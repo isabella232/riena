@@ -204,7 +204,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		validationRulesCheckedMarkFlash(onEdit);
 		if (onEdit.isOK()) {
 			firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, textValue);
-			firePropertyChange("textAfter", oldValue, textValue);
+			firePropertyChange("textAfter", oldValue, textValue); //$NON-NLS-1$
 		}
 	}
 
@@ -332,7 +332,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 			textValue = newValue;
 			if (checkOnEditRules(newValue).isOK()) {
 				firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, newValue);
-				firePropertyChange("textAfter", oldValue, newValue);
+				firePropertyChange("textAfter", oldValue, newValue); //$NON-NLS-1$
 			}
 		}
 	}
