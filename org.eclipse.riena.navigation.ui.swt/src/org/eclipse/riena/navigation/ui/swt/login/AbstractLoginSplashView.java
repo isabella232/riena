@@ -12,8 +12,9 @@ package org.eclipse.riena.navigation.ui.swt.login;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.riena.beans.common.IntegerBean;
-import org.eclipse.riena.navigation.ui.swt.views.AbstractControlledView;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
+import org.eclipse.riena.ui.ridgets.swt.views.AbstractControlledView;
+
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 

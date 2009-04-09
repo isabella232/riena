@@ -8,17 +8,19 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.views;
+package org.eclipse.riena.ui.ridgets.swt.views;
 
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.riena.internal.navigation.ui.swt.utils.RcpUtilities;
-import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
-import org.eclipse.riena.ui.swt.RienaDialog;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
+import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
+import org.eclipse.riena.ui.swt.RienaDialog;
+import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 
 /**
  * base class for SWT dialogs.

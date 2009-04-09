@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.views;
+package org.eclipse.riena.ui.swt.lnf;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -26,7 +26,6 @@ import java.util.Set;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -34,9 +33,8 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.internal.navigation.ui.swt.Activator;
+import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
@@ -362,7 +360,7 @@ public class LnFUpdater {
 				return ReflectionUtils.invokeHidden(control, property.getReadMethod().getName());
 			} catch (ReflectionFailure failure) {
 				// TODO This is a workaround of a nebula "bug"
-				if (control.getClass().getName().equals(CompositeTable.class.getName())) {
+				if (control.getClass().getName().equals("org.eclipse.swt.nebula.widgets.compositetable.CompositeTable")) { //$NON-NLS-1$
 					return null;
 				}
 				String message = "Cannot get the value of the property \"" + property.getName() + "\" of the class \"" //$NON-NLS-1$ //$NON-NLS-2$
