@@ -81,7 +81,7 @@ public final class PropertiesUtils {
 	 *            data) method.
 	 * @param expectedKeys
 	 *            optional expected keys
-	 * @return a map
+	 * @return a map maybe empty but never {@code null}
 	 * @throws IllegalArgumentException
 	 *             for any errors
 	 * @see IExecutableExtension.setInitializationData()
@@ -116,7 +116,7 @@ public final class PropertiesUtils {
 	 *            optional defaults
 	 * @param expectedKeys
 	 *            optional expected keys
-	 * @return a map
+	 * @return a map maybe empty but never {@code null}
 	 * @throws IllegalArgumentException
 	 *             for any errors
 	 * @see IExecutableExtension.setInitializationData()
@@ -180,7 +180,7 @@ public final class PropertiesUtils {
 	 * @param data
 	 *            must be of type string; otherwise a IllegalArgumentException
 	 *            will be thrown
-	 * @return
+	 * @return a String array maybe empty but never {@code null}
 	 * @throws IllegalArgumentException
 	 *             in case of errors
 	 */
