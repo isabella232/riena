@@ -26,9 +26,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.beans.common.TypedBean;
-import org.eclipse.riena.internal.ui.ridgets.swt.DateTimeRidget;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -55,14 +55,14 @@ public class SnippetDateTimeRidget001 {
 		UIControlsFactory.createLabel(shell, "Date:"); //$NON-NLS-1$
 		DateTime dtDate = new DateTime(shell, SWT.DATE | SWT.MEDIUM | SWT.DROP_DOWN);
 		fill.applyTo(dtDate);
-		final DateTimeRidget dtDateRidget = (DateTimeRidget) SwtRidgetFactory.createRidget(dtDate);
+		final IDateTimeRidget dtDateRidget = (IDateTimeRidget) SwtRidgetFactory.createRidget(dtDate);
 		dtDateRidget.bindToModel(value, TypedBean.PROP_VALUE);
 		dtDateRidget.updateFromModel();
 
 		UIControlsFactory.createLabel(shell, "Time:"); //$NON-NLS-1$
 		DateTime dtTime = new DateTime(shell, SWT.TIME | SWT.MEDIUM);
 		fill.applyTo(dtTime);
-		final DateTimeRidget dtTimeRidget = (DateTimeRidget) SwtRidgetFactory.createRidget(dtTime);
+		final IDateTimeRidget dtTimeRidget = (IDateTimeRidget) SwtRidgetFactory.createRidget(dtTime);
 		dtTimeRidget.bindToModel(value, TypedBean.PROP_VALUE);
 		dtTimeRidget.updateFromModel();
 

@@ -14,11 +14,13 @@ import java.util.Date;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.DateAndTimeObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DateTime;
@@ -31,9 +33,15 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
  */
 public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget {
 
-	private IObservableValue value;
+	private IObservableValue modelValue;
+	private final IObservableValue ridgetValue;
 	private DataBindingContext dbc;
-	private Binding dtBinding;
+	private Binding modelBinding;
+	private Binding controlBinding;
+
+	public DateTimeRidget() {
+		ridgetValue = new WritableValue(new Date(0), Date.class);
+	}
 
 	@Override
 	protected void checkUIControl(Object uiControl) {
@@ -42,31 +50,36 @@ public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget
 
 	@Override
 	protected void bindUIControl() {
-		DateTime control = getUIControl();
-		if (control != null && value != null) {
+		final DateTime control = getUIControl();
+		if (control != null) {
 			dbc = new DataBindingContext();
-			IObservableValue timeObservable;
-			IObservableValue dateObservable;
-			if ((control.getStyle() & SWT.TIME) != 0) {
+			final IObservableValue timeObservable;
+			final IObservableValue dateObservable;
+			if (isTimeControl(control)) {
 				// it is a time widget
 				timeObservable = WidgetProperties.selection().observe(control);
-				timeObservable.setValue(value.getValue());
-				dateObservable = new WritableValue(timeObservable.getRealm(), value.getValue(), Date.class);
+				timeObservable.setValue(ridgetValue.getValue());
+				dateObservable = new WritableValue(timeObservable.getRealm(), ridgetValue.getValue(), Date.class);
 			} else {
 				// it is  date/calendar widget
 				dateObservable = WidgetProperties.selection().observe(control);
-				timeObservable = new WritableValue(dateObservable.getRealm(), value.getValue(), Date.class);
+				timeObservable = new WritableValue(dateObservable.getRealm(), ridgetValue.getValue(), Date.class);
 			}
-			dtBinding = dbc.bindValue(new DateAndTimeObservableValue(dateObservable, timeObservable), value);
+			if (modelValue != null) {
+				modelBinding = dbc.bindValue(ridgetValue, modelValue, new UpdateValueStrategy(
+						UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(
+						UpdateValueStrategy.POLICY_ON_REQUEST));
+			}
+			controlBinding = dbc.bindValue(new DateAndTimeObservableValue(dateObservable, timeObservable), ridgetValue);
 		}
+	}
+
+	private boolean isTimeControl(DateTime control) {
+		return (control.getStyle() & SWT.TIME) != 0;
 	}
 
 	@Override
 	protected void unbindUIControl() {
-		if (dtBinding != null) {
-			dtBinding.dispose();
-			dtBinding = null;
-		}
 		if (dbc != null) {
 			dbc.dispose();
 			dbc = null;
@@ -86,13 +99,30 @@ public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget
 	public void bindToModel(IObservableValue observableValue) {
 		unbindUIControl();
 
-		this.value = observableValue;
+		Assert.isNotNull(observableValue);
+		this.modelValue = observableValue;
+		this.ridgetValue.setValue(new Date(0));
 
 		bindUIControl();
 	}
 
 	public void bindToModel(Object pojo, String propertyName) {
 		bindToModel(PojoObservables.observeValue(pojo, propertyName));
+	}
+
+	public Date getDate() {
+		return (Date) ridgetValue.getValue();
+	}
+
+	public void setDate(Date date) {
+		ridgetValue.setValue(date);
+		if (controlBinding != null) {
+			controlBinding.updateModelToTarget(); // update widget
+		}
+		if (modelBinding != null) {
+			modelBinding.updateTargetToModel(); // update modelValue
+		}
+		// TODO [EV] fire-event and test 
 	}
 
 	public IConverter getModelToUIControlConverter() {
@@ -107,8 +137,8 @@ public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget
 	@Override
 	public void updateFromModel() {
 		super.updateFromModel();
-		if (value != null) {
-			dtBinding.updateModelToTarget();
+		if (modelValue != null) {
+			setDate((Date) modelValue.getValue());
 		}
 	}
 

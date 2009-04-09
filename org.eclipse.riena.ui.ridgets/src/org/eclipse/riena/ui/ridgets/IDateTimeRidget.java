@@ -10,11 +10,35 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+import java.util.Date;
+
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+
 /**
  * Ridget for a date / time field.
  */
 public interface IDateTimeRidget extends IMarkableRidget {
 
 	// TODO [ev] extend IValueRidget ?
+
+	/**
+	 * TODO [ev] docs
+	 */
+	public void bindToModel(IObservableValue observableValue);
+
+	/**
+	 * TODO [ev] docs
+	 */
+	public void bindToModel(Object pojo, String propertyName);
+
+	/**
+	 * TODO [ev] docs
+	 */
+	Date getDate();
+
+	/**
+	 * TODO [ev] docs
+	 */
+	void setDate(Date date);
 
 }

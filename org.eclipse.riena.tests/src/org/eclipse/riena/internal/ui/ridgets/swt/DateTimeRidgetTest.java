@@ -10,11 +10,16 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 
+import org.eclipse.riena.beans.common.TypedBean;
+import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
@@ -52,120 +57,105 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertSame(DateTimeRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
-	//	public void testSetText() {
-	//		IDateTextRidget ridget = getRidget();
-	//		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
-	//
-	//		ridget.setText("01.10.2008");
-	//		assertEquals("01.10.2008", ridget.getText());
-	//
-	//		ridget.setText("01.10");
-	//		assertEquals("01.10.    ", ridget.getText());
-	//
-	//		ridget.setText("22.22.2222");
-	//		assertEquals("22.22.2222", ridget.getText());
-	//
-	//		ridget.setText("");
-	//		assertEquals("  .  .    ", ridget.getText());
-	//
-	//		ridget.setText("  .10.");
-	//		assertEquals("  .10.    ", ridget.getText());
-	//
-	//		ridget.setText("  .  .");
-	//		assertEquals("  .  .    ", ridget.getText());
-	//
-	//		try {
-	//			ridget.setText("abc");
-	//			fail();
-	//		} catch (RuntimeException rex) {
-	//			ok();
-	//		}
-	//
-	//		try {
-	//			ridget.setText("12102008");
-	//			fail();
-	//		} catch (RuntimeException rex) {
-	//			ok();
-	//		}
-	//
-	//		try {
-	//			ridget.setText("12/10/2008");
-	//			fail();
-	//		} catch (RuntimeException rex) {
-	//			ok();
-	//		}
-	//
-	//		try {
-	//			ridget.setText("12.ab");
-	//			fail();
-	//		} catch (RuntimeException rex) {
-	//			ok();
-	//		}
-	//	}
+	public void testSetDate() {
+		IDateTimeRidget ridget = getRidget();
+		DateTime control = getWidget();
+		TypedBean<Date> dateBean = new TypedBean<Date>(new Date(0));
+		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
 
-	/**
-	 * Tests that setText(null) clears the ridget (i.e. results in an empty
-	 * pattern with just the separators)
-	 */
-	//	public void testSetTextNull() {
-	//		IDateTextRidget ridget = getRidget();
-	//		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
-	//
-	//		ridget.setText("01.10.2008");
-	//
-	//		assertEquals("01.10.2008", ridget.getText());
-	//
-	//		ridget.setText(null);
-	//
-	//		assertEquals("  .  .    ", ridget.getText());
-	//	}
+		Date date2001 = createDate(2001, 12, 2);
+		ridget.setDate(date2001);
+
+		assertEquals(date2001, ridget.getDate());
+		assertEquals(date2001, dateBean.getValue());
+		assertEquals(date2001, getDate(control));
+
+		Date date1700 = createDate(1700, 1, 1);
+		ridget.setDate(date1700);
+
+		assertEquals(date1700, ridget.getDate());
+		assertEquals(date1700, dateBean.getValue());
+		assertEquals(date1700, getDate(control));
+	}
+
+	public void testSetDateNull() {
+		IDateTimeRidget ridget = getRidget();
+		TypedBean<Date> dateBean = new TypedBean<Date>(new Date(0));
+		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
+
+		ridget.setDate(null);
+
+		assertEquals(null, ridget.getDate());
+		// TODO [ev] wait for https://bugs.eclipse.org/bugs/show_bug.cgi?id=271720
+		// what should be in the control?
+		assertEquals(null, dateBean.getValue());
+	}
 
 	public void testUpdateFromModel() {
-		//		IDateTextRidget ridget = getRidget();
-		//		Text control = getWidget();
-		//		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
-		//		StringBean bean = new StringBean("12.10.2008");
-		//		ridget.bindToModel(bean, StringBean.PROP_VALUE);
-		//
-		//		// value fully matches pattern
-		//		ridget.updateFromModel();
-		//
-		//		assertEquals("12.10.2008", control.getText());
-		//		assertEquals("12.10.2008", ridget.getText());
-		//		assertEquals("12.10.2008", bean.getValue());
-		//
-		//		// value matches sub-pattern
-		//		bean.setValue("  .12");
-		//		ridget.updateFromModel();
-		//
-		//		assertEquals("  .12.    ", control.getText());
-		//		assertEquals("  .12.    ", ridget.getText());
-		//		assertEquals("  .12", bean.getValue());
-		//
-		//		// value does not match patter; control and ridget unchanged
-		//		bean.setValue("abc");
-		//		ridget.updateFromModel();
-		//
-		//		assertEquals("  .12.    ", control.getText());
-		//		assertEquals("  .12.    ", control.getText());
-		//		assertEquals("abc", bean.getValue());
+		IDateTimeRidget ridget = getRidget();
+		DateTime control = getWidget();
+		Date date2000 = createDate(2000, 1, 1);
+		Date date2001 = createDate(2001, 12, 2);
+
+		assertEquals(new Date(0), ridget.getDate());
+
+		TypedBean<Date> dateBean = new TypedBean<Date>(date2000);
+		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
+
+		assertEquals(new Date(0), ridget.getDate());
+		// assertEquals(null, ridget.getDate());
+		// TODO [ev] wait for https://bugs.eclipse.org/bugs/show_bug.cgi?id=271720
+		// assertEquals(new Date(0), getDate(control));
+
+		ridget.updateFromModel();
+
+		assertEquals(date2000, ridget.getDate());
+		assertEquals(date2000, getDate(control));
+
+		dateBean.setValue(date2001);
+
+		assertEquals(date2000, ridget.getDate());
+		assertEquals(date2000, getDate(control));
+
+		ridget.updateFromModel();
+
+		assertEquals(date2001, ridget.getDate());
+		assertEquals(date2001, getDate(control));
+
+		dateBean.setValue(null);
+		ridget.updateFromModel();
+
+		assertEquals(null, ridget.getDate());
+		// TODO [ev] wait for https://bugs.eclipse.org/bugs/show_bug.cgi?id=271720
+		// assertEquals(new Date(0), getDate(control));
 	}
 
 	public void testMandatoryMarker() {
-		//		IDateTextRidget ridget = getRidget();
-		//		ridget.setMandatory(true);
-		//		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
-		//
-		//		ridget.setText("31.10.2008");
-		//
-		//		TestUtils.assertMandatoryMarker(ridget, 1, true);
-		//
-		//		ridget.setText(null);
-		//
-		//		TestUtils.assertMandatoryMarker(ridget, 1, false);
-		//
-		//		ridget.setMandatory(false);
-		//
-		//		TestUtils.assertMandatoryMarker(ridget, 0, false);
+		IDateTimeRidget ridget = getRidget();
+		ridget.setMandatory(true);
+
+		assertTrue(ridget.isDisableMandatoryMarker());
+		TestUtils.assertMandatoryMarker(ridget, 1, true);
 	}
+
+	// helping methods
+	//////////////////
+
+	private Date createDate(int year, int month, int day) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear();
+		cal.set(year, month - 1, day);
+		return cal.getTime();
+	}
+
+	private Date getDate(DateTime control) {
+		int year = control.getYear();
+		int month = control.getMonth();
+		int day = control.getDay();
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, month, day, 0, 0, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		return cal.getTime();
+	}
+
 }

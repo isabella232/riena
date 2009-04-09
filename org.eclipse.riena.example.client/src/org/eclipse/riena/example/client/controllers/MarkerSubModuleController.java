@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,6 +32,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
+import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
@@ -72,7 +74,10 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		final IDateTextRidget textDate = (IDateTextRidget) getRidget("textDate"); //$NON-NLS-1$
 		textDate.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
-		textDate.setText(null);
+		textDate.setText("04.12.2008"); //$NON-NLS-1$
+
+		final IDateTimeRidget dtDate = (IDateTimeRidget) getRidget("dtDate"); //$NON-NLS-1$
+		dtDate.setDate(new Date(2008 - 1900, 11, 04));
 
 		final IComboRidget comboAge = (IComboRidget) getRidget("comboAge"); //$NON-NLS-1$
 		List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
@@ -133,7 +138,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IToggleButtonRidget buttonRadioB = (IToggleButtonRidget) getRidget("buttonRadioB"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonCheck = (IToggleButtonRidget) getRidget("buttonCheck"); //$NON-NLS-1$
 
-		final IMarkableRidget[] markables = new IMarkableRidget[] { textName, textPrice, textAmount, textDate,
+		final IMarkableRidget[] markables = new IMarkableRidget[] { textName, textPrice, textAmount, textDate, dtDate,
 				comboAge, choiceType, choiceFlavor, listPersons, tablePersons, compTable, treePersons, treeWCols,
 				buttonToggle, buttonPush, buttonRadioA, buttonRadioB, buttonCheck };
 
