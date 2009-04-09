@@ -40,14 +40,17 @@ public class DateTimeSubModuleController extends SubModuleController {
 		IDateTimeRidget dtTime = (IDateTimeRidget) getRidget("dtTime"); //$NON-NLS-1$
 		IDateTimeRidget dtDateOnly = (IDateTimeRidget) getRidget("dtDateOnly"); //$NON-NLS-1$
 		IDateTimeRidget dtTimeOnly = (IDateTimeRidget) getRidget("dtTimeOnly"); //$NON-NLS-1$
+		IDateTimeRidget dtCal = (IDateTimeRidget) getRidget("dtCal"); //$NON-NLS-1$
 		ITextRidget txt1 = (ITextRidget) getRidget("txt1"); //$NON-NLS-1$
 		ITextRidget txt2 = (ITextRidget) getRidget("txt2"); //$NON-NLS-1$
 		ITextRidget txt3 = (ITextRidget) getRidget("txt3"); //$NON-NLS-1$
+		ITextRidget txt4 = (ITextRidget) getRidget("txt4"); //$NON-NLS-1$
 
 		long now = System.currentTimeMillis();
 		TypedBean<Date> date1 = new TypedBean<Date>(new Date(now));
 		TypedBean<Date> date2 = new TypedBean<Date>(new Date(now));
 		TypedBean<Date> date3 = new TypedBean<Date>(new Date(now));
+		TypedBean<Date> date4 = new TypedBean<Date>(new Date(now));
 
 		dtDate.bindToModel(date1, TypedBean.PROP_VALUE);
 		dtDate.updateFromModel();
@@ -60,6 +63,9 @@ public class DateTimeSubModuleController extends SubModuleController {
 		dtTimeOnly.bindToModel(date3, TypedBean.PROP_VALUE);
 		dtTimeOnly.updateFromModel();
 
+		dtCal.bindToModel(date4, TypedBean.PROP_VALUE);
+		dtCal.updateFromModel();
+
 		DataBindingContext dbc = new DataBindingContext();
 		dbc.bindValue(BeansObservables.observeValue(txt1, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
 				date1, TypedBean.PROP_VALUE));
@@ -67,5 +73,7 @@ public class DateTimeSubModuleController extends SubModuleController {
 				date2, TypedBean.PROP_VALUE));
 		dbc.bindValue(BeansObservables.observeValue(txt3, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
 				date3, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt4, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
+				date4, TypedBean.PROP_VALUE));
 	}
 }

@@ -17,6 +17,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.example.client.controllers.DateTimeSubModuleController;
@@ -50,6 +51,10 @@ public class DateTimeSubModuleView extends SubModuleView<DateTimeSubModuleContro
 		Group group3 = createGroup(parent, null, "dtTimeOnly", "txt3", SWT.SHORT); //$NON-NLS-1$ //$NON-NLS-2$
 		group3.setText("DateTime #3"); //$NON-NLS-1$
 		gdf.applyTo(group3);
+
+		Group group4 = createGroup(parent, "dtCal", null, "txt4", SWT.CALENDAR); //$NON-NLS-1$ //$NON-NLS-2$
+		group4.setText("DateTime #4"); //$NON-NLS-1$
+		gdf.applyTo(group4);
 	}
 
 	// helping methods
@@ -59,16 +64,20 @@ public class DateTimeSubModuleView extends SubModuleView<DateTimeSubModuleContro
 		Group group = UIControlsFactory.createGroup(parent, ""); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 		if (dateId != null) {
-			UIControlsFactory.createLabel(group, "Date:"); //$NON-NLS-1$
-			DateTime dtDate = new DateTime(group, SWT.DATE | SWT.DROP_DOWN | style);
-			//			GridDataFactory.fillDefaults().applyTo(dtDate);
+			Label label = UIControlsFactory.createLabel(group, "Date:"); //$NON-NLS-1$
+			GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(label);
+			DateTime dtDate;
+			if (style != SWT.CALENDAR) {
+				dtDate = new DateTime(group, SWT.DATE | SWT.DROP_DOWN | style);
+			} else {
+				dtDate = new DateTime(group, style);
+			}
 			addUIControl(dtDate, dateId);
 		}
 
 		if (timeId != null) {
 			UIControlsFactory.createLabel(group, "Time:"); //$NON-NLS-1$
 			DateTime dtTime = new DateTime(group, SWT.TIME | style);
-			//			GridDataFactory.fillDefaults().applyTo(dtTime);
 			addUIControl(dtTime, timeId);
 		}
 
