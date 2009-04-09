@@ -202,7 +202,7 @@ public class ExtensionInjector {
 			}
 		}
 		throw new NoSuchMethodError("In " + target.getClass() + " is no method matching " + updateMethodName //$NON-NLS-1$ //$NON-NLS-2$
-				+ "(" + interfaceType + " )"); //$NON-NLS-1$ //$NON-NLS-2$
+				+ "(" + interfaceType + (isArray ? "[]" : "") + " )"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
 	/**
