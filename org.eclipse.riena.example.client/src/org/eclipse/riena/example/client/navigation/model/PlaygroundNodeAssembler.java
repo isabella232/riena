@@ -19,6 +19,7 @@ import org.eclipse.riena.example.client.controllers.BlockingSubModuleController;
 import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
 import org.eclipse.riena.example.client.controllers.CompositeTableSubModuleController;
+import org.eclipse.riena.example.client.controllers.DateTimeSubModuleController;
 import org.eclipse.riena.example.client.controllers.DialogSubModuleController;
 import org.eclipse.riena.example.client.controllers.FocusableSubModuleController;
 import org.eclipse.riena.example.client.controllers.ListSubModuleController;
@@ -40,6 +41,7 @@ import org.eclipse.riena.example.client.views.BlockingSubModuleView;
 import org.eclipse.riena.example.client.views.ChoiceSubModuleView;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.example.client.views.CompositeTableSubModuleView;
+import org.eclipse.riena.example.client.views.DateTimeSubModuleView;
 import org.eclipse.riena.example.client.views.DialogSubModuleView;
 import org.eclipse.riena.example.client.views.FocusableSubModuleView;
 import org.eclipse.riena.example.client.views.ListSubModuleView;
@@ -118,6 +120,12 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(tablexSubModule, CompositeTableSubModuleController.class,
 				CompositeTableSubModuleView.ID, false);
 		playgroundModule.addChild(tablexSubModule);
+
+		ISubModuleNode dateTimeSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.datetime"), "DateTime"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(dateTimeSubModule, DateTimeSubModuleController.class, DateTimeSubModuleView.ID,
+				false);
+		playgroundModule.addChild(dateTimeSubModule);
 
 		ISubModuleNode dialogSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.dialog"), "Dialog"); //$NON-NLS-1$ //$NON-NLS-2$

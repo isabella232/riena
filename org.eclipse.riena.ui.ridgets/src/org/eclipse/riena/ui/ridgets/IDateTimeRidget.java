@@ -22,6 +22,14 @@ public interface IDateTimeRidget extends IMarkableRidget {
 	// TODO [ev] extend IValueRidget ?
 
 	/**
+	 * Property name of the date property.
+	 * 
+	 * @see #getDate()
+	 * @see #setDate(Date)
+	 */
+	String PROPERTY_DATE = "date"; //$NON-NLS-1$
+
+	/**
 	 * TODO [ev] docs
 	 */
 	public void bindToModel(IObservableValue observableValue);
