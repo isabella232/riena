@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+
 import org.eclipse.riena.core.util.Literal;
 import org.eclipse.riena.core.util.Millis;
 import org.eclipse.riena.core.util.PropertiesUtils;
@@ -48,7 +49,7 @@ import org.eclipse.riena.monitor.common.IReceiver;
  * &lt;extension point=&quot;org.eclipse.riena.monitor.sender&quot;&gt;
  *       &lt;sender
  *             name=&quot;SimpleSender&quot;
- *             class=&quot;org.eclipse.riena.internal.monitor.client.SimpleSender:retryTime=20 m&quot;&gt;
+ *             class=&quot;org.eclipse.riena.monitor.client.SimpleSender:retryTime=20 m&quot;&gt;
  *       &lt;/sender&gt;
  * &lt;/extension&gt;
  * </pre>

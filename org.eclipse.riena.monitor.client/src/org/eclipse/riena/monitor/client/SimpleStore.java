@@ -38,6 +38,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -47,6 +49,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaLocations;
 import org.eclipse.riena.core.util.IOUtils;
@@ -55,7 +58,6 @@ import org.eclipse.riena.core.util.Millis;
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.internal.monitor.client.Activator;
 import org.eclipse.riena.monitor.common.Collectible;
-import org.osgi.service.log.LogService;
 
 /**
  * This simple store implements a file based {@code IStore} for the client
@@ -75,7 +77,7 @@ import org.osgi.service.log.LogService;
  * &lt;extension point=&quot;org.eclipse.riena.monitor.store&quot;&gt;
  *     &lt;store
  *           name=&quot;SimpleStore&quot;
- *           class=&quot;org.eclipse.riena.internal.monitor.client.SimpleStore:cleanupDelay=120 s&quot;&gt;
+ *           class=&quot;org.eclipse.riena.monitor.client.SimpleStore:cleanupDelay=120 s&quot;&gt;
  *     &lt;/store&gt;
  * &lt;/extension&gt;
  * </pre>
