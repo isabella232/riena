@@ -138,6 +138,36 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		TestUtils.assertMandatoryMarker(ridget, 1, true);
 	}
 
+	public void testControlEnablement() {
+		IDateTimeRidget ridget = getRidget();
+		DateTime control = getWidget();
+
+		assertTrue(control.isEnabled());
+
+		ridget.setEnabled(false);
+
+		assertFalse(control.isEnabled());
+
+		ridget.setEnabled(true);
+
+		assertTrue(control.isEnabled());
+
+		ridget.setOutputOnly(true);
+		ridget.setEnabled(false);
+		ridget.setEnabled(true);
+
+		assertFalse(control.isEnabled());
+
+		ridget.setEnabled(false);
+		ridget.setOutputOnly(false);
+
+		assertFalse(control.isEnabled());
+
+		ridget.setEnabled(true);
+
+		assertTrue(control.isEnabled());
+	}
+
 	// helping methods
 	//////////////////
 

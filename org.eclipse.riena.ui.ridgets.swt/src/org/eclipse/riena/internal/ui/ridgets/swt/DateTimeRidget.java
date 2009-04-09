@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Date;
 
 import org.eclipse.core.databinding.Binding;
@@ -26,6 +28,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DateTime;
 
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
@@ -41,6 +44,16 @@ public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget
 
 	public DateTimeRidget() {
 		ridgetValue = new WritableValue(new Date(0), Date.class);
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				updateEditable();
+			}
+		});
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				updateEditable();
+			}
+		});
 	}
 
 	@Override
@@ -52,6 +65,8 @@ public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget
 	protected void bindUIControl() {
 		final DateTime control = getUIControl();
 		if (control != null) {
+			updateEditable();
+
 			dbc = new DataBindingContext();
 			final IObservableValue timeObservable;
 			final IObservableValue dateObservable;
@@ -72,10 +87,6 @@ public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget
 			}
 			controlBinding = dbc.bindValue(new DateAndTimeObservableValue(dateObservable, timeObservable), ridgetValue);
 		}
-	}
-
-	private boolean isTimeControl(DateTime control) {
-		return (control.getStyle() & SWT.TIME) != 0;
 	}
 
 	@Override
@@ -139,6 +150,20 @@ public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget
 		super.updateFromModel();
 		if (modelValue != null) {
 			setDate((Date) modelValue.getValue());
+		}
+	}
+
+	// helping methods
+	//////////////////
+
+	private boolean isTimeControl(DateTime control) {
+		return (control.getStyle() & SWT.TIME) != 0;
+	}
+
+	private void updateEditable() {
+		DateTime control = getUIControl();
+		if (control != null && !control.isDisposed()) {
+			control.setEnabled(isOutputOnly() || !isEnabled() ? false : true);
 		}
 	}
 
