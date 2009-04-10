@@ -166,7 +166,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	public void setSelection(Object newSelection) {
-		// TODO [ev] this is affected by Bug 271080
 		getTableRidget().setSelection(newSelection);
 		MasterDetailsComposite control = getUIControl();
 		if (control != null) {
