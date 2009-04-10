@@ -30,7 +30,6 @@ public class RcpUtilities {
 	 * Returns the shell of the active workbench.
 	 * 
 	 * @return shell of {@code null} if no active workbench exists.
-	 * @deprecated
 	 */
 	public static Shell getWorkbenchShell() {
 
