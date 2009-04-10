@@ -209,6 +209,9 @@ public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 		bindToModel(listObservableValue, rowValueClass, renderingMethod, selectionObservableValue);
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public void bindToModel(Object listPojo, String listPropertyName, Class<? extends Object> rowValueClass,
 			String renderingMethod, Object selectionPojo, String selectionPropertyName, IComboEntryFactory entryFactory) {
 		throw new UnsupportedOperationException();

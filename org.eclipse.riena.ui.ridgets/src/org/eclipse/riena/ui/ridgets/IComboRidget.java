@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.ridgets;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+
 import org.eclipse.riena.ui.common.IComboEntryFactory;
 
 /**
@@ -75,6 +76,7 @@ public interface IComboRidget extends IMarkableRidget {
 	 *            The property name to access the selection.
 	 * @param entryFactory
 	 *            Factory for creating new entries for this ComboBox
+	 * @deprecated
 	 */
 	void bindToModel(Object listPojo, String listPropertyName, Class<? extends Object> rowValueClass,
 			String renderingMethod, Object selectionPojo, String selectionPropertyName, IComboEntryFactory entryFactory);

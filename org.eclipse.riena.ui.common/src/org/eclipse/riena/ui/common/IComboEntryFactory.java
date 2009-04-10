@@ -13,7 +13,10 @@ package org.eclipse.riena.ui.common;
 /**
  * Interface to be implemented by classes, which may be used by a
  * <code>ListAdapter</code> to create list entries from a string.
+ * 
+ * @deprecated
  */
+//  TODO [ev] remove
 public interface IComboEntryFactory {
 
 	/**
