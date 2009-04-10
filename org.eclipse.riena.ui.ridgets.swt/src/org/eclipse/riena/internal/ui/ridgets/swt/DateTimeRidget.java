@@ -12,13 +12,12 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoObservables;
-import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.DateAndTimeObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
@@ -27,23 +26,25 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DateTime;
 
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
  * Ridget for {@link DateTime} widgets.
  */
-public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget {
+public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeRidget, IDateTextRidget {
 
-	private IObservableValue modelValue;
-	private final IObservableValue ridgetValue;
+	/**
+	 * Holds the date value for this ridget.
+	 * <p>
+	 * Do not access directly. Use {@link #getRidgetObservable()}.
+	 */
+	private IObservableValue ridgetObservable;
 	private DataBindingContext dbc;
-	private Binding modelBinding;
 	private Binding controlBinding;
 
 	public DateTimeRidget() {
-		ridgetValue = new WritableValue(new Date(0), Date.class);
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				updateEditable();
@@ -73,19 +74,15 @@ public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget
 			if (isTimeControl(control)) {
 				// it is a time widget
 				timeObservable = WidgetProperties.selection().observe(control);
-				timeObservable.setValue(ridgetValue.getValue());
-				dateObservable = new WritableValue(timeObservable.getRealm(), ridgetValue.getValue(), Date.class);
+				timeObservable.setValue(getDate());
+				dateObservable = new WritableValue(timeObservable.getRealm(), getDate(), Date.class);
 			} else {
 				// it is  date/calendar widget
 				dateObservable = WidgetProperties.selection().observe(control);
-				timeObservable = new WritableValue(dateObservable.getRealm(), ridgetValue.getValue(), Date.class);
+				timeObservable = new WritableValue(dateObservable.getRealm(), getDate(), Date.class);
 			}
-			if (modelValue != null) {
-				modelBinding = dbc.bindValue(ridgetValue, modelValue, new UpdateValueStrategy(
-						UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(
-						UpdateValueStrategy.POLICY_ON_REQUEST));
-			}
-			controlBinding = dbc.bindValue(new DateAndTimeObservableValue(dateObservable, timeObservable), ridgetValue);
+			controlBinding = dbc.bindValue(new DateAndTimeObservableValue(dateObservable, timeObservable),
+					getRidgetObservable());
 		}
 	}
 
@@ -95,6 +92,14 @@ public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget
 			dbc.dispose();
 			dbc = null;
 		}
+	}
+
+	@Override
+	protected IObservableValue getRidgetObservable() {
+		if (ridgetObservable == null) {
+			ridgetObservable = new WritableValue(new Date(0), Date.class);
+		}
+		return ridgetObservable;
 	}
 
 	@Override
@@ -111,8 +116,8 @@ public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget
 		unbindUIControl();
 
 		Assert.isNotNull(observableValue);
-		this.modelValue = observableValue;
-		this.ridgetValue.setValue(new Date(0));
+		getRidgetObservable().setValue(new Date(0));
+		super.bindToModel(observableValue);
 
 		bindUIControl();
 	}
@@ -122,35 +127,55 @@ public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget
 	}
 
 	public Date getDate() {
-		return (Date) ridgetValue.getValue();
+		return (Date) getRidgetObservable().getValue();
 	}
 
 	public void setDate(Date date) {
-		ridgetValue.setValue(date);
+		getRidgetObservable().setValue(date);
 		if (controlBinding != null) {
 			controlBinding.updateModelToTarget(); // update widget
 		}
-		if (modelBinding != null) {
-			modelBinding.updateTargetToModel(); // update modelValue
-		}
+		getValueBindingSupport().updateFromTarget();
 		// TODO [EV] fire-event and test 
 	}
 
-	public IConverter getModelToUIControlConverter() {
-		// TODO Auto-generated method stub
-		return null;
+	/** Not supported. */
+	public void setFormat(String datePattern) {
+		throw new UnsupportedOperationException();
 	}
 
-	public void setModelToUIControlConverter(IConverter converter) {
-		// TODO Auto-generated method stub
+	/** Not supported. */
+	public int getAlignment() {
+		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public void updateFromModel() {
-		super.updateFromModel();
-		if (modelValue != null) {
-			setDate((Date) modelValue.getValue());
-		}
+	public String getText() {
+		Date date = getDate();
+		return date != null ? SimpleDateFormat.getInstance().format(date) : ""; //$NON-NLS-1$
+	}
+
+	public boolean isDirectWriting() {
+		return true;
+	}
+
+	/** Not supported. */
+	public void setAlignment(int alignment) {
+		throw new UnsupportedOperationException();
+	}
+
+	/** Not supported. */
+	public void setDirectWriting(boolean directWriting) {
+		throw new UnsupportedOperationException();
+	}
+
+	/** Not supported. */
+	public void setText(String text) {
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean revalidate() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 	// helping methods
@@ -166,5 +191,4 @@ public class DateTimeRidget extends AbstractSWTRidget implements IDateTimeRidget
 			control.setEnabled(isOutputOnly() || !isEnabled() ? false : true);
 		}
 	}
-
 }

@@ -12,14 +12,10 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.util.Date;
 
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-
 /**
  * Ridget for a date / time field.
  */
-public interface IDateTimeRidget extends IMarkableRidget {
-
-	// TODO [ev] extend IValueRidget ?
+public interface IDateTimeRidget extends ITextRidget {
 
 	/**
 	 * Property name of the date property.
@@ -30,23 +26,17 @@ public interface IDateTimeRidget extends IMarkableRidget {
 	String PROPERTY_DATE = "date"; //$NON-NLS-1$
 
 	/**
-	 * TODO [ev] docs
-	 */
-	public void bindToModel(IObservableValue observableValue);
-
-	/**
-	 * TODO [ev] docs
-	 */
-	public void bindToModel(Object pojo, String propertyName);
-
-	/**
-	 * TODO [ev] docs
+	 * Get the date value of this ridget.
 	 */
 	Date getDate();
 
 	/**
-	 * TODO [ev] docs
+	 * Set the date value of this ridget.
+	 * 
+	 * @param date
+	 *            a Date value
 	 */
+	// TODO [ev] document behavior for date == null
 	void setDate(Date date);
 
 }
