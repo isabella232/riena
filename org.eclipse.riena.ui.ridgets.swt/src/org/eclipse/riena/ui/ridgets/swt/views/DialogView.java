@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.swt.RienaDialog;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
@@ -29,18 +28,19 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
 
-	private Composite parent;
 	protected Dialog dialog;
+
+	private Shell parentShell;
 
 	/**
 	 * @param parent
 	 *            the parent control.
 	 */
 	public DialogView(Composite parent) {
-
 		super();
-
-		initializeParent(parent);
+		if (parent != null) {
+			parentShell = parent.getShell();
+		}
 	}
 
 	/**
@@ -80,21 +80,8 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 		dialog.open();
 	}
 
-	private void initializeParent(Composite parent) {
-		if (parent == null) {
-			this.parent = RcpUtilities.getWorkbenchShell();
-		} else {
-			this.parent = parent;
-		}
-	}
-
 	private Shell getParentShell() {
-
-		if (parent != null) {
-			return parent.getShell();
-		} else {
-			return null;
-		}
+		return parentShell;
 	}
 
 	protected void onClose() {
