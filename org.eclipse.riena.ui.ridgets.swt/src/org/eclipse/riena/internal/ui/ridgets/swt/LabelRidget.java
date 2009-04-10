@@ -49,7 +49,7 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 	}
 
 	@Override
-	IObservableValue getRidgetObservable() {
+	protected IObservableValue getRidgetObservable() {
 		return BeansObservables.observeValue(this, ILabelRidget.PROPERTY_TEXT);
 	}
 

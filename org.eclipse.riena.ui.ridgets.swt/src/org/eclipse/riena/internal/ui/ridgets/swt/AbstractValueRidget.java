@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+
 import org.eclipse.riena.ui.ridgets.IValueRidget;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
@@ -31,7 +32,7 @@ public abstract class AbstractValueRidget extends AbstractSWTRidget implements I
 	/**
 	 * @return The observable value of the Ridget.
 	 */
-	abstract IObservableValue getRidgetObservable();
+	protected abstract IObservableValue getRidgetObservable();
 
 	public void bindToModel(IObservableValue observableValue) {
 		valueBindingSupport.bindToModel(observableValue);

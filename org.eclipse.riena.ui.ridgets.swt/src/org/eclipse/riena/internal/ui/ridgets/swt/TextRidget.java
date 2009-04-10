@@ -87,7 +87,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	@Override
-	IObservableValue getRidgetObservable() {
+	protected IObservableValue getRidgetObservable() {
 		return BeansObservables.observeValue(this, ITextRidget.PROPERTY_TEXT);
 	}
 

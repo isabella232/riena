@@ -24,14 +24,14 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Button;
+
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Button;
 
 /**
  * Adapter of the SWT Widget <code>Button</code> with the style SWT.CHECK or
@@ -100,7 +100,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	}
 
 	@Override
-	IObservableValue getRidgetObservable() {
+	protected IObservableValue getRidgetObservable() {
 		return BeansObservables.observeValue(this, IToggleButtonRidget.PROPERTY_SELECTED);
 	}
 
