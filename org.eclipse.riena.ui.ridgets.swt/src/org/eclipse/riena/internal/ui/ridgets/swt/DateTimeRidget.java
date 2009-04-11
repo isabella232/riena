@@ -26,14 +26,14 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DateTime;
 
-import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
  * Ridget for {@link DateTime} widgets.
  */
-public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeRidget, IDateTextRidget {
+public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeRidget, ITextRidget {
 
 	/**
 	 * Holds the date value for this ridget.
@@ -71,20 +71,22 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 			dbc = new DataBindingContext();
 			final IObservableValue timeObservable;
 			final IObservableValue dateObservable;
+			final Date nonNullDate = getNonNullDate(getDate());
 			if (isTimeControl(control)) {
 				// it is a time widget
 				timeObservable = WidgetProperties.selection().observe(control);
-				timeObservable.setValue(getDate());
-				dateObservable = new WritableValue(timeObservable.getRealm(), getDate(), Date.class);
+				timeObservable.setValue(nonNullDate);
+				dateObservable = new WritableValue(timeObservable.getRealm(), nonNullDate, Date.class);
 			} else {
 				// it is  date/calendar widget
 				dateObservable = WidgetProperties.selection().observe(control);
-				timeObservable = new WritableValue(dateObservable.getRealm(), getDate(), Date.class);
+				dateObservable.setValue(nonNullDate);
+				timeObservable = new WritableValue(dateObservable.getRealm(), nonNullDate, Date.class);
 			}
 			controlBinding = dbc.bindValue(new DateAndTimeObservableValue(dateObservable, timeObservable) {
 				@Override
 				protected void doSetValue(Object value) {
-					super.doSetValue(value == null ? getEmptyDate() : value);
+					super.doSetValue(getNonNullDate((Date) value));
 				}
 			}, getRidgetObservable());
 		}
@@ -151,11 +153,6 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	}
 
 	/** Not supported. */
-	public void setFormat(String datePattern) {
-		throw new UnsupportedOperationException();
-	}
-
-	/** Not supported. */
 	public int getAlignment() {
 		throw new UnsupportedOperationException();
 	}
@@ -192,8 +189,8 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	// helping methods
 	//////////////////
 
-	private Date getEmptyDate() {
-		return new Date(0);
+	private Date getNonNullDate(Date date) {
+		return date != null ? date : new Date(0);
 	}
 
 	private boolean isTimeControl(DateTime control) {
