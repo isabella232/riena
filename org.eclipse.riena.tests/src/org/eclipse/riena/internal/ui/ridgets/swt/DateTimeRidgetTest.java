@@ -60,34 +60,38 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	public void testSetDate() {
 		IDateTimeRidget ridget = getRidget();
 		DateTime control = getWidget();
-		TypedBean<Date> dateBean = new TypedBean<Date>(new Date(0));
+		TypedBean<Date> dateBean = new TypedBean<Date>(null);
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
+
+		assertEquals(null, ridget.getDate());
+		assertEquals(null, dateBean.getValue());
 
 		Date date2001 = createDate(2001, 12, 2);
 		ridget.setDate(date2001);
 
 		assertEquals(date2001, ridget.getDate());
 		assertEquals(date2001, dateBean.getValue());
-		assertEquals(date2001, getDate(control));
+		assertEquals("12/2/2001", getDate(control));
 
 		Date date1700 = createDate(1700, 1, 1);
 		ridget.setDate(date1700);
 
 		assertEquals(date1700, ridget.getDate());
 		assertEquals(date1700, dateBean.getValue());
-		assertEquals(date1700, getDate(control));
+		assertEquals("1/1/1700", getDate(control));
 	}
 
 	public void testSetDateNull() {
 		IDateTimeRidget ridget = getRidget();
-		TypedBean<Date> dateBean = new TypedBean<Date>(new Date(0));
+		DateTime control = getWidget();
+		TypedBean<Date> dateBean = new TypedBean<Date>(new Date());
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
+		ridget.updateFromModel();
 
 		ridget.setDate(null);
 
 		assertEquals(null, ridget.getDate());
-		// TODO [ev] wait for https://bugs.eclipse.org/bugs/show_bug.cgi?id=271720
-		// what should be in the control?
+		assertEquals(getEmptyDate(), getDate(control));
 		assertEquals(null, dateBean.getValue());
 	}
 
@@ -96,38 +100,32 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		DateTime control = getWidget();
 		Date date2000 = createDate(2000, 1, 1);
 		Date date2001 = createDate(2001, 12, 2);
-
-		assertEquals(new Date(0), ridget.getDate());
-
 		TypedBean<Date> dateBean = new TypedBean<Date>(date2000);
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
 
-		assertEquals(new Date(0), ridget.getDate());
-		// assertEquals(null, ridget.getDate());
-		// TODO [ev] wait for https://bugs.eclipse.org/bugs/show_bug.cgi?id=271720
-		// assertEquals(new Date(0), getDate(control));
+		assertEquals(null, ridget.getDate());
+		assertEquals(getEmptyDate(), getDate(control));
 
 		ridget.updateFromModel();
 
 		assertEquals(date2000, ridget.getDate());
-		assertEquals(date2000, getDate(control));
+		assertEquals("1/1/2000", getDate(control));
 
 		dateBean.setValue(date2001);
 
 		assertEquals(date2000, ridget.getDate());
-		assertEquals(date2000, getDate(control));
+		assertEquals("1/1/2000", getDate(control));
 
 		ridget.updateFromModel();
 
 		assertEquals(date2001, ridget.getDate());
-		assertEquals(date2001, getDate(control));
+		assertEquals("12/2/2001", getDate(control));
 
 		dateBean.setValue(null);
 		ridget.updateFromModel();
 
 		assertEquals(null, ridget.getDate());
-		// TODO [ev] wait for https://bugs.eclipse.org/bugs/show_bug.cgi?id=271720
-		// assertEquals(new Date(0), getDate(control));
+		assertEquals(getEmptyDate(), getDate(control));
 	}
 
 	public void testMandatoryMarker() {
@@ -174,18 +172,25 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	private Date createDate(int year, int month, int day) {
 		Calendar cal = Calendar.getInstance();
 		cal.clear();
-		cal.set(year, month - 1, day);
-		return cal.getTime();
-	}
-
-	private Date getDate(DateTime control) {
-		int year = control.getYear();
-		int month = control.getMonth();
-		int day = control.getDay();
-		Calendar cal = Calendar.getInstance();
-		cal.set(year, month, day, 0, 0, 0);
+		cal.set(year, month - 1, day, 0, 0);
 		cal.set(Calendar.MILLISECOND, 0);
 		return cal.getTime();
 	}
 
+	private String getDate(DateTime control) {
+		int year = control.getYear();
+		int month = control.getMonth() + 1;
+		int day = control.getDay();
+		return String.format("%s/%s/%s", month, day, year);
+	}
+
+	private String getEmptyDate() {
+		Calendar cal = Calendar.getInstance();
+		cal.clear();
+		cal.setTime(new Date(0));
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH) + 1;
+		int day = cal.get(Calendar.DAY_OF_MONTH);
+		return String.format("%s/%s/%s", month, day, year);
+	}
 }

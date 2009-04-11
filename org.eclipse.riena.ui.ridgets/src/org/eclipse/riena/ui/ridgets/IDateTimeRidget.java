@@ -36,7 +36,6 @@ public interface IDateTimeRidget extends ITextRidget {
 	 * @param date
 	 *            a Date value
 	 */
-	// TODO [ev] document behavior for date == null
 	void setDate(Date date);
 
 }

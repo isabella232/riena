@@ -81,8 +81,12 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 				dateObservable = WidgetProperties.selection().observe(control);
 				timeObservable = new WritableValue(dateObservable.getRealm(), getDate(), Date.class);
 			}
-			controlBinding = dbc.bindValue(new DateAndTimeObservableValue(dateObservable, timeObservable),
-					getRidgetObservable());
+			controlBinding = dbc.bindValue(new DateAndTimeObservableValue(dateObservable, timeObservable) {
+				@Override
+				protected void doSetValue(Object value) {
+					super.doSetValue(value == null ? getEmptyDate() : value);
+				}
+			}, getRidgetObservable());
 		}
 	}
 
@@ -97,7 +101,7 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	@Override
 	protected IObservableValue getRidgetObservable() {
 		if (ridgetObservable == null) {
-			ridgetObservable = new WritableValue(new Date(0), Date.class);
+			ridgetObservable = new WritableValue(null, Date.class);
 		}
 		return ridgetObservable;
 	}
@@ -116,7 +120,7 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		unbindUIControl();
 
 		Assert.isNotNull(observableValue);
-		getRidgetObservable().setValue(new Date(0));
+		getRidgetObservable().setValue(null);
 		super.bindToModel(observableValue);
 
 		bindUIControl();
@@ -130,6 +134,13 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		return (Date) getRidgetObservable().getValue();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Implementation note: since the underlying DateTime widget cannot be
+	 * empty, a {@code null} date value will cause the widget to show the
+	 * 'empty' date, but getDate() will correctly return null.
+	 */
 	public void setDate(Date date) {
 		getRidgetObservable().setValue(date);
 		if (controlBinding != null) {
@@ -180,6 +191,10 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 
 	// helping methods
 	//////////////////
+
+	private Date getEmptyDate() {
+		return new Date(0);
+	}
 
 	private boolean isTimeControl(DateTime control) {
 		return (control.getStyle() & SWT.TIME) != 0;
