@@ -22,6 +22,7 @@ import org.eclipse.core.databinding.observable.value.DateAndTimeObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DateTime;
@@ -114,10 +115,6 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	}
 
 	@Override
-	public boolean isDisableMandatoryMarker() {
-		return true;
-	}
-
 	public void bindToModel(IObservableValue observableValue) {
 		unbindUIControl();
 
@@ -128,12 +125,47 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		bindUIControl();
 	}
 
+	@Override
 	public void bindToModel(Object pojo, String propertyName) {
 		bindToModel(PojoObservables.observeValue(pojo, propertyName));
 	}
 
+	/** Not supported. */
+	public int getAlignment() {
+		throw new UnsupportedOperationException();
+	}
+
 	public Date getDate() {
 		return (Date) getRidgetObservable().getValue();
+	}
+
+	public String getText() {
+		Date date = getDate();
+		return date != null ? SimpleDateFormat.getInstance().format(date) : ""; //$NON-NLS-1$
+	}
+
+	public boolean isDirectWriting() {
+		return true;
+	}
+
+	@Override
+	public boolean isDisableMandatoryMarker() {
+		return true;
+	}
+
+	public boolean revalidate() {
+		Date date = getDate();
+		IStatus onUpdate = checkOnUpdateRules(date);
+		validationRulesChecked(suppressBlockWithFlash(onUpdate));
+		if (onUpdate.isOK()) {
+			getValueBindingSupport().updateFromTarget();
+		}
+		return !isErrorMarked();
+	}
+
+	/** Not supported. */
+	public void setAlignment(int alignment) {
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -148,27 +180,12 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		if (controlBinding != null) {
 			controlBinding.updateModelToTarget(); // update widget
 		}
-		getValueBindingSupport().updateFromTarget();
-		// TODO [EV] fire-event and test 
-	}
-
-	/** Not supported. */
-	public int getAlignment() {
-		throw new UnsupportedOperationException();
-	}
-
-	public String getText() {
-		Date date = getDate();
-		return date != null ? SimpleDateFormat.getInstance().format(date) : ""; //$NON-NLS-1$
-	}
-
-	public boolean isDirectWriting() {
-		return true;
-	}
-
-	/** Not supported. */
-	public void setAlignment(int alignment) {
-		throw new UnsupportedOperationException();
+		IStatus onUpdate = checkOnUpdateRules(date);
+		validationRulesChecked(suppressBlockWithFlash(onUpdate));
+		if (onUpdate.isOK()) {
+			getValueBindingSupport().updateFromTarget();
+			// TODO [EV] fire-event and test 
+		}
 	}
 
 	/** Not supported. */
@@ -181,9 +198,11 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean revalidate() {
-		// TODO Auto-generated method stub
-		return true;
+	@Override
+	public void updateFromModel() {
+		super.updateFromModel();
+		IStatus onUpdate = checkOnUpdateRules(getDate());
+		validationRulesChecked(suppressBlockWithFlash(onUpdate));
 	}
 
 	// helping methods
