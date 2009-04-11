@@ -17,7 +17,6 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -309,22 +308,6 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		return (Text) super.getUIControl();
 	}
 
-	/**
-	 * Returns the given status object, without the ERROR_BLOCK_WITH_FLASH
-	 * status code.
-	 */
-	private IStatus suppressBlockWithFlash(IStatus status) {
-		IStatus theStatus;
-		if (status.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
-			final int newCode = IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
-			theStatus = new Status(status.getSeverity(), status.getPlugin(), newCode, status.getMessage(), status
-					.getException());
-		} else {
-			theStatus = status;
-		}
-		return theStatus;
-	}
-
 	private synchronized void updateTextValue() {
 		String oldValue = textValue;
 		String newValue = getUIText();
@@ -351,7 +334,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 * validationRulesChecked(status) call directly - see event listeners below.
 	 */
 	private void validationRulesCheckedMarkFlash(IStatus status) {
-		IStatus newStatus = suppressBlockWithFlash(status);
+		IStatus newStatus = AbstractEditableRidget.suppressBlockWithFlash(status);
 		validationRulesChecked(newStatus);
 	}
 

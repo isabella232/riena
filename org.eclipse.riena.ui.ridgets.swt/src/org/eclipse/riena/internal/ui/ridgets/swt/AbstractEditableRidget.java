@@ -16,14 +16,16 @@ import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IEditableRidget;
 import org.eclipse.riena.ui.ridgets.IValidationCallback;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * Abstract implementation of an {@link IEditableRidget} for SWT.
@@ -37,6 +39,23 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	protected static final int FLASH_DURATION_MS = 300;
 
 	private boolean isFlashInProgress = false;
+
+	/**
+	 * Returns the given status object, without the ERROR_BLOCK_WITH_FLASH
+	 * status code which is downgraded to ERROR_ALLOW_WITH_MESSAGE. Other status
+	 * codes are not modified.
+	 */
+	public static IStatus suppressBlockWithFlash(IStatus status) {
+		IStatus theStatus;
+		if (status.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
+			final int newCode = IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
+			theStatus = new Status(status.getSeverity(), status.getPlugin(), newCode, status.getMessage(), status
+					.getException());
+		} else {
+			theStatus = status;
+		}
+		return theStatus;
+	}
 
 	public void addValidationRule(IValidator validationRule, ValidationTime validationTime) {
 		Assert.isNotNull(validationRule);
