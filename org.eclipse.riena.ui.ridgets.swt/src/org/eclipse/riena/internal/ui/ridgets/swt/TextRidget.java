@@ -33,11 +33,9 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
-import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
 /**
  * Ridget for an SWT <code>Text</code> widget.
@@ -270,20 +268,6 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	// helping methods
 	// ////////////////
-
-	private IStatus checkOnEditRules(String newValue) {
-		ValueBindingSupport vbs = getValueBindingSupport();
-		ValidatorCollection onEditValidators = vbs.getOnEditValidators();
-		IStatus result = onEditValidators.validate(newValue);
-		return result;
-	}
-
-	private IStatus checkOnUpdateRules(String newValue) {
-		ValueBindingSupport vbs = getValueBindingSupport();
-		ValidatorCollection afterGetValidators = vbs.getAfterGetValidators();
-		IStatus result = afterGetValidators.validate(newValue);
-		return result;
-	}
 
 	private synchronized void forceTextToControl(String newValue) {
 		Control control = getUIControl();

@@ -25,7 +25,9 @@ import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IEditableRidget;
 import org.eclipse.riena.ui.ridgets.IValidationCallback;
+import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
+import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
 /**
  * Abstract implementation of an {@link IEditableRidget} for SWT.
@@ -45,7 +47,7 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * status code which is downgraded to ERROR_ALLOW_WITH_MESSAGE. Other status
 	 * codes are not modified.
 	 */
-	public static IStatus suppressBlockWithFlash(IStatus status) {
+	protected static final IStatus suppressBlockWithFlash(IStatus status) {
 		IStatus theStatus;
 		if (status.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
 			final int newCode = IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
@@ -135,6 +137,32 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 
 	// protected methods
 	////////////////////
+
+	/**
+	 * TODO [ev] docs
+	 * 
+	 * @param newValue
+	 * @return
+	 */
+	protected final IStatus checkOnEditRules(Object newValue) {
+		ValueBindingSupport vbs = getValueBindingSupport();
+		ValidatorCollection onEditValidators = vbs.getOnEditValidators();
+		IStatus result = onEditValidators.validate(newValue);
+		return result;
+	}
+
+	/**
+	 * TODO [ev] docs
+	 * 
+	 * @param newValue
+	 * @return
+	 */
+	protected final IStatus checkOnUpdateRules(Object newValue) {
+		ValueBindingSupport vbs = getValueBindingSupport();
+		ValidatorCollection afterGetValidators = vbs.getAfterGetValidators();
+		IStatus result = afterGetValidators.validate(newValue);
+		return result;
+	}
 
 	/**
 	 * Toggles the background color of the control to
