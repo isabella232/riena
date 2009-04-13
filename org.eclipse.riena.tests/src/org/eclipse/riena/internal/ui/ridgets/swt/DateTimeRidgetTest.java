@@ -171,10 +171,87 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(control.isEnabled());
 	}
 
-	public void testValidateOnUpdate_UpdateFromModel() {
+	public void testValidateOnUpdate_OnUpdateRules() {
+		handleValidateOnUpdate_UpdateFromModel(ValidationTime.ON_UPDATE_TO_MODEL);
+	}
+
+	public void testValidateOnUpdate_OnEditRules() {
+		handleValidateOnUpdate_UpdateFromModel(ValidationTime.ON_UI_CONTROL_EDIT);
+	}
+
+	public void testValidateOnUpdate_SetDate_OnUpdateRules() {
+		handleValidateOnUpdate_SetDate(ValidationTime.ON_UPDATE_TO_MODEL);
+	}
+
+	public void testValidateOnUpdate_SetDate_OnEditRules() {
+		handleValidateOnUpdate_SetDate(ValidationTime.ON_UI_CONTROL_EDIT);
+	}
+
+	public void testValidateOnWidgetModification_onUpdateRules() {
+		handleValidateOnWidgetModification(ValidationTime.ON_UPDATE_TO_MODEL);
+	}
+
+	public void testValidateOnWidgetModification_OnEditRules() {
+		handleValidateOnWidgetModification(ValidationTime.ON_UI_CONTROL_EDIT);
+	}
+
+	public void testRevalidate() {
 		IDateTimeRidget ridget = getRidget();
 		FTValidator validator = new FTValidator(new Date(99));
 		ridget.addValidationRule(validator, ValidationTime.ON_UPDATE_TO_MODEL);
+		ridget.setDate(new Date(99));
+
+		assertTrue(ridget.isErrorMarked());
+
+		ridget.removeValidationRule(validator);
+
+		assertTrue(ridget.isErrorMarked());
+
+		ridget.revalidate();
+
+		assertFalse(ridget.isErrorMarked());
+	}
+
+	// helping methods
+	//////////////////
+
+	private String asString(Date date) {
+		String result = "null";
+		if (date != null) {
+			Calendar cal = Calendar.getInstance();
+			cal.clear();
+			cal.setTime(date);
+			int year = cal.get(Calendar.YEAR);
+			int month = cal.get(Calendar.MONTH) + 1;
+			int day = cal.get(Calendar.DAY_OF_MONTH);
+			result = String.format("%s/%s/%s", month, day, year);
+		}
+		return result;
+	}
+
+	private String asStringEmptyDate() {
+		return asString(new Date(0));
+	}
+
+	private Date createDate(int year, int month, int day) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear();
+		cal.set(year, month - 1, day, 0, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		return cal.getTime();
+	}
+
+	private String getDate(DateTime control) {
+		int year = control.getYear();
+		int month = control.getMonth() + 1;
+		int day = control.getDay();
+		return String.format("%s/%s/%s", month, day, year);
+	}
+
+	private void handleValidateOnUpdate_UpdateFromModel(ValidationTime time) {
+		IDateTimeRidget ridget = getRidget();
+		FTValidator validator = new FTValidator(new Date(99));
+		ridget.addValidationRule(validator, time);
 		TypedBean<Date> dateBean = new TypedBean<Date>(new Date(0));
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
 
@@ -199,10 +276,10 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(ridget.isErrorMarked());
 	}
 
-	public void testValidateOnUpdate_SetDate() {
+	private void handleValidateOnUpdate_SetDate(ValidationTime time) {
 		IDateTimeRidget ridget = getRidget();
 		FTValidator validator = new FTValidator(new Date(99));
-		ridget.addValidationRule(validator, ValidationTime.ON_UPDATE_TO_MODEL);
+		ridget.addValidationRule(validator, time);
 
 		assertEquals(0, validator.count);
 
@@ -223,11 +300,11 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(ridget.isErrorMarked());
 	}
 
-	public void testValidateOnWidgetModification() {
+	private void handleValidateOnWidgetModification(ValidationTime time) {
 		IDateTimeRidget ridget = getRidget();
 		FTValidator validator = new FTValidator("4/10/2009");
 		DateTime control = getWidget();
-		ridget.addValidationRule(validator, ValidationTime.ON_UPDATE_TO_MODEL);
+		ridget.addValidationRule(validator, time);
 		TypedBean<Date> dateBean = new TypedBean<Date>(new Date(0));
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
 
@@ -237,65 +314,10 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), "4/10/2009");
 
+		System.out.println(control);
 		assertEquals(count + 3, validator.count);
 		assertEquals(true, ridget.isErrorMarked());
 	}
-
-	public void testRevalidate() {
-		IDateTimeRidget ridget = getRidget();
-		FTValidator validator = new FTValidator(new Date(99));
-		ridget.addValidationRule(validator, ValidationTime.ON_UPDATE_TO_MODEL);
-		ridget.setDate(new Date(99));
-
-		assertTrue(ridget.isErrorMarked());
-
-		ridget.removeValidationRule(validator);
-
-		assertTrue(ridget.isErrorMarked());
-
-		ridget.revalidate();
-
-		assertFalse(ridget.isErrorMarked());
-	}
-
-	// helping methods
-	//////////////////
-
-	private Date createDate(int year, int month, int day) {
-		Calendar cal = Calendar.getInstance();
-		cal.clear();
-		cal.set(year, month - 1, day, 0, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		return cal.getTime();
-	}
-
-	private String getDate(DateTime control) {
-		int year = control.getYear();
-		int month = control.getMonth() + 1;
-		int day = control.getDay();
-		return String.format("%s/%s/%s", month, day, year);
-	}
-
-	private String asString(Date date) {
-		String result = "null";
-		if (date != null) {
-			Calendar cal = Calendar.getInstance();
-			cal.clear();
-			cal.setTime(date);
-			int year = cal.get(Calendar.YEAR);
-			int month = cal.get(Calendar.MONTH) + 1;
-			int day = cal.get(Calendar.DAY_OF_MONTH);
-			result = String.format("%s/%s/%s", month, day, year);
-		}
-		return result;
-	}
-
-	private String asStringEmptyDate() {
-		return asString(new Date(0));
-	}
-
-	// helping classes
-	//////////////////
 
 	private final class FTValidator implements IValidator {
 
@@ -313,14 +335,15 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 
 		public IStatus validate(Object value) {
 			count++;
-			System.out.println("vv: " + count + " " + value);
+			IStatus result = ValidationStatus.ok();
 			if (errorDate != null && errorDate.equals(value)) {
-				return ValidationStatus.error("error");
+				result = ValidationStatus.error("error");
 			}
 			if (errorString != null && errorString.equals(asString((Date) value))) {
-				return ValidationStatus.error("error");
+				result = ValidationStatus.error("error");
 			}
-			return ValidationStatus.ok();
+			// System.out.println("validate: " + count + " " + value + " " + result);
+			return result;
 		}
 	}
 }

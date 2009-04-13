@@ -27,6 +27,7 @@ import org.eclipse.riena.ui.ridgets.IEditableRidget;
 import org.eclipse.riena.ui.ridgets.IValidationCallback;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
+import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
 /**
@@ -47,16 +48,17 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * status code which is downgraded to ERROR_ALLOW_WITH_MESSAGE. Other status
 	 * codes are not modified.
 	 */
-	protected static final IStatus suppressBlockWithFlash(IStatus status) {
-		IStatus theStatus;
+	protected static final IStatus suppressBlockWithFlash(IStatus... statuses) {
+		IStatus status = ValidationRuleStatus.join(statuses);
+		IStatus result;
 		if (status.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
 			final int newCode = IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
-			theStatus = new Status(status.getSeverity(), status.getPlugin(), newCode, status.getMessage(), status
+			result = new Status(status.getSeverity(), status.getPlugin(), newCode, status.getMessage(), status
 					.getException());
 		} else {
-			theStatus = status;
+			result = status;
 		}
-		return theStatus;
+		return result;
 	}
 
 	public void addValidationRule(IValidator validationRule, ValidationTime validationTime) {

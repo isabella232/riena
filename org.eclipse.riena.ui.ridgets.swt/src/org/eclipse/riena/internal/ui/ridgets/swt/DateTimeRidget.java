@@ -22,6 +22,7 @@ import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.DateAndTimeObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
@@ -85,13 +86,10 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 				dateObservable.setValue(nonNullDate);
 				timeObservable = new WritableValue(dateObservable.getRealm(), nonNullDate, Date.class);
 			}
-			controlBinding = dbc.bindValue(new DateAndTimeObservableValue(dateObservable, timeObservable) {
-				@Override
-				protected void doSetValue(Object value) {
-					super.doSetValue(getNonNullDate((Date) value));
-				}
-			}, getRidgetObservable(), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
-					new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
+			controlBinding = dbc.bindValue(new DateAndTimeObservableWithNullConversion(dateObservable, timeObservable),
+					getRidgetObservable(), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
+							.setAfterGetValidator(new EditRulesValidator()), new UpdateValueStrategy(
+							UpdateValueStrategy.POLICY_ON_REQUEST));
 		}
 	}
 
@@ -175,15 +173,23 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	 * Implementation note: since the underlying DateTime widget cannot be
 	 * empty, a {@code null} date value will cause the widget to show the
 	 * 'empty' date, but getDate() will correctly return null.
+	 * <p>
+	 * Invoking this method will copy the given date into the ridget and the
+	 * widget regardless of the validation outcome. If the date does not pass
+	 * validation the error marker will be set and the date will <b>not</b> be
+	 * copied into the model. If validation passes the date will be copied into
+	 * the model as well.
 	 */
 	public void setDate(Date date) {
 		getRidgetObservable().setValue(date);
 		if (controlBinding != null) {
 			controlBinding.updateModelToTarget(); // update widget
 		}
+		IStatus onEdit = checkOnEditRules(date);
 		IStatus onUpdate = checkOnUpdateRules(date);
-		validationRulesChecked(suppressBlockWithFlash(onUpdate));
-		if (onUpdate.isOK()) {
+		IStatus status = suppressBlockWithFlash(onEdit, onUpdate);
+		validationRulesChecked(status);
+		if (status.isOK()) {
 			getValueBindingSupport().updateFromTarget();
 			// TODO [EV] fire-event and test 
 		}
@@ -205,13 +211,19 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		if (controlBinding != null) {
 			controlBinding.updateModelToTarget(); // updateWidget
 		}
+		IStatus onEdit = checkOnEditRules(getDate());
 		IStatus onUpdate = checkOnUpdateRules(getDate());
-		validationRulesChecked(suppressBlockWithFlash(onUpdate));
+		validationRulesChecked(suppressBlockWithFlash(onEdit, onUpdate));
 	}
 
 	// helping methods
 	//////////////////
 
+	/**
+	 * Return {@code date} if non-null, otherwise return the 'empty' date value.
+	 * 
+	 * @return {@code date} or new Date instance
+	 */
 	private Date getNonNullDate(Date date) {
 		return date != null ? date : new Date(0);
 	}
@@ -226,4 +238,32 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 			control.setEnabled(isOutputOnly() || !isEnabled() ? false : true);
 		}
 	}
+
+	// helping classes
+	//////////////////
+
+	/**
+	 * DateAndTimeObservable that handles doSetValue(null) gracefully.
+	 */
+	private final class DateAndTimeObservableWithNullConversion extends DateAndTimeObservableValue {
+		public DateAndTimeObservableWithNullConversion(IObservableValue dateObservable, IObservableValue timeObservable) {
+			super(dateObservable, timeObservable);
+		}
+
+		protected void doSetValue(Object value) {
+			super.doSetValue(getNonNullDate((Date) value));
+		}
+	}
+
+	/**
+	 * Validator that delegates to the 'on edit' validators for this ridget.
+	 */
+	private final class EditRulesValidator implements IValidator {
+		public IStatus validate(Object value) {
+			IStatus result = getValueBindingSupport().getOnEditValidators().validate(value);
+			validationRulesChecked(result);
+			return result;
+		}
+	}
+
 }
