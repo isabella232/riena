@@ -17,6 +17,7 @@ import java.util.Date;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.DateAndTimeObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -89,7 +90,8 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 				protected void doSetValue(Object value) {
 					super.doSetValue(getNonNullDate((Date) value));
 				}
-			}, getRidgetObservable());
+			}, getRidgetObservable(), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
 		}
 	}
 
@@ -119,7 +121,6 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		unbindUIControl();
 
 		Assert.isNotNull(observableValue);
-		getRidgetObservable().setValue(null);
 		super.bindToModel(observableValue);
 
 		bindUIControl();
@@ -201,6 +202,9 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	@Override
 	public void updateFromModel() {
 		super.updateFromModel();
+		if (controlBinding != null) {
+			controlBinding.updateModelToTarget(); // updateWidget
+		}
 		IStatus onUpdate = checkOnUpdateRules(getDate());
 		validationRulesChecked(suppressBlockWithFlash(onUpdate));
 	}

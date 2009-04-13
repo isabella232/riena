@@ -13,6 +13,9 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -20,6 +23,8 @@ import org.eclipse.swt.widgets.DateTime;
 
 import org.eclipse.riena.beans.common.TypedBean;
 import org.eclipse.riena.tests.TestUtils;
+import org.eclipse.riena.tests.UITestHelper;
+import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
@@ -91,7 +96,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setDate(null);
 
 		assertEquals(null, ridget.getDate());
-		assertEquals(getEmptyDate(), getDate(control));
+		assertEquals(asStringEmptyDate(), getDate(control));
 		assertEquals(null, dateBean.getValue());
 	}
 
@@ -104,7 +109,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
 
 		assertEquals(null, ridget.getDate());
-		assertEquals(getEmptyDate(), getDate(control));
+		assertEquals(asStringEmptyDate(), getDate(control));
 
 		ridget.updateFromModel();
 
@@ -125,7 +130,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		ridget.updateFromModel();
 
 		assertEquals(null, ridget.getDate());
-		assertEquals(getEmptyDate(), getDate(control));
+		assertEquals(asStringEmptyDate(), getDate(control));
 	}
 
 	public void testMandatoryMarker() {
@@ -166,6 +171,93 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(control.isEnabled());
 	}
 
+	public void testValidateOnUpdate_UpdateFromModel() {
+		IDateTimeRidget ridget = getRidget();
+		FTValidator validator = new FTValidator(new Date(99));
+		ridget.addValidationRule(validator, ValidationTime.ON_UPDATE_TO_MODEL);
+		TypedBean<Date> dateBean = new TypedBean<Date>(new Date(0));
+		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
+
+		int count = validator.count;
+
+		ridget.updateFromModel();
+
+		assertEquals(count + 1, validator.count);
+		assertFalse(ridget.isErrorMarked());
+
+		dateBean.setValue(new Date(99));
+		ridget.updateFromModel();
+
+		assertEquals(count + 2, validator.count);
+		assertTrue(ridget.isErrorMarked());
+		assertEquals(new Date(99), ridget.getDate());
+
+		dateBean.setValue(new Date(0));
+		ridget.updateFromModel();
+
+		assertEquals(count + 3, validator.count);
+		assertFalse(ridget.isErrorMarked());
+	}
+
+	public void testValidateOnUpdate_SetDate() {
+		IDateTimeRidget ridget = getRidget();
+		FTValidator validator = new FTValidator(new Date(99));
+		ridget.addValidationRule(validator, ValidationTime.ON_UPDATE_TO_MODEL);
+
+		assertEquals(0, validator.count);
+
+		ridget.setDate(new Date(0));
+
+		assertEquals(1, validator.count);
+		assertFalse(ridget.isErrorMarked());
+
+		ridget.setDate(new Date(99));
+
+		assertEquals(2, validator.count);
+		assertTrue(ridget.isErrorMarked());
+		assertEquals(new Date(99), ridget.getDate());
+
+		ridget.setDate(new Date(0));
+
+		assertEquals(3, validator.count);
+		assertFalse(ridget.isErrorMarked());
+	}
+
+	public void testValidateOnWidgetModification() {
+		IDateTimeRidget ridget = getRidget();
+		FTValidator validator = new FTValidator("4/10/2009");
+		DateTime control = getWidget();
+		ridget.addValidationRule(validator, ValidationTime.ON_UPDATE_TO_MODEL);
+		TypedBean<Date> dateBean = new TypedBean<Date>(new Date(0));
+		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
+
+		int count = validator.count;
+		assertEquals(false, ridget.isErrorMarked());
+
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "4/10/2009");
+
+		assertEquals(count + 3, validator.count);
+		assertEquals(true, ridget.isErrorMarked());
+	}
+
+	public void testRevalidate() {
+		IDateTimeRidget ridget = getRidget();
+		FTValidator validator = new FTValidator(new Date(99));
+		ridget.addValidationRule(validator, ValidationTime.ON_UPDATE_TO_MODEL);
+		ridget.setDate(new Date(99));
+
+		assertTrue(ridget.isErrorMarked());
+
+		ridget.removeValidationRule(validator);
+
+		assertTrue(ridget.isErrorMarked());
+
+		ridget.revalidate();
+
+		assertFalse(ridget.isErrorMarked());
+	}
+
 	// helping methods
 	//////////////////
 
@@ -184,13 +276,51 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		return String.format("%s/%s/%s", month, day, year);
 	}
 
-	private String getEmptyDate() {
-		Calendar cal = Calendar.getInstance();
-		cal.clear();
-		cal.setTime(new Date(0));
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH) + 1;
-		int day = cal.get(Calendar.DAY_OF_MONTH);
-		return String.format("%s/%s/%s", month, day, year);
+	private String asString(Date date) {
+		String result = "null";
+		if (date != null) {
+			Calendar cal = Calendar.getInstance();
+			cal.clear();
+			cal.setTime(date);
+			int year = cal.get(Calendar.YEAR);
+			int month = cal.get(Calendar.MONTH) + 1;
+			int day = cal.get(Calendar.DAY_OF_MONTH);
+			result = String.format("%s/%s/%s", month, day, year);
+		}
+		return result;
+	}
+
+	private String asStringEmptyDate() {
+		return asString(new Date(0));
+	}
+
+	// helping classes
+	//////////////////
+
+	private final class FTValidator implements IValidator {
+
+		int count = 0;
+		private Date errorDate;
+		private String errorString;
+
+		FTValidator(Date errorValue) {
+			this.errorDate = errorValue;
+		}
+
+		FTValidator(String errorValue) {
+			this.errorString = errorValue;
+		}
+
+		public IStatus validate(Object value) {
+			count++;
+			System.out.println("vv: " + count + " " + value);
+			if (errorDate != null && errorDate.equals(value)) {
+				return ValidationStatus.error("error");
+			}
+			if (errorString != null && errorString.equals(asString((Date) value))) {
+				return ValidationStatus.error("error");
+			}
+			return ValidationStatus.ok();
+		}
 	}
 }
