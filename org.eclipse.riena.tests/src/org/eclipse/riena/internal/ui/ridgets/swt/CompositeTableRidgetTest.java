@@ -95,33 +95,6 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	@Override
-	public void testClearSelection() {
-		// Overrides the original test, because clear selection is not supported.
-		// TODO [ev] Fill out when Bug 267713 gets fixed.
-		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=267713
-		return;
-	}
-
-	@Override
-	public void testGetSelectionIndex() {
-		// Overrides the original test, because clear selection is not supported.
-		// TODO [ev] Revisit when Bug 267713 gets fixed.
-		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=267713
-
-		ISelectableIndexedRidget ridget = getRidget();
-
-		assertEquals(-1, ridget.getSelectionIndex());
-
-		ridget.setSelection(1);
-
-		assertEquals(1, ridget.getSelectionIndex());
-
-		ridget.setSelection(new int[] { 2, 0 });
-
-		assertEquals(2, ridget.getSelectionIndex());
-	}
-
-	@Override
 	public void testUpdateSingleSelectionFromRidgetOnRebind() {
 		ISelectableIndexedRidget ridget = getRidget();
 		CompositeTable control = getWidget();
@@ -170,9 +143,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 		manager.getPersons().remove(person2);
 		ridget.updateFromModel();
 
-		assertSame(person1, ridget.getSelection().get(0));
-		// TODO [ev] - what to check here
-		// assertTrue(ridget.getSelection().isEmpty()); 
+		assertTrue(ridget.getSelection().isEmpty());
 	}
 
 	public void testContainsOption() {

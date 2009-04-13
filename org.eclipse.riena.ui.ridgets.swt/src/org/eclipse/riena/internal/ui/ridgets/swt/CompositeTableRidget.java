@@ -138,7 +138,6 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			control.addRowConstructionListener(rowToRidgetMapper);
 			control.addRowContentProvider(rowToRidgetMapper);
 			updateControl(control);
-			updateSelection(false);
 			control.addRowFocusListener(selectionSynchronizer);
 			getSingleSelectionObservable().addValueChangeListener(selectionSynchronizer);
 			if (getHeader() != null) {
@@ -358,16 +357,6 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 	}
 
-	/**
-	 * Currently not supported.
-	 * <p>
-	 * See <a href="https://bugs.eclipse.org/267713">Bug 267713</a> for details.
-	 */
-	@Override
-	public final void clearSelection() {
-		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
-	}
-
 	// helping methods
 	//////////////////
 
@@ -494,21 +483,21 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			try {
 				control.setNumRowsInCollection(rowValues.length);
 				applyComparator();
-				updateSelection(true);
+				updateSelection();
 			} finally {
 				control.setRedraw(true);
 			}
 		}
 	}
 
+	// helping classes
+	//////////////////
+
 	/**
 	 * Re-applies ridget selection to control (if selection exists), otherwise
 	 * clears ridget selection
-	 * 
-	 * @param canClear
-	 *            true, if it's ok to clear the selection
 	 */
-	private void updateSelection(boolean canClear) {
+	private void updateSelection() {
 		CompositeTable control = getUIControl();
 		if (control != null) {
 			Object selection = getSingleSelectionObservable().getValue();
@@ -519,24 +508,11 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 				control.setSelection(0, row);
 				readAndDispatch();
 			} else {
-				if (selection != null && canClear) {
-					// if the selection has been deleted, selected another row
-					// because otherwise composite table still things the
-					// deleted row is selected
-					// Need to revisit this when addressing Bug 267713
-					// https://bugs.eclipse.org/bugs/show_bug.cgi?id=267713
-					if (rowValues.length > 0) {
-						setSelection(0);
-					} else {
-						clearSelection();
-					}
-				}
+				clearSelection();
+				control.clearSelection();
 			}
 		}
 	}
-
-	// helping classes
-	//////////////////
 
 	/**
 	 * Binds and configures Ridgets to a Row control.
@@ -628,7 +604,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			}
 			isSelecting = true;
 			try {
-				updateSelection(false);
+				updateSelection();
 			} finally {
 				isSelecting = false;
 			}
