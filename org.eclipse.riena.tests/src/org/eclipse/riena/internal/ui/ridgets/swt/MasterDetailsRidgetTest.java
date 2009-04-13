@@ -97,8 +97,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		bindToModel(false);
 
-		// TODO [ev] 264325 - enable this after adding seperation into TableRidget
-		// assertEquals(0, table.getItemCount());
+		assertEquals(0, table.getItemCount());
 
 		ridget.updateFromModel();
 
