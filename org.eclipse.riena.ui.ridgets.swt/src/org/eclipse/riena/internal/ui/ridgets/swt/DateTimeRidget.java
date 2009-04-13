@@ -200,7 +200,6 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		validationRulesChecked(status);
 		if (status.isOK()) {
 			getValueBindingSupport().updateFromTarget();
-			// TODO [EV] fire-event and test 
 		}
 	}
 
