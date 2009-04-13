@@ -26,7 +26,6 @@ import org.eclipse.swt.nebula.widgets.compositetable.ResizableGridRowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
@@ -539,20 +538,12 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 
 	private TableColumn getColumn(CompositeTableRidget ridget, int columnIndex) {
 		TableColumn result = null;
-		Object table = ReflectionUtils.invokeHidden(ridget, "getHeaderTable", (Object[]) null);
-		if (table instanceof Table) {
-			result = ((Table) table).getColumn(columnIndex);
+		Object table = ReflectionUtils.invokeHidden(ridget, "getHeader", (Object[]) null);
+		if (table instanceof AbstractNativeHeader) {
+			result = ((AbstractNativeHeader) table).getColumns()[columnIndex];
 		}
 		return result;
 	}
-
-	//	private void printRows(CompositeTable control) {
-	//		Object[] rowControls = control.getRowControls();
-	//		for (int i = 0; i < rowControls.length; i++) {
-	//			System.out.println(((Row) rowControls[i]).toString());
-	//		}
-	//		System.out.println("");
-	//	}
 
 	/**
 	 * Not supported.

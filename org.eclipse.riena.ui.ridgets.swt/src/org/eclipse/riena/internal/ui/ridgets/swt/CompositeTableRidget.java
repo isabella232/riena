@@ -37,10 +37,8 @@ import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.nebula.widgets.compositetable.IRowContentProvider;
 import org.eclipse.swt.nebula.widgets.compositetable.IRowFocusListener;
 import org.eclipse.swt.nebula.widgets.compositetable.RowConstructionListener;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 import org.eclipse.riena.core.Log4r;
@@ -143,8 +141,8 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			updateSelection(false);
 			control.addRowFocusListener(selectionSynchronizer);
 			getSingleSelectionObservable().addValueChangeListener(selectionSynchronizer);
-			if (getHeaderTable() != null) {
-				for (TableColumn column : getHeaderTable().getColumns()) {
+			if (getHeader() != null) {
+				for (TableColumn column : getHeader().getColumns()) {
 					column.addSelectionListener(sortListener);
 				}
 			}
@@ -156,8 +154,8 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	protected void unbindUIControl() {
 		CompositeTable control = getUIControl();
 		if (control != null) {
-			if (getHeaderTable() != null) {
-				for (TableColumn column : getHeaderTable().getColumns()) {
+			if (getHeader() != null) {
+				for (TableColumn column : getHeader().getColumns()) {
 					column.removeSelectionListener(sortListener);
 				}
 			}
@@ -301,7 +299,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	public boolean isColumnSortable(int columnIndex) {
 		checkColumnRange(columnIndex);
 		boolean result = false;
-		if (getHeaderTable() != null) {
+		if (getHeader() != null) {
 			Integer key = Integer.valueOf(columnIndex);
 			Boolean sortable = sortableColumnsMap.get(columnIndex);
 			if (sortable == null || Boolean.TRUE.equals(sortable)) {
@@ -367,7 +365,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	 */
 	@Override
 	public final void clearSelection() {
-		throw new UnsupportedOperationException("not supported");
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
 	// helping methods
@@ -409,42 +407,10 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		Assert.isLegal(-1 < columnIndex, "columnIndex out of range: " + columnIndex); //$NON-NLS-1$
 	}
 
-	private Table getHeaderTable() {
-		Table result = null;
+	private AbstractNativeHeader getHeader() {
 		CompositeTable control = getUIControl();
-		if (control != null) {
-			/*
-			 * CompositeTable does not have API for gettting the 'header' table.
-			 * We rely on implementation details: start with TableComposite ->
-			 * child[2] is the InternalComposite (with child 0+1 being the
-			 * header and row prototypes) -> child[0] is the content composite
-			 * (with child 1+2 being composites for the scroll bars) -> child[0]
-			 * is the header composite - hopefully AbstractNativeHeader ->
-			 * child[0] is the Table which is used as the 'native header'
-			 * widget.
-			 */
-			Control[] tcChildren = control.getChildren();
-			if (tcChildren.length > 2 && tcChildren[2] instanceof Composite) {
-				Composite intComposite = (Composite) tcChildren[2];
-				Control[] intChildren = intComposite.getChildren();
-				if (intChildren.length > 0 && intChildren[0] instanceof Composite) {
-					Composite contComposite = (Composite) intChildren[0];
-					Control[] contChildren = contComposite.getChildren();
-					if (contChildren.length > 0 && contChildren[0] instanceof Composite) {
-						Composite tableComp = (Composite) contChildren[0];
-						Control[] tableChildren = tableComp.getChildren();
-						if (tableChildren.length > 0 && tableChildren[0] instanceof AbstractNativeHeader) {
-							AbstractNativeHeader header = (AbstractNativeHeader) tableChildren[0];
-							Control[] headerChildren = header.getChildren();
-							if (headerChildren.length > 0 && headerChildren[0] instanceof Table) {
-								result = (Table) headerChildren[0];
-							}
-						}
-					}
-				}
-			}
-		}
-		return result;
+		Control header = control.getHeader();
+		return (AbstractNativeHeader) (header instanceof AbstractNativeHeader ? header : null);
 	}
 
 	/**
@@ -509,23 +475,16 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	private void setSortDirectionOnHeader(int direction) {
-		Table headerTable = getHeaderTable();
-		if (headerTable != null) {
-			headerTable.setSortDirection(direction);
-			headerTable.redraw();
+		AbstractNativeHeader header = getHeader();
+		if (header != null) {
+			header.setSortDirection(direction);
 		}
 	}
 
 	private void setSortColumnOnHeader(int columnIndex) {
-		Table headerTable = getHeaderTable();
-		if (headerTable != null) {
-			if (columnIndex == -1) {
-				headerTable.setSortColumn(null);
-			} else {
-				TableColumn column = headerTable.getColumn(columnIndex);
-				headerTable.setSortColumn(column);
-				headerTable.redraw();
-			}
+		AbstractNativeHeader header = getHeader();
+		if (header != null) {
+			header.setSortColumn(columnIndex);
 		}
 	}
 
