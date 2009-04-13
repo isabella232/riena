@@ -21,6 +21,8 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.DateAndTimeObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
@@ -102,9 +104,16 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	}
 
 	@Override
-	protected IObservableValue getRidgetObservable() {
+	protected final IObservableValue getRidgetObservable() {
 		if (ridgetObservable == null) {
 			ridgetObservable = new WritableValue(null, Date.class);
+			ridgetObservable.addValueChangeListener(new IValueChangeListener() {
+				public void handleValueChange(ValueChangeEvent event) {
+					Object oldValue = event.diff.getOldValue();
+					Object newValue = event.diff.getNewValue();
+					firePropertyChange(IDateTimeRidget.PROPERTY_DATE, oldValue, newValue);
+				}
+			});
 		}
 		return ridgetObservable;
 	}
