@@ -141,29 +141,27 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	////////////////////
 
 	/**
-	 * TODO [ev] docs
+	 * Validates the given {@code value} against all 'on edit' validators.
 	 * 
-	 * @param newValue
-	 * @return
+	 * @return an IStatus with the most severe validation result; IStatus.isOK()
+	 *         indicates validation success or failure.
 	 */
-	protected final IStatus checkOnEditRules(Object newValue) {
+	protected final IStatus checkOnEditRules(Object value) {
 		ValueBindingSupport vbs = getValueBindingSupport();
 		ValidatorCollection onEditValidators = vbs.getOnEditValidators();
-		IStatus result = onEditValidators.validate(newValue);
-		return result;
+		return onEditValidators.validate(value);
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Validates the given {@code value} against all 'on update' validators.
 	 * 
-	 * @param newValue
-	 * @return
+	 * @return an IStatus with the most severe validation result; IStatus.isOK()
+	 *         indicates valdiation success or failure.
 	 */
-	protected final IStatus checkOnUpdateRules(Object newValue) {
+	protected final IStatus checkOnUpdateRules(Object value) {
 		ValueBindingSupport vbs = getValueBindingSupport();
 		ValidatorCollection afterGetValidators = vbs.getAfterGetValidators();
-		IStatus result = afterGetValidators.validate(newValue);
-		return result;
+		return afterGetValidators.validate(value);
 	}
 
 	/**
