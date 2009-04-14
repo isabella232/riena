@@ -68,10 +68,7 @@ public class CommandProviderLogFilter implements LogFilter, CommandProvider, IEx
 	 * @see org.eclipse.osgi.framework.console.CommandProvider#getHelp()
 	 */
 	public String getHelp() {
-		StringBuilder bob = new StringBuilder("---Controlling Riena logging---\n"); //$NON-NLS-1$
-		bob
-				.append("\tlogLevel [ <level> ] - specify log level, e.g. debug, info, warn, error or none, or retrieve current level"); //$NON-NLS-1$
-		return bob.toString();
+		return "---Controlling Riena logging---\n\tlogLevel [ <level> ] - specify log level, e.g. debug, info, warn, error or none, or retrieve current level"; //$NON-NLS-1$
 	}
 
 	/*
