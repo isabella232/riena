@@ -87,7 +87,7 @@ public class Aggregator implements IAggregator {
 			return;
 		}
 		store.open(nameCategories);
-		sender.start(store, nameCategories);
+		sender.start(store, nameCategories.values());
 		for (ICollector collector : Iter.able(collectors)) {
 			collector.start(this, collectorCategories.get(collector), clientInfoProvider);
 		}
