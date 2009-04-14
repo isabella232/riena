@@ -39,11 +39,14 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 
 /**
  * Ridget for a {@link ChoiceComposite} widget with multiple selection.
  */
 public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultipleChoiceRidget {
+
+	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
 
 	private final WritableList optionsObservable;
 	private final WritableList selectionObservable;
@@ -253,7 +256,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 				});
 			}
 			updateSelection(control);
-			control.layout(true);
+			LNF_UPDATER.updateUIControlsAfterBind(control);
 		}
 	}
 

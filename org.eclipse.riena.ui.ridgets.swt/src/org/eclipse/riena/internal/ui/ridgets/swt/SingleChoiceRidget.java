@@ -39,11 +39,14 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 
 /**
  * Ridget for a {@link ChoiceComposite} widget with single selection.
  */
 public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoiceRidget {
+
+	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
 
 	/** A single selected bean Object. */
 	private final WritableList optionsObservable;
@@ -237,7 +240,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 				});
 			}
 			updateSelection(control);
-			control.layout(true);
+			LNF_UPDATER.updateUIControlsAfterBind(control);
 		}
 	}
 
