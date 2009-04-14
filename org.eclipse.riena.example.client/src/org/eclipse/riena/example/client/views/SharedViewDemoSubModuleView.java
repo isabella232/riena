@@ -13,11 +13,6 @@ package org.eclipse.riena.example.client.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -25,6 +20,12 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSubModuleController> {
 
@@ -34,7 +35,8 @@ public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSub
 	private static final int FIELD_WIDTH = 100;
 	private static final int TOP = 10;
 	private static final int LEFT = 10;
-	private static final int LABEL_WIDTH = 90;
+	private static final int GAP_LABEL_TEXT = 10;
+	private static final int GAP_FIRST_SECOND_ROW = 10;
 
 	private int instanceIndex = 0;
 
@@ -67,7 +69,7 @@ public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSub
 		Text someData = new Text(parent, SWT.BORDER | SWT.SINGLE);
 		fd = new FormData();
 		fd.top = new FormAttachment(someText, 0, SWT.TOP);
-		fd.left = new FormAttachment(someText, LABEL_WIDTH, SWT.LEFT);
+		fd.left = new FormAttachment(someText, GAP_LABEL_TEXT);
 		fd.width = FIELD_WIDTH;
 		someData.setLayoutData(fd);
 		// ta = new TextFieldRidget(someData);
@@ -75,8 +77,8 @@ public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSub
 		// getController().setTextFacade(ta);
 		// layout
 		FormData data = new FormData();
-		data.top = new FormAttachment(0, 45);
-		data.left = new FormAttachment(someText, LABEL_WIDTH, SWT.LEFT);
+		data.top = new FormAttachment(someText, GAP_FIRST_SECOND_ROW);
+		data.left = new FormAttachment(someText, GAP_LABEL_TEXT);
 		helloLabel.setLayoutData(data);
 	}
 
