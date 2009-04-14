@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.monitor.client;
 
-import java.util.Map;
+import java.util.Collection;
 
 /**
  * The {@code ISender} is responsible for retrieving {@code Collectible}s from
@@ -29,7 +29,7 @@ public interface ISender {
 	 * @param category
 	 *            the categories this sender must handle
 	 */
-	void start(IStore store, Map<String, Category> categories);
+	void start(IStore store, Collection<Category> categories);
 
 	/**
 	 * Stop the sender.
