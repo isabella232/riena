@@ -803,6 +803,14 @@
             class="org.eclipse.riena.monitor.client.SimpleSender:retryTime=20 m">
       </sender>
 	</extension>
+
+	<extension point="org.eclipse.riena.monitor.clientinfoprovider">
+       <clientInfoProvider
+            name="SimpleClientInfoProvider"
+            class="org.eclipse.riena.monitor.client.SimpleClientInfoProvider:user.name,x-host.name">
+       </clientInfoProvider>
+ 	</extension>
+ 
 	
     <!-- -->
     <extension
