@@ -10,9 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.monitor.client;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
@@ -22,7 +25,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.equinox.log.Logger;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.Literal;
 import org.eclipse.riena.core.util.Millis;
 import org.eclipse.riena.core.util.PropertiesUtils;
@@ -61,12 +66,11 @@ public class SimpleSender implements ISender, IExecutableExtension {
 	private IReceiver receiver;
 	private boolean started;
 	private long retryTime;
-	private Map<String, Category> categories = new HashMap<String, Category>();
 	private final Map<String, Sender> senders = new HashMap<String, Sender>();
 	private static final String RETRY_TIME = "retryTime"; //$NON-NLS-1$
 	private static final String RETRY_TIME_DEFAULT = "15 m"; //$NON-NLS-1$
 
-	private static final boolean TRACE = Boolean.getBoolean("riena.monitor.trace"); //$NON-NLS-1$
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleSender.class);
 
 	/**
 	 * Creates the {@code SimpleSender}.
@@ -80,7 +84,6 @@ public class SimpleSender implements ISender, IExecutableExtension {
 
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
 			throws CoreException {
-
 		Map<String, String> properties = null;
 		try {
 			properties = PropertiesUtils.asMap(data, Literal.map(RETRY_TIME, RETRY_TIME_DEFAULT));
@@ -103,20 +106,19 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		this.receiver = null;
 	}
 
-	public void start(IStore store, Map<String, Category> categories) {
+	public void start(IStore store, Collection<Category> categories) {
 		if (started) {
 			return;
 		}
 		Assert.isNotNull(store, "store must not be null"); //$NON-NLS-1$
 		Assert.isNotNull(categories, "categories must not be null"); //$NON-NLS-1$
 		this.store = store;
-		this.categories = categories;
 		started = true;
 
-		for (String categoryName : categories.keySet()) {
-			Sender sender = new Sender(categoryName);
-			senders.put(categoryName, sender);
-			// check if there are remaining collectibles, if so trigger transfer in the background with a slight delay
+		for (Category category : categories) {
+			Sender sender = new Sender(category.getName());
+			senders.put(category.getName(), sender);
+			// check if there are remaining {@code Collectible}s, if so trigger transfer in the background with a slight delay
 			sender.tryIt(Millis.seconds(5));
 		}
 	}
@@ -160,7 +162,7 @@ public class SimpleSender implements ISender, IExecutableExtension {
 
 		private void tryIt(long delay) {
 			if (retrying) {
-				trace("Retry already scheduled."); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_DEBUG, "Sender(" + category + ") retry already scheduled."); //$NON-NLS-1$ //$NON-NLS-2$
 				return;
 			}
 			schedule(delay);
@@ -174,19 +176,19 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		 */
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
-			trace("Sender retrying: " + retrying); //$NON-NLS-1$
-			trace("sender start - " + category); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_DEBUG, "Sender(" + category + ") started with" + (retrying ? "" : "out") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					+ " retry"); //$NON-NLS-1$
 			if (receiver == null) {
-				trace("sender ended(no receiver) - " + category); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_DEBUG, "Sender(" + category + ") ended (no receiver)"); //$NON-NLS-1$ //$NON-NLS-2$
 				return Status.OK_STATUS;
 			}
 			List<Collectible<?>> transferables = store.retrieveTransferables(category);
 			if (transferables.size() == 0) {
-				trace("sender ended(nothing to send) - " + category); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_DEBUG, "Sender(" + category + ") ended (nothing to send)"); //$NON-NLS-1$ //$NON-NLS-2$
 				return Status.OK_STATUS;
 			}
 			transfer(transferables);
-			trace("sender ended - " + category); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_DEBUG, "Sender(" + category + ") ended"); //$NON-NLS-1$ //$NON-NLS-2$
 			return Status.OK_STATUS;
 		}
 
@@ -194,9 +196,9 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		 * 
 		 */
 		private void transfer(List<Collectible<?>> transferables) {
-			trace("sender transfer " + transferables.size() + " transferables:"); //$NON-NLS-1$ //$NON-NLS-2$
+			LOGGER.log(LogService.LOG_DEBUG, "sender transfer " + transferables.size() + " transferables:"); //$NON-NLS-1$ //$NON-NLS-2$
 			for (Collectible<?> transferable : transferables) {
-				trace(" - " + transferable); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_DEBUG, " - " + transferable); //$NON-NLS-1$
 			}
 			try {
 				if (receiver.take(System.currentTimeMillis(), transferables)) {
@@ -206,8 +208,8 @@ public class SimpleSender implements ISender, IExecutableExtension {
 					throw new RuntimeException("Retry sending later because receiver rejected it."); //$NON-NLS-1$
 				}
 			} catch (Throwable t) {
-				trace("sending failed with: " + t, t); //$NON-NLS-1$
-				trace("retrying in " + retryTime + " milli seconds"); //$NON-NLS-1$ //$NON-NLS-2$
+				LOGGER.log(LogService.LOG_DEBUG, "sending failed with: " + t, t); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_DEBUG, "retrying in " + retryTime + " milli seconds"); //$NON-NLS-1$ //$NON-NLS-2$
 				retrying = true;
 				schedule(retryTime);
 			}
@@ -215,16 +217,4 @@ public class SimpleSender implements ISender, IExecutableExtension {
 
 	}
 
-	private static void trace(String line) {
-		if (TRACE) {
-			System.out.println(line);
-		}
-	}
-
-	private static void trace(String line, Throwable t) {
-		if (TRACE) {
-			System.out.println(line);
-			t.printStackTrace();
-		}
-	}
 }
