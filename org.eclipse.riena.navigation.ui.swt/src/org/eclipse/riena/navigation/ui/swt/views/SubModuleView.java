@@ -355,7 +355,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			}
 		}
 
-		getParentComposite().layout();
+		LNF_UPDATER.updateUIControlsAfterBind(getParentComposite());
 
 	}
 
