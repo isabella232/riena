@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.monitor.client;
 
+import org.eclipse.riena.core.injector.extension.DoNotWireExecutable;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 import org.eclipse.riena.monitor.client.ISender;
 
 /**
- * Extension interface for the sender definition.
+ * Extension interface for the {@code ISender} definition.
  */
 @ExtensionInterface
 public interface ISenderExtension {
@@ -25,5 +26,6 @@ public interface ISenderExtension {
 	String getName();
 
 	@MapName("class")
+	@DoNotWireExecutable
 	ISender createSender();
 }

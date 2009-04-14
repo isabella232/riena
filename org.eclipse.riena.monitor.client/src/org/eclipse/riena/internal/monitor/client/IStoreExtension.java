@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.monitor.client;
 
+import org.eclipse.riena.core.injector.extension.DoNotWireExecutable;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 import org.eclipse.riena.monitor.client.IStore;
 
 /**
- * Extension interface for store definitions
+ * Extension interface for the {@code IStore} definition.
  */
 @ExtensionInterface
 public interface IStoreExtension {
@@ -25,6 +26,7 @@ public interface IStoreExtension {
 	String getName();
 
 	@MapName("class")
+	@DoNotWireExecutable
 	IStore createStore();
 
 }

@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.monitor.client;
 
+import org.eclipse.riena.core.injector.extension.DoNotWireExecutable;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 import org.eclipse.riena.monitor.client.ICollector;
 
 /**
- * Extension interface for collector definitions.
+ * Extension interface for {@code ICollector} definitions.
  */
 @ExtensionInterface
 public interface ICollectorExtension {
@@ -25,6 +26,7 @@ public interface ICollectorExtension {
 	String getCategory();
 
 	@MapName("class")
+	@DoNotWireExecutable
 	ICollector createCollector();
 
 	int getMaxItems();
