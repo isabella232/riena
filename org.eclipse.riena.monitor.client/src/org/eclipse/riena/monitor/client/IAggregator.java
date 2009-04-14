@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.monitor.client;
 
+import org.eclipse.riena.monitor.common.Collectible;
+
 /**
  * The {@code IAggregator} is responsible for the life cycle of the client side
  * monitoring and its components.
@@ -30,9 +32,18 @@ public interface IAggregator {
 	void stop();
 
 	/**
-	 * Trigger transfer of collectibles for the given category.
+	 * Trigger transfer of {@code Collectible}s for the given category.
 	 * 
 	 * @param category
 	 */
 	void triggerTransfer(String category);
+
+	/**
+	 * Collect the given {@code Collectible}.<br>
+	 * <b>Note:</b> This method should only be called by the {@code ICollector}
+	 * s.
+	 * 
+	 * @param collectible
+	 */
+	void collect(final Collectible<?> collectible);
 }
