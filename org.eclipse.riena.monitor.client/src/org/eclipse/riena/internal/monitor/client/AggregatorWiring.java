@@ -28,8 +28,6 @@ public class AggregatorWiring extends AbstractWiring {
 
 	@Override
 	public void wire(Object bean, BundleContext context) {
-		// Note: The order of the extension injectors is important, because there are dependencies between them,
-		// e.g. the sender requires a store, so the store needs to exist before the sender is created.  
 		clientInfoProviderInjector = Inject.extension(IClientInfoProviderExtension.ID).expectingMinMax(0, 1).useType(
 				IClientInfoProviderExtension.class).into(bean).andStart(context);
 		collectorsInjector = Inject.extension(ICollectorExtension.ID).useType(ICollectorExtension.class).into(bean)
