@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeEvent;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
@@ -150,6 +151,24 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testWidgetModification() {
+		PropertyChangeEvent[] events = new PropertyChangeEvent[3];
+		String input;
+		String country = Locale.getDefault().getCountry();
+		if ("DE".equals(country)) {
+			events[0] = createPropertyChangeEvent(2001, 12, 1, 2001, 12, 10);
+			events[1] = createPropertyChangeEvent(2001, 12, 10, 2001, 04, 10);
+			events[2] = createPropertyChangeEvent(2001, 04, 10, 2009, 04, 10);
+			input = "10.04.2009";
+		} else if ("US".equals(country)) {
+			events[0] = createPropertyChangeEvent(2001, 12, 1, 2001, 4, 1);
+			events[1] = createPropertyChangeEvent(2001, 4, 1, 2001, 4, 10);
+			events[2] = createPropertyChangeEvent(2001, 4, 10, 2009, 4, 10);
+			input = "04/10/2009";
+		} else {
+			System.out.println("Skipping DateTimeRidgetTest#testWidgetModification()");
+			return;
+		}
+
 		IDateTimeRidget ridget = getRidget();
 		DateTime control = getWidget();
 		Date date2001 = createDate(2001, 12, 1);
@@ -157,13 +176,18 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
 		ridget.updateFromModel();
 
+		//		ridget.addPropertyChangeListener(new PropertyChangeListener() {
+		//			public void propertyChange(PropertyChangeEvent evt) {
+		//				System.out.println(String.format("%s: %s -> %s", evt.getPropertyName(), evt.getOldValue(), evt
+		//						.getNewValue()));
+		//			}
+		//		});
+
 		assertEquals(date2001, ridget.getDate());
 		assertEquals(date2001, dateBean.getValue());
-
-		expectPropertyChangeEvents(createPropertyChangeEvent(2001, 12, 1, 2001, 4, 1), createPropertyChangeEvent(2001,
-				4, 1, 2001, 4, 10), createPropertyChangeEvent(2001, 4, 10, 2009, 4, 10));
+		expectPropertyChangeEvents(events);
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), "4/10/2009");
+		UITestHelper.sendString(control.getDisplay(), input);
 		verifyPropertyChangeEvents();
 
 		assertEquals("4/10/2009", asString(ridget.getDate()));
@@ -225,11 +249,25 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidation_WidgetModification_onUpdateRules() {
-		handleValidation_WidgetModification(ValidationTime.ON_UPDATE_TO_MODEL);
+		String country = Locale.getDefault().getCountry();
+		if ("DE".equals(country)) {
+			handleValidation_WidgetModification(ValidationTime.ON_UPDATE_TO_MODEL, "10.04.2009");
+		} else if ("US".equals(country)) {
+			handleValidation_WidgetModification(ValidationTime.ON_UPDATE_TO_MODEL, "04/10/2009");
+		} else {
+			System.out.println("Skipping DateTimeRidgetTest#testValidation_WidgetModification_onUpdateRules");
+		}
 	}
 
 	public void testValidation_WidgetModification_OnEditRules() {
-		handleValidation_WidgetModification(ValidationTime.ON_UI_CONTROL_EDIT);
+		String country = Locale.getDefault().getCountry();
+		if ("DE".equals(country)) {
+			handleValidation_WidgetModification(ValidationTime.ON_UI_CONTROL_EDIT, "10.04.2009");
+		} else if ("US".equals(country)) {
+			handleValidation_WidgetModification(ValidationTime.ON_UI_CONTROL_EDIT, "04/10/2009");
+		} else {
+			System.out.println("Skipping DateTimeRidgetTest#testValidation_WidgetModification_OnEditRules");
+		}
 	}
 
 	public void testRevalidate() {
@@ -344,7 +382,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(ridget.isErrorMarked());
 	}
 
-	private void handleValidation_WidgetModification(ValidationTime time) {
+	private void handleValidation_WidgetModification(ValidationTime time, final String input) {
 		IDateTimeRidget ridget = getRidget();
 		FTValidator validator = new FTValidator("4/10/2009");
 		DateTime control = getWidget();
@@ -356,7 +394,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(false, ridget.isErrorMarked());
 
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), "4/10/2009");
+		UITestHelper.sendString(control.getDisplay(), input);
 
 		assertEquals(count + 3, validator.count);
 		assertEquals(true, ridget.isErrorMarked());
