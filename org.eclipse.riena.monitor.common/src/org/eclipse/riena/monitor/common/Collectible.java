@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.core.util.StringUtils;
 
 /**
@@ -21,6 +22,7 @@ import org.eclipse.riena.core.util.StringUtils;
  */
 public class Collectible<T extends Serializable> implements Serializable {
 
+	private final String clientInfo;
 	private final String categoryName;
 	private final UUID uuid;
 	private final long collectionTime;
@@ -33,6 +35,7 @@ public class Collectible<T extends Serializable> implements Serializable {
 	 * serialization.
 	 */
 	protected Collectible() {
+		this.clientInfo = null;
 		this.categoryName = null;
 		this.uuid = null;
 		this.collectionTime = 0;
@@ -42,19 +45,25 @@ public class Collectible<T extends Serializable> implements Serializable {
 	/**
 	 * Create a {@code Collectible} for a given categoryName.
 	 * 
+	 * @param clientInfo
+	 *            some information about the client
 	 * @param categoryName
 	 *            the categoryName for this collectible
 	 * @param payload
 	 *            the payload of this collectible
 	 */
-	public Collectible(final String categoryName, final T payload) {
+	public Collectible(final String clientInfo, final String categoryName, final T payload) {
 		Assert.isTrue(StringUtils.isGiven(categoryName), "categoryName must not be empty"); //$NON-NLS-1$
-		//		Assert.isTrue(categoryName != null, "categoryName must not be empty"); //$NON-NLS-1$
 		Assert.isNotNull(payload, "payload must not be null"); //$NON-NLS-1$
+		this.clientInfo = clientInfo;
 		this.categoryName = categoryName;
 		this.uuid = UUID.randomUUID();
 		this.collectionTime = System.currentTimeMillis();
 		this.payload = payload;
+	}
+
+	public String getClientInfo() {
+		return clientInfo;
 	}
 
 	/**
@@ -86,7 +95,7 @@ public class Collectible<T extends Serializable> implements Serializable {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Collectible)) {
+		if (!(obj instanceof Collectible<?>)) {
 			return false;
 		}
 		return uuid.equals(((Collectible<?>) obj).uuid);
@@ -104,7 +113,11 @@ public class Collectible<T extends Serializable> implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Collectible(" + categoryName + ": " + payload + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		StringBuilder bob = new StringBuilder("Collectible: "); //$NON-NLS-1$
+		bob.append("ClientInfo=").append(clientInfo).append(','); //$NON-NLS-1$
+		bob.append("Category=").append(categoryName).append(','); //$NON-NLS-1$
+		bob.append("Payload=").append(payload); //$NON-NLS-1$
+		return bob.toString();
 	}
 
 }

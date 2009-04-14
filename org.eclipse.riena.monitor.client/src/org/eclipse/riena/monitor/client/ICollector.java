@@ -16,6 +16,13 @@ package org.eclipse.riena.monitor.client;
 public interface ICollector {
 
 	/**
+	 * Set the client information provider.
+	 * 
+	 * @param clientInfoProvider
+	 */
+	void setClientInfoProvider(IClientInfoProvider clientInfoProvider);
+
+	/**
 	 * Set the category for this collector.
 	 * 
 	 * @param category

@@ -10,22 +10,28 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.monitor.client;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.injector.extension.ExtensionInjector;
 import org.eclipse.riena.core.wire.AbstractWiring;
-import org.osgi.framework.BundleContext;
 
 /**
  * Wire/unwire the {@code Aggregator}.
  */
 public class AggregatorWiring extends AbstractWiring {
 
+	private ExtensionInjector clientInfoProviderInjector;
 	private ExtensionInjector collectorsInjector;
 	private ExtensionInjector storeInjector;
 	private ExtensionInjector senderInjector;
 
 	@Override
 	public void wire(Object bean, BundleContext context) {
+		// Note: The order of the extension injectors is important, because there are dependencies between them,
+		// e.g. the sender requires a store, so the store needs to exist before the sender is created.  
+		clientInfoProviderInjector = Inject.extension(IClientInfoProviderExtension.ID).expectingMinMax(0, 1).useType(
+				IClientInfoProviderExtension.class).into(bean).andStart(context);
 		collectorsInjector = Inject.extension(ICollectorExtension.ID).useType(ICollectorExtension.class).into(bean)
 				.andStart(context);
 		storeInjector = Inject.extension(IStoreExtension.ID).expectingMinMax(0, 1).useType(IStoreExtension.class).into(
@@ -36,6 +42,7 @@ public class AggregatorWiring extends AbstractWiring {
 
 	@Override
 	public void unwire(Object bean, BundleContext context) {
+		clientInfoProviderInjector.stop();
 		collectorsInjector.stop();
 		storeInjector.stop();
 		senderInjector.stop();

@@ -30,6 +30,7 @@ import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.core.wire.WirePuller;
 import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.monitor.client.Category;
+import org.eclipse.riena.monitor.client.IClientInfoProvider;
 import org.eclipse.riena.monitor.client.ICollectingAggregator;
 import org.eclipse.riena.monitor.client.ICollector;
 import org.eclipse.riena.monitor.client.ISender;
@@ -43,6 +44,7 @@ import org.eclipse.riena.monitor.common.Collectible;
 @WireWith(AggregatorWiring.class)
 public class Aggregator implements ICollectingAggregator {
 
+	private IClientInfoProvider clientInfoProvider;
 	private IStore store;
 	private WirePuller storeWiring;
 	private ISender sender;
@@ -106,6 +108,14 @@ public class Aggregator implements ICollectingAggregator {
 		started = false;
 	}
 
+	public void update(final IClientInfoProviderExtension clientInfoProviderExtension) throws CoreException {
+		stopSender();
+		if (clientInfoProviderExtension == null) {
+			return;
+		}
+		clientInfoProvider = clientInfoProviderExtension.createClientInfoProvider();
+	}
+
 	public synchronized void update(final ICollectorExtension[] collectorExtensions) {
 		stopCollectors();
 		List<ICollector> list = new ArrayList<ICollector>(collectorExtensions.length);
@@ -116,6 +126,7 @@ public class Aggregator implements ICollectingAggregator {
 			Category category = new Category(extension.getCategory(), extension.getMaxItems());
 			categories.put(extension.getCategory(), category);
 			ICollector collector = extension.createCollector();
+			collector.setClientInfoProvider(clientInfoProvider);
 			collector.setCategory(category);
 			collector.setAggregator(this);
 			collectorWirings.add(Wire.instance(collector).andStart(Activator.getDefault().getContext()));

@@ -21,6 +21,7 @@ public abstract class AbstractCollector implements ICollector {
 
 	private ICollectingAggregator aggregator;
 	private Category category;
+	private IClientInfoProvider clientInfoProvider;
 	private boolean started;
 
 	/*
@@ -56,6 +57,17 @@ public abstract class AbstractCollector implements ICollector {
 	 */
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.monitor.client.ICollector#setClientInfoProvider(org
+	 * .eclipse.riena.monitor.client.IClientInfoProvider)
+	 */
+	public void setClientInfoProvider(IClientInfoProvider clientInfoProvider) {
+		this.clientInfoProvider = clientInfoProvider;
 	}
 
 	/*
@@ -111,7 +123,8 @@ public abstract class AbstractCollector implements ICollector {
 		if (!isReady()) {
 			return;
 		}
-		aggregator.collect(new Collectible<T>(category.getName(), payload));
+		aggregator.collect(new Collectible<T>(clientInfoProvider == null ? null : clientInfoProvider.getClientInfo(),
+				category.getName(), payload));
 	}
 
 	/**
