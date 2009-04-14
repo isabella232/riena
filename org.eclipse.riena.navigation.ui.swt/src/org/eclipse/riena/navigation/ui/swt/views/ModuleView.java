@@ -223,9 +223,11 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 			public void handleEvent(Event event) {
 				treeDirty = true;
 				TreeItem[] selection = getTree().getSelection();
-				if (selection[0].getData() instanceof ISubModuleNode) {
+				if ((selection.length > 0) && (selection[0].getData() instanceof ISubModuleNode)) {
 					ISubModuleNode activeSubModule = (ISubModuleNode) selection[0].getData();
-					activeSubModule.activate();
+					if (activeSubModule.getParent().isActivated()) {
+						activeSubModule.activate();
+					}
 				}
 				resize();
 			}
