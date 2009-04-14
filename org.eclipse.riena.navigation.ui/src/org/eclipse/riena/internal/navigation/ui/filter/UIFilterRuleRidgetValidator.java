@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.navigation.ui.filter;
 
 import org.eclipse.core.databinding.validation.IValidator;
+
 import org.eclipse.riena.core.util.StringMatcher;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.filter.IUIFilterRuleValidatorRidget;
@@ -83,6 +84,7 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator i
 			IEditableRidget editableRidget = (IEditableRidget) object;
 			editableRidget.addValidationRule(getValidator(), getValidationTime());
 			editableRidget.updateFromModel();
+			editableRidget.revalidate();
 		}
 
 	}
@@ -99,6 +101,7 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator i
 			IEditableRidget editableRidget = (IEditableRidget) object;
 			editableRidget.removeValidationRule(getValidator());
 			editableRidget.updateFromModel();
+			editableRidget.revalidate();
 		}
 
 	}
