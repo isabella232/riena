@@ -30,8 +30,8 @@ import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.core.wire.WirePuller;
 import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.monitor.client.Category;
+import org.eclipse.riena.monitor.client.IAggregator;
 import org.eclipse.riena.monitor.client.IClientInfoProvider;
-import org.eclipse.riena.monitor.client.ICollectingAggregator;
 import org.eclipse.riena.monitor.client.ICollector;
 import org.eclipse.riena.monitor.client.ISender;
 import org.eclipse.riena.monitor.client.IStore;
@@ -42,7 +42,7 @@ import org.eclipse.riena.monitor.common.Collectible;
  * collectible may trigger the transmission of the collectibles.
  */
 @WireWith(AggregatorWiring.class)
-public class Aggregator implements ICollectingAggregator {
+public class Aggregator implements IAggregator {
 
 	private IClientInfoProvider clientInfoProvider;
 	private IStore store;
@@ -54,7 +54,8 @@ public class Aggregator implements ICollectingAggregator {
 	private boolean workerStop;
 	private boolean started;
 	private final BlockingQueue<Runnable> workQueue;
-	private final Map<String, Category> categories = new HashMap<String, Category>();
+	private final Map<String, Category> nameCategories = new HashMap<String, Category>();
+	private final Map<ICollector, Category> collectorCategories = new HashMap<ICollector, Category>();
 	private final CountDownLatch workSignal;
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), Aggregator.class);
@@ -85,12 +86,10 @@ public class Aggregator implements ICollectingAggregator {
 			LOGGER.log(LogService.LOG_WARNING, "Client monitoring not started. No store defined."); //$NON-NLS-1$
 			return;
 		}
-		store.setCategories(categories);
-		sender.setCategories(categories);
-		store.open();
-		sender.start();
+		store.open(nameCategories);
+		sender.start(store, nameCategories);
 		for (ICollector collector : Iter.able(collectors)) {
-			collector.start();
+			collector.start(this, collectorCategories.get(collector), clientInfoProvider);
 		}
 		workerStop = false;
 		started = true;
@@ -118,17 +117,17 @@ public class Aggregator implements ICollectingAggregator {
 
 	public synchronized void update(final ICollectorExtension[] collectorExtensions) {
 		stopCollectors();
+		nameCategories.clear();
+		collectorCategories.clear();
 		List<ICollector> list = new ArrayList<ICollector>(collectorExtensions.length);
 		collectorWirings = new ArrayList<WirePuller>(collectorExtensions.length);
 		for (ICollectorExtension extension : collectorExtensions) {
-			Assert.isLegal(!categories.containsKey(extension.getCategory()), "Category " + extension.getCategory() //$NON-NLS-1$
+			Assert.isLegal(!nameCategories.containsKey(extension.getCategory()), "Category " + extension.getCategory() //$NON-NLS-1$
 					+ " is defined twice. Categories must be unique."); //$NON-NLS-1$
 			Category category = new Category(extension.getCategory(), extension.getMaxItems());
-			categories.put(extension.getCategory(), category);
+			nameCategories.put(extension.getCategory(), category);
 			ICollector collector = extension.createCollector();
-			collector.setClientInfoProvider(clientInfoProvider);
-			collector.setCategory(category);
-			collector.setAggregator(this);
+			collectorCategories.put(collector, category);
 			collectorWirings.add(Wire.instance(collector).andStart(Activator.getDefault().getContext()));
 			list.add(collector);
 		}
@@ -157,7 +156,6 @@ public class Aggregator implements ICollectingAggregator {
 		}
 		sender = senderExtension.createSender();
 		senderWiring = Wire.instance(sender).andStart(Activator.getDefault().getContext());
-		sender.setStore(store);
 		// TODO if we were really dynamic aware we should start it here
 	}
 
