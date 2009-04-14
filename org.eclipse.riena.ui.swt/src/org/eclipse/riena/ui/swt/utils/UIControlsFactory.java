@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -53,10 +54,19 @@ public final class UIControlsFactory {
 		// prevent instantiation
 	}
 
+	/**
+	 * @wbp.factory
+	 * @wbp.factory.parameter.source caption "Label"
+	 */
 	public static Label createLabel(Composite parent, String caption) {
 		return createLabel(parent, caption, SWT.NONE);
 	}
 
+	/**
+	 * @wbp.factory
+	 * @wbp.factory.parameter.source caption "Label"
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 */
 	public static Label createLabel(Composite parent, String caption, int style) {
 		Label label = new Label(parent, style);
 		label.setText(caption);
@@ -64,32 +74,51 @@ public final class UIControlsFactory {
 		return label;
 	}
 
+	/**
+	 * @wbp.factory
+	 */
 	public static Text createText(Composite parent) {
 		return new Text(parent, SWT.SINGLE | SWT.BORDER);
 	}
 
+	/**
+	 * @wbp.factory
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.BORDER
+	 */
 	public static Text createText(Composite parent, int style) {
 		return new Text(parent, style | SWT.BORDER);
 	}
 
+	/**
+	 * @wbp.factory
+	 */
 	public static Text createTextDate(Composite parent) {
 		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
 		result.setData(KEY_TYPE, TYPE_DATE);
 		return result;
 	}
 
+	/**
+	 * @wbp.factory
+	 */
 	public static Text createTextDecimal(Composite parent) {
 		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
 		result.setData(KEY_TYPE, TYPE_DECIMAL);
 		return result;
 	}
 
+	/**
+	 * @wbp.factory
+	 */
 	public static Text createTextNumeric(Composite parent) {
 		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
 		result.setData(KEY_TYPE, TYPE_NUMERIC);
 		return result;
 	}
 
+	/**
+	 * @wbp.factory
+	 */
 	public static Text createTextOutput(Composite parent) {
 		Text text = new Text(parent, SWT.BORDER | SWT.READ_ONLY);
 		text.setEditable(false);
@@ -164,6 +193,13 @@ public final class UIControlsFactory {
 			style |= SWT.V_SCROLL;
 		}
 		return new List(parent, style);
+	}
+
+	/**
+	 * @wbp.factory
+	 */
+	public static MasterDetailsComposite createMasterDetails(Composite parent) {
+		return new MasterDetailsComposite(parent, SWT.NONE);
 	}
 
 	public static Shell createShell(Display display) {

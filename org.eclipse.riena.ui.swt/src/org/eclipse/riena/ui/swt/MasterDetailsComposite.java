@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.swt;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
@@ -24,6 +25,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.ui.common.IComplexComponent;
@@ -38,10 +40,15 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * remove and update buttons. It also contains an arbitratry composite (the
  * "details"), which are updated automatically when the selected row in the
  * table changes.
+ * <p>
+ * Subclasses must override the {@link #createDetails(Composite)} method, to
+ * populate the details composite with additional widgets. Widgets in the
+ * details composite that should be bound to ridgets, must be registered by
+ * invoking the {@link #addUIControl(Object, String)} method.
  * 
  * @see IMasterDetailsRidget
  */
-public abstract class MasterDetailsComposite extends Composite implements IComplexComponent {
+public class MasterDetailsComposite extends Composite implements IComplexComponent {
 
 	/**
 	 * Binding id of the table control {@value} .
@@ -113,12 +120,30 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 	}
 
 	/**
-	 * Returns the Table control of the 'master' area/
+	 * Return the 'Apply' button.
 	 * 
-	 * @return a Table; never null
+	 * @return a Button instance; never null.
 	 */
-	public final Table getTable() {
-		return table;
+	public final Button getButtonApply() {
+		return (Button) getUIControl(BIND_ID_APPLY);
+	}
+
+	/**
+	 * Return the 'New' button.
+	 * 
+	 * @return a Button instance; never null.
+	 */
+	public final Button getButtonNew() {
+		return (Button) getUIControl(BIND_ID_NEW);
+	}
+
+	/**
+	 * Return the 'Remove' button.
+	 * 
+	 * @return a Button instance; never null.
+	 */
+	public final Button getButtonRemove() {
+		return (Button) getUIControl(BIND_ID_REMOVE);
 	}
 
 	/**
@@ -130,8 +155,14 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 		return details;
 	}
 
-	// protected methods
-	////////////////////
+	/**
+	 * Returns the Table control of the 'master' area/
+	 * 
+	 * @return a Table; never null
+	 */
+	public final Table getTable() {
+		return table;
+	}
 
 	public final List<Object> getUIControls() {
 		return Collections.unmodifiableList(controls);
@@ -236,9 +267,14 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 	}
 
 	/**
-	 * Subclasses must implement this method to create the details area.
+	 * Subclasses must override this method to populate the details area.
+	 * 
+	 * @param details
+	 *            the Composite for the details area; never null.
 	 */
-	protected abstract void createDetails(Composite parent);
+	protected void createDetails(Composite details) {
+		// Sublasses should override.
+	}
 
 	/**
 	 * Creates the table used by this control. Subclasses may ovverride.
@@ -322,6 +358,20 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 		int hHint = (table.getItemHeight() * 8) + table.getHeaderHeight();
 		GridDataFactory.fillDefaults().grab(true, false).hint(wHint, hHint).applyTo(result);
 		addUIControl(table, BIND_ID_TABLE);
+		return result;
+	}
+
+	private Control getUIControl(String id) {
+		Control result = null;
+		SWTBindingPropertyLocator bpLocator = SWTBindingPropertyLocator.getInstance();
+		Iterator<Object> iter = controls.iterator();
+		while (result == null && iter.hasNext()) {
+			Control control = (Control) iter.next();
+			if (id.equals(bpLocator.locateBindingProperty(control))) {
+				result = control;
+			}
+		}
+		Assert.isNotNull(result);
 		return result;
 	}
 
