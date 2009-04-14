@@ -100,7 +100,6 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	private static final String CLEANUP_DELAY_DEFAULT = "1 h"; //$NON-NLS-1$
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleStore.class);
-	private static final boolean TRACE = Boolean.getBoolean("riena.monitor.trace"); //$NON-NLS-1$
 
 	public SimpleStore() throws CoreException {
 		// perform default initialization
@@ -334,7 +333,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 			objectis = new ObjectInputStream(gzipis);
 			return (Collectible<?>) objectis.readObject();
 		} catch (Exception e) {
-			trace("Error retrieving collectible: " + e.getMessage()); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_DEBUG, "Error retrieving collectible: " + e.getMessage(), e); //$NON-NLS-1$
 			if (file.exists() && !file.delete()) {
 				file.deleteOnExit();
 			}
@@ -359,7 +358,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 			objectos = new ObjectOutputStream(gzipos);
 			objectos.writeObject(collectible);
 		} catch (IOException e) {
-			trace("Error storing collectible: " + e.getMessage(), e); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_DEBUG, "Error storing collectible: " + e.getMessage(), e); //$NON-NLS-1$
 			if (file.exists() && !file.delete()) {
 				file.deleteOnExit();
 			}
@@ -393,13 +392,13 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		 */
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
-			trace("Store Cleaner started"); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_DEBUG, "Store Cleaner started"); //$NON-NLS-1$
 			monitor.beginTask("Cleanup", IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 			clean();
 			monitor.done();
 			// reschedule for periodic work
 			schedule(cleanupDelay);
-			trace("Store Cleaner ended"); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_DEBUG, "Store Cleaner ended"); //$NON-NLS-1$
 			return Status.OK_STATUS;
 		}
 
@@ -480,19 +479,6 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		SecretKeyFactory skf = SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
 		SecretKey s = skf.generateSecret(pass);
 		return s;
-	}
-
-	private static void trace(String line) {
-		if (TRACE) {
-			System.out.println(line);
-		}
-	}
-
-	private static void trace(String line, Throwable t) {
-		if (TRACE) {
-			System.out.println(line);
-			t.printStackTrace();
-		}
 	}
 
 }
