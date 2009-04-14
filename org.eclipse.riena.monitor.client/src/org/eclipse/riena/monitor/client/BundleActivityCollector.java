@@ -10,9 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.monitor.client;
 
-import org.eclipse.riena.internal.monitor.client.Activator;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
+
+import org.eclipse.riena.internal.monitor.client.Activator;
 
 /**
  * Collector for the bundle activity.
@@ -45,7 +46,7 @@ public class BundleActivityCollector extends AbstractCollector implements Bundle
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @seeorg.osgi.framework.BundleListener#bundleChanged(org.osgi.framework.
+	 * @see org.osgi.framework.BundleListener#bundleChanged(org.osgi.framework.
 	 * BundleEvent)
 	 */
 	public void bundleChanged(BundleEvent event) {
