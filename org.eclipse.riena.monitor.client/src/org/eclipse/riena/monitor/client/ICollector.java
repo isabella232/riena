@@ -16,30 +16,16 @@ package org.eclipse.riena.monitor.client;
 public interface ICollector {
 
 	/**
-	 * Set the client information provider.
-	 * 
-	 * @param clientInfoProvider
-	 */
-	void setClientInfoProvider(IClientInfoProvider clientInfoProvider);
-
-	/**
-	 * Set the category for this collector.
-	 * 
-	 * @param category
-	 */
-	void setCategory(Category category);
-
-	/**
-	 * Set the {@code IAggregator} for this collector.
+	 * Start the collector, i.e. the collector can now start collecting
 	 * 
 	 * @param aggregator
+	 *            the {@code IAggregator} for this collector
+	 * @param category
+	 *            the category for this collector
+	 * @param clientInfoProvider
+	 *            the client information provider
 	 */
-	void setAggregator(ICollectingAggregator aggregator);
-
-	/**
-	 * Start the collector, i.e. the collector can now start collecting
-	 */
-	void start();
+	void start(IAggregator aggregator, Category category, IClientInfoProvider clientInfoProvider);
 
 	/**
 	 * Stop the collector, i.e. the collector must now stop collecting

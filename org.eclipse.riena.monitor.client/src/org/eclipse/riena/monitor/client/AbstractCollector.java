@@ -12,6 +12,8 @@ package org.eclipse.riena.monitor.client;
 
 import java.io.Serializable;
 
+import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.monitor.common.Collectible;
 
 /**
@@ -19,7 +21,7 @@ import org.eclipse.riena.monitor.common.Collectible;
  */
 public abstract class AbstractCollector implements ICollector {
 
-	private ICollectingAggregator aggregator;
+	private IAggregator aggregator;
 	private Category category;
 	private IClientInfoProvider clientInfoProvider;
 	private boolean started;
@@ -36,49 +38,18 @@ public abstract class AbstractCollector implements ICollector {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.ICollector#setAggregator(org.eclipse
-	 * .riena.monitor.client.ICollectingAggregator)
-	 */
-	public void setAggregator(ICollectingAggregator aggregator) {
-		this.aggregator = aggregator;
-	}
-
-	protected ICollectingAggregator getAggregator() {
-		return aggregator;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.ICollector#setCategory(org.eclipse.riena
-	 * .monitor.client.Category)
-	 */
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.ICollector#setClientInfoProvider(org
-	 * .eclipse.riena.monitor.client.IClientInfoProvider)
-	 */
-	public void setClientInfoProvider(IClientInfoProvider clientInfoProvider) {
-		this.clientInfoProvider = clientInfoProvider;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.riena.monitor.client.ICollector#start()
 	 */
-	public void start() {
+	public void start(IAggregator aggregator, Category category, IClientInfoProvider clientInfoProvider) {
 		if (started) {
 			return;
 		}
+		Assert.isLegal(aggregator != null, "aggregator must not be null."); //$NON-NLS-1$
+		Assert.isLegal(category != null, "category must not be null."); //$NON-NLS-1$
+		this.aggregator = aggregator;
+		this.category = category;
+		this.clientInfoProvider = clientInfoProvider;
+
 		doStart();
 		started = true;
 	}

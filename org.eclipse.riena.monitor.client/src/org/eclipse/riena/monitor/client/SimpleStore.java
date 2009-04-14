@@ -146,18 +146,11 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.monitor.client.IStore#setCategories(java.util.Map)
-	 */
-	public void setCategories(Map<String, Category> categories) {
-		this.categories = categories;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.riena.monitor.client.IStore#open()
 	 */
-	public void open() {
+	public void open(Map<String, Category> categories) {
+		Assert.isNotNull(categories, "categories must not be null"); //$NON-NLS-1$
+		this.categories = categories;
 		cleaner.schedule(Millis.seconds(15));
 	}
 

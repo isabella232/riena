@@ -103,32 +103,14 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		this.receiver = null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.monitor.client.ISender#configureStore(org
-	 * .eclipse.riena.monitor.client.ICollectibleStore)
-	 */
-	public void setStore(IStore store) {
-		Assert.isNotNull(store, "store must not be null"); //$NON-NLS-1$
-		this.store = store;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.monitor.client.ISender#addCategory(java.
-	 * lang.String )
-	 */
-	public void setCategories(Map<String, Category> categories) {
-		Assert.isNotNull(categories, "categories must not be null"); //$NON-NLS-1$
-		this.categories = categories;
-	}
-
-	public void start() {
+	public void start(IStore store, Map<String, Category> categories) {
 		if (started) {
 			return;
 		}
+		Assert.isNotNull(store, "store must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(categories, "categories must not be null"); //$NON-NLS-1$
+		this.store = store;
+		this.categories = categories;
 		started = true;
 
 		for (String categoryName : categories.keySet()) {

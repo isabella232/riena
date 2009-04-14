@@ -13,32 +13,23 @@ package org.eclipse.riena.monitor.client;
 import java.util.Map;
 
 /**
- * The {@code ISender} is responsible for retrieving collectibles from the
- * store, transferring them to the receiver.
+ * The {@code ISender} is responsible for retrieving {@code Collectible}s from
+ * the store, transferring them to the receiver.
  */
 public interface ISender {
 
 	/**
-	 * Set the store for the sender.
-	 * 
-	 * @param store
-	 */
-	void setStore(IStore store);
-
-	/**
-	 * Set the categories this sender must handle.
-	 * 
-	 * @param category
-	 */
-	void setCategories(Map<String, Category> categories);
-
-	/**
 	 * Start the sender, i.e. from now on the sender is responsible for sending
-	 * collectibles and maintain the sore appropriate.
+	 * {@code Collectible}s and maintaining the store appropriately.
 	 * <p>
 	 * Sender is also responsible for retrying failed send attempts.
+	 * 
+	 * @param store
+	 *            the store for the sender
+	 * @param category
+	 *            the categories this sender must handle
 	 */
-	void start();
+	void start(IStore store, Map<String, Category> categories);
 
 	/**
 	 * Stop the sender.
@@ -46,8 +37,8 @@ public interface ISender {
 	void stop();
 
 	/**
-	 * Trigger the transfer of the collectibles registered with the given
-	 * category.
+	 * Trigger the transfer of the {@code Collectible}s registered with the
+	 * given category.
 	 * 
 	 * @param category
 	 */

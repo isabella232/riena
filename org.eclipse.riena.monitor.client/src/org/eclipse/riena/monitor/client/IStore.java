@@ -16,24 +16,22 @@ import java.util.Map;
 import org.eclipse.riena.monitor.common.Collectible;
 
 /**
- * The {@code IStore} defines a store for collectibles.
+ * The {@code IStore} defines a store for {@code Collectible}s.
  */
 public interface IStore {
 
 	/**
-	 * Set the categories this store must handle.
+	 * Open the store with the categories it must handle.
 	 * 
 	 * @param categories
+	 *            the categories this store must handle
 	 */
-	void setCategories(Map<String, Category> categories);
-
-	/**
-	 * Open the store.
-	 */
-	void open();
+	void open(Map<String, Category> categories);
 
 	/**
 	 * Close the store.
+	 * 
+	 * @param categories
 	 */
 	void close();
 
@@ -52,26 +50,27 @@ public interface IStore {
 	boolean collect(final Collectible<?> collectible);
 
 	/**
-	 * Prepare (mark) collectibles for the given category as ready to transfer.
+	 * Prepare (mark) {@code Collectible}s for the given category as ready to
+	 * transfer.
 	 * 
 	 * @param category
 	 */
 	void prepareTransferables(String category);
 
 	/**
-	 * Retrieve all collectibles for the given category
+	 * Retrieve all {@code Collectible}s for the given category
 	 * 
 	 * @param category
 	 *            the category
-	 * @return a list of ready to transfer collectibles
+	 * @return a list of ready to transfer {@code Collectible}s
 	 */
 	List<Collectible<?>> retrieveTransferables(String category);
 
 	/**
-	 * Commit the given collectibles, i.e. remove them from the persistent
-	 * store. These collectibles have been previously retrieved by {@code
-	 * getTransferables}. This method should only be called in case of a
-	 * successful transfer.
+	 * Commit the given {@code Collectible}s, i.e. remove them from the
+	 * persistent store. These {@code Collectible}s have been previously
+	 * retrieved by {@code getTransferables}. This method should only be called
+	 * in case of a successful transfer.
 	 * 
 	 * @param collectibles
 	 */
