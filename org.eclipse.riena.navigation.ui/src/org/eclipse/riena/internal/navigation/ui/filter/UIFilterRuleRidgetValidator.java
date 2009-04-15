@@ -84,7 +84,6 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator i
 			IEditableRidget editableRidget = (IEditableRidget) object;
 			editableRidget.addValidationRule(getValidator(), getValidationTime());
 			editableRidget.updateFromModel();
-			editableRidget.revalidate();
 		}
 
 	}
@@ -101,7 +100,6 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator i
 			IEditableRidget editableRidget = (IEditableRidget) object;
 			editableRidget.removeValidationRule(getValidator());
 			editableRidget.updateFromModel();
-			editableRidget.revalidate();
 		}
 
 	}

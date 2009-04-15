@@ -10,22 +10,36 @@
  *******************************************************************************/
 package org.eclipse.riena.demo.client.validator;
 
+import java.text.DecimalFormatSymbols;
+
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 
+/**
+ * This validator tests if the given value if greater than zero.
+ */
 public class SalaryMoreThanNull implements IValidator {
+
+	private static final char DECIMAL_SEPARATOR = new DecimalFormatSymbols().getDecimalSeparator();
+	private static final char GROUPING_SEPARATOR = new DecimalFormatSymbols().getGroupingSeparator();
 
 	public IStatus validate(Object value) {
 		try {
-			float parseFloat = Float.parseFloat((String) value);
+			String strgValue = ""; //$NON-NLS-1$
+			if (value != null) {
+				strgValue = value.toString();
+				strgValue = strgValue.replace("" + GROUPING_SEPARATOR, ""); //$NON-NLS-1$//$NON-NLS-2$
+				strgValue = strgValue.replace(DECIMAL_SEPARATOR, '.');
+			}
+			float parseFloat = Float.parseFloat(strgValue);
 			if (parseFloat > 0) {
 				return ValidationRuleStatus.ok();
 			}
-			return ValidationRuleStatus.error(false, "salary must be more than 0", this);
+			return ValidationRuleStatus.error(false, "salary must be more than 0", this); //$NON-NLS-1$
 		} catch (NumberFormatException e) {
-			return ValidationRuleStatus.error(false, "invalid value", this);
+			return ValidationRuleStatus.error(false, "invalid value", this); //$NON-NLS-1$
 		}
 	}
 

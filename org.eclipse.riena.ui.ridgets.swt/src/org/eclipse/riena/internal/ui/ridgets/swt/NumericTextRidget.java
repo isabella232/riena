@@ -356,6 +356,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 				control.setSelection(newText.length());
 				startModifyListener();
 				startVerifyListener();
+				revalidate();
 			}
 		}
 	}
