@@ -71,13 +71,6 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		});
 	}
 
-	protected void updateEditable() {
-		Text control = getTextWidget();
-		if (control != null && !control.isDisposed()) {
-			control.setEditable(isOutputOnly() ? false : true);
-		}
-	}
-
 	protected TextRidget(String initialValue) {
 		this();
 		Assert.isNotNull(initialValue);
@@ -160,6 +153,13 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	protected String getUIText() {
 		// getTextWidget() may return null
 		return getTextWidget().getText();
+	}
+
+	protected void updateEditable() {
+		Text control = getTextWidget();
+		if (control != null && !control.isDisposed()) {
+			control.setEditable(isOutputOnly() ? false : true);
+		}
 	}
 
 	protected void setUIText(String text) {
