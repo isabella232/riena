@@ -52,6 +52,7 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaLocations;
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.util.IOUtils;
 import org.eclipse.riena.core.util.Literal;
 import org.eclipse.riena.core.util.Millis;
@@ -124,6 +125,12 @@ public class SimpleStore implements IStore, IExecutableExtension {
 			throw new IllegalArgumentException("Could not generate keys for encryption.", e); //$NON-NLS-1$
 		}
 		LOGGER.log(LogService.LOG_DEBUG, "SimpleStore at " + storeFolder); //$NON-NLS-1$
+		if (RienaStatus.isDevelopment()) {
+			// This only for debugging/development so that old files do not bother us
+			for (File file : storeFolder.listFiles()) {
+				file.delete();
+			}
+		}
 	}
 
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
