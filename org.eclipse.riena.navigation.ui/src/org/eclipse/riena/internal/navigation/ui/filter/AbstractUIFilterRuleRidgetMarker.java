@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.filter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.StringMatcher;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
@@ -22,6 +25,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterRuleMarker implements
 		IUIFilterRuleMarkerRidget {
 
+	private Map<IMarkableRidget, IMarker> markerMap;
 	protected RidgetMatcher matcher;
 
 	/**
@@ -34,6 +38,7 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 	public AbstractUIFilterRuleRidgetMarker(String idPattern, IMarker marker) {
 		super(marker);
 		matcher = createMatcher(idPattern);
+		markerMap = new HashMap<IMarkableRidget, IMarker>();
 	}
 
 	/**
@@ -58,7 +63,9 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 	public void apply(Object object) {
 		if (object instanceof IMarkableRidget) {
 			IMarkableRidget markableRidget = (IMarkableRidget) object;
-			markableRidget.addMarker(getMarker());
+			IMarker marker = getMarker();
+			markableRidget.addMarker(marker);
+			markerMap.put(markableRidget, marker);
 		}
 	}
 
@@ -71,7 +78,9 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 	public void remove(Object object) {
 		if (object instanceof IMarkableRidget) {
 			IMarkableRidget markableRidget = (IMarkableRidget) object;
-			markableRidget.removeMarker(getMarker());
+			IMarker marker = markerMap.get(markableRidget);
+			markableRidget.removeMarker(marker);
+			markerMap.remove(marker);
 		}
 	}
 

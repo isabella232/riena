@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.filter;
 
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 
 /**
- * Filter rule to provide a mandatory marker for a ridget.
+ * Filter rule to provide a mandatory marker for a ridget.<br>
+ * <i>Note: For every ridget an own instance of the marker is necessary (
+ * {@link #getMarker()}).</i>
  */
 public class UIFilterRuleRidgetMandatoryMarker extends AbstractUIFilterRuleRidgetMarker {
 
@@ -24,7 +27,7 @@ public class UIFilterRuleRidgetMandatoryMarker extends AbstractUIFilterRuleRidge
 	 *            - ID
 	 */
 	public UIFilterRuleRidgetMandatoryMarker() {
-		super(null, new MandatoryMarker(false));
+		super(null, null);
 	}
 
 	/**
@@ -34,7 +37,21 @@ public class UIFilterRuleRidgetMandatoryMarker extends AbstractUIFilterRuleRidge
 	 *            - ID
 	 */
 	public UIFilterRuleRidgetMandatoryMarker(String ridgetIdPattern) {
-		super(ridgetIdPattern, new MandatoryMarker(false));
+		super(ridgetIdPattern, null);
+	}
+
+	/**
+	 * Returns always a new instance of the {@code MandatoryMarker}. This is
+	 * necessary because every ridget needs its own instance of the marker.
+	 * Dependent on the content of the ridget (is empty of not) the marker
+	 * affects the appearance of the ridget (e.g. yellow background color or
+	 * default background color).
+	 * 
+	 * @see org.eclipse.riena.ui.filter.impl.AbstractUIFilterRuleMarker#getMarker()
+	 */
+	@Override
+	public IMarker getMarker() {
+		return new MandatoryMarker(false);
 	}
 
 }
