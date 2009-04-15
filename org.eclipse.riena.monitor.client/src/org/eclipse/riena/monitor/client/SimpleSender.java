@@ -198,7 +198,7 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		private void transfer(List<Collectible<?>> transferables) {
 			LOGGER.log(LogService.LOG_DEBUG, "sender transfer " + transferables.size() + " transferables:"); //$NON-NLS-1$ //$NON-NLS-2$
 			for (Collectible<?> transferable : transferables) {
-				LOGGER.log(LogService.LOG_DEBUG, " - " + transferable); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_DEBUG, " - " + transferable.toLogString()); //$NON-NLS-1$
 			}
 			try {
 				if (receiver.take(System.currentTimeMillis(), transferables)) {
@@ -208,13 +208,24 @@ public class SimpleSender implements ISender, IExecutableExtension {
 					throw new RuntimeException("Retry sending later because receiver rejected it."); //$NON-NLS-1$
 				}
 			} catch (Throwable t) {
-				LOGGER.log(LogService.LOG_DEBUG, "sending failed with: " + t, t); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_DEBUG, "sending failed with: " + condense(t)); //$NON-NLS-1$
 				LOGGER.log(LogService.LOG_DEBUG, "retrying in " + retryTime + " milli seconds"); //$NON-NLS-1$ //$NON-NLS-2$
 				retrying = true;
 				schedule(retryTime);
 			}
 		}
 
+		private final static String CAUSED_BY = " Caused by: "; //$NON-NLS-1$
+
+		private String condense(Throwable throwable) {
+			StringBuilder bob = new StringBuilder();
+			do {
+				bob.append(throwable.toString()).append(CAUSED_BY);
+				throwable = throwable.getCause();
+			} while (throwable != null);
+			bob.setLength(bob.length() - CAUSED_BY.length());
+			return bob.toString();
+		}
 	}
 
 }
