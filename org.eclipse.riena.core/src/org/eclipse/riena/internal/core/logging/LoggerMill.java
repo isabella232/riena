@@ -20,6 +20,7 @@ import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
 
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.logging.CommandProviderLogFilter;
 import org.eclipse.riena.core.logging.ILogCatcher;
 import org.eclipse.riena.core.logging.LogServiceLogCatcher;
@@ -37,29 +38,12 @@ import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 @WireWith(LoggerMillWiring.class)
 public class LoggerMill {
 
-	/**
-	 * When set explicitly to {@code false} no default logging will be used.
-	 * Otherwise if no loggers have been defined than a default logging setup
-	 * will be used.
-	 */
-	public static final String RIENA_DEFAULT_LOGGING = "riena.defaultlogging"; //$NON-NLS-1$
-
 	private List<LogListener> logListeners = new ArrayList<LogListener>();
 	private List<ILogCatcher> logCatchers = new ArrayList<ILogCatcher>();;
 	private ILogListenerDefinition[] listenerDefs;
 	private ILogCatcherDefinition[] catcherDefs;
 
 	private ExtendedLogService logService = null;
-
-	/**
-	 * Retrieves whether to use default logging or not depending on the system
-	 * property {@code RIENA_DEFAULT_LOGGING}.
-	 * 
-	 * @return whether to use default logging or not
-	 */
-	public static boolean useDefaultLogging() {
-		return Boolean.parseBoolean(System.getProperty(RIENA_DEFAULT_LOGGING, Boolean.TRUE.toString()));
-	}
 
 	/**
 	 * Get the logger for the specified category.<br>
@@ -104,7 +88,9 @@ public class LoggerMill {
 	 * @param logReaderService
 	 */
 	public void bind(ExtendedLogReaderService logReaderService) {
-		final boolean useDefaultLogging = LoggerMill.useDefaultLogging();
+		// When isDevelopment() is explicitly set to {@code false} no default logging will be used. Otherwise if 
+		// no loggers have been defined than a default logging setup will be used.
+		final boolean useDefaultLogging = RienaStatus.isDevelopment();
 		if (listenerDefs.length == 0 && useDefaultLogging) {
 			listenerDefs = new ILogListenerDefinition[] { new SysoLogListenerDefinition() };
 		}

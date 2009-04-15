@@ -15,7 +15,6 @@ import org.osgi.framework.ServiceReference;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.logging.ConsoleLogger;
-import org.eclipse.riena.internal.core.logging.LoggerMill;
 
 /**
  * Gets a logger ({@code Logger}) from the {@code IRienaActivator}. <br>
@@ -77,7 +76,7 @@ public final class Log4r {
 
 	// use ConsoleLogger unless the system property specifies otherwise
 	private static Logger getEmergencyLogger(String className) {
-		return LoggerMill.useDefaultLogging() ? new ConsoleLogger(className) : new NullLogger();
+		return RienaStatus.isDevelopment() ? new ConsoleLogger(className) : new NullLogger();
 	}
 
 	private static class NullLogger implements Logger {
