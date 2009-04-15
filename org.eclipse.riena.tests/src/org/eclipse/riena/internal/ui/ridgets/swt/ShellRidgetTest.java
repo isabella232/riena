@@ -10,29 +10,75 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import junit.framework.TestCase;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Widget;
 
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.tests.collect.UITestCase;
+import org.eclipse.riena.ui.ridgets.IRidget;
 
 /**
  * Tests of the class {@link ShellRidget}.
  */
-@NonUITestCase
-public class ShellRidgetTest extends TestCase {
+@UITestCase
+public class ShellRidgetTest extends AbstractSWTRidgetTest {
+
+	@Override
+	protected IRidget createRidget() {
+		return new MockShellRidget();
+	}
+
+	@Override
+	protected Widget createWidget(Composite parent) {
+		return getShell();
+	}
+
+	@Override
+	protected MockShellRidget getRidget() {
+		return (MockShellRidget) super.getRidget();
+	}
+
+	@Override
+	protected Shell getWidget() {
+		return (Shell) super.getWidget();
+	}
+
+	/**
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidgetTest#testGetFocusable()
+	 */
+	@Override
+	public void testGetFocusable() {
+
+		assertFalse(getRidget().isFocusable());
+
+		getRidget().setFocusable(true);
+
+		assertFalse(getRidget().isFocusable());
+	}
 
 	/**
 	 * Tests the method {@code hasChanged}.
 	 */
 	public void testHasChanged() {
 
-		MockShellRidget ridget = new MockShellRidget();
+		assertTrue(getRidget().hasChanged("a", "b"));
+		assertFalse(getRidget().hasChanged("a", "a"));
+		assertTrue(getRidget().hasChanged(null, "b"));
+		assertTrue(getRidget().hasChanged("a", null));
+		assertFalse(getRidget().hasChanged(null, null));
+	}
 
-		assertTrue(ridget.hasChanged("a", "b"));
-		assertFalse(ridget.hasChanged("a", "a"));
-		assertTrue(ridget.hasChanged(null, "b"));
-		assertTrue(ridget.hasChanged("a", null));
-		assertFalse(ridget.hasChanged(null, null));
+	public void testSetActive() throws Exception {
 
+		getRidget().setActive(false);
+
+		assertFalse(getRidget().isEnabled());
+		assertFalse(getWidget().isEnabled());
+
+		getRidget().setActive(true);
+
+		assertTrue(getRidget().isEnabled());
+		assertTrue(getWidget().isEnabled());
 	}
 
 	/**

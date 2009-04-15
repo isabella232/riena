@@ -14,10 +14,10 @@ package org.eclipse.riena.ui.ridgets;
  * A ridget for UI controls that allow an action to be performed on them, like
  * clicking a button.
  */
-public interface IActionRidget extends IMarkableRidget {
+public interface IActionRidget extends IRidget {
 
-	public static final String BASE_ID_TOOLBARACTION = "toolbarAction."; //$NON-NLS-1$
-	public static final String BASE_ID_MENUACTION = "menuAction."; //$NON-NLS-1$
+	String BASE_ID_TOOLBARACTION = "toolbarAction."; //$NON-NLS-1$
+	String BASE_ID_MENUACTION = "menuAction."; //$NON-NLS-1$
 
 	/**
 	 * Add an action listener to call back.

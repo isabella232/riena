@@ -22,6 +22,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.ProcessInfo;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
@@ -33,8 +36,6 @@ import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.uiprocess.ICancelListener;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * The {@link UIProcessRidget} is not a standard {@link AbstractSWTRidget} as it
@@ -548,6 +549,13 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		return false;
 	}
 
+	public boolean isEnabled() {
+		if (getWindowShell() != null && !getWindowShell().isDisposed()) {
+			return getWindowShell().isEnabled();
+		}
+		return false;
+	}
+
 	/**
 	 * request focus of window
 	 */
@@ -576,6 +584,12 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 			open();
 		} else {
 			close();
+		}
+	}
+
+	public void setEnabled(boolean enabled) {
+		if (getWindowShell() != null && !getWindowShell().isDisposed()) {
+			getWindowShell().setEnabled(enabled);
 		}
 	}
 

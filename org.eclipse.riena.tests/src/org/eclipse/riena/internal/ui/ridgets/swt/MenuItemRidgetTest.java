@@ -10,16 +10,17 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
  * Tests of the class {@link MenuItemRidget}.
@@ -51,6 +52,28 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 	@Override
 	protected MenuItemRidget getRidget() {
 		return (MenuItemRidget) super.getRidget();
+	}
+
+	@Override
+	public void testIsVisible() {
+		getShell().open();
+
+		assertTrue("Fails for " + getRidget(), getRidget().isVisible());
+		assertFalse("Fails for " + getRidget(), getWidget().isDisposed());
+
+		getRidget().setVisible(false);
+
+		assertFalse("Fails for " + getRidget(), getRidget().isVisible());
+		// widget expected to be hidden by disposing it:
+		assertTrue("Fails for " + getRidget(), getWidget().isDisposed());
+
+		getRidget().setVisible(true);
+
+		assertTrue("Fails for " + getRidget(), getRidget().isVisible());
+		// dispose of old widget cannot be undone:
+		assertTrue("Fails for " + getRidget(), getWidget().isDisposed());
+		// but a new widget should have been created:
+		assertFalse("Fails for " + getRidget(), getRidget().getUIControl().isDisposed());
 	}
 
 	/**

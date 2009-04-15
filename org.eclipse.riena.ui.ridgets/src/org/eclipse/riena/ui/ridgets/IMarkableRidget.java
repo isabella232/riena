@@ -28,30 +28,12 @@ public interface IMarkableRidget extends IRidget, IMarkable {
 	 * added or removed ("marker").
 	 */
 	String PROPERTY_MARKER = "marker"; //$NON-NLS-1$
-	/**
-	 * The name of the PropertyChangeEvent that will be fired when the
-	 * enablement state of this ridget is changed ("enabled").
-	 */
-	String PROPERTY_ENABLED = "enabled"; //$NON-NLS-1$
+
 	/**
 	 * The name of the PropertyChangeEvent that will be fired when the 'output
 	 * only' state of this ridget is changed ("output").
 	 */
 	String PROPERTY_OUTPUT_ONLY = "output"; //$NON-NLS-1$
-
-	/**
-	 * Returns {@code false} if any DisabledMarker was added, {@code true}
-	 * otherwise.
-	 */
-	boolean isEnabled();
-
-	/**
-	 * Adds and removes a default DisabledMarker.
-	 * 
-	 * @param enabled
-	 *            The new enabled state.
-	 */
-	void setEnabled(boolean enabled);
 
 	/**
 	 * @return Indicates whether any ErrorMarker was added.

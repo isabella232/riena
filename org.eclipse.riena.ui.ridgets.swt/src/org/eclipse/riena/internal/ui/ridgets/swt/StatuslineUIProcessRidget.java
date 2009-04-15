@@ -18,6 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 
+import org.osgi.framework.BundleContext;
+
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.DefaultProcessDetailComparator;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.IProcessDetailComparatorContrib;
@@ -34,8 +38,6 @@ import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineUIProcess;
 import org.eclipse.riena.ui.swt.uiprocess.ProcessState;
 import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
-import org.eclipse.swt.widgets.Display;
-import org.osgi.framework.BundleContext;
 
 /**
  * Controls the {@link StatuslineUIProcess} (part of {@link Statusline}).
@@ -290,7 +292,11 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	}
 
 	public boolean isVisible() {
-		return false;
+		return true;
+	}
+
+	public boolean isEnabled() {
+		return true;
 	}
 
 	public void requestFocus() {
@@ -307,7 +313,11 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	}
 
 	public void setVisible(boolean visible) {
-		// allways visible
+		// always visible
+	}
+
+	public void setEnabled(boolean enabled) {
+		// always enabled
 	}
 
 	public String getID() {

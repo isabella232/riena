@@ -16,6 +16,9 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -23,13 +26,11 @@ import org.eclipse.riena.ui.ridgets.IMessageBoxRidget.MessageBoxOption;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.swt.MessageBox;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * Tests for the MessageBoxRidget.
  */
-public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
+public class MessageBoxRidgetTest extends AbstractRidgetTestCase {
 
 	/*
 	 * (non-Javadoc)
@@ -318,12 +319,6 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
 		assertEquals(getWidget(), getRidget().getUIControl());
 	}
 
-	@Override
-	public void testGetToolTip() {
-		// no test, because tooltips not yet supported
-	}
-
-	@Override
 	public void testGetFocusable() {
 
 		IRidget aRidget = getRidget();
@@ -339,7 +334,6 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
 		assertTrue(aRidget.isFocusable());
 	}
 
-	@Override
 	public void testSetFocusable() {
 
 		IRidget aRidget = getRidget();
@@ -368,7 +362,6 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
 		}
 	}
 
-	@Override
 	public void testRequestFocus() throws Exception {
 
 		MessageBox aControl = getWidget();
@@ -417,6 +410,21 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
 			assertEquals(1, focusGainedEvents.size());
 			assertEquals(1, focusLostEvents.size());
 		}
+	}
+
+	@Override
+	public void testFiresTooltipProperty() {
+		// tooltips are not supported
+	}
+
+	@Override
+	public void testIsVisible() {
+
+		assertFalse(getRidget().isVisible());
+
+		getRidget().setVisible(true);
+
+		super.testIsVisible();
 	}
 
 	private void setMessageBoxReturnValue(final int returnValue) {

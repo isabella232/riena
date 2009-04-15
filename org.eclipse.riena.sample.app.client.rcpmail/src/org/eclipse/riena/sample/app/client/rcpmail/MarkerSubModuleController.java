@@ -18,6 +18,7 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.TestBean;
 import org.eclipse.riena.beans.common.WordNode;
@@ -30,6 +31,7 @@ import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -111,9 +113,9 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IToggleButtonRidget buttonRadioB = (IToggleButtonRidget) getRidget("buttonRadioB"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonCheck = (IToggleButtonRidget) getRidget("buttonCheck"); //$NON-NLS-1$
 
-		final IMarkableRidget[] markables = new IMarkableRidget[] { textName, textPrice, comboAge, choiceType,
-				choiceFlavor, listPersons, tablePersons, treePersons, treeWCols, buttonToggle, buttonPush,
-				buttonRadioA, buttonRadioB, buttonCheck };
+		final IRidget[] markables = new IRidget[] { textName, textPrice, comboAge, choiceType, choiceFlavor,
+				listPersons, tablePersons, treePersons, treeWCols, buttonToggle, buttonPush, buttonRadioA,
+				buttonRadioB, buttonCheck };
 
 		final IToggleButtonRidget checkMandatory = (IToggleButtonRidget) getRidget("checkMandatory"); //$NON-NLS-1$
 		final IToggleButtonRidget checkError = (IToggleButtonRidget) getRidget("checkError"); //$NON-NLS-1$
@@ -125,8 +127,10 @@ public class MarkerSubModuleController extends SubModuleController {
 		checkMandatory.addListener(new IActionListener() {
 			public void callback() {
 				boolean isMandatory = checkMandatory.isSelected();
-				for (IMarkableRidget ridget : markables) {
-					ridget.setMandatory(isMandatory);
+				for (IRidget ridget : markables) {
+					if (ridget instanceof IMarkableRidget) {
+						((IMarkableRidget) ridget).setMandatory(isMandatory);
+					}
 				}
 				if (isMandatory) {
 					textName.setText(""); //$NON-NLS-1$
@@ -152,8 +156,10 @@ public class MarkerSubModuleController extends SubModuleController {
 
 			public void callback() {
 				boolean isError = checkError.isSelected();
-				for (IMarkableRidget ridget : markables) {
-					ridget.setErrorMarked(isError);
+				for (IRidget ridget : markables) {
+					if (ridget instanceof IMarkableRidget) {
+						((IMarkableRidget) ridget).setErrorMarked(isError);
+					}
 				}
 				/*
 				 * using this "always wrong" validator for purposes of this
@@ -175,7 +181,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		checkDisabled.addListener(new IActionListener() {
 			public void callback() {
 				boolean isEnabled = !checkDisabled.isSelected();
-				for (IMarkableRidget ridget : markables) {
+				for (IRidget ridget : markables) {
 					ridget.setEnabled(isEnabled);
 				}
 			}
@@ -185,8 +191,10 @@ public class MarkerSubModuleController extends SubModuleController {
 		checkOutput.addListener(new IActionListener() {
 			public void callback() {
 				boolean isOutput = checkOutput.isSelected();
-				for (IMarkableRidget ridget : markables) {
-					ridget.setOutputOnly(isOutput);
+				for (IRidget ridget : markables) {
+					if (ridget instanceof IMarkableRidget) {
+						((IMarkableRidget) ridget).setOutputOnly(isOutput);
+					}
 				}
 			}
 		});
@@ -195,7 +203,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		checkHidden.addListener(new IActionListener() {
 			public void callback() {
 				boolean isVisible = !checkHidden.isSelected();
-				for (IMarkableRidget ridget : markables) {
+				for (IRidget ridget : markables) {
 					ridget.setVisible(isVisible);
 				}
 			}

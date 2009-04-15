@@ -13,15 +13,16 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.riena.ui.ridgets.AbstractRidget;
-import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
-import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+
+import org.eclipse.riena.ui.ridgets.AbstractRidget;
+import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
+import org.eclipse.riena.ui.swt.MessageBox;
 
 /**
  * The ridget for a message box.
@@ -33,6 +34,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	private String text;
 	private boolean blocked;
 	private boolean visible;
+	private boolean enabled = true;
 	private boolean focusable;
 	private FocusListener focusManager;
 	private Type type = Type.PLAIN;
@@ -189,6 +191,10 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		return messageBox != null && visible;
 	}
 
+	public boolean isEnabled() {
+		return enabled;
+	}
+
 	public void requestFocus() {
 		if (isFocusable()) {
 			messageBox.requestFocus();
@@ -227,6 +233,11 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		updateUIControl();
 	}
 
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+		updateUIControl();
+	}
+
 	@Override
 	public void updateFromModel() {
 		// do nothing
@@ -235,11 +246,16 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	private void updateUIControl() {
 		if (messageBox != null) {
 			updateVisible();
+			updateEnabled();
 		}
 	}
 
 	private void updateVisible() {
 		messageBox.setVisible(visible);
+	}
+
+	private void updateEnabled() {
+		messageBox.setVisible(enabled);
 	}
 
 	/**

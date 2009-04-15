@@ -19,18 +19,19 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.example.client.views.TreeSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Controller for the {@link TreeSubModuleView} example.
@@ -224,8 +225,8 @@ public class TreeSubModuleController extends SubModuleController {
 	// helping methods
 	//////////////////
 
-	private void bindEnablementToValue(DataBindingContext dbc, IMarkableRidget ridget, IObservableValue value) {
-		dbc.bindValue(BeansObservables.observeValue(ridget, IMarkableRidget.PROPERTY_ENABLED), value, null, null);
+	private void bindEnablementToValue(DataBindingContext dbc, IRidget ridget, IObservableValue value) {
+		dbc.bindValue(BeansObservables.observeValue(ridget, IRidget.PROPERTY_ENABLED), value, null, null);
 	}
 
 	private TreeNode[] createTreeInput() {

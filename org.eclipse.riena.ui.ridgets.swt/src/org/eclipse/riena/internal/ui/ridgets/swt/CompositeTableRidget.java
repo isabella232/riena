@@ -114,7 +114,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 				}
 			}
 		});
-		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				refreshRowStyles();
 			}

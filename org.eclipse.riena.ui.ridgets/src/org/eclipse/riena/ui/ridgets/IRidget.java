@@ -14,6 +14,7 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 
 /**
@@ -33,6 +34,12 @@ public interface IRidget {
 	String PROPERTY_TOOLTIP = "tooltip"; //$NON-NLS-1$
 
 	/**
+	 * The name of the PropertyChangeEvent that will be fired when the
+	 * enablement state of this ridget is changed ("enabled").
+	 */
+	String PROPERTY_ENABLED = "enabled"; //$NON-NLS-1$
+
+	/**
 	 * @return Indicates whether the UI-control is visible.
 	 */
 	boolean isVisible();
@@ -44,6 +51,19 @@ public interface IRidget {
 	 *            The new visibility state.
 	 */
 	void setVisible(boolean visible);
+
+	/**
+	 * @return Indicates whether the UI-control is enabled.
+	 */
+	boolean isEnabled();
+
+	/**
+	 * Sets whether the UI-control is enabled.
+	 * 
+	 * @param visible
+	 *            The new enabled state.
+	 */
+	void setEnabled(boolean enabled);
 
 	/**
 	 * Getter to access the UI-toolkit specific UI-control. Allows modifications

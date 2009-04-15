@@ -73,7 +73,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 						|| editable == null
 						// ignore these events:
 						|| IMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName())
-						|| IMarkableRidget.PROPERTY_ENABLED.equals(evt.getPropertyName())
+						|| IRidget.PROPERTY_ENABLED.equals(evt.getPropertyName())
 						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(evt.getPropertyName())) {
 					return;
 				}
@@ -201,6 +201,14 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		}
 	}
 
+	@Override
+	protected final void updateEnabled() {
+		MasterDetailsComposite control = getUIControl();
+		if (control != null) {
+			control.setEnabled(isEnabled());
+		}
+	}
+
 	// helping methods
 	//////////////////
 
@@ -210,10 +218,10 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		}
 	}
 
-	private void bindEnablementToValue(DataBindingContext dbc, IMarkableRidget ridget, IObservableValue value) {
+	private void bindEnablementToValue(DataBindingContext dbc, IRidget ridget, IObservableValue value) {
 		Assert.isNotNull(ridget);
 		Assert.isNotNull(value);
-		dbc.bindValue(BeansObservables.observeValue(ridget, IMarkableRidget.PROPERTY_ENABLED), value, null, null);
+		dbc.bindValue(BeansObservables.observeValue(ridget, IRidget.PROPERTY_ENABLED), value, null, null);
 	}
 
 	private boolean canApply() {

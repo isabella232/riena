@@ -14,9 +14,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
+
+import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 
 /**
  * The <code>MessageBox</code> pops up a standard dialog box to display
@@ -149,6 +150,18 @@ public class MessageBox implements IPropertyNameProvider {
 	public void setVisible(boolean visible) {
 		if (messageDialog != null) {
 			messageDialog.getShell().setVisible(visible);
+		}
+	}
+
+	/**
+	 * Set the enabled state of a dialog that is shown.
+	 * 
+	 * @param enabled
+	 *            the new enabled state.
+	 */
+	public void setEnabled(boolean enabled) {
+		if (messageDialog != null) {
+			messageDialog.getShell().setEnabled(enabled);
 		}
 	}
 

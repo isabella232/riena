@@ -52,6 +52,7 @@ import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 
 /**
@@ -102,7 +103,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 				disableMandatoryMarkers(hasInput());
 			}
 		});
-		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
 				updateEnabled(isEnabled);

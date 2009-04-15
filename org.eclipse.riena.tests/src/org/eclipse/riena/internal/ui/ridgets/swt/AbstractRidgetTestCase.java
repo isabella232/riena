@@ -12,17 +12,14 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.easymock.EasyMock;
 
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -32,46 +29,65 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.tests.UITestHelper;
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
-import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.tests.base.PropertyChangeEventEquals;
 
 /**
- * @deprecated use
- * @see AbstractRidgetTestCase
- * @see AbstractSWTRidgetTest
+ * Superclass to test a Ridget .
  */
 @UITestCase
-public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
+public abstract class AbstractRidgetTestCase extends RienaTestCase {
 
 	private Shell shell;
-	private Object control;
+	private Object widget;
 	private IRidget ridget;
 	private Text otherControl;
-	private PropertyChangeListener propertyChangeListenerMock;
+	protected PropertyChangeListener propertyChangeListenerMock;
+
+	protected abstract Object createWidget(final Composite parent);
+
+	protected abstract IRidget createRidget();
+
+	protected Object getWidget() {
+		return widget;
+	}
+
+	protected IRidget getRidget() {
+		return ridget;
+	}
+
+	protected Shell getShell() {
+		return shell;
+	}
+
+	protected Control getOtherControl() {
+		return otherControl;
+	}
 
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
+
 		Display display = Display.getDefault();
 
 		Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 
-		shell = new Shell();
+		shell = new Shell(SWT.SYSTEM_MODAL | SWT.ON_TOP);
+
 		shell.setLayout(new RowLayout(SWT.VERTICAL));
 
-		control = createWidget(shell);
+		widget = createWidget(shell);
 
 		ridget = createRidget();
-		ridget.setUIControl(control);
+		ridget.setUIControl(widget);
 		propertyChangeListenerMock = EasyMock.createMock(PropertyChangeListener.class);
 		ridget.addPropertyChangeListener(propertyChangeListenerMock);
 
@@ -86,34 +102,12 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		ridget = null;
-		control = null;
-		otherControl.dispose();
+		widget = null;
 		otherControl = null;
 		shell.dispose();
 		shell = null;
-	}
 
-	// protected methods
-	// //////////////////
-
-	protected abstract Object createWidget(final Composite parent);
-
-	protected abstract IRidget createRidget();
-
-	protected Object getWidget() {
-		return control;
-	}
-
-	protected IRidget getRidget() {
-		return ridget;
-	}
-
-	protected final Shell getShell() {
-		return shell;
-	}
-
-	protected Text getOtherControl() {
-		return otherControl;
+		super.tearDown();
 	}
 
 	// easy mock helper methods
@@ -144,141 +138,103 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 	// /////////////
 
 	public void testIsVisible() {
-		shell.open();
-		ridget.setVisible(false);
-		assertFalse(ridget.isVisible());
+		getShell().open();
 
-		ridget.setVisible(true);
-		assertTrue(ridget.isVisible());
-	}
-
-	public void testGetToolTip() {
-
-		if (!(getWidget() instanceof Control)) {
-			// only Control supports tool tips
-			return;
+		assertTrue("Fails for " + getRidget(), getRidget().isVisible());
+		if (isWidgetControl()) {
+			assertTrue("Fails for " + getRidget(), ((Control) getWidget()).isVisible());
 		}
 
-		ridget.setUIControl(null);
+		getRidget().setVisible(false);
 
-		assertEquals(null, ridget.getToolTipText());
-
-		ridget.setToolTipText("foo");
-
-		assertEquals("foo", ridget.getToolTipText());
-
-		Control aControl = (Control) getWidget();
-		aControl.setToolTipText(null);
-		ridget.setUIControl(aControl);
-
-		assertEquals("foo", ridget.getToolTipText());
-		assertEquals("foo", ((Control) ridget.getUIControl()).getToolTipText());
-	}
-
-	public void testGetFocusable() {
-
-		if (!(getWidget() instanceof Control)) {
-			// only Control supports focus
-			return;
+		assertFalse("Fails for " + getRidget(), getRidget().isVisible());
+		if (isWidgetControl()) {
+			assertFalse("Fails for " + getRidget(), ((Control) getWidget()).isVisible());
 		}
 
-		IRidget aRidget = getRidget();
+		getRidget().setVisible(true);
 
-		assertTrue(aRidget.isFocusable());
-
-		aRidget.setFocusable(false);
-
-		assertFalse(aRidget.isFocusable());
-
-		aRidget.setFocusable(true);
-
-		assertTrue(aRidget.isFocusable());
-	}
-
-	public void testSetFocusable() {
-
-		if (!(getWidget() instanceof Control)) {
-			// only Control supports focus
-			return;
+		assertTrue("Fails for " + getRidget(), getRidget().isVisible());
+		if (isWidgetControl()) {
+			assertTrue("Fails for " + getRidget(), ((Control) getWidget()).isVisible());
 		}
 
-		IRidget aRidget = getRidget();
-		Control aControl = (Control) getWidget();
-		otherControl.moveAbove(aControl);
+		getRidget().setUIControl(null);
+		getRidget().setVisible(false);
 
-		aControl.setFocus();
-		if (aControl.isFocusControl()) { // skip if control cannot receive focus
+		assertFalse("Fails for " + getRidget(), getRidget().isVisible());
+		if (isWidgetControl()) {
+			assertTrue("Fails for " + getRidget(), ((Control) getWidget()).isVisible());
+		}
 
-			aRidget.setFocusable(false);
-			otherControl.setFocus();
+		getRidget().setUIControl(getWidget());
 
-			assertTrue(otherControl.isFocusControl());
-
-			UITestHelper.sendString(otherControl.getDisplay(), "\t");
-
-			assertFalse(aControl.isFocusControl());
-
-			aRidget.setFocusable(true);
-
-			otherControl.setFocus();
-			UITestHelper.sendString(otherControl.getDisplay(), "\t");
-
-			assertTrue(aControl.isFocusControl());
+		assertFalse("Fails for " + getRidget(), getRidget().isVisible());
+		if (isWidgetControl()) {
+			assertFalse("Fails for " + getRidget(), ((Control) getWidget()).isVisible());
 		}
 	}
 
-	public void testRequestFocus() throws Exception {
+	public void testIsEnabled() throws Exception {
 
-		if (!(getWidget() instanceof Control)) {
-			// only Control supports focus
-			return;
+		assertTrue("Fails for " + getRidget(), getRidget().isEnabled());
+		if (isWidgetControl()) {
+			assertTrue("Fails for " + getRidget(), ((Control) getWidget()).isEnabled());
 		}
 
-		Control aControl = (Control) getWidget();
-		aControl.setFocus();
-		if (aControl.isFocusControl()) { // skip if control cannot receive focus
-			assertTrue(otherControl.setFocus());
+		getRidget().setEnabled(false);
 
-			assertFalse(aControl.isFocusControl());
-			assertFalse(ridget.hasFocus());
-
-			final List<FocusEvent> focusGainedEvents = new ArrayList<FocusEvent>();
-			final List<FocusEvent> focusLostEvents = new ArrayList<FocusEvent>();
-			IFocusListener focusListener = new IFocusListener() {
-				public void focusGained(FocusEvent event) {
-					focusGainedEvents.add(event);
-				}
-
-				public void focusLost(FocusEvent event) {
-					focusLostEvents.add(event);
-				}
-			};
-			ridget.addFocusListener(focusListener);
-
-			ridget.requestFocus();
-
-			assertTrue(aControl.isFocusControl());
-			assertTrue(ridget.hasFocus());
-			assertEquals(1, focusGainedEvents.size());
-			assertEquals(ridget, focusGainedEvents.get(0).getNewFocusOwner());
-			assertEquals(0, focusLostEvents.size());
-
-			assertTrue(otherControl.setFocus());
-
-			assertFalse(aControl.isFocusControl());
-			assertFalse(ridget.hasFocus());
-			assertEquals(1, focusGainedEvents.size());
-			assertEquals(1, focusLostEvents.size());
-			assertEquals(ridget, focusLostEvents.get(0).getOldFocusOwner());
-
-			ridget.removeFocusListener(focusListener);
-
-			ridget.requestFocus();
-			assertTrue(otherControl.setFocus());
-
-			assertEquals(1, focusGainedEvents.size());
-			assertEquals(1, focusLostEvents.size());
+		assertFalse("Fails for " + getRidget(), getRidget().isEnabled());
+		if (isWidgetControl()) {
+			assertFalse("Fails for " + getRidget(), ((Control) getWidget()).isEnabled());
 		}
+
+		getRidget().setEnabled(false);
+
+		assertFalse("Fails for " + getRidget(), getRidget().isEnabled());
+		if (isWidgetControl()) {
+			assertFalse("Fails for " + getRidget(), ((Control) getWidget()).isEnabled());
+		}
+
+		getRidget().setEnabled(true);
+
+		assertTrue("Fails for " + getRidget(), getRidget().isEnabled());
+		if (isWidgetControl()) {
+			assertTrue("Fails for " + getRidget(), ((Control) getWidget()).isEnabled());
+		}
+
+		getRidget().setUIControl(null);
+		getRidget().setEnabled(false);
+
+		assertFalse("Fails for " + getRidget(), getRidget().isEnabled());
+		if (isWidgetControl()) {
+			assertTrue("Fails for " + getRidget(), ((Control) getWidget()).isEnabled());
+		}
+
+		getRidget().setUIControl(getWidget());
+
+		assertFalse("Fails for " + getRidget(), getRidget().isEnabled());
+		if (isWidgetControl()) {
+			assertFalse("Fails for " + getRidget(), ((Control) getWidget()).isEnabled());
+		}
+	}
+
+	public void testFiresTooltipProperty() {
+		expectPropertyChangeEvent(IRidget.PROPERTY_TOOLTIP, null, "begood");
+
+		getRidget().setToolTipText("begood");
+
+		verifyPropertyChangeEvents();
+		expectNoPropertyChangeEvent();
+
+		getRidget().setToolTipText("begood");
+
+		verifyPropertyChangeEvents();
+		expectPropertyChangeEvent(IRidget.PROPERTY_TOOLTIP, "begood", null);
+
+		getRidget().setToolTipText(null);
+
+		verifyPropertyChangeEvents();
 	}
 
 	public void testFiresMarkerProperty() {
@@ -291,8 +247,8 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 		HashSet<IMarker> after = new HashSet<IMarker>(before);
 		after.add(marker);
 
-		assertTrue(markableRidget.isEnabled());
-		assertEquals(before.size() + 1, after.size());
+		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
+		assertEquals("Fails for " + markableRidget, before.size() + 1, after.size());
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, before, after);
 		markableRidget.addMarker(marker);
@@ -319,7 +275,7 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
 
-		assertTrue(markableRidget.isEnabled());
+		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
 
 		expectNoPropertyChangeEvent();
 		markableRidget.setEnabled(true);
@@ -347,7 +303,7 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
 
-		assertTrue(markableRidget.isEnabled());
+		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
 
 		expectPropertyChangeEvent(IRidget.PROPERTY_ENABLED, Boolean.TRUE, Boolean.FALSE);
 		markableRidget.addMarker(marker);
@@ -376,15 +332,15 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
 		markableRidget.setUIControl(null);
 
-		assertTrue(markableRidget.isEnabled());
+		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
 
 		markableRidget.setEnabled(false);
 
-		assertFalse(markableRidget.isEnabled());
+		assertFalse("Fails for " + markableRidget, markableRidget.isEnabled());
 
 		markableRidget.setEnabled(true);
 
-		assertTrue(markableRidget.isEnabled());
+		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
 	}
 
 	public void testFiresOutputPropertyUsingSetter() {
@@ -395,7 +351,7 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, propertyChangeListenerMock);
 
-		assertFalse(markableRidget.isOutputOnly());
+		assertFalse("Fails for " + markableRidget, markableRidget.isOutputOnly());
 
 		expectNoPropertyChangeEvent();
 		markableRidget.setOutputOnly(false);
@@ -423,7 +379,7 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, propertyChangeListenerMock);
 
-		assertFalse(markableRidget.isOutputOnly());
+		assertFalse("Fails for " + markableRidget, markableRidget.isOutputOnly());
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_OUTPUT_ONLY, Boolean.FALSE, Boolean.TRUE);
 		markableRidget.addMarker(marker);
@@ -447,6 +403,31 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 
 	private PropertyChangeEvent createArgumentMatcher(PropertyChangeEvent propertyChangeEvent) {
 		return PropertyChangeEventEquals.eqPropertyChangeEvent(propertyChangeEvent);
+	}
+
+	protected void assertMarkerIgnored(IMarker marker) {
+		AbstractSWTWidgetRidget ridgetImpl = (AbstractSWTWidgetRidget) getRidget();
+		Control control = (Control) getWidget();
+		Color originalForegroundColor = control.getForeground();
+		Color originalBackgroundColor = control.getBackground();
+
+		ridgetImpl.addMarker(marker);
+
+		assertTrue(control.isVisible());
+		assertTrue(control.isEnabled());
+		assertEquals(originalForegroundColor, control.getForeground());
+		assertEquals(originalBackgroundColor, control.getBackground());
+
+		ridgetImpl.removeMarker(marker);
+
+		assertTrue(control.isVisible());
+		assertTrue(control.isEnabled());
+		assertEquals(originalForegroundColor, control.getForeground());
+		assertEquals(originalBackgroundColor, control.getBackground());
+	}
+
+	protected boolean isWidgetControl() {
+		return getWidget() instanceof Control;
 	}
 
 }

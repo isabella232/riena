@@ -163,7 +163,7 @@ public abstract class AbstractMarkerSupport {
 		Boolean oldValue = isEnabled(oldMarkers);
 		Boolean newValue = isEnabled(getMarkers());
 		if (!oldValue.equals(newValue)) {
-			PropertyChangeEvent evt = new PropertyChangeEvent(ridget, IMarkableRidget.PROPERTY_ENABLED, oldValue,
+			PropertyChangeEvent evt = new PropertyChangeEvent(ridget, IRidget.PROPERTY_ENABLED, oldValue,
 					newValue);
 			propertyChangeSupport.firePropertyChange(evt);
 		}

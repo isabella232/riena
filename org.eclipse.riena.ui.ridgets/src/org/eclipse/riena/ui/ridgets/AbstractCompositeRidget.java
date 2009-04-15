@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
-import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
@@ -29,6 +28,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	private Map<String, IRidget> ridgets;
 	private PropertyChangeListener propertyChangeListener;
 	private boolean visible;
+	private boolean enabled = true;
 	private String toolTip = null;
 	private boolean blocked;
 
@@ -55,6 +55,17 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		}
 	}
 
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		if (this.enabled != enabled) {
+			this.enabled = enabled;
+			updateEnabled();
+		}
+	}
+
 	public IComplexComponent getUIControl() {
 		return uiControl;
 	}
@@ -68,6 +79,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 
 		this.uiControl = (IComplexComponent) uiControl;
 		updateVisible();
+		updateEnabled();
 		updateToolTipText();
 	}
 
@@ -162,18 +174,21 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	////////////////////
 
 	/**
-	 * The default implementation can update the visibility of a
-	 * java.awt.Component.
-	 * <p>
-	 * Subclasses should override, to update the visibility of their UI controls
-	 * in an appropriate way.
+	 * Updates the visibility of the complex UI control (and of the UI controls
+	 * it contains). This default implementation does nothing and should be
+	 * overridden by subclasses.
 	 */
 	protected void updateVisible() {
-		// this java.awt.Component is an artefact of our swing legacy
-		// and could be removed when swing support is no longer needed
-		if (uiControl != null && uiControl instanceof Component) {
-			((Component) uiControl).setVisible(this.visible);
-		}
+		// empty default implementation
+	}
+
+	/**
+	 * Updates the enabled state of the complex UI control (and of the UI
+	 * controls it contains). This default implementation does nothing and
+	 * should be overridden by subclasses.
+	 */
+	protected void updateEnabled() {
+		// empty default implementation
 	}
 
 	/**

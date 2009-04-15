@@ -11,32 +11,28 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.riena.core.util.ListenerList;
-import org.eclipse.riena.ui.ridgets.AbstractRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.IWindowRidget;
-import org.eclipse.riena.ui.ridgets.UIBindingFailure;
-import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
-import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
-import org.eclipse.riena.ui.swt.utils.ImageStore;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.ridgets.UIBindingFailure;
+import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
+import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+
 /**
  * The ridget for a Shell control.
  */
-public class ShellRidget extends AbstractRidget implements IWindowRidget {
+public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidget {
 
 	private static Image missingImage;
-	private Shell shell;
-	private String toolTip = null;
-	private boolean blocked;
 	private boolean closeable;
-	private boolean active;
 	private String title;
 	private String icon;
 	private ListenerList<IWindowRidgetListener> windowRidgetListeners;
@@ -48,7 +44,6 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 
 		title = ""; //$NON-NLS-1$
 		closeable = true;
-		active = true;
 		windowRidgetListeners = new ListenerList<IWindowRidgetListener>(IWindowRidgetListener.class);
 		shellListener = new RidgetShellListener();
 	}
@@ -58,26 +53,48 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		setUIControl(shell);
 	}
 
-	/*
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#getUIControl()
-	 */
 	public Shell getUIControl() {
-		return shell;
+		return (Shell) super.getUIControl();
 	}
 
-	/*
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setUIControl(java.lang.Object)
+	/**
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget#checkUIControl(java.lang.Object)
 	 */
-	public void setUIControl(Object uiControl) {
+	@Override
+	protected void checkUIControl(Object uiControl) {
 		if (uiControl != null && !(uiControl instanceof Shell)) {
 			throw new UIBindingFailure("uiControl of a ShellRidget must be a Shell but was a " //$NON-NLS-1$
 					+ uiControl.getClass().getSimpleName());
 		}
+	}
 
+	/**
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget#unbindUIControl()
+	 */
+	@Override
+	protected void unbindUIControl() {
 		removeShellListener();
-		shell = (Shell) uiControl;
+	}
+
+	/**
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget#bindUIControl()
+	 */
+	@Override
+	protected void bindUIControl() {
+
 		addShellListener();
 		updateToolTip();
+		updateCloseable();
+		updateTitle();
+		updateIcon();
+	}
+
+	/**
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget#createMarkerSupport()
+	 */
+	@Override
+	protected AbstractMarkerSupport createMarkerSupport() {
+		return new BasicMarkerSupport(this, propertyChangeSupport);
 	}
 
 	private void addShellListener() {
@@ -98,14 +115,6 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 
 	public void removeWindowRidgetListener(IWindowRidgetListener listener) {
 		windowRidgetListeners.remove(listener);
-	}
-
-	public boolean isVisible() {
-		return getUIControl().isVisible();
-	}
-
-	public void setVisible(boolean visible) {
-		getUIControl().setVisible(visible);
 	}
 
 	public void dispose() {
@@ -224,7 +233,6 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	}
 
 	public boolean isFocusable() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -232,36 +240,9 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		// TODO Auto-generated method stub
 	}
 
-	public String getToolTipText() {
-		return toolTip;
-	}
-
-	public void setToolTipText(String toolTipText) {
-		String oldValue = toolTip;
-		toolTip = toolTipText;
-		updateToolTip();
-		firePropertyChange(IRidget.PROPERTY_TOOLTIP, oldValue, toolTip);
-	}
-
-	private void updateToolTip() {
+	protected void updateToolTip() {
 		if (getUIControl() != null) {
-			getUIControl().setToolTipText(toolTip);
-		}
-	}
-
-	/*
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
-	 */
-	public boolean isBlocked() {
-		return blocked;
-	}
-
-	/*
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
-	 */
-	public void setBlocked(boolean blocked) {
-		if (this.blocked != blocked) {
-			this.blocked = blocked;
+			getUIControl().setToolTipText(getToolTipText());
 		}
 	}
 
@@ -269,10 +250,7 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setActive(boolean)
 	 */
 	public void setActive(boolean active) {
-		if (this.active != active) {
-			this.active = active;
-			updateActive();
-		}
+		setEnabled(active);
 	}
 
 	/*
@@ -289,12 +267,6 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		// TODO
 	}
 
-	private void updateActive() {
-		if (getUIControl() != null) {
-			getUIControl().setEnabled(active);
-		}
-	}
-
 	@Override
 	public void updateFromModel() {
 
@@ -303,7 +275,6 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		if (getUIControl() != null) {
 			updateTitle();
 			updateIcon();
-			updateActive();
 		}
 	}
 
@@ -341,5 +312,13 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		public void shellIconified(ShellEvent e) {
 			// do nothing yet
 		}
+	}
+
+	/**
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget#isDisableMandatoryMarker()
+	 */
+	@Override
+	public boolean isDisableMandatoryMarker() {
+		return false;
 	}
 }

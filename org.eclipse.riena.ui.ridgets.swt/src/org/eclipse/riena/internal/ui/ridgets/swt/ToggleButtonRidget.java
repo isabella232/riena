@@ -29,7 +29,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 
 import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
@@ -54,7 +54,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 		actionObserver = new ActionObserver();
 		textAlreadyInitialized = false;
 		useRidgetIcon = false;
-		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
 				updateSelection(isEnabled);

@@ -39,6 +39,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.common.IComboEntryFactory;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
@@ -109,7 +110,7 @@ public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 		strToObjConverter = new StringToObjectConverter();
 		selectionValidator = new SelectionBindingValidator();
 		valueChangeValidator = new ValueChangeValidator();
-		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				applyEnabled();
 			}
