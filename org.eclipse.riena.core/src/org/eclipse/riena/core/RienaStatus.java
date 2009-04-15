@@ -17,6 +17,17 @@ import org.eclipse.riena.internal.core.Activator;
  */
 public final class RienaStatus {
 
+	/**
+	 * This system property controls {@code RienaStatus.isDevelopment()}
+	 */
+	public static final String RIENA_DEVELOPMENT_SYSTEM_PROPERTY = "riena.development"; //$NON-NLS-1$
+
+	/**
+	 * This is the default value (i.e. if the value is not explicitly defined)
+	 * for the system property {@code RIENA_DEVELOPMENT_SYSTEM_PROPERTY}
+	 */
+	public static final String DEVELOPMENT_DEFAULT = "true"; //$NON-NLS-1$
+
 	private RienaStatus() {
 		// Utility
 	}
@@ -30,4 +41,19 @@ public final class RienaStatus {
 		return Activator.getDefault().isActive();
 	}
 
+	/**
+	 * Are we in <i>development</i>?<br>
+	 * If {@code true} certain services/functionalities behave more appropriate
+	 * for development time, e.g.
+	 * <ul>
+	 * <li>default logging is enabled</li>
+	 * <li>the store of the client monitoring is cleaned up on each start
+	 * <li>..</li>
+	 * </ul>
+	 * 
+	 * @return
+	 */
+	public static boolean isDevelopment() {
+		return Boolean.parseBoolean(System.getProperty(RIENA_DEVELOPMENT_SYSTEM_PROPERTY, DEVELOPMENT_DEFAULT));
+	}
 }
