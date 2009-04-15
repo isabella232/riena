@@ -11,6 +11,7 @@
 package org.eclipse.riena.tests;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
@@ -82,7 +83,14 @@ public final class UITestHelper {
 	private static void waitAndDispatch(Display display, Thread thread) {
 		Shell shell = display.getActiveShell();
 		while (!shell.isDisposed() && thread.isAlive()) {
-			display.readAndDispatch();
+			try {
+				display.readAndDispatch();
+			} catch (SWTException exc) {
+				// swallow this kind of exception
+				if (!exc.toString().contains("Workbench has not been created yet.")) {
+					throw exc;
+				}
+			}
 		}
 	}
 
