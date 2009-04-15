@@ -31,9 +31,11 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
+import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
@@ -150,6 +152,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(new SubApplicationListener());
 		navigationTreeObserver.addListener(new ModuleGroupListener());
+		navigationTreeObserver.addListener(new SubModuleListener());
 		navigationTreeObserver.addListenerTo(getSubApplicationNode());
 	}
 
@@ -158,6 +161,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	 * (fix for bug 270620).
 	 */
 	private final class ResizeListener extends ControlAdapter {
+		@Override
 		public void controlResized(ControlEvent e) {
 			updateNavigationSize();
 			parent.layout();
@@ -189,7 +193,6 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 		@Override
 		public void filterRemoved(ISubApplicationNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 			updateNavigationSize();
 		}
@@ -204,20 +207,23 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 			updateNavigationSize();
 		}
 
+		@Override
+		public void markersChanged(ISubApplicationNode source) {
+			updateNavigationSize();
+		}
+
 	}
 
 	private class ModuleGroupListener extends ModuleGroupNodeListener {
 
 		@Override
 		public void filterAdded(IModuleGroupNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterAdded(source, filter);
 			updateNavigationSize();
 		}
 
 		@Override
 		public void filterRemoved(IModuleGroupNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 			updateNavigationSize();
 		}
@@ -242,7 +248,20 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 			super.disposed(source);
 			unregisterModuleGroupView(source);
 			updateNavigationSize();
+		}
 
+		@Override
+		public void markersChanged(IModuleGroupNode source) {
+			updateNavigationSize();
+		}
+
+	}
+
+	private class SubModuleListener extends SubModuleNodeListener {
+
+		@Override
+		public void markersChanged(ISubModuleNode source) {
+			updateNavigationSize();
 		}
 	}
 
