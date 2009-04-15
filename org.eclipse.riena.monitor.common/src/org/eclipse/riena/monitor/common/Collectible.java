@@ -113,11 +113,27 @@ public class Collectible<T extends Serializable> implements Serializable {
 
 	@Override
 	public String toString() {
+		return toString(true);
+	}
+
+	public String toLogString() {
+		return toString(false);
+	}
+
+	private String toString(boolean verbose) {
 		StringBuilder bob = new StringBuilder("Collectible: "); //$NON-NLS-1$
 		bob.append("ClientInfo={").append(clientInfo).append("},"); //$NON-NLS-1$ //$NON-NLS-2$
 		bob.append("Category=").append(categoryName).append(','); //$NON-NLS-1$
-		bob.append("Payload=").append(payload); //$NON-NLS-1$
+		bob.append("Payload (partial)=").append(verbose ? payload : partial(payload)); //$NON-NLS-1$
 		return bob.toString();
 	}
 
+	private String partial(T payload) {
+		String all = payload.toString();
+		int cutOff = all.indexOf('\n');
+		if (cutOff == -1) {
+			return all;
+		}
+		return all.substring(0, cutOff) + " (and more ..)"; //$NON-NLS-1$
+	}
 }
