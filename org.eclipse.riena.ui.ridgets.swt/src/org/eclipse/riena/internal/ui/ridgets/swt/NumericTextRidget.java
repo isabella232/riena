@@ -31,6 +31,7 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
@@ -350,13 +351,17 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 				}
 			}
 			if (!newText.equals(text)) {
-				stopVerifyListener();
+				Listener[] verifyListeners = control.getListeners(SWT.Verify);
+				for (Listener listener : verifyListeners) {
+					control.removeListener(SWT.Verify, listener);
+				}
 				stopModifyListener();
 				control.setText(newText);
 				control.setSelection(newText.length());
 				startModifyListener();
-				startVerifyListener();
-				// TODO [ev] revalidate(); -- this causes test failures
+				for (Listener listener : verifyListeners) {
+					control.addListener(SWT.Verify, listener);
+				}
 			}
 		}
 	}

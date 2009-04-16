@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Composite;
@@ -22,10 +24,12 @@ import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
+import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -614,6 +618,37 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(ridget.isEnabled());
 		assertEquals(localize("1.234,00"), control.getText());
 		assertEquals(localize("1.234"), ridget.getText());
+	}
+
+	public void testValidationAfterUpdate() {
+		IDecimalTextRidget ridget = getRidget();
+		ridget.addValidationRule(new IValidator() {
+			public IStatus validate(Object input) {
+				IStatus result = ValidationRuleStatus.ok();
+				try {
+					double value = Double.parseDouble(input.toString());
+					if (value == 0d) {
+						result = ValidationRuleStatus.error(false, "cannot be 0", this);
+					}
+				} catch (NumberFormatException nfe) {
+					result = ValidationRuleStatus.error(false, "number format exception", this);
+				}
+				return result;
+			}
+
+		}, ValidationTime.ON_UPDATE_TO_MODEL);
+
+		assertFalse(ridget.isErrorMarked());
+
+		ridget.revalidate();
+
+		assertTrue(ridget.isErrorMarked());
+
+		DoubleBean value = new DoubleBean(0d);
+		ridget.bindToModel(value, DoubleBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		assertTrue(ridget.isErrorMarked());
 	}
 
 	// helping methods
