@@ -142,13 +142,15 @@ public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 			if (control != null) {
 				// These bindings are only necessary when we have a Combo
 				listBindingInternal = dbc.bindList(SWTObservables.observeItems(control), rowObservables,
-						new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE).setConverter(strToObjConverter),
-						new UpdateListStrategy(UpdateValueStrategy.POLICY_UPDATE).setConverter(objToStrConverter));
+						new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST).setConverter(strToObjConverter),
+						new UpdateListStrategy(UpdateValueStrategy.POLICY_ON_REQUEST).setConverter(objToStrConverter));
 				listBindingInternal.updateModelToTarget();
 				applyEnabled();
 			}
-			listBindingExternal = dbc.bindList(rowObservables, rowObservablesModel, new UpdateListStrategy(
-					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST));
+			listBindingExternal = dbc
+					.bindList(rowObservables, rowObservablesModel, new UpdateListStrategy(
+							UpdateListStrategy.POLICY_ON_REQUEST), new UpdateListStrategy(
+							UpdateListStrategy.POLICY_ON_REQUEST));
 			selectionBindingExternal = dbc
 					.bindValue(selectionObservable, selectionObservableModel, new UpdateValueStrategy(
 							UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(selectionValidator),
