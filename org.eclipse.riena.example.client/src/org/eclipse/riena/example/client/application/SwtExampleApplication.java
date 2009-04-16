@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.application;
 
+import org.osgi.framework.Bundle;
+
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -22,7 +24,6 @@ import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
-import org.osgi.framework.Bundle;
 
 /**
  * Define the model of the application
@@ -68,9 +69,10 @@ public class SwtExampleApplication extends SwtApplication {
 		ISubApplicationNode subApplication = null;
 
 		//		SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
+		String bundleVersion = (String) Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
 
 		final IApplicationNode applicationNode = new ApplicationNode(
-				new NavigationNodeId("application"), "Riena Navigation Example"); //$NON-NLS-1$ //$NON-NLS-2$
+				new NavigationNodeId("application"), "Riena Playground Example - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
 		applicationNode.setIcon(ExampleIcons.ICON_APPLICATION);
 
 		// Navigation SubApplication
