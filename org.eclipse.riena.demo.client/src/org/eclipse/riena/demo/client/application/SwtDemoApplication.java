@@ -47,7 +47,6 @@ public class SwtDemoApplication extends SwtApplication {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	/**
@@ -63,7 +62,10 @@ public class SwtDemoApplication extends SwtApplication {
 	@Override
 	protected IApplicationNode createModel() {
 
-		final IApplicationNode applicationNode = new ApplicationNode(new NavigationNodeId("application"), "Riena Demo"); //$NON-NLS-1$ //$NON-NLS-2$
+		String bundleVersion = (String) Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
+
+		final IApplicationNode applicationNode = new ApplicationNode(
+				new NavigationNodeId("application"), "Riena Demo - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
 		//		applicationNode.setIcon(getIconPath(ExampleIcons.ICON_APPLICATION));
 
 		return applicationNode;
