@@ -13,16 +13,6 @@ package org.eclipse.riena.navigation.ui.swt.component;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.navigation.IApplicationNode;
-import org.eclipse.riena.navigation.ISubApplicationNode;
-import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
-import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRenderer;
-import org.eclipse.riena.ui.core.marker.DisabledMarker;
-import org.eclipse.riena.ui.core.marker.HiddenMarker;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -33,6 +23,17 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+
+import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
+import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRenderer;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Control to switch between sub-applications.
@@ -244,7 +245,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	private final class SubApplicationListener extends SubApplicationNodeListener {
 
 		@Override
-		public void markersChanged(ISubApplicationNode source, IMarker marker) {
+		public void markerChanged(ISubApplicationNode source, IMarker marker) {
 			redraw();
 		}
 

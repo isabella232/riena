@@ -172,7 +172,7 @@ public class SimpleNavigationNodeAdapater implements ISimpleNavigationNodeListen
 	 * @seeorg.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#
 	 * markersChanged(org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void markersChanged(INavigationNode<?> source, IMarker marker) {
+	public void markerChanged(INavigationNode<?> source, IMarker marker) {
 	}
 
 	/*

@@ -36,15 +36,14 @@ public interface ISimpleNavigationNodeListener {
 	void expandedChanged(INavigationNode<?> source);
 
 	/**
-	 * This method is called if a marker was added to or removed form a node.
+	 * This method is called if a marker was added to or removed from a node.
 	 * 
 	 * @param source
 	 *            - node
 	 * @param marker
-	 *            - marker that was removed or added; it can be also {@code
-	 *            null}, if more than one marker has be changed
+	 *            - marker that was removed or added
 	 */
-	void markersChanged(INavigationNode<?> source, IMarker marker);
+	void markerChanged(INavigationNode<?> source, IMarker marker);
 
 	void activated(INavigationNode<?> source);
 

@@ -420,7 +420,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 */
 	public void addListener(L listener) {
 		listeners.add(listener);
-
 	}
 
 	/**
@@ -662,8 +661,12 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		}
 		boolean oldEnabled = isEnabled();
 		boolean oldVisible = isVisible();
-		getMarkable().removeAllMarkers();
-		notifyMarkersChanged(null);
+		// getMarkable().removeAllMarkers();
+		while (!getMarkable().getMarkers().isEmpty()) {
+			IMarker marker = getMarkable().getMarkers().iterator().next();
+			getMarkable().removeMarker(marker);
+			notifyMarkersChanged(marker);
+		}
 		if (oldEnabled != isEnabled()) {
 			propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_ENABLED, oldEnabled, isEnabled());
 		}
@@ -702,10 +705,10 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	@SuppressWarnings("unchecked")
 	private void notifyMarkersChanged(IMarker marker) {
 		for (L next : getListeners()) {
-			next.markersChanged((S) this, marker);
+			next.markerChanged((S) this, marker);
 		}
 		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
-			next.markersChanged(this, marker);
+			next.markerChanged(this, marker);
 		}
 	}
 

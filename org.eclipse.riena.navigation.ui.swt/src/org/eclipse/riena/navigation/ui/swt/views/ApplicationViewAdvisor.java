@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPerspectiveDescriptor;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -297,10 +298,21 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		@Override
 		public void filterAdded(IApplicationNode source, IUIFilter filter) {
-			super.filterAdded(source, filter);
+			show();
+		}
+
+		@Override
+		public void filterRemoved(IApplicationNode source, IUIFilter filter) {
+			show();
+		}
+
+		private void show() {
 			try {
+				IViewPart vp = getActivePage().findView(NavigationViewPart.ID);
 				NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
-				navi.updateNavigationSize();
+				if (vp == null) {
+					navi.updateNavigationSize();
+				}
 			} catch (PartInitException e) {
 				throw new UIViewFailure(e.getMessage(), e);
 			}
@@ -310,17 +322,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		}
 
-		@Override
-		public void filterRemoved(IApplicationNode source, IUIFilter filter) {
-			super.filterRemoved(source, filter);
-
-			try {
-				NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
-				navi.updateNavigationSize();
-			} catch (PartInitException e) {
-				throw new UIViewFailure(e.getMessage(), e);
-			}
-		}
 	}
 
 	private class MySubApplicationNodeListener extends SubApplicationNodeListener {

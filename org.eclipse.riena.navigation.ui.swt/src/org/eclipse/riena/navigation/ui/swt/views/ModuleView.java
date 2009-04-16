@@ -38,8 +38,6 @@ import org.eclipse.riena.navigation.ui.swt.component.ModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.component.SubModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleTreeItemMarkerRenderer;
-import org.eclipse.riena.ui.core.marker.HiddenMarker;
-import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
@@ -364,18 +362,18 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * view must be resized.
 	 */
 	private class SubModuleListener extends SubModuleNodeListener {
-
-		@Override
-		public void filterAdded(ISubModuleNode source, IUIFilter filter) {
-			super.filterAdded(source, filter);
-			updateModuleView();
-		}
-
-		@Override
-		public void filterRemoved(ISubModuleNode source, IUIFilter filter) {
-			super.filterRemoved(source, filter);
-			updateModuleView();
-		}
+		//
+		//		@Override
+		//		public void filterAdded(ISubModuleNode source, IUIFilter filter) {
+		//			super.filterAdded(source, filter);
+		//			updateModuleView();
+		//		}
+		//
+		//		@Override
+		//		public void filterRemoved(ISubModuleNode source, IUIFilter filter) {
+		//			super.filterRemoved(source, filter);
+		//			updateModuleView();
+		//		}
 
 		/**
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#childAdded(org.eclipse.riena.navigation.INavigationNode,
@@ -417,14 +415,12 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markerChanged(org.eclipse.riena.navigation.INavigationNode,
 		 *      IMarker)
 		 */
 		@Override
-		public void markersChanged(ISubModuleNode source, IMarker marker) {
-			if ((marker == null) || (marker instanceof HiddenMarker)) {
-				getTree().redraw();
-			}
+		public void markerChanged(ISubModuleNode source, IMarker marker) {
+			getTree().redraw();
 		}
 
 		@Override
@@ -440,18 +436,18 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * must be resized.
 	 */
 	private class ModuleListener extends ModuleNodeListener {
-
-		@Override
-		public void filterAdded(IModuleNode source, IUIFilter filter) {
-			super.filterAdded(source, filter);
-			updateModuleView();
-		}
-
-		@Override
-		public void filterRemoved(IModuleNode source, IUIFilter filter) {
-			super.filterRemoved(source, filter);
-			updateModuleView();
-		}
+		//
+		//		@Override
+		//		public void filterAdded(IModuleNode source, IUIFilter filter) {
+		//			super.filterAdded(source, filter);
+		//			updateModuleView();
+		//		}
+		//
+		//		@Override
+		//		public void filterRemoved(IModuleNode source, IUIFilter filter) {
+		//			super.filterRemoved(source, filter);
+		//			updateModuleView();
+		//		}
 
 		/**
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
@@ -473,12 +469,12 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markerChanged(org.eclipse.riena.navigation.INavigationNode,
 		 *      IMarker)
 		 */
 		@Override
-		public void markersChanged(IModuleNode source, IMarker marker) {
-			super.markersChanged(source, marker);
+		public void markerChanged(IModuleNode source, IMarker marker) {
+			super.markerChanged(source, marker);
 			title.setMarkers(source.getMarkers());
 			title.redraw();
 		}

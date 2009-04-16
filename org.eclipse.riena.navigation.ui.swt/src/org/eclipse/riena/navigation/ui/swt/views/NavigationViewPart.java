@@ -46,7 +46,6 @@ import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPres
 import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleDesc;
 import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupDesc;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
-import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
@@ -187,18 +186,18 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 			updateNavigationSize();
 		}
 
-		@Override
-		public void filterAdded(ISubApplicationNode source, IUIFilter filter) {
-			super.filterAdded(source, filter);
-			updateNavigationSize();
-		}
-
-		@Override
-		public void filterRemoved(ISubApplicationNode source, IUIFilter filter) {
-			super.filterRemoved(source, filter);
-			updateNavigationSize();
-		}
-
+		//		@Override
+		//		public void filterAdded(ISubApplicationNode source, IUIFilter filter) {
+		//			super.filterAdded(source, filter);
+		//			updateNavigationSize();
+		//		}
+		//
+		//		@Override
+		//		public void filterRemoved(ISubApplicationNode source, IUIFilter filter) {
+		//			super.filterRemoved(source, filter);
+		//			updateNavigationSize();
+		//		}
+		//
 		/**
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
@@ -210,8 +209,10 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		}
 
 		@Override
-		public void markersChanged(ISubApplicationNode source, IMarker marker) {
-			if ((marker == null) || (marker instanceof HiddenMarker)) {
+		public void markerChanged(ISubApplicationNode source, IMarker marker) {
+			if (marker instanceof HiddenMarker) {
+				System.out.println("NavigationViewPart.SubApplicationListener.markersChanged() " + source + "/"
+						+ marker);
 				updateNavigationSize();
 			}
 		}
@@ -220,17 +221,17 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 	private class ModuleGroupListener extends ModuleGroupNodeListener {
 
-		@Override
-		public void filterAdded(IModuleGroupNode source, IUIFilter filter) {
-			super.filterAdded(source, filter);
-			updateNavigationSize();
-		}
-
-		@Override
-		public void filterRemoved(IModuleGroupNode source, IUIFilter filter) {
-			super.filterRemoved(source, filter);
-			updateNavigationSize();
-		}
+		//		@Override
+		//		public void filterAdded(IModuleGroupNode source, IUIFilter filter) {
+		//			super.filterAdded(source, filter);
+		//			updateNavigationSize();
+		//		}
+		//
+		//		@Override
+		//		public void filterRemoved(IModuleGroupNode source, IUIFilter filter) {
+		//			super.filterRemoved(source, filter);
+		//			updateNavigationSize();
+		//		}
 
 		@Override
 		public void childAdded(IModuleGroupNode source, IModuleNode child) {
@@ -255,8 +256,9 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		}
 
 		@Override
-		public void markersChanged(IModuleGroupNode source, IMarker marker) {
-			if ((marker == null) || (marker instanceof HiddenMarker)) {
+		public void markerChanged(IModuleGroupNode source, IMarker marker) {
+			if (marker instanceof HiddenMarker) {
+				System.out.println("NavigationViewPart.ModuleGroupListener.markersChanged() " + source + "/" + marker);
 				updateNavigationSize();
 			}
 		}
@@ -266,8 +268,11 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	private class SubModuleListener extends SubModuleNodeListener {
 
 		@Override
-		public void markersChanged(ISubModuleNode source, IMarker marker) {
-			updateNavigationSize();
+		public void markerChanged(ISubModuleNode source, IMarker marker) {
+			if (marker instanceof HiddenMarker) {
+				System.out.println("NavigationViewPart.SubModuleListener.markersChanged() " + source + "/" + marker);
+				updateNavigationSize();
+			}
 		}
 	}
 
