@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.listener;
 
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNode.State;
 import org.eclipse.riena.ui.filter.IUIFilter;
@@ -112,9 +113,9 @@ public class NavigationNodeListener<S extends INavigationNode<C>, C extends INav
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode, IMarker)
 	 */
-	public void markersChanged(S source) {
+	public void markersChanged(S source, IMarker marker) {
 	}
 
 	/**

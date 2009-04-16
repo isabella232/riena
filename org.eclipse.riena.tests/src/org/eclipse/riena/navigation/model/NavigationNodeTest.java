@@ -644,7 +644,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		public void labelChanged(INavigationNode<?> source) {
 		}
 
-		public void markersChanged(INavigationNode<?> source) {
+		public void markersChanged(INavigationNode<?> source, IMarker marker) {
 			markersChangedCalled = true;
 		}
 

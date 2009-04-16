@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
 import org.eclipse.riena.navigation.INavigationNode.State;
@@ -171,7 +172,7 @@ public class SimpleNavigationNodeAdapater implements ISimpleNavigationNodeListen
 	 * @seeorg.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#
 	 * markersChanged(org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void markersChanged(INavigationNode<?> source) {
+	public void markersChanged(INavigationNode<?> source, IMarker marker) {
 	}
 
 	/*

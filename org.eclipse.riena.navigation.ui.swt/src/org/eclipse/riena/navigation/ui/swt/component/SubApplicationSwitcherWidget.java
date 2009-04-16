@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.component;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
@@ -243,7 +244,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	private final class SubApplicationListener extends SubApplicationNodeListener {
 
 		@Override
-		public void markersChanged(ISubApplicationNode source) {
+		public void markersChanged(ISubApplicationNode source, IMarker marker) {
 			redraw();
 		}
 

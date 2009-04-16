@@ -632,7 +632,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	public void addMarker(INavigationContext context, IMarker marker) {
 		getMarkable().addMarker(marker);
-		notifyMarkersChanged();
+		notifyMarkersChanged(marker);
 		if ((marker instanceof DisabledMarker) || (marker instanceof HiddenMarker)) {
 			for (Object child : getChildren()) {
 				if (child instanceof INavigationNode<?>) {
@@ -663,7 +663,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		boolean oldEnabled = isEnabled();
 		boolean oldVisible = isVisible();
 		getMarkable().removeAllMarkers();
-		notifyMarkersChanged();
+		notifyMarkersChanged(null);
 		if (oldEnabled != isEnabled()) {
 			propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_ENABLED, oldEnabled, isEnabled());
 		}
@@ -689,7 +689,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		if (oldVisible != isVisible()) {
 			propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_VISIBLE, oldVisible, isVisible());
 		}
-		notifyMarkersChanged();
+		notifyMarkersChanged(marker);
 		if ((marker instanceof DisabledMarker) || (marker instanceof HiddenMarker)) {
 			for (Object child : getChildren()) {
 				if (child instanceof INavigationNode<?>) {
@@ -700,12 +700,12 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	@SuppressWarnings("unchecked")
-	private void notifyMarkersChanged() {
+	private void notifyMarkersChanged(IMarker marker) {
 		for (L next : getListeners()) {
-			next.markersChanged((S) this);
+			next.markersChanged((S) this, marker);
 		}
 		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
-			next.markersChanged(this);
+			next.markersChanged(this, marker);
 		}
 	}
 

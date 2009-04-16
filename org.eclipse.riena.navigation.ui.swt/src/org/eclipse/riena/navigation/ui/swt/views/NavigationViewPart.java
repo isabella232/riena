@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -44,6 +45,7 @@ import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleDesc;
 import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupDesc;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -208,8 +210,10 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		}
 
 		@Override
-		public void markersChanged(ISubApplicationNode source) {
-			updateNavigationSize();
+		public void markersChanged(ISubApplicationNode source, IMarker marker) {
+			if ((marker == null) || (marker instanceof HiddenMarker)) {
+				updateNavigationSize();
+			}
 		}
 
 	}
@@ -251,8 +255,10 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		}
 
 		@Override
-		public void markersChanged(IModuleGroupNode source) {
-			updateNavigationSize();
+		public void markersChanged(IModuleGroupNode source, IMarker marker) {
+			if ((marker == null) || (marker instanceof HiddenMarker)) {
+				updateNavigationSize();
+			}
 		}
 
 	}
@@ -260,7 +266,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	private class SubModuleListener extends SubModuleNodeListener {
 
 		@Override
-		public void markersChanged(ISubModuleNode source) {
+		public void markersChanged(ISubModuleNode source, IMarker marker) {
 			updateNavigationSize();
 		}
 	}

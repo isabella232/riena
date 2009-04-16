@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -37,6 +38,7 @@ import org.eclipse.riena.navigation.ui.swt.component.ModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.component.SubModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleTreeItemMarkerRenderer;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
@@ -415,11 +417,14 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode,
+		 *      IMarker)
 		 */
 		@Override
-		public void markersChanged(ISubModuleNode source) {
-			getTree().redraw();
+		public void markersChanged(ISubModuleNode source, IMarker marker) {
+			if ((marker == null) || (marker instanceof HiddenMarker)) {
+				getTree().redraw();
+			}
 		}
 
 		@Override
@@ -468,11 +473,12 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode,
+		 *      IMarker)
 		 */
 		@Override
-		public void markersChanged(IModuleNode source) {
-			super.markersChanged(source);
+		public void markersChanged(IModuleNode source, IMarker marker) {
+			super.markersChanged(source, marker);
 			title.setMarkers(source.getMarkers());
 			title.redraw();
 		}

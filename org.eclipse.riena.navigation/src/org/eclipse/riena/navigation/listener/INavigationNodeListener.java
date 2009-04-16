@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.listener;
 
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNode.State;
 import org.eclipse.riena.ui.filter.IUIFilter;
@@ -36,7 +37,16 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 
 	void expandedChanged(S source);
 
-	void markersChanged(S source);
+	/**
+	 * This method is called if a marker was added to or removed form a node.
+	 * 
+	 * @param source
+	 *            - node
+	 * @param marker
+	 *            - marker that was removed or added; it can be also {@code
+	 *            null}, if more than one marker has be changed
+	 */
+	void markersChanged(S source, IMarker marker);
 
 	void activated(S source);
 

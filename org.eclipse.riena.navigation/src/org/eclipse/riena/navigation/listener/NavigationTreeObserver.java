@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.listener;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -435,13 +436,14 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode,
+		 *      IMarker)
 		 */
 		@Override
-		public void markersChanged(IApplicationNode source) {
-			super.markersChanged(source);
+		public void markersChanged(IApplicationNode source, IMarker marker) {
+			super.markersChanged(source, marker);
 			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
-				next.markersChanged(source);
+				next.markersChanged(source, marker);
 			}
 		}
 
@@ -667,13 +669,14 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode,
+		 *      IMarker)
 		 */
 		@Override
-		public void markersChanged(ISubApplicationNode source) {
-			super.markersChanged(source);
+		public void markersChanged(ISubApplicationNode source, IMarker marker) {
+			super.markersChanged(source, marker);
 			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
-				next.markersChanged(source);
+				next.markersChanged(source, marker);
 			}
 		}
 
@@ -899,13 +902,14 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode,
+		 *      IMarker)
 		 */
 		@Override
-		public void markersChanged(IModuleGroupNode source) {
-			super.markersChanged(source);
+		public void markersChanged(IModuleGroupNode source, IMarker marker) {
+			super.markersChanged(source, marker);
 			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
-				next.markersChanged(source);
+				next.markersChanged(source, marker);
 			}
 		}
 
@@ -1130,13 +1134,14 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode,
+		 *      IMarker)
 		 */
 		@Override
-		public void markersChanged(IModuleNode source) {
-			super.markersChanged(source);
+		public void markersChanged(IModuleNode source, IMarker marker) {
+			super.markersChanged(source, marker);
 			for (IModuleNodeListener next : getModuleNodeListeners()) {
-				next.markersChanged(source);
+				next.markersChanged(source, marker);
 			}
 		}
 
@@ -1361,13 +1366,14 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode,
+		 *      IMarker)
 		 */
 		@Override
-		public void markersChanged(ISubModuleNode source) {
-			super.markersChanged(source);
+		public void markersChanged(ISubModuleNode source, IMarker marker) {
+			super.markersChanged(source, marker);
 			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
-				next.markersChanged(source);
+				next.markersChanged(source, marker);
 			}
 		}
 
