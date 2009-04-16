@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.filter.IUIFilterRule;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -25,6 +26,7 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 /**
  * Tests of the class {@link AbstractUIFilterRuleRidgetMarker}.
  */
+@NonUITestCase
 public class AbstractUIFilterRuleRidgetMarkerTest extends TestCase {
 
 	private IUIFilterRule rule;
