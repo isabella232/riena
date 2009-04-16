@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -308,9 +309,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		private void show() {
 			try {
-				IViewPart vp = getActivePage().findView(NavigationViewPart.ID);
-				NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
+				IViewPart vp = getNavigationViewPart();
 				if (vp == null) {
+					NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
 					navi.updateNavigationSize();
 				}
 			} catch (PartInitException e) {
@@ -320,6 +321,21 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		private IWorkbenchPage getActivePage() {
 			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		}
+
+		/**
+		 * Returns the view part of the navigation.
+		 * 
+		 * @return view part of the navigation or
+		 */
+		private IViewPart getNavigationViewPart() {
+			IViewReference[] references = getActivePage().getViewReferences();
+			for (IViewReference viewReference : references) {
+				if (viewReference.getId().equals(NavigationViewPart.ID)) {
+					return viewReference.getView(true);
+				}
+			}
+			return null;
 		}
 
 	}

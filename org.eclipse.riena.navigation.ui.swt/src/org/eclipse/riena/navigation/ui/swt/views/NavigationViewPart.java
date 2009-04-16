@@ -211,8 +211,6 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		@Override
 		public void markerChanged(ISubApplicationNode source, IMarker marker) {
 			if (marker instanceof HiddenMarker) {
-				System.out.println("NavigationViewPart.SubApplicationListener.markersChanged() " + source + "/"
-						+ marker);
 				updateNavigationSize();
 			}
 		}
@@ -258,7 +256,6 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		@Override
 		public void markerChanged(IModuleGroupNode source, IMarker marker) {
 			if (marker instanceof HiddenMarker) {
-				System.out.println("NavigationViewPart.ModuleGroupListener.markersChanged() " + source + "/" + marker);
 				updateNavigationSize();
 			}
 		}
@@ -270,7 +267,6 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		@Override
 		public void markerChanged(ISubModuleNode source, IMarker marker) {
 			if (marker instanceof HiddenMarker) {
-				System.out.println("NavigationViewPart.SubModuleListener.markersChanged() " + source + "/" + marker);
 				updateNavigationSize();
 			}
 		}
