@@ -82,11 +82,6 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 	}
 
 	@Override
-	protected void unbindUIControl() {
-		// unused
-	}
-
-	@Override
 	public Label getUIControl() {
 		return (Label) super.getUIControl();
 	}

@@ -27,7 +27,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	private IComplexComponent uiControl;
 	private Map<String, IRidget> ridgets;
 	private PropertyChangeListener propertyChangeListener;
-	private boolean visible;
+	protected boolean markedHidden; // TODO add MarkerSupport instead of boolean flag
+
 	private boolean enabled = true;
 	private String toolTip = null;
 	private boolean blocked;
@@ -36,21 +37,33 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 * Constructor
 	 */
 	public AbstractCompositeRidget() {
-
 		super();
-
 		ridgets = new HashMap<String, IRidget>();
 		propertyChangeListener = new PropertyChangeHandler();
-		visible = true;
+		markedHidden = false;
 	}
 
 	public boolean isVisible() {
-		return uiControl != null && visible;
+		// check for "hidden.marker". This marker overrules any other visibility rule
+		if (markedHidden) {
+			return false;
+		}
+
+		if (getUIControl() != null) {
+			// the swt control is bound
+			return isUIControlVisible();
+		}
+		// control is not bound
+		return savedVisibleState;
+	}
+
+	protected boolean isUIControlVisible() {
+		return true;
 	}
 
 	public void setVisible(boolean visible) {
-		if (this.visible != visible) {
-			this.visible = visible;
+		if (this.markedHidden == visible) {
+			this.markedHidden = !visible;
 			updateVisible();
 		}
 	}
@@ -71,12 +84,12 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	public void setUIControl(Object uiControl) {
-
 		if (uiControl != null && !(uiControl instanceof IComplexComponent)) {
 			throw new UIBindingFailure("uiControl of a AbstractCompositeRidget must be a IComplexComponent but was a " //$NON-NLS-1$
 					+ uiControl.getClass().getSimpleName());
 		}
-
+		// save state
+		this.savedVisibleState = getUIControl() != null ? isUIControlVisible() : savedVisibleState;
 		this.uiControl = (IComplexComponent) uiControl;
 		updateVisible();
 		updateEnabled();

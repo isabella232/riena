@@ -13,19 +13,6 @@ package org.eclipse.riena.navigation.ui.swt.presentation.stack;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.riena.navigation.ISubApplicationNode;
-import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
-import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
-import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
-import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
-import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisor;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -40,6 +27,20 @@ import org.eclipse.ui.presentations.IPresentablePart;
 import org.eclipse.ui.presentations.IStackPresentationSite;
 import org.eclipse.ui.presentations.StackDropResult;
 import org.eclipse.ui.presentations.StackPresentation;
+
+import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
+import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
+import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
+import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisor;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * <pre>
@@ -154,7 +155,13 @@ public class TitlelessStackPresentation extends StackPresentation {
 			Rectangle inner = calcSubModuleInnerBounds();
 			toSelect.setBounds(inner);
 			if (current != null) {
-				current.setVisible(false);
+				/*
+				 * A SWT control´s visible state depends on all of its
+				 * predecessors to the root shell. A Ridget should answer
+				 * isShowing=true even when it´s view is temporarily not showing
+				 * because of another active view.
+				 */
+				current.setBounds(new Rectangle(0, 0, 0, 0));
 			}
 			redrawSubModuleTitle();
 			current = toSelect;

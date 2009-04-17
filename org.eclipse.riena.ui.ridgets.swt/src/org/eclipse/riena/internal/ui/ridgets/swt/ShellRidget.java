@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
@@ -73,6 +74,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	 */
 	@Override
 	protected void unbindUIControl() {
+		savedVisibleState = isVisible();
 		removeShellListener();
 	}
 
@@ -321,4 +323,19 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	public boolean isDisableMandatoryMarker() {
 		return false;
 	}
+
+	public boolean isVisible() {
+		// check for "hidden.marker". This marker overrules any other visibility rule
+		if (!getMarkersOfType(HiddenMarker.class).isEmpty()) {
+			return false;
+		}
+
+		if (getUIControl() != null) {
+			// the swt control is bound
+			return getUIControl().isVisible();
+		}
+		// control is not bound
+		return savedVisibleState;
+	}
+
 }

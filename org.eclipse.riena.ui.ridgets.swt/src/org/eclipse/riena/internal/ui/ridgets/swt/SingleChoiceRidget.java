@@ -89,6 +89,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 
 	@Override
 	protected void unbindUIControl() {
+		super.unbindUIControl();
 		Composite control = getUIControl();
 		disposeChildren(control);
 	}

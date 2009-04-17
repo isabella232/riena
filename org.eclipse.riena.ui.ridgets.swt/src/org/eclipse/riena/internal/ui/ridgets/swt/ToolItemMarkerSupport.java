@@ -13,10 +13,11 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeSupport;
 
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
-import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.menus.CommandContributionItem;
+
+import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
 
 /**
  * Helper class for SWT Tool Item Ridgets to delegate their marker issues to.
@@ -76,7 +77,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 */
 	private void updateVisible(ToolItem item) {
 
-		if (getRidget().isVisible()) {
+		if (!hasHiddenMarkers()) {
 			getRidget().createItem();
 		} else {
 			MenuManager menuManager = getMenuManager(item);

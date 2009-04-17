@@ -14,6 +14,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
@@ -27,6 +28,7 @@ public abstract class AbstractRidget implements IRidget {
 
 	protected PropertyChangeSupport propertyChangeSupport;
 	private ListenerList<IFocusListener> focusListeners;
+	protected boolean savedVisibleState = true;
 
 	/**
 	 * Constructor.

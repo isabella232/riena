@@ -12,11 +12,13 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
-import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.MenuItem;
+
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
+import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 
 /**
  * Ridget of a menu item.
@@ -34,6 +36,7 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 		if (menuItem == null) {
 			return false;
 		}
+
 		return ((menuItem.getStyle() & SWT.CASCADE) == SWT.CASCADE);
 	}
 
@@ -48,6 +51,7 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 
 	@Override
 	protected void unbindUIControl() {
+		savedVisibleState = isVisible();
 		MenuItem menuItem = getUIControl();
 
 		if ((menuItem != null) && !menuItem.isDisposed() && !isMenu(menuItem)) {
@@ -86,6 +90,19 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 	@Override
 	AbstractItemProperties createProperties() {
 		return new MenuItemProperties(this);
+	}
+
+	public boolean isVisible() {
+		// check for "hidden.marker". This marker overrules any other visibility rule
+		if (!getMarkersOfType(HiddenMarker.class).isEmpty()) {
+			return false;
+		}
+
+		if (getUIControl() != null) {
+			return !getUIControl().isDisposed();
+		}
+		// control is not bound
+		return savedVisibleState;
 	}
 
 }

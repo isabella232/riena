@@ -197,8 +197,13 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	protected final void updateVisible() {
 		MasterDetailsComposite control = getUIControl();
 		if (control != null) {
-			control.setVisible(isVisible());
+			control.setVisible(!markedHidden);
 		}
+	}
+
+	@Override
+	protected boolean isUIControlVisible() {
+		return getUIControl().isVisible();
 	}
 
 	@Override

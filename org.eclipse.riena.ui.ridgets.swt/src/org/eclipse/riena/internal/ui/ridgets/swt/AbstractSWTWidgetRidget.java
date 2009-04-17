@@ -136,10 +136,6 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		// not supported
 	}
 
-	public final boolean isVisible() {
-		return (uiControl != null) && (getMarkersOfType(HiddenMarker.class).isEmpty());
-	}
-
 	public final void setVisible(boolean visible) {
 
 		if (hiddenMarker == null) {

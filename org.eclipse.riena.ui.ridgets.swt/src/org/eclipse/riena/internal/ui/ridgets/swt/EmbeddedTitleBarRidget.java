@@ -135,6 +135,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	 */
 	@Override
 	protected void unbindUIControl() {
+		super.unbindUIControl();
 		if (getUIControl() != null) {
 			getUIControl().removeEmbeddedTitleBarListener(titleBarListener);
 		}

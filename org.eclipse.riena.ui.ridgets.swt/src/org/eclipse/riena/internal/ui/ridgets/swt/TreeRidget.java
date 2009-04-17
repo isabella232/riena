@@ -172,6 +172,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	@Override
 	protected void unbindUIControl() {
+		super.unbindUIControl();
 		if (viewer != null) {
 			Object[] elements = viewer.getExpandedElements();
 			ExpansionCommand cmd = new ExpansionCommand(ExpansionState.RESTORE, elements);

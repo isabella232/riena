@@ -127,6 +127,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 */
 	@Override
 	protected void unbindUIControl() {
+		super.unbindUIControl();
 		if (dbc != null) {
 			disposeSelectionBindings();
 			dbc.dispose();

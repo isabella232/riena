@@ -12,9 +12,10 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeSupport;
 
-import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.menus.CommandContributionItem;
+
+import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 
 /**
  * Helper class for SWT Menu Item Ridgets to delegate their marker issues to.
@@ -74,7 +75,7 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 */
 	private void updateVisible(MenuItem item) {
 
-		if (getRidget().isVisible()) {
+		if (!hasHiddenMarkers()) {
 			getRidget().createItem();
 		} else {
 			if ((!item.isDisposed()) && (item.getMenu() != null)) {

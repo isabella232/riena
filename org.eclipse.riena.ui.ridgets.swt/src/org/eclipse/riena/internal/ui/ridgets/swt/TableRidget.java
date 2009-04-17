@@ -166,6 +166,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	@Override
 	protected void unbindUIControl() {
+		super.unbindUIControl();
 		if (dbc != null) {
 			disposeMultipleSelectionBinding();
 			dbc.dispose();

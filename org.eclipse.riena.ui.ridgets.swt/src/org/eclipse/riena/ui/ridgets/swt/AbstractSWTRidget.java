@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 
 /**
  * Ridget for an SWT control.
@@ -84,6 +85,26 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 		if (this.focusable != focusable) {
 			this.focusable = focusable;
 		}
+	}
+
+	public boolean isVisible() {
+		// check for "hidden.marker". This marker overrules any other visibility rule
+		if (!getMarkersOfType(HiddenMarker.class).isEmpty()) {
+			return false;
+		}
+
+		if (getUIControl() != null) {
+			// the swt control is bound
+			return getUIControl().isVisible();
+		}
+		// control is not bound
+		return savedVisibleState;
+	}
+
+	@Override
+	protected void unbindUIControl() {
+		// save the state
+		savedVisibleState = isVisible();
 	}
 
 	// helping methods

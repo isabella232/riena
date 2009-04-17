@@ -88,6 +88,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 
 	@Override
 	protected void unbindUIControl() {
+		super.unbindUIControl();
 		disposeChildren(getUIControl());
 	}
 

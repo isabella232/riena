@@ -60,7 +60,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	}
 
 	protected void updateVisible(Control control) {
-		control.setVisible(ridget.isVisible());
+		control.setVisible(!hasHiddenMarkers());
 	}
 
 	protected void updateDisabled(Control control) {

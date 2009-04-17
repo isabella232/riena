@@ -191,6 +191,33 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 
 		assertTrue("Fails for " + theRidget, theRidget.isVisible());
 		assertTrue("Fails for " + control, control.isVisible());
+
+		control.setVisible(false);
+		assertFalse("Fails for " + theRidget, theRidget.isVisible());
+
+		//unbind
+		theRidget.setUIControl(null);
+		// check saved state
+		assertFalse("Fails for " + theRidget, theRidget.isVisible());
+
+		theRidget.setUIControl(control);
+		control.setVisible(true);
+		assertTrue("Fails for " + theRidget, theRidget.isVisible());
+		theRidget.setUIControl(null);
+		assertTrue("Fails for " + theRidget, theRidget.isVisible());
+
+		theRidget.setUIControl(control);
+
+		// check implicit visibility
+		Composite parent = control.getParent();
+		if (parent != null) {
+			parent.setVisible(false);
+			assertFalse("Fails for " + theRidget, theRidget.isVisible());
+			theRidget.setUIControl(null);
+			parent.setVisible(true);
+			assertFalse("Fails for " + theRidget, theRidget.isVisible());
+		}
+
 	}
 
 }

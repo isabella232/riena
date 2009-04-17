@@ -55,6 +55,7 @@ public class ActionRidget extends AbstractActionRidget {
 
 	@Override
 	protected void unbindUIControl() {
+		super.unbindUIControl();
 		if (button != null) {
 			button.removeSelectionListener(actionObserver);
 			button = null;

@@ -103,14 +103,6 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#unbindUIControl()
-	 */
-	@Override
-	protected void unbindUIControl() {
-		// unused
-	}
-
-	/**
 	 * Always returns true because mandatory markers do not make sense for this
 	 * ridget.
 	 */

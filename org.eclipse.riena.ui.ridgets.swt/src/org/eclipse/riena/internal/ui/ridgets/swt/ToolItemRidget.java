@@ -10,12 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.ToolItem;
+
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IToolItemRidget;
 import org.eclipse.riena.ui.swt.utils.ImageState;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.ToolItem;
 
 /**
  * Ridget of a tool item.
@@ -33,6 +35,7 @@ public class ToolItemRidget extends AbstractItemRidget implements IToolItemRidge
 
 	@Override
 	protected void unbindUIControl() {
+		savedVisibleState = isVisible();
 		ToolItem toolItem = getUIControl();
 		if ((toolItem != null) && !toolItem.isDisposed()) {
 			toolItem.removeSelectionListener(getActionObserver());
@@ -81,6 +84,19 @@ public class ToolItemRidget extends AbstractItemRidget implements IToolItemRidge
 		}
 
 		return newImage;
+	}
+
+	public boolean isVisible() {
+		// check for "hidden.marker". This marker overrules any other visibility rule
+		if (!getMarkersOfType(HiddenMarker.class).isEmpty()) {
+			return false;
+		}
+
+		if (getUIControl() != null) {
+			return !getUIControl().isDisposed();
+		}
+		// control is not bound
+		return savedVisibleState;
 	}
 
 }

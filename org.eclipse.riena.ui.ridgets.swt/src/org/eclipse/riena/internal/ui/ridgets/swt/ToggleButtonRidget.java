@@ -28,6 +28,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 
+import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
@@ -80,10 +81,10 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 		DataBindingContext context = getValueBindingSupport().getContext();
 		Button control = getUIControl();
 		if (control != null) {
-			controlBinding = context.bindValue(SWTObservables.observeSelection(control), BeansObservables.observeValue(
-					this, IToggleButtonRidget.PROPERTY_SELECTED), new UpdateValueStrategy(
-					UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
-					.setBeforeSetValidator(new CancelControlUpdateWhenDisabled()));
+			controlBinding = context.bindValue(SWTObservables.observeSelection(control), getRidgetObservable(),
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(
+							UpdateValueStrategy.POLICY_UPDATE)
+							.setBeforeSetValidator(new CancelControlUpdateWhenDisabled()));
 			initText();
 			updateUIText();
 			updateSelection(isEnabled());
@@ -93,6 +94,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 
 	@Override
 	protected void unbindUIControl() {
+		super.unbindUIControl();
 		if (controlBinding != null) {
 			controlBinding.dispose();
 			controlBinding = null;
@@ -118,6 +120,21 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	}
 
 	public void setSelected(boolean selected) {
+		if (!getMarkersOfType(OutputMarker.class).isEmpty()) {
+			/*
+			 * TODO If the Ridget has an OutputMarker all events from UI should
+			 * be "reverted". At the moment this only works if the control is
+			 * unbound at the moment the selection is reset to the saved value
+			 * in the Ridget. Needs some investigation. See bug #271762
+			 */
+			//
+			////// Revert
+			unbindUIControl();
+			getUIControl().setSelection(this.selected);
+			bindUIControl();
+			////// End Revert
+			return;
+		}
 		if (this.selected != selected) {
 			boolean oldValue = this.selected;
 			this.selected = selected;

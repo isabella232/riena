@@ -22,6 +22,7 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.IMarkerAttributeChangeListener;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.IMarkerPropertyChangeEvent;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 
@@ -163,8 +164,7 @@ public abstract class AbstractMarkerSupport {
 		Boolean oldValue = isEnabled(oldMarkers);
 		Boolean newValue = isEnabled(getMarkers());
 		if (!oldValue.equals(newValue)) {
-			PropertyChangeEvent evt = new PropertyChangeEvent(ridget, IRidget.PROPERTY_ENABLED, oldValue,
-					newValue);
+			PropertyChangeEvent evt = new PropertyChangeEvent(ridget, IRidget.PROPERTY_ENABLED, oldValue, newValue);
 			propertyChangeSupport.firePropertyChange(evt);
 		}
 	}
@@ -181,6 +181,10 @@ public abstract class AbstractMarkerSupport {
 					newValue);
 			propertyChangeSupport.firePropertyChange(evt);
 		}
+	}
+
+	protected boolean hasHiddenMarkers() {
+		return !ridget.getMarkersOfType(HiddenMarker.class).isEmpty();
 	}
 
 	// helping classes

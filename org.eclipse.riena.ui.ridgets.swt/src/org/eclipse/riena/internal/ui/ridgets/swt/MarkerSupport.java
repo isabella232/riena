@@ -101,9 +101,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 			control.setData(PRE_OUTPUT_BACKGROUND_KEY, control.getBackground());
 			control.setBackground(color);
 		}
-		if (isButton(control)) {
-			control.setVisible(false);
-		}
 	}
 
 	private void clearMandatory(Control control) {
@@ -124,9 +121,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 		if (control.getData(PRE_OUTPUT_BACKGROUND_KEY) != null) {
 			control.setBackground((Color) control.getData(PRE_OUTPUT_BACKGROUND_KEY));
 			control.setData(PRE_OUTPUT_BACKGROUND_KEY, null);
-		}
-		if (isButton(control)) {
-			control.setVisible(ridget.isVisible());
 		}
 	}
 

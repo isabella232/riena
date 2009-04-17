@@ -16,16 +16,17 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.tests.FTActionListener;
-import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
-import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.tests.FTActionListener;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
  * Tests of the class <code>ToggleButtonRidget</code>.
@@ -317,7 +318,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setOutputOnly(true);
 
 		assertTrue(ridget.isOutputOnly());
-		assertFalse(control.isVisible());
+		assertTrue(control.isVisible());
 
 		ridget.setOutputOnly(false);
 
@@ -329,7 +330,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		assertTrue(ridget.isOutputOnly());
 		assertTrue(ridget.isVisible());
-		assertFalse(control.isVisible());
+		assertTrue(control.isVisible());
 
 		ridget.setVisible(false);
 		ridget.setOutputOnly(false);
@@ -359,7 +360,6 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		assertTrue(ridget.isOutputOnly());
 		assertTrue(ridget.isVisible());
-		assertFalse(control.isVisible());
 	}
 
 	/**

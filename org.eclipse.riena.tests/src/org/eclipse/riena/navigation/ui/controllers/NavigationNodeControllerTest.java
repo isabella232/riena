@@ -52,6 +52,9 @@ public class NavigationNodeControllerTest extends TestCase {
 
 		Display display = Display.getDefault();
 		shell = new Shell(display);
+		shell.pack();
+		shell.setVisible(true);
+
 		Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
@@ -88,7 +91,6 @@ public class NavigationNodeControllerTest extends TestCase {
 	 * Tests the method {@code updateNavigationNodeMarkers()}.
 	 */
 	public void testUpdateNavigationNodeMarkers() {
-
 		node.addMarker(new HiddenMarker());
 		controller.updateNavigationNodeMarkers();
 		assertTrue(node.getMarkers().isEmpty());
@@ -222,6 +224,7 @@ public class NavigationNodeControllerTest extends TestCase {
 	}
 
 	private static class CompositeRidget extends AbstractCompositeRidget {
+
 	}
 
 }

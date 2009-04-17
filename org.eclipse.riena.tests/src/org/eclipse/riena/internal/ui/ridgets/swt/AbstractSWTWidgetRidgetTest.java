@@ -63,6 +63,10 @@ public class AbstractSWTWidgetRidgetTest extends TestCase {
 			return super.hasChanged(oldValue, newValue);
 		}
 
+		public boolean isVisible() {
+			return false;
+		}
+
 	}
 
 }

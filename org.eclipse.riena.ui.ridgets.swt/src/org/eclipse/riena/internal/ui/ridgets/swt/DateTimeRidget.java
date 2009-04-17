@@ -98,6 +98,7 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 
 	@Override
 	protected void unbindUIControl() {
+		super.unbindUIControl();
 		if (dbc != null) {
 			dbc.dispose();
 			dbc = null;

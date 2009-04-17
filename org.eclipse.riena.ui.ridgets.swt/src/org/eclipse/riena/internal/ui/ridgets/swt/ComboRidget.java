@@ -161,6 +161,7 @@ public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 
 	@Override
 	protected void unbindUIControl() {
+		super.unbindUIControl();
 		disposeBinding(listBindingInternal);
 		listBindingInternal = null;
 		disposeBinding(listBindingExternal);

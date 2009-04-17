@@ -151,6 +151,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 
 	@Override
 	protected void unbindUIControl() {
+		super.unbindUIControl();
 		CompositeTable control = getUIControl();
 		if (control != null) {
 			if (getHeader() != null) {

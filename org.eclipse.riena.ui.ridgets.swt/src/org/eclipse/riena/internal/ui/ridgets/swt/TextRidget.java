@@ -114,6 +114,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	@Override
 	protected final synchronized void unbindUIControl() {
+		super.unbindUIControl();
 		Control control = getUIControl();
 		if (control != null) {
 			removeListeners(control);
