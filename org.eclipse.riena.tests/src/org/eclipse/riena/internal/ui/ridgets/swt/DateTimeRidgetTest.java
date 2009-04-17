@@ -85,14 +85,14 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(date2001, dateBean.getValue());
 		assertEquals("12/2/2001", getDate(control));
 
-		Date date1700 = createDate(1700, 1, 1);
-		expectPropertyChangeEvent(IDateTimeRidget.PROPERTY_DATE, date2001, date1700);
-		ridget.setDate(date1700);
+		Date date1800 = createDate(1800, 1, 1);
+		expectPropertyChangeEvent(IDateTimeRidget.PROPERTY_DATE, date2001, date1800);
+		ridget.setDate(date1800);
 		verifyPropertyChangeEvents();
 
-		assertEquals(date1700, ridget.getDate());
-		assertEquals(date1700, dateBean.getValue());
-		assertEquals("1/1/1700", getDate(control));
+		assertEquals(date1800, ridget.getDate());
+		assertEquals(date1800, dateBean.getValue());
+		assertEquals("1/1/1800", getDate(control));
 	}
 
 	public void testSetDateNull() {
