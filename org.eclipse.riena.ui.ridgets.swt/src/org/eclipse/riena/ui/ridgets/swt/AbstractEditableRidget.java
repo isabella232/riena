@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt;
+package org.eclipse.riena.ui.ridgets.swt;
 
 import java.util.Collection;
 
@@ -21,6 +21,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.riena.internal.ui.ridgets.swt.Activator;
+import org.eclipse.riena.internal.ui.ridgets.swt.SharedColors;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IEditableRidget;

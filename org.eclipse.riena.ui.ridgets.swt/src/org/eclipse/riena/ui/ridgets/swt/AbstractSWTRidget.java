@@ -17,7 +17,6 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 
 /**

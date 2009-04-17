@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractValueRidget;
 
 /**
  * Ridget for an SWT {@link Label} widget.

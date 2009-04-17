@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt;
+package org.eclipse.riena.ui.ridgets.swt;
 
 import java.util.ArrayList;
 import java.util.List;

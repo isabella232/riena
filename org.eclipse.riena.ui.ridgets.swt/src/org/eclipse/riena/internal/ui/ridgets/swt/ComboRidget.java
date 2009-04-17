@@ -41,6 +41,7 @@ import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 
 /**
  * Ridget for {@link Combo} widgets.

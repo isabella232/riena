@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt;
+package org.eclipse.riena.ui.ridgets.swt;
 
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.internal.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;

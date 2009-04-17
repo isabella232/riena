@@ -82,6 +82,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableRidget;
 import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
 
 /**

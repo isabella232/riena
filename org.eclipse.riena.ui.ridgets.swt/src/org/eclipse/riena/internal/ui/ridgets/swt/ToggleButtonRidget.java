@@ -33,6 +33,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractValueRidget;
 
 /**
  * Adapter of the SWT Widget <code>Button</code> with the style SWT.CHECK or

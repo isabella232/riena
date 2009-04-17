@@ -44,8 +44,6 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionListener;
 
 import org.eclipse.riena.core.util.ListenerList;
-import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget;
-import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSelectableIndexedRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.internal.ui.ridgets.swt.OutputAwareValidator;
 import org.eclipse.riena.ui.common.ISortableByColumn;
@@ -123,7 +121,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	protected abstract void updateEnabled(boolean isEnabled);
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget#unbindUIControl()
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget#unbindUIControl()
 	 */
 	@Override
 	protected void unbindUIControl() {

@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt;
+package org.eclipse.riena.ui.ridgets.swt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +33,6 @@ import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
  * Default implementation of an {@link ISelectableRidget}. This ridget than can

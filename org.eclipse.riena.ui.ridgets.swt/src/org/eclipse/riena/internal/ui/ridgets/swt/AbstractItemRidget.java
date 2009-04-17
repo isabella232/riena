@@ -15,6 +15,8 @@ import java.beans.EventHandler;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
+
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Item;
 

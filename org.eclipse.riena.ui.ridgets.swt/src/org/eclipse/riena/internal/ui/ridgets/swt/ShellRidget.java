@@ -23,6 +23,7 @@ import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -59,7 +60,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget#checkUIControl(java.lang.Object)
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget#checkUIControl(java.lang.Object)
 	 */
 	@Override
 	protected void checkUIControl(Object uiControl) {
@@ -70,7 +71,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget#unbindUIControl()
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget#unbindUIControl()
 	 */
 	@Override
 	protected void unbindUIControl() {
@@ -79,7 +80,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget#bindUIControl()
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget#bindUIControl()
 	 */
 	@Override
 	protected void bindUIControl() {
@@ -92,7 +93,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget#createMarkerSupport()
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget#createMarkerSupport()
 	 */
 	@Override
 	protected AbstractMarkerSupport createMarkerSupport() {
@@ -317,7 +318,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget#isDisableMandatoryMarker()
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget#isDisableMandatoryMarker()
 	 */
 	@Override
 	public boolean isDisableMandatoryMarker() {
