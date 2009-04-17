@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.math.BigDecimal;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -52,7 +53,9 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 
 	@Override
 	protected boolean isNotEmpty(String text) {
-		return super.isNotEmpty(text) && !text.equals(String.valueOf(DECIMAL_SEPARATOR));
+		String stripped = removeLeadingZeroes(removeTrailingPadding(text));
+		return !(stripped.length() == 0 || String.valueOf(DECIMAL_SEPARATOR).equals(stripped) || String.valueOf(ZERO)
+				.equals(stripped));
 	}
 
 	@Override

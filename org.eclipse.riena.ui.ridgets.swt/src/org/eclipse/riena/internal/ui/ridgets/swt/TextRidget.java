@@ -278,7 +278,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 				control.removeListener(SWT.Verify, listener);
 			}
 			boolean hideValue = !isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT;
-			setUIText(hideValue ? EMPTY_STRING : newValue);
+			TextRidget.this.setUIText(hideValue ? EMPTY_STRING : newValue);
 			for (Listener listener : listeners) {
 				control.addListener(SWT.Verify, listener);
 			}

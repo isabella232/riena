@@ -95,21 +95,22 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setText(localize("12345"));
 
-		assertEquals(localize("12.345,"), control.getText());
+		assertEquals(localize("12.345,00"), control.getText());
 		assertEquals(localize("12.345"), ridget.getText());
 
 		ridget.setText(localize("3,145"));
 
-		assertEquals(localize("3,145"), control.getText());
+		assertEquals(localize("3,14"), control.getText());
 		assertEquals(localize("3,145"), ridget.getText());
 
-		final String lastText = ridget.getText();
+		String controlLastText = control.getText();
+		String ridgetLastText = ridget.getText();
 		try {
 			ridget.setText("abc");
 			fail();
 		} catch (RuntimeException rex) {
-			assertEquals(lastText, control.getText());
-			assertEquals(lastText, ridget.getText());
+			assertEquals(controlLastText, control.getText());
+			assertEquals(ridgetLastText, ridget.getText());
 		}
 	}
 
@@ -186,16 +187,16 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		control.setSelection(0, 6);
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
 
-		assertEquals(localize(",9876"), ridget.getText());
-		assertEquals(0, control.getCaretPosition());
+		assertEquals(localize("0,9876"), ridget.getText());
+		assertEquals(1, control.getCaretPosition());
 
 		ridget.setText(localize("1.234,9876"));
 		control.selectAll();
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
 
-		assertEquals(localize(","), control.getText());
-		assertEquals(localize(""), ridget.getText());
-		assertEquals(0, control.getCaretPosition());
+		assertEquals(localize("0,"), control.getText());
+		assertEquals(localize("0"), ridget.getText());
+		assertEquals(1, control.getCaretPosition());
 	}
 
 	public void testDeleteNegativeSign() {
@@ -337,6 +338,10 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	public void testUpdateFromModel() {
 		IDecimalTextRidget ridget = getRidget();
 		Text control = getWidget();
+
+		assertEquals(2, ridget.getPrecision());
+		assertEquals(localize("0,00"), control.getText());
+		assertEquals("0", ridget.getText());
 
 		ridget.setMaxLength(6);
 		ridget.setPrecision(3);
@@ -644,8 +649,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 		assertTrue(ridget.isErrorMarked());
 
-		DoubleBean value = new DoubleBean(0d);
-		ridget.bindToModel(value, DoubleBean.PROP_VALUE);
+		DoubleBean bean = new DoubleBean(0d);
+		ridget.bindToModel(bean, DoubleBean.PROP_VALUE);
 		ridget.updateFromModel();
 
 		assertTrue(ridget.isErrorMarked());
