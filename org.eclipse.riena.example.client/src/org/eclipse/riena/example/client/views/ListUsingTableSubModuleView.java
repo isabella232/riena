@@ -14,14 +14,10 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Experimental view using a single column Table instead of a List. This
@@ -34,37 +30,19 @@ public class ListUsingTableSubModuleView extends ListSubModuleView {
 	public static final String ID = ListUsingTableSubModuleView.class.getName();
 
 	@Override
-	protected Group createListGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "&Persons:"); //$NON-NLS-1$
-		group.setLayout(new GridLayout(2, true));
+	protected Control createListControl(Composite parent) {
+		Composite tableComposite = new Composite(parent, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(false, true).span(2, 1).hint(200, SWT.DEFAULT).applyTo(tableComposite);
 
-		Composite tableComposite = new Composite(group, SWT.NONE);
-		GridDataFactory.fillDefaults().grab(true, true).applyTo(tableComposite);
 		int style = SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.NO_BACKGROUND;
-		final Table listPersons = new Table(tableComposite, style);
+		Table listPersons = new Table(tableComposite, style);
 		listPersons.setLinesVisible(false);
 		TableColumn listColumn = new TableColumn(listPersons, SWT.LEFT);
+
 		TableColumnLayout layout = new TableColumnLayout();
 		layout.setColumnData(listColumn, new ColumnWeightData(1, false));
 		tableComposite.setLayout(layout);
 
-		GridDataFactory.fillDefaults().grab(false, true).span(2, 1).applyTo(tableComposite);
-		addUIControl(listPersons, "listPersons"); //$NON-NLS-1$
-
-		Button buttonSort = UIControlsFactory.createButtonCheck(group);
-		GridDataFactory.fillDefaults().grab(false, true).span(2, 1).applyTo(buttonSort);
-		addUIControl(buttonSort, "buttonSort"); //$NON-NLS-1$
-
-		Button buttonAdd = UIControlsFactory.createButton(group);
-		addUIControl(buttonAdd, "buttonAdd"); //$NON-NLS-1$
-		int xHint = UIControlsFactory.getWidthHint(buttonAdd);
-		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(buttonAdd);
-
-		Button buttonRemove = UIControlsFactory.createButton(group);
-		addUIControl(buttonRemove, "buttonRemove"); //$NON-NLS-1$
-		xHint = UIControlsFactory.getWidthHint(buttonRemove);
-		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(buttonRemove);
-
-		return group;
+		return listPersons;
 	}
 }

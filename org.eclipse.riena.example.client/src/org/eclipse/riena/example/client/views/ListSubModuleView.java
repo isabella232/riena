@@ -15,6 +15,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
@@ -44,15 +45,20 @@ public class ListSubModuleView extends SubModuleView<ListSubModuleController> {
 		GridDataFactory.fillDefaults().applyTo(group2);
 	}
 
+	protected Control createListControl(Composite parent) {
+		List listPersons = UIControlsFactory.createList(parent, true, true);
+		GridDataFactory.fillDefaults().grab(false, true).span(2, 1).applyTo(listPersons);
+		return listPersons;
+	}
+
 	// helping methods
 	// ////////////////
 
-	protected Group createListGroup(Composite parent) {
+	private Group createListGroup(Composite parent) {
 		Group group = UIControlsFactory.createGroup(parent, "&Persons:"); //$NON-NLS-1$
 		group.setLayout(new GridLayout(2, true));
 
-		List listPersons = UIControlsFactory.createList(group, true, true);
-		GridDataFactory.fillDefaults().grab(false, true).span(2, 1).applyTo(listPersons);
+		Control listPersons = createListControl(group);
 		addUIControl(listPersons, "listPersons"); //$NON-NLS-1$
 
 		Button buttonSort = UIControlsFactory.createButtonCheck(group);
