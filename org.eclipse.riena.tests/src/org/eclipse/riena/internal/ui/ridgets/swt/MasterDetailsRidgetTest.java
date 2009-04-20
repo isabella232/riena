@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
@@ -28,6 +32,7 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
@@ -321,6 +326,41 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("TestR0C2", widget2.txtColumn2.getText());
 	}
 
+	public void testSetSelectionFiresEvents() {
+		IMasterDetailsRidget ridget = getRidget();
+		MDBean item0 = input.get(0);
+		FTPropertyChangeListener listener = new FTPropertyChangeListener();
+
+		bindToModel(true);
+		ridget.addPropertyChangeListener(ISelectableRidget.PROPERTY_SELECTION, listener);
+
+		ridget.setSelection(item0);
+		java.util.List<?> oldSelection = Collections.EMPTY_LIST;
+		java.util.List<?> newSelection = Arrays.asList(new Object[] { item0 });
+		assertPropertyChangeEvent(1, oldSelection, newSelection, listener);
+
+		ridget.setSelection(item0);
+		assertEquals(1, listener.count);
+
+		// TODO this code can replace the 4 lines below once 272651 is fixed
+		//		MDBean item1 = input.get(1);
+		//		ridget.setSelection(item1);
+		//		oldSelection = newSelection;
+		//		newSelection = Arrays.asList(new Object[] { item1 });
+		//		assertPropertyChangeEvent(2, oldSelection, newSelection, listener);
+		//
+		//		ridget.setSelection(null);
+		//		oldSelection = newSelection;
+		//		newSelection = Collections.EMPTY_LIST;
+		//		assertPropertyChangeEvent(3, oldSelection, newSelection, listener);
+
+		ridget.setSelection(null);
+		oldSelection = newSelection;
+		newSelection = Collections.EMPTY_LIST;
+		assertPropertyChangeEvent(2, oldSelection, newSelection, listener);
+
+	}
+
 	// helping methods
 	//////////////////
 
@@ -331,6 +371,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			assertEquals(label0, table.getItem(i).getText(0));
 			assertEquals(label1, table.getItem(i).getText(1));
 		}
+	}
+
+	private void assertPropertyChangeEvent(int count, Object oldValue, Object newValue,
+			FTPropertyChangeListener listener) {
+		assertEquals(count, listener.count);
+		assertEquals("selection", listener.event.getPropertyName());
+		assertEquals(oldValue, listener.event.getOldValue());
+		assertEquals(newValue, listener.event.getNewValue());
 	}
 
 	private void bindToModel(boolean withUpdate) {
@@ -475,6 +523,20 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			for (IRidget ridget : container.getRidgets()) {
 				ridget.updateFromModel();
 			}
+		}
+	}
+
+	/**
+	 * PropertyChangeListener stub used for testing.
+	 */
+	private static final class FTPropertyChangeListener implements PropertyChangeListener {
+
+		private int count;
+		private PropertyChangeEvent event;
+
+		public void propertyChange(PropertyChangeEvent event) {
+			count++;
+			this.event = event;
 		}
 	}
 

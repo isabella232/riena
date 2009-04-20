@@ -28,7 +28,6 @@ import org.eclipse.core.databinding.observable.list.ListDiff;
 import org.eclipse.core.databinding.observable.list.ListDiffEntry;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.ValueDiff;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
 
@@ -215,14 +214,6 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 			super(null, Object.class);
 		}
 
-		@Override
-		protected void fireValueChange(ValueDiff diff) {
-			super.fireValueChange(diff);
-			String key = ISelectableRidget.PROPERTY_SELECTION;
-			Object oldValue = diff.getOldValue();
-			Object newValue = diff.getNewValue();
-			AbstractSelectableRidget.this.firePropertyChange(key, oldValue, newValue);
-		}
 	};
 
 	/**
@@ -236,6 +227,10 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 			super(new ArrayList<Object>(), Object.class);
 		}
 
+		/**
+		 * Only the MultiSelectionObservable is firing selection property change
+		 * events to avoid duplicate events (bug 268897)
+		 */
 		@Override
 		protected void fireListChange(ListDiff diff) {
 			super.fireListChange(diff);

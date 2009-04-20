@@ -12,12 +12,10 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
-import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -580,7 +578,6 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 */
 	public void testDisabledDoesNotFireSelection() {
 		ListRidget ridget = getRidget();
-		ridget.setSelectionType(ISelectableRidget.SelectionType.MULTI);
 		FTPropertyChangeListener listener = new FTPropertyChangeListener();
 		ridget.addPropertyChangeListener(ISelectableRidget.PROPERTY_SELECTION, listener);
 

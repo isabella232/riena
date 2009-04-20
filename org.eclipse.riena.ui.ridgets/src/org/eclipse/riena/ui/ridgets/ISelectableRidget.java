@@ -26,7 +26,8 @@ public interface ISelectableRidget extends IMarkableRidget {
 	 * This property will be fired every time the selection changes. If the
 	 * selection type is single selection, the selection will contain zero or
 	 * one items. If the selection type is multiple selection, the selection
-	 * will contain zero or more items.
+	 * will contain zero or more items. In both cases the old and new value of
+	 * the PropertyChangeEvent are collections.
 	 */
 	String PROPERTY_SELECTION = "selection"; //$NON-NLS-1$
 

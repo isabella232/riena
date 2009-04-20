@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,6 +24,13 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
+
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.tests.TreeUtils;
 import org.eclipse.riena.tests.UITestHelper;
@@ -37,12 +43,6 @@ import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 import org.eclipse.riena.ui.tests.base.TestMultiSelectionBean;
 import org.eclipse.riena.ui.tests.base.TestSingleSelectionBean;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * Tests for the class {@link TreeRidget}.
@@ -501,11 +501,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 		java.util.List<?> oldSelection = Collections.EMPTY_LIST;
 		java.util.List<?> newSelection = Arrays.asList(new Object[] { root });
-		PropertyChangeEvent multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION,
-				oldSelection, newSelection);
-		PropertyChangeEvent singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, null,
-				root);
-		expectPropertyChangeEvents(multiEvent, singleEvent);
+		expectPropertyChangeEvent(ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
 
 		ridget.setSelection(root);
 
@@ -519,9 +515,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 		oldSelection = newSelection;
 		newSelection = Collections.EMPTY_LIST;
-		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
-		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, root, null);
-		expectPropertyChangeEvents(multiEvent, singleEvent);
+		expectPropertyChangeEvent(ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
 
 		ridget.setSelection(Collections.EMPTY_LIST);
 
@@ -529,9 +523,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 		oldSelection = Collections.EMPTY_LIST;
 		newSelection = Arrays.asList(new Object[] { rootChild1 });
-		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
-		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, null, rootChild1);
-		expectPropertyChangeEvents(multiEvent, singleEvent);
+		expectPropertyChangeEvent(ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
 
 		ridget.setSelection(Arrays.asList(new Object[] { rootChild1, rootChild1Child1 }));
 
@@ -557,11 +549,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 		java.util.List<?> oldSelection = Collections.EMPTY_LIST;
 		java.util.List<?> newSelection = Arrays.asList(new Object[] { root });
-		PropertyChangeEvent multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION,
-				oldSelection, newSelection);
-		PropertyChangeEvent singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, null,
-				root);
-		expectPropertyChangeEvents(multiEvent, singleEvent);
+		expectPropertyChangeEvent(ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
 
 		ridget.setSelection(root);
 
@@ -575,9 +563,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 		oldSelection = newSelection;
 		newSelection = Collections.EMPTY_LIST;
-		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
-		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, root, null);
-		expectPropertyChangeEvents(multiEvent, singleEvent);
+		expectPropertyChangeEvent(ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
 
 		ridget.setSelection(Collections.EMPTY_LIST);
 
@@ -585,9 +571,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 		oldSelection = Collections.EMPTY_LIST;
 		newSelection = Arrays.asList(new Object[] { rootChild1, rootChild1Child1 });
-		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
-		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, null, rootChild1);
-		expectPropertyChangeEvents(multiEvent, singleEvent);
+		expectPropertyChangeEvent(ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
 
 		ridget.setSelection(Arrays.asList(new Object[] { rootChild1, rootChild1Child1 }));
 
