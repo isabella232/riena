@@ -14,8 +14,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.eclipse.riena.communication.core.RemoteFailure;
-
 import com.caucho.hessian.io.AbstractDeserializer;
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
@@ -24,6 +22,8 @@ import com.caucho.hessian.io.AbstractSerializerFactory;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.Serializer;
+
+import org.eclipse.riena.communication.core.RemoteFailure;
 
 /**
  * SerializerFactory used to serialize and deserialize InputStream, used for the
@@ -72,37 +72,35 @@ public class InputStreamSerializerFactory extends AbstractSerializerFactory {
 
 				@Override
 				public void writeObject(Object obj, AbstractHessianOutput out) throws IOException {
+					if (obj == null) {
+						out.writeNull();
+						return;
+					}
 					InputStream is = (InputStream) obj;
 					try {
+						byte[] buf = new byte[1024];
+						int len = 0;
 
-						if (is == null) {
-							out.writeNull();
-						} else {
-							byte[] buf = new byte[1024];
-							int len = 0;
-
-							while (true) {
-								try {
-									len = is.read(buf, 0, buf.length);
-								} catch (IOException e) {
-									// catch the exception only for the inputstream and close
-									// write null so that the client gets a "hick-up" and can tell that there is something wrong
-									out.writeNull();
-									break;
-								}
-								if (len > 0) {
-									out.writeByteBufferPart(buf, 0, len);
-								} else {
-									break;
-								}
+						while (true) {
+							try {
+								len = is.read(buf, 0, buf.length);
+							} catch (IOException e) {
+								// catch the exception only for the inputstream and close
+								// write null so that the client gets a "hick-up" and can tell that there is something wrong
+								out.writeNull();
+								break;
 							}
-
-							out.writeByteBufferEnd(buf, 0, 0);
+							if (len > 0) {
+								out.writeByteBufferPart(buf, 0, len);
+							} else {
+								break;
+							}
 						}
+
+						out.writeByteBufferEnd(buf, 0, 0);
 					} finally {
 						is.close();
 					}
-
 				}
 			};
 		}
