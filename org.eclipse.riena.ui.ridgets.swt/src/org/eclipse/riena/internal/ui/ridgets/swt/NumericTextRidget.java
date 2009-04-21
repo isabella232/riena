@@ -123,7 +123,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		if (decSep != -1) {
 			int index = text.length() - 1;
 			char ch = result.charAt(index);
-			while (index >= decSep && (ch == DECIMAL_SEPARATOR | ch == '0')) {
+			while (index >= decSep && (ch == DECIMAL_SEPARATOR || ch == '0')) {
 				result = result.substring(0, index);
 				index--;
 				if (index >= decSep) {
