@@ -33,7 +33,7 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 	private Text postalCodeText;
 	private Combo countryCombo;
 	private Text streetText;
-	private Text BirthplaceText;
+	private Text birthplaceText;
 	private Text birthdayText;
 	private Text firstNameText;
 	private Text lastNameText;
@@ -48,8 +48,8 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		parent.setBackgroundMode(SWT.INHERIT_FORCE);
 
 		final Label personLabel = new Label(parent, SWT.NONE);
-		final GridData gd_personLabel = new GridData(75, SWT.DEFAULT);
-		personLabel.setLayoutData(gd_personLabel);
+		final GridData gdPersonLabel = new GridData(75, SWT.DEFAULT);
+		personLabel.setLayoutData(gdPersonLabel);
 		personLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
 		personLabel.setText("Person"); //$NON-NLS-1$
 
@@ -61,8 +61,8 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		customerNumberText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		customerNumberText.setData("type", "numeric"); //$NON-NLS-1$ //$NON-NLS-2$
 		customerNumberText.setData("binding_property", "customerNumber"); //$NON-NLS-1$ //$NON-NLS-2$
-		final GridData gd_customerNumberText = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		customerNumberText.setLayoutData(gd_customerNumberText);
+		final GridData gdCustomerNumberText = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		customerNumberText.setLayoutData(gdCustomerNumberText);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
@@ -76,20 +76,20 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		lastNameText = new Text(parent, SWT.BORDER);
 		lastNameText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		lastNameText.setData("binding_property", "lastName"); //$NON-NLS-1$ //$NON-NLS-2$
-		final GridData gd_lastNameText = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		lastNameText.setLayoutData(gd_lastNameText);
+		final GridData gdLastNameText = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		lastNameText.setLayoutData(gdLastNameText);
 
 		final Label firstNameLabel = new Label(parent, SWT.NONE);
-		final GridData gd_firstNameLabel = new GridData();
-		gd_firstNameLabel.horizontalIndent = 10;
-		firstNameLabel.setLayoutData(gd_firstNameLabel);
+		final GridData gdFirstNameLabel = new GridData();
+		gdFirstNameLabel.horizontalIndent = 10;
+		firstNameLabel.setLayoutData(gdFirstNameLabel);
 		firstNameLabel.setText("First Name"); //$NON-NLS-1$
 
 		firstNameText = new Text(parent, SWT.BORDER);
 		firstNameText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		firstNameText.setData("binding_property", "firstName"); //$NON-NLS-1$ //$NON-NLS-2$
-		final GridData gd_firstNameText = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		firstNameText.setLayoutData(gd_firstNameText);
+		final GridData gdFirstNameText = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		firstNameText.setLayoutData(gdFirstNameText);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
@@ -102,41 +102,41 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		birthdayText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		birthdayText.setData("binding_property", "birthday"); //$NON-NLS-1$ //$NON-NLS-2$
 		birthdayText.setData("type", "date"); //$NON-NLS-1$ //$NON-NLS-2$
-		final GridData gd_birthdayText = new GridData(SWT.LEFT, SWT.CENTER, true, false);
-		gd_birthdayText.widthHint = 75;
-		birthdayText.setLayoutData(gd_birthdayText);
+		final GridData gdBirthdayText = new GridData(SWT.LEFT, SWT.CENTER, true, false);
+		gdBirthdayText.widthHint = 75;
+		birthdayText.setLayoutData(gdBirthdayText);
 
 		final Label birthplaceLabel = new Label(parent, SWT.NONE);
-		final GridData gd_birthplaceLabel = new GridData();
-		gd_birthplaceLabel.horizontalIndent = 10;
-		birthplaceLabel.setLayoutData(gd_birthplaceLabel);
+		final GridData gdBirthplaceLabel = new GridData();
+		gdBirthplaceLabel.horizontalIndent = 10;
+		birthplaceLabel.setLayoutData(gdBirthplaceLabel);
 		birthplaceLabel.setText("Birthplace"); //$NON-NLS-1$
 
-		BirthplaceText = new Text(parent, SWT.BORDER);
-		BirthplaceText.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		BirthplaceText.setData("binding_property", "birthplace"); //$NON-NLS-1$ //$NON-NLS-2$
-		final GridData gd_birthplaceText = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		BirthplaceText.setLayoutData(gd_birthplaceText);
+		birthplaceText = new Text(parent, SWT.BORDER);
+		birthplaceText.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		birthplaceText.setData("binding_property", "birthplace"); //$NON-NLS-1$ //$NON-NLS-2$
+		final GridData gdBirthplaceText = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		birthplaceText.setLayoutData(gdBirthplaceText);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 
 		final Label genderLabel = new Label(parent, SWT.NONE);
-		final GridData gd_genderLabel = new GridData();
-		genderLabel.setLayoutData(gd_genderLabel);
+		final GridData gdGenderLabel = new GridData();
+		genderLabel.setLayoutData(gdGenderLabel);
 		genderLabel.setText("Gender"); //$NON-NLS-1$
 
 		final ChoiceComposite genderChoiceComposite = new ChoiceComposite(parent, SWT.NONE, false);
 		genderChoiceComposite.setOrientation(SWT.HORIZONTAL);
 		genderChoiceComposite.setData("binding_property", "gender"); //$NON-NLS-1$ //$NON-NLS-2$
-		final GridData gd_genderChoiceComposite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
-		genderChoiceComposite.setLayoutData(gd_genderChoiceComposite);
+		final GridData gdGenderChoiceComposite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
+		genderChoiceComposite.setLayoutData(gdGenderChoiceComposite);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 
 		final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
-		final GridData gd_separator = new GridData(SWT.FILL, SWT.CENTER, false, false, 7, 1);
-		separator.setLayoutData(gd_separator);
+		final GridData gdSeparator = new GridData(SWT.FILL, SWT.CENTER, false, false, 7, 1);
+		separator.setLayoutData(gdSeparator);
 
 		final Label addressLabel = new Label(parent, SWT.NONE);
 		addressLabel.setLayoutData(new GridData());
@@ -150,8 +150,8 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		streetText = new Text(parent, SWT.BORDER);
 		streetText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		streetText.setData("binding_property", "street"); //$NON-NLS-1$ //$NON-NLS-2$
-		final GridData gd_streetText = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		streetText.setLayoutData(gd_streetText);
+		final GridData gdStreetText = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		streetText.setLayoutData(gdStreetText);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
@@ -164,34 +164,34 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 
 		countryCombo = new Combo(parent, SWT.READ_ONLY);
 		countryCombo.setData("binding_property", "country"); //$NON-NLS-1$ //$NON-NLS-2$
-		final GridData gd_countryCombo = new GridData(SWT.LEFT, SWT.CENTER, true, false);
-		countryCombo.setLayoutData(gd_countryCombo);
+		final GridData gdCountryCombo = new GridData(SWT.LEFT, SWT.CENTER, true, false);
+		countryCombo.setLayoutData(gdCountryCombo);
 
 		final Label postalCodeLabel = new Label(parent, SWT.NONE);
-		final GridData gd_postalCodeLabel = new GridData();
-		gd_postalCodeLabel.horizontalIndent = 10;
-		postalCodeLabel.setLayoutData(gd_postalCodeLabel);
+		final GridData gdPostalCodeLabel = new GridData();
+		gdPostalCodeLabel.horizontalIndent = 10;
+		postalCodeLabel.setLayoutData(gdPostalCodeLabel);
 		postalCodeLabel.setText("Postal Code"); //$NON-NLS-1$
 
 		postalCodeText = new Text(parent, SWT.BORDER);
 		postalCodeText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		postalCodeText.setData("type", "numeric"); //$NON-NLS-1$ //$NON-NLS-2$
 		postalCodeText.setData("binding_property", "postalCode"); //$NON-NLS-1$ //$NON-NLS-2$
-		final GridData gd_postalCodeText = new GridData(SWT.LEFT, SWT.CENTER, true, false);
-		gd_postalCodeText.widthHint = 35;
-		postalCodeText.setLayoutData(gd_postalCodeText);
+		final GridData gdPostalCodeText = new GridData(SWT.LEFT, SWT.CENTER, true, false);
+		gdPostalCodeText.widthHint = 35;
+		postalCodeText.setLayoutData(gdPostalCodeText);
 
 		final Label townLabel = new Label(parent, SWT.NONE);
-		final GridData gd_townLabel = new GridData();
-		gd_townLabel.horizontalIndent = 10;
-		townLabel.setLayoutData(gd_townLabel);
+		final GridData gdTownLabel = new GridData();
+		gdTownLabel.horizontalIndent = 10;
+		townLabel.setLayoutData(gdTownLabel);
 		townLabel.setText("Town"); //$NON-NLS-1$
 
 		townText = new Text(parent, SWT.BORDER);
 		townText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		townText.setData("binding_property", "town"); //$NON-NLS-1$ //$NON-NLS-2$
-		final GridData gd_townText = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		townText.setLayoutData(gd_townText);
+		final GridData gdTownText = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		townText.setLayoutData(gdTownText);
 
 		final Label label = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 7, 1));
