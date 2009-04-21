@@ -20,8 +20,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.objecttransaction.Activator;
 import org.eclipse.riena.objecttransaction.IObjectId;
@@ -39,7 +42,6 @@ import org.eclipse.riena.objecttransaction.delta.TransactionDelta;
 import org.eclipse.riena.objecttransaction.state.Action;
 import org.eclipse.riena.objecttransaction.state.State;
 import org.eclipse.riena.objecttransaction.state.StateMachine;
-import org.osgi.service.log.LogService;
 
 /**
  * Implements the IObjectTransaction interface. Contains all the logic for
@@ -1144,13 +1146,13 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		for (Method method : clazz.getDeclaredMethods()) {
 			if (method.getName().equals(methodName)) {
 				Class<?>[] parmType = method.getParameterTypes();
-				if ((parmType != null && parmType.length == 1)) {
+				if (parmType.length == 1) {
 					if ((arg != null && parmType[0].isAssignableFrom(arg.getClass())) || arg == null) {
 						method.setAccessible(true);
 						return method;
 					}
 				} else {
-					if ((parmType == null || parmType.length == 0) && arg == null) {
+					if (parmType.length == 0 && arg == null) {
 						method.setAccessible(true);
 						return method;
 					}
