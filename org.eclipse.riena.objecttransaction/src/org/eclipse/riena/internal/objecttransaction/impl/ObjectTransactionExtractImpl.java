@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.objecttransaction.impl;
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.objecttransaction.IObjectId;
 import org.eclipse.riena.objecttransaction.IObjectTransactionExtract;
 import org.eclipse.riena.objecttransaction.ITransactedObject;
@@ -38,7 +39,7 @@ public class ObjectTransactionExtractImpl implements IObjectTransactionExtract {
 	 * @see org.eclipse.riena.objecttransaction.IObjectTransactionExtract#getDeltas()
 	 */
 	public TransactionDelta[] getDeltas() {
-		return deltas.toArray(new TransactionDelta[0]);
+		return deltas.toArray(new TransactionDelta[deltas.size()]);
 	}
 
 	/*
