@@ -12,6 +12,8 @@ package org.eclipse.riena.internal.security.services;
 
 import java.util.Hashtable;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.injector.Inject;
@@ -27,7 +29,6 @@ import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.security.sessionservice.ISessionProvider;
 import org.eclipse.riena.security.sessionservice.ISessionStore;
 import org.eclipse.riena.security.sessionservice.SessionProvider;
-import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -86,7 +87,6 @@ public class Activator extends RienaActivator {
 		// register AuthorizationService
 		IAuthorizationService authorizationService = new AuthorizationService();
 		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
-		properties = RienaConstants.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
 		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("riena.remote.path", IAuthorizationService.WS_ID); //$NON-NLS-1$
@@ -100,11 +100,10 @@ public class Activator extends RienaActivator {
 	private void createSessionServiceAndInjectors() {
 		// register SessionService
 		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
-		ISessionService sessionService = new SessionService();
-		properties = RienaConstants.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
 		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("riena.remote.path", ISessionService.WS_ID); //$NON-NLS-1$
+		ISessionService sessionService = new SessionService();
 		getContext().registerService(ISessionService.class.getName(), sessionService, properties);
 
 		Inject.service(ISessionStore.class.getName()).into(sessionService)
