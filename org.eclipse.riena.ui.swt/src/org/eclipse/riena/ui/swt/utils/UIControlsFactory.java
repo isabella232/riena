@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -294,6 +295,18 @@ public final class UIControlsFactory {
 	public static Composite createComposite(Composite parent, int style) {
 		Composite composite = new Composite(parent, style);
 		composite.setBackground(SHARED_BG_COLOR);
+		return composite;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @wbp.factory.parameter.source multipleSelection false
+	 * @wbp.factory.parameter.source bindingId "myChoiceCompositeId"
+	 */
+	public static Composite createChoiceComposite(Composite parent, int style, boolean multipleSelection,
+			String bindingId) {
+		ChoiceComposite composite = new ChoiceComposite(parent, style, multipleSelection);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(composite, bindingId);
 		return composite;
 	}
 
