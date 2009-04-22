@@ -53,14 +53,14 @@ public class SnippetDateTimeRidget001 {
 		fill.applyTo(txtValue);
 
 		UIControlsFactory.createLabel(shell, "Date:"); //$NON-NLS-1$
-		DateTime dtDate = new DateTime(shell, SWT.DATE | SWT.MEDIUM | SWT.DROP_DOWN);
+		DateTime dtDate = UIControlsFactory.createDate(shell, SWT.MEDIUM);
 		fill.applyTo(dtDate);
 		final IDateTimeRidget dtDateRidget = (IDateTimeRidget) SwtRidgetFactory.createRidget(dtDate);
 		dtDateRidget.bindToModel(value, TypedBean.PROP_VALUE);
 		dtDateRidget.updateFromModel();
 
 		UIControlsFactory.createLabel(shell, "Time:"); //$NON-NLS-1$
-		DateTime dtTime = new DateTime(shell, SWT.TIME | SWT.MEDIUM);
+		DateTime dtTime = UIControlsFactory.createTime(shell, SWT.MEDIUM);
 		fill.applyTo(dtTime);
 		final IDateTimeRidget dtTimeRidget = (IDateTimeRidget) SwtRidgetFactory.createRidget(dtTime);
 		dtTimeRidget.bindToModel(value, TypedBean.PROP_VALUE);

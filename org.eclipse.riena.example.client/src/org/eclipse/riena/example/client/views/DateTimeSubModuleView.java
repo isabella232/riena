@@ -68,16 +68,16 @@ public class DateTimeSubModuleView extends SubModuleView<DateTimeSubModuleContro
 			GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(label);
 			DateTime dtDate;
 			if (style != SWT.CALENDAR) {
-				dtDate = new DateTime(group, SWT.DATE | SWT.DROP_DOWN | style);
+				dtDate = UIControlsFactory.createDate(group, style);
 			} else {
-				dtDate = new DateTime(group, style);
+				dtDate = UIControlsFactory.createCalendar(group);
 			}
 			addUIControl(dtDate, dateId);
 		}
 
 		if (timeId != null) {
 			UIControlsFactory.createLabel(group, "Time:"); //$NON-NLS-1$
-			DateTime dtTime = new DateTime(group, SWT.TIME | style);
+			DateTime dtTime = UIControlsFactory.createTime(group, style);
 			addUIControl(dtTime, timeId);
 		}
 

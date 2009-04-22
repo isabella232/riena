@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -272,6 +273,21 @@ public final class UIControlsFactory {
 		return button;
 	}
 
+	public static DateTime createCalendar(Composite parent) {
+		DateTime result = new DateTime(parent, SWT.CALENDAR);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source bindingId "myCalendarId"
+	 */
+	public static DateTime createCalendar(Composite parent, String bindingId) {
+		DateTime result = createCalendar(parent);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
+	}
+
 	public static Combo createCombo(Composite parent) {
 		return new Combo(parent, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
 	}
@@ -308,6 +324,25 @@ public final class UIControlsFactory {
 		ChoiceComposite composite = new ChoiceComposite(parent, style, multipleSelection);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(composite, bindingId);
 		return composite;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.MEDIUM
+	 */
+	public static DateTime createDate(Composite parent, int style) {
+		DateTime result = new DateTime(parent, SWT.DATE | SWT.DROP_DOWN | style);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.MEDIUM
+	 * @wbp.factory.parameter.source bindingId "myDateTimeId"
+	 */
+	public static DateTime createDate(Composite parent, int style, String bindingId) {
+		DateTime result = createDate(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
 	}
 
 	/**
@@ -360,11 +395,34 @@ public final class UIControlsFactory {
 		return masterDetails;
 	}
 
+	public static MessageBox createMessageBox(Composite parent) {
+		return new MessageBox(parent);
+	}
+
 	public static Shell createShell(Display display) {
 		Assert.isNotNull(display);
 		Shell shell = new Shell(display);
 		shell.setBackground(SHARED_BG_COLOR);
 		return shell;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.MEDIUM
+	 */
+	public static DateTime createTime(Composite parent, int style) {
+		DateTime result = new DateTime(parent, SWT.TIME | style);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.MEDIUM
+	 * @wbp.factory.parameter.source bindingId "myDateTimeId"
+	 */
+	public static DateTime createTime(Composite parent, int style, String bindingId) {
+		DateTime result = createTime(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
 	}
 
 	public static int getWidthHint(Button button) {
@@ -395,10 +453,6 @@ public final class UIControlsFactory {
 		Assert.isLegal(numItems > 0, "numItems must be greater than 0"); //$NON-NLS-1$
 		int items = list.getItemHeight() * numItems;
 		return items;
-	}
-
-	public static MessageBox createMessageBox(Composite parent) {
-		return new MessageBox(parent);
 	}
 
 }
