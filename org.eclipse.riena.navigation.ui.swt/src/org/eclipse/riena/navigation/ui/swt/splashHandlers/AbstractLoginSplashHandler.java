@@ -11,10 +11,6 @@
 package org.eclipse.riena.navigation.ui.swt.splashHandlers;
 
 import org.eclipse.equinox.app.IApplication;
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.internal.navigation.ui.swt.Activator;
-import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashView;
-import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewDefinition;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -22,6 +18,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.splash.AbstractSplashHandler;
+
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.internal.navigation.ui.swt.Activator;
+import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashView;
+import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewDefinition;
 
 /**
  * Riena base class for splash implementations.
@@ -92,6 +93,9 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 		if (!IApplication.EXIT_OK.equals(loginView.getResult())) {
 			// Abort the loading of the RCP application
 			PlatformUI.getWorkbench().getDisplay().close();
+			// This:
+			// PlatformUI.getWorkbench().close();
+			// will not work because the {@ IWorkbench} is not yet started.
 			System.exit(0);
 		}
 	}
