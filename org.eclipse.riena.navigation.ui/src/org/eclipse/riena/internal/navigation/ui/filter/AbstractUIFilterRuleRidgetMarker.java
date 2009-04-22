@@ -80,7 +80,7 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 			IMarkableRidget markableRidget = (IMarkableRidget) object;
 			IMarker marker = markerMap.get(markableRidget);
 			markableRidget.removeMarker(marker);
-			markerMap.remove(marker);
+			markerMap.remove(markableRidget);
 		}
 	}
 

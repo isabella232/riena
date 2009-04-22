@@ -10,17 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.filter;
 
+import java.util.Map;
+
 import junit.framework.TestCase;
 
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.filter.IUIFilterRule;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
@@ -59,6 +63,9 @@ public class AbstractUIFilterRuleRidgetMarkerTest extends TestCase {
 		assertFalse(ridget.getMarkers().isEmpty());
 		assertTrue(ridget.getMarkers().contains(new MandatoryMarker(false)));
 
+		Map<IMarkableRidget, IMarker> markerMap = ReflectionUtils.getHidden(rule, "markerMap");
+		assertEquals(new MandatoryMarker(false), markerMap.get(ridget));
+
 	}
 
 	/**
@@ -66,15 +73,19 @@ public class AbstractUIFilterRuleRidgetMarkerTest extends TestCase {
 	 */
 	public void testRemove() {
 
+		Map<IMarkableRidget, IMarker> markerMap = ReflectionUtils.getHidden(rule, "markerMap");
+
 		ITextRidget ridget = new TextRidget();
 		assertTrue(ridget.getMarkers().isEmpty());
+		assertTrue(markerMap.isEmpty());
 
 		rule.apply(ridget);
-		assertFalse(ridget.getMarkers().isEmpty());
 		assertTrue(ridget.getMarkers().contains(new MandatoryMarker(false)));
+		assertFalse(markerMap.isEmpty());
 
 		rule.remove(ridget);
 		assertTrue(ridget.getMarkers().isEmpty());
+		assertTrue(markerMap.isEmpty());
 
 	}
 
