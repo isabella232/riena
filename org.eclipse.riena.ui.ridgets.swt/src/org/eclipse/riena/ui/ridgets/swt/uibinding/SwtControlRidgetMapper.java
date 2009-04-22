@@ -195,7 +195,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 				return mapping.getRidgetClazz();
 			}
 		}
-		throw new BindingException("No ridget found for " + controlClazz.getSimpleName()); //$NON-NLS-1$
+		throw new BindingException("No Ridget class defined for widget class " + controlClazz.getSimpleName()); //$NON-NLS-1$
 	}
 
 	/**
