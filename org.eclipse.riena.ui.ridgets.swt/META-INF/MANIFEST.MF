@@ -7,18 +7,16 @@ Bundle-Activator: org.eclipse.riena.internal.ui.ridgets.swt.Activator
 Require-Bundle: org.eclipse.core.databinding,
  org.eclipse.core.databinding.beans,
  org.eclipse.core.databinding.property,
- org.eclipse.core.runtime,
  org.eclipse.jface,
  org.eclipse.jface.databinding,
  org.eclipse.nebula.widgets.compositetable;bundle-version="1.0.0",
- org.eclipse.ui,
  org.eclipse.riena.beans.common,
  org.eclipse.riena.core,
  org.eclipse.riena.ui.core,
  org.eclipse.riena.ui.common,
  org.eclipse.riena.ui.ridgets,
  org.eclipse.riena.ui.swt,
- org.eclipse.swt
+ org.eclipse.ui.workbench
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.internal.ui.ridgets.swt;x-friends:="org.eclipse.riena.tests,org.eclipse.riena.navigation.ui.swt",
  org.eclipse.riena.internal.ui.ridgets.swt.uiprocess;x-friends:="org.eclipse.riena.tests",
