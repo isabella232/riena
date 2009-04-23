@@ -163,7 +163,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		hFillFactory.hint(170, hHint).applyTo(tablePersons);
 		addUIControl(tablePersons, "tablePersons"); //$NON-NLS-1$
 
-		CompositeTable compTable = new CompositeTable(cmpReviewed, SWT.BORDER);
+		CompositeTable compTable = UIControlsFactory.createCompositeTable(cmpReviewed, SWT.BORDER);
 		new Header(compTable, SWT.NONE);
 		new Row(compTable, SWT.NONE);
 		compTable.setRunTime(true);

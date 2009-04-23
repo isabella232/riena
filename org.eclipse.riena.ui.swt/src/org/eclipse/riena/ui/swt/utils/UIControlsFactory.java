@@ -18,6 +18,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -278,6 +279,15 @@ public final class UIControlsFactory {
 		Composite composite = new Composite(parent, style);
 		composite.setBackground(SHARED_BG_COLOR);
 		return composite;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 */
+	public static CompositeTable createCompositeTable(Composite parent, int style) {
+		CompositeTable result = new CompositeTable(parent, style);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**

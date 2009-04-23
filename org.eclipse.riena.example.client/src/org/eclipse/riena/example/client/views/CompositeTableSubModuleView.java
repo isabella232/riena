@@ -16,15 +16,6 @@ import java.util.List;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.example.client.controllers.CompositeTableSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.common.IComplexComponent;
-import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.swt.ChoiceComposite;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
@@ -34,6 +25,16 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.example.client.controllers.CompositeTableSubModuleController;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.common.IComplexComponent;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * SWT {@link ITableRidget} sample with complex table rows.
@@ -55,6 +56,7 @@ public class CompositeTableSubModuleView extends SubModuleView<CompositeTableSub
 
 		public Row(Composite parent, int style) {
 			super(parent, style);
+			setBackground(parent.getBackground());
 			setLayout(new ResizableGridRowLayout());
 			createColumnName();
 			createColumnGender();
@@ -90,8 +92,8 @@ public class CompositeTableSubModuleView extends SubModuleView<CompositeTableSub
 
 		private Composite createCell() {
 			Composite cell = new Composite(this, SWT.NONE);
+			cell.setBackground(getBackground());
 			GridLayoutFactory.swtDefaults().numColumns(1).applyTo(cell);
-			cell.setBackground(cell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 			return cell;
 		}
 
@@ -119,7 +121,7 @@ public class CompositeTableSubModuleView extends SubModuleView<CompositeTableSub
 		Group group = UIControlsFactory.createGroup(parent, "Composite Table:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(1).applyTo(group);
 
-		CompositeTable table = new CompositeTable(group, SWT.BORDER);
+		CompositeTable table = UIControlsFactory.createCompositeTable(group, SWT.BORDER);
 		new Header(table, SWT.NONE);
 		new Row(table, SWT.NONE);
 		table.setInsertHint("Press 'Add' to add more rows..."); //$NON-NLS-1$
