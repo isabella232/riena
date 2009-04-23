@@ -127,8 +127,12 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		LOGGER.log(LogService.LOG_DEBUG, "SimpleStore at " + storeFolder); //$NON-NLS-1$
 		if (RienaStatus.isDevelopment()) {
 			// This only for debugging/development so that old files do not bother us
+			LOGGER.log(LogService.LOG_DEBUG, "SimpleStore in development mode, trying to clean-up store."); //$NON-NLS-1$
 			for (File file : storeFolder.listFiles()) {
-				file.delete();
+				if (!file.delete()) {
+					LOGGER.log(LogService.LOG_DEBUG, " - failed deleting file: " + file); //$NON-NLS-1$
+					file.deleteOnExit();
+				}
 			}
 		}
 	}
