@@ -82,9 +82,7 @@ public final class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myLabelId"
 	 */
 	public static Label createLabel(Composite parent, String caption, int style, String bindingId) {
-		Label label = new Label(parent, style);
-		label.setText(caption);
-		label.setBackground(SHARED_BG_COLOR);
+		Label label = createLabel(parent, caption, style);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(label, bindingId);
 		return label;
 	}
@@ -120,8 +118,7 @@ public final class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "MyTextDateId"
 	 */
 	public static Text createTextDate(Composite parent, String bindingId) {
-		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
-		result.setData(KEY_TYPE, TYPE_DATE);
+		Text result = createTextDate(parent);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
 		return result;
 	}
@@ -136,8 +133,7 @@ public final class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myTextDecimalId"
 	 */
 	public static Text createTextDecimal(Composite parent, String bindingId) {
-		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
-		result.setData(KEY_TYPE, TYPE_DECIMAL);
+		Text result = createTextDecimal(parent);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
 		return result;
 	}
@@ -152,8 +148,7 @@ public final class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myTextNumericId"
 	 */
 	public static Text createTextNumeric(Composite parent, String bindingId) {
-		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
-		result.setData(KEY_TYPE, TYPE_NUMERIC);
+		Text result = createTextNumeric(parent);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
 		return result;
 	}
@@ -161,7 +156,6 @@ public final class UIControlsFactory {
 	public static Text createTextOutput(Composite parent) {
 		Text text = new Text(parent, SWT.BORDER | SWT.READ_ONLY);
 		text.setEditable(false);
-		text.setEnabled(false);
 		return text;
 	}
 
@@ -169,9 +163,7 @@ public final class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myTextOutputId"
 	 */
 	public static Text createTextOutput(Composite parent, String bindingId) {
-		Text text = new Text(parent, SWT.BORDER | SWT.READ_ONLY);
-		text.setEditable(false);
-		text.setEnabled(false);
+		Text text = createTextOutput(parent);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(text, bindingId);
 		return text;
 	}
@@ -191,14 +183,7 @@ public final class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myTextMultiId"
 	 */
 	public static Text createTextMulti(Composite parent, boolean hScroll, boolean vScroll, String bindingId) {
-		int style = SWT.MULTI | SWT.BORDER;
-		if (hScroll) {
-			style |= SWT.H_SCROLL;
-		}
-		if (vScroll) {
-			style |= SWT.V_SCROLL;
-		}
-		Text text = new Text(parent, style);
+		Text text = createTextMulti(parent, hScroll, vScroll);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(text, bindingId);
 		return text;
 	}
@@ -213,7 +198,6 @@ public final class UIControlsFactory {
 	public static Button createButton(Composite parent, String caption) {
 		Button result = new Button(parent, SWT.PUSH);
 		result.setText(caption);
-
 		return result;
 	}
 
@@ -222,8 +206,7 @@ public final class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myButtonId"
 	 */
 	public static Button createButton(Composite parent, String caption, String bindingId) {
-		Button result = new Button(parent, SWT.PUSH);
-		result.setText(caption);
+		Button result = createButton(parent, caption);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
 		return result;
 	}
@@ -236,7 +219,7 @@ public final class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myButtonToggleId"
 	 */
 	public static Button createButtonToggle(Composite parent, String bindingId) {
-		Button button = new Button(parent, SWT.TOGGLE);
+		Button button = createButtonToggle(parent);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, bindingId);
 		return button;
 	}
@@ -251,8 +234,7 @@ public final class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myButtonCheckId"
 	 */
 	public static Button createButtonCheck(Composite parent, String bindingId) {
-		Button button = new Button(parent, SWT.CHECK);
-		button.setBackground(SHARED_BG_COLOR);
+		Button button = createButtonCheck(parent);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, bindingId);
 		return button;
 	}
@@ -267,8 +249,7 @@ public final class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myButtonRadioId"
 	 */
 	public static Button createButtonRadio(Composite parent, String bindingId) {
-		Button button = new Button(parent, SWT.RADIO);
-		button.setBackground(SHARED_BG_COLOR);
+		Button button = createButtonRadio(parent);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, bindingId);
 		return button;
 	}
@@ -296,7 +277,7 @@ public final class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myComboId"
 	 */
 	public static Combo createCombo(Composite parent, String bindingId) {
-		Combo combo = new Combo(parent, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+		Combo combo = createCombo(parent);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
 		return combo;
 	}
@@ -317,11 +298,19 @@ public final class UIControlsFactory {
 	/**
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 * @wbp.factory.parameter.source multipleSelection false
+	 */
+	public static ChoiceComposite createChoiceComposite(Composite parent, int style, boolean multipleSelection) {
+		return new ChoiceComposite(parent, style, multipleSelection);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @wbp.factory.parameter.source multipleSelection false
 	 * @wbp.factory.parameter.source bindingId "myChoiceCompositeId"
 	 */
-	public static Composite createChoiceComposite(Composite parent, int style, boolean multipleSelection,
+	public static ChoiceComposite createChoiceComposite(Composite parent, int style, boolean multipleSelection,
 			String bindingId) {
-		ChoiceComposite composite = new ChoiceComposite(parent, style, multipleSelection);
+		ChoiceComposite composite = createChoiceComposite(parent, style, multipleSelection);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(composite, bindingId);
 		return composite;
 	}
@@ -370,14 +359,7 @@ public final class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myListId"
 	 */
 	public static List createList(Composite parent, boolean hScroll, boolean vScroll, String bindingId) {
-		int style = SWT.BORDER | SWT.MULTI;
-		if (hScroll) {
-			style |= SWT.H_SCROLL;
-		}
-		if (vScroll) {
-			style |= SWT.V_SCROLL;
-		}
-		List list = new List(parent, style);
+		List list = createList(parent, hScroll, vScroll);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(list, bindingId);
 		return list;
 	}
