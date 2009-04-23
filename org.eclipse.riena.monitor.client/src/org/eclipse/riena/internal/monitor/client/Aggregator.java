@@ -107,7 +107,8 @@ public class Aggregator implements IAggregator {
 		started = false;
 	}
 
-	public void update(final IClientInfoProviderExtension clientInfoProviderExtension) throws CoreException {
+	public synchronized void update(final IClientInfoProviderExtension clientInfoProviderExtension)
+			throws CoreException {
 		stopSender();
 		if (clientInfoProviderExtension == null) {
 			return;
@@ -170,7 +171,7 @@ public class Aggregator implements IAggregator {
 		}
 	}
 
-	public void update(final IStoreExtension storeExtension) throws CoreException {
+	public synchronized void update(final IStoreExtension storeExtension) throws CoreException {
 		stopStore();
 		if (storeExtension == null) {
 			return;
@@ -197,6 +198,9 @@ public class Aggregator implements IAggregator {
 	 * .riena.monitor.common.Collectible)
 	 */
 	public synchronized void collect(final Collectible<?> collectible) {
+		if (!started) {
+			return;
+		}
 		boolean elementAdded = workQueue.offer(new CollectTask(store, collectible));
 		Assert.isTrue(elementAdded);
 	}
@@ -245,6 +249,7 @@ public class Aggregator implements IAggregator {
 		private final Collectible<?> collectible;
 
 		public CollectTask(final IStore store, final Collectible<?> collectible) {
+			Assert.isLegal(store != null, "store must be not null"); //$NON-NLS-1$
 			this.store = store;
 			this.collectible = collectible;
 		}
