@@ -100,6 +100,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		uninstallListeners();
 		unbindUIControl();
 		this.uiControl = (Widget) uiControl;
+		updateEnabled();
 		updateMarkers();
 		updateToolTip();
 		bindUIControl();
@@ -217,6 +218,18 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * has non empty input).
 	 */
 	abstract public boolean isDisableMandatoryMarker();
+
+	/**
+	 * Update the enabled state for the ridget's control, based on the
+	 * information from {@link #isEnabled()}
+	 * <p>
+	 * Implementation note: if a ridget has markers, the marker support logic
+	 * may compute a different enabled state for this widget. The marker support
+	 * will be invoked after this method is invoked.
+	 * 
+	 * @see #setUIControl(Object)
+	 */
+	abstract protected void updateEnabled();
 
 	/**
 	 * Update the tooltip for the ridget's control.

@@ -12,16 +12,17 @@ package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.example.client.controllers.ValidationSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.example.client.controllers.ValidationSubModuleController;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Sample for validation rules.
@@ -58,7 +59,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		Text txtNumbersOnly = UIControlsFactory.createText(group);
 		addUIControl(txtNumbersOnly, "txtNumbersOnly"); //$NON-NLS-1$
 		fillFactory.applyTo(txtNumbersOnly);
-		Text lblNumbersOnly = UIControlsFactory.createTextOutput(group);
+		Text lblNumbersOnly = UIControlsFactory.createText(group);
 		addUIControl(lblNumbersOnly, "lblNumbersOnly"); //$NON-NLS-1$
 		fillFactory.applyTo(lblNumbersOnly);
 
@@ -66,7 +67,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		Text txtNumbersOnlyDW = UIControlsFactory.createText(group);
 		addUIControl(txtNumbersOnlyDW, "txtNumbersOnlyDW"); //$NON-NLS-1$
 		fillFactory.applyTo(txtNumbersOnlyDW);
-		Text lblNumbersOnlyDW = UIControlsFactory.createTextOutput(group);
+		Text lblNumbersOnlyDW = UIControlsFactory.createText(group);
 		addUIControl(lblNumbersOnlyDW, "lblNumbersOnlyDW"); //$NON-NLS-1$
 		fillFactory.applyTo(lblNumbersOnlyDW);
 
@@ -74,7 +75,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		Text txtCharactersOnly = UIControlsFactory.createText(group);
 		addUIControl(txtCharactersOnly, "txtCharactersOnly"); //$NON-NLS-1$
 		fillFactory.applyTo(txtCharactersOnly);
-		Text lblCharactersOnly = UIControlsFactory.createTextOutput(group);
+		Text lblCharactersOnly = UIControlsFactory.createText(group);
 		addUIControl(lblCharactersOnly, "lblCharactersOnly"); //$NON-NLS-1$
 		fillFactory.applyTo(lblCharactersOnly);
 
@@ -82,7 +83,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		Text txtExpression = UIControlsFactory.createText(group);
 		addUIControl(txtExpression, "txtExpression"); //$NON-NLS-1$
 		fillFactory.applyTo(txtExpression);
-		Text lblExpression = UIControlsFactory.createTextOutput(group);
+		Text lblExpression = UIControlsFactory.createText(group);
 		addUIControl(lblExpression, "lblExpression"); //$NON-NLS-1$
 		fillFactory.applyTo(lblExpression);
 
@@ -90,7 +91,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		Text txtLengthLessThan5 = UIControlsFactory.createText(group);
 		addUIControl(txtLengthLessThan5, "txtLengthLessThan5"); //$NON-NLS-1$
 		fillFactory.applyTo(txtLengthLessThan5);
-		Text lblLengthLessThan5 = UIControlsFactory.createTextOutput(group);
+		Text lblLengthLessThan5 = UIControlsFactory.createText(group);
 		addUIControl(lblLengthLessThan5, "lblLengthLessThan5"); //$NON-NLS-1$
 		fillFactory.applyTo(lblLengthLessThan5);
 
@@ -98,7 +99,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		Text txtRequiredLowercase = UIControlsFactory.createText(group);
 		addUIControl(txtRequiredLowercase, "txtRequiredLowercase"); //$NON-NLS-1$
 		fillFactory.applyTo(txtRequiredLowercase);
-		Text lblRequiredLowercase = UIControlsFactory.createTextOutput(group);
+		Text lblRequiredLowercase = UIControlsFactory.createText(group);
 		addUIControl(lblRequiredLowercase, "lblRequiredLowercase"); //$NON-NLS-1$
 		fillFactory.applyTo(lblRequiredLowercase);
 
@@ -106,7 +107,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		Text txtRange18to80 = UIControlsFactory.createTextNumeric(group);
 		addUIControl(txtRange18to80, "txtRange18to80"); //$NON-NLS-1$
 		fillFactory.applyTo(txtRange18to80);
-		Text lblRange18to80 = UIControlsFactory.createTextOutput(group);
+		Text lblRange18to80 = UIControlsFactory.createText(group);
 		addUIControl(lblRange18to80, "lblRange18to80"); //$NON-NLS-1$
 		fillFactory.applyTo(lblRange18to80);
 
@@ -114,7 +115,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		Text txtLength5to10 = UIControlsFactory.createText(group);
 		addUIControl(txtLength5to10, "txtLength5to10"); //$NON-NLS-1$
 		fillFactory.applyTo(txtLength5to10);
-		Text lblLength5to10 = UIControlsFactory.createTextOutput(group);
+		Text lblLength5to10 = UIControlsFactory.createText(group);
 		addUIControl(lblLength5to10, "lblLength5to10"); //$NON-NLS-1$
 		fillFactory.applyTo(lblLength5to10);
 
@@ -122,7 +123,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		Text txtDate = UIControlsFactory.createText(group);
 		addUIControl(txtDate, "txtDate"); //$NON-NLS-1$
 		fillFactory.applyTo(txtDate);
-		Text lblDate = UIControlsFactory.createTextOutput(group);
+		Text lblDate = UIControlsFactory.createText(group);
 		addUIControl(lblDate, "lblDate"); //$NON-NLS-1$
 		fillFactory.applyTo(lblDate);
 
@@ -130,7 +131,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		Text txtEmail = UIControlsFactory.createText(group);
 		addUIControl(txtEmail, "txtEmail"); //$NON-NLS-1$
 		fillFactory.applyTo(txtEmail);
-		Text lblEmail = UIControlsFactory.createTextOutput(group);
+		Text lblEmail = UIControlsFactory.createText(group);
 		addUIControl(lblEmail, "lblEmail"); //$NON-NLS-1$
 		fillFactory.applyTo(lblEmail);
 

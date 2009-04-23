@@ -132,6 +132,13 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	}
 
 	@Override
+	protected final void updateEnabled() {
+		if (getUIControl() != null) {
+			getUIControl().setEnabled(isEnabled());
+		}
+	}
+
+	@Override
 	protected final void updateToolTip() {
 		if (getUIControl() != null) {
 			getUIControl().setToolTipText(getToolTipText());

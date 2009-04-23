@@ -56,6 +56,10 @@ public class AbstractSWTWidgetRidgetTest extends TestCase {
 		}
 
 		@Override
+		protected void updateEnabled() {
+		}
+
+		@Override
 		protected void updateToolTip() {
 		}
 

@@ -78,6 +78,14 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 		return new MenuItemMarkerSupport(this, propertyChangeSupport);
 	}
 
+	@Override
+	protected void updateEnabled() {
+		MenuItem item = getUIControl();
+		if (item != null) {
+			item.setEnabled(isEnabled());
+		}
+	}
+
 	boolean isCommandEnabled() {
 		Item item = getUIControl();
 		if (item.getData() instanceof IContributionItem) {

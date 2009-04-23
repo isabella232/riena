@@ -153,21 +153,6 @@ public final class UIControlsFactory {
 		return result;
 	}
 
-	public static Text createTextOutput(Composite parent) {
-		Text text = new Text(parent, SWT.BORDER | SWT.READ_ONLY);
-		text.setEditable(false);
-		return text;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source bindingId "myTextOutputId"
-	 */
-	public static Text createTextOutput(Composite parent, String bindingId) {
-		Text text = createTextOutput(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(text, bindingId);
-		return text;
-	}
-
 	public static Text createTextMulti(Composite parent, boolean hScroll, boolean vScroll) {
 		int style = SWT.MULTI | SWT.BORDER;
 		if (hScroll) {

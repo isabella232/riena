@@ -77,6 +77,8 @@ public class ValidationSubModuleController extends SubModuleController {
 		final ITextRidget lblLength5to10 = (ITextRidget) getRidget("lblLength5to10"); //$NON-NLS-1$
 		final ITextRidget lblDate = (ITextRidget) getRidget("lblDate"); //$NON-NLS-1$
 		final ITextRidget lblEmail = (ITextRidget) getRidget("lblEmail"); //$NON-NLS-1$
+		makeOutputOnly(lblNumbersOnly, lblNumbersOnlyDW, lblCharactersOnly, lblExpression, lblLengthLessThan5,
+				lblRequiredLowercase, lblRange18to80, lblLength5to10, lblDate, lblEmail);
 
 		// on edit validation
 
@@ -147,6 +149,9 @@ public class ValidationSubModuleController extends SubModuleController {
 
 	}
 
+	// helping methods
+	//////////////////
+
 	private IObservableValue getTextValue(ITextRidget bean) {
 		return BeansObservables.observeValue(bean, ITextRidget.PROPERTY_TEXT);
 	}
@@ -159,6 +164,13 @@ public class ValidationSubModuleController extends SubModuleController {
 	private ApplicationController getApplicationController() {
 		return (ApplicationController) getNavigationNode().getParentOfType(IApplicationNode.class)
 				.getNavigationNodeController();
+	}
+
+	private void makeOutputOnly(ITextRidget... ridgets) {
+		for (ITextRidget ridget : ridgets) {
+			ridget.setOutputOnly(true);
+			ridget.setEnabled(false);
+		}
 	}
 
 }

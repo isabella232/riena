@@ -11,6 +11,11 @@
 package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.example.client.controllers.TextNumericSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
@@ -18,14 +23,9 @@ import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Text;
 
 /**
- * SWT example for {@link INumericTextRidget} and
- * {@link IDecimalTextRidget}.
+ * SWT example for {@link INumericTextRidget} and {@link IDecimalTextRidget}.
  */
 public class TextNumericSubModuleView extends SubModuleView<TextNumericSubModuleController> {
 
@@ -44,37 +44,37 @@ public class TextNumericSubModuleView extends SubModuleView<TextNumericSubModule
 
 		UIControlsFactory.createLabel(parent, "String (Numeric):"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextNumeric(parent), "inStringNum"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextOutput(parent), "outStringNum"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createText(parent), "outStringNum"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Integer:"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextNumeric(parent), "inInteger"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextOutput(parent), "outInteger"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createText(parent), "outInteger"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Long:"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextNumeric(parent), "inLong"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextOutput(parent), "outLong"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createText(parent), "outLong"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Big Integer:"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextNumeric(parent), "inBigInteger"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextOutput(parent), "outBigInteger"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createText(parent), "outBigInteger"); //$NON-NLS-1$
 
 		// decimal ridgets
 
 		UIControlsFactory.createLabel(parent, "String (Decimal):"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextDecimal(parent), "inStringDec"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextOutput(parent), "outStringDec"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createText(parent), "outStringDec"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Double:"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextDecimal(parent), "inDouble"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextOutput(parent), "outDouble"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createText(parent), "outDouble"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Float:"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextDecimal(parent), "inFloat"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextOutput(parent), "outFloat"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createText(parent), "outFloat"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Big Decimal (30,10):"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextDecimal(parent), "inBigDecimal"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextOutput(parent), "outBigDecimal"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createText(parent), "outBigDecimal"); //$NON-NLS-1$
 
 		// customized ridgets (see controller)
 
@@ -84,15 +84,15 @@ public class TextNumericSubModuleView extends SubModuleView<TextNumericSubModule
 
 		UIControlsFactory.createLabel(parent, "Range[100,1000]:"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextNumeric(parent), "inRange"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextOutput(parent), "outRange"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createText(parent), "outRange"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Max. 8 digits:"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextNumeric(parent), "inMaxEight"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextOutput(parent), "outMaxEight"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createText(parent), "outMaxEight"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Unformatted; Min. 4 digits:  "); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextNumeric(parent), "inMinThree"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextOutput(parent), "outMinThree"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createText(parent), "outMinThree"); //$NON-NLS-1$
 
 		//		UIControlsFactory.createLabel(parent, "With leading Zero:"); //$NON-NLS-1$
 		//		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$

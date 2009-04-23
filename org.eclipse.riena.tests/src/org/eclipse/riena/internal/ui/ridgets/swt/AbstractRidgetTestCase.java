@@ -40,7 +40,7 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.tests.base.PropertyChangeEventEquals;
 
 /**
- * Superclass to test a Ridget .
+ * Superclass to test a Ridget.
  */
 @UITestCase
 public abstract class AbstractRidgetTestCase extends RienaTestCase {
@@ -177,7 +177,6 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 	}
 
 	public void testIsEnabled() throws Exception {
-
 		assertTrue("Fails for " + getRidget(), getRidget().isEnabled());
 		if (isWidgetControl()) {
 			assertTrue("Fails for " + getRidget(), ((Control) getWidget()).isEnabled());
@@ -397,6 +396,29 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 		expectNoPropertyChangeEvent();
 		markableRidget.removeMarker(marker);
 		verifyPropertyChangeEvents();
+	}
+
+	/**
+	 * Make sure that enabled setting from ridget is applied to UI control. See
+	 * <a href="http://bugs.eclipse.org/270444">Bug #270444 - Case 1</a>.
+	 */
+	public void testApplyEnabledToUIControl() {
+		Object widget = createWidget(getShell());
+		if (!(widget instanceof Control)) {
+			return;
+		}
+		IRidget ridget = createRidget();
+		Control control = (Control) widget;
+
+		control.setEnabled(false);
+		ridget.setEnabled(true);
+		ridget.setUIControl(control);
+
+		assertTrue(ridget.isEnabled());
+		assertTrue(control.isEnabled());
+		if (ridget instanceof IMarkableRidget) {
+			assertEquals(0, ((IMarkableRidget) ridget).getMarkersOfType(DisabledMarker.class).size());
+		}
 	}
 
 	// helping methods

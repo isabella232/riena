@@ -18,8 +18,11 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
@@ -230,6 +233,26 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(2, listener2.getCount());
+	}
+
+	/**
+	 * Make sure that enabled setting from ridget is applied to UI control. See
+	 * <a href="http://bugs.eclipse.org/270444">Bug #270444 - Case 1</a>.
+	 */
+	@Override
+	public void testApplyEnabledToUIControl() {
+		IRidget ridget = createRidget();
+		MenuItem item = createWidget(getShell());
+
+		item.setEnabled(false);
+		ridget.setEnabled(true);
+		ridget.setUIControl(item);
+
+		assertTrue(ridget.isEnabled());
+		assertTrue(item.isEnabled());
+		if (ridget instanceof IMarkableRidget) {
+			assertEquals(0, ((IMarkableRidget) ridget).getMarkersOfType(DisabledMarker.class).size());
+		}
 	}
 
 	// helping methods

@@ -243,6 +243,12 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		// TODO Auto-generated method stub
 	}
 
+	protected void updateEnabled() {
+		if (getUIControl() != null) {
+			getUIControl().setEnabled(isEnabled());
+		}
+	}
+
 	protected void updateToolTip() {
 		if (getUIControl() != null) {
 			getUIControl().setToolTipText(getToolTipText());

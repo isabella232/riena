@@ -63,6 +63,14 @@ public class ToolItemRidget extends AbstractItemRidget implements IToolItemRidge
 		return new ToolItemProperties(this);
 	}
 
+	@Override
+	protected void updateEnabled() {
+		ToolItem item = getUIControl();
+		if (item != null) {
+			item.setEnabled(isEnabled());
+		}
+	}
+
 	/**
 	 * Updates (sets) the icon of the tool item and also the <i>hot/hover</i>
 	 * icon (image).

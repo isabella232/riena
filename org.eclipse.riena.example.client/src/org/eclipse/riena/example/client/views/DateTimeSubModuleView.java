@@ -82,7 +82,7 @@ public class DateTimeSubModuleView extends SubModuleView<DateTimeSubModuleContro
 		}
 
 		UIControlsFactory.createLabel(group, "Model:"); //$NON-NLS-1$
-		Text text = UIControlsFactory.createTextOutput(group);
+		Text text = UIControlsFactory.createText(group);
 		GridDataFactory.fillDefaults().hint(220, SWT.DEFAULT).applyTo(text);
 		addUIControl(text, textId);
 

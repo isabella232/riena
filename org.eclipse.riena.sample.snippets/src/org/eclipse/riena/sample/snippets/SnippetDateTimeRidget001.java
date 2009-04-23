@@ -49,7 +49,8 @@ public class SnippetDateTimeRidget001 {
 		GridDataFactory fill = GridDataFactory.fillDefaults();
 
 		UIControlsFactory.createLabel(shell, "Value:"); //$NON-NLS-1$
-		Text txtValue = UIControlsFactory.createTextOutput(shell);
+		Text txtValue = UIControlsFactory.createText(shell, SWT.READ_ONLY);
+		txtValue.setEnabled(false);
 		fill.applyTo(txtValue);
 
 		UIControlsFactory.createLabel(shell, "Date:"); //$NON-NLS-1$

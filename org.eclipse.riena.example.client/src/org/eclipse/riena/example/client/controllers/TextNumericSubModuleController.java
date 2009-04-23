@@ -16,6 +16,7 @@ import java.math.BigInteger;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
+
 import org.eclipse.riena.beans.common.IntegerBean;
 import org.eclipse.riena.beans.common.TypedBean;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -82,7 +83,9 @@ public class TextNumericSubModuleController extends SubModuleController {
 
 	private void bind(DataBindingContext dbc, String id) {
 		IRidget inputRidget = getRidget("in" + id); //$NON-NLS-1$
-		IRidget outputRidget = getRidget("out" + id); //$NON-NLS-1$
+		ITextRidget outputRidget = (ITextRidget) getRidget("out" + id); //$NON-NLS-1$
+		outputRidget.setOutputOnly(true);
+		outputRidget.setEnabled(false);
 		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextRidget.PROPERTY_TEXT), BeansObservables
 				.observeValue(outputRidget, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));

@@ -75,5 +75,17 @@ public class DateTimeSubModuleController extends SubModuleController {
 				date3, TypedBean.PROP_VALUE));
 		dbc.bindValue(BeansObservables.observeValue(txt4, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
 				date4, TypedBean.PROP_VALUE));
+
+		makeOutputOnly(txt1, txt2, txt3, txt4);
+	}
+
+	// helping methods
+	//////////////////
+
+	private void makeOutputOnly(ITextRidget... ridgets) {
+		for (ITextRidget ridget : ridgets) {
+			ridget.setOutputOnly(true);
+			ridget.setEnabled(false);
+		}
 	}
 }
