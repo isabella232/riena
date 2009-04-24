@@ -20,11 +20,8 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
 
-import org.eclipse.equinox.log.Logger;
-
-import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.internal.navigation.Activator;
+import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationHistory;
@@ -44,7 +41,6 @@ import org.eclipse.riena.ui.core.marker.HiddenMarker;
  */
 public class NavigationProcessor implements INavigationProcessor, INavigationHistory {
 
-	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationProcessor.class);
 	private static int maxStacksize = 40;
 	private Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
 	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
@@ -57,6 +53,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	public void activate(INavigationNode<?> toActivate) {
 		if (toActivate != null) {
 			if (toActivate.isActivated()) {
+				Nop.reason("see comment below."); //$NON-NLS-1$
 				// do nothing
 				// if toActivate is module, module group or sub application
 				// the same sub module will be activated on activation of
