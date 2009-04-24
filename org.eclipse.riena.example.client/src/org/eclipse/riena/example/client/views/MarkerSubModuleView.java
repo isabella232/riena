@@ -15,7 +15,6 @@ import java.util.Arrays;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
@@ -70,7 +69,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 
 	private Group createMarkerOptionsGroup(Composite parent) {
 		Group group = UIControlsFactory.createGroup(parent, "Marker Options:"); //$NON-NLS-1$
-		group.setLayout(createFillLayout());
+		group.setLayout(createGridLayout(4));
 
 		Button checkMandatory = UIControlsFactory.createButtonCheck(group);
 		addUIControl(checkMandatory, "checkMandatory"); //$NON-NLS-1$
@@ -89,7 +88,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 
 	private Group createVisibilityOptionsGroup(Composite parent) {
 		Group group = UIControlsFactory.createGroup(parent, "Visibility Options:"); //$NON-NLS-1$
-		group.setLayout(createFillLayout());
+		group.setLayout(createGridLayout(2));
 
 		Button checkHidden = UIControlsFactory.createButtonCheck(group);
 		addUIControl(checkHidden, "checkHidden"); //$NON-NLS-1$
@@ -221,8 +220,8 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		return composite;
 	}
 
-	private FillLayout createFillLayout() {
-		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
+	private GridLayout createGridLayout(int numColumns) {
+		GridLayout layout = new GridLayout(numColumns, false);
 		layout.marginWidth = 20;
 		layout.marginHeight = 20;
 		return layout;
