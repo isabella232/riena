@@ -46,7 +46,7 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 
 	@Override
 	protected MenuItemRidget getRidget() {
-		return (MenuItemRidget) ridget;
+		return (MenuItemRidget) super.getRidget();
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 		if (item.isDisposed()) {
 			return;
 		}
-		boolean enabled = ridget.isEnabled();
+		boolean enabled = getRidget().isEnabled();
 		CommandContributionItem commandItem = getContributionItem(item);
 		if (commandItem != null) {
 			enabled = enabled && commandItem.isEnabled();
@@ -90,7 +90,7 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 * Updates the menu item to display the current markers.
 	 */
 	private void updateMenuItem() {
-		MenuItem item = (MenuItem) ridget.getUIControl();
+		MenuItem item = (MenuItem) getRidget().getUIControl();
 		if (item != null) {
 			updateVisible(item);
 			if (!item.isDisposed()) {

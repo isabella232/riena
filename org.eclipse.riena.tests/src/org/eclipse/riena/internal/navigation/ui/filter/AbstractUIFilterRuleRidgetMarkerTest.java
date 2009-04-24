@@ -24,7 +24,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.filter.IUIFilterRule;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
@@ -63,7 +63,7 @@ public class AbstractUIFilterRuleRidgetMarkerTest extends TestCase {
 		assertFalse(ridget.getMarkers().isEmpty());
 		assertTrue(ridget.getMarkers().contains(new MandatoryMarker(false)));
 
-		Map<IMarkableRidget, IMarker> markerMap = ReflectionUtils.getHidden(rule, "markerMap");
+		Map<IBasicMarkableRidget, IMarker> markerMap = ReflectionUtils.getHidden(rule, "markerMap");
 		assertEquals(new MandatoryMarker(false), markerMap.get(ridget));
 
 	}
@@ -73,7 +73,7 @@ public class AbstractUIFilterRuleRidgetMarkerTest extends TestCase {
 	 */
 	public void testRemove() {
 
-		Map<IMarkableRidget, IMarker> markerMap = ReflectionUtils.getHidden(rule, "markerMap");
+		Map<IBasicMarkableRidget, IMarker> markerMap = ReflectionUtils.getHidden(rule, "markerMap");
 
 		ITextRidget ridget = new TextRidget();
 		assertTrue(ridget.getMarkers().isEmpty());

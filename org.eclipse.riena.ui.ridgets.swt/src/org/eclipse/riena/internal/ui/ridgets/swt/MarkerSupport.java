@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractActionRidget;
 
@@ -53,8 +54,13 @@ public class MarkerSupport extends BasicMarkerSupport {
 
 	private ControlDecoration errorDecoration;
 
-	public MarkerSupport(IMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+	public MarkerSupport(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
+	}
+
+	@Override
+	protected IMarkableRidget getRidget() {
+		return (IMarkableRidget) super.getRidget();
 	}
 
 	protected void addError(Control control) {
@@ -126,7 +132,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 
 	private boolean isMandatory(IMarkableRidget ridget) {
 		boolean result = false;
-		Iterator<MandatoryMarker> iter = ridget.getMarkersOfType(MandatoryMarker.class).iterator();
+		Iterator<MandatoryMarker> iter = getRidget().getMarkersOfType(MandatoryMarker.class).iterator();
 		while (!result && iter.hasNext()) {
 			result = !iter.next().isDisabled();
 		}
@@ -134,8 +140,8 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	private void updateError(Control control) {
-		if (ridget.isErrorMarked() && ridget.isEnabled() && ridget.isVisible()) {
-			if (!(isButton(control) && ridget.isOutputOnly())) {
+		if (getRidget().isErrorMarked() && getRidget().isEnabled() && getRidget().isVisible()) {
+			if (!(isButton(control) && getRidget().isOutputOnly())) {
 				addError(control);
 			} else {
 				clearError(control);
@@ -146,7 +152,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	private void updateMandatory(Control control) {
-		if (isMandatory(ridget) && !ridget.isOutputOnly() && ridget.isEnabled()) {
+		if (isMandatory(getRidget()) && !getRidget().isOutputOnly() && getRidget().isEnabled()) {
 			addMandatory(control);
 		} else {
 			clearMandatory(control);
@@ -154,7 +160,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	private void updateNegative(Control control) {
-		if (!ridget.getMarkersOfType(NegativeMarker.class).isEmpty() && ridget.isEnabled()) {
+		if (!getRidget().getMarkersOfType(NegativeMarker.class).isEmpty() && getRidget().isEnabled()) {
 			addNegative(control);
 		} else {
 			clearNegative(control);
@@ -162,10 +168,10 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	private void updateOutput(Control control) {
-		if (ridget.isOutputOnly() && ridget.isEnabled()) {
+		if (getRidget().isOutputOnly() && getRidget().isEnabled()) {
 			clearMandatory(control);
 			clearOutput(control);
-			if (isMandatory(ridget)) {
+			if (isMandatory(getRidget())) {
 				Color color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY_OUTPUT);
 				addOutput(control, color);
 			} else {
@@ -199,7 +205,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	private boolean isButton(Control control) {
-		return control instanceof Button || ridget instanceof AbstractActionRidget;
+		return control instanceof Button || getRidget() instanceof AbstractActionRidget;
 	}
 
 }

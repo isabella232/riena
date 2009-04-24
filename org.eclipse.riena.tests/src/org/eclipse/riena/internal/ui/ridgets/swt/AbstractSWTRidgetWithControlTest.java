@@ -37,6 +37,7 @@ import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
@@ -282,10 +283,10 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 	}
 
 	public void testFiresMarkerProperty() {
-		if (!(getRidget() instanceof IMarkableRidget)) {
+		if (!(getRidget() instanceof IBasicMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
+		IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
 		IMarker marker = new MandatoryMarker();
 		HashSet<IMarker> before = new HashSet<IMarker>(markableRidget.getMarkers());
 		HashSet<IMarker> after = new HashSet<IMarker>(before);
@@ -294,7 +295,7 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 		assertTrue(markableRidget.isEnabled());
 		assertEquals(before.size() + 1, after.size());
 
-		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, before, after);
+		expectPropertyChangeEvent(IBasicMarkableRidget.PROPERTY_MARKER, before, after);
 		markableRidget.addMarker(marker);
 		verifyPropertyChangeEvents();
 
@@ -302,7 +303,7 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 		markableRidget.addMarker(marker);
 		verifyPropertyChangeEvents();
 
-		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, after, before);
+		expectPropertyChangeEvent(IBasicMarkableRidget.PROPERTY_MARKER, after, before);
 		markableRidget.removeMarker(marker);
 		verifyPropertyChangeEvents();
 
@@ -312,10 +313,10 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 	}
 
 	public void testFiresDisabledPropertyUsingSetter() {
-		if (!(getRidget() instanceof IMarkableRidget)) {
+		if (!(getRidget() instanceof IBasicMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
+		IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
 
@@ -339,10 +340,10 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 	}
 
 	public void testFiresDisabledPropertyUsingAddRemove() {
-		if (!(getRidget() instanceof IMarkableRidget)) {
+		if (!(getRidget() instanceof IBasicMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
+		IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
 		IMarker marker = new DisabledMarker();
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
@@ -370,10 +371,10 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 	 * Check that disabling / enabling works when we don't have a bound control.
 	 */
 	public void testDisableWithoutUIControl() {
-		if (!(getRidget() instanceof IMarkableRidget)) {
+		if (!(getRidget() instanceof IBasicMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
+		IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
 		markableRidget.setUIControl(null);
 
 		assertTrue(markableRidget.isEnabled());

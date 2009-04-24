@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.ridgets.marker;
 
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 
 /**
  * Visualizes certain types of message markers of certain Ridgets.
@@ -30,7 +30,7 @@ public interface IMessageMarkerViewer {
 	 * @throws RuntimeException
 	 *             if markableRidget is null
 	 */
-	void addRidget(IMarkableRidget markableRidget);
+	void addRidget(IBasicMarkableRidget markableRidget);
 
 	/**
 	 * Removes a Ridget from the list of Ridgets being observed for message
@@ -42,7 +42,7 @@ public interface IMessageMarkerViewer {
 	 * @throws RuntimeException
 	 *             if markableRidget is null
 	 */
-	void removeRidget(IMarkableRidget markableRidget);
+	void removeRidget(IBasicMarkableRidget markableRidget);
 
 	/**
 	 * Adds a type of marker to the list of markers to be visualized.

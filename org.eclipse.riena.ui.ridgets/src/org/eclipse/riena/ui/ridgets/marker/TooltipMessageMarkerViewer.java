@@ -20,7 +20,7 @@ import java.util.LinkedHashMap;
 
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 
 /**
@@ -31,16 +31,16 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
 	private PropertyChangeListener markerPropertyChangeListener = new MarkerPropertyChangeListener();
 
-	private HashMap<IMarkableRidget, Tooltip> tooltips = new LinkedHashMap<IMarkableRidget, Tooltip>();
+	private HashMap<IBasicMarkableRidget, Tooltip> tooltips = new LinkedHashMap<IBasicMarkableRidget, Tooltip>();
 
 	@Override
-	public void addRidget(IMarkableRidget markableRidget) {
+	public void addRidget(IBasicMarkableRidget markableRidget) {
 		super.addRidget(markableRidget);
 		markableRidget.addPropertyChangeListener(markerPropertyChangeListener);
 	}
 
 	@Override
-	public void removeRidget(IMarkableRidget markableRidget) {
+	public void removeRidget(IBasicMarkableRidget markableRidget) {
 		markableRidget.removePropertyChangeListener(markerPropertyChangeListener);
 		super.removeRidget(markableRidget);
 	}
@@ -49,7 +49,7 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	////////////////////
 
 	@Override
-	protected void showMessages(IMarkableRidget markableRidget) {
+	protected void showMessages(IBasicMarkableRidget markableRidget) {
 		Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
 		String message = constructMessage(messageMarker);
 		// show the message only if there is something to show
@@ -71,7 +71,7 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	@Override
-	protected void hideMessages(IMarkableRidget markableRidget) {
+	protected void hideMessages(IBasicMarkableRidget markableRidget) {
 		if (tooltips.containsKey(markableRidget)) {
 			String tooltip = tooltips.get(markableRidget).originalTooltip;
 			markableRidget.setToolTipText(tooltip);
@@ -105,12 +105,12 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	private final class MarkerPropertyChangeListener implements PropertyChangeListener {
 
 		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getSource() instanceof IMarkableRidget) {
-				if (IMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName())) {
-					IMarkableRidget ridget = (IMarkableRidget) evt.getSource();
+			if (evt.getSource() instanceof IBasicMarkableRidget) {
+				if (IBasicMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName())) {
+					IBasicMarkableRidget ridget = (IBasicMarkableRidget) evt.getSource();
 					showMessages(ridget);
 				} else if (IRidget.PROPERTY_TOOLTIP.equals(evt.getPropertyName())) {
-					IMarkableRidget ridget = (IMarkableRidget) evt.getSource();
+					IBasicMarkableRidget ridget = (IBasicMarkableRidget) evt.getSource();
 					String newTooltip = (String) evt.getNewValue();
 					Tooltip tip = tooltips.get(ridget);
 					if (tip != null && !StringUtils.equals(newTooltip, tip.originalTooltip)) {

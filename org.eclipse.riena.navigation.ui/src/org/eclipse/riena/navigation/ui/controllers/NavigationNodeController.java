@@ -26,7 +26,7 @@ import org.eclipse.riena.navigation.common.TypecastingObject;
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
@@ -165,7 +165,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 *      org.eclipse.riena.ui.internal.ridgets.IRidget)
 	 */
 	public void addRidget(String id, IRidget ridget) {
-		ridget.addPropertyChangeListener(IMarkableRidget.PROPERTY_MARKER, propertyChangeListener);
+		ridget.addPropertyChangeListener(IBasicMarkableRidget.PROPERTY_MARKER, propertyChangeListener);
 		ridgets.put(id, ridget);
 	}
 
@@ -185,15 +185,15 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 	private void addRidgetMarkers(IRidget ridget, List<IMarker> combinedMarkers) {
 
-		if (ridget instanceof IMarkableRidget && ((IMarkableRidget) ridget).isVisible()
-				&& ((IMarkableRidget) ridget).isEnabled()) {
-			addRidgetMarkers((IMarkableRidget) ridget, combinedMarkers);
+		if (ridget instanceof IBasicMarkableRidget && ((IBasicMarkableRidget) ridget).isVisible()
+				&& ((IBasicMarkableRidget) ridget).isEnabled()) {
+			addRidgetMarkers((IBasicMarkableRidget) ridget, combinedMarkers);
 		} else if (ridget instanceof IRidgetContainer) {
 			addRidgetMarkers((IRidgetContainer) ridget, combinedMarkers);
 		}
 	}
 
-	private void addRidgetMarkers(IMarkableRidget ridget, List<IMarker> combinedMarkers) {
+	private void addRidgetMarkers(IBasicMarkableRidget ridget, List<IMarker> combinedMarkers) {
 		combinedMarkers.addAll(ridget.getMarkers());
 	}
 

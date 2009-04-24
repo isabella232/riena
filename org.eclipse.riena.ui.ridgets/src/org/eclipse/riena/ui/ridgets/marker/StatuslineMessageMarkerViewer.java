@@ -18,7 +18,7 @@ import java.util.Iterator;
 
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
@@ -58,14 +58,14 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	@Override
-	public void addRidget(IMarkableRidget markableRidget) {
+	public void addRidget(IBasicMarkableRidget markableRidget) {
 		super.addRidget(markableRidget);
 		markableRidget.addPropertyChangeListener(markerPropertyChangeListener);
 		markableRidget.addFocusListener(ridgetFocusListener);
 	}
 
 	@Override
-	protected void showMessages(IMarkableRidget markableRidget) {
+	protected void showMessages(IBasicMarkableRidget markableRidget) {
 		if (markableRidget.hasFocus()) {
 			Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
 			String message = constructMessage(messageMarker).trim();
@@ -80,7 +80,7 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	@Override
-	protected void hideMessages(IMarkableRidget ridget) {
+	protected void hideMessages(IBasicMarkableRidget ridget) {
 		if (ridget.hasFocus()) {
 			resetStatuslineMessage();
 		}
@@ -170,9 +170,9 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	private class MarkerPropertyChangeListener implements PropertyChangeListener {
 
 		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getPropertyName().equals(IMarkableRidget.PROPERTY_MARKER)
-					&& evt.getSource() instanceof IMarkableRidget && ((IMarkableRidget) evt.getSource()).hasFocus()) {
-				showMessages((IMarkableRidget) evt.getSource());
+			if (evt.getPropertyName().equals(IBasicMarkableRidget.PROPERTY_MARKER)
+					&& evt.getSource() instanceof IBasicMarkableRidget && ((IBasicMarkableRidget) evt.getSource()).hasFocus()) {
+				showMessages((IBasicMarkableRidget) evt.getSource());
 			}
 		}
 
@@ -181,13 +181,13 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	private class RidgetFocusListener implements IFocusListener {
 
 		public void focusGained(FocusEvent event) {
-			if (event.getNewFocusOwner() instanceof IMarkableRidget) {
-				showMessages((IMarkableRidget) event.getNewFocusOwner());
+			if (event.getNewFocusOwner() instanceof IBasicMarkableRidget) {
+				showMessages((IBasicMarkableRidget) event.getNewFocusOwner());
 			}
 		}
 
 		public void focusLost(FocusEvent event) {
-			if (event.getOldFocusOwner() instanceof IMarkableRidget) {
+			if (event.getOldFocusOwner() instanceof IBasicMarkableRidget) {
 				resetStatuslineMessage();
 			}
 		}

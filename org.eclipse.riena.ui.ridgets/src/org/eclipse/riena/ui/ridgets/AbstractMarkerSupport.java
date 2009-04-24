@@ -32,11 +32,11 @@ import org.eclipse.riena.ui.core.marker.OutputMarker;
 public abstract class AbstractMarkerSupport {
 
 	private Set<IMarker> markers;
-	protected IMarkableRidget ridget;
+	private IBasicMarkableRidget ridget;
 	private PropertyChangeSupport propertyChangeSupport;
 	private IMarkerAttributeChangeListener markerAttributeChangeListener;
 
-	public AbstractMarkerSupport(IMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+	public AbstractMarkerSupport(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
 		this.ridget = ridget;
 		this.propertyChangeSupport = propertyChangeSupport;
 		markerAttributeChangeListener = new MarkerAttributeChangeListener();
@@ -51,7 +51,7 @@ public abstract class AbstractMarkerSupport {
 	public abstract void updateMarkers();
 
 	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IMarkableRidget#addMarker(org.eclipse.riena.core.marker.IMarker)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget#addMarker(org.eclipse.riena.core.marker.IMarker)
 	 */
 	public void addMarker(IMarker marker) {
 		if (marker == null) {
@@ -71,7 +71,7 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IMarkableRidget#getMarkers()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget#getMarkers()
 	 */
 	public Collection<IMarker> getMarkers() {
 		if (markers != null) {
@@ -82,14 +82,14 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IMarkableRidget#getMarkersOfType(java.lang.Class)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget#getMarkersOfType(java.lang.Class)
 	 */
 	public <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
 		return Markable.getMarkersOfType(getMarkers(), type);
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IMarkableRidget#removeAllMarkers()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget#removeAllMarkers()
 	 */
 	public void removeAllMarkers() {
 		if ((markers != null) && !getMarkers().isEmpty()) {
@@ -108,7 +108,7 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IMarkableRidget#removeMarker(org.eclipse.riena.core.marker.IMarker)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget#removeMarker(org.eclipse.riena.core.marker.IMarker)
 	 */
 	public void removeMarker(IMarker marker) {
 		if ((markers != null) && !getMarkers().isEmpty()) {
@@ -124,15 +124,15 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	protected Object getUIControl() {
-		return ridget.getUIControl();
+		return getRidget().getUIControl();
 	}
 
-	protected IMarkableRidget getRidget() {
+	protected IBasicMarkableRidget getRidget() {
 		return ridget;
 	}
 
 	protected void handleMarkerAttributesChanged() {
-		propertyChangeSupport.firePropertyChange(new MarkerPropertyChangeEvent(true, ridget, getMarkers()));
+		propertyChangeSupport.firePropertyChange(new MarkerPropertyChangeEvent(true, getRidget(), getMarkers()));
 	}
 
 	// helping methods
@@ -164,27 +164,27 @@ public abstract class AbstractMarkerSupport {
 		Boolean oldValue = isEnabled(oldMarkers);
 		Boolean newValue = isEnabled(getMarkers());
 		if (!oldValue.equals(newValue)) {
-			PropertyChangeEvent evt = new PropertyChangeEvent(ridget, IRidget.PROPERTY_ENABLED, oldValue, newValue);
+			PropertyChangeEvent evt = new PropertyChangeEvent(getRidget(), IRidget.PROPERTY_ENABLED, oldValue, newValue);
 			propertyChangeSupport.firePropertyChange(evt);
 		}
 	}
 
 	private void fireMarkerPropertyChangeEvent(Collection<IMarker> oldValue) {
-		propertyChangeSupport.firePropertyChange(new MarkerPropertyChangeEvent(oldValue, ridget, getMarkers()));
+		propertyChangeSupport.firePropertyChange(new MarkerPropertyChangeEvent(oldValue, getRidget(), getMarkers()));
 	}
 
 	private void fireOutputPropertyChangeEvent(Collection<IMarker> oldMarkers) {
 		Boolean oldValue = isOutput(oldMarkers);
 		Boolean newValue = isOutput(getMarkers());
 		if (!oldValue.equals(newValue)) {
-			PropertyChangeEvent evt = new PropertyChangeEvent(ridget, IMarkableRidget.PROPERTY_OUTPUT_ONLY, oldValue,
-					newValue);
+			PropertyChangeEvent evt = new PropertyChangeEvent(getRidget(), IMarkableRidget.PROPERTY_OUTPUT_ONLY,
+					oldValue, newValue);
 			propertyChangeSupport.firePropertyChange(evt);
 		}
 	}
 
 	protected boolean hasHiddenMarkers() {
-		return !ridget.getMarkersOfType(HiddenMarker.class).isEmpty();
+		return !getRidget().getMarkersOfType(HiddenMarker.class).isEmpty();
 	}
 
 	// helping classes
@@ -197,11 +197,11 @@ public abstract class AbstractMarkerSupport {
 
 		private boolean attributeRelated = false;
 
-		private MarkerPropertyChangeEvent(Object oldValue, IMarkableRidget source, Object newValue) {
-			super(source, IMarkableRidget.PROPERTY_MARKER, oldValue, newValue);
+		private MarkerPropertyChangeEvent(Object oldValue, IBasicMarkableRidget source, Object newValue) {
+			super(source, IBasicMarkableRidget.PROPERTY_MARKER, oldValue, newValue);
 		}
 
-		private MarkerPropertyChangeEvent(boolean attributeRelated, IMarkableRidget source, Object newValue) {
+		private MarkerPropertyChangeEvent(boolean attributeRelated, IBasicMarkableRidget source, Object newValue) {
 			this(null, source, newValue);
 			this.attributeRelated = attributeRelated;
 		}

@@ -21,7 +21,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
@@ -250,8 +250,8 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 
 		assertTrue(ridget.isEnabled());
 		assertTrue(item.isEnabled());
-		if (ridget instanceof IMarkableRidget) {
-			assertEquals(0, ((IMarkableRidget) ridget).getMarkersOfType(DisabledMarker.class).size());
+		if (ridget instanceof IBasicMarkableRidget) {
+			assertEquals(0, ((IBasicMarkableRidget) ridget).getMarkersOfType(DisabledMarker.class).size());
 		}
 	}
 

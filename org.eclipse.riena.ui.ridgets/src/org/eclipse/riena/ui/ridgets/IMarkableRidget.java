@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
-import org.eclipse.riena.core.marker.IMarkable;
 
 /**
  * A Ridget that supports markers. All markers are maintained in a list, ie it
@@ -21,13 +20,7 @@ import org.eclipse.riena.core.marker.IMarkable;
  * 
  * @see org.eclipse.riena.core.marker.IMarker
  */
-public interface IMarkableRidget extends IRidget, IMarkable {
-
-	/**
-	 * The name of the PropertyChangeEvent that will be fired if a marker was
-	 * added or removed ("marker").
-	 */
-	String PROPERTY_MARKER = "marker"; //$NON-NLS-1$
+public interface IMarkableRidget extends IBasicMarkableRidget {
 
 	/**
 	 * The name of the PropertyChangeEvent that will be fired when the 'output

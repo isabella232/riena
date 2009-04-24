@@ -48,7 +48,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 
 	@Override
 	protected ToolItemRidget getRidget() {
-		return (ToolItemRidget) ridget;
+		return (ToolItemRidget) super.getRidget();
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 		if (item.isDisposed()) {
 			return;
 		}
-		boolean enabled = ridget.isEnabled();
+		boolean enabled = getRidget().isEnabled();
 		CommandContributionItem commandItem = getContributionItem(item);
 		if (commandItem != null) {
 			enabled = enabled && commandItem.isEnabled();
@@ -140,7 +140,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 * Updates the tool item to display the current markers.
 	 */
 	private void updateToolItem() {
-		ToolItem item = (ToolItem) ridget.getUIControl();
+		ToolItem item = (ToolItem) getRidget().getUIControl();
 		if (item != null) {
 			updateVisible(item);
 			if (!item.isDisposed()) {

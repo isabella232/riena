@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 
 /**
  * Helper class for Ridgets to delegate their marker issues to that just handles
@@ -27,7 +27,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
  */
 public class BasicMarkerSupport extends AbstractMarkerSupport {
 
-	public BasicMarkerSupport(IMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+	public BasicMarkerSupport(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
 	}
 
@@ -43,7 +43,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	}
 
 	private void updateUIControl() {
-		Control control = (Control) ridget.getUIControl();
+		Control control = (Control) getUIControl();
 		if (control != null) {
 			stopRedraw(control);
 			try {
@@ -64,7 +64,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	}
 
 	protected void updateDisabled(Control control) {
-		control.setEnabled(ridget.isEnabled());
+		control.setEnabled(getRidget().isEnabled());
 	}
 
 	private void startRedraw(Control control) {

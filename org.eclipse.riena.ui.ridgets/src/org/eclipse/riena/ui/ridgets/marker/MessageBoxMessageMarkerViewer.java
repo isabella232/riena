@@ -20,7 +20,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 
 /**
@@ -37,18 +37,18 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.marker.AbstractMessageMarkerViewer#hideMessages(org.eclipse.riena.ui.internal.ridgets.IMarkableRidget)
+	 * @see org.eclipse.riena.ui.internal.ridgets.marker.AbstractMessageMarkerViewer#hideMessages(org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget)
 	 */
 	@Override
-	protected void hideMessages(IMarkableRidget ridget) {
+	protected void hideMessages(IBasicMarkableRidget ridget) {
 		// automatically hidden when the message box is closed
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.marker.AbstractMessageMarkerViewer#showMessages(org.eclipse.riena.ui.internal.ridgets.IMarkableRidget)
+	 * @see org.eclipse.riena.ui.internal.ridgets.marker.AbstractMessageMarkerViewer#showMessages(org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget)
 	 */
 	@Override
-	protected void showMessages(IMarkableRidget ridget) {
+	protected void showMessages(IBasicMarkableRidget ridget) {
 		if (isVisible()) {
 			String message = getMessage();
 			if (message.length() > 0) {
@@ -66,10 +66,10 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	 */
 	private String getMessage() {
 		Collection<IMessageMarker> allMessageMarker = new LinkedHashSet<IMessageMarker>();
-		IMarkableRidget nextMarkableAdapter = null;
-		Collection<IMarkableRidget> localMarkableAdapter = new HashSet<IMarkableRidget>();
+		IBasicMarkableRidget nextMarkableAdapter = null;
+		Collection<IBasicMarkableRidget> localMarkableAdapter = new HashSet<IBasicMarkableRidget>();
 		localMarkableAdapter.addAll(getRidgets());
-		for (Iterator<IMarkableRidget> i = localMarkableAdapter.iterator(); i.hasNext();) {
+		for (Iterator<IBasicMarkableRidget> i = localMarkableAdapter.iterator(); i.hasNext();) {
 			nextMarkableAdapter = i.next();
 			allMessageMarker.addAll(getMessageMarker(nextMarkableAdapter, false));
 		}

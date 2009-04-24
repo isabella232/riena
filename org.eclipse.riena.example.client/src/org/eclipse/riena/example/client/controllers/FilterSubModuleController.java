@@ -43,7 +43,7 @@ import org.eclipse.riena.ui.filter.impl.UIFilter;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -330,7 +330,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void doAddMarker() {
 		if (markerModel.getSelectedId() != null) {
-			IMarkableRidget ridget = (IMarkableRidget) getRidget(markerModel.getSelectedId());
+			IBasicMarkableRidget ridget = (IBasicMarkableRidget) getRidget(markerModel.getSelectedId());
 			ridget.addMarker(markerModel.getSelectedMarker().getMarker());
 		}
 	}
@@ -340,7 +340,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void doRemoveMarker() {
 		if (markerModel.getSelectedId() != null) {
-			IMarkableRidget ridget = (IMarkableRidget) getRidget(markerModel.getSelectedId());
+			IBasicMarkableRidget ridget = (IBasicMarkableRidget) getRidget(markerModel.getSelectedId());
 			ridget.removeMarker(markerModel.getSelectedMarker().getMarker());
 		}
 	}

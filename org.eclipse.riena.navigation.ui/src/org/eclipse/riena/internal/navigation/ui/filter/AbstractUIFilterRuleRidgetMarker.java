@@ -17,7 +17,7 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.StringMatcher;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
 import org.eclipse.riena.ui.filter.impl.AbstractUIFilterRuleMarker;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 
 /**
  * Filter rule to provide a marker for a ridget.
@@ -25,7 +25,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterRuleMarker implements
 		IUIFilterRuleMarkerRidget {
 
-	private Map<IMarkableRidget, IMarker> markerMap;
+	private Map<IBasicMarkableRidget, IMarker> markerMap;
 	protected RidgetMatcher matcher;
 
 	/**
@@ -38,7 +38,7 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 	public AbstractUIFilterRuleRidgetMarker(String idPattern, IMarker marker) {
 		super(marker);
 		matcher = createMatcher(idPattern);
-		markerMap = new HashMap<IMarkableRidget, IMarker>();
+		markerMap = new HashMap<IBasicMarkableRidget, IMarker>();
 	}
 
 	/**
@@ -61,8 +61,8 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#apply(java.lang.Object)
 	 */
 	public void apply(Object object) {
-		if (object instanceof IMarkableRidget) {
-			IMarkableRidget markableRidget = (IMarkableRidget) object;
+		if (object instanceof IBasicMarkableRidget) {
+			IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) object;
 			IMarker marker = getMarker();
 			markableRidget.addMarker(marker);
 			markerMap.put(markableRidget, marker);
@@ -76,8 +76,8 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#remove(java.lang.Object)
 	 */
 	public void remove(Object object) {
-		if (object instanceof IMarkableRidget) {
-			IMarkableRidget markableRidget = (IMarkableRidget) object;
+		if (object instanceof IBasicMarkableRidget) {
+			IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) object;
 			IMarker marker = markerMap.get(markableRidget);
 			markableRidget.removeMarker(marker);
 			markerMap.remove(markableRidget);

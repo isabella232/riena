@@ -28,7 +28,7 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -36,7 +36,7 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 /**
  * Ridget for an SWT widget.
  */
-public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements IMarkableRidget {
+public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements IBasicMarkableRidget {
 
 	private Widget uiControl;
 	private String toolTip = null;

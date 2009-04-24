@@ -34,6 +34,7 @@ import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
@@ -238,10 +239,10 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 	}
 
 	public void testFiresMarkerProperty() {
-		if (!(getRidget() instanceof IMarkableRidget)) {
+		if (!(getRidget() instanceof IBasicMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
+		IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
 		IMarker marker = new MandatoryMarker();
 		HashSet<IMarker> before = new HashSet<IMarker>(markableRidget.getMarkers());
 		HashSet<IMarker> after = new HashSet<IMarker>(before);
@@ -250,7 +251,7 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
 		assertEquals("Fails for " + markableRidget, before.size() + 1, after.size());
 
-		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, before, after);
+		expectPropertyChangeEvent(IBasicMarkableRidget.PROPERTY_MARKER, before, after);
 		markableRidget.addMarker(marker);
 		verifyPropertyChangeEvents();
 
@@ -258,7 +259,7 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 		markableRidget.addMarker(marker);
 		verifyPropertyChangeEvents();
 
-		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, after, before);
+		expectPropertyChangeEvent(IBasicMarkableRidget.PROPERTY_MARKER, after, before);
 		markableRidget.removeMarker(marker);
 		verifyPropertyChangeEvents();
 
@@ -268,10 +269,10 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 	}
 
 	public void testFiresDisabledPropertyUsingSetter() {
-		if (!(getRidget() instanceof IMarkableRidget)) {
+		if (!(getRidget() instanceof IBasicMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
+		IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
 
@@ -295,10 +296,10 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 	}
 
 	public void testFiresDisabledPropertyUsingAddRemove() {
-		if (!(getRidget() instanceof IMarkableRidget)) {
+		if (!(getRidget() instanceof IBasicMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
+		IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
 		IMarker marker = new DisabledMarker();
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
@@ -326,10 +327,10 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 	 * Check that disabling / enabling works when we don't have a bound control.
 	 */
 	public void testDisableWithoutUIControl() {
-		if (!(getRidget() instanceof IMarkableRidget)) {
+		if (!(getRidget() instanceof IBasicMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
+		IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
 		markableRidget.setUIControl(null);
 
 		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
@@ -416,8 +417,8 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 
 		assertTrue(ridget.isEnabled());
 		assertTrue(control.isEnabled());
-		if (ridget instanceof IMarkableRidget) {
-			assertEquals(0, ((IMarkableRidget) ridget).getMarkersOfType(DisabledMarker.class).size());
+		if (ridget instanceof IBasicMarkableRidget) {
+			assertEquals(0, ((IBasicMarkableRidget) ridget).getMarkersOfType(DisabledMarker.class).size());
 		}
 	}
 

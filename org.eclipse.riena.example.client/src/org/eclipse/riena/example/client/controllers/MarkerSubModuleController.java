@@ -18,6 +18,7 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.beans.common.Person;
@@ -158,6 +159,9 @@ public class MarkerSubModuleController extends SubModuleController {
 				for (IRidget ridget : markables) {
 					if (ridget instanceof IMarkableRidget) {
 						((IMarkableRidget) ridget).setMandatory(isMandatory);
+					} else {
+						String name = ridget.getClass().getSimpleName();
+						System.out.println("No mandatory marker support on " + name); //$NON-NLS-1$
 					}
 				}
 				if (isMandatory) {
@@ -227,6 +231,9 @@ public class MarkerSubModuleController extends SubModuleController {
 				for (IRidget ridget : markables) {
 					if (ridget instanceof IMarkableRidget) {
 						((IMarkableRidget) ridget).setOutputOnly(isOutput);
+					} else {
+						String name = ridget.getClass().getSimpleName();
+						System.out.println("No output marker support on " + name); //$NON-NLS-1$
 					}
 				}
 			}
@@ -245,7 +252,9 @@ public class MarkerSubModuleController extends SubModuleController {
 		checkHiddenParent.setText("&hidden parent"); //$NON-NLS-1$
 		checkHiddenParent.addListener(new IActionListener() {
 			public void callback() {
-				((Control) markables[0].getUIControl()).getParent().setVisible(!checkHiddenParent.isSelected());
+				Composite parent = ((Control) markables[0].getUIControl()).getParent();
+				boolean isVisible = !checkHiddenParent.isSelected();
+				parent.setVisible(isVisible);
 			}
 		});
 	}

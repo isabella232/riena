@@ -24,7 +24,7 @@ import java.util.List;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 
 /**
  * Common functionality of classes visualizing certain types of message markers.
@@ -32,23 +32,23 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewer {
 
 	private HashSet<Class<? extends IMessageMarker>> markerTypes;
-	private ListenerList<IMarkableRidget> ridgets;
+	private ListenerList<IBasicMarkableRidget> ridgets;
 	private boolean visible;
 
 	public AbstractMessageMarkerViewer() {
 		markerTypes = new LinkedHashSet<Class<? extends IMessageMarker>>();
-		ridgets = new ListenerList<IMarkableRidget>(IMarkableRidget.class);
+		ridgets = new ListenerList<IBasicMarkableRidget>(IBasicMarkableRidget.class);
 		visible = true;
 		markerTypes.add(ValidationMessageMarker.class);
 		markerTypes.add(ErrorMessageMarker.class);
 	}
 
-	public void addRidget(IMarkableRidget markableRidget) {
+	public void addRidget(IBasicMarkableRidget markableRidget) {
 		ridgets.add(markableRidget);
 		showMessages(markableRidget);
 	}
 
-	public void removeRidget(IMarkableRidget markableRidget) {
+	public void removeRidget(IBasicMarkableRidget markableRidget) {
 		ridgets.remove(markableRidget);
 		hideMessages(markableRidget);
 	}
@@ -73,20 +73,20 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 	}
 
 	private void showMessages() {
-		for (IMarkableRidget ridget : getRidgets()) {
+		for (IBasicMarkableRidget ridget : getRidgets()) {
 			showMessages(ridget);
 		}
 	}
 
-	protected abstract void showMessages(IMarkableRidget ridget);
+	protected abstract void showMessages(IBasicMarkableRidget ridget);
 
-	protected abstract void hideMessages(IMarkableRidget ridget);
+	protected abstract void hideMessages(IBasicMarkableRidget ridget);
 
-	protected Collection<IMessageMarker> getMessageMarker(IMarkableRidget markableRidget) {
+	protected Collection<IMessageMarker> getMessageMarker(IBasicMarkableRidget markableRidget) {
 		return getMessageMarker(markableRidget, false);
 	}
 
-	protected Collection<IMessageMarker> getMessageMarker(IMarkableRidget markableRidget, boolean pRemove) {
+	protected Collection<IMessageMarker> getMessageMarker(IBasicMarkableRidget markableRidget, boolean pRemove) {
 		List<IMessageMarker> result = new ArrayList<IMessageMarker>();
 		for (Class<? extends IMessageMarker> nextMessageMarkerType : markerTypes) {
 			Collection<? extends IMessageMarker> nextMessageMarkers = markableRidget
@@ -104,7 +104,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 		return result;
 	}
 
-	protected Collection<IMarkableRidget> getRidgets() {
+	protected Collection<IBasicMarkableRidget> getRidgets() {
 		return Arrays.asList(ridgets.getListeners());
 	}
 
