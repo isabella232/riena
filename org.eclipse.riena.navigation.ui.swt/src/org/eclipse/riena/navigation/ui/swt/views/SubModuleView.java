@@ -27,6 +27,8 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.part.ViewPart;
 
 import org.eclipse.riena.core.Log4r;
@@ -44,6 +46,8 @@ import org.eclipse.riena.navigation.ui.controllers.ControllerUtils;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.ui.common.IComplexComponent;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
@@ -65,6 +69,8 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	private AbstractViewBindingDelegate binding;
 	private SubModuleController currentController;
+
+	private VisibilityListener visibilityListener;
 
 	/**
 	 * This node is used when creating this ViewPart inside an RCP application.
@@ -90,6 +96,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 */
 	public SubModuleView() {
 		binding = createBinding();
+		visibilityListener = new VisibilityListener();
 	}
 
 	/**
@@ -164,6 +171,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		if (!Beans.isDesignTime()) {
 			createViewFacade();
 			doBinding();
+			addVisibilityListener(visibilityListener);
 		}
 	}
 
@@ -255,19 +263,36 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	private final class SubModuleNodesListener extends SubModuleNodeListener {
 		@Override
 		public void activated(ISubModuleNode source) {
-			if (source.equals(getNavigationNode())) {
+			if (source.equals(currentController.getNavigationNode())) {
 				doBinding();
+				addVisibilityListener(visibilityListener);
+			}
+		}
+
+		@Override
+		public void deactivated(ISubModuleNode source) {
+			if (source.equals(currentController.getNavigationNode())) {
+				removeVisibilityListener(visibilityListener);
 			}
 		}
 
 		@Override
 		public void block(ISubModuleNode source, boolean block) {
-			if (source.equals(getNavigationNode())) {
+			if (source.equals(currentController.getNavigationNode())) {
 				ControllerUtils.blockRidgets(getController().getRidgets(), block);
 				blockView(block);
 			}
 		}
+	}
 
+	private void addVisibilityListener(VisibilityListener l) {
+		getContentComposite().getDisplay().addFilter(SWT.Show, l);
+		getContentComposite().getDisplay().addFilter(SWT.Hide, l);
+	}
+
+	private void removeVisibilityListener(VisibilityListener l) {
+		getContentComposite().getDisplay().removeFilter(SWT.Show, l);
+		getContentComposite().getDisplay().removeFilter(SWT.Hide, l);
 	}
 
 	protected void blockView(boolean block) {
@@ -313,7 +338,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			try {
 				controller = (C) def.createController();
 			} catch (Exception ex) {
-				String message = String.format("cannnot create controller for class %s", def.getControllerClass()); //$NON-NLS-1$ 
+				String message = String.format("cannot create controller for class %s", def.getControllerClass()); //$NON-NLS-1$ 
 				LOGGER.log(LogService.LOG_ERROR, message, ex);
 				throw new InvocationTargetFailure(message, ex);
 			}
@@ -333,6 +358,9 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#bind(org.eclipse.riena.navigation.INavigationNode)
+	 */
 	public void bind(SubModuleNode node) {
 
 		if (currentController != getController()) {
@@ -359,6 +387,47 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	}
 
+	private class VisibilityListener implements Listener {
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets
+		 * .Event)
+		 */
+		public void handleEvent(final Event event) {
+			if (shouldBeHandled(event)) {
+				getContentComposite().getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						for (IRidget r : getController().getRidgets()) {
+							if (r instanceof IMarkableRidget) {
+								((IMarkableRidget) r).updateMarkers();
+							}
+						}
+						getController().updateNavigationNodeMarkers();
+					}
+				});
+			}
+		}
+
+		private boolean shouldBeHandled(Event event) {
+			return getContentComposite().equals(event.widget)
+					|| (event.widget instanceof Control && isDescendant(getContentComposite(), (Control) event.widget));
+		}
+
+		private boolean isDescendant(Control ancestor, Control descendant) {
+			if (descendant == null) {
+				return false;
+			}
+
+			if (descendant == ancestor) {
+				return true;
+			}
+
+			return isDescendant(ancestor, descendant.getParent());
+		}
+	}
+
 	public SubModuleNode getNavigationNode() {
 		String viewId = this.getViewSite().getId();
 		String secondaryId = this.getViewSite().getSecondaryId();
@@ -369,6 +438,9 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		return result;
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#unbind()
+	 */
 	public void unbind() {
 		SubModuleController controller = getController();
 		if (controller != null) {
@@ -428,9 +500,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			if (uiControl instanceof Composite) {
 				addUIControls((Composite) uiControl);
 			}
-
 		}
-
 	}
 
 	private boolean isChildOfComplexComponent(Control uiControl) {
@@ -442,7 +512,5 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			return true;
 		}
 		return isChildOfComplexComponent(uiControl.getParent());
-
 	}
-
 }

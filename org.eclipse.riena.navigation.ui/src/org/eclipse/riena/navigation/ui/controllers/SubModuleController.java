@@ -176,4 +176,11 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		}
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.ui.controllers.NavigationNodeController#updateNavigationNodeMarkers()
+	 */
+	@Override
+	public void updateNavigationNodeMarkers() {
+		super.updateNavigationNodeMarkers();
+	}
 }

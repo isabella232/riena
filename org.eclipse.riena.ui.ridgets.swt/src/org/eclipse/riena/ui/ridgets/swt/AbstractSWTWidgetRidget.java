@@ -399,6 +399,15 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IMarkableRidget#updateMarkers()
+	 */
+	public void updateMarkers() {
+		if (markerSupport != null) {
+			markerSupport.updateMarkers();
+		}
+	}
+
 	// protected methods
 	// //////////////////
 
@@ -415,14 +424,4 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			mMarker.setDisabled(disable);
 		}
 	}
-
-	// helping methods
-	// ////////////////
-
-	private void updateMarkers() {
-		if (markerSupport != null) {
-			markerSupport.updateMarkers();
-		}
-	}
-
 }

@@ -18,6 +18,7 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
@@ -148,6 +149,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IToggleButtonRidget checkDisabled = (IToggleButtonRidget) getRidget("checkDisabled"); //$NON-NLS-1$
 		final IToggleButtonRidget checkOutput = (IToggleButtonRidget) getRidget("checkOutput"); //$NON-NLS-1$
 		final IToggleButtonRidget checkHidden = (IToggleButtonRidget) getRidget("checkHidden"); //$NON-NLS-1$
+		final IToggleButtonRidget checkHiddenParent = (IToggleButtonRidget) getRidget("checkHiddenParent"); //$NON-NLS-1$
 
 		checkMandatory.setText("&mandatory"); //$NON-NLS-1$
 		checkMandatory.addListener(new IActionListener() {
@@ -237,6 +239,13 @@ public class MarkerSubModuleController extends SubModuleController {
 				for (IRidget ridget : markables) {
 					ridget.setVisible(isVisible);
 				}
+			}
+		});
+
+		checkHiddenParent.setText("&hidden parent"); //$NON-NLS-1$
+		checkHiddenParent.addListener(new IActionListener() {
+			public void callback() {
+				((Control) markables[0].getUIControl()).getParent().setVisible(!checkHiddenParent.isSelected());
 			}
 		});
 	}

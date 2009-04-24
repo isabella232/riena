@@ -82,4 +82,10 @@ public interface IMarkableRidget extends IRidget, IMarkable {
 	 *            (=cannot be edited), <code>false</code> otherwise.
 	 */
 	void setOutputOnly(boolean outputOnly);
+
+	/**
+	 * Update the representation of the control associated with the ridget based
+	 * on its markers.
+	 */
+	void updateMarkers();
 }

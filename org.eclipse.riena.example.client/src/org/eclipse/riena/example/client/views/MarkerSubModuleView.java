@@ -94,6 +94,9 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		Button checkHidden = UIControlsFactory.createButtonCheck(group);
 		addUIControl(checkHidden, "checkHidden"); //$NON-NLS-1$
 
+		Button checkHiddenParent = UIControlsFactory.createButtonCheck(group);
+		addUIControl(checkHiddenParent, "checkHiddenParent"); //$NON-NLS-1$
+
 		return group;
 	}
 
