@@ -57,7 +57,7 @@ public class ActionObserver extends SelectionAdapter {
 		}
 	}
 
-	void fireAction() {
+	public void fireAction() {
 		if (actionListeners != null) {
 			for (IActionListener listener : actionListeners.getListeners()) {
 				listener.callback();

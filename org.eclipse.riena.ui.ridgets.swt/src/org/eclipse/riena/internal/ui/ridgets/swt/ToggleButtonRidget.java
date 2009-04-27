@@ -10,59 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import java.beans.EventHandler;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.BindingException;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 
-import org.eclipse.riena.ui.core.marker.OutputMarker;
-import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractValueRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractToggleButtonRidget;
 
 /**
  * Adapter of the SWT Widget <code>Button</code> with the style SWT.CHECK or
  * SWT.TOGGLE .
  */
-public class ToggleButtonRidget extends AbstractValueRidget implements IToggleButtonRidget {
-
-	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
-
-	private final ActionObserver actionObserver;
-	private Binding controlBinding;
-	private String text;
-	private String icon;
-	private boolean selected;
-	private boolean textAlreadyInitialized;
-	private boolean useRidgetIcon;
-
-	public ToggleButtonRidget() {
-		super();
-		actionObserver = new ActionObserver();
-		textAlreadyInitialized = false;
-		useRidgetIcon = false;
-		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
-				updateSelection(isEnabled);
-			}
-		});
-	}
+public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 
 	@Override
 	protected void checkUIControl(Object uiControl) {
@@ -78,186 +40,32 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	}
 
 	@Override
-	protected void bindUIControl() {
-		DataBindingContext context = getValueBindingSupport().getContext();
-		Button control = getUIControl();
-		if (control != null) {
-			controlBinding = context.bindValue(SWTObservables.observeSelection(control), getRidgetObservable(),
-					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(
-							UpdateValueStrategy.POLICY_UPDATE)
-							.setBeforeSetValidator(new CancelControlUpdateWhenDisabled()));
-			initText();
-			updateUIText();
-			updateSelection(isEnabled());
-			updateUIIcon();
-		}
-	}
-
-	@Override
-	protected void unbindUIControl() {
-		super.unbindUIControl();
-		if (controlBinding != null) {
-			controlBinding.dispose();
-			controlBinding = null;
-		}
-	}
-
-	@Override
-	protected IObservableValue getRidgetObservable() {
-		return BeansObservables.observeValue(this, IToggleButtonRidget.PROPERTY_SELECTED);
-	}
-
-	/**
-	 * Always returns true because mandatory markers do not make sense for this
-	 * ridget.
-	 */
-	@Override
-	public boolean isDisableMandatoryMarker() {
-		return true;
-	}
-
-	public boolean isSelected() {
-		return selected;
-	}
-
-	public void setSelected(boolean selected) {
-		if (!getMarkersOfType(OutputMarker.class).isEmpty()) {
-			/*
-			 * TODO If the Ridget has an OutputMarker all events from UI should
-			 * be "reverted". At the moment this only works if the control is
-			 * unbound at the moment the selection is reset to the saved value
-			 * in the Ridget. Needs some investigation. See bug #271762
-			 */
-			//
-			////// Revert
-			unbindUIControl();
-			getUIControl().setSelection(this.selected);
-			bindUIControl();
-			////// End Revert
-			return;
-		}
-		if (this.selected != selected) {
-			boolean oldValue = this.selected;
-			this.selected = selected;
-			actionObserver.fireAction();
-			firePropertyChange(IToggleButtonRidget.PROPERTY_SELECTED, Boolean.valueOf(oldValue), Boolean
-					.valueOf(selected));
-		}
-	}
-
-	@Override
 	public Button getUIControl() {
 		return (Button) super.getUIControl();
 	}
 
-	public void addListener(IActionListener listener) {
-		actionObserver.addListener(listener);
+	protected ISWTObservableValue getUIControlSelectionObservable() {
+		return SWTObservables.observeSelection(getUIControl());
 	}
 
-	public void addListener(Object target, String action) {
-		IActionListener listener = EventHandler.create(IActionListener.class, target, action);
-		actionObserver.addListener(listener);
+	@Override
+	protected void setUIControlSelection(boolean selected) {
+		getUIControl().setSelection(selected);
 	}
 
-	public void removeListener(IActionListener listener) {
-		actionObserver.removeListener(listener);
+	@Override
+	protected String getUIControlText() {
+		return getUIControl().getText();
 	}
 
-	public final String getText() {
-		return text;
+	@Override
+	protected void setUIControlText(String text) {
+		getUIControl().setText(text);
 	}
 
-	public final void setText(String newText) {
-		this.text = newText;
-		updateUIText();
+	@Override
+	protected void setUIControlImage(Image image) {
+		getUIControl().setImage(image);
 	}
-
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		boolean oldUseRidgetIcon = useRidgetIcon;
-		useRidgetIcon = true;
-		String oldIcon = this.icon;
-		this.icon = icon;
-		if (hasChanged(oldIcon, icon) || !oldUseRidgetIcon) {
-			updateUIIcon();
-		}
-	}
-
-	// helping methods
-	// ////////////////
-
-	/**
-	 * If the text of the ridget has no value, initialize it with the text of
-	 * the UI control.
-	 */
-	private void initText() {
-		if ((text == null) && (!textAlreadyInitialized)) {
-			if ((getUIControl()) != null && !(getUIControl().isDisposed())) {
-				text = getUIControl().getText();
-				if (text == null) {
-					text = EMPTY_STRING;
-				}
-				textAlreadyInitialized = true;
-			}
-		}
-	}
-
-	/**
-	 * Update the selection state of this ridget's control (button)
-	 * 
-	 * @param isRidgetEnabled
-	 *            true if this ridget is enabled, false otherwise
-	 */
-	private void updateSelection(boolean isRidgetEnabled) {
-		Button control = getUIControl();
-		if (control != null && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
-			if (!isRidgetEnabled) {
-				control.setSelection(false);
-			} else {
-				control.setSelection(isSelected());
-			}
-		}
-	}
-
-	private void updateUIText() {
-		Button control = getUIControl();
-		if (control != null) {
-			control.setText(text);
-		}
-	}
-
-	/**
-	 * Updates the images of the control.
-	 */
-	private void updateUIIcon() {
-		Button control = getUIControl();
-		if (control != null) {
-			Image image = null;
-			if (icon != null) {
-				image = getManagedImage(icon);
-			}
-			if ((image != null) || useRidgetIcon) {
-				control.setImage(image);
-			}
-		}
-	}
-
-	// helping classes
-	//////////////////
-
-	/**
-	 * When the ridget is disabled, this validator will prevent the selected
-	 * attribute of a control (Button) from changing -- unless
-	 * HIDE_DISABLED_RIDGET_CONTENT is {@code false}.
-	 */
-	private final class CancelControlUpdateWhenDisabled implements IValidator {
-		public IStatus validate(Object value) {
-			boolean cancel = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT && !isEnabled();
-			return cancel ? Status.CANCEL_STATUS : Status.OK_STATUS;
-		}
-	};
 
 }
