@@ -118,6 +118,11 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 				throw new ExtensionPointFailure("No assembler found for ID=" + targetId.getTypeId()); //$NON-NLS-1$
 			}
 		}
+		if (argument != null) {
+			// store the NavigationArgument in node context
+			targetNode.setContext(NavigationArgument.CONTEXT_KEY_ARGUMENT, argument);
+			targetNode.setContext(NavigationArgument.CONTEXT_KEY_PARAMETER, argument.getParameter());
+		}
 
 		return targetNode;
 	}

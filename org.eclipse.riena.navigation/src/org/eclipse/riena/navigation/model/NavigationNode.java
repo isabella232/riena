@@ -1087,6 +1087,18 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		getNavigationProcessor().create(this, targetId);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.INavigationNode#create(org.eclipse.riena
+	 * .navigation.NavigationNodeId,
+	 * org.eclipse.riena.navigation.NavigationArgument)
+	 */
+	public void create(NavigationNodeId targetId, NavigationArgument argument) {
+		getNavigationProcessor().create(this, targetId, argument);
+	}
+
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(org.eclipse.riena.navigation.NavigationNodeId)
 	 */
@@ -1221,6 +1233,15 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
 			next.filterRemoved(this, filter);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.navigation.INavigationNode#getNavigationArgument()
+	 */
+	public NavigationArgument getNavigationArgument() {
+		return (NavigationArgument) getContext(NavigationArgument.CONTEXT_KEY_ARGUMENT);
 	}
 
 }

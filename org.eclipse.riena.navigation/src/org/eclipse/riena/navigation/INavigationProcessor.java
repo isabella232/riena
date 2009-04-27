@@ -61,6 +61,23 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	void create(INavigationNode<?> sourceNode, NavigationNodeId targetId);
 
 	/**
+	 * Creates the specified navigation node and adds it to the application
+	 * model if does not already exist. Also adds the NavigationArgument to the
+	 * node of the targetId.
+	 * 
+	 * @param sourceNode
+	 *            An existing node in the application model tree.
+	 * @param targetId
+	 *            ID of the node to create. Also refers to an extension point
+	 *            used to create the target node if it does not exist.
+	 * @param argument
+	 *            Contains information passed on to the target node and/or used
+	 *            during its creation.
+	 * @see INavigationAssembler
+	 */
+	void create(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
+
+	/**
 	 * Navigates from the specified source node to the specified target node.
 	 * The target node is created and added to the application model if no node
 	 * with the specified id exists.

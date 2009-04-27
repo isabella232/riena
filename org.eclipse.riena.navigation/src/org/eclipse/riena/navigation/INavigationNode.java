@@ -171,6 +171,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	/**
 	 * Called from the navigation processor to remove a node during dispose
 	 * Removes the passed node from the list child nodes
+	 * 
 	 * @param pChild
 	 *            - the child node to remove
 	 */
@@ -455,6 +456,22 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void create(NavigationNodeId targetId);
 
 	/**
+	 * Creates the specified navigation node and adds it to the application
+	 * model if does not already exist. It also adds the NavigationArgument to
+	 * the context of the NavigationNode.
+	 * 
+	 * @param targetId
+	 *            ID of the node to create. Also refers to an extension point
+	 *            describing the target node that is used to create it if it
+	 *            does not exist.
+	 * @param argument
+	 *            The optional NavigationArgument
+	 * @see INavigationAssembler
+	 * @see NavigationArgument
+	 */
+	void create(NavigationNodeId targetId, NavigationArgument argument);
+
+	/**
 	 * Creates the specified navigation node (if it does not already exist) and
 	 * navigates to it.
 	 * 
@@ -503,5 +520,10 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * @return type of child nodes.
 	 */
 	Class<C> getValidChildType();
+
+	/**
+	 * @return NavigationArgument attached to this node
+	 */
+	public NavigationArgument getNavigationArgument();
 
 }

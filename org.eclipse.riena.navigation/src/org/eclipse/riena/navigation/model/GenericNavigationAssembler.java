@@ -18,9 +18,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtilsBean;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.navigation.IAssemblerProvider;
 import org.eclipse.riena.navigation.IForEachExtension;
@@ -439,9 +441,10 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 
 	protected void updateContext(INavigationNode<?> node, NavigationArgument navigationArgument) {
 
-		if (navigationArgument != null) {
-			node.setContext(NavigationArgument.CONTEXT_KEY_PARAMETER, navigationArgument.getParameter());
-		}
+		// this logic is now in GenericNavigationAssembler and available for Generic assemblers and handwritten ones....
+		//		if (navigationArgument != null) {
+		//			node.setContext(NavigationArgument.CONTEXT_KEY_PARAMETER, navigationArgument.getParameter());
+		//		}
 
 	}
 

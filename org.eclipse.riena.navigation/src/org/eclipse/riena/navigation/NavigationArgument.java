@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Contains additional information for a navigation passed on to the target node
  * and/or used during its creation.
@@ -21,11 +24,20 @@ package org.eclipse.riena.navigation;
  */
 public class NavigationArgument {
 
+	/**
+	 * this key is used in INavigationNode.getContext to address the parameter
+	 * within the NavigationArgument
+	 */
 	public static final String CONTEXT_KEY_PARAMETER = "riena.navigation.parameter"; //$NON-NLS-1$
+	/**
+	 * this key is used in INavigationNode.getContext to address THIS (the
+	 * NavigationArgument)
+	 */
+	public static final String CONTEXT_KEY_ARGUMENT = "riena.navigation.argument"; //$NON-NLS-1$
 
 	private Object parameter;
 	private NavigationNodeId parentNodeId;
-	private INavigationArgumentListener argumentListener;
+	private List<INavigationArgumentListener> argumentListeners = null;
 
 	// TODO see https://bugs.eclipse.org/bugs/show_bug.cgi?id=261832
 	//private boolean navigateAsync = false;
@@ -50,11 +62,9 @@ public class NavigationArgument {
 	 * @param argumentListener
 	 * @param parentNodeId
 	 */
-	public NavigationArgument(Object argument, INavigationArgumentListener argumentListener,
-			NavigationNodeId parentNodeId) {
+	public NavigationArgument(Object argument, NavigationNodeId parentNodeId) {
 		super();
 		this.parameter = argument;
-		this.argumentListener = argumentListener;
 		this.parentNodeId = parentNodeId;
 	}
 
@@ -70,16 +80,6 @@ public class NavigationArgument {
 	public NavigationArgument(Object argument) {
 		super();
 		this.parameter = argument;
-	}
-
-	/**
-	 * @param parameter
-	 * @param argumentListener
-	 */
-	public NavigationArgument(Object argument, INavigationArgumentListener argumentListener) {
-		super();
-		this.parameter = argument;
-		this.argumentListener = argumentListener;
 	}
 
 	/**
@@ -113,18 +113,36 @@ public class NavigationArgument {
 	}
 
 	/**
-	 * @return the argumentListener
+	 * @param argumentListener
+	 *            the argumentListener to add
 	 */
-	public INavigationArgumentListener getArgumentListener() {
-		return argumentListener;
+	public void addArgumentListener(INavigationArgumentListener argumentListener) {
+		if (argumentListeners == null) {
+			argumentListeners = new ArrayList<INavigationArgumentListener>();
+		}
+		argumentListeners.add(argumentListener);
 	}
 
 	/**
 	 * @param argumentListener
-	 *            the argumentListener to set
+	 *            the argumentListener to add
 	 */
-	public void setArgumentListener(INavigationArgumentListener argumentListener) {
-		this.argumentListener = argumentListener;
+	public void removeArgumentListener(INavigationArgumentListener argumentListener) {
+		if (argumentListeners == null) {
+			return;
+		}
+		argumentListeners.remove(argumentListener);
 	}
 
+	/**
+	 * Navigation Argument was changed, fire change event to all listeners
+	 */
+	public void fireValueChanged() {
+		if (argumentListeners == null) {
+			return;
+		}
+		for (INavigationArgumentListener listeners : argumentListeners) {
+			listeners.valueChanged(this);
+		}
+	}
 }
