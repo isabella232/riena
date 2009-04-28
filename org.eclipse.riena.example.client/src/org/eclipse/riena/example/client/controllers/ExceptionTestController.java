@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-
-import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  *
@@ -58,6 +58,7 @@ public class ExceptionTestController extends SubModuleController {
 			public void callback() {
 				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) { //$NON-NLS-1$
 
+					@Override
 					public boolean runJob(IProgressMonitor monitor) {
 						notifyUpdateUI();
 						return false;

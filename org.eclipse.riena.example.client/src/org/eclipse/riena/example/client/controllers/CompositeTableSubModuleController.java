@@ -43,7 +43,7 @@ public class CompositeTableSubModuleController extends SubModuleController {
 	public static class RowRidget extends AbstractCompositeRidget implements IRowRidget {
 		private Person rowData;
 
-		private static String[] GENDER = { Person.FEMALE, Person.MALE };
+		private static final String[] GENDER = { Person.FEMALE, Person.MALE };
 
 		public void setData(Object rowData) {
 			this.rowData = (Person) rowData;
@@ -79,6 +79,7 @@ public class CompositeTableSubModuleController extends SubModuleController {
 		super(navigationNode);
 	}
 
+	@Override
 	public void configureRidgets() {
 		final ICompositeTableRidget table = (ICompositeTableRidget) getRidget("table"); //$NON-NLS-1$
 		final IActionRidget buttonAdd = (IActionRidget) getRidget("buttonAdd"); //$NON-NLS-1$

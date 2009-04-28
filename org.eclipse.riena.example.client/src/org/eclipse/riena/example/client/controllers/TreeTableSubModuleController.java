@@ -74,6 +74,7 @@ public class TreeTableSubModuleController extends SubModuleController {
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 
 		tree = (IGroupedTreeTableRidget) getRidget("tree"); //$NON-NLS-1$

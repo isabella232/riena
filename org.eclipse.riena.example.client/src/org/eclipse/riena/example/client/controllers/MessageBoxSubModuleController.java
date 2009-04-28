@@ -173,6 +173,7 @@ public class MessageBoxSubModuleController extends SubModuleController {
 			return type;
 		}
 
+		@Override
 		public String toString() {
 			return label;
 		}
@@ -192,6 +193,7 @@ public class MessageBoxSubModuleController extends SubModuleController {
 			return options;
 		}
 
+		@Override
 		public String toString() {
 			return label;
 		}

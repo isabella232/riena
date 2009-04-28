@@ -35,6 +35,7 @@ public class DateTimeSubModuleController extends SubModuleController {
 		super(navigationNode);
 	}
 
+	@Override
 	public void configureRidgets() {
 		IDateTimeRidget dtDate = (IDateTimeRidget) getRidget("dtDate"); //$NON-NLS-1$
 		IDateTimeRidget dtTime = (IDateTimeRidget) getRidget("dtTime"); //$NON-NLS-1$

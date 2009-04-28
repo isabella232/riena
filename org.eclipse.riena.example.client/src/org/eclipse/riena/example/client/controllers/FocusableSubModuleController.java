@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.example.client.views.FocusableSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -36,6 +37,7 @@ public class FocusableSubModuleController extends SubModuleController {
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 
 		final IToggleButtonRidget checkVisible = (IToggleButtonRidget) getRidget("checkVisible"); //$NON-NLS-1$

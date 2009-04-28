@@ -88,7 +88,7 @@ public class OnePersonSubModuleController extends SubModuleController {
 	 * 
 	 * @return countries
 	 */
-	public List<String> getCountries() {
+	public synchronized List<String> getCountries() {
 
 		if (countries == null) {
 			countries = new ArrayList<String>();

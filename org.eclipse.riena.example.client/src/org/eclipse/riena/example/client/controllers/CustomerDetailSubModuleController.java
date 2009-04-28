@@ -32,6 +32,7 @@ public class CustomerDetailSubModuleController extends SubModuleController {
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 		ISubModuleNode newNode = new SubModuleNode(null, "dynamically added node"); //$NON-NLS-1$
 		// TODO do it like swtExampleApplication ..

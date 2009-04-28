@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
@@ -80,7 +83,13 @@ public class MarkerSubModuleController extends SubModuleController {
 		textDate.setText("04.12.2008"); //$NON-NLS-1$
 
 		final IDateTimeRidget dtDate = (IDateTimeRidget) getRidget("dtDate"); //$NON-NLS-1$
-		dtDate.setDate(new Date(2008 - 1900, 11, 04));
+		DateFormat dateFormat = new SimpleDateFormat("dd.MM.YYYY"); //$NON-NLS-1$
+		try {
+			Date date = dateFormat.parse("04.12.2008"); //$NON-NLS-1$
+			dtDate.setDate(date);
+		} catch (ParseException e) {
+			dtDate.setDate(new Date());
+		}
 
 		final IComboRidget comboAge = (IComboRidget) getRidget("comboAge"); //$NON-NLS-1$
 		List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
@@ -215,48 +224,16 @@ public class MarkerSubModuleController extends SubModuleController {
 		});
 
 		checkDisabled.setText("&disabled"); //$NON-NLS-1$
-		checkDisabled.addListener(new IActionListener() {
-			public void callback() {
-				boolean isEnabled = !checkDisabled.isSelected();
-				for (IRidget ridget : markables) {
-					ridget.setEnabled(isEnabled);
-				}
-			}
-		});
+		checkDisabled.addListener(new DisabledActionListener(markables, checkDisabled));
 
 		checkOutput.setText("&output"); //$NON-NLS-1$
-		checkOutput.addListener(new IActionListener() {
-			public void callback() {
-				boolean isOutput = checkOutput.isSelected();
-				for (IRidget ridget : markables) {
-					if (ridget instanceof IMarkableRidget) {
-						((IMarkableRidget) ridget).setOutputOnly(isOutput);
-					} else {
-						String name = ridget.getClass().getSimpleName();
-						System.out.println("No output marker support on " + name); //$NON-NLS-1$
-					}
-				}
-			}
-		});
+		checkOutput.addListener(new OutputActionListener(markables, checkOutput));
 
 		checkHidden.setText("&hidden"); //$NON-NLS-1$
-		checkHidden.addListener(new IActionListener() {
-			public void callback() {
-				boolean isVisible = !checkHidden.isSelected();
-				for (IRidget ridget : markables) {
-					ridget.setVisible(isVisible);
-				}
-			}
-		});
+		checkHidden.addListener(new HiddenActionListener(checkHidden, markables));
 
 		checkHiddenParent.setText("&hidden parent"); //$NON-NLS-1$
-		checkHiddenParent.addListener(new IActionListener() {
-			public void callback() {
-				Composite parent = ((Control) markables[0].getUIControl()).getParent();
-				boolean isVisible = !checkHiddenParent.isSelected();
-				parent.setVisible(isVisible);
-			}
-		});
+		checkHiddenParent.addListener(new HiddenParentActionListener(checkHiddenParent, markables));
 	}
 
 	// helping methods
@@ -293,6 +270,86 @@ public class MarkerSubModuleController extends SubModuleController {
 	// helping classes
 	// ////////////////
 
+	private static final class DisabledActionListener implements IActionListener {
+
+		private final IRidget[] markables;
+		private final IToggleButtonRidget checkDisabled;
+
+		private DisabledActionListener(IRidget[] markables, IToggleButtonRidget checkDisabled) {
+			this.markables = markables;
+			this.checkDisabled = checkDisabled;
+		}
+
+		public void callback() {
+			boolean isEnabled = !checkDisabled.isSelected();
+			for (IRidget ridget : markables) {
+				ridget.setEnabled(isEnabled);
+			}
+		}
+
+	}
+
+	private static final class OutputActionListener implements IActionListener {
+
+		private final IRidget[] markables;
+		private final IToggleButtonRidget checkOutput;
+
+		private OutputActionListener(IRidget[] markables, IToggleButtonRidget checkOutput) {
+			this.markables = markables;
+			this.checkOutput = checkOutput;
+		}
+
+		public void callback() {
+			boolean isOutput = checkOutput.isSelected();
+			for (IRidget ridget : markables) {
+				if (ridget instanceof IMarkableRidget) {
+					((IMarkableRidget) ridget).setOutputOnly(isOutput);
+				} else {
+					String name = ridget.getClass().getSimpleName();
+					System.out.println("No output marker support on " + name); //$NON-NLS-1$
+				}
+			}
+		}
+
+	}
+
+	private static final class HiddenActionListener implements IActionListener {
+
+		private final IToggleButtonRidget checkHidden;
+		private final IRidget[] markables;
+
+		private HiddenActionListener(IToggleButtonRidget checkHidden, IRidget[] markables) {
+			this.checkHidden = checkHidden;
+			this.markables = markables;
+		}
+
+		public void callback() {
+			boolean isVisible = !checkHidden.isSelected();
+			for (IRidget ridget : markables) {
+				ridget.setVisible(isVisible);
+			}
+		}
+
+	}
+
+	private static final class HiddenParentActionListener implements IActionListener {
+
+		private final IToggleButtonRidget checkHiddenParent;
+		private final IRidget[] markables;
+
+		private HiddenParentActionListener(IToggleButtonRidget checkHiddenParent, IRidget[] markables) {
+			this.checkHiddenParent = checkHiddenParent;
+			this.markables = markables;
+		}
+
+		public void callback() {
+			Composite parent = ((Control) markables[0].getUIControl()).getParent();
+			boolean isVisible = !checkHiddenParent.isSelected();
+			parent.setVisible(isVisible);
+		}
+
+	}
+
 	/**
 	 * Validator that always returns an error status.
 	 */
@@ -313,6 +370,7 @@ public class MarkerSubModuleController extends SubModuleController {
 			this.rowData = (Person) rowData;
 		}
 
+		@Override
 		public void configureRidgets() {
 			ITextRidget txtLast = (ITextRidget) getRidget("txtLast"); //$NON-NLS-1$
 			txtLast.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);

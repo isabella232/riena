@@ -77,6 +77,7 @@ public class TableSubModuleController extends SubModuleController {
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 
 		table = (ITableRidget) getRidget("table"); //$NON-NLS-1$

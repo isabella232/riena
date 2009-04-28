@@ -52,6 +52,7 @@ public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubM
 		result.setLayout(createFillLayout(20));
 
 		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.TOP) {
+			@Override
 			protected void createDetails(Composite parent) {
 				GridLayoutFactory.fillDefaults().numColumns(3).spacing(6, 0).equalWidth(false).applyTo(parent);
 

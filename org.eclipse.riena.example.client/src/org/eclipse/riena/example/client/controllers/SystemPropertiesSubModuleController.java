@@ -19,6 +19,10 @@ import java.util.Set;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.PlatformUI;
+
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView;
@@ -30,9 +34,6 @@ import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Controller for the {@link SystemPropertiesSubModuleView} example.
@@ -92,6 +93,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 
 		tableProperties = (ITableRidget) getRidget("tableProperties"); //$NON-NLS-1$

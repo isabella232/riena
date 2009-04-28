@@ -11,10 +11,6 @@
 package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.example.client.controllers.LoginDialogController;
-import org.eclipse.riena.navigation.ui.swt.login.AbstractLoginSplashView;
-import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -22,6 +18,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.example.client.controllers.LoginDialogController;
+import org.eclipse.riena.navigation.ui.swt.login.AbstractLoginSplashView;
+import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * The view for the login splash dialog of the example.
@@ -33,10 +34,12 @@ public class LoginSplashView extends AbstractLoginSplashView {
 	private static final GridData GD11RIGHTBOTTOMFILL = new GridData(SWT.RIGHT, SWT.BOTTOM, true, true, 1, 1);
 	private static final GridData GD11LEFTBOTTOMFILL = new GridData(SWT.LEFT, SWT.BOTTOM, true, true, 1, 1);
 
+	@Override
 	protected AbstractWindowController createController() {
 		return new LoginDialogController(result);
 	}
 
+	@Override
 	protected Control buildView(Composite parent) {
 
 		addUIControl(parent.getShell(), AbstractWindowController.RIDGET_ID_WINDOW);

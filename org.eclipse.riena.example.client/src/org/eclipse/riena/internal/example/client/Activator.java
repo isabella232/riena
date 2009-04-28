@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.example.client;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.communication.core.factory.ProxyAlreadyRegisteredFailure;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.monitor.common.IReceiver;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
-
-import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -33,22 +34,25 @@ public class Activator extends RienaPlugin {
 	/**
 	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		Register.remoteProxy(IReceiver.class).usingUrl("http://localhost:8080/hessian/CollectibleReceiverWS")
-				.withProtocol("hessian").andStart(context);
+		Register.remoteProxy(IReceiver.class).usingUrl("http://localhost:8080/hessian/CollectibleReceiverWS") //$NON-NLS-1$
+				.withProtocol(PROTOCOL_HESSIAN).andStart(context);
 		try {
-			Register.remoteProxy(IAuthenticationService.class).usingUrl(
-					"http://localhost:8080/hessian/AuthenticationService").withProtocol("hessian").andStart(context);
+			Register
+					.remoteProxy(IAuthenticationService.class)
+					.usingUrl("http://localhost:8080/hessian/AuthenticationService").withProtocol(PROTOCOL_HESSIAN).andStart(context); //$NON-NLS-1$ 
 		} catch (ProxyAlreadyRegisteredFailure e) {
-			// do nothing, can happen if some other bundle registered this service
+			Nop.reason("do nothing, can happen if some other bundle registered this service"); //$NON-NLS-1$
 		}
 	}
 
 	/**
 	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
