@@ -50,65 +50,65 @@ public class CustomerSearchView extends SubModuleView<CustomerSearchController> 
 		ergebnis.setLinesVisible(true);
 		ergebnis.setHeaderVisible(true);
 		ergebnis.setBounds(30, 137, 703, 264);
-		addUIControl(ergebnis, "result");
+		addUIControl(ergebnis, "result"); //$NON-NLS-1$
 
-		final TableColumn newColumnTableColumn = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn.setWidth(136);
+		final TableColumn colLastname = new TableColumn(ergebnis, SWT.NONE);
+		colLastname.setWidth(136);
 
-		final TableColumn newColumnTableColumn_1 = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn_1.setWidth(95);
+		final TableColumn colFirstname = new TableColumn(ergebnis, SWT.NONE);
+		colFirstname.setWidth(95);
 
-		final TableColumn newColumnTableColumn_3 = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn_3.setWidth(122);
+		final TableColumn colBirthdate = new TableColumn(ergebnis, SWT.NONE);
+		colBirthdate.setWidth(122);
 
-		final TableColumn newColumnTableColumn_4 = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn_4.setWidth(150);
+		final TableColumn colStreet = new TableColumn(ergebnis, SWT.NONE);
+		colStreet.setWidth(150);
 
-		final TableColumn newColumnTableColumn_6 = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn_6.setWidth(127);
+		final TableColumn colCity = new TableColumn(ergebnis, SWT.NONE);
+		colCity.setWidth(127);
 
 		Text suchName = new Text(container, SWT.BORDER);
-		suchName.setFont(SWTResourceManager.getFont("", 12, SWT.NONE));
+		suchName.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 		suchName.setBounds(120, 25, 201, 32);
-		addUIControl(suchName, "searchLastName");
+		addUIControl(suchName, "searchLastName"); //$NON-NLS-1$
 
 		final Label nameLabel = new Label(container, SWT.NONE);
 		nameLabel.setForeground(SWTResourceManager.getColor(1, 0, 0));
-		nameLabel.setFont(SWTResourceManager.getFont("Helvetica", 14, SWT.NONE));
-		nameLabel.setText("Lastname");
+		nameLabel.setFont(SWTResourceManager.getFont("Helvetica", 14, SWT.NONE)); //$NON-NLS-1$
+		nameLabel.setText("Lastname"); //$NON-NLS-1$
 		nameLabel.setBounds(30, 31, 82, 26);
 
 		final Button sucheStarten = new Button(container, SWT.NONE);
-		sucheStarten.setFont(SWTResourceManager.getFont("", 12, SWT.BOLD));
-		sucheStarten.setText("&Search");
+		sucheStarten.setFont(SWTResourceManager.getFont("", 12, SWT.BOLD)); //$NON-NLS-1$
+		sucheStarten.setText("&Search"); //$NON-NLS-1$
 		sucheStarten.setBounds(345, 25, 82, 32);
-		addUIControl(sucheStarten, "search");
+		addUIControl(sucheStarten, "search"); //$NON-NLS-1$
 
 		final Label treffer = new Label(container, SWT.RIGHT);
 		treffer.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		treffer.setForeground(SWTResourceManager.getColor(0, 0, 1));
-		treffer.setFont(SWTResourceManager.getFont("", 12, SWT.NONE));
-		treffer.setText("no");
+		treffer.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
+		treffer.setText("no"); //$NON-NLS-1$
 		treffer.setBounds(665, 110, 33, 19);
-		addUIControl(treffer, "hits");
+		addUIControl(treffer, "hits"); //$NON-NLS-1$
 
 		final Button openCustomerButton = new Button(container, SWT.NONE);
-		openCustomerButton.setFont(SWTResourceManager.getFont("", 12, SWT.BOLD));
-		openCustomerButton.setText("Open");
+		openCustomerButton.setFont(SWTResourceManager.getFont("", 12, SWT.BOLD)); //$NON-NLS-1$
+		openCustomerButton.setText("Open"); //$NON-NLS-1$
 		openCustomerButton.setBounds(250, 460, 133, 34);
-		addUIControl(openCustomerButton, "open");
+		addUIControl(openCustomerButton, "open"); //$NON-NLS-1$
 
 		final Button newCustomerButton = new Button(container, SWT.NONE);
-		newCustomerButton.setFont(SWTResourceManager.getFont("", 12, SWT.BOLD));
-		newCustomerButton.setText("New ");
+		newCustomerButton.setFont(SWTResourceManager.getFont("", 12, SWT.BOLD)); //$NON-NLS-1$
+		newCustomerButton.setText("New "); //$NON-NLS-1$
 		newCustomerButton.setBounds(407, 460, 133, 34);
-		addUIControl(newCustomerButton, "new");
+		addUIControl(newCustomerButton, "new"); //$NON-NLS-1$
 
 		final Label hitsLabel = new Label(container, SWT.NONE);
 		hitsLabel.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		hitsLabel.setForeground(SWTResourceManager.getColor(0, 0, 1));
-		hitsLabel.setFont(SWTResourceManager.getFont("", 12, SWT.BOLD));
-		hitsLabel.setText("Hits");
+		hitsLabel.setFont(SWTResourceManager.getFont("", 12, SWT.BOLD)); //$NON-NLS-1$
+		hitsLabel.setText("Hits"); //$NON-NLS-1$
 		hitsLabel.setBounds(703, 111, 30, 19);
 
 		final Composite composite = new Composite(container, SWT.BORDER);

@@ -18,15 +18,15 @@ import org.eclipse.riena.demo.common.ICustomerService;
 public class RemoteClientTest {
 
 	public void bind(ICustomerService customerService) {
-		System.out.println("remoteclienttest: customer service bound");
-		List<Customer> searchResult = customerService.search("M");
+		System.out.println("remoteclienttest: customer service bound"); //$NON-NLS-1$
+		List<Customer> searchResult = customerService.search("M"); //$NON-NLS-1$
 		for (Customer c : searchResult) {
-			System.out.println(c.getLastName() + ", " + c.getFirstName());
+			System.out.println(c.getLastName() + ", " + c.getFirstName()); //$NON-NLS-1$
 		}
 	}
 
 	public void unbind(ICustomerService customerService) {
-		System.out.println("remoteclientest: customer service unbound");
+		System.out.println("remoteclientest: customer service unbound"); //$NON-NLS-1$
 
 	}
 

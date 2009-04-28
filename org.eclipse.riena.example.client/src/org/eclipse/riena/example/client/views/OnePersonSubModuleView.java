@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
-import org.eclipse.riena.example.client.controllers.OnePersonSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.swt.ChoiceComposite;
+import com.swtdesigner.SWTResourceManager;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -22,12 +21,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import com.swtdesigner.SWTResourceManager;
+import org.eclipse.riena.example.client.controllers.OnePersonSubModuleController;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.ChoiceComposite;
 
 /**
  * This view displays the data of one person.
  */
 public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleController> {
+	public OnePersonSubModuleView() {
+	}
 
 	private Text townText;
 	private Text postalCodeText;
@@ -206,11 +209,6 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		showButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		showButton.setData("binding_property", "show"); //$NON-NLS-1$ //$NON-NLS-2$
 		showButton.setText("Show"); //$NON-NLS-1$
-		initializeToolBar();
-	}
-
-	private void initializeToolBar() {
-		//
 	}
 
 }

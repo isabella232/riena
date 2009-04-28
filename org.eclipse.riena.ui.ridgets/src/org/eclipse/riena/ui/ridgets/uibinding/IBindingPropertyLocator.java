@@ -15,7 +15,7 @@ package org.eclipse.riena.ui.ridgets.uibinding;
  */
 public interface IBindingPropertyLocator {
 
-	final static String SEPARATOR = "."; //$NON-NLS-1$
+	String SEPARATOR = "."; //$NON-NLS-1$
 
 	/**
 	 * Returns the ID of the given UI control.

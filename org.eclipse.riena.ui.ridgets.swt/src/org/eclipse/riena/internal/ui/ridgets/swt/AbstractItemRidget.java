@@ -12,16 +12,16 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.EventHandler;
 
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Item;
+
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Item;
-
 /**
- * Ridget of a menu item.
+ * Ridget of an item (e.g. menu item).
  */
 public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget implements IActionRidget {
 
@@ -201,8 +201,8 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	 * Creates a new item on base of the stored item properties.
 	 */
 	void createItem() {
-		Item item = getUIControl();
-		if ((item == null) || (item.isDisposed())) {
+		Item uiItem = getUIControl();
+		if ((uiItem == null) || (uiItem.isDisposed())) {
 			getItemProperties().createItem();
 		}
 	}

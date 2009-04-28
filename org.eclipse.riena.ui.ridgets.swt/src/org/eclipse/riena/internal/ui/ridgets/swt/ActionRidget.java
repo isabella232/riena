@@ -24,14 +24,17 @@ public class ActionRidget extends AbstractActionRidget {
 		return (Button) super.getUIControl();
 	}
 
+	@Override
 	protected String getUIControlText() {
 		return getUIControl().getText();
 	}
 
+	@Override
 	protected void setUIControlText(String text) {
 		getUIControl().setText(text);
 	}
 
+	@Override
 	protected void setUIControlImage(Image image) {
 		getUIControl().setImage(image);
 	}

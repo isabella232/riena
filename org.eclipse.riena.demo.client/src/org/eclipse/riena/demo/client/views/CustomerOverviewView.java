@@ -26,6 +26,8 @@ import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
  *
  */
 public class CustomerOverviewView extends SubModuleView<CustomerOverviewController> {
+	public CustomerOverviewView() {
+	}
 
 	/**
 	 * Create contents of the view part
@@ -47,106 +49,106 @@ public class CustomerOverviewView extends SubModuleView<CustomerOverviewControll
 		Composite container = new Composite(parent, SWT.NONE);
 
 		final Label personalLabel = new Label(container, SWT.NONE);
-		personalLabel.setText("Name");
+		personalLabel.setText("Name"); //$NON-NLS-1$
 		personalLabel.setBounds(30, 27, 66, 21);
 
-		final Label Lfirstname = new Label(container, SWT.NONE);
-		Lfirstname.setForeground(SWTResourceManager.getColor(1, 0, 0));
-		Lfirstname.setFont(SWTResourceManager.getFont("", 14, SWT.NONE));
-		Lfirstname.setText("Firstname");
-		Lfirstname.setBounds(150, 25, 131, 32);
+		final Label lFirstname = new Label(container, SWT.NONE);
+		lFirstname.setForeground(SWTResourceManager.getColor(1, 0, 0));
+		lFirstname.setFont(SWTResourceManager.getFont("", 14, SWT.NONE)); //$NON-NLS-1$
+		lFirstname.setText("Firstname"); //$NON-NLS-1$
+		lFirstname.setBounds(150, 25, 131, 32);
 
 		firstname = new Text(container, SWT.BORDER);
-		firstname.setData("binding_property", "firstname");
-		firstname.setFont(SWTResourceManager.getFont("", 12, SWT.NONE));
+		firstname.setData("binding_property", "firstname"); //$NON-NLS-1$ //$NON-NLS-2$
+		firstname.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 		firstname.setBounds(291, 25, 181, 32);
 
-		final Label Llastname = new Label(container, SWT.NONE);
-		Llastname.setForeground(SWTResourceManager.getColor(1, 0, 0));
-		Llastname.setFont(SWTResourceManager.getFont("", 14, SWT.NONE));
-		Llastname.setText("Lastname");
-		Llastname.setBounds(150, 67, 130, 23);
+		final Label lLastname = new Label(container, SWT.NONE);
+		lLastname.setForeground(SWTResourceManager.getColor(1, 0, 0));
+		lLastname.setFont(SWTResourceManager.getFont("", 14, SWT.NONE)); //$NON-NLS-1$
+		lLastname.setText("Lastname"); //$NON-NLS-1$
+		lLastname.setBounds(150, 67, 130, 23);
 
 		lastname = new Text(container, SWT.BORDER);
-		lastname.setData("binding_property", "lastname");
-		lastname.setFont(SWTResourceManager.getFont("", 12, SWT.NONE));
+		lastname.setData("binding_property", "lastname"); //$NON-NLS-1$ //$NON-NLS-2$
+		lastname.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 		lastname.setBounds(290, 67, 182, 32);
 
-		final Label Lzipcity = new Label(container, SWT.NONE);
-		Lzipcity.setForeground(SWTResourceManager.getColor(1, 0, 0));
-		Lzipcity.setBounds(150, 173, 132, 23);
-		Lzipcity.setFont(SWTResourceManager.getFont("", 14, SWT.NONE));
-		Lzipcity.setText("Zipcode / City");
+		final Label lZipcity = new Label(container, SWT.NONE);
+		lZipcity.setForeground(SWTResourceManager.getColor(1, 0, 0));
+		lZipcity.setBounds(150, 173, 132, 23);
+		lZipcity.setFont(SWTResourceManager.getFont("", 14, SWT.NONE)); //$NON-NLS-1$
+		lZipcity.setText("Zipcode / City"); //$NON-NLS-1$
 
 		final Label address = new Label(container, SWT.NONE);
 		address.setBounds(30, 132, 86, 22);
-		address.setText("Address");
+		address.setText("Address"); //$NON-NLS-1$
 
-		final Label Lstreet = new Label(container, SWT.NONE);
-		Lstreet.setForeground(SWTResourceManager.getColor(1, 0, 0));
-		Lstreet.setBounds(150, 133, 132, 23);
-		Lstreet.setFont(SWTResourceManager.getFont("", 14, SWT.NONE));
-		Lstreet.setText("Street");
+		final Label lStreet = new Label(container, SWT.NONE);
+		lStreet.setForeground(SWTResourceManager.getColor(1, 0, 0));
+		lStreet.setBounds(150, 133, 132, 23);
+		lStreet.setFont(SWTResourceManager.getFont("", 14, SWT.NONE)); //$NON-NLS-1$
+		lStreet.setText("Street"); //$NON-NLS-1$
 
 		street = new Text(container, SWT.BORDER);
-		street.setData("binding_property", "street");
+		street.setData("binding_property", "street"); //$NON-NLS-1$ //$NON-NLS-2$
 		street.setBounds(291, 125, 182, 32);
-		street.setFont(SWTResourceManager.getFont("", 12, SWT.NONE));
+		street.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 
 		zipcode = new Text(container, SWT.BORDER);
-		zipcode.setData("binding_property", "zipcode");
+		zipcode.setData("binding_property", "zipcode"); //$NON-NLS-1$ //$NON-NLS-2$
 		zipcode.setBounds(290, 165, 66, 32);
-		zipcode.setFont(SWTResourceManager.getFont("", 12, SWT.NONE));
+		zipcode.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 
 		city = new Text(container, SWT.BORDER);
-		city.setData("binding_property", "city");
+		city.setData("binding_property", "city"); //$NON-NLS-1$ //$NON-NLS-2$
 		city.setBounds(377, 165, 182, 32);
-		city.setFont(SWTResourceManager.getFont("", 12, SWT.NONE));
+		city.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 
-		final Label address_1 = new Label(container, SWT.NONE);
-		address_1.setBounds(30, 232, 86, 27);
-		address_1.setText("Personal");
+		final Label personal = new Label(container, SWT.NONE);
+		personal.setBounds(30, 232, 86, 27);
+		personal.setText("Personal"); //$NON-NLS-1$
 
-		final Label Lbirthday = new Label(container, SWT.NONE);
-		Lbirthday.setForeground(SWTResourceManager.getColor(1, 0, 0));
-		Lbirthday.setBounds(150, 233, 118, 32);
-		Lbirthday.setFont(SWTResourceManager.getFont("", 14, SWT.NONE));
-		Lbirthday.setText("Birthdate");
+		final Label lBirthday = new Label(container, SWT.NONE);
+		lBirthday.setForeground(SWTResourceManager.getColor(1, 0, 0));
+		lBirthday.setBounds(150, 233, 118, 32);
+		lBirthday.setFont(SWTResourceManager.getFont("", 14, SWT.NONE)); //$NON-NLS-1$
+		lBirthday.setText("Birthdate"); //$NON-NLS-1$
 
-		final Label Lsalary = new Label(container, SWT.NONE);
-		Lsalary.setForeground(SWTResourceManager.getColor(1, 0, 0));
-		Lsalary.setBounds(150, 275, 132, 32);
-		Lsalary.setFont(SWTResourceManager.getFont("", 14, SWT.NONE));
-		Lsalary.setText("Salary");
-		Lsalary.setData("binding_property", "salaryLabel");
+		final Label lSalary = new Label(container, SWT.NONE);
+		lSalary.setForeground(SWTResourceManager.getColor(1, 0, 0));
+		lSalary.setBounds(150, 275, 132, 32);
+		lSalary.setFont(SWTResourceManager.getFont("", 14, SWT.NONE)); //$NON-NLS-1$
+		lSalary.setText("Salary"); //$NON-NLS-1$
+		lSalary.setData("binding_property", "salaryLabel"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		birthdate = new Text(container, SWT.BORDER);
-		birthdate.setData("binding_property", "birthdate");
-		birthdate.setData("type", "date");
+		birthdate.setData("binding_property", "birthdate"); //$NON-NLS-1$ //$NON-NLS-2$
+		birthdate.setData("type", "date"); //$NON-NLS-1$ //$NON-NLS-2$
 		birthdate.setBounds(291, 233, 100, 32);
-		birthdate.setFont(SWTResourceManager.getFont("", 12, SWT.NONE));
+		birthdate.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 
 		salary = new Text(container, SWT.BORDER);
-		salary.setData("binding_property", "salary");
+		salary.setData("binding_property", "salary"); //$NON-NLS-1$ //$NON-NLS-2$
 		salary.setBounds(291, 275, 100, 32);
-		salary.setFont(SWTResourceManager.getFont("", 12, SWT.NONE));
-		salary.setData("type", "decimal");
+		salary.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
+		salary.setData("type", "decimal"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final Button saveButton = new Button(container, SWT.NONE);
-		saveButton.setData("binding_property", "savea_action");
-		saveButton.setFont(SWTResourceManager.getFont("", 12, SWT.NONE));
-		saveButton.setText("Save");
+		saveButton.setData("binding_property", "savea_action"); //$NON-NLS-1$ //$NON-NLS-2$
+		saveButton.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
+		saveButton.setText("Save"); //$NON-NLS-1$
 		saveButton.setBounds(625, 465, 109, 38);
 
-		final Button aButton = new Button(container, SWT.TOGGLE);
-		aButton.setText("A");
-		aButton.setBounds(650, 30, 36, 32);
-		aButton.setData("binding_property", "assistent");
+		final Button buttonA = new Button(container, SWT.TOGGLE);
+		buttonA.setText("A"); //$NON-NLS-1$
+		buttonA.setBounds(650, 30, 36, 32);
+		buttonA.setData("binding_property", "assistent"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		final Button aButton_1 = new Button(container, SWT.TOGGLE);
-		aButton_1.setBounds(700, 30, 36, 32);
-		aButton_1.setText("B");
-		aButton_1.setData("binding_property", "mandatory");
+		final Button buttonB = new Button(container, SWT.TOGGLE);
+		buttonB.setBounds(700, 30, 36, 32);
+		buttonB.setText("B"); //$NON-NLS-1$
+		buttonB.setData("binding_property", "mandatory"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final Composite composite = new Composite(container, SWT.NONE);
 		composite.setBackground(SWTResourceManager.getColor(121, 117, 168));

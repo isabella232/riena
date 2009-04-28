@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.internal.ui.ridgets.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.SharedColors;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
@@ -184,7 +185,7 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 					try {
 						Thread.sleep(AbstractEditableRidget.FLASH_DURATION_MS);
 					} catch (InterruptedException e) {
-						// ignore
+						Nop.reason("ignore"); //$NON-NLS-1$
 					} finally {
 						if (!control.isDisposed()) {
 							display.syncExec(new Runnable() {

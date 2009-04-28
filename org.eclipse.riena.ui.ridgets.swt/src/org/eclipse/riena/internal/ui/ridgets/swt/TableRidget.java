@@ -660,7 +660,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 * Non-API.
 	 */
 	public static interface ITableRidgetDelegate {
-		public void prepareTable(Table control, int numColumns);
+		void prepareTable(Table control, int numColumns);
 	}
 
 }

@@ -55,6 +55,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		setUIControl(shell);
 	}
 
+	@Override
 	public Shell getUIControl() {
 		return (Shell) super.getUIControl();
 	}
@@ -163,6 +164,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		}
 	}
 
+	@Override
 	protected Image getManagedImage(String key) {
 		Image image = ImageStore.getInstance().getImage(key);
 		if (image == null) {
@@ -189,6 +191,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	 * 
 	 * @return true, if value has changed; otherwise false
 	 */
+	@Override
 	protected boolean hasChanged(Object oldValue, Object newValue) {
 
 		if (oldValue == null && newValue == null) {
@@ -219,6 +222,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	/*
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#requestFocus()
 	 */
+	@Override
 	public void requestFocus() {
 		if (getUIControl() != null) {
 			getUIControl().setFocus();
@@ -228,6 +232,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	/*
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#hasFocus()
 	 */
+	@Override
 	public boolean hasFocus() {
 		if (getUIControl() != null) {
 			return getUIControl().isFocusControl();
@@ -235,20 +240,24 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		return false;
 	}
 
+	@Override
 	public boolean isFocusable() {
 		return false;
 	}
 
+	@Override
 	public void setFocusable(boolean focusable) {
 		// TODO Auto-generated method stub
 	}
 
+	@Override
 	protected void updateEnabled() {
 		if (getUIControl() != null) {
 			getUIControl().setEnabled(isEnabled());
 		}
 	}
 
+	@Override
 	protected void updateToolTip() {
 		if (getUIControl() != null) {
 			getUIControl().setToolTipText(getToolTipText());
@@ -287,6 +296,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		}
 	}
 
+	@Override
 	public String getID() {
 		if (getUIControl() != null) {
 			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();

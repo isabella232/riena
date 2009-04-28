@@ -25,6 +25,7 @@ final class ExplicitWorkareaDefinitionRegistry extends AbstractWorkareaDefinitio
 	private ExplicitWorkareaDefinitionRegistry() {
 	}
 
+	@Override
 	public IWorkareaDefinition register(Object id, IWorkareaDefinition definition) {
 
 		if (id instanceof INavigationNode) {

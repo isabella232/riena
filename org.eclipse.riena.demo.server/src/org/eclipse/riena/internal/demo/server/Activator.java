@@ -28,7 +28,7 @@ import org.eclipse.riena.demo.server.ICustomerRepository;
 public class Activator extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.riena.demo.server";
+	public static final String PLUGIN_ID = "org.eclipse.riena.demo.server"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
@@ -46,7 +46,7 @@ public class Activator extends Plugin {
 
 		CustomerService customerService = new CustomerService();
 		context.registerService(ICustomerService.class.getName(), customerService, null);
-		Publish.service(ICustomerService.class).usingPath(ICustomerService.WS_ID).withProtocol("hessian").andStart(
+		Publish.service(ICustomerService.class).usingPath(ICustomerService.WS_ID).withProtocol("hessian").andStart( //$NON-NLS-1$
 				context);
 
 		Inject.service(ICustomerRepository.class).into(customerService).andStart(context);

@@ -16,7 +16,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * A collection of utility methods for RCP.
  */
-public class RcpUtilities {
+public final class RcpUtilities {
 
 	/**
 	 * This class contains only static methods. So it is not necessary to create

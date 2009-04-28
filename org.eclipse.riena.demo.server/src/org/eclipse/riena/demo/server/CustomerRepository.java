@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.demo.server;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.eclipse.riena.demo.common.Customer;
@@ -21,17 +23,19 @@ import org.eclipse.riena.demo.common.Customer;
  */
 public class CustomerRepository implements ICustomerRepository {
 
+	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy"); //$NON-NLS-1$
+
 	private List<Customer> customers = new ArrayList<Customer>();
-	
+
 	public CustomerRepository() {
-		System.out.println("repository started");
+		System.out.println("repository started"); //$NON-NLS-1$
 		init();
 	}
 
 	public List<Customer> search(String lastName) {
 		return customers;
 	}
-	
+
 	public void store(Customer customer) {
 		customers.add(customer);
 	}
@@ -40,51 +44,50 @@ public class CustomerRepository implements ICustomerRepository {
 		try {
 			Customer crv = new Customer();
 			// 1.
-			crv.setLastName("Mundl");
-			crv.setFirstName("Josef");
-			crv.setBirthDate(new Date(Date.parse("01/01/1950")));
-			crv.getAddress().setStreet("Musterstr.1");
-			crv.getAddress().setZipCode("12345");
-			crv.getAddress().setCity("Musterstadt");
+			crv.setLastName("Mundl"); //$NON-NLS-1$
+			crv.setFirstName("Josef"); //$NON-NLS-1$
+			crv.setBirthDate(DATE_FORMAT.parse("01/01/1950")); //$NON-NLS-1$
+			crv.getAddress().setStreet("Musterstr.1"); //$NON-NLS-1$
+			crv.getAddress().setZipCode("12345"); //$NON-NLS-1$
+			crv.getAddress().setCity("Musterstadt"); //$NON-NLS-1$
 			customers.add(crv);
 			// 2.
 			crv = new Customer();
-			crv.setLastName("Muster");
-			crv.setFirstName("Robert");
-			crv.setBirthDate(new Date(Date.parse("01/04/1955")));
-			crv.getAddress().setStreet("Willibaldgasse");
-			crv.getAddress().setZipCode("12366");
-			crv.getAddress().setCity("Musterhaus");
+			crv.setLastName("Muster"); //$NON-NLS-1$
+			crv.setFirstName("Robert"); //$NON-NLS-1$
+			crv.setBirthDate(DATE_FORMAT.parse("01/04/1955")); //$NON-NLS-1$
+			crv.getAddress().setStreet("Willibaldgasse"); //$NON-NLS-1$
+			crv.getAddress().setZipCode("12366"); //$NON-NLS-1$
+			crv.getAddress().setCity("Musterhaus"); //$NON-NLS-1$
 			customers.add(crv);
 			// 3.
 			crv = new Customer();
-			crv.setLastName("Muster-Maier");
-			crv.setFirstName("Trulli");
-			crv.setBirthDate(new Date(Date.parse("21/06/1964")));
-			crv.getAddress().setStreet("Willibaldgasse");
-			crv.getAddress().setZipCode("12345");
-			crv.getAddress().setCity("Musterstadt");
+			crv.setLastName("Muster-Maier"); //$NON-NLS-1$
+			crv.setFirstName("Trulli"); //$NON-NLS-1$
+			crv.setBirthDate(DATE_FORMAT.parse("21/06/1964")); //$NON-NLS-1$
+			crv.getAddress().setStreet("Willibaldgasse"); //$NON-NLS-1$
+			crv.getAddress().setZipCode("12345"); //$NON-NLS-1$
+			crv.getAddress().setCity("Musterstadt"); //$NON-NLS-1$
 			customers.add(crv);
 			// 4.
 			crv = new Customer();
-			crv.setLastName("Mustermann");
-			crv.setFirstName("Elfriede");
-			crv.setBirthDate(new Date(Date.parse("01/04/1955")));
-			crv.getAddress().setStreet("Musterstr.1");
-			crv.getAddress().setZipCode("12345");
-			crv.getAddress().setCity("Musterstadt");
+			crv.setLastName("Mustermann"); //$NON-NLS-1$
+			crv.setFirstName("Elfriede"); //$NON-NLS-1$
+			crv.setBirthDate(DATE_FORMAT.parse("01/04/1955")); //$NON-NLS-1$
+			crv.getAddress().setStreet("Musterstr.1"); //$NON-NLS-1$
+			crv.getAddress().setZipCode("12345"); //$NON-NLS-1$
+			crv.getAddress().setCity("Musterstadt"); //$NON-NLS-1$
 			customers.add(crv);
 			// 5.
 			crv = new Customer();
-			crv.setLastName("Mustermann");
-			crv.setFirstName("Ingo");
-			crv.setBirthDate(new Date(Date.parse("01/01/1950")));
-			crv.getAddress().setStreet("Musterstr.1");
-			crv.getAddress().setZipCode("12345");
-			crv.getAddress().setCity("Musterstadt");
+			crv.setLastName("Mustermann"); //$NON-NLS-1$
+			crv.setFirstName("Ingo"); //$NON-NLS-1$
+			crv.setBirthDate(DATE_FORMAT.parse("01/01/1950")); //$NON-NLS-1$
+			crv.getAddress().setStreet("Musterstr.1"); //$NON-NLS-1$
+			crv.getAddress().setZipCode("12345"); //$NON-NLS-1$
+			crv.getAddress().setCity("Musterstadt"); //$NON-NLS-1$
 			customers.add(crv);
-
-		} catch (IllegalArgumentException p) {
+		} catch (ParseException p) {
 			System.out.println(p.getMessage());
 		}
 	}

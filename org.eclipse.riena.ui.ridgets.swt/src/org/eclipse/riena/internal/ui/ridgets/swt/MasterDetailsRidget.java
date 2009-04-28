@@ -111,13 +111,13 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
 			String[] columnPropertyNames, String[] headerNames) {
-		IObservableList rowObservables;
+		IObservableList rowObservableList;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
-			rowObservables = BeansObservables.observeList(listHolder, listPropertyName);
+			rowObservableList = BeansObservables.observeList(listHolder, listPropertyName);
 		} else {
-			rowObservables = PojoObservables.observeList(listHolder, listPropertyName);
+			rowObservableList = PojoObservables.observeList(listHolder, listPropertyName);
 		}
-		bindToModel(rowObservables, rowClass, columnPropertyNames, headerNames);
+		bindToModel(rowObservableList, rowClass, columnPropertyNames, headerNames);
 	}
 
 	@Override

@@ -44,6 +44,7 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 		return (Button) super.getUIControl();
 	}
 
+	@Override
 	protected ISWTObservableValue getUIControlSelectionObservable() {
 		return SWTObservables.observeSelection(getUIControl());
 	}

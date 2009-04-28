@@ -140,7 +140,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 * Updates the tool item to display the current markers.
 	 */
 	private void updateToolItem() {
-		ToolItem item = (ToolItem) getRidget().getUIControl();
+		ToolItem item = getRidget().getUIControl();
 		if (item != null) {
 			updateVisible(item);
 			if (!item.isDisposed()) {

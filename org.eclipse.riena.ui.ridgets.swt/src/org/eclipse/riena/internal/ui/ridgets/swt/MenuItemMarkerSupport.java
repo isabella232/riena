@@ -90,7 +90,7 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 * Updates the menu item to display the current markers.
 	 */
 	private void updateMenuItem() {
-		MenuItem item = (MenuItem) getRidget().getUIControl();
+		MenuItem item = getRidget().getUIControl();
 		if (item != null) {
 			updateVisible(item);
 			if (!item.isDisposed()) {

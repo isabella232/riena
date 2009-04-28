@@ -208,7 +208,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	 * ridget to monitor and maintain the selection state for single selection
 	 * and fire appropriate events.
 	 */
-	private final class SingleSelectionObservable extends WritableValue {
+	private static final class SingleSelectionObservable extends WritableValue {
 
 		SingleSelectionObservable() {
 			super(null, Object.class);

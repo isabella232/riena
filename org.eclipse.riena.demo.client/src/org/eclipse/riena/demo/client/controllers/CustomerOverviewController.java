@@ -30,10 +30,10 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
  */
 public class CustomerOverviewController extends SubModuleController {
 
-	private IUIFilter assistent = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.assistent")
+	private IUIFilter assistent = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.assistent") //$NON-NLS-1$
 			.getFilter();
 
-	private IUIFilter mandatory = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.mandatory")
+	private IUIFilter mandatory = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.mandatory") //$NON-NLS-1$
 			.getFilter();
 
 	@Override
@@ -43,51 +43,52 @@ public class CustomerOverviewController extends SubModuleController {
 				NavigationArgument.CONTEXT_KEY_PARAMETER);
 		if (customer == null) {
 			customer = new Customer();
-			getNavigationNode().getParent().setLabel("new Customer");
+			getNavigationNode().getParent().setLabel("new Customer"); //$NON-NLS-1$
 			getNavigationNode().getParent().setContext(NavigationArgument.CONTEXT_KEY_PARAMETER, customer);
 		}
 
-		ITextRidget firstName = (ITextRidget) getRidget("firstname");
-		firstName.bindToModel(customer, "firstName");
+		ITextRidget firstName = (ITextRidget) getRidget("firstname"); //$NON-NLS-1$
+		firstName.bindToModel(customer, "firstName"); //$NON-NLS-1$
 		firstName.setMandatory(true);
-		ITextRidget lastName = (ITextRidget) getRidget("lastname");
+		ITextRidget lastName = (ITextRidget) getRidget("lastname"); //$NON-NLS-1$
 		lastName.setMandatory(true);
-		lastName.bindToModel(customer, "lastName");
+		lastName.bindToModel(customer, "lastName"); //$NON-NLS-1$
 
-		((ITextRidget) getRidget("zipcode")).bindToModel(customer.getAddress(), "zipCode");
-		((ITextRidget) getRidget("street")).bindToModel(customer.getAddress(), "street");
-		((ITextRidget) getRidget("city")).bindToModel(customer.getAddress(), "city");
-		((IDateTextRidget) getRidget("birthdate")).bindToModel(customer, "birthDate");
-		((ITextRidget) getRidget("salary")).bindToModel(customer, "salary");
-		((IDecimalTextRidget) getRidget("salary")).setPrecision(2);
+		((ITextRidget) getRidget("zipcode")).bindToModel(customer.getAddress(), "zipCode"); //$NON-NLS-1$ //$NON-NLS-2$
+		((ITextRidget) getRidget("street")).bindToModel(customer.getAddress(), "street"); //$NON-NLS-1$ //$NON-NLS-2$
+		((ITextRidget) getRidget("city")).bindToModel(customer.getAddress(), "city"); //$NON-NLS-1$ //$NON-NLS-2$
+		((IDateTextRidget) getRidget("birthdate")).bindToModel(customer, "birthDate"); //$NON-NLS-1$ //$NON-NLS-2$
+		((ITextRidget) getRidget("salary")).bindToModel(customer, "salary"); //$NON-NLS-1$ //$NON-NLS-2$
+		((IDecimalTextRidget) getRidget("salary")).setPrecision(2); //$NON-NLS-1$
 
 		updateAllRidgetsFromModel();
 
-		((IActionRidget) getRidget("assistent")).addListener(new IActionListener() {
+		((IActionRidget) getRidget("assistent")).addListener(new IActionListener() { //$NON-NLS-1$
 
-			public void callback() {
-				IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-				if (((IToggleButtonRidget) getRidget("assistent")).isSelected()) {
-					applNode.addFilter(assistent);
-				} else {
-					applNode.removeFilter(assistent);
-				}
-			}
-		});
+					public void callback() {
+						IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+						if (((IToggleButtonRidget) getRidget("assistent")).isSelected()) { //$NON-NLS-1$
+							applNode.addFilter(assistent);
+						} else {
+							applNode.removeFilter(assistent);
+						}
+					}
+				});
 
-		((IActionRidget) getRidget("mandatory")).addListener(new IActionListener() {
+		((IActionRidget) getRidget("mandatory")).addListener(new IActionListener() { //$NON-NLS-1$
 
-			public void callback() {
-				IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-				if (((IToggleButtonRidget) getRidget("mandatory")).isSelected()) {
-					applNode.addFilter(mandatory);
-				} else {
-					applNode.removeFilter(mandatory);
-				}
-			}
-		});
+					public void callback() {
+						IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+						if (((IToggleButtonRidget) getRidget("mandatory")).isSelected()) { //$NON-NLS-1$
+							applNode.addFilter(mandatory);
+						} else {
+							applNode.removeFilter(mandatory);
+						}
+					}
+				});
 
 		getNavigationNode().addListener(new SubModuleNodeListener() {
+			@Override
 			public void activated(ISubModuleNode source) {
 				updateAllRidgetsFromModel();
 			}

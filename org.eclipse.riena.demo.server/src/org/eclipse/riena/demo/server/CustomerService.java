@@ -27,19 +27,19 @@ public class CustomerService implements ICustomerService {
 	 * @param repository
 	 */
 	public CustomerService() {
-		System.out.println("customer service started");
+		System.out.println("customer service started"); //$NON-NLS-1$
 	}
 
 	public void bind(ICustomerRepository repository) {
-		System.out.println("customer service:repository bound");
+		System.out.println("customer service:repository bound"); //$NON-NLS-1$
 		this.repository = repository;
 	}
 
 	public void unbind(ICustomerRepository repository) {
-		System.out.println("customer service:repository unbound");
+		System.out.println("customer service:repository unbound"); //$NON-NLS-1$
 		this.repository = null;
 	}
-	
+
 	public ICustomerRepository getRepository() {
 		return repository;
 	}
@@ -50,7 +50,7 @@ public class CustomerService implements ICustomerService {
 	 */
 	public List<Customer> search(String lastName) {
 		// check parameter
-		
+
 		// perform search
 		return repository.search(lastName);
 	}

@@ -77,7 +77,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 	private static final int IGNORE_SWT_STYLE = -99;
 	// remove final here so that a SwtControlRidgetMapperTest can reinstantiate a new SwtControlRidgetMapper in tearDown
 	// dont add final again, maybe add a better fix later (i.e. protected removeMapping or initSingleton method) TODO
-	private static SwtControlRidgetMapper INSTANCE = new SwtControlRidgetMapper();
+	private static SwtControlRidgetMapper instance = new SwtControlRidgetMapper();
 
 	private final List<Mapping> mappings;
 
@@ -92,7 +92,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 	 * @return the SwtControlRidgetMapper singleton
 	 */
 	public static SwtControlRidgetMapper getInstance() {
-		return INSTANCE;
+		return instance;
 	}
 
 	/**

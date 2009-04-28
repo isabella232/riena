@@ -90,7 +90,7 @@ import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
  */
 public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget {
 
-	private static final Listener eraseListener = new EraseAndPaintListener();
+	private static final Listener ERASE_LISTENER = new EraseAndPaintListener();
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final DoubleClickForwarder doubleClickForwarder;
@@ -188,8 +188,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		if (control != null) {
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
-			control.removeListener(SWT.EraseItem, eraseListener);
-			control.removeListener(SWT.PaintItem, eraseListener);
+			control.removeListener(SWT.EraseItem, ERASE_LISTENER);
+			control.removeListener(SWT.PaintItem, ERASE_LISTENER);
 		}
 		if (viewer != null) {
 			// IMPORTANT: remove the change listeners from the input model.
@@ -308,22 +308,22 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			String parentAccessor, String valueAccessor) {
 		Assert.isNotNull(valueAccessor);
 		String[] myValueAccessors = new String[] { valueAccessor };
-		String[] columnHeaders = null;
-		String enablementAccessor = null;
-		String visibilityAccessor = null;
-		String imageAccessor = null;
+		String[] noColumnHeaders = null;
+		String noEnablementAccessor = null;
+		String noVisibilityAccessor = null;
+		String noImageAccessor = null;
 		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				columnHeaders, enablementAccessor, visibilityAccessor, imageAccessor);
+				noColumnHeaders, noEnablementAccessor, noVisibilityAccessor, noImageAccessor);
 	}
 
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String valueAccessor, String enablementAccessor, String visibilityAccessor) {
 		Assert.isNotNull(valueAccessor);
 		String[] myValueAccessors = new String[] { valueAccessor };
-		String[] columnHeaders = null;
-		String imageAccessor = null;
+		String[] noColumnHeaders = null;
+		String noImageAccessor = null;
 		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				columnHeaders, enablementAccessor, visibilityAccessor, imageAccessor);
+				noColumnHeaders, enablementAccessor, visibilityAccessor, noImageAccessor);
 	}
 
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
@@ -331,9 +331,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			String imageAccessor) {
 		Assert.isNotNull(valueAccessor);
 		String[] myValueAccessors = new String[] { valueAccessor };
-		String[] columnHeaders = null;
+		String[] noColumnHeaders = null;
 		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				columnHeaders, enablementAccessor, visibilityAccessor, imageAccessor);
+				noColumnHeaders, enablementAccessor, visibilityAccessor, imageAccessor);
 	}
 
 	/** @deprecated */
@@ -475,10 +475,10 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private void applyEraseListener() {
 		if (viewer != null) {
 			Control control = viewer.getControl();
-			control.removeListener(SWT.EraseItem, eraseListener);
+			control.removeListener(SWT.EraseItem, ERASE_LISTENER);
 			if (!isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
-				control.addListener(SWT.EraseItem, eraseListener);
-				control.addListener(SWT.PaintItem, eraseListener);
+				control.addListener(SWT.EraseItem, ERASE_LISTENER);
+				control.addListener(SWT.PaintItem, ERASE_LISTENER);
 			}
 		}
 	}

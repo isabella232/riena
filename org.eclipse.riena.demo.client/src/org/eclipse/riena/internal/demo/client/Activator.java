@@ -44,8 +44,8 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		Register.remoteProxy(ICustomerService.class).usingUrl("http://localhost:8080/hessian/CustomerServiceWS")
-				.withProtocol("hessian").andStart(context);
+		Register.remoteProxy(ICustomerService.class).usingUrl("http://localhost:8080/hessian/CustomerServiceWS") //$NON-NLS-1$
+				.withProtocol("hessian").andStart(context); //$NON-NLS-1$
 
 		//		Inject.service(ICustomerService.class).into(new RemoteClientTest()).andStart(context);
 	}

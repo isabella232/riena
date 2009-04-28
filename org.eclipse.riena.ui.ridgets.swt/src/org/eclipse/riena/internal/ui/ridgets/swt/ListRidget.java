@@ -45,14 +45,17 @@ public class ListRidget extends AbstractListRidget {
 		return (List) super.getUIControl();
 	}
 
+	@Override
 	protected int getUIControlSelectionIndex() {
 		return getUIControl().getSelectionIndex();
 	}
 
+	@Override
 	protected int[] getUIControlSelectionIndices() {
 		return getUIControl().getSelectionIndices();
 	}
 
+	@Override
 	protected int getUIControlItemCount() {
 		return getUIControl().getItemCount();
 	}
@@ -91,6 +94,7 @@ public class ListRidget extends AbstractListRidget {
 		return viewer;
 	}
 
+	@Override
 	protected void updateEnabled(boolean isEnabled) {
 		final String savedBackgroundKey = "oldbg"; //$NON-NLS-1$
 		if (isEnabled) {

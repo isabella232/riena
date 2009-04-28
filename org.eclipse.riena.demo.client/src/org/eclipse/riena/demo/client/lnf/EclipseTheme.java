@@ -33,7 +33,7 @@ public class EclipseTheme extends RienaDefaultTheme {
 	public void addCustomColors(Map<String, ILnfResource> table) {
 		super.addCustomColors(table);
 
-		table.put(LnfKeyConstants.TITLELESS_SHELL_FOREGROUND, new ColorLnfResource(255,255,255));
+		table.put(LnfKeyConstants.TITLELESS_SHELL_FOREGROUND, new ColorLnfResource(255, 255, 255));
 
 		table.put(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FOREGROUND, new ColorLnfResource(64, 0, 64));
 
@@ -42,25 +42,29 @@ public class EclipseTheme extends RienaDefaultTheme {
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(215, 214, 231));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(150, 146, 192));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR, new ColorLnfResource(121, 117, 168));
-		
+
 		table
 				.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(250, 250,
 						250));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(219, 219, 219));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(183, 183, 183));
 
-//		table.put("Text.background", new ColorLnfResource(230, 230, 230)); //$NON-NLS-1$
+		//		table.put("Text.background", new ColorLnfResource(230, 230, 230)); //$NON-NLS-1$
 
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR, new ColorLnfResource(172,  167 , 226));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_FOREGROUND, new ColorLnfResource(0,0,0));
-		
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR, table.get(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR, table.get(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR, table.get(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, table.get(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR));
-		
-		table.put("Label.foreground", new ColorLnfResource(112,54,190));
-		
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR, new ColorLnfResource(172, 167, 226));
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_FOREGROUND, new ColorLnfResource(0, 0, 0));
+
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR, table
+				.get(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR));
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR, table
+				.get(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR));
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR, table
+				.get(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR));
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, table
+				.get(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR));
+
+		table.put("Label.foreground", new ColorLnfResource(112, 54, 190)); //$NON-NLS-1$
+
 	}
 
 	/**
@@ -114,23 +118,23 @@ public class EclipseTheme extends RienaDefaultTheme {
 
 		super.addCustomSettings(table);
 
-//		table.put(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.TOP);
-//		table.put(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 7);
-//		table.put(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.CENTER);
+		//		table.put(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.TOP);
+		//		table.put(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 7);
+		//		table.put(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.CENTER);
 
-//		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.CENTER);
-//		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, true);
+		//		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.CENTER);
+		//		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, true);
 
 	}
 
 	@Override
 	protected ColorLnfResource getPrimaryForeground() {
-		return new ColorLnfResource(0,0,0);
+		return new ColorLnfResource(0, 0, 0);
 	}
 
 	@Override
 	protected ColorLnfResource getPrimaryBackground() {
-		return new ColorLnfResource(230,230,230);
+		return new ColorLnfResource(230, 230, 230);
 	}
 
 	@Override

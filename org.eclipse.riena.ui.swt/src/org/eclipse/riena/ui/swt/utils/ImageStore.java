@@ -48,7 +48,7 @@ public final class ImageStore {
 	 * 
 	 * @return instance of {@code ImageStore}
 	 */
-	public static ImageStore getInstance() {
+	public static synchronized ImageStore getInstance() {
 		if (store == null) {
 			store = new ImageStore();
 			if (Activator.getDefault() != null) {

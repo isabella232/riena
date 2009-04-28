@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter.impl;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.wire.AbstractWiring;
 import org.eclipse.riena.internal.ui.filter.Activator;
-import org.osgi.framework.BundleContext;
 
 /**
  * Wire the {@code RulesProvider}.
@@ -22,6 +23,7 @@ public class RulesProviderWiring extends AbstractWiring {
 
 	private static final String EP_RULEMAPPER = "org.eclipse.riena.filter.rulemapper"; //$NON-NLS-1$
 
+	@Override
 	public void wire(Object bean, BundleContext context) {
 		Inject.extension(EP_RULEMAPPER).into(bean).andStart(Activator.getDefault().getContext());
 	}

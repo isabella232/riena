@@ -524,6 +524,6 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	/**
 	 * @return NavigationArgument attached to this node
 	 */
-	public NavigationArgument getNavigationArgument();
+	NavigationArgument getNavigationArgument();
 
 }

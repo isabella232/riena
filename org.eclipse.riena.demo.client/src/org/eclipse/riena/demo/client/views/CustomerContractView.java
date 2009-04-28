@@ -50,29 +50,29 @@ public class CustomerContractView extends SubModuleView<CustomerContractControll
 
 		final Label personalLabel = new Label(container, SWT.NONE);
 		//		personalLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		personalLabel.setText("Name");
+		personalLabel.setText("Name"); //$NON-NLS-1$
 		personalLabel.setBounds(25, 20, 66, 28);
 
-		final Label Lfirstname = new Label(container, SWT.NONE);
-		Lfirstname.setForeground(SWTResourceManager.getColor(1, 0, 0));
-		Lfirstname.setFont(SWTResourceManager.getFont("", 14, SWT.NONE));
-		Lfirstname.setText("Firstname");
-		Lfirstname.setBounds(130, 23, 94, 22);
+		final Label lFirstname = new Label(container, SWT.NONE);
+		lFirstname.setForeground(SWTResourceManager.getColor(1, 0, 0));
+		lFirstname.setFont(SWTResourceManager.getFont("", 14, SWT.NONE)); //$NON-NLS-1$
+		lFirstname.setText("Firstname"); //$NON-NLS-1$
+		lFirstname.setBounds(130, 23, 94, 22);
 
 		Text firstname = new Text(container, SWT.BORDER);
-		firstname.setData("binding_property", "firstname");
-		firstname.setFont(SWTResourceManager.getFont("", 12, SWT.NONE));
+		firstname.setData("binding_property", "firstname"); //$NON-NLS-1$ //$NON-NLS-2$
+		firstname.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 		firstname.setBounds(236, 20, 181, 32);
 
-		final Label Llastname = new Label(container, SWT.NONE);
-		Llastname.setForeground(SWTResourceManager.getColor(1, 0, 0));
-		Llastname.setFont(SWTResourceManager.getFont("", 14, SWT.NONE));
-		Llastname.setText("Lastname");
-		Llastname.setBounds(130, 63, 93, 23);
+		final Label lLastname = new Label(container, SWT.NONE);
+		lLastname.setForeground(SWTResourceManager.getColor(1, 0, 0));
+		lLastname.setFont(SWTResourceManager.getFont("", 14, SWT.NONE)); //$NON-NLS-1$
+		lLastname.setText("Lastname"); //$NON-NLS-1$
+		lLastname.setBounds(130, 63, 93, 23);
 
 		Text lastname = new Text(container, SWT.BORDER);
-		lastname.setData("binding_property", "lastname");
-		lastname.setFont(SWTResourceManager.getFont("", 12, SWT.NONE));
+		lastname.setData("binding_property", "lastname"); //$NON-NLS-1$ //$NON-NLS-2$
+		lastname.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 		lastname.setBounds(235, 62, 182, 32);
 
 		final Group group = new Group(container, SWT.NONE);
@@ -81,50 +81,51 @@ public class CustomerContractView extends SubModuleView<CustomerContractControll
 		group.setBounds(130, 120, 537, 310);
 
 		MasterDetailsComposite mdComposite = new MasterDetailsComposite(group, SWT.NONE, SWT.BOTTOM) {
+			@Override
 			protected void createDetails(Composite parent) {
 				GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(parent);
 
-				Label lcontractNo = UIControlsFactory.createLabel(parent, "ContractNo");
+				Label lcontractNo = UIControlsFactory.createLabel(parent, "ContractNo"); //$NON-NLS-1$
 				Text contractNo = UIControlsFactory.createText(parent);
 				lcontractNo.setForeground(SWTResourceManager.getColor(1, 0, 0));
 				GridDataFactory.fillDefaults().grab(true, false).applyTo(contractNo);
 				//				contractNo.setData("binding_property", "contractno");
-				addUIControl(contractNo, "contractno");
+				addUIControl(contractNo, "contractno"); //$NON-NLS-1$
 
-				Label lDescription = UIControlsFactory.createLabel(parent, "Description");
+				Label lDescription = UIControlsFactory.createLabel(parent, "Description"); //$NON-NLS-1$
 				Text description = UIControlsFactory.createText(parent);
 				lDescription.setForeground(SWTResourceManager.getColor(1, 0, 0));
 				GridDataFactory.fillDefaults().grab(true, false).applyTo(description);
 				//				description.setData("binding_property", "description");
-				addUIControl(description, "description");
+				addUIControl(description, "description"); //$NON-NLS-1$
 
-				Label lValue = UIControlsFactory.createLabel(parent, "Value");
+				Label lValue = UIControlsFactory.createLabel(parent, "Value"); //$NON-NLS-1$
 				Text value = UIControlsFactory.createText(parent);
 				lValue.setForeground(SWTResourceManager.getColor(1, 0, 0));
 				GridDataFactory.fillDefaults().grab(true, false).applyTo(value);
 				//				value.setData("binding_property", "value");
-				addUIControl(value, "value");
+				addUIControl(value, "value"); //$NON-NLS-1$
 
-				Label lStatus = UIControlsFactory.createLabel(parent, "Status");
+				Label lStatus = UIControlsFactory.createLabel(parent, "Status"); //$NON-NLS-1$
 				Text status = UIControlsFactory.createText(parent);
 				lStatus.setForeground(SWTResourceManager.getColor(1, 0, 0));
 				GridDataFactory.fillDefaults().grab(true, false).applyTo(status);
 				//				status.setData("binding_property", "status");
-				addUIControl(status, "status");
+				addUIControl(status, "status"); //$NON-NLS-1$
 			}
 		};
 		//		mdComposite.setData("binding_property","contracts");
-		addUIControl(mdComposite, "contracts");
+		addUIControl(mdComposite, "contracts"); //$NON-NLS-1$
 		mdComposite.setBounds(5, 15, 520, 350);
 
 		final Button saveButton = new Button(container, SWT.NONE);
 		saveButton.setBounds(625, 465, 109, 38);
-		saveButton.setFont(SWTResourceManager.getFont("", 12, SWT.NONE));
-		saveButton.setData("binding_property", "savea_action");
-		saveButton.setText("Save");
+		saveButton.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
+		saveButton.setData("binding_property", "savea_action"); //$NON-NLS-1$ //$NON-NLS-2$
+		saveButton.setText("Save"); //$NON-NLS-1$
 
 		final Label contractsLabel = new Label(container, SWT.NONE);
-		contractsLabel.setText("Contracts");
+		contractsLabel.setText("Contracts"); //$NON-NLS-1$
 		contractsLabel.setBounds(25, 136, 81, 28);
 
 		final Composite composite = new Composite(container, SWT.NONE);

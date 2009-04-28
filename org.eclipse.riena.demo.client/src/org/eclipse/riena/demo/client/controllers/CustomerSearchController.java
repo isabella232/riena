@@ -49,53 +49,54 @@ public class CustomerSearchController extends SubModuleController {
 		Inject.service(ICustomerService.class).into(this).andStart(
 				Activator.getDefault().getBundle().getBundleContext());
 
-		ITextRidget suchName = (ITextRidget) getRidget("searchLastName");
-		suchName.bindToModel(customerSearchBean, "lastName");
+		ITextRidget suchName = (ITextRidget) getRidget("searchLastName"); //$NON-NLS-1$
+		suchName.bindToModel(customerSearchBean, "lastName"); //$NON-NLS-1$
 		suchName.setMandatory(true);
 
-		((ILabelRidget) getRidget("hits")).bindToModel(result, "hits");
+		((ILabelRidget) getRidget("hits")).bindToModel(result, "hits"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		final ITableRidget kunden = ((ITableRidget) getRidget("result"));
-		String[] columnNames = { "lastname", "firstname", "birthdate", "street", "city" };
-		String[] propertyNames = { "lastName", "firstName", "birthDate", "address.street", "address.city" };
+		final ITableRidget kunden = ((ITableRidget) getRidget("result")); //$NON-NLS-1$
+		String[] columnNames = { "lastname", "firstname", "birthdate", "street", "city" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		String[] propertyNames = { "lastName", "firstName", "birthDate", "address.street", "address.city" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
-		kunden.bindToModel(result, "customers", Customer.class, propertyNames, columnNames);
+		kunden.bindToModel(result, "customers", Customer.class, propertyNames, columnNames); //$NON-NLS-1$
 
-		kunden.setColumnFormatter(2, new DateColumnFormatter("dd.mm.yyyy") {
-			@Override
-			protected Date getDate(Object element) {
-				return ((Customer) element).getBirthDate();
-			}
-		});
+		kunden.setColumnFormatter(2, new DateColumnFormatter("dd.mm.yyyy") { //$NON-NLS-1$
+					@Override
+					protected Date getDate(Object element) {
+						return ((Customer) element).getBirthDate();
+					}
+				});
 
-		((IActionRidget) getRidget("search")).addListener(new IActionListener() {
-			public void callback() {
-				result.setCustomers(null);
-				getRidget("result").updateFromModel();
+		((IActionRidget) getRidget("search")).addListener(new IActionListener() { //$NON-NLS-1$
+					public void callback() {
+						result.setCustomers(null);
+						getRidget("result").updateFromModel(); //$NON-NLS-1$
 
-				result.setCustomers(customerDemoService.search(null));
+						result.setCustomers(customerDemoService.search(null));
 
-				getRidget("result").updateFromModel();
-				getRidget("hits").updateFromModel();
-			}
-		});
+						getRidget("result").updateFromModel(); //$NON-NLS-1$
+						getRidget("hits").updateFromModel(); //$NON-NLS-1$
+					}
+				});
 
-		((IActionRidget) getRidget("new")).addListener(new IActionListener() {
-			public void callback() {
-				getNavigationNode().navigate(new NavigationNodeId("riena.demo.client.CustomerRecord"));
+		((IActionRidget) getRidget("new")).addListener(new IActionListener() { //$NON-NLS-1$
+					public void callback() {
+						getNavigationNode().navigate(new NavigationNodeId("riena.demo.client.CustomerRecord")); //$NON-NLS-1$
 
-			}
-		});
+					}
+				});
 
-		((IActionRidget) getRidget("open")).addListener(new IActionListener() {
-			public void callback() {
-				int selectionIndex = kunden.getSelectionIndex();
-				if (selectionIndex >= 0) {
-					getNavigationNode().navigate(
-							new NavigationNodeId("riena.demo.client.CustomerRecord", String.valueOf(selectionIndex)),
-							new NavigationArgument(result.getCustomers().get(selectionIndex)));
-				}
-			}
-		});
+		((IActionRidget) getRidget("open")).addListener(new IActionListener() { //$NON-NLS-1$
+					public void callback() {
+						int selectionIndex = kunden.getSelectionIndex();
+						if (selectionIndex >= 0) {
+							getNavigationNode().navigate(
+									new NavigationNodeId(
+											"riena.demo.client.CustomerRecord", String.valueOf(selectionIndex)), //$NON-NLS-1$
+									new NavigationArgument(result.getCustomers().get(selectionIndex)));
+						}
+					}
+				});
 	}
 }
