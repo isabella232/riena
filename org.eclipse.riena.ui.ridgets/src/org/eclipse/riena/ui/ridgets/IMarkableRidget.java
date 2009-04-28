@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
-
 /**
  * A Ridget that supports markers. All markers are maintained in a list, ie it
  * is valid behaviour to 'mark' a ridget with the same marker type multiple
@@ -76,9 +75,4 @@ public interface IMarkableRidget extends IBasicMarkableRidget {
 	 */
 	void setOutputOnly(boolean outputOnly);
 
-	/**
-	 * Update the representation of the control associated with the ridget based
-	 * on its markers.
-	 */
-	void updateMarkers();
 }
