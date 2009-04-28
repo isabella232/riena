@@ -15,7 +15,12 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.marker.IMarker;
@@ -47,6 +52,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	private OutputMarker outputMarker;
 	private HiddenMarker hiddenMarker;
 	private AbstractMarkerSupport markerSupport;
+	private Listener visibilityListener;
 
 	/**
 	 * Checks that the given uiControl is assignable to the the given type.
@@ -244,6 +250,22 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * ridget.
 	 */
 	protected void installListeners() {
+		if (getUIControl() != null) {
+			if (visibilityListener == null) {
+				visibilityListener = new VisibilityListener();
+			}
+			addHierarchieVisibilityListener(getUIControl(), visibilityListener);
+		}
+	}
+
+	private void addHierarchieVisibilityListener(Widget widget, Listener listener) {
+		if (widget != null && !widget.isDisposed()) {
+			widget.addListener(SWT.Show, listener);
+			widget.addListener(SWT.Hide, listener);
+		}
+		if (widget instanceof Control) {
+			addHierarchieVisibilityListener(((Control) widget).getParent(), listener);
+		}
 	}
 
 	/**
@@ -251,6 +273,19 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * unbound from the ridget.
 	 */
 	protected void uninstallListeners() {
+		if (getUIControl() != null && visibilityListener != null) {
+			removeHierarchieVisibilityListener(getUIControl(), visibilityListener);
+		}
+	}
+
+	private void removeHierarchieVisibilityListener(Widget widget, Listener listener) {
+		if (widget != null && !widget.isDisposed()) {
+			widget.removeListener(SWT.Show, listener);
+			widget.removeListener(SWT.Hide, listener);
+		}
+		if (widget instanceof Control) {
+			addHierarchieVisibilityListener(((Control) widget).getParent(), listener);
+		}
 	}
 
 	protected Image getManagedImage(String key) {
@@ -423,6 +458,46 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		if (markerSupport != null) {
 			markerSupport.updateMarkers();
 		}
+	}
+
+	// helping classes
+	// ////////////////
+
+	private class VisibilityListener implements Listener {
+
+		public void handleEvent(Event event) {
+			if (getUIControl() != null && isRelevant(event, getUIControl())) {
+				// visibility change of this Ridget in progress. Fire event
+				// when it is completed
+				getUIControl().getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						if (getUIControl() != null && !getUIControl().isDisposed()) {
+							if (markerSupport == null) {
+								markerSupport = createMarkerSupport();
+							}
+							markerSupport.fireShowingPropertyChangeEvent();
+						}
+					}
+				});
+			}
+		}
+
+		private boolean isRelevant(Event event, Widget widget) {
+			if (widget.isDisposed()) {
+				return false;
+			}
+			if (event.widget == widget) {
+				return true;
+			}
+			if (widget instanceof Control) {
+				Composite parent = ((Control) widget).getParent();
+				if (parent != null) {
+					return isRelevant(event, parent);
+				}
+			}
+			return false;
+		}
+
 	}
 
 }

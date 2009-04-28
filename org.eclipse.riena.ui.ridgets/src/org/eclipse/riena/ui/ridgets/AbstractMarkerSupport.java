@@ -183,6 +183,11 @@ public abstract class AbstractMarkerSupport {
 		}
 	}
 
+	public void fireShowingPropertyChangeEvent() {
+		propertyChangeSupport.firePropertyChange(IRidget.PROPERTY_SHOWING, !ridget.isVisible(), ridget.isVisible());
+		updateMarkers();
+	}
+
 	protected boolean hasHiddenMarkers() {
 		return !getRidget().getMarkersOfType(HiddenMarker.class).isEmpty();
 	}

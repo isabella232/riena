@@ -115,6 +115,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	 */
 	@Override
 	protected final void installListeners() {
+		super.installListeners();
 		if (getUIControl() != null) {
 			getUIControl().addFocusListener(focusManager);
 		}
@@ -129,6 +130,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 		if (getUIControl() != null) {
 			getUIControl().removeFocusListener(focusManager);
 		}
+		super.uninstallListeners();
 	}
 
 	@Override

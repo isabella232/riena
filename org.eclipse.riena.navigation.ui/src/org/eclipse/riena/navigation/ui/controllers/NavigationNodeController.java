@@ -166,6 +166,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 */
 	public void addRidget(String id, IRidget ridget) {
 		ridget.addPropertyChangeListener(IBasicMarkableRidget.PROPERTY_MARKER, propertyChangeListener);
+		ridget.addPropertyChangeListener(IRidget.PROPERTY_SHOWING, propertyChangeListener);
 		ridgets.put(id, ridget);
 	}
 

@@ -40,6 +40,16 @@ public interface IRidget {
 	String PROPERTY_ENABLED = "enabled"; //$NON-NLS-1$
 
 	/**
+	 * The name of the PropertyChangeEvent that is fired when the actual
+	 * visibility of the Ridget changes while the Ridget is bound to a widget -
+	 * either the visibility of the Ridget itself or the visibility of a parent
+	 * of the associated widget.
+	 * 
+	 * @see IRidget#isVisible()
+	 */
+	String PROPERTY_SHOWING = "showing"; //$NON-NLS-1$
+
+	/**
 	 * @return Indicates whether the UI-control is visible.
 	 */
 	boolean isVisible();
