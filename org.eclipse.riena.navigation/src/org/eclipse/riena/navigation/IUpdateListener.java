@@ -11,12 +11,13 @@
 package org.eclipse.riena.navigation;
 
 /**
- * Listener for changes performed on an argument Object that was passed to
- * another node as part of an NavigationArgument during a navigation.
+ * Listener for changes performed. The NavigationArgument itself is immutable
+ * and cannot be changed, but the changelistener could notify a listener (i.e.
+ * another controller) that a passed object has changed.
  * 
  * @see INavigationNode#navigate(NavigationNodeId, NavigationArgument)
  */
-public interface INavigationArgumentListener {
+public interface IUpdateListener {
 
 	/**
 	 * Called when the Object passed as an argument during a navigation was
@@ -25,6 +26,6 @@ public interface INavigationArgumentListener {
 	 * @param argument
 	 *            The changed argument.
 	 */
-	void valueChanged(Object argument);
+	void handleUpdate(Object argument);
 
 }

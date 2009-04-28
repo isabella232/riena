@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Contains additional information for a navigation passed on to the target node
  * and/or used during its creation.
@@ -37,36 +34,7 @@ public class NavigationArgument {
 
 	private Object parameter;
 	private NavigationNodeId parentNodeId;
-	private List<INavigationArgumentListener> argumentListeners = null;
-
-	// TODO see https://bugs.eclipse.org/bugs/show_bug.cgi?id=261832
-	//private boolean navigateAsync = false;
-	//
-	//	/**
-	//	 * @return the navigateAsync
-	//	 */
-	//	public boolean isNavigateAsync() {
-	//		return navigateAsync;
-	//	}
-	//
-	//	/**
-	//	 * @param navigateAsync
-	//	 *            the navigateAsync to set
-	//	 */
-	//	public void setNavigateAsync(boolean navigateAsync) {
-	//		this.navigateAsync = navigateAsync;
-	//	}
-
-	/**
-	 * @param parameter
-	 * @param argumentListener
-	 * @param parentNodeId
-	 */
-	public NavigationArgument(Object argument, NavigationNodeId parentNodeId) {
-		super();
-		this.parameter = argument;
-		this.parentNodeId = parentNodeId;
-	}
+	private IUpdateListener updateListener = null;
 
 	/**
 	 */
@@ -77,9 +45,32 @@ public class NavigationArgument {
 	/**
 	 * @param parameter
 	 */
-	public NavigationArgument(Object argument) {
+	public NavigationArgument(Object parameter) {
 		super();
-		this.parameter = argument;
+		this.parameter = parameter;
+	}
+
+	/**
+	 * @param parameter
+	 * @param argumentListener
+	 * @param parentNodeId
+	 */
+	public NavigationArgument(Object parameter, NavigationNodeId parentNodeId) {
+		super();
+		this.parameter = parameter;
+		this.parentNodeId = parentNodeId;
+	}
+
+	/**
+	 * @param parameter
+	 * @param updateListener
+	 * @param parentNodeId
+	 */
+	public NavigationArgument(Object parameter, IUpdateListener updateListener, NavigationNodeId parentNodeId) {
+		super();
+		this.parameter = parameter;
+		this.parentNodeId = parentNodeId;
+		this.updateListener = updateListener;
 	}
 
 	/**
@@ -90,59 +81,23 @@ public class NavigationArgument {
 	}
 
 	/**
-	 * @param externalParameter
-	 *            the externalParameter to set
-	 */
-	public void setParameter(Object externalParameter) {
-		this.parameter = externalParameter;
-	}
-
-	/**
 	 * @return the parentNodeId
 	 */
 	public NavigationNodeId getParentNodeId() {
 		return parentNodeId;
 	}
 
-	/**
-	 * @param parentNodeId
-	 *            the parentNodeId to set
-	 */
-	public void setParentNode(NavigationNodeId parentNodeId) {
-		this.parentNodeId = parentNodeId;
+	public IUpdateListener getUpdateListener() {
+		return updateListener;
 	}
 
 	/**
-	 * @param argumentListener
-	 *            the argumentListener to add
+	 * Value was changed, notify list
 	 */
-	public void addArgumentListener(INavigationArgumentListener argumentListener) {
-		if (argumentListeners == null) {
-			argumentListeners = new ArrayList<INavigationArgumentListener>();
-		}
-		argumentListeners.add(argumentListener);
-	}
-
-	/**
-	 * @param argumentListener
-	 *            the argumentListener to add
-	 */
-	public void removeArgumentListener(INavigationArgumentListener argumentListener) {
-		if (argumentListeners == null) {
+	public void fireValueChanged(Object parameter) {
+		if (updateListener == null) {
 			return;
 		}
-		argumentListeners.remove(argumentListener);
-	}
-
-	/**
-	 * Navigation Argument was changed, fire change event to all listeners
-	 */
-	public void fireValueChanged() {
-		if (argumentListeners == null) {
-			return;
-		}
-		for (INavigationArgumentListener listeners : argumentListeners) {
-			listeners.valueChanged(this);
-		}
+		updateListener.handleUpdate(parameter);
 	}
 }
