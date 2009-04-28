@@ -39,6 +39,7 @@ public class DeferredLoggingForwarder extends Thread {
 		this.queue = queue;
 	}
 
+	@Override
 	public void run() {
 		while (true) {
 			DeferredLogEvent logEvent = null;

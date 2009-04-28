@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.sample.pingpong.client.config;
 
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.communication.sample.pingpong.common.IPingPong;
-
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
 
 /**
  * The Ping Pong sample shows to config a "remote" OSGi Services on the base of
@@ -44,8 +44,8 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext context) throws Exception {
 		// register hessian proxy for riena remote service
-		pingPongReg = Register.remoteProxy(IPingPong.class).usingUrl("http://${riena.hostname}/hessian/PingPongWS")
-				.withProtocol("hessian").andStart(context);
+		pingPongReg = Register.remoteProxy(IPingPong.class).usingUrl("http://${riena.hostname}/hessian/PingPongWS") //$NON-NLS-1$
+				.withProtocol("hessian").andStart(context); //$NON-NLS-1$
 	}
 
 	/**

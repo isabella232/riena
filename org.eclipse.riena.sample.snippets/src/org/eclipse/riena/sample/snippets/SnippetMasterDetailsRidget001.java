@@ -37,7 +37,11 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * A master details ridget. The master area shows a table of persons. The detail
  * area can rename a person.
  */
-public class SnippetMasterDetailsRidget001 {
+public final class SnippetMasterDetailsRidget001 {
+
+	private SnippetMasterDetailsRidget001() {
+		// "utility class"
+	}
 
 	/**
 	 * A master details widget with a text fields for renaming a person.

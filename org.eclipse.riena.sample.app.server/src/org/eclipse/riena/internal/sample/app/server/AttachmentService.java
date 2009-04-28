@@ -23,11 +23,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.SecureRandom;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.communication.core.attachment.Attachment;
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
-import org.osgi.service.log.LogService;
 
 /**
  * Example service to show the feature of sending attachments in Webservice
@@ -139,7 +142,7 @@ public final class AttachmentService implements IAttachmentService {
 			}
 			return new Attachment(url);
 		} catch (IOException e) {
-			// do nothing
+			Nop.reason("do nothing"); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -148,9 +151,9 @@ public final class AttachmentService implements IAttachmentService {
 		try {
 			return new Attachment(new URL("http://localhost:8080/junittest/errorinthemiddle")); //$NON-NLS-1$
 		} catch (MalformedURLException e) {
-			// do nothing
+			Nop.reason("do nothing"); //$NON-NLS-1$
 		} catch (IOException e) {
-			// do nothing
+			Nop.reason("do nothing"); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -160,9 +163,9 @@ public final class AttachmentService implements IAttachmentService {
 			URL url = new URL("http://localhost:8080/junittest/validoutput"); //$NON-NLS-1$
 			return new Attachment(url);
 		} catch (MalformedURLException e) {
-			// do nothing
+			Nop.reason("do nothing"); //$NON-NLS-1$
 		} catch (IOException e) {
-			// do nothing
+			Nop.reason("do nothing"); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -200,7 +203,7 @@ public final class AttachmentService implements IAttachmentService {
 			// intentionally a invalid port
 			return new Attachment(new URL("http://localhost:24444/unittest/errorinthemiddle")); //$NON-NLS-1$
 		} catch (MalformedURLException e) {
-			// do nothing
+			Nop.reason("do nothing"); //$NON-NLS-1$
 		}
 
 		return null;

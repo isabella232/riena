@@ -65,9 +65,10 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	private ModuleTitleBar title;
 	private NavigationTreeObserver navigationTreeObserver;
 	private ListenerList<IComponentUpdateListener> updateListeners;
+
 	//performance tweaking
-	private boolean cachedActivityState = true;
-	private boolean treeDirty = true;
+	//private boolean cachedActivityState = true;
+	//private boolean treeDirty = true;
 
 	public ModuleView(Composite parent) {
 		this.parent = parent;
@@ -221,7 +222,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		getTree().addListener(SWT.Selection, new Listener() {
 
 			public void handleEvent(Event event) {
-				treeDirty = true;
+				// treeDirty = true;
 				TreeItem[] selection = getTree().getSelection();
 				if ((selection.length > 0) && (selection[0].getData() instanceof ISubModuleNode)) {
 					ISubModuleNode activeSubModule = (ISubModuleNode) selection[0].getData();
@@ -245,7 +246,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		getTree().addListener(SWT.Expand, new Listener() {
 
 			public void handleEvent(Event event) {
-				treeDirty = true;
+				// treeDirty = true;
 				handleExpandCollapse(event, true);
 			}
 
@@ -254,7 +255,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		getTree().addListener(SWT.Collapse, new Listener() {
 
 			public void handleEvent(Event event) {
-				treeDirty = true;
+				// treeDirty = true;
 				handleExpandCollapse(event, false);
 			}
 

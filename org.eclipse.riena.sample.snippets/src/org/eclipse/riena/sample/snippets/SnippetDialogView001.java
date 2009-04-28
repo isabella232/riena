@@ -34,6 +34,10 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public final class SnippetDialogView001 {
 
+	private SnippetDialogView001() {
+		// "utility class"
+	}
+
 	public static void main(String[] args) {
 		Display display = Display.getDefault();
 		try {

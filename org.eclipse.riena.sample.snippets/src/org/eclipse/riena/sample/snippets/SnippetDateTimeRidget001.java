@@ -36,7 +36,11 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * Bind a java.util.Date to IDateTimeRidgets.
  */
-public class SnippetDateTimeRidget001 {
+public final class SnippetDateTimeRidget001 {
+
+	private SnippetDateTimeRidget001() {
+		// "utility class"
+	}
 
 	public static void main(String[] args) {
 		Display display = new Display();
@@ -90,8 +94,9 @@ public class SnippetDateTimeRidget001 {
 		shell.pack();
 		shell.open();
 		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
 		}
 		display.dispose();
 	}

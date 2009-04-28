@@ -56,6 +56,7 @@ public class Activator extends RienaPlugin {
 	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext
 	 * )
 	 */
+	@Override
 	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -106,6 +107,7 @@ public class Activator extends RienaPlugin {
 	 * @see
 	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
 	public void stop(BundleContext context) throws Exception {
 		active = false;

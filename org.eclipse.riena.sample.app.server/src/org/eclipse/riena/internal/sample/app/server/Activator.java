@@ -12,6 +12,9 @@ package org.eclipse.riena.internal.sample.app.server;
 
 import java.util.Hashtable;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.publisher.Publish;
 import org.eclipse.riena.core.RienaPlugin;
@@ -22,8 +25,6 @@ import org.eclipse.riena.sample.app.common.exception.IExceptionService;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.sample.app.common.model.ICustomers;
 import org.eclipse.riena.sample.app.common.model.IHelloWorldService;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -160,7 +161,7 @@ public class Activator extends RienaPlugin {
 
 	private void startTestGregorianCalendar(BundleContext context) {
 		context.registerService(ITestGregorianCalendar.class.getName(), new TestGregorianCalendar(), null);
-		Publish.service(ITestGregorianCalendar.class).usingPath("/TestGregorianCalendarWS").withProtocol(
+		Publish.service(ITestGregorianCalendar.class).usingPath("/TestGregorianCalendarWS").withProtocol( //$NON-NLS-1$
 				REMOTE_PROTOCOL_HESSIAN).andStart(context);
 	}
 

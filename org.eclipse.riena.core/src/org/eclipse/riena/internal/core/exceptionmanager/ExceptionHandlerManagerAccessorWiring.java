@@ -21,6 +21,7 @@ import org.eclipse.riena.core.wire.AbstractWiring;
  */
 public class ExceptionHandlerManagerAccessorWiring extends AbstractWiring {
 
+	@Override
 	public void wire(Object bean, BundleContext context) {
 		Inject.service(IExceptionHandlerManager.class).useRanking().into(bean).andStart(context);
 	}

@@ -147,21 +147,21 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 			return;
 		}
 
-		String itemId;
+		String id;
 		if (item instanceof MenuItem) {
-			itemId = getItemId((MenuItem) item);
+			id = getItemId((MenuItem) item);
 		} else {
-			itemId = getItemId((ToolItem) item);
+			id = getItemId((ToolItem) item);
 		}
-		if (StringUtils.isEmpty(itemId)) {
+		if (StringUtils.isEmpty(id)) {
 			return;
 		}
 
 		IRidget ridget = menuItemBindingManager.createRidget(item);
 		ridget.setUIControl(item);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, itemId);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, id);
 		getUIControls().add(item);
-		controller.addRidget(itemId, ridget);
+		controller.addRidget(id, ridget);
 
 		if (item instanceof MenuItem) {
 			MenuItem menuItem = (MenuItem) item;

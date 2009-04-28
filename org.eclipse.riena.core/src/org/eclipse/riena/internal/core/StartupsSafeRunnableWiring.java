@@ -20,6 +20,7 @@ import org.eclipse.riena.core.wire.AbstractWiring;
  */
 public class StartupsSafeRunnableWiring extends AbstractWiring {
 
+	@Override
 	public void wire(Object bean, BundleContext context) {
 		Inject.extension("org.eclipse.riena.core.startups").into(bean).andStart(context); //$NON-NLS-1$
 	}

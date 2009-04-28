@@ -20,6 +20,7 @@ import org.eclipse.riena.core.wire.AbstractWiring;
  */
 public class SimpleExceptionHandlerManagerWiring extends AbstractWiring {
 
+	@Override
 	public void wire(Object bean, BundleContext context) {
 		Inject.extension(IExceptionHandlerDefinition.EXTENSION_POINT).into(bean).andStart(context);
 	}

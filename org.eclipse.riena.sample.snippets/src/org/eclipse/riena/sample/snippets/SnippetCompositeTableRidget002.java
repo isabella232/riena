@@ -39,7 +39,11 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 /**
  * A composite table ridget with sorting.
  */
-public class SnippetCompositeTableRidget002 {
+public final class SnippetCompositeTableRidget002 {
+
+	private SnippetCompositeTableRidget002() {
+		// "utility class"
+	}
 
 	/**
 	 * Header for a {@link CompositeTable} widget.
@@ -108,6 +112,7 @@ public class SnippetCompositeTableRidget002 {
 			this.rowData = (Person) rowData;
 		}
 
+		@Override
 		public void configureRidgets() {
 			ITextRidget txtFirst = (ITextRidget) getRidget("first"); //$NON-NLS-1$
 			txtFirst.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
