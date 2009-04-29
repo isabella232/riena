@@ -83,7 +83,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		textDate.setText("04.12.2008"); //$NON-NLS-1$
 
 		final IDateTimeRidget dtDate = (IDateTimeRidget) getRidget("dtDate"); //$NON-NLS-1$
-		DateFormat dateFormat = new SimpleDateFormat("dd.MM.YYYY"); //$NON-NLS-1$
+		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); //$NON-NLS-1$
 		try {
 			Date date = dateFormat.parse("04.12.2008"); //$NON-NLS-1$
 			dtDate.setDate(date);
