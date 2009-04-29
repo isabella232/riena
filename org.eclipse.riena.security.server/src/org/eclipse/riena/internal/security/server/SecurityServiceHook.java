@@ -16,7 +16,10 @@ import java.util.Arrays;
 import javax.security.auth.Subject;
 import javax.servlet.http.Cookie;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
 import org.eclipse.riena.core.Log4r;
@@ -26,7 +29,6 @@ import org.eclipse.riena.security.common.NotAuthorizedFailure;
 import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
-import org.osgi.service.log.LogService;
 
 /**
  * This Service Hook deals with security issues of a webservice invocation. It
@@ -73,9 +75,9 @@ public class SecurityServiceHook implements IServiceHook {
 		// RegistryAccessor.fetchRegistry().getConfiguration(
 		// UNSECURE_WEBSERVICES_ID);
 		String appName = "???appname??????";// RuntimeInfo.getApplicationName(); //$NON-NLS-1$
-		if (appName == null) {
-			appName = "<unknown>"; //$NON-NLS-1$
-		}
+		//		if (appName == null) {
+		//			appName = "<unknown>"; //$NON-NLS-1$
+		//		}
 		// if (tempList.size() == 0) {
 		// LOGGER.log(LogService.LOG_INFO, appName +" : no unsecureWebservices
 		// defined");

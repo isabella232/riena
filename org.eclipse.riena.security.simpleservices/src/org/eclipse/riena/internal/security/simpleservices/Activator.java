@@ -12,14 +12,15 @@ package org.eclipse.riena.internal.security.simpleservices;
 
 import java.io.InputStream;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+
 import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.security.authorizationservice.IPermissionStore;
 import org.eclipse.riena.security.sessionservice.ISessionStore;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
 import org.eclipse.riena.security.simpleservices.sessionservice.store.MemoryStore;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -47,6 +48,7 @@ public final class Activator extends RienaActivator {
 	 * @see
 	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
@@ -68,6 +70,7 @@ public final class Activator extends RienaActivator {
 	 * @see
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		memoryStore.unregister();
 		filepermissionstore.unregister();

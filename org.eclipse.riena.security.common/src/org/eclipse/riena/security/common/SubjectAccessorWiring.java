@@ -10,15 +10,17 @@
  *******************************************************************************/
 package org.eclipse.riena.security.common;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.wire.AbstractWiring;
-import org.osgi.framework.BundleContext;
 
 /**
  * Wire the {@code SubjectAccessor}.
  */
 public class SubjectAccessorWiring extends AbstractWiring {
 
+	@Override
 	public void wire(Object bean, BundleContext context) {
 		Inject.service(ISubjectHolderService.class).useRanking().into(bean).andStart(context);
 	}

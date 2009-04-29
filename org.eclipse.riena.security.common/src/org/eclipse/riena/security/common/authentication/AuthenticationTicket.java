@@ -85,6 +85,7 @@ public class AuthenticationTicket implements Serializable {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "AuthenticationTicket(session=" + getSession() + ",principals=" + getPrincipals() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}

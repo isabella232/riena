@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.security.client.startup;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.communication.core.factory.ProxyAlreadyRegisteredFailure;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.core.RienaActivator;
+import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
-
-import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -51,7 +52,7 @@ public class Activator extends RienaActivator {
 					.remoteProxy(IAuthenticationService.class)
 					.usingUrl("http://${riena.securehostname}/hessian/AuthenticationService").withProtocol("hessian").andStart(context); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (ProxyAlreadyRegisteredFailure e) {
-			// do nothing, can happen if other projects already registered this remote service
+			Nop.reason("do nothing, can happen if other projects already registered this remote service"); //$NON-NLS-1$
 		}
 
 		try {
@@ -59,7 +60,7 @@ public class Activator extends RienaActivator {
 					"http://${riena.securehostname}/hessian/AuthorizationServiceWS").withProtocol("hessian").andStart( //$NON-NLS-1$ //$NON-NLS-2$
 					context);
 		} catch (ProxyAlreadyRegisteredFailure e) {
-			// do nothing, can happen if other projects already registered this remote service
+			Nop.reason("do nothing, can happen if other projects already registered this remote service"); //$NON-NLS-1$
 		}
 	}
 

@@ -28,9 +28,12 @@ public interface IAuthenticationService {
 	 * @param credentials
 	 *            list of credentials that need to be verified for a successful
 	 *            login
+	 * 
+	 * @throws AuthenticationFailure
+	 * 
 	 * @return
 	 */
-	AuthenticationTicket login(String loginContext, AbstractCredential[] credentials);
+	AuthenticationTicket login(String loginContext, AbstractCredential[] credentials) throws AuthenticationFailure;
 
 	/**
 	 * Logoff currently logged in user and invalidate current session

@@ -82,6 +82,7 @@ public class SimplePrincipal implements Principal, Serializable {
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
 			return true;
@@ -101,6 +102,7 @@ public class SimplePrincipal implements Principal, Serializable {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		if (name == null) {
 			return getClass().hashCode();
@@ -114,6 +116,7 @@ public class SimplePrincipal implements Principal, Serializable {
 	 * 
 	 * @return string representation of object
 	 */
+	@Override
 	public String toString() {
 		return "(" + this.getClass().getSimpleName() + ":" + name + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}

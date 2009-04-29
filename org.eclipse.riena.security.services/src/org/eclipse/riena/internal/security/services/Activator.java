@@ -54,6 +54,7 @@ public class Activator extends RienaActivator {
 	 * @see
 	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
@@ -125,6 +126,7 @@ public class Activator extends RienaActivator {
 	 * @see
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		Activator.plugin = null;
 		super.stop(context);
