@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.ridgets.tree;
 import org.eclipse.core.databinding.observable.IObservable;
 
 /**
- *
+ * @deprecated see {@link ITreeNode}
  */
 public interface IObservableTreeModel extends IObservable, ITreeModel {
 
