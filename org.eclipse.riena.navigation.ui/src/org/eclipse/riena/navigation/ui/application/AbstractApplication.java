@@ -13,10 +13,13 @@ package org.eclipse.riena.navigation.ui.application;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.ui.Activator;
@@ -37,7 +40,6 @@ import org.eclipse.riena.navigation.model.NavigationNodeProviderAccessor;
 import org.eclipse.riena.navigation.ui.login.ILoginDialogViewDefinition;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
-import org.osgi.service.log.LogService;
 
 /**
  * Abstract application defining the basic structure of a Riena application
@@ -271,11 +273,16 @@ public abstract class AbstractApplication implements IApplication {
 		}
 
 		public int compareTo(StartupSortable o) {
-			if (level.compareTo(o.level) != 0) {
+			if (sequence == o.sequence) {
 				return level.compareTo(o.level);
 			} else {
 				return sequence - o.sequence;
 			}
+			//			if (level.compareTo(o.level) != 0) {
+			//				return level.compareTo(o.level);
+			//			} else {
+			//				return sequence - o.sequence;
+			//			}
 		}
 
 		@Override
