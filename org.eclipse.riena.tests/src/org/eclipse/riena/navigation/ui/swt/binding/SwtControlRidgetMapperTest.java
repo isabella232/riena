@@ -52,7 +52,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	protected void tearDown() throws Exception {
 
 		// Create new instance of SwtControlRidgetMapper to start with initial mappings only (not additional mappings added in previous test cases)
-		ReflectionUtils.setHidden(SwtControlRidgetMapper.class, "INSTANCE", ReflectionUtils.newInstanceHidden(
+		ReflectionUtils.setHidden(SwtControlRidgetMapper.class, "instance", ReflectionUtils.newInstanceHidden(
 				SwtControlRidgetMapper.class, new Object[0]));
 		mapper = null;
 		shell.dispose();
