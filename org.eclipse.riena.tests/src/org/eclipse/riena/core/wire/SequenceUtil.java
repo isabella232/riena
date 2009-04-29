@@ -25,24 +25,24 @@ public final class SequenceUtil {
 		// util
 	}
 
-	private static List<Class<? extends IWiring>> sequence;
+	private static List<Object> sequence;
 
 	public static void init() {
-		sequence = new ArrayList<Class<? extends IWiring>>();
+		sequence = new ArrayList<Object>();
 	}
 
 	/**
-	 * @param clazz
+	 * @param object
 	 */
-	public static void add(Class<? extends IWiring> clazz) {
+	public static void add(Object object) {
 		if (sequence == null) {
 			return;
 		}
-		sequence.add(clazz);
+		sequence.add(object);
 	}
 
-	public static void assertExpected(Class<? extends IWiring>... wirings) {
-		List<Class<? extends IWiring>> temp = Arrays.asList(wirings);
+	public static void assertExpected(Object... objects) {
+		List<Object> temp = Arrays.asList(objects);
 		Assert.assertEquals(temp, sequence);
 	}
 }
