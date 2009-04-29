@@ -26,6 +26,7 @@ import org.eclipse.riena.core.injector.IStoppable;
 import org.eclipse.riena.core.injector.extension.ExtensionInjector;
 import org.eclipse.riena.core.injector.service.ServiceInjector;
 import org.eclipse.riena.core.util.Iter;
+import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.eclipse.riena.internal.core.wire.ExtensionInjectorBuilder;
 import org.eclipse.riena.internal.core.wire.ServiceInjectorBuilder;
 
@@ -189,6 +190,7 @@ public class WirePuller implements IStoppable {
 	 * Stops this wire-puller if the owning bundle is stopping.
 	 */
 	private class BundleStoppingListener implements SynchronousBundleListener {
+		@IgnoreFindBugs(value = "IS2_INCONSISTENT_SYNC", justification = "Field context of WirePuller is written only before this listener is added, field bundle of BundleContext is immutable.")
 		public void bundleChanged(BundleEvent event) {
 			if (event.getBundle() != context.getBundle()) {
 				return;
