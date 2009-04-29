@@ -1241,7 +1241,14 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.INavigationNode#getNavigationArgument()
 	 */
 	public NavigationArgument getNavigationArgument() {
-		return (NavigationArgument) getContext(NavigationArgument.CONTEXT_KEY_ARGUMENT);
+		NavigationArgument navigationArgument = (NavigationArgument) getContext(NavigationArgument.CONTEXTKEY_ARGUMENT);
+		if (navigationArgument != null) {
+			return navigationArgument;
+		}
+		if (getParent() != null) {
+			return getParent().getNavigationArgument();
+		}
+		return navigationArgument;
 	}
 
 }

@@ -550,7 +550,7 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 
 	protected Object resolveCoreVariable(String variable, NavigationArgument navigationArgument) {
 
-		if (NavigationArgument.CONTEXT_KEY_PARAMETER.equals(variable)) {
+		if (NavigationArgument.CONTEXTKEY_PARAMETER.equals(variable)) {
 			return navigationArgument.getParameter();
 		}
 

@@ -15,7 +15,6 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.riena.demo.common.Contract;
 import org.eclipse.riena.demo.common.Customer;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
@@ -32,8 +31,7 @@ public class CustomerContractController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		Customer customer = (Customer) getNavigationNode().getParent().getContext(
-				NavigationArgument.CONTEXT_KEY_PARAMETER);
+		Customer customer = (Customer) getNavigationNode().getParent().getContext("demo.customer"); //$NON-NLS-1$
 
 		ITextRidget firstName = (ITextRidget) getRidget("firstname"); //$NON-NLS-1$
 		firstName.bindToModel(customer, "firstName"); //$NON-NLS-1$

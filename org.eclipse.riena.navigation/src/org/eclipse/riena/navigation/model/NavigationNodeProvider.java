@@ -120,8 +120,7 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 		}
 		if (argument != null) {
 			// store the NavigationArgument in node context
-			targetNode.setContext(NavigationArgument.CONTEXT_KEY_ARGUMENT, argument);
-			targetNode.setContext(NavigationArgument.CONTEXT_KEY_PARAMETER, argument.getParameter());
+			targetNode.setContext(NavigationArgument.CONTEXTKEY_ARGUMENT, argument);
 		}
 
 		return targetNode;

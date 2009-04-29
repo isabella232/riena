@@ -30,21 +30,27 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
  */
 public class CustomerOverviewController extends SubModuleController {
 
-	private IUIFilter assistent = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.assistent") //$NON-NLS-1$
+	private IUIFilter assistent = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.assistent")
 			.getFilter();
 
-	private IUIFilter mandatory = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.mandatory") //$NON-NLS-1$
+	private IUIFilter mandatory = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.mandatory")
 			.getFilter();
 
 	@Override
 	public void configureRidgets() {
 
-		Customer customer = (Customer) getNavigationNode().getParent().getContext(
-				NavigationArgument.CONTEXT_KEY_PARAMETER);
-		if (customer == null) {
-			customer = new Customer();
-			getNavigationNode().getParent().setLabel("new Customer"); //$NON-NLS-1$
-			getNavigationNode().getParent().setContext(NavigationArgument.CONTEXT_KEY_PARAMETER, customer);
+		// store context in parent node (Module) so that all Submodule can access it
+		Customer customer = (Customer) getNavigationNode().getParent().getContext("demo.customer"); //$NON-NLS-1$
+
+		if (customer == null) { // we came here from a navigation from the search
+			NavigationArgument navigationArgument = getNavigationNode().getNavigationArgument();
+			if (navigationArgument != null) {
+				customer = (Customer) navigationArgument.getParameter();
+			} else {
+				customer = new Customer();
+				this.getNavigationNode().getParent().setLabel("new Customer"); //$NON-NLS-1$
+			}
+			getNavigationNode().getParent().setContext("demo.customer", customer); //$NON-NLS-1$
 		}
 
 		ITextRidget firstName = (ITextRidget) getRidget("firstname"); //$NON-NLS-1$
@@ -75,17 +81,17 @@ public class CustomerOverviewController extends SubModuleController {
 					}
 				});
 
-		((IActionRidget) getRidget("mandatory")).addListener(new IActionListener() { //$NON-NLS-1$
+		((IActionRidget) getRidget("mandatory")).addListener(new IActionListener() {
 
-					public void callback() {
-						IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-						if (((IToggleButtonRidget) getRidget("mandatory")).isSelected()) { //$NON-NLS-1$
-							applNode.addFilter(mandatory);
-						} else {
-							applNode.removeFilter(mandatory);
-						}
-					}
-				});
+			public void callback() {
+				IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+				if (((IToggleButtonRidget) getRidget("mandatory")).isSelected()) { //$NON-NLS-1$
+					applNode.addFilter(mandatory);
+				} else {
+					applNode.removeFilter(mandatory);
+				}
+			}
+		});
 
 		getNavigationNode().addListener(new SubModuleNodeListener() {
 			@Override
@@ -94,5 +100,4 @@ public class CustomerOverviewController extends SubModuleController {
 			}
 		});
 	}
-
 }
