@@ -22,15 +22,12 @@ package org.eclipse.riena.navigation;
 public class NavigationArgument {
 
 	/**
-	 * this key is used in INavigationNode.getContext to address the parameter
-	 * within the NavigationArgument
-	 */
-	public static final String CONTEXT_KEY_PARAMETER = "riena.navigation.parameter"; //$NON-NLS-1$
-	/**
 	 * this key is used in INavigationNode.getContext to address THIS (the
 	 * NavigationArgument)
 	 */
-	public static final String CONTEXT_KEY_ARGUMENT = "riena.navigation.argument"; //$NON-NLS-1$
+	public static final String CONTEXTKEY_ARGUMENT = "riena.navigation.argument"; //$NON-NLS-1$
+
+	public static final String CONTEXTKEY_PARAMETER = "riena.navigation.parameter"; //$NON-NLS-1$
 
 	private Object parameter;
 	private NavigationNodeId parentNodeId;
