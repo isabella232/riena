@@ -23,14 +23,13 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.core.wire.WireWith;
+import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 
 /**
  * Execute the startup actions
  */
-@WireWith(StartupsSafeRunnableWiring.class)
 public class StartupsSafeRunnable implements ISafeRunnable {
 
 	private IRienaStartupExtension[] startups;
@@ -139,6 +138,7 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 	}
 
 	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´startups´ is too expensive")
+	@InjectExtension(id = "org.eclipse.riena.core.startups")
 	public void update(IRienaStartupExtension[] startups) {
 		this.startups = startups;
 	}
