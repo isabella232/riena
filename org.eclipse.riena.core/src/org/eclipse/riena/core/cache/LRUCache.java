@@ -110,7 +110,7 @@ public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 		}
 	}
 
-	@IgnoreFindBugs(value = "IS2_INCONSISTENT_SYNC", justification = "not that critical, just statisitcs")
+	@IgnoreFindBugs(value = "IS2_INCONSISTENT_SYNC", justification = "not that critical, just statistics")
 	public String getStatistic() {
 		return name + "Hit / NotFound / Miss / Timeout " //$NON-NLS-1$
 				+ statHit + " / " + statNotFound + " / " + statTimeout; //$NON-NLS-1$ //$NON-NLS-2$
