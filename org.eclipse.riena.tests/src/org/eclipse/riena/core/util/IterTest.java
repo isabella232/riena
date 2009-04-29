@@ -175,6 +175,30 @@ public class IterTest extends RienaTestCase {
 		}
 	}
 
+	/**
+	 * Nomen est omen!
+	 */
+	public void testReverseIterating() {
+		List<Integer> ints = new ArrayList<Integer>();
+		ints.add(1);
+		ints.add(2);
+		ints.add(3);
+		int expected = 3;
+		for (Integer i : Iter.ableReverse(ints)) {
+			assertEquals(expected--, (int) i);
+		}
+	}
+
+	/**
+	 * Nomen est omen!
+	 */
+	public void testReverseIteratingWithNull() {
+		List<Integer> ints = null;
+		for (Integer i : Iter.ableReverse(ints)) {
+			fail("Should not be reached.");
+		}
+	}
+
 	private static class UntypedIteratorReturner {
 		private String[] strings;
 
