@@ -15,6 +15,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * The Iter class provides conversions from classes only implementing Iterator
@@ -79,6 +81,21 @@ public final class Iter {
 			return Collections.emptyList();
 		}
 		return collection;
+	}
+
+	/**
+	 * Create an {@code Iterable} that can be used in foreach loops that
+	 * iterates in reverse order of the given list.
+	 * 
+	 * @param list
+	 *            the list that should be iterated over in reverse order
+	 * @return the iterable
+	 */
+	public static <T> Iterable<T> ableReverse(List<T> list) {
+		if (list == null) {
+			return Collections.emptyList();
+		}
+		return new ReverseIterable<T>(list.listIterator(list.size()));
 	}
 
 	/**
@@ -169,4 +186,33 @@ public final class Iter {
 		}
 
 	}
+
+	private static final class ReverseIterable<T> implements Iterable<T> {
+
+		private Iterator<T> reversed;
+
+		private ReverseIterable(final ListIterator<T> iterator) {
+			reversed = new Iterator<T>() {
+
+				public boolean hasNext() {
+					boolean has = iterator.hasPrevious();
+					return has;
+				}
+
+				public T next() {
+					return iterator.previous();
+				}
+
+				public void remove() {
+					iterator.remove();
+				}
+			};
+		}
+
+		public Iterator<T> iterator() {
+			return reversed;
+		}
+
+	}
+
 }
