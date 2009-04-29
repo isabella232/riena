@@ -10,22 +10,27 @@
  *******************************************************************************/
 package org.eclipse.riena.core.wire;
 
-import org.eclipse.riena.core.injector.Inject;
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.injector.service.ServiceInjector;
 
 /**
  *
  */
 public class BeanWiring extends AbstractWiring {
 
+	private ServiceInjector injector;
+
 	@Override
 	public void wire(Object bean, BundleContext context) {
-		Inject.service(Schtonk.class.getName()).into(bean).andStart(context);
+		injector = Inject.service(Schtonk.class.getName()).into(bean).andStart(context);
 		SequenceUtil.add(BeanWiring.class);
 	}
 
 	@Override
 	public void unwire(Object bean, BundleContext context) {
+		injector.stop();
 		SequenceUtil.add(BeanWiring.class);
 	}
 
