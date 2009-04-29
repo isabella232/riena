@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.injector.service;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -117,7 +118,8 @@ public class RankingInjector extends ServiceInjector {
 	}
 
 	@IgnoreFindBugs(value = "SE_COMPARATOR_SHOULD_BE_SERIALIZABLE", justification = "only used locally")
-	private static final class ObjectRankingComparator implements Comparator<ServiceReference> {
+	private static final class ObjectRankingComparator implements Comparator<ServiceReference>, Serializable {
+		private static final long serialVersionUID = 1L;
 
 		/*
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
