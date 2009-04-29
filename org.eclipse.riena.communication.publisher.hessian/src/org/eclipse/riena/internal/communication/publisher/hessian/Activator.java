@@ -12,14 +12,15 @@ package org.eclipse.riena.internal.communication.publisher.hessian;
 
 import java.util.Hashtable;
 
-import org.eclipse.riena.communication.core.publisher.IServicePublisher;
-import org.eclipse.riena.core.RienaActivator;
-import org.eclipse.riena.core.RienaConstants;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
+
+import org.eclipse.riena.communication.core.publisher.IServicePublisher;
+import org.eclipse.riena.core.RienaActivator;
+import org.eclipse.riena.core.RienaConstants;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -39,6 +40,7 @@ public class Activator extends RienaActivator {
 	 * @see
 	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
@@ -58,6 +60,7 @@ public class Activator extends RienaActivator {
 	 * @see
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		publisherReg.unregister();
 		publisherReg = null;

@@ -138,7 +138,7 @@ public class JavaPermissionSerializerFactory extends AbstractSerializerFactory {
 			try {
 				return getType().getConstructor(String.class, String.class);
 			} catch (NoSuchMethodException e) {
-				Nop.reason("Fall throgh!");
+				Nop.reason("Fall throgh!"); //$NON-NLS-1$
 			}
 			try {
 				return getType().getConstructor(String.class);

@@ -10,14 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.publisher;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.publisher.Publish;
 import org.eclipse.riena.communication.publisher.ServicePublishBinder;
 import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.injector.Inject;
-
-import org.osgi.framework.BundleContext;
 
 public class Activator extends RienaActivator {
 
@@ -31,6 +31,7 @@ public class Activator extends RienaActivator {
 	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext
 	 * )
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 
@@ -50,6 +51,7 @@ public class Activator extends RienaActivator {
 	 * @see
 	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		Activator.plugin = null;
 		super.stop(context);

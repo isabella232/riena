@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.factory.hessian;
 
-import org.eclipse.riena.core.RienaActivator;
-
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.riena.core.RienaActivator;
 
 public class Activator extends RienaActivator {
 
@@ -24,6 +24,7 @@ public class Activator extends RienaActivator {
 	 * org.eclipse.riena.core.RienaActivator#start(org.osgi.framework.BundleContext
 	 * )
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
@@ -35,6 +36,7 @@ public class Activator extends RienaActivator {
 	 * @see
 	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		Activator.plugin = null;
 		super.stop(context);

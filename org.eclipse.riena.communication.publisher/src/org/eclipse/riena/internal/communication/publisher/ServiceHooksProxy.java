@@ -37,6 +37,7 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 		Inject.service(IServiceHook.class.getName()).into(this).andStart(Activator.getDefault().getContext());
 	}
 
+	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		if (method.getName().equals("equals") || method.getName().equals("hashCode")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return new UnsupportedOperationException("method :" + method.getName() + " not supported for " //$NON-NLS-1$ //$NON-NLS-2$
@@ -101,6 +102,7 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 		this.mca = mca;
 	}
 
+	@Override
 	public Subject getSubject() {
 		return subject;
 	}
