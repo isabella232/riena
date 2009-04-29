@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.wire;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,14 +22,22 @@ import org.osgi.framework.SynchronousBundleListener;
 
 import org.eclipse.core.runtime.Assert;
 
+import org.eclipse.riena.core.injector.IStoppable;
+import org.eclipse.riena.core.injector.extension.ExtensionInjector;
+import org.eclipse.riena.core.injector.service.ServiceInjector;
+import org.eclipse.riena.core.util.Iter;
+import org.eclipse.riena.internal.core.wire.ExtensionInjectorBuilder;
+import org.eclipse.riena.internal.core.wire.ServiceInjectorBuilder;
+
 /**
  * The {@code WirePuler} is responsible for the wiring of a bean.
  */
-public class WirePuller {
+public class WirePuller implements IStoppable {
 
-	private Object bean;
+	private final Object bean;
 	private BundleContext context;
 	private List<IWiring> wirings;
+	private List<IStoppable> injections;
 	private State state = State.PENDING;
 	private BundleListener bundleStoppingListener;
 
@@ -38,7 +47,7 @@ public class WirePuller {
 	/**
 	 * @param bean
 	 */
-	WirePuller(Object bean) {
+	WirePuller(final Object bean) {
 		Assert.isLegal(bean != null, "bean must exist"); //$NON-NLS-1$
 		this.bean = bean;
 	}
@@ -49,7 +58,7 @@ public class WirePuller {
 	 * @param context
 	 * @return the bean
 	 */
-	public WirePuller andStart(final BundleContext context) {
+	public synchronized WirePuller andStart(final BundleContext context) {
 		Assert.isLegal(context != null, "context must be given."); //$NON-NLS-1$
 		Assert.isLegal(state == State.PENDING, "state must be pending."); //$NON-NLS-1$
 		this.context = context;
@@ -73,6 +82,11 @@ public class WirePuller {
 				wiring.unwire(bean, context);
 			}
 		}
+		if (injections != null) {
+			for (IStoppable stoppable : Iter.ableReverse(injections)) {
+				stoppable.stop();
+			}
+		}
 		state = State.STOPPED;
 	}
 
@@ -80,13 +94,35 @@ public class WirePuller {
 		if (beanClass == null || beanClass == Object.class) {
 			return;
 		}
-		Class<? extends IWiring> wiringClass = getWiringClass(beanClass);
-		IWiring wiring = getWiring(wiringClass);
-		addIfNotNull(wiring);
+		IWiring wiring = getWiring(getWiringClass(beanClass));
+		add(wiring);
 		wire(beanClass.getSuperclass());
 		if (wiring != null) {
 			wiring.wire(bean, context);
 		}
+		injectIntoAnnotatedMethods(bean, beanClass);
+	}
+
+	private void injectIntoAnnotatedMethods(Object bean, Class<?> beanClass) {
+		for (Method method : beanClass.getDeclaredMethods()) {
+			if (method.isAnnotationPresent(InjectService.class)) {
+				injectServiceInto(bean, method);
+			} else if (method.isAnnotationPresent(InjectExtension.class)) {
+				injectExtensionInto(bean, method);
+			}
+		}
+	}
+
+	private void injectServiceInto(Object bean, Method method) {
+		ServiceInjectorBuilder bob = new ServiceInjectorBuilder(bean, method);
+		ServiceInjector injector = bob.build();
+		add(injector.andStart(context));
+	}
+
+	private void injectExtensionInto(Object bean, Method method) {
+		ExtensionInjectorBuilder bob = new ExtensionInjectorBuilder(bean, method);
+		ExtensionInjector injector = bob.build();
+		add(injector.andStart(context));
 	}
 
 	/**
@@ -94,7 +130,7 @@ public class WirePuller {
 	 * 
 	 * @param wiring
 	 */
-	private void addIfNotNull(IWiring wiring) {
+	private void add(IWiring wiring) {
 		if (wiring == null) {
 			return;
 		}
@@ -102,6 +138,18 @@ public class WirePuller {
 			wirings = new ArrayList<IWiring>(2);
 		}
 		wirings.add(wiring);
+	}
+
+	/**
+	 * Collect the stoppable injections.
+	 * 
+	 * @param stoppable
+	 */
+	private void add(IStoppable stoppable) {
+		if (injections == null) {
+			injections = new ArrayList<IStoppable>();
+		}
+		injections.add(stoppable);
 	}
 
 	/**
