@@ -249,7 +249,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * @param is
 	 * @return
 	 */
-	protected InputStream getDecryptor(InputStream is) throws IOException {
+	protected InputStream getDecryptor(InputStream is) {
 		return new CipherInputStream(is, decrypt);
 	}
 
@@ -264,7 +264,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * @param os
 	 * @return
 	 */
-	protected OutputStream getEncryptor(OutputStream os) throws IOException {
+	protected OutputStream getEncryptor(OutputStream os) {
 		return new CipherOutputStream(os, encrypt);
 	}
 

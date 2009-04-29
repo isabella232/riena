@@ -10,16 +10,18 @@
  *******************************************************************************/
 package org.eclipse.riena.monitor.client;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.wire.AbstractWiring;
 import org.eclipse.riena.monitor.common.IReceiver;
-import org.osgi.framework.BundleContext;
 
 /**
  * Wire the {@code SimpleSender}.
  */
 public class SimpleSenderWiring extends AbstractWiring {
 
+	@Override
 	public void wire(Object bean, BundleContext context) {
 		Inject.service(IReceiver.class).useRanking().into(bean).andStart(context);
 	}

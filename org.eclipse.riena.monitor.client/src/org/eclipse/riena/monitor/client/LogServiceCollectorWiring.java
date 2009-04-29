@@ -10,16 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.monitor.client;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.equinox.log.ExtendedLogReaderService;
+
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.wire.AbstractWiring;
-import org.osgi.framework.BundleContext;
 
 /**
  * Wire the {@code LogServiceCollector}.
  */
 public class LogServiceCollectorWiring extends AbstractWiring {
 
+	@Override
 	public void wire(Object bean, BundleContext context) {
 		Inject.service(ExtendedLogReaderService.class).useRanking().into(bean).andStart(context);
 	}

@@ -21,7 +21,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
@@ -107,8 +106,7 @@ public class Aggregator implements IAggregator {
 		started = false;
 	}
 
-	public synchronized void update(final IClientInfoProviderExtension clientInfoProviderExtension)
-			throws CoreException {
+	public synchronized void update(final IClientInfoProviderExtension clientInfoProviderExtension) {
 		stopSender();
 		if (clientInfoProviderExtension == null) {
 			return;
@@ -150,7 +148,7 @@ public class Aggregator implements IAggregator {
 		}
 	}
 
-	public void update(final ISenderExtension senderExtension) throws CoreException {
+	public void update(final ISenderExtension senderExtension) {
 		stopSender();
 		if (senderExtension == null) {
 			return;
@@ -171,7 +169,7 @@ public class Aggregator implements IAggregator {
 		}
 	}
 
-	public synchronized void update(final IStoreExtension storeExtension) throws CoreException {
+	public synchronized void update(final IStoreExtension storeExtension) {
 		stopStore();
 		if (storeExtension == null) {
 			return;
