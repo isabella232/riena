@@ -11,13 +11,14 @@
 package org.eclipse.riena.communication.core.attachment;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
 import org.eclipse.core.runtime.Assert;
+
+import org.eclipse.riena.internal.core.ignore.Nop;
 
 /**
  * This class contains data constructed from a File object or a URL. If this
@@ -64,7 +65,7 @@ public class Attachment {
 	 * @pre file.exist==true
 	 * @throws java.io.FileNotFoundException
 	 */
-	public Attachment(File file) throws FileNotFoundException, IOException {
+	public Attachment(File file) throws IOException {
 		this();
 		type = Type.FILE;
 		this.file = file;
@@ -175,7 +176,7 @@ public class Attachment {
 						input.reset();
 					}
 				} catch (IOException e) {
-					// do nothing
+					Nop.reason("do nothing"); //$NON-NLS-1$
 				}
 			}
 		} catch (Throwable e) {

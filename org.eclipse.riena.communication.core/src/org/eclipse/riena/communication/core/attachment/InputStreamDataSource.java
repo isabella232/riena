@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.eclipse.riena.internal.core.ignore.Nop;
+
 /**
  *
  */
@@ -36,7 +38,7 @@ public class InputStreamDataSource implements IDataSource {
 		try {
 			inputStream.reset();
 		} catch (IOException e) {
-			// catch and ignore
+			Nop.reason("catch and ignore"); //$NON-NLS-1$
 		}
 		return inputStream;
 	}

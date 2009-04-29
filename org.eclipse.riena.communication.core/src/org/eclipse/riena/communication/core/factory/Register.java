@@ -13,7 +13,11 @@ package org.eclipse.riena.communication.core.factory;
 /**
  *
  */
-public class Register {
+public final class Register {
+
+	private Register() {
+		// utility class
+	}
 
 	public static ProxyFactory remoteProxy(Class<?> clazz) {
 		return new ProxyFactory(clazz);

@@ -108,6 +108,7 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 		 * are the same if there containing method have the same name and formal
 		 * parameter types and return type.
 		 */
+		@Override
 		public boolean equals(Object obj) {
 			if (obj == null || !(obj instanceof MethodKey)) {
 				return false;
@@ -135,6 +136,7 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 		 * computed as the hash-code of the method's name and the number of
 		 * arguments.
 		 */
+		@Override
 		public int hashCode() {
 			return method.getName().hashCode() + 31 * params.length;
 		}
