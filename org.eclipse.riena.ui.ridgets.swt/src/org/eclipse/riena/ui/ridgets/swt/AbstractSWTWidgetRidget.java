@@ -254,17 +254,17 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			if (visibilityListener == null) {
 				visibilityListener = new VisibilityListener();
 			}
-			addHierarchieVisibilityListener(getUIControl(), visibilityListener);
+			if (getUIControl() instanceof Control) {
+				addHierarchieVisibilityListener(((Control) getUIControl()).getParent(), visibilityListener);
+			}
 		}
 	}
 
-	private void addHierarchieVisibilityListener(Widget widget, Listener listener) {
-		if (widget != null && !widget.isDisposed()) {
-			widget.addListener(SWT.Show, listener);
-			widget.addListener(SWT.Hide, listener);
-		}
-		if (widget instanceof Control) {
-			addHierarchieVisibilityListener(((Control) widget).getParent(), listener);
+	private void addHierarchieVisibilityListener(Composite parent, Listener listener) {
+		if (parent != null && !parent.isDisposed()) {
+			parent.addListener(SWT.Show, listener);
+			parent.addListener(SWT.Hide, listener);
+			addHierarchieVisibilityListener(parent.getParent(), listener);
 		}
 	}
 
@@ -273,18 +273,16 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * unbound from the ridget.
 	 */
 	protected void uninstallListeners() {
-		if (getUIControl() != null && visibilityListener != null) {
-			removeHierarchieVisibilityListener(getUIControl(), visibilityListener);
+		if (getUIControl() instanceof Control && visibilityListener != null) {
+			removeHierarchieVisibilityListener(((Control) getUIControl()).getParent(), visibilityListener);
 		}
 	}
 
-	private void removeHierarchieVisibilityListener(Widget widget, Listener listener) {
-		if (widget != null && !widget.isDisposed()) {
-			widget.removeListener(SWT.Show, listener);
-			widget.removeListener(SWT.Hide, listener);
-		}
-		if (widget instanceof Control) {
-			addHierarchieVisibilityListener(((Control) widget).getParent(), listener);
+	private void removeHierarchieVisibilityListener(Composite parent, Listener listener) {
+		if (parent != null && !parent.isDisposed()) {
+			parent.removeListener(SWT.Show, listener);
+			parent.removeListener(SWT.Hide, listener);
+			removeHierarchieVisibilityListener(parent.getParent(), listener);
 		}
 	}
 
@@ -466,36 +464,18 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	private class VisibilityListener implements Listener {
 
 		public void handleEvent(Event event) {
-			if (getUIControl() != null && isRelevant(event, getUIControl())) {
-				// visibility change of this Ridget in progress. Fire event
-				// when it is completed
+			// fire a showing event for Ridgets with markers whose visibility
+			// changes because of a parent widget so that markers can be
+			// updated (bug 261980)
+			if (!getMarkers().isEmpty() && getUIControl() != null && !getUIControl().isDisposed()) {
 				getUIControl().getDisplay().asyncExec(new Runnable() {
 					public void run() {
 						if (getUIControl() != null && !getUIControl().isDisposed()) {
-							if (markerSupport == null) {
-								markerSupport = createMarkerSupport();
-							}
 							markerSupport.fireShowingPropertyChangeEvent();
 						}
 					}
 				});
 			}
-		}
-
-		private boolean isRelevant(Event event, Widget widget) {
-			if (widget.isDisposed()) {
-				return false;
-			}
-			if (event.widget == widget) {
-				return true;
-			}
-			if (widget instanceof Control) {
-				Composite parent = ((Control) widget).getParent();
-				if (parent != null) {
-					return isRelevant(event, parent);
-				}
-			}
-			return false;
 		}
 
 	}
