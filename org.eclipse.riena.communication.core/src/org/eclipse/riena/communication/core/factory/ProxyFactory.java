@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.factory;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.core.runtime.Assert;
+
+import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 
 /**
  * ProxyFactory used in the fluent API of Register to allow easy registration of
@@ -23,7 +25,6 @@ public class ProxyFactory {
 	private final Class<?> clazz;
 	private String url;
 	private String protocol;
-	private BundleContext context;
 
 	/**
 	 * @param clazz
@@ -62,7 +63,6 @@ public class ProxyFactory {
 	 * @return
 	 */
 	public IRemoteServiceRegistration andStart(BundleContext context) {
-		this.context = context;
 		Assert.isNotNull(url);
 		Assert.isNotNull(protocol);
 		return new RemoteServiceFactory().createAndRegisterProxy(clazz, url, protocol, context);
