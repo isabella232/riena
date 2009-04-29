@@ -47,8 +47,10 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * @param rowClass
 	 *            The class of the objects in the list.
 	 * @param columnPropertyNames
-	 *            The property names of the properties of the beans to be
-	 *            displayed in the columns. A non-null String array.
+	 *            The list of property names that are to be displayed in the
+	 *            columns. One property per column. Each object in
+	 *            rowObservables must have a corresponding getter. This
+	 *            parameter must be a non-null String array.
 	 * @param columnHeaders
 	 *            The titles of the columns to be displayed in the header. May
 	 *            be null if no headers should be shown for this table.
@@ -66,12 +68,14 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * @param listHolder
 	 *            An object that has a property with a list of objects.
 	 * @param listPropertyName
-	 *            Property for accessing the list of beans.
+	 *            Property for accessing the list of objects.
 	 * @param rowClass
 	 *            Property for accessing the list of objects.
 	 * @param columnPropertyNames
-	 *            The property names of the properties of the beans to be
-	 *            displayed in the columns.
+	 *            The list of property names that are to be displayed in the
+	 *            columns. One property per column. Each object in
+	 *            rowObservables must have a corresponding getter. This
+	 *            parameter must be a non-null String array.
 	 * @param headerNames
 	 *            The titles of the columns to be displayed in the header. May
 	 *            be null if no headers should be shown for this table.
@@ -92,10 +96,10 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 
 	/**
 	 * Set the new selection. This behaves exactly like an interactive selection
-	 * change (i.e. the user selecting another bean).
+	 * change (i.e. the user selecting another value).
 	 * 
 	 * @param newSelection
-	 *            the newly selected bean of the master, or null to clear the
+	 *            the newly selected value of this ridget, or null to clear the
 	 *            selection
 	 */
 	void setSelection(final Object newSelection);

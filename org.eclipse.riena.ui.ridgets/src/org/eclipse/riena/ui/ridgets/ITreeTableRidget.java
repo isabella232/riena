@@ -20,8 +20,7 @@ import org.eclipse.riena.ui.common.ISortableByColumn;
 public interface ITreeTableRidget extends ITreeRidget, ISortableByColumn {
 
 	/**
-	 * Creates a default binding between the Tree Ridget and the specified
-	 * treeRoots.
+	 * Creates a binding between the Tree Ridget and the specified treeRoots.
 	 * <p>
 	 * Each tree element must have an accessor that provides a list of children
 	 * (List), an accessor that provides a parent (null for the a root element)

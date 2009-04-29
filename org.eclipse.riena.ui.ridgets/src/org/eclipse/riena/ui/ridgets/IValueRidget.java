@@ -19,9 +19,9 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 public interface IValueRidget extends IRidget {
 
 	/**
-	 * Creates a default binding between the Ridget value and the specified
-	 * model value. The UpdateValueStrategy will be POLICY_UPDATE to the model
-	 * value (automatic update) and POLICY_ON_REQUEST from the model value.
+	 * Creates a binding between the Ridget value and the specified model value.
+	 * The UpdateValueStrategy will be POLICY_UPDATE to the model value
+	 * (automatic update) and POLICY_ON_REQUEST from the model value.
 	 * 
 	 * @see #updateFromModel()
 	 * 
@@ -31,17 +31,18 @@ public interface IValueRidget extends IRidget {
 	void bindToModel(IObservableValue observableValue);
 
 	/**
-	 * Creates an observable value from the specified bean property and binds it
-	 * to the Ridget value using a default binding. The UpdateValueStrategy will
-	 * be POLICY_UPDATE to the model value (automatic update) and
-	 * POLICY_ON_REQUEST from the model value.
+	 * Creates an observable value from the specified property (i.e. getter) and
+	 * binds it to the Ridget value using a default binding. The
+	 * UpdateValueStrategy will be POLICY_UPDATE to the model value (automatic
+	 * update) and POLICY_ON_REQUEST from the model value.
 	 * 
 	 * @see #updateFromModel()
 	 * 
 	 * @param pojo
 	 *            The pojo holding the model value.
 	 * @param propertyName
-	 *            Name of the bean property holding the model value.
+	 *            Name of the object property (example 'name' -> getName())
+	 *            holding the model value.
 	 */
 	void bindToModel(Object pojo, String propertyName);
 

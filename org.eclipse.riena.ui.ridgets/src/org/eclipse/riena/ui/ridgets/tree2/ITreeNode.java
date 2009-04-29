@@ -26,8 +26,8 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
  * objects satisfy the following requirements:
  * <ol>
  * <li>they must all have the same type</li>
- * <li>they must be beans (i.e. support for change listenrs and change
- * notification)</li>
+ * <li>they must be beans (i.e. support for change listeners and change
+ * notifications)</li>
  * <li>they must provide an read-only accessor for a value (i.e. public Object
  * getXXXX)</li>
  * <li>they must provide read/write accessor for a List of children (i.e. public

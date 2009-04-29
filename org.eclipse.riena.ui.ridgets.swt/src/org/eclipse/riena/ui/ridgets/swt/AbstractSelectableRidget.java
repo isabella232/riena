@@ -40,9 +40,9 @@ import org.eclipse.riena.ui.ridgets.ISelectableRidget;
  */
 public abstract class AbstractSelectableRidget extends AbstractSWTRidget implements ISelectableRidget {
 
-	/** A single selected bean Object. */
+	/** The selected option (single-selection). */
 	private final WritableValue singleSelectionObservable;
-	/** A list of selected bean Objects. */
+	/** A list of selected options (multiple-selection). */
 	private final WritableList multiSelectionObservable;
 	/** Binds the singleSelectionObservable to some model. */
 	private Binding singleSelectionBinding;
@@ -204,9 +204,9 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	// ////////////////
 
 	/**
-	 * Observable value bean for single selection. This class is used by this
-	 * ridget to monitor and maintain the selection state for single selection
-	 * and fire appropriate events.
+	 * Observable value for single selection. This class is used by this ridget
+	 * to monitor and maintain the selection state for single selection and fire
+	 * appropriate events.
 	 */
 	private static final class SingleSelectionObservable extends WritableValue {
 
@@ -217,9 +217,9 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	};
 
 	/**
-	 * Observable list bean for multiple selection. This class is used by this
-	 * ridget to monitor and maintain the selection state for multiple selection
-	 * and fire appropriate events.
+	 * Observable list for multiple selection. This class is used by this ridget
+	 * to monitor and maintain the selection state for multiple selection and
+	 * fire appropriate events.
 	 */
 	private final class MultiSelectionObservable extends WritableList {
 

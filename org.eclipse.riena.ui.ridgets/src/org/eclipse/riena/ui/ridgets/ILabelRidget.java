@@ -13,13 +13,16 @@ package org.eclipse.riena.ui.ridgets;
 import java.net.URL;
 
 /**
- * label ridget. Read only ridget, which will not change the bean.
+ * Ridget for a label.
+ * <p>
+ * Because a label is read-only, this ridget will not modify the bound model
+ * value (ref. {@link #bindToModel(Object, String)}) when the ridget value is
+ * modified.
  * 
  * @author Juergen Becker
  * @author Carsten Drossel
  * @author Frank Schepp
  */
-// public interface ILabelAdapter extends IMarkableAdapter {
 public interface ILabelRidget extends IValueRidget {
 
 	/**
@@ -78,15 +81,4 @@ public interface ILabelRidget extends IValueRidget {
 	 *            - icon name.
 	 */
 	void setIcon(String icon);
-
-	// /**
-	// * @return Returns the status of enable.
-	// */
-	// boolean isEnabled();
-	//
-	// /**
-	// * @param enabled
-	// * The enable to set.
-	// */
-	// void setEnabled(boolean enabled);
 }

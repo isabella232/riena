@@ -38,8 +38,10 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * @param rowClass
 	 *            The class of the objects in the list.
 	 * @param columnPropertyNames
-	 *            The property names of the properties of the beans to be
-	 *            displayed in the columns. A non-null String array.
+	 *            The list of property names that are to be displayed in the
+	 *            columns. One property per column. Each object in
+	 *            rowObservables must have a corresponding getter. This
+	 *            parameter must be a non-null String array.
 	 * @param columnHeaders
 	 *            The titles of the columns to be displayed in the table header.
 	 *            May be null if no headers should be shown for this table.
@@ -59,12 +61,14 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * @param listHolder
 	 *            An object that has a property with a list of objects.
 	 * @param listPropertyName
-	 *            Property for accessing the list of beans.
-	 * @param rowClass
 	 *            Property for accessing the list of objects.
+	 * @param rowClass
+	 *            The class of the objects in the list.
 	 * @param columnPropertyNames
-	 *            The property names of the properties of the beans to be
-	 *            displayed in the columns.
+	 *            The list of property names that are to be displayed in the
+	 *            columns. One property per column. Each object in
+	 *            rowObservables must have a corresponding getter. This
+	 *            parameter must be a non-null String array.
 	 * @param columnHeaders
 	 *            The titles of the columns to be displayed in the header. May
 	 *            be null if no headers should be shown for this table.

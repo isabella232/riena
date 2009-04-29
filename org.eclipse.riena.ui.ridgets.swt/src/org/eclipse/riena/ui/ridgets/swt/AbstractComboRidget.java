@@ -44,9 +44,9 @@ import org.eclipse.riena.ui.ridgets.IRidget;
  * be reused for custom Combo controls.
  */
 public abstract class AbstractComboRidget extends AbstractSWTRidget implements IComboRidget {
-	/** List of choices (Objects). */
+	/** List of available options (ridget). */
 	private final IObservableList rowObservables;
-	/** An observable with the current selection. */
+	/** The selected option (ridget). */
 	private final IObservableValue selectionObservable;
 	/**
 	 * Converts from objects (rowObsservables) to strings (Combo) using the
@@ -63,9 +63,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	/** If this item is selected, treat it as if nothing is selected */
 	private Object emptySelection;
 
-	/** List observable bean (model) */
+	/** List of available options (model). */
 	private IObservableList rowObservablesModel;
-	/** Selection observable bean (model) */
+	/** The selected option (model). */
 	private IObservableValue selectionObservableModel;
 	/** A string used for converting from Object to String */
 	private String renderingMethod;

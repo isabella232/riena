@@ -21,6 +21,12 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 public interface ISingleChoiceRidget extends IChoiceRidget {
 
 	/**
+	 * Creates the bindings for this ridget.
+	 * <p>
+	 * The method will use the values provided by optionValues to create the
+	 * choices shown by this ridget. The method will bind the selection kept by
+	 * this ridget to the selectionValue.
+	 * 
 	 * @param optionValues
 	 *            An observable list with a list of options.
 	 * @param selectionValue
@@ -29,28 +35,43 @@ public interface ISingleChoiceRidget extends IChoiceRidget {
 	void bindToModel(IObservableList optionValues, IObservableValue selectionValue);
 
 	/**
-	 * @param listPojo
+	 * Creates the bindings for this ridget.
+	 * <p>
+	 * The method will use the values provided by the listHolder to create the
+	 * choices shown by this ridget. The method will bind the selection kept by
+	 * this ridget to the to the attribute in selectionHolder specified by
+	 * selectionPropertyName.
+	 * 
+	 * @param listHolder
 	 *            An object holding the list of options.
 	 * @param listPropertyName
 	 *            The property name to access the list.
-	 * @param selectionPojo
+	 * @param selectionHolder
 	 *            An object holding the selection.
 	 * @param selectionPropertyName
 	 *            The property name to access the selection.
 	 */
-	void bindToModel(Object listPojo, String listPropertyName, Object selectionPojo, String selectionPropertyName);
+	void bindToModel(Object listHolder, String listPropertyName, Object selectionHolder, String selectionPropertyName);
 
 	/**
+	 * Creates the bindings for this ridget.
+	 * <p>
+	 * It will use the labels (Strings) provided by optionLabels to create the
+	 * choices shown by this ridget. Each label corresponds to one option from
+	 * optionValues, based on the position in each list. The method will bind
+	 * the selection kept by this ridget to the attribute in selectionHolder
+	 * specified by selectionPropertyName.
+	 * 
 	 * @param optionValues
 	 *            The list of values to provide as choice list.
 	 * @param optionLabels
 	 *            The list of labels to present the choice list.
-	 * @param selectionPojo
+	 * @param selectionHolder
 	 *            An object holding the selection.
 	 * @param selectionPropertyName
 	 *            The property name to access the selection.
 	 */
-	void bindToModel(List<? extends Object> optionValues, List<String> optionLabels, Object selectionPojo,
+	void bindToModel(List<? extends Object> optionValues, List<String> optionLabels, Object selectionHolder,
 			String selectionPropertyName);
 
 	/**

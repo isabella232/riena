@@ -12,10 +12,14 @@ package org.eclipse.riena.ui.ridgets;
 
 /**
  * Delegate for {@link IMasterDetailsRidget}, responsible for driving the
- * details area:
+ * details area by:
  * <ul>
  * <li>configuring the ridgets for the details area</li>
- * <li></li>
+ * <li>creating the model driving the details area</li>
+ * <li>updating a model value from the details area</li>
+ * <li>updating the details area from a model value</li>
+ * <li>deciding if data in the details area has been changed</li>
+ * <li>deciding if data in the details area is valid
  * </ul>
  * <p>
  * Developers using a {@link IMasterDetailsRidget} must introduce an appropriate
@@ -42,45 +46,60 @@ public interface IMasterDetailsDelegate {
 	void configureRidgets(IRidgetContainer container);
 
 	/**
-	 * Creates a workingCopy. The workingCopy object represents the model behind
-	 * the detail fields. It is always an instance of the bean class of the
-	 * master model.
+	 * Creates a 'working copy'. The object represents the model driving the
+	 * details area.
+	 * <p>
+	 * The 'working copy' is always an instance of the 'rowClass' specified in
+	 * the {@code bindToModel(...) } method of the corresponding
+	 * {@link IMasterDetailsRidget}.
 	 * 
-	 * @return an Object instance; never null.
+	 * @return an Object; never null.
+	 * @see IMasterDetailsRidget#bindToModel(org.eclipse.core.databinding.observable.list.IObservableList,
+	 *      Class, String[], String[])
+	 * @see IMasterDetailsRidget#bindToModel(Object, String, Class, String[],
+	 *      String[])
 	 */
 	Object createWorkingCopy();
 
 	/**
-	 * Copies the content of one given bean instance into another given bean
-	 * instance.
+	 * Copies the content of the source object into the target object.
+	 * Implementors only need to copy attributes that can be modified in the
+	 * details area.
 	 * 
 	 * @param source
-	 *            The source bean. If null, a fresh instance obtained from
-	 *            {@link #createWorkingCopy()} will be used as the source.
+	 *            The source object. If null, a new instance, obtained from
+	 *            {@link #createWorkingCopy()}, will be used as the source.
 	 * @param target
-	 *            The target bean. If null, a fresh instance obtained from
-	 *            {@link #createWorkingCopy()} will be used as the target
-	 * @return returns the target bean; never null.
+	 *            The target object. If null, a new instance, obtained from
+	 *            {@link #createWorkingCopy()}, will be used as the target.
+	 * @return returns the target object; never null.
 	 */
 	Object copyBean(Object source, Object target);
 
 	/**
-	 * Returns the workingCopy object. The workingCopyObject represents the
-	 * model behind the detail fields.It is always an instance of the bean class
-	 * of the master model.
+	 * Returns the 'working copy' object. This object represents the model
+	 * driving the details area.
+	 * <p>
+	 * The 'working copy' is always an instance of the 'rowClass' specified in
+	 * the {@code bindToModel(...) } method of the corresponding
+	 * {@link IMasterDetailsRidget}.
 	 * <p>
 	 * It is recommended that the instance returned by this method stays the
 	 * same over the lifetime of the delegate (i.e. always return the same
 	 * instance).
 	 * 
 	 * @return an Object; never null
+	 * @see IMasterDetailsRidget#bindToModel(org.eclipse.core.databinding.observable.list.IObservableList,
+	 *      Class, String[], String[])
+	 * @see IMasterDetailsRidget#bindToModel(Object, String, Class, String[],
+	 *      String[])
 	 */
 	Object getWorkingCopy();
 
 	/**
-	 * Returns true, if there there is a difference between the two beans, with
-	 * respect to the data that is editable in the details area. Returns false
-	 * is both beans are the equal, with respect to that data.
+	 * Returns true, if there there is a difference between the two objects,
+	 * with respect to the data that is editable in the details area. Returns
+	 * false is both objects are the equal, with respect to that data.
 	 * <p>
 	 * The return value determines the enablement state of the 'update' button
 	 * in the {@link IMasterDetailsRidget}.
@@ -95,10 +114,10 @@ public interface IMasterDetailsDelegate {
 	 * </pre>
 	 * 
 	 * @param source
-	 *            the source bean; never null. Holds the original values
+	 *            the source object; never null. Holds the original values
 	 * @param target
-	 *            the target bean; never null. Holds the latest values from the
-	 *            detail area.
+	 *            the target object; never null. Holds the latest values from
+	 *            the details area.
 	 */
 	boolean isChanged(Object source, Object target);
 

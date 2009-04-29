@@ -47,7 +47,7 @@ public interface ICompositeTableRidget extends ISelectableIndexedRidget, ISortab
 	 * @param listPropertyName
 	 *            Property for accessing the list of objects.
 	 * @param rowClass
-	 *            The class of the beans in the list.
+	 *            The class of the objects in the list.
 	 * @param rowRidgetClass
 	 *            A class (extending Composite) which will be instantiated for
 	 *            each row. It must provide a public constructor with these

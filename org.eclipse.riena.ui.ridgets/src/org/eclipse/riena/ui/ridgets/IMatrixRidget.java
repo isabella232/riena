@@ -30,8 +30,10 @@ public interface IMatrixRidget extends IRidget {
 	 * @param rowClass
 	 *            The class of the objects in the list.
 	 * @param columnPropertyNames
-	 *            The property names of the properties of the beans to be
-	 *            displayed in the columns.
+	 *            The list of property names that are to be displayed in the
+	 *            columns. One property per column. Each object in
+	 *            rowObservables must have a corresponding getter. This
+	 *            parameter must be a non-null String array.
 	 * @param columnHeaders
 	 *            The titles of the columns to be displayed in the header.
 	 */
@@ -46,10 +48,12 @@ public interface IMatrixRidget extends IRidget {
 	 * @param listPropertyName
 	 *            Property for accessing the list of objects.
 	 * @param rowClass
-	 *            The class of the beans in the list.
+	 *            The class of the objects in the list.
 	 * @param columnPropertyNames
-	 *            The property names of the properties of the beans to be
-	 *            displayed in the columns.
+	 *            The list of property names that are to be displayed in the
+	 *            columns. One property per column. Each object in
+	 *            rowObservables must have a corresponding getter. This
+	 *            parameter must be a non-null String array.
 	 * @param columnHeaders
 	 *            The titles of the columns to be displayed in the header.
 	 */

@@ -17,8 +17,8 @@ package org.eclipse.riena.ui.ridgets;
  * the UIControlsFactory (see UIControlsFactory.createTextDecimal() /
  * UIControlFactory.createSegmentedDecimalValueTextField())
  * 
- * Models supported by this ridget are the String-based TextBean and the
- * Double-based DoubleBean (see {@link #bindToModel(Object, String)}.
+ * It is recommended to use String or Double based-values as the model for this
+ * ridget (see {@link #bindToModel(Object, String)}.
  */
 public interface IDecimalTextRidget extends INumericTextRidget {
 

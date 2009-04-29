@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.ridgets;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+
 import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
 import org.eclipse.riena.ui.ridgets.tree.ITreeNode;
 
@@ -31,9 +32,9 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	IObservableTreeModel getRidgetObservable();
 
 	/**
-	 * Creates a default binding between the Ridget value and the specified
-	 * model value. The UpdateValueStrategy will be POLICY_UPDATE to the model
-	 * value (automatic update) and POLICY_ON_REQUEST from the model value.
+	 * Creates a binding between the Ridget value and the specified model value.
+	 * The UpdateValueStrategy will be POLICY_UPDATE to the model value
+	 * (automatic update) and POLICY_ON_REQUEST from the model value.
 	 * 
 	 * @see #updateFromModel()
 	 * 
@@ -45,8 +46,7 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	void bindToModel(IObservableTreeModel observableTreeModel);
 
 	/**
-	 * Creates a default binding between the Tree Ridget and the specified
-	 * treeRoots.
+	 * Creates a binding between the Tree Ridget and the specified treeRoots.
 	 * <p>
 	 * Each tree element must have an accessor that provides a list of children
 	 * (List), an accessor that provides a parent (null for the a root element)
@@ -91,8 +91,7 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 			String parentAccessor, String valueAccessor);
 
 	/**
-	 * Creates a default binding between the Tree Ridget and the specified
-	 * treeRoots.
+	 * Creates a binding between the Tree Ridget and the specified treeRoots.
 	 * <p>
 	 * Each tree element must have an accessor that provides a list of children
 	 * (List), an accessor that provides a parent (null for the a root element)
@@ -149,8 +148,7 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 			String parentAccessor, String valueAccessor, String enablementAccessor, String visibilityAccessor);
 
 	/**
-	 * Creates a default binding between the Tree Ridget and the specified
-	 * treeRoots.
+	 * Creates a binding between the Tree Ridget and the specified treeRoots.
 	 * <p>
 	 * Each tree element must have an accessor that provides a list of children
 	 * (List), an accessor that provides a parent (null for the a root element)

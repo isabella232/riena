@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * Adapter for a bean property: typically a boolean (selected).
+ * Adapter for a object property: typically a boolean (selected).
  * 
  * @author Frank Schepp
  */

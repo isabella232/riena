@@ -182,7 +182,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * POJO-Bean with two strings.
+	 * A POJO holding two strings.
 	 */
 	private static class TextPojo {
 		private String text1;

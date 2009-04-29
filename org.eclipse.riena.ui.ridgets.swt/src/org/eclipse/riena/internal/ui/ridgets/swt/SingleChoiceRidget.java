@@ -48,8 +48,9 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
 
-	/** A single selected bean Object. */
+	/** The list of available options. */
 	private final WritableList optionsObservable;
+	/** The selected option. */
 	private final WritableValue selectionObservable;
 
 	private Binding optionsBinding;
@@ -108,23 +109,24 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		bindToModel(optionValues, null, selectionValue);
 	}
 
-	public void bindToModel(Object listPojo, String listPropertyName, Object selectionPojo, String selectionPropertyName) {
-		Assert.isNotNull(listPojo, "listPojo"); //$NON-NLS-1$
+	public void bindToModel(Object listHolder, String listPropertyName, Object selectionHolder,
+			String selectionPropertyName) {
+		Assert.isNotNull(listHolder, "listHolder"); //$NON-NLS-1$
 		Assert.isNotNull(listPropertyName, "listPropertyName"); //$NON-NLS-1$
-		Assert.isNotNull(selectionPojo, "selectionPojo"); //$NON-NLS-1$
+		Assert.isNotNull(selectionHolder, "selectionHolder"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList optionValues = PojoObservables.observeList(listPojo, listPropertyName);
-		IObservableValue selectionValue = PojoObservables.observeValue(selectionPojo, selectionPropertyName);
+		IObservableList optionValues = PojoObservables.observeList(listHolder, listPropertyName);
+		IObservableValue selectionValue = PojoObservables.observeValue(selectionHolder, selectionPropertyName);
 		bindToModel(optionValues, null, selectionValue);
 	}
 
-	public void bindToModel(List<? extends Object> optionValues, List<String> optionLabels, Object selectionPojo,
+	public void bindToModel(List<? extends Object> optionValues, List<String> optionLabels, Object selectionHolder,
 			String selectionPropertyName) {
 		Assert.isNotNull(optionValues, "optionValues"); //$NON-NLS-1$
-		Assert.isNotNull(selectionPojo, "selectionPojo"); //$NON-NLS-1$
+		Assert.isNotNull(selectionHolder, "selectionHolder"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
 		IObservableList list = new WritableList(optionValues, null);
-		IObservableValue selection = PojoObservables.observeValue(selectionPojo, selectionPropertyName);
+		IObservableValue selection = PojoObservables.observeValue(selectionHolder, selectionPropertyName);
 		bindToModel(list, optionLabels, selection);
 	}
 

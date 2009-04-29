@@ -20,6 +20,7 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
  * @author Frank Schepp
  */
 public interface IMultipleChoiceRidget extends IChoiceRidget {
+
 	/**
 	 * Return the observable list holding the selected options.
 	 * 
@@ -28,6 +29,12 @@ public interface IMultipleChoiceRidget extends IChoiceRidget {
 	IObservableList getObservableSelectionList();
 
 	/**
+	 * Creates the bindings for this ridget.
+	 * <p>
+	 * The method will use the values provided by optionValues to create the
+	 * choices shown by this ridget. The method will bind the selections kept by
+	 * this ridget to selectionValues.
+	 * 
 	 * @param optionValues
 	 *            An observable list with a list of options.
 	 * @param selectionValues
@@ -36,28 +43,43 @@ public interface IMultipleChoiceRidget extends IChoiceRidget {
 	void bindToModel(IObservableList optionValues, IObservableList selectionValues);
 
 	/**
-	 * @param listBean
+	 * Creates the bindings for this ridget.
+	 * <p>
+	 * The method will use the values provided by the listHolder to create the
+	 * choices shown by this ridget. The method will bind the selections kept by
+	 * this ridget to the to the attribute in selectionHolder specified by
+	 * selectionPropertyName.
+	 * 
+	 * @param listHolder
 	 *            An object holding the list of options.
 	 * @param listPropertyName
 	 *            The property name to access the list.
-	 * @param selectionBean
+	 * @param selectionHolder
 	 *            An object holding the list of selected options.
 	 * @param selectionPropertyName
 	 *            The property name to access the selection.
 	 */
-	void bindToModel(Object listBean, String listPropertyName, Object selectionBean, String selectionPropertyName);
+	void bindToModel(Object listHolder, String listPropertyName, Object selectionHolder, String selectionPropertyName);
 
 	/**
+	 * Creates the bindings for this ridget.
+	 * <p>
+	 * It will use the labels (Strings) provided by optionLabels to create the
+	 * choices shown by this ridget. Each label corresponds to one option from
+	 * optionValues, based on the position in each list. The method will bind
+	 * the selections kept by this ridget to the attribute in selectionHolder
+	 * specified by selectionPropertyName.
+	 * 
 	 * @param optionValues
 	 *            The list of values to provide as choice list.
 	 * @param optionLabels
 	 *            The list of labels to present the choice list.
-	 * @param selectionBean
+	 * @param selectionHolder
 	 *            An object holding the list of selected options.
 	 * @param selectionPropertyName
 	 *            The property name to access the selection.
 	 */
-	void bindToModel(List<? extends Object> optionValues, List<String> optionLabels, Object selectionBean,
+	void bindToModel(List<? extends Object> optionValues, List<String> optionLabels, Object selectionHolder,
 			String selectionPropertyName);
 
 	/**
