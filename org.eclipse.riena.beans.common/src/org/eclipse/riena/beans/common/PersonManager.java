@@ -13,14 +13,11 @@ package org.eclipse.riena.beans.common;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Collection;
-import java.util.StringTokenizer;
-
-import org.eclipse.riena.ui.common.IComboEntryFactory;
 
 /**
  * 
  */
-public class PersonManager implements IComboEntryFactory {
+public class PersonManager {
 
 	/**
 	 * Property name of the selected person property.
@@ -77,33 +74,6 @@ public class PersonManager implements IComboEntryFactory {
 	public void setPersons(Collection<Person> persons) {
 
 		this.persons = persons;
-	}
-
-	/**
-	 * @see IComboEntryFactory#createNewEntry(java.lang.Object)
-	 */
-	public Person createNewEntry(Object listEntryString) {
-		if (listEntryString instanceof String) {
-			StringTokenizer t = new StringTokenizer((String) listEntryString, ","); //$NON-NLS-1$
-
-			Person person;
-			switch (t.countTokens()) {
-			case 0:
-				person = new Person("", ""); //$NON-NLS-1$//$NON-NLS-2$
-				break;
-			case 1:
-				person = new Person(t.nextToken().trim(), ""); //$NON-NLS-1$
-				break;
-			case 2:
-				person = new Person(t.nextToken().trim(), t.nextToken().trim());
-				break;
-			default:
-				person = new Person("", ""); //$NON-NLS-1$ //$NON-NLS-2$
-				break;
-			}
-			return person;
-		}
-		return null;
 	}
 
 	/**

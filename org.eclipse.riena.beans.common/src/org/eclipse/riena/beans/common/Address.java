@@ -40,10 +40,10 @@ public class Address extends AbstractBean {
 	private String town;
 
 	public Address() {
-		streetAndNumber = "";
+		streetAndNumber = ""; //$NON-NLS-1$
 		country = Locale.getDefault().getCountry();
 		postalCode = 0;
-		town = "";
+		town = ""; //$NON-NLS-1$
 	}
 
 	public void setStreetAndNumber(String streetAndNumber) {
