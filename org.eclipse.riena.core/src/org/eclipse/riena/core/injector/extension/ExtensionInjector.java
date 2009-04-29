@@ -28,13 +28,14 @@ import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.injector.IStoppable;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
  * This is the extension injector.<br>
  * See {@link ExtensionDescriptor} for explanation and usage.
  */
-public class ExtensionInjector {
+public class ExtensionInjector implements IStoppable {
 
 	/**
 	 * When this system property is set to {@code true} than the {@code

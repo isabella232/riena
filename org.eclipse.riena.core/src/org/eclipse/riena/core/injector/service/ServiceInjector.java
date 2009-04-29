@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.injector.IStoppable;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
@@ -37,7 +38,7 @@ import org.eclipse.riena.internal.core.Activator;
  * {@link ServiceDescriptor} for explanation and usage. It provides common
  * functionality for the ranking injector and the filtering injector.
  */
-public abstract class ServiceInjector {
+public abstract class ServiceInjector implements IStoppable {
 
 	/**
 	 * Default ´bind´ method name.
