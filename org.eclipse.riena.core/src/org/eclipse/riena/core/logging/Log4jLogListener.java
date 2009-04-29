@@ -223,6 +223,9 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 	 * A generic custom log level for log4j.
 	 */
 	private static final class CustomLevel extends Level {
+
+		private static final long serialVersionUID = 8076188016013250132L;
+
 		private static Map<Integer, CustomLevel> map = new HashMap<Integer, CustomLevel>();
 		private static final int LOG4J_LEVEL = Priority.FATAL_INT * 2;
 		// This value is duplicated here (because of access restrictions) from log4j SyslogAppender

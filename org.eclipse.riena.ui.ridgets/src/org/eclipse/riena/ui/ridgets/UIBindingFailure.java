@@ -21,15 +21,6 @@ public class UIBindingFailure extends Failure {
 
 	/**
 	 * @param msg
-	 * @param args
-	 * @param cause
-	 */
-	public UIBindingFailure(String msg, Object[] args, Throwable cause) {
-		super(msg, args, cause);
-	}
-
-	/**
-	 * @param msg
 	 */
 	public UIBindingFailure(String msg) {
 		super(msg);
@@ -43,22 +34,4 @@ public class UIBindingFailure extends Failure {
 		super(msg, cause);
 	}
 
-	/**
-	 * @param msg
-	 * @param arg1
-	 * @param cause
-	 */
-	public UIBindingFailure(String msg, Object arg1, Throwable cause) {
-		super(msg, arg1, cause);
-	}
-
-	/**
-	 * @param msg
-	 * @param arg1
-	 * @param arg2
-	 * @param cause
-	 */
-	public UIBindingFailure(String msg, Object arg1, Object arg2, Throwable cause) {
-		super(msg, arg1, arg2, cause);
-	}
 }

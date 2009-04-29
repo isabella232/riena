@@ -25,20 +25,6 @@ public class SecurityFailure extends Failure {
 	 * 
 	 * @param msg
 	 *            message text or message code
-	 * @param args
-	 *            message parameters
-	 * @param cause
-	 *            exception which has caused this Failure
-	 */
-	public SecurityFailure(String msg, Object[] args, Throwable cause) {
-		super(msg, args, cause);
-	}
-
-	/**
-	 * Creates a new instance of <code>SecurityFailure</code>
-	 * 
-	 * @param msg
-	 *            message text or message code
 	 */
 	public SecurityFailure(String msg) {
 		super(msg);
@@ -54,36 +40,6 @@ public class SecurityFailure extends Failure {
 	 */
 	public SecurityFailure(String msg, Throwable cause) {
 		super(msg, cause);
-	}
-
-	/**
-	 * Creates a new instance of <code>SecurityFailure</code>
-	 * 
-	 * @param msg
-	 *            message text or message code
-	 * @param arg1
-	 *            message parameter 1
-	 * @param cause
-	 *            exception which has caused this Failure
-	 */
-	public SecurityFailure(String msg, Object arg1, Throwable cause) {
-		super(msg, arg1, cause);
-	}
-
-	/**
-	 * Creates a new instance of <code>SecurityFailure</code>
-	 * 
-	 * @param msg
-	 *            message text or message code
-	 * @param arg1
-	 *            message parameter 1
-	 * @param arg2
-	 *            message parameter 2
-	 * @param cause
-	 *            exception which has caused this Failure
-	 */
-	public SecurityFailure(String msg, Object arg1, Object arg2, Throwable cause) {
-		super(msg, arg1, arg2, cause);
 	}
 
 }

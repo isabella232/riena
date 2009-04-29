@@ -16,15 +16,6 @@ public class NotAuthorizedFailure extends SecurityFailure {
 
 	/**
 	 * @param msg
-	 * @param args
-	 * @param cause
-	 */
-	public NotAuthorizedFailure(String msg, Object[] args, Throwable cause) {
-		super(msg, args, cause);
-	}
-
-	/**
-	 * @param msg
 	 */
 	public NotAuthorizedFailure(String msg) {
 		super(msg);
@@ -36,25 +27,6 @@ public class NotAuthorizedFailure extends SecurityFailure {
 	 */
 	public NotAuthorizedFailure(String msg, Throwable cause) {
 		super(msg, cause);
-	}
-
-	/**
-	 * @param msg
-	 * @param arg1
-	 * @param cause
-	 */
-	public NotAuthorizedFailure(String msg, Object arg1, Throwable cause) {
-		super(msg, arg1, cause);
-	}
-
-	/**
-	 * @param msg
-	 * @param arg1
-	 * @param arg2
-	 * @param cause
-	 */
-	public NotAuthorizedFailure(String msg, Object arg1, Object arg2, Throwable cause) {
-		super(msg, arg1, arg2, cause);
 	}
 
 }

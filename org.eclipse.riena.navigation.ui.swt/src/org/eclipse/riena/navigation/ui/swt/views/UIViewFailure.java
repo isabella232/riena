@@ -23,19 +23,6 @@ public class UIViewFailure extends Failure {
 	private static final long serialVersionUID = 7955739836963025929L;
 
 	/**
-	 * 
-	 * @param msg
-	 *            the message
-	 * @param args
-	 *            some argument
-	 * @param cause
-	 *            the cause
-	 */
-	public UIViewFailure(String msg, Object[] args, Throwable cause) {
-		super(msg, args, cause);
-	}
-
-	/**
 	 * Failure with a simple message.
 	 * 
 	 * @param msg
@@ -55,30 +42,4 @@ public class UIViewFailure extends Failure {
 		super(msg, cause);
 	}
 
-	/**
-	 * @param msg
-	 *            the message
-	 * @param arg1
-	 *            some argument
-	 * @param cause
-	 *            the cause
-	 */
-	public UIViewFailure(String msg, Object arg1, Throwable cause) {
-		super(msg, arg1, cause);
-	}
-
-	/**
-	 * @param msg
-	 *            the message
-	 * @param arg1
-	 *            some argument
-	 * @param arg2
-	 *            another argument
-	 * @param cause
-	 *            the cause
-	 * 
-	 */
-	public UIViewFailure(String msg, Object arg1, Object arg2, Throwable cause) {
-		super(msg, arg1, arg2, cause);
-	}
 }

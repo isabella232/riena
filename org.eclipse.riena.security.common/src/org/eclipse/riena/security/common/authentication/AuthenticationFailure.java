@@ -43,47 +43,4 @@ public class AuthenticationFailure extends SecurityFailure {
 		super(message, e);
 	}
 
-	/**
-	 * Creates a new instance of <code>AuthenticationFailure</code>
-	 * 
-	 * @param msg
-	 *            message text or message code
-	 * @param arg1
-	 *            message parameter 1
-	 * @param arg2
-	 *            message parameter 2
-	 * @param cause
-	 *            exception which has caused this Failure
-	 */
-	public AuthenticationFailure(String msg, Object arg1, Object arg2, Throwable cause) {
-		super(msg, arg1, arg2, cause);
-	}
-
-	/**
-	 * Creates a new instance of <code>AuthenticationFailure</code>
-	 * 
-	 * @param msg
-	 *            message text or message code
-	 * @param arg1
-	 *            message parameter 1
-	 * @param cause
-	 *            exception which has caused this Failure
-	 */
-	public AuthenticationFailure(String msg, Object arg1, Throwable cause) {
-		super(msg, arg1, cause);
-	}
-
-	/**
-	 * Creates a new instance of <code>AuthenticationFailure</code>
-	 * 
-	 * @param msg
-	 *            message text or message code
-	 * @param args
-	 *            message parameters
-	 * @param cause
-	 *            exception which has caused this Failure
-	 */
-	public AuthenticationFailure(String msg, Object[] args, Throwable cause) {
-		super(msg, args, cause);
-	}
 }

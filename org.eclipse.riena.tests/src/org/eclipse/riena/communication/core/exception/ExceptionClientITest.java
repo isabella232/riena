@@ -12,7 +12,10 @@ package org.eclipse.riena.communication.core.exception;
 
 import java.io.IOException;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.factory.Register;
@@ -23,7 +26,6 @@ import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.exception.IExceptionService;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.IntegrationTestCase;
-import org.osgi.service.log.LogService;
 
 /**
  * This class is an test client for the exception service.
@@ -187,12 +189,7 @@ public class ExceptionClientITest extends RienaTestCase {
 					"ExceptionService: Here is your requested org.eclipse.riena.core.exception.ExceptionFailure...") > -1);
 			// in this case even the cause is supposed to be null.
 			assertNull(failure.getCause());
-			assertNotNull(failure.getId());
 			assertNotNull(failure.getTimestamp());
-			assertNotNull(failure.getCallerClassName());
-			assertNotNull(failure.getCallerMethodName());
-			// assertEquals( failure.getCallerMethodName(), "throwException" );
-			assertNotNull(failure.getJavaVersion());
 			assertNotNull(failure.getStackTrace());
 			assertTrue(failure.getStackTrace().length > 10);
 		}
@@ -216,12 +213,7 @@ public class ExceptionClientITest extends RienaTestCase {
 					"ExceptionService: Here is your requested org.eclipse.riena.communication.core.RemoteFailure...") > -1);
 			// in this case even the cause is supposed to be null.
 			assertNull(failure.getCause());
-			assertNotNull(failure.getId());
 			assertNotNull(failure.getTimestamp());
-			assertNotNull(failure.getCallerClassName());
-			assertNotNull(failure.getCallerMethodName());
-			// assertEquals( failure.getCallerMethodName(), "throwException" );
-			assertNotNull(failure.getJavaVersion());
 			assertNotNull(failure.getStackTrace());
 		}
 	}

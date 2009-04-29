@@ -24,15 +24,6 @@ public class ExtensionPointFailure extends Failure {
 
 	/**
 	 * @param msg
-	 * @param args
-	 * @param cause
-	 */
-	public ExtensionPointFailure(String msg, Object[] args, Throwable cause) {
-		super(msg, args, cause);
-	}
-
-	/**
-	 * @param msg
 	 */
 	public ExtensionPointFailure(String msg) {
 		super(msg);
@@ -46,22 +37,4 @@ public class ExtensionPointFailure extends Failure {
 		super(msg, cause);
 	}
 
-	/**
-	 * @param msg
-	 * @param arg1
-	 * @param cause
-	 */
-	public ExtensionPointFailure(String msg, Object arg1, Throwable cause) {
-		super(msg, arg1, cause);
-	}
-
-	/**
-	 * @param msg
-	 * @param arg1
-	 * @param arg2
-	 * @param cause
-	 */
-	public ExtensionPointFailure(String msg, Object arg1, Object arg2, Throwable cause) {
-		super(msg, arg1, arg2, cause);
-	}
 }
