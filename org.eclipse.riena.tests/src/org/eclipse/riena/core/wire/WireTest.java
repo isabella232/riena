@@ -13,11 +13,12 @@ package org.eclipse.riena.core.wire;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 
 /**
  * Test the {@code Wire} stuff.
@@ -48,8 +49,8 @@ public class WireTest extends RienaTestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		context.ungetService(schtonkReg.getReference());
-		context.ungetService(stunkReg.getReference());
+		schtonkReg.unregister();
+		stunkReg.unregister();
 		super.tearDown();
 	}
 
@@ -60,7 +61,6 @@ public class WireTest extends RienaTestCase {
 		puller.stop();
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testWiringDeeplyAndCheckSequenceConstraint() {
 		BeanOnBean beanOnBean = new BeanOnBean();
 		SequenceUtil.init();
@@ -73,7 +73,6 @@ public class WireTest extends RienaTestCase {
 		SequenceUtil.assertExpected(BeanOnBeanWiring.class, BeanWiring.class);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testWiringDeeply() {
 		NoWirableBean noWirableBean = new NoWirableBean();
 		SequenceUtil.init();
@@ -93,5 +92,30 @@ public class WireTest extends RienaTestCase {
 		puller.stop();
 
 		WirePuller.injectWiringMocks(null);
+	}
+
+	public void testAnnotatedServiceWiring() {
+		AnnoServiceBeanB beanB = new AnnoServiceBeanB();
+		SequenceUtil.init();
+		WirePuller puller = Wire.instance(beanB).andStart(context);
+		SequenceUtil.assertExpected(AnnoServiceBeanA.class, AnnoServiceBeanB.class);
+		SequenceUtil.init();
+		puller.stop();
+		SequenceUtil.assertExpected(AnnoServiceBeanB.class, AnnoServiceBeanA.class);
+	}
+
+	public void testAnnotatedExtensionWiring() {
+		addPluginXml(WireTest.class, "plugin.xml");
+		addPluginXml(WireTest.class, "plugin_ext.xml");
+		AnnoExtBeanB beanB = new AnnoExtBeanB();
+		SequenceUtil.init();
+		WirePuller puller = Wire.instance(beanB).andStart(context);
+		SequenceUtil.assertExpected("textA", "infoB");
+		SequenceUtil.init();
+		puller.stop();
+		SequenceUtil.assertExpected("-IDataB", "-IDataA");
+		removeExtension("core.test.extpoint.idA");
+		removeExtension("core.test.extpoint.idB");
+
 	}
 }
