@@ -94,7 +94,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 */
 	private IObservableList viewerObservables;
 
-	private Class<?> rowBeanClass;
+	private Class<?> rowClass;
 	private String[] renderingMethods;
 
 	private boolean isSortedAscending;
@@ -212,7 +212,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 		unbindUIControl();
 
-		rowBeanClass = rowClass;
+		rowClass = rowClass;
 		modelObservables = rowObservables;
 		viewerObservables = null;
 		renderingMethods = new String[columnPropertyNames.length];
@@ -244,7 +244,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		super.updateFromModel();
 		if (modelObservables != null) {
 			List<Object> copy = new ArrayList<Object>(modelObservables);
-			viewerObservables = new WritableList(copy, rowBeanClass);
+			viewerObservables = new WritableList(copy, rowClass);
 		}
 		if (viewer != null) {
 			if (!isViewerConfigured()) {
@@ -511,10 +511,10 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private void configureViewer(TableViewer viewer) {
 		ObservableListContentProvider viewerCP = new ObservableListContentProvider();
 		IObservableMap[] attrMap;
-		if (AbstractSWTWidgetRidget.isBean(rowBeanClass)) {
-			attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass, renderingMethods);
+		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
+			attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowClass, renderingMethods);
 		} else {
-			attrMap = PojoObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass, renderingMethods);
+			attrMap = PojoObservables.observeMaps(viewerCP.getKnownElements(), rowClass, renderingMethods);
 		}
 		IColumnFormatter[] formatters = getColumnFormatters(attrMap.length);
 		viewer.setLabelProvider(new TableRidgetLabelProvider(attrMap, formatters));

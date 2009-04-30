@@ -23,10 +23,9 @@ public interface IValueRidget extends IRidget {
 	 * The UpdateValueStrategy will be POLICY_UPDATE to the model value
 	 * (automatic update) and POLICY_ON_REQUEST from the model value.
 	 * 
-	 * @see #updateFromModel()
-	 * 
 	 * @param observableValue
 	 *            The model value.
+	 * @see #updateFromModel()
 	 */
 	void bindToModel(IObservableValue observableValue);
 
@@ -36,15 +35,14 @@ public interface IValueRidget extends IRidget {
 	 * UpdateValueStrategy will be POLICY_UPDATE to the model value (automatic
 	 * update) and POLICY_ON_REQUEST from the model value.
 	 * 
+	 * @param valueHolder
+	 *            An object holding the model value.
+	 * @param valuePropertyName
+	 *            Name of property (example 'name' -> getName()) holding the
+	 *            model value.
 	 * @see #updateFromModel()
-	 * 
-	 * @param pojo
-	 *            The pojo holding the model value.
-	 * @param propertyName
-	 *            Name of the object property (example 'name' -> getName())
-	 *            holding the model value.
 	 */
-	void bindToModel(Object pojo, String propertyName);
+	void bindToModel(Object valueHolder, String valuePropertyName);
 
 	/**
 	 * @return The converter used when updating from the model to the

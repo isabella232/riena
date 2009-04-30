@@ -26,71 +26,72 @@ public interface IComboRidget extends IMarkableRidget {
 	String PROPERTY_SELECTION = "selection"; //$NON-NLS-1$
 
 	/**
-	 * @param listObservableValue
-	 *            An observable list of objects.
-	 * @param rowValueClass
-	 *            The class of the values in the list.
+	 * @param optionValues
+	 *            An observable list with a list of options.
+	 * @param rowClass
+	 *            The class of the objects in the list.
 	 * @param renderingMethod
-	 *            A method of rowValueClass that returns the value to display
-	 *            for each entry of the combo box combo box (null for {@code
-	 *            toString()}).
-	 * @param selectionObservableValue
+	 *            A property of rowClass that returns the value to display for
+	 *            each option of the combo box combo box (examples: 'name' ->
+	 *            getName(); null for {@code toString()}).
+	 * @param selectionValue
 	 *            A non-null observable value holding the selection.
 	 */
-	void bindToModel(IObservableList listObservableValue, Class<? extends Object> rowValueClass,
-			String renderingMethod, IObservableValue selectionObservableValue);
+	void bindToModel(IObservableList optionValues, Class<? extends Object> rowClass, String renderingMethod,
+			IObservableValue selectionValue);
 
 	/**
-	 * @param listPojo
+	 * @param listHolder
 	 *            An object holding a list of values (objects).
 	 * @param listPropertyName
 	 *            The property name to access the list.
-	 * @param rowValueClass
-	 *            The class of the values in the list.
+	 * @param rowClass
+	 *            The class of the objects in the list.
 	 * @param renderingMethod
-	 *            A method of rowValueClass that returns the value to display
-	 *            for each entry of the combo box combo box (null for {@code
-	 *            toString()}).
-	 * @param selectionPojo
+	 *            A property of rowClass that returns the value to display for
+	 *            each option of the combo box combo box (examples: 'name' ->
+	 *            getName(); null for {@code toString()}).
+	 * @param selectionHolder
 	 *            A non-null object holding the selection.
 	 * @param selectionPropertyName
 	 *            The property name to access the selection (non-null).
 	 */
-	void bindToModel(Object listPojo, String listPropertyName, Class<? extends Object> rowValueClass,
-			String renderingMethod, Object selectionPojo, String selectionPropertyName);
+	void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
+			String renderingMethod, Object selectionHolder, String selectionPropertyName);
 
 	/**
-	 * @param listPojo
+	 * @param listHolder
 	 *            An object holding a list of values (objects).
 	 * @param listPropertyName
 	 *            The property name to access the list.
-	 * @param rowValueClass
-	 *            The class of the values in the list.
+	 * @param rowClass
+	 *            The class of the objects in the list.
 	 * @param renderingMethod
-	 *            A method of rowValueClass that returns the value to display
-	 *            for each entry of the combo box combo box (null for {@code
-	 *            toString()}).
-	 * @param selectionPojo
+	 *            A property of rowClass that returns the value to display for
+	 *            each option of the combo box combo box (examples: 'name' ->
+	 *            getName(); null for {@code toString()}).
+	 * @param selectionHolder
 	 *            A non-null object holding the selection.
 	 * @param selectionPropertyName
 	 *            The property name to access the selection.
 	 * @param entryFactory
-	 *            Factory for creating new entries for this ComboBox
+	 *            Factory for creating new options for this ComboBox
 	 * @deprecated
 	 */
-	void bindToModel(Object listPojo, String listPropertyName, Class<? extends Object> rowValueClass,
-			String renderingMethod, Object selectionPojo, String selectionPropertyName, IComboEntryFactory entryFactory);
+	void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
+			String renderingMethod, Object selectionHolder, String selectionPropertyName,
+			IComboEntryFactory entryFactory);
 
 	/**
-	 * Return the observable list holding the list.
+	 * Return the observable list holding the options.
 	 * 
-	 * @return the observable list.
+	 * @return the observable list of options.
 	 */
 	IObservableList getObservableList();
 
 	/**
 	 * Return the current selection. Will return null if either nothing or the
-	 * "empty selection item" is selected.
+	 * "empty selection option" is selected.
 	 * 
 	 * @return the current selection or null if none.
 	 * @see #setEmptySelectionItem(Object)
@@ -108,41 +109,44 @@ public interface IComboRidget extends IMarkableRidget {
 	 * Set the current selection to index.
 	 * 
 	 * @param index
+	 *            the 0-based index; -1 to unselect
 	 */
 	void setSelection(int index);
 
 	/**
 	 * Return the index of the current selection. Will return -1 if either
-	 * nothing or the "empty selection item" is selected.
+	 * nothing or the "empty selection option" is selected.
 	 * 
 	 * @return index of the current selection or -1 if none
 	 */
 	int getSelectionIndex();
 
 	/**
-	 * Returns the item that represents 'no selection'. When the selected item
-	 * is equal to this item the adapter is marked just as if no item was
-	 * selected. This entry could be represented by an empty item or something
+	 * Returns the option that represents 'no selection'.
+	 * <p>
+	 * When this option is selected the ridget behaves just as if nothing was
+	 * selected. This option could be represented by an empty value or something
 	 * like "[Please select...]".
 	 * 
-	 * @return The item that represents 'no selection'.
+	 * @return The option that represents 'no selection'.
 	 */
 	Object getEmptySelectionItem();
 
 	/**
-	 * Sets the item that represents 'no selection'. When the selected item is
-	 * equal to this item the adapter is marked just as if no item was selected.
-	 * This entry could be represented by an empty item or something like
+	 * Sets the option that represents 'no selection'.
+	 * <p>
+	 * When this option is selected the ridget behaves just as if nothing was
+	 * selected. This option could be represented by an value or something like
 	 * "[Please select...]".
 	 * 
-	 * @param emptySelectionItem
-	 *            The item that represents 'no selection'.
+	 * @param emptySelection
+	 *            The option that represents 'no selection'.
 	 */
-	void setEmptySelectionItem(Object emptySelectionItem);
+	void setEmptySelectionItem(Object emptySelection);
 
 	/**
-	 * Return true if the receivers drop down list is mutable, ie items not yet
-	 * contained in the list will automatically be added if entered into the
+	 * Return true if the receiver's drop down list is mutable, ie. options snot
+	 * yet contained in the list will automatically be added if entered into the
 	 * text field.
 	 * 
 	 * @return true if the receiver is mutable, otherwise false
@@ -186,7 +190,7 @@ public interface IComboRidget extends IMarkableRidget {
 	 * provider. The addable state will not be significant if the adapter is
 	 * readonly.
 	 * 
-	 * @return True if edited values will be added to the list of options, false
+	 * @return true if edited values will be added to the list of options, false
 	 *         otherwise.
 	 */
 	boolean isAddable();

@@ -138,8 +138,8 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	}
 
 	@Override
-	public void bindToModel(Object pojo, String propertyName) {
-		bindToModel(PojoObservables.observeValue(pojo, propertyName));
+	public void bindToModel(Object valueHolder, String valuePropertyName) {
+		bindToModel(PojoObservables.observeValue(valueHolder, valuePropertyName));
 	}
 
 	/** Not supported. */

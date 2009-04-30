@@ -37,8 +37,8 @@ public abstract class AbstractValueRidget extends AbstractSWTRidget implements I
 		valueBindingSupport.bindToModel(observableValue);
 	}
 
-	public void bindToModel(Object pojo, String propertyName) {
-		valueBindingSupport.bindToModel(pojo, propertyName);
+	public void bindToModel(Object valueHolder, String valuePropertyName) {
+		valueBindingSupport.bindToModel(valueHolder, valuePropertyName);
 	}
 
 	public IConverter getModelToUIControlConverter() {

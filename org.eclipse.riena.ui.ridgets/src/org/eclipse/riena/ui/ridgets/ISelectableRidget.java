@@ -25,8 +25,8 @@ public interface ISelectableRidget extends IMarkableRidget {
 	 * <p>
 	 * This property will be fired every time the selection changes. If the
 	 * selection type is single selection, the selection will contain zero or
-	 * one items. If the selection type is multiple selection, the selection
-	 * will contain zero or more items. In both cases the old and new value of
+	 * one values. If the selection type is multiple selection, the selection
+	 * will contain zero or more values. In both cases the old and new value of
 	 * the PropertyChangeEvent are collections.
 	 */
 	String PROPERTY_SELECTION = "selection"; //$NON-NLS-1$
@@ -60,31 +60,32 @@ public interface ISelectableRidget extends IMarkableRidget {
 	void setSelectionType(SelectionType selectionType);
 
 	/**
-	 * @return An observable value that holds the single selection of the table.
-	 *         If the selection type is set to multiple selection the single
-	 *         selection will contain one of the selected items.
+	 * @return An observable value that holds the single selection of this
+	 *         ridget. If the selection type is set to multiple selection the
+	 *         single selection will contain one of the selected values.
 	 */
 	IObservableValue getSingleSelectionObservable();
 
 	/**
 	 * Binds an observable value to the single selection.
 	 * 
+	 * @param selectionValue
+	 *            The observable holding the single selection.
 	 * @see #getSingleSelectionObservable()
-	 * @param observableValue
-	 *            The single selection model.
 	 */
-	void bindSingleSelectionToModel(IObservableValue observableValue);
+	void bindSingleSelectionToModel(IObservableValue selectionValue);
 
 	/**
-	 * Binds an object property to the single selection.
+	 * Binds a property of selectionHolder to the single selection of this
+	 * ridget.
 	 * 
+	 * @param selectionHolder
+	 *            An object holding the single selection.
+	 * @param selectionPropertyName
+	 *            The name of the single selection property.
 	 * @see #getSingleSelectionObservable()
-	 * @param pojo
-	 *            The pojo holding the single selection model property.
-	 * @param propertyName
-	 *            The name of the single selection model property.
 	 */
-	void bindSingleSelectionToModel(Object pojo, String propertyName);
+	void bindSingleSelectionToModel(Object selectionHolder, String selectionPropertyName);
 
 	/**
 	 * Updates the single selection from the single selection model.
@@ -95,33 +96,33 @@ public interface ISelectableRidget extends IMarkableRidget {
 	void updateSingleSelectionFromModel();
 
 	/**
-	 * @return An observable list that holds the multiple selection of the
-	 *         table. If the selection type is set to single selection the
+	 * @return An observable list that holds the multiple selection of this
+	 *         ridget. If the selection type is set to single selection the
 	 *         multiple selection will be either empty or contain the single
-	 *         selected item.
+	 *         selected values.
 	 */
 	IObservableList getMultiSelectionObservable();
 
 	/**
 	 * Binds an observable list to the multiple selection.
 	 * 
-	 * @see #getMultiSelectionObservable()
 	 * @param observableList
-	 *            The multiple selection model.
+	 *            The observable list holding the multiple selection.
+	 * @see #getMultiSelectionObservable()
 	 */
 	void bindMultiSelectionToModel(IObservableList observableList);
 
 	/**
-	 * Binds an object property to the multiple selection. The property must be
-	 * a Collection.
+	 * Binds a property of selection holder to the multiple selection of this
+	 * ridget. The property must be a Collection.
 	 * 
+	 * @param selectionHolder
+	 *            An object holding a list of selections.
+	 * @param selectionPropertyName
+	 *            The name of the multiple selection property.
 	 * @see #getMultiSelectionObservable()
-	 * @param pojo
-	 *            The pojo holding the multiple selection model property.
-	 * @param propertyName
-	 *            The name of the multiple selection model property.
 	 */
-	void bindMultiSelectionToModel(Object pojo, String propertyName);
+	void bindMultiSelectionToModel(Object selectionHolder, String selectionPropertyName);
 
 	/**
 	 * Updates the multiple selection from the multiple selection model.
@@ -132,23 +133,23 @@ public interface ISelectableRidget extends IMarkableRidget {
 	void updateMultiSelectionFromModel();
 
 	/**
-	 * Deselects all selected items.
+	 * Deselects all selected values.
 	 */
 	void clearSelection();
 
 	/**
-	 * Returns a list of the selected items.
+	 * Returns a list of the selected values.
 	 * 
-	 * @return list of selected items; never null; may be empty.
+	 * @return list of selected values; never null; may be empty.
 	 */
 	List<Object> getSelection();
 
 	/**
-	 * Selects the given items. Items that are not in the set of selectable
+	 * Selects the given values. Values that are not in the set of selectable
 	 * options will be ignored.
 	 * 
 	 * @param newSelection
-	 *            a List of items to select. Never null. May be empty.
+	 *            a List of values to select. Never null. May be empty.
 	 * @throws RuntimeException
 	 *             (a) when there is no bound model to select from; (b) if
 	 *             newSelection is null.
@@ -156,11 +157,11 @@ public interface ISelectableRidget extends IMarkableRidget {
 	void setSelection(List<?> newSelection);
 
 	/**
-	 * Selects the given item. If the item is not in the set of selectable
+	 * Selects the given value. If the value is not in the set of selectable
 	 * options it will be ignored.
 	 * 
 	 * @param newSelection
-	 *            item to select
+	 *            value to select
 	 * @throws RuntimeException
 	 *             when there is no bound model to select from
 	 */

@@ -64,9 +64,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	private Object emptySelection;
 
 	/** List of available options (model). */
-	private IObservableList rowObservablesModel;
+	private IObservableList optionValues;
 	/** The selected option (model). */
-	private IObservableValue selectionObservableModel;
+	private IObservableValue selectionValue;
 	/** A string used for converting from Object to String */
 	private String renderingMethod;
 
@@ -116,7 +116,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 
 	@Override
 	protected void bindUIControl() {
-		if (rowObservablesModel != null) {
+		if (optionValues != null) {
 			// These bindings are only necessary when we have a model
 			DataBindingContext dbc = new DataBindingContext();
 			if (getUIControl() != null) {
@@ -128,13 +128,12 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 				applyEnabled();
 			}
 			listBindingExternal = dbc
-					.bindList(rowObservables, rowObservablesModel, new UpdateListStrategy(
-							UpdateListStrategy.POLICY_ON_REQUEST), new UpdateListStrategy(
-							UpdateListStrategy.POLICY_ON_REQUEST));
-			selectionBindingExternal = dbc
-					.bindValue(selectionObservable, selectionObservableModel, new UpdateValueStrategy(
-							UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(selectionValidator),
-							new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
+					.bindList(rowObservables, optionValues,
+							new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST), new UpdateListStrategy(
+									UpdateListStrategy.POLICY_ON_REQUEST));
+			selectionBindingExternal = dbc.bindValue(selectionObservable, selectionValue, new UpdateValueStrategy(
+					UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(selectionValidator),
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
 
 		}
 	}
@@ -170,34 +169,36 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
-	public void bindToModel(IObservableList listObservableValue, Class<? extends Object> rowValueClass,
-			String renderingMethod, IObservableValue selectionObservableValue) {
+	public void bindToModel(IObservableList optionValues, Class<? extends Object> rowClass, String renderingMethod,
+			IObservableValue selectionValue) {
 		unbindUIControl();
 
-		this.rowObservablesModel = listObservableValue;
+		this.optionValues = optionValues;
 		this.renderingMethod = renderingMethod;
-		this.selectionObservableModel = selectionObservableValue;
+		this.selectionValue = selectionValue;
 
 		bindUIControl();
 	}
 
-	public void bindToModel(Object listPojo, String listPropertyName, Class<? extends Object> rowValueClass,
-			String renderingMethod, Object selectionPojo, String selectionPropertyName) {
+	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
+			String renderingMethod, Object selectionHolder, String selectionPropertyName) {
 		IObservableList listObservableValue;
-		if (AbstractSWTWidgetRidget.isBean(rowValueClass)) {
-			listObservableValue = BeansObservables.observeList(listPojo, listPropertyName);
+		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
+			listObservableValue = BeansObservables.observeList(listHolder, listPropertyName);
 		} else {
-			listObservableValue = PojoObservables.observeList(listPojo, listPropertyName);
+			listObservableValue = PojoObservables.observeList(listHolder, listPropertyName);
 		}
-		IObservableValue selectionObservableValue = PojoObservables.observeValue(selectionPojo, selectionPropertyName);
-		bindToModel(listObservableValue, rowValueClass, renderingMethod, selectionObservableValue);
+		IObservableValue selectionObservableValue = PojoObservables
+				.observeValue(selectionHolder, selectionPropertyName);
+		bindToModel(listObservableValue, rowClass, renderingMethod, selectionObservableValue);
 	}
 
 	/**
 	 * @deprecated
 	 */
-	public void bindToModel(Object listPojo, String listPropertyName, Class<? extends Object> rowValueClass,
-			String renderingMethod, Object selectionPojo, String selectionPropertyName, IComboEntryFactory entryFactory) {
+	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
+			String renderingMethod, Object selectionHolder, String selectionPropertyName,
+			IComboEntryFactory entryFactory) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -224,6 +225,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return result;
 	}
 
+	/** Not implemented. */
 	public boolean isAddable() {
 		throw new UnsupportedOperationException(); // TODO implement
 	}
@@ -233,26 +235,31 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return hasInput();
 	}
 
+	/** Not implemented. */
 	public boolean isListMutable() {
 		throw new UnsupportedOperationException(); // TODO implement
 	}
 
+	/** Not implemented. */
 	public boolean isReadonly() {
 		throw new UnsupportedOperationException(); // TODO implement
 	}
 
+	/** Not implemented. */
 	public void setAddable(boolean addable) {
 		throw new UnsupportedOperationException(); // TODO implement
 	}
 
-	public void setEmptySelectionItem(Object emptySelectionItem) {
-		this.emptySelection = emptySelectionItem;
+	public void setEmptySelectionItem(Object emptySelection) {
+		this.emptySelection = emptySelection;
 	}
 
+	/** Not implemented. */
 	public void setListMutable(boolean mutable) {
 		throw new UnsupportedOperationException(); // TODO implement
 	}
 
+	/** Not implemented. */
 	public void setReadonly(boolean readonly) {
 		throw new UnsupportedOperationException(); // TODO implement
 	}
@@ -310,7 +317,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	}
 
 	private void assertIsBoundToModel() {
-		if (rowObservablesModel == null) {
+		if (optionValues == null) {
 			throw new BindingException("ridget not bound to model"); //$NON-NLS-1$
 		}
 	}

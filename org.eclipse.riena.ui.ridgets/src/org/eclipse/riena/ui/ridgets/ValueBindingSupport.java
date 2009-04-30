@@ -27,6 +27,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
@@ -165,8 +166,8 @@ public class ValueBindingSupport implements IValidationCallback {
 	 * @see org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(java.lang.Object,
 	 *      java.lang.String)
 	 */
-	public void bindToModel(Object pojo, String propertyName) {
-		modelOV = PojoObservables.observeValue(pojo, propertyName);
+	public void bindToModel(Object valueHolder, String valuePropertyName) {
+		modelOV = PojoObservables.observeValue(valueHolder, valuePropertyName);
 		rebindToModel();
 	}
 

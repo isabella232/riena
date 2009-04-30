@@ -56,33 +56,32 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		multiSelectionObservable = new MultiSelectionObservable();
 	}
 
-	public final void bindMultiSelectionToModel(IObservableList modelObservableList) {
+	public final void bindMultiSelectionToModel(IObservableList observableList) {
 		if (multiSelectionBinding != null) {
 			multiSelectionBinding.dispose();
 		}
 		DataBindingContext dbc = new DataBindingContext();
-		multiSelectionBinding = (ListBinding) dbc.bindList(multiSelectionObservable, modelObservableList,
+		multiSelectionBinding = (ListBinding) dbc.bindList(multiSelectionObservable, observableList,
 				new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(
 						UpdateListStrategy.POLICY_ON_REQUEST));
 	}
 
-	public final void bindMultiSelectionToModel(Object pojo, String propertyName) {
-		IObservableList observableList = PojoObservables.observeList(pojo, propertyName);
+	public final void bindMultiSelectionToModel(Object selectionHolder, String selectionPropertyName) {
+		IObservableList observableList = PojoObservables.observeList(selectionHolder, selectionPropertyName);
 		bindMultiSelectionToModel(observableList);
 	}
 
-	public final void bindSingleSelectionToModel(IObservableValue modelObservableValue) {
+	public final void bindSingleSelectionToModel(IObservableValue selectionValue) {
 		if (singleSelectionBinding != null) {
 			singleSelectionBinding.dispose();
 		}
 		DataBindingContext dbc = new DataBindingContext();
-		singleSelectionBinding = dbc.bindValue(singleSelectionObservable, modelObservableValue,
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(
-						UpdateValueStrategy.POLICY_ON_REQUEST));
+		singleSelectionBinding = dbc.bindValue(singleSelectionObservable, selectionValue, new UpdateValueStrategy(
+				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
 	}
 
-	public final void bindSingleSelectionToModel(Object pojo, String propertyName) {
-		IObservableValue observableValue = PojoObservables.observeValue(pojo, propertyName);
+	public final void bindSingleSelectionToModel(Object selectionHolder, String selectionPropertyName) {
+		IObservableValue observableValue = PojoObservables.observeValue(selectionHolder, selectionPropertyName);
 		bindSingleSelectionToModel(observableValue);
 	}
 

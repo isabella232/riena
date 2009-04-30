@@ -518,7 +518,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	// ////////////////
 
 	/**
-	 * A POJO holding one boolean.
+	 * An object holding one boolean.
 	 */
 	private static class BooleanTestPojo {
 
