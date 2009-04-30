@@ -45,7 +45,7 @@ public class CoreNetProxySelectorTest extends RienaTestCase {
 			assertEquals(2, proxies.size());
 			assertEquals("idproxy", ((InetSocketAddress) proxies.get(0).address()).getHostName());
 			assertEquals(3128, ((InetSocketAddress) proxies.get(0).address()).getPort());
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			fail();
 		} finally {
 			server.stop();

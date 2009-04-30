@@ -248,7 +248,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		handleValidationSetDate(ValidationTime.ON_UI_CONTROL_EDIT);
 	}
 
-	public void testValidationWidgetModificationonUpdateRules() {
+	public void testValidationWidgetModificationOnUpdateRules() {
 		String country = Locale.getDefault().getCountry();
 		if ("DE".equals(country)) {
 			handleValidationWidgetModification(ValidationTime.ON_UPDATE_TO_MODEL, "10.04.2009");

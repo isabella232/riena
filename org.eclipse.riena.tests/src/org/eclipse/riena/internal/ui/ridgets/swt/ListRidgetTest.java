@@ -294,6 +294,9 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		ListRidget ridget = getRidget();
 
 		try {
+			// TODO warning suppression: Ignore FindBugs warning about the
+			// UnsupportedOperationException being thrown since this is
+			// what the test is all about.
 			ridget.setColumnSortable(0, true);
 			fail();
 		} catch (UnsupportedOperationException uoe) {

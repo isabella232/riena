@@ -34,6 +34,9 @@ public class ExtensionInjectorWithWiringTest extends RienaTestCase {
 				getContext());
 		IWireData data = target.getData();
 		assertNotNull(data);
+		// TODO warning suppression. Ignoring three FindBugs problems below
+		// about writing to static field. Since this is used only for testing
+		// manipulation of multiple instances is not an issue.
 		Wireable.wired = false;
 		assertTrue(data.createObjectTypeWithWire().isWired());
 		Wireable.wired = false;
@@ -61,6 +64,9 @@ public class ExtensionInjectorWithWiringTest extends RienaTestCase {
 				getContext());
 		IWireData data = target.getData();
 		assertNotNull(data);
+		// TODO warning suppression. Ignoring three FindBugs problems below
+		// about writing to static field. Since this is used only for testing
+		// manipulation of multiple instances is not an issue.
 		Wireable.wired = false;
 		assertFalse(data.createObjectTypeWithWire().isWired());
 		Wireable.wired = false;

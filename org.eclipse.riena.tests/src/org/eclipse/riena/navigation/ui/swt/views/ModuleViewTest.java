@@ -34,6 +34,7 @@ public class ModuleViewTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
 
 		shell = new Shell();
 		view = new ModuleView(shell);
@@ -57,6 +58,8 @@ public class ModuleViewTest extends RienaTestCase {
 		view.dispose();
 		SwtUtilities.disposeWidget(shell);
 		node = null;
+
+		super.tearDown();
 	}
 
 	/**

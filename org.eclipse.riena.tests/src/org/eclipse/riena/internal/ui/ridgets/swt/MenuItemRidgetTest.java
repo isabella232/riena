@@ -250,9 +250,7 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 
 		assertTrue(ridget.isEnabled());
 		assertTrue(item.isEnabled());
-		if (ridget instanceof IBasicMarkableRidget) {
-			assertEquals(0, ((IBasicMarkableRidget) ridget).getMarkersOfType(DisabledMarker.class).size());
-		}
+		assertEquals(0, ((IBasicMarkableRidget) ridget).getMarkersOfType(DisabledMarker.class).size());
 	}
 
 	// helping methods

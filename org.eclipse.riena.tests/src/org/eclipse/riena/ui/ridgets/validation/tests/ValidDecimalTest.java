@@ -64,7 +64,7 @@ public class ValidDecimalTest extends RienaTestCase {
 			assertEquals(0.0d, DecimalFormat.getInstance(Locale.US).parse(".").doubleValue());
 			fail("expected a ParseException");
 		} catch (final ParseException e) {
-			assert true : "test passed";
+			ok("passed test");
 		}
 
 		// last char is fraction digit

@@ -13,8 +13,7 @@ package org.eclipse.riena.ui.ridgets.validation.tests;
 import java.text.DecimalFormat;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.MaxNumberLength;
@@ -24,7 +23,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
  * Tests for the MaxNumberLength rule.
  */
 @NonUITestCase
-public class MaxNumberLengthTest extends TestCase {
+public class MaxNumberLengthTest extends RienaTestCase {
 
 	/**
 	 * @throws Exception
@@ -38,7 +37,7 @@ public class MaxNumberLengthTest extends TestCase {
 			maxNumberLength.validate(new Object());
 			fail("expected thrown " + ValidationFailure.class.getName());
 		} catch (final ValidationFailure e) {
-			assert true : "passed test";
+			ok("passed test");
 		} catch (final RuntimeException e) {
 			fail("expected thrown " + ValidationFailure.class.getName());
 		}
@@ -76,7 +75,7 @@ public class MaxNumberLengthTest extends TestCase {
 			maxNumberLength.validate(new Object());
 			fail("expected thrown " + ValidationFailure.class.getName());
 		} catch (final ValidationFailure e) {
-			assert true : "passed test";
+			ok("passed test");
 		} catch (final RuntimeException e) {
 			fail("expected thrown " + ValidationFailure.class.getName());
 		}
@@ -111,7 +110,7 @@ public class MaxNumberLengthTest extends TestCase {
 			maxNumberLength.validate(new Object());
 			fail("expected thrown " + ValidationFailure.class.getName());
 		} catch (final ValidationFailure e) {
-			assert true : "passed test";
+			ok("passed test");
 		} catch (final RuntimeException e) {
 			fail("expected thrown " + ValidationFailure.class.getName());
 		}
@@ -158,7 +157,7 @@ public class MaxNumberLengthTest extends TestCase {
 			maxNumberLength.validate(new Object());
 			fail("expected thrown " + ValidationFailure.class.getName());
 		} catch (final ValidationFailure e) {
-			assert true : "passed test";
+			ok("passed test");
 		} catch (final RuntimeException e) {
 			fail("expected thrown " + ValidationFailure.class.getName());
 		}

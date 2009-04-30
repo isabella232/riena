@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -660,7 +661,9 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	/**
 	 * Compares Persons by first name.
 	 */
-	private static final class FirstNameComparator implements Comparator<Object> {
+	private static final class FirstNameComparator implements Comparator<Object>, Serializable {
+		private static final long serialVersionUID = 1L;
+
 		public int compare(Object o1, Object o2) {
 			Person p1 = (Person) o1;
 			Person p2 = (Person) o2;
@@ -671,7 +674,9 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	/**
 	 * Compares Persons by last name.
 	 */
-	private static final class LastNameComparator implements Comparator<Object> {
+	private static final class LastNameComparator implements Comparator<Object>, Serializable {
+		private static final long serialVersionUID = 1L;
+
 		public int compare(Object o1, Object o2) {
 			Person p1 = (Person) o1;
 			Person p2 = (Person) o2;

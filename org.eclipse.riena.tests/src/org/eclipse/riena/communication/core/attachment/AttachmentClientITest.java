@@ -242,6 +242,9 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 * @throws IOException
 	 */
 	public void testSendAndDeleteFile() throws IOException {
+		// TODO warning suppression. Ignoring FindBugs problem about
+		// hard coded reference to an absolute pathname. Appears to
+		// be ok for testing.
 		File file = new File("/testattachments.txt");
 		OutputStream out = null;
 		try {

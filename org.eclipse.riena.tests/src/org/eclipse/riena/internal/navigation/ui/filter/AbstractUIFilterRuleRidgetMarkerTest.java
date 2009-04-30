@@ -89,7 +89,7 @@ public class AbstractUIFilterRuleRidgetMarkerTest extends TestCase {
 
 	}
 
-	private class MyUIFilterRule extends AbstractUIFilterRuleRidgetMarker {
+	private static class MyUIFilterRule extends AbstractUIFilterRuleRidgetMarker {
 
 		public MyUIFilterRule() {
 			super("*", new MandatoryMarker(false));

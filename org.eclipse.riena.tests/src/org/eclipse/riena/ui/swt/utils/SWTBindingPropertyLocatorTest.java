@@ -57,7 +57,7 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 
 	}
 
-	private class TestComplexComponent extends Composite implements IComplexComponent {
+	private static class TestComplexComponent extends Composite implements IComplexComponent {
 
 		public TestComplexComponent(Composite parent, int style) {
 			super(parent, style);

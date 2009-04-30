@@ -144,7 +144,12 @@ public abstract class RienaTestCase extends TestCase {
 	 * @return
 	 */
 	protected File getFile(String resource) {
+		// TODO warning suppression. Ignoring FindBugs problem that
+		// getResource(..) will return a resource relative to a
+		// subclass rather than relative to this class. This is the
+		// intended behavior.
 		URL url = getClass().getResource(resource);
+		// nested File constructors for OS independence...
 		return new File(new File(new File("").getAbsolutePath(), "src"), url.getFile());
 	}
 

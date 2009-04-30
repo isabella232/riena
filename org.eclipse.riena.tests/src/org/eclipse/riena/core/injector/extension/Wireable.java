@@ -18,16 +18,20 @@ import org.eclipse.riena.core.wire.WireWith;
 @WireWith(WirableWiring.class)
 public class Wireable implements IWireable {
 
+	// ignore Checkstyle warning: field is not private for testing.
 	static boolean wired;
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.riena.core.injector.extension.IWireable#setWired(boolean)
 	 */
 	public void setWired(boolean wired) {
+		// TODO warning suppression. Ignoring FindBugs problem about
+		// writing to static field. Since this is used only for testing
+		// manipulation of multiple instances is not an issue.
 		Wireable.wired = wired;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.riena.core.injector.extension.IWireable#isWired()
 	 */
 	public boolean isWired() {

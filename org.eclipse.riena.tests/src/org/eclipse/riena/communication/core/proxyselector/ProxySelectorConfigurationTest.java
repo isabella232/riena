@@ -84,7 +84,7 @@ public class ProxySelectorConfigurationTest extends RienaTestCase {
 	}
 
 	@SuppressWarnings("restriction")
-	private final class ProxySelectorExtension implements IProxySelectorExtension {
+	private static final class ProxySelectorExtension implements IProxySelectorExtension {
 
 		private int order;
 		private String name;

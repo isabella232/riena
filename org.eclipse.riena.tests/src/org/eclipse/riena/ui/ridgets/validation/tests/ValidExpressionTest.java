@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation.tests;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.runtime.IStatus;
+
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidExpression;
@@ -22,7 +22,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
  * 
  */
 @NonUITestCase
-public class ValidExpressionTest extends TestCase {
+public class ValidExpressionTest extends RienaTestCase {
 
 	public void testInvalidArgs() throws Exception {
 		try {
@@ -30,7 +30,7 @@ public class ValidExpressionTest extends TestCase {
 			rule.validate(new Object());
 			fail("expected a thrown " + ValidationFailure.class.getName());
 		} catch (ValidationFailure e) {
-			assert true : "test passed";
+			ok("passed test");
 		} catch (RuntimeException e) {
 			fail("expected a thrown " + ValidationFailure.class.getName());
 		}
@@ -39,14 +39,14 @@ public class ValidExpressionTest extends TestCase {
 			new ValidExpression(null);
 			fail("Null expression: expected some kind of " + RuntimeException.class.getName());
 		} catch (RuntimeException e) {
-			assert true : "test passed";
+			ok("passed test");
 		}
 
 		try {
 			new ValidExpression("");
 			fail("Empty expression: expected some kind of " + RuntimeException.class.getName());
 		} catch (RuntimeException e) {
-			assert true : "test passed";
+			ok("passed test");
 		}
 	}
 

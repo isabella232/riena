@@ -34,12 +34,12 @@ public class NavigationViewFactoryTest extends RienaTestCase {
 
 		ModuleView moduleView = viewFactory.createModuleView(new Shell());
 
-		assertTrue(moduleView instanceof ModuleView);
+		assertNotNull(moduleView);
 		assertTrue(moduleView.getClass() == ModuleView.class);
 
 		ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
 
-		assertTrue(moduleGroupView instanceof ModuleGroupView);
+		assertNotNull(moduleGroupView);
 		assertTrue(moduleGroupView.getClass() == ModuleGroupView.class);
 	}
 
@@ -54,12 +54,12 @@ public class NavigationViewFactoryTest extends RienaTestCase {
 
 		ModuleView moduleView = viewFactory.createModuleView(new Shell());
 
-		assertTrue(moduleView instanceof ModuleView);
+		assertNotNull(moduleView);
 		assertTrue(moduleView.getClass() == ModuleView.class);
 
 		ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
 
-		assertTrue(moduleGroupView instanceof ModuleGroupView);
+		assertNotNull(moduleGroupView);
 		assertTrue(moduleGroupView.getClass() == ModuleGroupView.class);
 	}
 
@@ -75,20 +75,20 @@ public class NavigationViewFactoryTest extends RienaTestCase {
 
 		ModuleView moduleView = viewFactory.createModuleView(new Shell());
 
-		assertTrue(moduleView instanceof ModuleView);
+		assertNotNull(moduleView);
 		assertTrue(moduleView.getClass() == TestModuleView.class);
 
 		ModuleController moduleController = viewFactory.createModuleController(new ModuleNode());
-		assertTrue(moduleController instanceof ModuleController);
+		assertNotNull(moduleController);
 		assertTrue(moduleController.getClass() == SWTModuleController.class);
 
 		ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
 
-		assertTrue(moduleGroupView instanceof ModuleGroupView);
+		assertNotNull(moduleGroupView);
 		assertTrue(moduleGroupView.getClass() == TestModuleGroupView.class);
 
 		ModuleGroupController moduleGroupController = viewFactory.createModuleGroupController(new ModuleGroupNode());
-		assertTrue(moduleGroupController instanceof ModuleGroupController);
+		assertNotNull(moduleGroupController);
 		assertTrue(moduleGroupController.getClass() == ModuleGroupController.class);
 
 		this.removeExtension("org.eclipse.riena.test.navigationModuleView");
@@ -107,20 +107,20 @@ public class NavigationViewFactoryTest extends RienaTestCase {
 
 		ModuleView moduleView = viewFactory.createModuleView(new Shell());
 
-		assertTrue(moduleView instanceof ModuleView);
+		assertNotNull(moduleView);
 		assertTrue(moduleView.getClass() == TestModuleView.class);
 
 		ModuleController moduleController = viewFactory.createModuleController(new ModuleNode());
-		assertTrue(moduleController instanceof ModuleController);
+		assertNotNull(moduleController);
 		assertTrue(moduleController.getClass() == TestModuleController.class);
 
 		ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
 
-		assertTrue(moduleGroupView instanceof ModuleGroupView);
+		assertNotNull(moduleGroupView);
 		assertTrue(moduleGroupView.getClass() == TestModuleGroupView.class);
 
 		ModuleGroupController moduleGroupController = viewFactory.createModuleGroupController(new ModuleGroupNode());
-		assertTrue(moduleGroupController instanceof ModuleGroupController);
+		assertNotNull(moduleGroupController);
 		assertTrue(moduleGroupController.getClass() == TestModuleGroupController.class);
 
 		this.removeExtension("org.eclipse.riena.test.navigationModuleView");

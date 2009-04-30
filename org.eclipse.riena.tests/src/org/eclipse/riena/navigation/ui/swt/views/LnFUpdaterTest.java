@@ -16,6 +16,14 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
@@ -26,13 +34,6 @@ import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Tests of the class {@link LnFUpdater}.
@@ -265,7 +266,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 
 	}
 
-	private class MyTheme implements ILnfTheme {
+	private static class MyTheme implements ILnfTheme {
 
 		public void addCustomColors(Map<String, ILnfResource> table) {
 			table.put("Label.foreground", new ColorLnfResource(1, 2, 3));

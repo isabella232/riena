@@ -736,7 +736,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 			}
 		};
 		final String lastName = person1.getLastname();
-		final String upperCaseName = lastName.toUpperCase();
+		final String lastNameUpperCase = lastName.toUpperCase();
 
 		try {
 			ridget.setColumnFormatter(-1, formatter);
@@ -758,11 +758,11 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 		ridget.updateFromModel();
 
-		assertEquals(upperCaseName, table.getItem(0).getText(1));
+		assertEquals(lastNameUpperCase, table.getItem(0).getText(1));
 
 		ridget.setColumnFormatter(1, null);
 
-		assertEquals(upperCaseName, table.getItem(0).getText(1));
+		assertEquals(lastNameUpperCase, table.getItem(0).getText(1));
 
 		ridget.updateFromModel();
 

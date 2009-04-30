@@ -103,8 +103,7 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 	public void testUnregisterForOtherBundleAndStopOtherBundle() throws Exception {
 		super.startBundle("org.eclipse.riena.communication.console");
 		BundleContext context = org.eclipse.riena.internal.communication.console.Activator.getDefault().getContext();
-		IRemoteServiceRegistration createAndRegisterProxy = new RemoteServiceFactory().createAndRegisterProxy(
-				IRSFTest.class, "http://localhost", "hessian", context);
+		new RemoteServiceFactory().createAndRegisterProxy(IRSFTest.class, "http://localhost", "hessian", context);
 		Object service = context.getService(context.getServiceReference(IRSFTest.class.getName()));
 		assertNotNull(service);
 		context.getBundle().stop();

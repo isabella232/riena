@@ -14,8 +14,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.ValidRange;
@@ -24,7 +23,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidRange;
  * Tests for the MaxLength rule.
  */
 @NonUITestCase
-public class ValidRangeTest extends TestCase {
+public class ValidRangeTest extends RienaTestCase {
 
 	/**
 	 * @throws Exception
@@ -151,45 +150,45 @@ public class ValidRangeTest extends TestCase {
 			new ValidRange((byte) 10, (short) 10);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
-			assert true : "test passed";
+			ok("passed test");
 		}
 		try {
 			new ValidRange(10, 1000d);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
-			assert true : "test passed";
+			ok("passed test");
 		}
 		// min greater max:
 		try {
 			new ValidRange(100, 10);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
-			assert true : "test passed";
+			ok("passed test");
 		}
 		// null parameter
 		try {
 			new ValidRange(null, 10);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
-			assert true : "test passed";
+			ok("passed test");
 		}
 		try {
 			new ValidRange(100, null);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
-			assert true : "test passed";
+			ok("passed test");
 		}
 		try {
 			new ValidRange(null, null);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
-			assert true : "test passed";
+			ok("passed test");
 		}
 		try {
 			new ValidRange(10, 100, null);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
-			assert true : "test passed";
+			ok("passed test");
 		}
 	}
 

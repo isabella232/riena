@@ -13,14 +13,6 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeEvent;
 import java.util.Comparator;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeColumn;
-import org.eclipse.swt.widgets.TreeItem;
-
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.beans.common.WordNode;
@@ -35,6 +27,13 @@ import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * Tests of the class {@link TreeTableRidget}.
@@ -648,7 +647,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 			}
 		};
 		final String lastName = node1.getLastname();
-		final String upperCaseName = lastName.toUpperCase();
+		final String lastNameUpperCase = lastName.toUpperCase();
 
 		try {
 			ridget.setColumnFormatter(-1, formatter);
@@ -670,11 +669,11 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.updateFromModel();
 
-		assertEquals(upperCaseName, tree.getItem(0).getText(1));
+		assertEquals(lastNameUpperCase, tree.getItem(0).getText(1));
 
 		ridget.setColumnFormatter(1, null);
 
-		assertEquals(upperCaseName, tree.getItem(0).getText(1));
+		assertEquals(lastNameUpperCase, tree.getItem(0).getText(1));
 
 		ridget.updateFromModel();
 

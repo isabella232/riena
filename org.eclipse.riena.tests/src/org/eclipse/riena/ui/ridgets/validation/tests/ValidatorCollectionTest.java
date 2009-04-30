@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.ridgets.validation.tests;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
@@ -110,14 +111,14 @@ public class ValidatorCollectionTest extends RienaTestCase {
 			rule.iterator().remove();
 			fail("the returned iterator may not support the remove() method, modification through rule#remove(IValidator) only.");
 		} catch (final RuntimeException e) {
-			assert true : "test passed";
+			ok("passed test");
 		}
 
 		try {
 			rule.getValidators().clear();
 			fail("the returned collection may not support the remove() method, modification through rule#remove(IValidator) only.");
 		} catch (final RuntimeException e) {
-			assert true : "test passed";
+			ok("passed test");
 		}
 
 	}
