@@ -195,7 +195,7 @@ public class IterTest extends RienaTestCase {
 	public void testReverseIteratingWithNull() {
 		List<Integer> ints = null;
 		for (Integer i : Iter.ableReverse(ints)) {
-			fail("Should not be reached.");
+			fail("Unfortunately " + i + " could be reached which should not happen!.");
 		}
 	}
 
