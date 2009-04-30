@@ -20,6 +20,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
@@ -267,8 +268,9 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 			getRenderer().setMarkers(getNavigationNode().getMarkers());
 			getRenderer().setItems(getAllVisibleModuleViews());
 			getRenderer().setActive(getNavigationNode().isActivated());
-			Point size = getRenderer().computeSize(e.gc, SWT.DEFAULT, SWT.DEFAULT);
-			getRenderer().setBounds(0, 0, size.x, size.y);
+			ModuleGroupView view = (ModuleGroupView) e.getSource();
+			Rectangle bounds = view.getBounds();
+			getRenderer().setBounds(0, 0, bounds.width, bounds.height);
 			getRenderer().paint(e.gc, null);
 		}
 	}
