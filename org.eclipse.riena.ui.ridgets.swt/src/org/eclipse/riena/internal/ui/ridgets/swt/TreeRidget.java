@@ -934,8 +934,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * Advisor class for the Eclipse 3.4 tree databinding framework. See {link
 	 * TreeStructureAdvisor}.
 	 * <p>
-	 * This advisor uses the supplied property name and beanClass to invoke an
-	 * appropriate accessor (get/isXXX method) on a element in the tree.
+	 * This advisor uses the supplied property name and elementClass to invoke
+	 * an appropriate accessor (get/isXXX method) on a element in the tree.
 	 * <p>
 	 * This functionality is used by the databinding framework to perform expand
 	 * operations.
@@ -949,20 +949,20 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		private final Class<?> beanClass;
 		private PropertyDescriptor descriptor;
 
-		GenericTreeStructureAdvisor(String propertyName, Class<?> beanClass) {
+		GenericTreeStructureAdvisor(String propertyName, Class<?> elementClass) {
 			Assert.isNotNull(propertyName);
 			String errorMsg = "propertyName cannot be empty"; //$NON-NLS-1$
 			Assert.isLegal(propertyName.trim().length() > 0, errorMsg);
-			Assert.isNotNull(beanClass);
+			Assert.isNotNull(elementClass);
 
 			String readMethodName = "get" + capitalize(propertyName); //$NON-NLS-1$
 			try {
-				descriptor = new PropertyDescriptor(propertyName, beanClass, readMethodName, null);
+				descriptor = new PropertyDescriptor(propertyName, elementClass, readMethodName, null);
 			} catch (IntrospectionException exc) {
 				log("Could not introspect bean.", exc); //$NON-NLS-1$
 				descriptor = null;
 			}
-			this.beanClass = beanClass;
+			this.beanClass = elementClass;
 		}
 
 		@Override

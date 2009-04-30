@@ -30,13 +30,20 @@ public interface ITreeTableRidget extends ITreeRidget, ISortableByColumn {
 	 * Example:
 	 * 
 	 * <pre>
-	 * AnyBean[] rootElements = { root1 };
+	 * MyType[] rootElements = { root1 };
 	 * String[] valueAccessors = { &quot;fistname&quot; ,&quot;lastname&quot; };
 	 * String[] columnHeaders = { &quot;First Name&quot;, &quot;Last Name&quot; }
-	 * // AnyBean has getChildren(), getParent(), getFirstname(), getLastname()
-	 * treeRidget.bind(rootElements, AnyBean.class, &quot;children&quot;, 
+	 * treeRidget.bind(rootElements, MyType.class, &quot;children&quot;, 
 	 *                 &quot;parent&quot;, valueAccessors, columnHeaders);
 	 * </pre>
+	 * <p>
+	 * In the example above MyType must have the methods specified in the
+	 * bind(...) invocation, i.e.: getChildren(), getParent(), getFirstname(),
+	 * getLastname(). It is suggested that MyType follows the 'beans' convention
+	 * by providing add / removePropertyChangeListener(PropertyChangeListener)
+	 * methods and firing events on containment or value modifications. This
+	 * will keep the tree in sync automatically. Otherwise
+	 * {@link #updateFromModel()} has to be called to resync.
 	 * <p>
 	 * Note that invoking this method will discard any queued expand/collapse
 	 * operations on the ridget.

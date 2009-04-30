@@ -34,10 +34,10 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
  * List&lt;Object&gt; get/setXXXX)</li>
  * <li>they must be able to provide their parent instance (i.e. public Object
  * getXXXXX), which may be null if this object is a tree-root
- * <li>they should (but do not have to) follow the bean convention. I.e. provide
- * support for adding / removing {@link PropertyChangeListener}s and firing
- * property change events. This will allow the tree ridget to keep the tree in
- * sync with the model automatically. Otherwise
+ * <li>they should (but do not have to) follow the 'beans' convention. I.e.
+ * provide support for adding / removing {@link PropertyChangeListener}s and
+ * firing property change events. This will allow the tree ridget to keep the
+ * tree in sync with the model automatically. Otherwise
  * {@link ITreeRidget#updateFromModel} has to be invoked to resync.</li>
  * </ol>
  * 

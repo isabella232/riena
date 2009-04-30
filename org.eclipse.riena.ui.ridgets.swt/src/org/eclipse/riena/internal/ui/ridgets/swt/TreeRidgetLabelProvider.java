@@ -86,9 +86,9 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	}
 
 	/**
-	 * Create an array of bean attributes that this label provides will observe.
-	 * If the observed attributes change the label provider will update the
-	 * appropriate element.
+	 * Create an array of attributes that this label provides will observe. If
+	 * observing a bean, and the observed attributes change the label provider
+	 * will update the appropriate element.
 	 */
 	private static IObservableMap[] createAttributeMap(Class<?> treeElementClass, IObservableSet knownElements,
 			String[] valueAccessors, String enablementAccessor, String imageAccessor) {

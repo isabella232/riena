@@ -56,10 +56,17 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * Example:
 	 * 
 	 * <pre>
-	 * AnyBean[] rootElements = { root1 };
-	 * // AnyBean has getChildren(), getParent() and getValue() methods
-	 * treeRidget.bind(rootElements, AnyBean.class, &quot;children&quot;, &quot;parent&quot;, &quot;value&quot;);
+	 * MyType[] rootElements = { root1 };
+	 * treeRidget.bind(rootElements, MyType.class, &quot;children&quot;, &quot;parent&quot;, &quot;value&quot;);
 	 * </pre>
+	 * <p>
+	 * In the example above MyType must have methods specified in the bind(...)
+	 * invocation, i.e.: getChildren(), getParent() and getValue(). It is
+	 * suggested that MyType follows the 'beans' convention by providing add /
+	 * removePropertyChangeListener(PropertyChangeListener) methods and firing
+	 * events on containment or value modifications. This will keep the tree in
+	 * sync automatically. Otherwise {@link #updateFromModel()} has to be called
+	 * to resync.
 	 * <p>
 	 * Note that invoking this method will discard any queued expand/collapse
 	 * operations on the ridget.
@@ -101,10 +108,18 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * Example:
 	 * 
 	 * <pre>
-	 * AnyBean[] rootElements = { root1 };
-	 * // AnyBean has getChildren(), getParent() and getValue() methods
-	 * treeRidget.bind(rootElements, AnyBean.class, &quot;children&quot;, &quot;parent&quot;, &quot;value&quot;, &quot;enabled&quot;, &quot;visible&quot;);
+	 * MyType[] rootElements = { root1 };
+	 * treeRidget.bind(rootElements, MyType.class, &quot;children&quot;, &quot;parent&quot;, &quot;value&quot;, &quot;enabled&quot;, &quot;visible&quot;);
 	 * </pre>
+	 * <p>
+	 * In the example above MyType must have the methods specified in the
+	 * bind(...) invocation, i.e.: getChildren(), getParent(), getValue(),
+	 * getEnabled() and getVisible(). It is suggested that MyType follows the
+	 * 'beans' convention by providing add /
+	 * removePropertyChangeListener(PropertyChangeListener) methods and firing
+	 * events on containment or value modifications. This will keep the tree in
+	 * sync automatically. Otherwise {@link #updateFromModel()} has to be called
+	 * to resync.
 	 * <p>
 	 * Note that invoking this method will discard any queued expand/collapse
 	 * operations on the ridget.
@@ -158,10 +173,17 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * Example:
 	 * 
 	 * <pre>
-	 * AnyBean[] rootElements = { root1 };
-	 * // AnyBean has getChildren(), getParent() and getValue() methods
-	 * treeRidget.bind(rootElements, AnyBean.class, &quot;children&quot;, &quot;parent&quot;, &quot;value&quot;, &quot;enabled&quot;, &quot;visible&quot;, &quot;icon&quot;);
+	 * MyType[] rootElements = { root1 };
+	 * treeRidget.bind(rootElements, MyType.class, &quot;children&quot;, &quot;parent&quot;, &quot;value&quot;, &quot;enabled&quot;, &quot;visible&quot;, &quot;icon&quot;);
 	 * </pre>
+	 * <p>
+	 * In the example above MyType must have the methods specified in the
+	 * bind(...) invocation, i.e.: getChildren(), getParent() and getValue(). It
+	 * is suggested that MyType follows the 'beans' convention by providing add
+	 * / removePropertyChangeListener(PropertyChangeListener) methods and firing
+	 * events on containment or value modifications. This will keep the tree in
+	 * sync automatically. Otherwise {@link #updateFromModel()} has to be called
+	 * to resync.
 	 * <p>
 	 * Note that invoking this method will discard any queued expand/collapse
 	 * operations on the ridget.
