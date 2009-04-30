@@ -17,10 +17,12 @@ import org.eclipse.riena.core.injector.extension.IData;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.wire.ExtensionInjectorBuilder;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test the {@code ExtensionInjectorBuilder}.
  */
+@NonUITestCase
 public class ExtensionInjectorBuilderTest extends RienaTestCase {
 
 	public void testBuildForUpdate1() throws NoSuchMethodException {
