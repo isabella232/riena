@@ -37,58 +37,42 @@ public class AuthenticationServiceCallbackHandler implements CallbackHandler {
 	public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
 		for (Callback cb : callbacks) {
 			for (Callback rcb : remoteCallbacks.get()) {
-				if (cb.getClass() == rcb.getClass()) {
-					if (cb instanceof NameCallback) {
-						if (((NameCallback) cb).getPrompt().equals(((NameCallback) rcb).getPrompt())) {
-							((NameCallback) cb).setName(((NameCallback) rcb).getName());
-							break;
-						}
-					} else {
-						if (cb instanceof PasswordCallback) {
-							if (((PasswordCallback) cb).getPrompt().equals(((PasswordCallback) rcb).getPrompt())) {
-								((PasswordCallback) cb).setPassword(((PasswordCallback) rcb).getPassword());
-								break;
-							}
-						} else {
-							if (cb instanceof ConfirmationCallback) {
-								if (((ConfirmationCallback) cb).getPrompt().equals(
-										((ConfirmationCallback) rcb).getPrompt())) {
-									((ConfirmationCallback) cb).setSelectedIndex(((ConfirmationCallback) rcb)
-											.getSelectedIndex());
-									break;
-								}
-							} else {
-								if (cb instanceof TextInputCallback) {
-									if (((TextInputCallback) cb).getPrompt().equals(
-											((TextInputCallback) rcb).getPrompt())) {
-										((TextInputCallback) cb).setText(((TextInputCallback) rcb).getText());
-									}
-								} else {
-									if (cb instanceof TextOutputCallback) {
-										// do nothing for now
-										break;
-									} else {
-										if (cb instanceof LanguageCallback) {
-											// do nothing for now
-											break;
-										} else {
-											if (cb instanceof ChoiceCallback) {
-												if (((ChoiceCallback) cb).getPrompt().equals(
-														((ChoiceCallback) rcb).getPrompt())) {
-													((ChoiceCallback) cb).setSelectedIndexes(((ChoiceCallback) rcb)
-															.getSelectedIndexes());
-
-												} else {
-													throw new UnsupportedOperationException(
-															"unsupported authentication callback type"); //$NON-NLS-1$
-												}
-											}
-										}
-									}
-								}
-							}
-						}
+				if (cb.getClass() != rcb.getClass()) {
+					continue;
+				}
+				if (cb instanceof NameCallback) {
+					if (((NameCallback) cb).getPrompt().equals(((NameCallback) rcb).getPrompt())) {
+						((NameCallback) cb).setName(((NameCallback) rcb).getName());
+						break;
 					}
+				} else if (cb instanceof PasswordCallback) {
+					if (((PasswordCallback) cb).getPrompt().equals(((PasswordCallback) rcb).getPrompt())) {
+						((PasswordCallback) cb).setPassword(((PasswordCallback) rcb).getPassword());
+						break;
+					}
+				} else if (cb instanceof ConfirmationCallback) {
+					if (((ConfirmationCallback) cb).getPrompt().equals(((ConfirmationCallback) rcb).getPrompt())) {
+						((ConfirmationCallback) cb).setSelectedIndex(((ConfirmationCallback) rcb).getSelectedIndex());
+						break;
+					}
+				} else if (cb instanceof TextInputCallback) {
+					if (((TextInputCallback) cb).getPrompt().equals(((TextInputCallback) rcb).getPrompt())) {
+						((TextInputCallback) cb).setText(((TextInputCallback) rcb).getText());
+						break;
+					}
+				} else if (cb instanceof TextOutputCallback) {
+					// do nothing for now
+					break;
+				} else if (cb instanceof LanguageCallback) {
+					// do nothing for now
+					break;
+				} else if (cb instanceof ChoiceCallback) {
+					if (((ChoiceCallback) cb).getPrompt().equals(((ChoiceCallback) rcb).getPrompt())) {
+						((ChoiceCallback) cb).setSelectedIndexes(((ChoiceCallback) rcb).getSelectedIndexes());
+						break;
+					}
+				} else {
+					throw new UnsupportedOperationException("unsupported authentication callback type"); //$NON-NLS-1$
 				}
 			}
 		}
