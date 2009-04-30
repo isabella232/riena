@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.cache;
 
+import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.ManualTestCase;
 
@@ -24,11 +25,13 @@ public class LRUCacheTest extends RienaTestCase {
 	private IGenericObjectCache<Integer, TestRunner> genericCache2;
 	private IGenericObjectCache<Integer, String> genericCache3;
 
+	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 		genericCache = new LRUCache<String, Integer>();
 	}
 
+	@Override
 	public void tearDown() throws Exception {
 		genericCache = null;
 		super.tearDown();
@@ -143,7 +146,7 @@ public class LRUCacheTest extends RienaTestCase {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				// no action
+				Nop.reason("no action");
 			}
 
 		}
@@ -161,6 +164,7 @@ public class LRUCacheTest extends RienaTestCase {
 			//			trace("low=" + lowRange + " high=" + highRange + " runs=" + runs);
 		}
 
+		@Override
 		public void run() {
 			for (int i = 0; i < runs; i++) {
 				for (int k = lowRange; k <= highRange; k++) {

@@ -36,6 +36,7 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 	 * 
 	 * @see org.eclipse.riena.tests.RienaTestCase#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		Inject.service(IRemoteServiceRegistry.class).into(this).andStart(Activator.getDefault().getContext());
@@ -60,6 +61,7 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 	 * 
 	 * @see org.eclipse.riena.tests.RienaTestCase#tearDown()
 	 */
+	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		BundleContext context = Activator.getDefault().getContext();

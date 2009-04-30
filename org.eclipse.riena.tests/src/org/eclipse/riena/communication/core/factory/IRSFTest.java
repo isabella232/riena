@@ -15,6 +15,6 @@ package org.eclipse.riena.communication.core.factory;
  */
 public interface IRSFTest {
 
-	public void hello();
+	void hello();
 
 }

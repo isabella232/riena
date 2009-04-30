@@ -12,7 +12,6 @@ package org.eclipse.riena.monitor.client;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.monitor.client.Range.ParseException;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
@@ -21,21 +20,21 @@ import org.eclipse.riena.tests.collect.NonUITestCase;
 @NonUITestCase
 public class RangeTest extends TestCase {
 
-	public void testEmptyRange() throws ParseException {
+	public void testEmptyRange() {
 		Range range = new Range("");
 		assertFalse(range.matches(1));
 		assertFalse(range.matches(2));
 		assertFalse(range.matches(3));
 	}
 
-	public void testSingleValue() throws ParseException {
+	public void testSingleValue() {
 		Range range = new Range("2");
 		assertFalse(range.matches(1));
 		assertTrue(range.matches(2));
 		assertFalse(range.matches(3));
 	}
 
-	public void testDoubleValue() throws ParseException {
+	public void testDoubleValue() {
 		Range range = new Range("2, 9");
 		assertFalse(range.matches(1));
 		assertTrue(range.matches(2));
@@ -43,14 +42,14 @@ public class RangeTest extends TestCase {
 		assertTrue(range.matches(9));
 	}
 
-	public void testSingleRangeInterval() throws ParseException {
+	public void testSingleRangeInterval() {
 		Range range = new Range("1..3");
 		assertTrue(range.matches(1));
 		assertTrue(range.matches(2));
 		assertTrue(range.matches(3));
 	}
 
-	public void testRangeIntervalPlusValue() throws ParseException {
+	public void testRangeIntervalPlusValue() {
 		Range range = new Range("1..3,5");
 		assertTrue(range.matches(1));
 		assertTrue(range.matches(2));
@@ -59,7 +58,7 @@ public class RangeTest extends TestCase {
 		assertTrue(range.matches(5));
 	}
 
-	public void testValuePlusRangeIntervalPlusValue() throws ParseException {
+	public void testValuePlusRangeIntervalPlusValue() {
 		Range range = new Range("-2, 1..3 , 5");
 		assertTrue(range.matches(-2));
 		assertFalse(range.matches(-1));
@@ -71,7 +70,7 @@ public class RangeTest extends TestCase {
 		assertTrue(range.matches(5));
 	}
 
-	public void testSingleRangeOpenOpenPlusRangeCloseClose() throws ParseException {
+	public void testSingleRangeOpenOpenPlusRangeCloseClose() {
 		Range range = new Range("-2..0, 10..12");
 		assertFalse(range.matches(-3));
 		assertTrue(range.matches(-2));

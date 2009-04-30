@@ -50,6 +50,7 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 		return (ILabelRidget) super.getRidget();
 	}
 
+	@Override
 	protected abstract ILabelRidget createRidget();
 
 	protected abstract String getText(Object widget);

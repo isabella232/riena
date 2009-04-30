@@ -17,6 +17,7 @@ import org.osgi.framework.BundleContext;
  */
 public class BeanWiringMock extends AbstractWiring {
 
+	@Override
 	public void wire(Object bean, BundleContext context) {
 		((Bean) bean).bind(new SchtonkSchtonk());
 	}

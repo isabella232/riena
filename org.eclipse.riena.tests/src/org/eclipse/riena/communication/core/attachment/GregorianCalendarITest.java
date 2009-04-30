@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.attachment;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -33,6 +36,7 @@ public final class GregorianCalendarITest extends RienaTestCase {
 	/**
 	 * @see junit.framework.TestCase#setUp()
 	 */
+	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 		regCalenderService = Register.remoteProxy(ITestGregorianCalendar.class).usingUrl(
@@ -44,6 +48,7 @@ public final class GregorianCalendarITest extends RienaTestCase {
 	/**
 	 * @see junit.framework.TestCase#tearDown()
 	 */
+	@Override
 	public void tearDown() throws Exception {
 		super.tearDown();
 		regCalenderService.unregister();
@@ -57,9 +62,10 @@ public final class GregorianCalendarITest extends RienaTestCase {
 		assertEquals(24L * 60L * 60L * 1000L, diff);
 	}
 
-	public void testDiffDate() {
-		Date from = new Date(2007, 1, 6);
-		Date till = new Date(2007, 1, 7);
+	public void testDiffDate() throws ParseException {
+		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+		Date from = dateFormat.parse("6.1.2007");
+		Date till = dateFormat.parse("7.1.2007");
 		long diff = calendarService.diffTimes2(from, till);
 		assertEquals(24L * 60L * 60L * 1000L, diff);
 	}

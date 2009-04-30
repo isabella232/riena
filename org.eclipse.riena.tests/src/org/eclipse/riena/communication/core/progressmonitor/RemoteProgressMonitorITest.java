@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.SecureRandom;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.attachment.Attachment;
 import org.eclipse.riena.communication.core.factory.Register;
@@ -21,8 +23,6 @@ import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.ManualTestCase;
-
-import org.osgi.framework.BundleContext;
 
 /**
  * This Testclass sends large byte streams to the Attachment Service and other
@@ -39,6 +39,7 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 	/**
 	 * @see junit.framework.TestCase#setUp()
 	 */
+	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 		regAttachmentService = Register.remoteProxy(IAttachmentService.class).usingUrl(
@@ -55,6 +56,7 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 	/**
 	 * @see junit.framework.TestCase#tearDown()
 	 */
+	@Override
 	public void tearDown() throws Exception {
 		super.tearDown();
 		regAttachmentService.unregister();

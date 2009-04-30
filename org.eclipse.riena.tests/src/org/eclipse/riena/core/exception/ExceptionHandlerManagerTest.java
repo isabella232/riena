@@ -25,11 +25,13 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 
 	private SimpleExceptionHandlerManager manager;
 
+	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 		manager = new SimpleExceptionHandlerManager();
 	}
 
+	@Override
 	public void tearDown() throws Exception {
 		manager = null;
 		super.tearDown();

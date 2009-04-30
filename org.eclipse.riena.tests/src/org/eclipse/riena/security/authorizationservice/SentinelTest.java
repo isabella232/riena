@@ -14,6 +14,10 @@ import java.io.InputStream;
 
 import javax.security.auth.Subject;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
+
 import org.eclipse.riena.internal.security.authorizationservice.AuthorizationService;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.common.SubjectAccessor;
@@ -23,10 +27,6 @@ import org.eclipse.riena.security.common.authorization.Sentinel;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceRegistration;
 
 /**
  * Tests the Sentinal which means we are testing for permissions without
@@ -42,6 +42,7 @@ public class SentinelTest extends RienaTestCase {
 	 * 
 	 * @see junit.framework.TestCase#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		// create FilePermissionStore which we inject into a local AuthorizationService
@@ -65,6 +66,7 @@ public class SentinelTest extends RienaTestCase {
 	 * 
 	 * @see junit.framework.TestCase#tearDown()
 	 */
+	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		authorizationServiceReg.unregister();

@@ -16,6 +16,7 @@ import javax.security.auth.login.LoginException;
 
 import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
+
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.authentication.callbackhandler.TestLocalCallbackHandler;
 import org.eclipse.riena.security.authentication.module.TestLocalLoginModule;
@@ -27,6 +28,7 @@ public class LoginModuleTest extends RienaTestCase {
 
 	private static final String JAAS_CONFIG_FILE = "config/sample_jaas.config"; //$NON-NLS-1$
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		startBundles("org\\.eclipse\\.riena.communication.core", null);
@@ -34,6 +36,7 @@ public class LoginModuleTest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}

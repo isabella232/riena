@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.easymock.EasyMock;
+
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
@@ -31,6 +32,7 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 	/**
 	 * @see junit.framework.TestCase#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 	}
@@ -55,6 +57,7 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 	/**
 	 * @see junit.framework.TestCase#tearDown()
 	 */
+	@Override
 	protected void tearDown() throws Exception {
 		if (dataSourceMock != null) {
 			EasyMock.verify(dataSourceMock);

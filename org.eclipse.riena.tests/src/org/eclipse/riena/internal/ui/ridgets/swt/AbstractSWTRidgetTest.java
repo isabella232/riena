@@ -30,8 +30,10 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 	// protected methods
 	// //////////////////
 
+	@Override
 	protected abstract Widget createWidget(final Composite parent);
 
+	@Override
 	protected Widget getWidget() {
 		return (Widget) super.getWidget();
 	}

@@ -23,6 +23,7 @@ import java.net.SocketException;
 import java.net.URL;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
@@ -44,6 +45,7 @@ public class AttachmentTest extends RienaTestCase {
 	/**
 	 * @see junit.framework.TestCase#setUp()
 	 */
+	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 		file = File.createTempFile("attachTest", null);
@@ -59,6 +61,7 @@ public class AttachmentTest extends RienaTestCase {
 	 * 
 	 * @see junit.framework.TestCase#tearDown()
 	 */
+	@Override
 	public void tearDown() throws Exception {
 		super.tearDown();
 	}
@@ -139,7 +142,7 @@ public class AttachmentTest extends RienaTestCase {
 					+ socketReader.getCount() + " times.", socketReader.getCount() == 1);
 			socketReader.stop();
 		} catch (SocketException e) {
-			// SocketException can happen in mavenbuild....thats ok
+			Nop.reason("SocketException can happen in mavenbuild....thats ok");
 		}
 	}
 
@@ -176,7 +179,7 @@ public class AttachmentTest extends RienaTestCase {
 							try {
 								Thread.sleep(10);
 							} catch (InterruptedException e) {
-								// do nothing
+								Nop.reason("nothing to do");
 							}
 						}
 						// then read until there is no more input
@@ -189,7 +192,7 @@ public class AttachmentTest extends RienaTestCase {
 									// some time to come up with some input
 									Thread.sleep(200);
 								} catch (InterruptedException e) {
-									// ignore
+									Nop.reason("ignore");
 								}
 							}
 						}
@@ -205,7 +208,7 @@ public class AttachmentTest extends RienaTestCase {
 							output.write(buffer, 0, len);
 						}
 					} catch (IOException e) {
-						//
+						Nop.reason("");
 					} finally {
 						if (input != null) {
 							input.close();
@@ -219,7 +222,7 @@ public class AttachmentTest extends RienaTestCase {
 					}
 				}
 			} catch (IOException e) {
-				// serverSocket did not work
+				Nop.reason("serverSocket did not work");
 			}
 		}
 

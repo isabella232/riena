@@ -18,8 +18,8 @@ public interface IWireable {
 	/**
 	 * @param wired
 	 */
-	public abstract void setWired(boolean wired);
+	void setWired(boolean wired);
 
-	public abstract boolean isWired();
+	boolean isWired();
 
 }

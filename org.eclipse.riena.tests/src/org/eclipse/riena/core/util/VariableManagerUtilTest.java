@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 
 import org.eclipse.core.internal.variables.StringVariableManager;
 import org.eclipse.core.runtime.CoreException;
+
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
@@ -53,7 +54,7 @@ public class VariableManagerUtilTest extends RienaTestCase {
 		assertEquals("${host", VariableManagerUtil.substitute("${host}"));
 	}
 
-	public void testUpdatedRecursiveKeyDirectly() throws CoreException {
+	public void testUpdatedRecursiveKeyDirectly() {
 		try {
 			VariableManagerUtil.addVariable("host", "${host}");
 			VariableManagerUtil.substitute("${host}");
@@ -63,7 +64,7 @@ public class VariableManagerUtilTest extends RienaTestCase {
 		}
 	}
 
-	public void testUpdatedRecursiveKeyIndirectly1() throws CoreException {
+	public void testUpdatedRecursiveKeyIndirectly1() {
 		try {
 			VariableManagerUtil.addVariable("a", "${b}");
 			VariableManagerUtil.addVariable("b", "${a}");
@@ -77,7 +78,7 @@ public class VariableManagerUtilTest extends RienaTestCase {
 		}
 	}
 
-	public void testUpdatedRecursiveKeyIndirectly2() throws CoreException {
+	public void testUpdatedRecursiveKeyIndirectly2() {
 		try {
 			VariableManagerUtil.addVariable("a", "${b}");
 			VariableManagerUtil.addVariable("b", "${c}");

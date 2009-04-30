@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.osgi.framework.InvalidSyntaxException;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 
@@ -237,7 +235,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		injector.stop();
 	}
 
-	public void testModifyWithUnknownTypeAndSingleData() throws CoreException, InvalidSyntaxException {
+	public void testModifyWithUnknownTypeAndSingleData() throws CoreException {
 		printTestName();
 		VariableManagerUtil.addVariable("true", "true");
 
@@ -509,7 +507,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		injector.stop();
 	}
 
-	public void testModifyGlobalOn() throws CoreException, InvalidSyntaxException {
+	public void testModifyGlobalOn() throws CoreException {
 		printTestName();
 		VariableManagerUtil.addVariable("value", "true");
 		VariableManagerUtil.addVariable("text", "Hallo!");
@@ -530,7 +528,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		VariableManagerUtil.removeVariable("key");
 	}
 
-	public void testModifyGlobalOff() throws CoreException, InvalidSyntaxException {
+	public void testModifyGlobalOff() throws CoreException {
 		printTestName();
 		VariableManagerUtil.addVariable("value", "true");
 		VariableManagerUtil.addVariable("text", "Hallo!");
@@ -551,7 +549,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		VariableManagerUtil.removeVariable("key");
 	}
 
-	public void testModifyInterfaceOff() throws CoreException, InvalidSyntaxException {
+	public void testModifyInterfaceOff() throws CoreException {
 		printTestName();
 		VariableManagerUtil.addVariable("value", "true");
 		VariableManagerUtil.addVariable("text", "Hallo!");
@@ -572,7 +570,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		VariableManagerUtil.removeVariable("key");
 	}
 
-	public void testModifyMethodOff() throws CoreException, InvalidSyntaxException {
+	public void testModifyMethodOff() throws CoreException {
 		printTestName();
 		VariableManagerUtil.addVariable("value", "true");
 		VariableManagerUtil.addVariable("text", "Hallo!");

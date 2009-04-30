@@ -89,6 +89,7 @@ public class NanoHTTPD {
 	 * @parm header Header entries, percent decoded
 	 * @return HTTP response, see class Response for details
 	 */
+	@SuppressWarnings("unchecked")
 	public Response serve(String uri, String method, Properties header, Properties parms) {
 		System.out.println(method + " '" + uri + "' ");
 
@@ -354,8 +355,8 @@ public class NanoHTTPD {
 		}
 
 		/**
-		 * Decodes the percent encoding scheme. <br/> For example:
-		 * "an+example%20string" -> "an example string"
+		 * Decodes the percent encoding scheme. <br/>
+		 * For example: "an+example%20string" -> "an example string"
 		 */
 		private String decodePercent(String str) throws InterruptedException {
 			try {
@@ -414,6 +415,7 @@ public class NanoHTTPD {
 		/**
 		 * Sends given response to the socket.
 		 */
+		@SuppressWarnings("unchecked")
 		private void sendResponse(String status, String mime, Properties header, InputStream data) {
 			try {
 				if (status == null) {
@@ -495,7 +497,7 @@ public class NanoHTTPD {
 	}
 
 	private int myTcpPort;
-	File myFileDir;
+	private File myFileDir;
 
 	// ==================================================
 	// File server code
@@ -635,7 +637,7 @@ public class NanoHTTPD {
 	/**
 	 * Hashtable mapping (String)FILENAME_EXTENSION -> (String)MIME_TYPE
 	 */
-	private static Hashtable theMimeTypes = new Hashtable();
+	private static Hashtable<String, String> theMimeTypes = new Hashtable<String, String>();
 	static {
 		StringTokenizer st = new StringTokenizer("htm		text/html " + "html		text/html " + "txt		text/plain "
 				+ "asc		text/plain " + "gif		image/gif " + "jpg		image/jpeg " + "jpeg		image/jpeg " + "png		image/png "

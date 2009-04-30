@@ -169,6 +169,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	/**
 	 * Test that setText(null) clears the number (equiv. to setText("0")).
 	 */
+	@Override
 	public void testSetTextNull() {
 		ITextRidget ridget = getRidget();
 

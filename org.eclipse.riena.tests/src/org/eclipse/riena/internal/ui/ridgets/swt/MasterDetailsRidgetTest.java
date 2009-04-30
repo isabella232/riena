@@ -57,7 +57,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	protected void setUp() throws Exception {
 		super.setUp();
 		input = createInput(3);
-		MasterDetailsRidget ridget = (MasterDetailsRidget) getRidget();
+		MasterDetailsRidget ridget = getRidget();
 		List<Object> uiControls = getWidget().getUIControls();
 		BINDING_MAN.injectRidgets(ridget, uiControls);
 		BINDING_MAN.bind(ridget, uiControls);

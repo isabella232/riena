@@ -232,39 +232,39 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(control.isEnabled());
 	}
 
-	public void testValidation_UpdateFromModel_OnUpdateRules() {
-		handleValidation_UpdateFromModel(ValidationTime.ON_UPDATE_TO_MODEL);
+	public void testValidationUpdateFromModelOnUpdateRules() {
+		handleValidationUpdateFromModel(ValidationTime.ON_UPDATE_TO_MODEL);
 	}
 
-	public void testValidation_UpdateFromModel_OnEditRules() {
-		handleValidation_UpdateFromModel(ValidationTime.ON_UI_CONTROL_EDIT);
+	public void testValidationUpdateFromModelOnEditRules() {
+		handleValidationUpdateFromModel(ValidationTime.ON_UI_CONTROL_EDIT);
 	}
 
-	public void testValidation_SetDate_OnUpdateRules() {
-		handleValidation_SetDate(ValidationTime.ON_UPDATE_TO_MODEL);
+	public void testValidationSetDateOnUpdateRules() {
+		handleValidationSetDate(ValidationTime.ON_UPDATE_TO_MODEL);
 	}
 
-	public void testValidation_SetDate_OnEditRules() {
-		handleValidation_SetDate(ValidationTime.ON_UI_CONTROL_EDIT);
+	public void testValidationSetDateOnEditRules() {
+		handleValidationSetDate(ValidationTime.ON_UI_CONTROL_EDIT);
 	}
 
-	public void testValidation_WidgetModification_onUpdateRules() {
+	public void testValidationWidgetModificationonUpdateRules() {
 		String country = Locale.getDefault().getCountry();
 		if ("DE".equals(country)) {
-			handleValidation_WidgetModification(ValidationTime.ON_UPDATE_TO_MODEL, "10.04.2009");
+			handleValidationWidgetModification(ValidationTime.ON_UPDATE_TO_MODEL, "10.04.2009");
 		} else if ("US".equals(country)) {
-			handleValidation_WidgetModification(ValidationTime.ON_UPDATE_TO_MODEL, "04/10/2009");
+			handleValidationWidgetModification(ValidationTime.ON_UPDATE_TO_MODEL, "04/10/2009");
 		} else {
 			System.out.println("Skipping DateTimeRidgetTest#testValidation_WidgetModification_onUpdateRules");
 		}
 	}
 
-	public void testValidation_WidgetModification_OnEditRules() {
+	public void testValidationWidgetModificationOnEditRules() {
 		String country = Locale.getDefault().getCountry();
 		if ("DE".equals(country)) {
-			handleValidation_WidgetModification(ValidationTime.ON_UI_CONTROL_EDIT, "10.04.2009");
+			handleValidationWidgetModification(ValidationTime.ON_UI_CONTROL_EDIT, "10.04.2009");
 		} else if ("US".equals(country)) {
-			handleValidation_WidgetModification(ValidationTime.ON_UI_CONTROL_EDIT, "04/10/2009");
+			handleValidationWidgetModification(ValidationTime.ON_UI_CONTROL_EDIT, "04/10/2009");
 		} else {
 			System.out.println("Skipping DateTimeRidgetTest#testValidation_WidgetModification_OnEditRules");
 		}
@@ -330,7 +330,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		return String.format("%s/%s/%s", month, day, year);
 	}
 
-	private void handleValidation_UpdateFromModel(ValidationTime time) {
+	private void handleValidationUpdateFromModel(ValidationTime time) {
 		IDateTimeRidget ridget = getRidget();
 		FTValidator validator = new FTValidator(new Date(99));
 		ridget.addValidationRule(validator, time);
@@ -358,7 +358,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(ridget.isErrorMarked());
 	}
 
-	private void handleValidation_SetDate(ValidationTime time) {
+	private void handleValidationSetDate(ValidationTime time) {
 		IDateTimeRidget ridget = getRidget();
 		FTValidator validator = new FTValidator(new Date(99));
 		ridget.addValidationRule(validator, time);
@@ -382,7 +382,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(ridget.isErrorMarked());
 	}
 
-	private void handleValidation_WidgetModification(ValidationTime time, final String input) {
+	private void handleValidationWidgetModification(ValidationTime time, final String input) {
 		IDateTimeRidget ridget = getRidget();
 		FTValidator validator = new FTValidator("4/10/2009");
 		DateTime control = getWidget();
@@ -408,7 +408,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	private final class FTValidator implements IValidator {
 
-		int count = 0;
+		private int count = 0;
 		private Date errorDate;
 		private String errorString;
 

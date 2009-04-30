@@ -404,21 +404,21 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 	 * <a href="http://bugs.eclipse.org/270444">Bug #270444 - Case 1</a>.
 	 */
 	public void testApplyEnabledToUIControl() {
-		Object widget = createWidget(getShell());
-		if (!(widget instanceof Control)) {
+		Object aWidget = createWidget(getShell());
+		if (!(aWidget instanceof Control)) {
 			return;
 		}
-		IRidget ridget = createRidget();
-		Control control = (Control) widget;
+		IRidget aRidget = createRidget();
+		Control control = (Control) aWidget;
 
 		control.setEnabled(false);
-		ridget.setEnabled(true);
-		ridget.setUIControl(control);
+		aRidget.setEnabled(true);
+		aRidget.setUIControl(control);
 
-		assertTrue(ridget.isEnabled());
+		assertTrue(aRidget.isEnabled());
 		assertTrue(control.isEnabled());
-		if (ridget instanceof IBasicMarkableRidget) {
-			assertEquals(0, ((IBasicMarkableRidget) ridget).getMarkersOfType(DisabledMarker.class).size());
+		if (aRidget instanceof IBasicMarkableRidget) {
+			assertEquals(0, ((IBasicMarkableRidget) aRidget).getMarkersOfType(DisabledMarker.class).size());
 		}
 	}
 

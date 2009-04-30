@@ -17,6 +17,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.internal.core.ignore.Nop;
+
 /**
  * Utility class for UI tests.
  */
@@ -40,7 +42,7 @@ public final class UITestHelper {
 	public static void readAndDispatch(Widget control) {
 		Display display = control.getDisplay();
 		while (display.readAndDispatch()) {
-			// keep going
+			Nop.reason("keep going");
 		}
 	}
 
@@ -177,7 +179,7 @@ public final class UITestHelper {
 			try {
 				Thread.sleep(millis);
 			} catch (InterruptedException iex) {
-				// ignore
+				Nop.reason("ignore");
 			}
 		}
 

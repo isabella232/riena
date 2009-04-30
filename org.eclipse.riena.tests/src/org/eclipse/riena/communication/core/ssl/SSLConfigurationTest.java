@@ -13,6 +13,8 @@ package org.eclipse.riena.communication.core.ssl;
 import java.io.File;
 import java.io.IOException;
 
+import org.osgi.framework.Bundle;
+
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.communication.core.ssl.ISSLProperties;
 import org.eclipse.riena.internal.communication.core.ssl.SSLConfiguration;
@@ -20,8 +22,6 @@ import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.tests.nanohttp.TestServer;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleException;
 
 /**
  * 
@@ -29,14 +29,14 @@ import org.osgi.framework.BundleException;
 @NonUITestCase
 public class SSLConfigurationTest extends RienaTestCase {
 
-	public void testZeroConfiguration() throws BundleException {
+	public void testZeroConfiguration() {
 		printTestName();
 
 		SSLConfiguration config = new SSLConfiguration();
 		assertEquals("SSLConfiguration: null, null", config.toString());
 	}
 
-	public void testOneConfiguration() throws BundleException {
+	public void testOneConfiguration() {
 		printTestName();
 		addPluginXml(SSLConfigurationTest.class, "plugin.xml");
 

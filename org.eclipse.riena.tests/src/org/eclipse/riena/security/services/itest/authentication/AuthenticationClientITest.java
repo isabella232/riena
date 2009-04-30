@@ -15,7 +15,11 @@ import java.util.Arrays;
 
 import javax.security.auth.Subject;
 
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.core.Log4r;
@@ -30,8 +34,6 @@ import org.eclipse.riena.security.common.authentication.credentials.PasswordCred
 import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.IntegrationTestCase;
-import org.osgi.framework.ServiceReference;
-import org.osgi.service.log.LogService;
 
 /**
  * Test client for authentication service.
@@ -44,6 +46,7 @@ public class AuthenticationClientITest extends RienaTestCase {
 	private IRemoteServiceRegistration sessionServiceRegistration;
 	private IRemoteServiceRegistration authenticationServiceRegistration;
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		startBundles("org\\.eclipse\\.equinox\\.cm.*", null);
@@ -59,6 +62,7 @@ public class AuthenticationClientITest extends RienaTestCase {
 
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		sessionServiceRegistration.unregister();

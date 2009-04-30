@@ -11,6 +11,7 @@
 package org.eclipse.riena.objecttransaction.simple;
 
 import org.eclipse.core.runtime.AssertionFailedException;
+
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
 import org.eclipse.riena.objecttransaction.IObjectTransactionExtract;
 import org.eclipse.riena.objecttransaction.InvalidTransactionFailure;
@@ -31,6 +32,7 @@ import org.eclipse.riena.tests.collect.NonUITestCase;
 @NonUITestCase
 public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 
+	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();

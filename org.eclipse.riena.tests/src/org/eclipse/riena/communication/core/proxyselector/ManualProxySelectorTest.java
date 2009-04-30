@@ -43,14 +43,14 @@ public class ManualProxySelectorTest extends TestCase {
 		}
 	}
 
-	public void testDirect() throws URISyntaxException, CoreException {
+	public void testDirect() throws CoreException {
 		ManualProxySelector selector = new ManualProxySelector();
 		List<Proxy> proxies = selector.select(http);
 		assertEquals(1, proxies.size());
 		assertEquals(Proxy.NO_PROXY, proxies.get(0));
 	}
 
-	public void testUniversal() throws URISyntaxException, CoreException {
+	public void testUniversal() throws CoreException {
 		ManualProxySelector selector = new ManualProxySelector();
 		selector.setInitializationData(null, null, "http://test1:8080,http://test2:8080");
 		List<Proxy> proxies = selector.select(http);
@@ -59,7 +59,7 @@ public class ManualProxySelectorTest extends TestCase {
 		assertEquals(proxy2, proxies.get(1));
 	}
 
-	public void testSpecific() throws URISyntaxException, CoreException {
+	public void testSpecific() throws CoreException {
 		ManualProxySelector selector = new ManualProxySelector();
 		selector.setInitializationData(null, null, "http=http://test1:8080,http=http://test2:8080");
 		List<Proxy> proxies = selector.select(http);
@@ -71,7 +71,7 @@ public class ManualProxySelectorTest extends TestCase {
 		assertEquals(1, proxies.size());
 	}
 
-	public void testUniversalAndSpecific() throws URISyntaxException, CoreException {
+	public void testUniversalAndSpecific() throws CoreException {
 		ManualProxySelector selector = new ManualProxySelector();
 		selector.setInitializationData(null, null,
 				"http://test1:8080,http://test2:8080,http=http://test3:8080,http=http://test4:8080");
@@ -85,7 +85,7 @@ public class ManualProxySelectorTest extends TestCase {
 		assertEquals(Proxy.NO_PROXY, proxies.get(0));
 	}
 
-	public void testConfigurationBySystemProperty() throws CoreException, URISyntaxException {
+	public void testConfigurationBySystemProperty() throws CoreException {
 		System.setProperty(ManualProxySelector.RIENA_MANUAL_PROXIES, "http://test1:8080,http://test2:8080");
 		ManualProxySelector selector = new ManualProxySelector();
 		selector.setInitializationData(null, null, "http://test3:8080;http://test4:8080");

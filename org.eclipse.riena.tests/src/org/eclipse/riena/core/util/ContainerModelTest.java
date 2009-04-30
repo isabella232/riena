@@ -34,7 +34,7 @@ public class ContainerModelTest extends TestCase {
 		ContainerModel.isClient();
 	}
 
-	public void testOnClient() throws ClassNotFoundException {
+	public void testOnClient() {
 		ReflectionUtils.invokeHidden(ContainerModel.class, INITIALIZE_METHOD_NAME);
 		assertTrue(ContainerModel.isClient());
 	}

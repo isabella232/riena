@@ -14,6 +14,10 @@ import java.io.InputStream;
 
 import javax.security.auth.Subject;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
+
 import org.eclipse.riena.internal.security.authorizationservice.AuthorizationService;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.common.SubjectAccessor;
@@ -22,9 +26,6 @@ import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.ManualTestCase;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceRegistration;
 
 @ManualTestCase
 public class AuthorizationTest extends RienaTestCase {
@@ -32,6 +33,7 @@ public class AuthorizationTest extends RienaTestCase {
 	//	private ServiceRegistration fileStoreReg;
 	private ServiceRegistration authorizationServiceReg;
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		// create FilePermissionStore which we inject into a local AuthorizationService
@@ -50,6 +52,7 @@ public class AuthorizationTest extends RienaTestCase {
 		authorizationService.bind(store);
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		authorizationServiceReg.unregister();

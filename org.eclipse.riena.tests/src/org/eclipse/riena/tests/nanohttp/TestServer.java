@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
+import org.eclipse.riena.internal.core.ignore.Nop;
+
 /**
  * Embedded simple web server for unit tests based on NanoHTTPD.
  */
@@ -53,7 +55,7 @@ public class TestServer extends NanoHTTPD {
 		try {
 			new URL("http://localhost:" + port).openStream();
 		} catch (IOException e) {
-			// no action necessary
+			Nop.reason("no action necessary");
 		}
 	}
 

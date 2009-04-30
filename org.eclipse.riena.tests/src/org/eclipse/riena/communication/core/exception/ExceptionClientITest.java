@@ -39,6 +39,7 @@ public class ExceptionClientITest extends RienaTestCase {
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ExceptionClientITest.class);
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		regExceptionService = Register.remoteProxy(IExceptionService.class).usingUrl(
@@ -51,6 +52,7 @@ public class ExceptionClientITest extends RienaTestCase {
 	/**
 	 * @see junit.framework.TestCase#tearDown()
 	 */
+	@Override
 	public void tearDown() throws Exception {
 		super.tearDown();
 		regExceptionService.unregister();

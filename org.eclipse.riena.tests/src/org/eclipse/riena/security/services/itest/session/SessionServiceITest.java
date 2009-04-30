@@ -12,6 +12,8 @@ package org.eclipse.riena.security.services.itest.session;
 
 import java.security.Principal;
 
+import org.osgi.framework.ServiceReference;
+
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.internal.tests.Activator;
@@ -20,8 +22,6 @@ import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.IntegrationTestCase;
-
-import org.osgi.framework.ServiceReference;
 
 /**
  * Tests the SessionService with single user. There is also a disabled multiuser
@@ -44,6 +44,7 @@ public class SessionServiceITest extends RienaTestCase {
 	/*
 	 * @see TestCase#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		startBundles("org\\.eclipse\\.equinox\\.cm.*", null);
@@ -59,6 +60,7 @@ public class SessionServiceITest extends RienaTestCase {
 	/*
 	 * @see TestCase#tearDown()
 	 */
+	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		sessionService.unregister();
@@ -69,19 +71,19 @@ public class SessionServiceITest extends RienaTestCase {
 	 */
 	public void testController1() throws Exception {
 		ServiceReference ref = getContext().getServiceReference(ISessionService.class.getName());
-		ISessionService sessionService = (ISessionService) getContext().getService(ref);
-		assertNotNull("SessionControllerAccessor returns null", sessionService);
-		Session session = sessionService.generateSession(new Principal[] { new SimplePrincipal("testuid") });
+		ISessionService service = (ISessionService) getContext().getService(ref);
+		assertNotNull("SessionControllerAccessor returns null", service);
+		Session session = service.generateSession(new Principal[] { new SimplePrincipal("testuid") });
 		assertNotNull("generateSession returns null", session);
 
-		Principal[] principals = sessionService.findPrincipals(session);
+		Principal[] principals = service.findPrincipals(session);
 		assertNotNull("findUser returns null", principals);
 		assertTrue("returned userid is not equal to the correct one", principals[0].getName().equals("testuid"));
 
-		sessionService.invalidateSession(session);
-		assertFalse("session should be invalid", sessionService.isValidSession(session));
+		service.invalidateSession(session);
+		assertFalse("session should be invalid", service.isValidSession(session));
 
-		Principal[] temp = sessionService.findPrincipals(session);
+		Principal[] temp = service.findPrincipals(session);
 		assertNull("no user should be found for invalid session", temp);
 	}
 
@@ -141,6 +143,7 @@ public class SessionServiceITest extends RienaTestCase {
 		/**
 		 * @see java.lang.Runnable#run()
 		 */
+		@Override
 		public void run() {
 			for (int i = 0; i < loopCounter; i++) {
 				Session session = sessionService.generateSession(new Principal[] { new SimplePrincipal("testuid") });

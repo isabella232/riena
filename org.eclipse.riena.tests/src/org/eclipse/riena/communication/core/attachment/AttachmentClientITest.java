@@ -23,6 +23,7 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
 import org.eclipse.riena.tests.RienaTestCase;
@@ -47,6 +48,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 	/**
 	 * @see junit.framework.TestCase#setUp()
 	 */
+	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 		regAttachmentService = Register.remoteProxy(IAttachmentService.class).usingUrl(
@@ -59,6 +61,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 	/**
 	 * @see junit.framework.TestCase#tearDown()
 	 */
+	@Override
 	public void tearDown() throws Exception {
 		super.tearDown();
 		regAttachmentService.unregister();
@@ -298,6 +301,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 		ByteArrayDataSource byteArray = (ByteArrayDataSource) ReflectionUtils.getHidden(attach2, "internalDataSource");
 		InputStream inputStream = byteArray.getInputStream();
 		while (inputStream.read() != -1) {
+			Nop.reason("nothing to do");
 		}
 		inputStream.close();
 		assertTrue(file.exists());
