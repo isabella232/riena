@@ -10,40 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-
-import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
-import org.eclipse.riena.ui.ridgets.tree.ITreeNode;
 
 /**
  * Ridget for a tree. The model value is an ITreeModel.
  */
 public interface ITreeRidget extends IRidget, ISelectableRidget {
-
-	/**
-	 * @return The observable value of the Ridget. Can be used as target value
-	 *         in a custom binding with a model value.
-	 * 
-	 * @see DataBindingContext#bindValue(IObservableValue, IObservableValue,
-	 *      org.eclipse.core.databinding.UpdateValueStrategy,
-	 *      org.eclipse.core.databinding.UpdateValueStrategy)
-	 */
-	IObservableTreeModel getRidgetObservable();
-
-	/**
-	 * Creates a binding between the Ridget value and the specified model value.
-	 * The UpdateValueStrategy will be POLICY_UPDATE to the model value
-	 * (automatic update) and POLICY_ON_REQUEST from the model value.
-	 * 
-	 * @see #updateFromModel()
-	 * 
-	 * @param observableValue
-	 *            The model value.
-	 * 
-	 * @deprecated see {@link #bindToModel(Object, Class, String, String)}
-	 */
-	void bindToModel(IObservableTreeModel observableTreeModel);
 
 	/**
 	 * Creates a binding between the Tree Ridget and the specified treeRoots.
@@ -260,16 +231,6 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * @see IRidget#getUIControl()
 	 */
 	void collapseAll();
-
-	/**
-	 * @deprecated see {@link #expand(Object)}
-	 */
-	void expand(ITreeNode node);
-
-	/**
-	 * @deprecated see {@link #collapse(Object)}
-	 */
-	void collapse(ITreeNode node);
 
 	/**
 	 * Expands a node if it is part of the data-model currently bound to the

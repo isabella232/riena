@@ -34,7 +34,6 @@ import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.MarkerSupport;
-import org.eclipse.riena.ui.common.IComboEntryFactory;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -191,15 +190,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		IObservableValue selectionObservableValue = PojoObservables
 				.observeValue(selectionHolder, selectionPropertyName);
 		bindToModel(listObservableValue, rowClass, renderingMethod, selectionObservableValue);
-	}
-
-	/**
-	 * @deprecated
-	 */
-	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
-			String renderingMethod, Object selectionHolder, String selectionPropertyName,
-			IComboEntryFactory entryFactory) {
-		throw new UnsupportedOperationException();
 	}
 
 	public Object getEmptySelectionItem() {

@@ -85,7 +85,6 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableRidget;
-import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
 
 /**
  * Ridget for SWT {@link Tree} widgets.
@@ -299,14 +298,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		doubleClickListeners.add(listener);
 	}
 
-	/**
-	 * @deprecated see
-	 *             {@link #bindToModel(Object[], Class, String, String, String)}
-	 */
-	public void bindToModel(IObservableTreeModel observableTreeModel) {
-		throw new UnsupportedOperationException("deprecated"); //$NON-NLS-1$
-	}
-
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String valueAccessor) {
 		Assert.isNotNull(valueAccessor);
@@ -339,11 +330,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				noColumnHeaders, enablementAccessor, visibilityAccessor, imageAccessor);
 	}
 
-	/** @deprecated */
-	public void collapse(org.eclipse.riena.ui.ridgets.tree.ITreeNode node) {
-		collapse((Object) node);
-	}
-
 	public void collapse(Object element) {
 		ExpansionCommand cmd = new ExpansionCommand(ExpansionState.COLLAPSE, element);
 		expansionStack.add(cmd);
@@ -356,11 +342,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		updateExpansionState();
 	}
 
-	/** @deprecated */
-	public void expand(org.eclipse.riena.ui.ridgets.tree.ITreeNode node) {
-		expand((Object) node);
-	}
-
 	public void expand(Object element) {
 		ExpansionCommand cmd = new ExpansionCommand(ExpansionState.EXPAND, element);
 		expansionStack.add(cmd);
@@ -371,13 +352,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		ExpansionCommand cmd = new ExpansionCommand(ExpansionState.FULLY_EXPAND, null);
 		expansionStack.add(cmd);
 		updateExpansionState();
-	}
-
-	/**
-	 * @deprecated
-	 */
-	public IObservableTreeModel getRidgetObservable() {
-		throw new UnsupportedOperationException("deprecated"); //$NON-NLS-1$
 	}
 
 	public void removeDoubleClickListener(IActionListener listener) {

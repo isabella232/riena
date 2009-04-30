@@ -13,8 +13,6 @@ package org.eclipse.riena.ui.ridgets;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 
-import org.eclipse.riena.ui.common.IComboEntryFactory;
-
 /**
  * @author Frank Schepp
  */
@@ -58,29 +56,6 @@ public interface IComboRidget extends IMarkableRidget {
 	 */
 	void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
 			String renderingMethod, Object selectionHolder, String selectionPropertyName);
-
-	/**
-	 * @param listHolder
-	 *            An object holding a list of values (objects).
-	 * @param listPropertyName
-	 *            The property name to access the list.
-	 * @param rowClass
-	 *            The class of the objects in the list.
-	 * @param renderingMethod
-	 *            A property of rowClass that returns the value to display for
-	 *            each option of the combo box combo box (examples: 'name' ->
-	 *            getName(); null for {@code toString()}).
-	 * @param selectionHolder
-	 *            A non-null object holding the selection.
-	 * @param selectionPropertyName
-	 *            The property name to access the selection.
-	 * @param entryFactory
-	 *            Factory for creating new options for this ComboBox
-	 * @deprecated
-	 */
-	void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
-			String renderingMethod, Object selectionHolder, String selectionPropertyName,
-			IComboEntryFactory entryFactory);
 
 	/**
 	 * Return the observable list holding the options.
