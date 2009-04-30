@@ -175,6 +175,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		bindToModel(rowValues, rowClass, columnPropertyNames, columnHeaders);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateFromModel() {
 		super.updateFromModel();

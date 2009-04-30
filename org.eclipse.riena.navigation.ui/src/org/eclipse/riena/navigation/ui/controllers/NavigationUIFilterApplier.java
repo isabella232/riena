@@ -34,6 +34,7 @@ import org.eclipse.riena.ui.ridgets.IToolItemRidget;
  * @param <N>
  *            type of the navigation node
  */
+@SuppressWarnings("unchecked")
 public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 
 	private final static IUIFilterRuleClosure APPLY_CLOSURE = new ApplyClosure();
@@ -178,14 +179,12 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void afterActivated(INavigationNode source) {
 		super.afterActivated(source);
 		applyFilters(source);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void beforeDeactivated(INavigationNode source) {
 		super.beforeDeactivated(source);
@@ -193,14 +192,12 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 		removeAllMenuItemRules(appNode);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void filterAdded(INavigationNode source, IUIFilter filter) {
 		super.filterAdded(source, filter);
 		applyFilter(source, filter, APPLY_CLOSURE);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void filterRemoved(INavigationNode source, IUIFilter filter) {
 		super.filterRemoved(source, filter);

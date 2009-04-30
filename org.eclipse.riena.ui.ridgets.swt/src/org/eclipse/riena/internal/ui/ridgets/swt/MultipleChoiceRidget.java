@@ -129,6 +129,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		bindToModel(optionList, optionLabels, selectionList);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateFromModel() {
 		assertIsBoundToModel();
@@ -146,10 +147,12 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		return selectionObservable;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<?> getSelection() {
 		return new ArrayList<Object>(selectionObservable);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setSelection(List<?> selection) {
 		assertIsBoundToModel();
 		List<?> oldSelection = new ArrayList<Object>(selectionObservable);
@@ -232,6 +235,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 				button.setBackground(control.getBackground());
 				button.setData(value);
 				button.addSelectionListener(new SelectionAdapter() {
+					@SuppressWarnings("unchecked")
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						Button button = (Button) e.widget;

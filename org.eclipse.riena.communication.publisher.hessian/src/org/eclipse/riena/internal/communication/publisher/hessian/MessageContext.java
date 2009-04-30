@@ -31,9 +31,10 @@ public class MessageContext implements IServiceMessageContext {
 		this.httpRes = httpRes;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<String> getRequestHeaderValue(String name) {
 		Enumeration<String> enumeration = httpReq.getHeaders(name);
-		ArrayList<String> hValues = new ArrayList<String>();
+		List<String> hValues = new ArrayList<String>();
 		while (enumeration.hasMoreElements()) {
 			String value = enumeration.nextElement();
 			hValues.add(value);
@@ -41,13 +42,14 @@ public class MessageContext implements IServiceMessageContext {
 		return hValues;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Map<String, List<String>> listRequestHeaders() {
 		Map<String, List<String>> headers = new HashMap<String, List<String>>();
 		Enumeration<String> enumHeaders = httpReq.getHeaderNames();
 		while (enumHeaders.hasMoreElements()) {
 			String name = enumHeaders.nextElement();
 			Enumeration<String> enumeration = httpReq.getHeaders(name);
-			ArrayList<String> hValues = new ArrayList<String>();
+			List<String> hValues = new ArrayList<String>();
 			headers.put(name, hValues);
 			while (enumeration.hasMoreElements()) {
 				String value = enumeration.nextElement();

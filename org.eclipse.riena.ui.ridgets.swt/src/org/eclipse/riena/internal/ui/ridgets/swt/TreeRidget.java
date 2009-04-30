@@ -203,6 +203,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		viewer = null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected final List<?> getRowObservables() {
 		List<?> result = null;
@@ -651,6 +652,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				/* Holds the last selection. */
 				private List<Object> lastSel;
 
+				@SuppressWarnings("unchecked")
 				public void selectionChanged(SelectionChangedEvent event) {
 					IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 					List<Object> newSel = new ArrayList<Object>(selection.toList());
