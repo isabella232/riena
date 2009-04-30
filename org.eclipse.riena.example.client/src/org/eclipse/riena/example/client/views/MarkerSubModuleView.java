@@ -155,7 +155,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		hFillFactory.hint(150, hHint).applyTo(listPersons);
 		addUIControl(listPersons, "listPersons"); //$NON-NLS-1$
 
-		Table tablePersons = new Table(cmpReviewed, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
+		Table tablePersons = UIControlsFactory.createTable(cmpReviewed, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 		tablePersons.setLinesVisible(true);
 		tablePersons.setHeaderVisible(true);
 		TableColumn tac1 = new TableColumn(tablePersons, SWT.NONE);
@@ -175,11 +175,12 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		UIControlsFactory.createLabel(group, ""); //$NON-NLS-1$
 		Composite cmpReviewed2 = createComposite(group, 3, true);
 
-		Tree treePersons = new Tree(cmpReviewed2, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
+		Tree treePersons = UIControlsFactory.createTree(cmpReviewed2, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 		hFillFactory.hint(150, hHint).applyTo(treePersons);
 		addUIControl(treePersons, "treePersons"); //$NON-NLS-1$
 
-		Tree treeWCols = new Tree(cmpReviewed2, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
+		Tree treeWCols = UIControlsFactory.createTree(cmpReviewed2, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION
+				| SWT.MULTI);
 		treeWCols.setLinesVisible(true);
 		treeWCols.setHeaderVisible(true);
 		TreeColumn trc1 = new TreeColumn(treeWCols, SWT.NONE);

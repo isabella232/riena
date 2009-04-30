@@ -12,12 +12,6 @@ package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.example.client.controllers.TreeSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.ridgets.ITreeRidget;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -25,6 +19,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
+
+import org.eclipse.riena.example.client.controllers.TreeSubModuleController;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.ridgets.ITreeRidget;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * SWT {@link ITreeRidget} sample.
@@ -49,7 +50,7 @@ public class TreeSubModuleView extends SubModuleView<TreeSubModuleController> {
 		Group group = UIControlsFactory.createGroup(parent, "&Tree:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(1).applyTo(group);
 
-		Tree tree = new Tree(group, SWT.FULL_SELECTION | SWT.MULTI);
+		Tree tree = UIControlsFactory.createTree(group, SWT.FULL_SELECTION | SWT.MULTI);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(tree);
 		addUIControl(tree, "tree"); //$NON-NLS-1$
 

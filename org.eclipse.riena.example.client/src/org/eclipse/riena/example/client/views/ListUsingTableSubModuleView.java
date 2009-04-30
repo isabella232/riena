@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
+
 /**
  * Experimental view using a single column Table instead of a List. This
  * improves look&feel by using the default background color for the list rather
@@ -35,7 +37,7 @@ public class ListUsingTableSubModuleView extends ListSubModuleView {
 		GridDataFactory.fillDefaults().grab(false, true).span(2, 1).hint(200, SWT.DEFAULT).applyTo(tableComposite);
 
 		int style = SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.NO_BACKGROUND;
-		Table listPersons = new Table(tableComposite, style);
+		Table listPersons = UIControlsFactory.createTable(tableComposite, style);
 		listPersons.setLinesVisible(false);
 		TableColumn listColumn = new TableColumn(listPersons, SWT.LEFT);
 

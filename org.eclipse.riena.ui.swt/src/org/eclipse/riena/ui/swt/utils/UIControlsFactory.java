@@ -28,7 +28,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
@@ -400,6 +402,40 @@ public final class UIControlsFactory {
 		DateTime result = createTime(parent, style);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
 		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 */
+	public static Tree createTree(Composite parent, int style) {
+		return new Tree(parent, style);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @wbp.factory.parameter.source bindingId "myTreeId"
+	 */
+	public static Tree createTree(Composite parent, int style, String bindingId) {
+		Tree tree = createTree(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(tree, bindingId);
+		return tree;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 */
+	public static Table createTable(Composite parent, int style) {
+		return new Table(parent, style);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @wbp.factory.parameter.source bindingId "myTableId"
+	 */
+	public static Table createTable(Composite parent, int style, String bindingId) {
+		Table table = createTable(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(table, bindingId);
+		return table;
 	}
 
 	public static int getWidthHint(Button button) {
