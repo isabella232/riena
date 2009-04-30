@@ -204,7 +204,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		doubleClickListeners.add(listener);
 	}
 
-	public void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass,
+	public void bindToModel(IObservableList rowObservables, Class<? extends Object> aRowClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
 		if (columnHeaders != null) {
 			String msg = "Mismatch between number of columnPropertyNames and columnHeaders"; //$NON-NLS-1$
@@ -212,7 +212,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 		unbindUIControl();
 
-		rowClass = rowClass;
+		rowClass = aRowClass;
 		modelObservables = rowObservables;
 		viewerObservables = null;
 		renderingMethods = new String[columnPropertyNames.length];
