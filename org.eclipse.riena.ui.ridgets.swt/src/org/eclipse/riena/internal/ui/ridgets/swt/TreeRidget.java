@@ -31,6 +31,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.Observables;
 import org.eclipse.core.databinding.observable.Realm;
@@ -82,6 +83,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableRidget;
 import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
 
@@ -511,11 +513,17 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				if (target instanceof Object[]) {
 					return Observables.staticObservableList(realm, Arrays.asList((Object[]) target));
 				}
+				Object value;
 				if (target instanceof FakeRoot) {
-					return BeansObservables.observeList(realm, ((FakeRoot) target).getRoot(), childrenAccessor,
-							treeElementClass);
+					value = ((FakeRoot) target).getRoot();
+				} else {
+					value = target;
 				}
-				return BeansObservables.observeList(realm, target, childrenAccessor, treeElementClass);
+				if (AbstractSWTWidgetRidget.isBean(treeElementClass)) {
+					return BeansObservables.observeList(realm, value, childrenAccessor, treeElementClass);
+				} else {
+					return PojoObservables.observeList(realm, value, childrenAccessor, treeElementClass);
+				}
 			}
 		};
 		// how to get the parent from a give object
@@ -585,7 +593,11 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private IObservableMap createObservableAttribute(ObservableListTreeContentProvider viewerCP, String accessor) {
 		IObservableMap result = null;
 		if (accessor != null) {
-			result = BeansObservables.observeMap(viewerCP.getKnownElements(), treeElementClass, accessor);
+			if (AbstractSWTWidgetRidget.isBean(treeElementClass)) {
+				result = BeansObservables.observeMap(viewerCP.getKnownElements(), treeElementClass, accessor);
+			} else {
+				result = PojoObservables.observeMap(viewerCP.getKnownElements(), treeElementClass, accessor);
+			}
 		}
 		return result;
 	}

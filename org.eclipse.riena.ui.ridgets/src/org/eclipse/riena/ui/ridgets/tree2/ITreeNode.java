@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.tree2;
 
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
@@ -21,19 +22,23 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
  * It is recommended to use {@link TreeNode}. This is a default implementation
  * of this interface that wraps a generic value Object.
  * <p>
- * You are <b>not required</b> to provide your own implementation. You can bind
- * your value objects directly to the {@link ITreeRidget}, as long as those
- * objects satisfy the following requirements:
+ * You are <b>not required</b> to provide your own implementation of this
+ * interface. You can bind your value objects of any type directly to an
+ * {@link ITreeRidget}, as long as those objects satisfy the following
+ * requirements:
  * <ol>
  * <li>they must all have the same type</li>
- * <li>they must be beans (i.e. support for change listeners and change
- * notifications)</li>
  * <li>they must provide an read-only accessor for a value (i.e. public Object
  * getXXXX)</li>
  * <li>they must provide read/write accessor for a List of children (i.e. public
  * List&lt;Object&gt; get/setXXXX)</li>
  * <li>they must be able to provide their parent instance (i.e. public Object
  * getXXXXX), which may be null if this object is a tree-root
+ * <li>they should (but do not have to) follow the bean convention. I.e. provide
+ * support for adding / removing {@link PropertyChangeListener}s and firing
+ * property change events. This will allow the tree ridget to keep the tree in
+ * sync with the model automatically. Otherwise
+ * {@link ITreeRidget#updateFromModel} has to be invoked to resync.</li>
  * </ol>
  * 
  * @see ITreeRidget#bindToModel(Object[], Class, String, String, String)
@@ -105,4 +110,26 @@ public interface ITreeNode {
 	 * @return parent an ITreeNode instance; may be null if this node is a root
 	 */
 	ITreeNode getParent();
+
+	/**
+	 * Adds a PropertyChangeListener for all properties.
+	 * <p>
+	 * Adding the same listener several times has no effect.
+	 * 
+	 * @param propertyChangeListener
+	 *            The PropertyChangeListener to be added (non-null)
+	 * @throws RuntimeException
+	 *             if propertyChangeListener is null
+	 */
+	void addPropertyChangeListener(PropertyChangeListener listener);
+
+	/**
+	 * Removes a PropertyChangeListener from this class.
+	 * 
+	 * @param propertyChangeListener
+	 *            The PropertyChangeListener to be removed (non null)
+	 * @throws RuntimeException
+	 *             if propertyChangeListener is null
+	 */
+	void removePropertyChangeListener(PropertyChangeListener listener);
 } // end interface

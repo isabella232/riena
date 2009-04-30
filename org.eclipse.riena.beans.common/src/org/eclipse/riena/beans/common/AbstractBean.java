@@ -17,8 +17,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.Assert;
+
 /**
- * base class for beans
+ * Base class for beans
  */
 public abstract class AbstractBean {
 	protected Set<PropertyChangeListener> propertyChangeListeners;
@@ -31,18 +33,35 @@ public abstract class AbstractBean {
 	}
 
 	/**
-	 * @param listener
+	 * Adds a PropertyChangeListener for all properties.
+	 * <p>
+	 * Adding the same listener several times has no effect.
+	 * 
+	 * @param propertyChangeListener
+	 *            The PropertyChangeListener to be added (non-null)
+	 * @throws RuntimeException
+	 *             if propertyChangeListener is null
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		Assert.isNotNull(listener);
 		propertyChangeListeners.add(listener);
 	}
 
 	/**
-	 * @param listener
+	 * Removes a PropertyChangeListener from this class.
+	 * 
+	 * @param propertyChangeListener
+	 *            The PropertyChangeListener to be removed (non null)
+	 * @throws RuntimeException
+	 *             if propertyChangeListener is null
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		Assert.isNotNull(listener);
 		propertyChangeListeners.remove(listener);
 	}
+
+	// protected methods
+	////////////////////
 
 	protected void removeAllPropertyChangeListeners() {
 		propertyChangeListeners.clear();

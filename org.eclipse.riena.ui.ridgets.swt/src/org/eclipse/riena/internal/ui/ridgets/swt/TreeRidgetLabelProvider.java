@@ -14,18 +14,21 @@ import java.beans.PropertyDescriptor;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.IBeanObservable;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.set.IObservableSet;
 import org.eclipse.jface.databinding.viewers.ObservableListTreeContentProvider;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.TreeEvent;
 import org.eclipse.swt.events.TreeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.TreeItem;
+
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 
 /**
  * Label provider for TreeViewers that provides different images based on the
@@ -90,6 +93,16 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	private static IObservableMap[] createAttributeMap(Class<?> treeElementClass, IObservableSet knownElements,
 			String[] valueAccessors, String enablementAccessor, String imageAccessor) {
 		IObservableMap[] result;
+		String[] attributes = computeAttributes(valueAccessors, enablementAccessor, imageAccessor);
+		if (AbstractSWTWidgetRidget.isBean(treeElementClass)) {
+			result = BeansObservables.observeMaps(knownElements, treeElementClass, attributes);
+		} else {
+			result = PojoObservables.observeMaps(knownElements, treeElementClass, attributes);
+		}
+		return result;
+	}
+
+	private static String[] computeAttributes(String[] valueAccessors, String enablementAccessor, String imageAccessor) {
 		int length = valueAccessors.length;
 		if (enablementAccessor != null) {
 			length++;
@@ -97,23 +110,20 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		if (imageAccessor != null) {
 			length++;
 		}
+		String[] attributes = new String[Math.max(length, valueAccessors.length)];
+		System.arraycopy(valueAccessors, 0, attributes, 0, valueAccessors.length);
 		if (length > valueAccessors.length) {
-			String[] attributes = new String[length];
-			System.arraycopy(valueAccessors, 0, attributes, 0, valueAccessors.length);
 			int index = valueAccessors.length;
 			if (enablementAccessor != null) {
 				// add the enablement attribute to the list of observed attributes for the label provider
 				attributes[index++] = enablementAccessor;
 			}
 			if (imageAccessor != null) {
+				// add the image accessor to the list of observed attributes for the label provider
 				attributes[index++] = imageAccessor;
 			}
-			result = BeansObservables.observeMaps(knownElements, treeElementClass, attributes);
-		} else {
-			result = BeansObservables.observeMaps(knownElements, treeElementClass, valueAccessors);
 		}
-
-		return result;
+		return attributes;
 	}
 
 	private TreeRidgetLabelProvider(TreeViewer viewer, IObservableMap[] attributeMap, String enablementAccessor,
