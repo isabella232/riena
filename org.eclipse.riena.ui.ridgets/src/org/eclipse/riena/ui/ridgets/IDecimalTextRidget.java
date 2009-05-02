@@ -17,8 +17,8 @@ package org.eclipse.riena.ui.ridgets;
  * the UIControlsFactory (see UIControlsFactory.createTextDecimal() /
  * UIControlFactory.createSegmentedDecimalValueTextField())
  * 
- * It is recommended to use String or Double based-values as the model for this
- * ridget (see {@link #bindToModel(Object, String)}.
+ * It is recommended to use String, Double or BigDecimal based-values as the
+ * model for this ridget (see {@link #bindToModel(Object, String)}.
  */
 public interface IDecimalTextRidget extends INumericTextRidget {
 
@@ -29,8 +29,12 @@ public interface IDecimalTextRidget extends INumericTextRidget {
 	String PROPERTY_MAXLENGTH = "maxLength"; //$NON-NLS-1$
 
 	/**
-	 * Sets the number of fraction digits of this text field, that is the number
-	 * of digits behind the decimal-separator.
+	 * Sets the number of fractional digits of this text field, that is the
+	 * number of digits behind the decimal-separator.
+	 * <p>
+	 * Note that {@link #setText(String)} and {@link #updateFromModel()} will
+	 * throw a RuntimeException when the number of fractional digits is
+	 * exceeded.
 	 * 
 	 * @param numberOfFractionDigits
 	 *            a value equal or greater than 0
@@ -47,9 +51,12 @@ public interface IDecimalTextRidget extends INumericTextRidget {
 	int getPrecision();
 
 	/**
-	 * Sets the number of allowed decimal-digits, that it , the number of digits
-	 * before the comma-separator. Note that the grouping separators ( i.e. the
+	 * Sets the number of allowed decimal digits, that it , the number of digits
+	 * before the comma separator. Note that the grouping separators ( i.e. the
 	 * dots between "1.034.235.123" ) do not count towards reaching this limit.
+	 * <p>
+	 * Note that {@link #setText(String)} and {@link #updateFromModel()} will
+	 * throw a RuntimeException when the number of decimal digits is exceeded.
 	 * 
 	 * @param maxLength
 	 *            a value greater than 0

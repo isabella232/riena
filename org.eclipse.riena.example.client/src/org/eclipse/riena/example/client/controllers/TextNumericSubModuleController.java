@@ -52,13 +52,17 @@ public class TextNumericSubModuleController extends SubModuleController {
 		bindToModel("Long", new TypedBean<Long>(Long.valueOf(1234))); //$NON-NLS-1$
 		bindToModel("BigInteger", new TypedBean<BigInteger>(BigInteger.valueOf(12345789))); //$NON-NLS-1$
 
+		IDecimalTextRidget inStringDec = (IDecimalTextRidget) getRidget("inStringDec"); //$NON-NLS-1$
+		inStringDec.setPrecision(4);
 		bindToModel("StringDec", new TypedBean<String>("12345678.1234")); //$NON-NLS-1$ //$NON-NLS-2$
+
 		bindToModel("Double", new TypedBean<Double>(Double.valueOf(-1234.00)), true); //$NON-NLS-1$
 		bindToModel("Float", new TypedBean<Float>(Float.valueOf("1234"))); //$NON-NLS-1$//$NON-NLS-2$
-		bindToModel("BigDecimal", new TypedBean<BigDecimal>(BigDecimal.valueOf(12345789.1234))); //$NON-NLS-1$
+
 		IDecimalTextRidget inBigDecimal = (IDecimalTextRidget) getRidget("inBigDecimal"); //$NON-NLS-1$
 		inBigDecimal.setMaxLength(30);
 		inBigDecimal.setPrecision(10);
+		bindToModel("BigDecimal", new TypedBean<BigDecimal>(BigDecimal.valueOf(12345789.1234))); //$NON-NLS-1$
 
 		INumericTextRidget txtRange = (INumericTextRidget) getRidget("inRange"); //$NON-NLS-1$
 		txtRange.addValidationRule(new ValidRange(Integer.valueOf(100), Integer.valueOf(1000)),
