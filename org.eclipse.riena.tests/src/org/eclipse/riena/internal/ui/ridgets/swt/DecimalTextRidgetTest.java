@@ -98,11 +98,6 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("12.345,00"), control.getText());
 		assertEquals(localize("12.345"), ridget.getText());
 
-		ridget.setText(localize("3,145"));
-
-		assertEquals(localize("3,14"), control.getText());
-		assertEquals(localize("3,145"), ridget.getText());
-
 		String controlLastText = control.getText();
 		String ridgetLastText = ridget.getText();
 		try {
@@ -115,18 +110,29 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Test that setText(null) clears the number (equiv. to setText("0")).
+	 * Test that setText(x) with x = {"", null } clears the number.
 	 */
 	public void testSetTextNull() {
 		ITextRidget ridget = getRidget();
+		Text control = getWidget();
 
-		ridget.setText(localize("42,2"));
+		String[] testValues = new String[] { null, "" };
 
-		assertEquals(localize("42,2"), ridget.getText());
+		for (String value : testValues) {
+			ridget.setText(localize("42,2"));
 
-		ridget.setText(null);
+			assertEquals(localize("42,2"), ridget.getText());
 
-		assertEquals("", ridget.getText());
+			DoubleBean doubleBean = new DoubleBean(3.14d);
+			ridget.bindToModel(doubleBean, DoubleBean.PROP_VALUE);
+			ridget.setText(value);
+
+			String msg = String.format("setText('%s')", value);
+
+			assertEquals(msg, "", ridget.getText());
+			assertEquals(msg, localize(","), control.getText());
+			assertEquals(msg, null, doubleBean.getValue());
+		}
 	}
 
 	public void testDeleteDecimalSeparator() {
@@ -194,9 +200,9 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		control.selectAll();
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
 
-		assertEquals(localize("0,"), control.getText());
-		assertEquals(localize("0"), ridget.getText());
-		assertEquals(1, control.getCaretPosition());
+		assertEquals(localize(","), control.getText());
+		assertEquals(localize(""), ridget.getText());
+		assertEquals(0, control.getCaretPosition());
 	}
 
 	public void testDeleteNegativeSign() {
@@ -309,23 +315,6 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		};
 
 		IDecimalTextRidget ridget = getRidget();
-		ridget.setMaxLength(6);
-		ridget.setPrecision(3);
-		ridget.bindToModel(doubleValueBean, DoubleBean.PROP_VALUE);
-		ridget.updateFromModel();
-
-		assertEquals(localize("1.000.000.000.000.000"), ridget.getText());
-	}
-
-	public void testDoubleValueProviderAndHighNumbersB() {
-		final DoubleBean doubleValueBean = new DoubleBean() {
-			@Override
-			public Double getValue() {
-				return 1000000000000000.0;
-			}
-		};
-
-		IDecimalTextRidget ridget = getRidget();
 		ridget.setMaxLength(16);
 		ridget.setPrecision(3);
 		ridget.bindToModel(doubleValueBean, DoubleBean.PROP_VALUE);
@@ -374,6 +363,22 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(oldControlValue, control.getText());
 		assertEquals(oldRidgetValue, ridget.getText());
 		assertEquals("abc", bean.getValue());
+	}
+
+	public void testUpdateFromModelNull() {
+		IDecimalTextRidget ridget = getRidget();
+		Text control = getWidget();
+
+		assertEquals(2, ridget.getPrecision());
+
+		DoubleBean bean = new DoubleBean(null);
+		ridget.setText(localize("3,14"));
+		ridget.bindToModel(bean, StringBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		assertEquals(localize(""), ridget.getText());
+		assertEquals(localize(","), control.getText());
+		assertEquals(null, bean.getValue());
 	}
 
 	public void testMaxLength() {
@@ -484,6 +489,110 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(0, ridget.getPrecision());
 	}
 
+	public void testExceedPrecisionWithSetText() {
+		IDecimalTextRidget ridget = getRidget();
+		Text control = getWidget();
+
+		assertEquals(2, ridget.getPrecision());
+
+		ridget.setText(localize("1,23"));
+
+		try {
+			ridget.setText(localize("3,145"));
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+			assertEquals(localize("1,23"), ridget.getText());
+			assertEquals(localize("1,23"), control.getText());
+		}
+	}
+
+	public void testExceedPrecisionWithUpdate() {
+		IDecimalTextRidget ridget = getRidget();
+		Text control = getWidget();
+		DoubleBean value = new DoubleBean(1.23d);
+		ridget.bindToModel(value, DoubleBean.PROP_VALUE);
+
+		assertEquals(2, ridget.getPrecision());
+
+		ridget.updateFromModel();
+
+		try {
+			value.setValue(3.145d);
+			ridget.updateFromModel();
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+			assertEquals(localize("1,23"), ridget.getText());
+			assertEquals(localize("1,23"), control.getText());
+		}
+	}
+
+	public void testExceedMaxLengthWithSetText() {
+		IDecimalTextRidget ridget = getRidget();
+		Text control = getWidget();
+
+		ridget.setMaxLength(3);
+
+		assertEquals(3, ridget.getMaxLength());
+
+		ridget.setText(localize("123,00"));
+
+		try {
+			ridget.setText(localize("1234,00"));
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+			assertEquals(localize("123"), ridget.getText());
+			assertEquals(localize("123,00"), control.getText());
+		}
+
+		ridget.setText(localize("321"));
+		try {
+			ridget.setText(localize("1234"));
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+			assertEquals(localize("321"), ridget.getText());
+			assertEquals(localize("321,00"), control.getText());
+		}
+	}
+
+	public void testExceedMaxLengthWithUpdate() {
+		IDecimalTextRidget ridget = getRidget();
+		Text control = getWidget();
+
+		ridget.setMaxLength(3);
+
+		assertEquals(3, ridget.getMaxLength());
+
+		DoubleBean value = new DoubleBean(123.00d);
+		ridget.bindToModel(value, DoubleBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		try {
+			value.setValue(1234.12d);
+			ridget.updateFromModel();
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+			assertEquals(localize("123"), ridget.getText());
+			assertEquals(localize("123,00"), control.getText());
+		}
+
+		value.setValue(321d);
+		ridget.updateFromModel();
+		try {
+			value.setValue(1234d);
+			ridget.updateFromModel();
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+			assertEquals(localize("321"), ridget.getText());
+			assertEquals(localize("321,00"), control.getText());
+		}
+	}
+
 	public void testIsSetWithSign() {
 		IDecimalTextRidget ridget = getRidget();
 		Text control = getWidget();
@@ -503,6 +612,13 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("-1,000"), control.getText());
 		assertEquals(localize("-1"), ridget.getText());
 		assertEquals(localize("-1"), bean.getValue());
+
+		control.selectAll();
+		UITestHelper.sendString(control.getDisplay(), "0-\r");
+
+		assertEquals(localize("0,000"), control.getText());
+		assertEquals(localize("0"), ridget.getText());
+		assertEquals(localize("0"), bean.getValue());
 
 		ridget.setSigned(false);
 
@@ -539,18 +655,33 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("0,1"), bean.getValue());
 
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), localize("\b,\t"));
+		UITestHelper.sendString(control.getDisplay(), localize("\b,0\t"));
+
+		assertEquals(localize("0,000"), control.getText());
+		assertEquals(localize("0"), ridget.getText());
+		assertEquals(localize("0"), bean.getValue());
+
+		ridget.setText("1");
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), localize("\b0\t"));
 
 		assertEquals(localize("0,000"), control.getText());
 		assertEquals(localize("0"), ridget.getText());
 		assertEquals(localize("0"), bean.getValue());
 
 		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), localize("\b,\t"));
+
+		assertEquals(localize(","), control.getText());
+		assertEquals(localize(""), ridget.getText());
+		assertEquals(localize(null), bean.getValue());
+
+		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), localize("\b,-\t"));
 
-		assertEquals(localize("0,000"), control.getText());
-		assertEquals(localize("0"), ridget.getText());
-		assertEquals(localize("0"), bean.getValue());
+		assertEquals(localize(","), control.getText());
+		assertEquals(localize(""), ridget.getText());
+		assertEquals(localize(""), bean.getValue());
 	}
 
 	public void testMandatoryMarkerFromUI() {

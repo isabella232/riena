@@ -199,6 +199,15 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		});
 	}
 
+	/**
+	 * Checks that given String value is a valid number.
+	 * <p>
+	 * Subclasses should override and adjust to their needs without calling
+	 * super().
+	 * 
+	 * @param number
+	 *            a String value; "" is used for the empty value
+	 */
 	protected void checkNumber(String number) {
 		if (!"".equals(number)) { //$NON-NLS-1$
 			try {
@@ -374,8 +383,11 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	private String beautifyText(String text) {
+		if (String.valueOf(DECIMAL_SEPARATOR).equals(text)) {
+			return text;
+		}
 		String newText = formatFraction(text);
-		if (newText.length() > 0 && newText.charAt(0) == DECIMAL_SEPARATOR) {
+		if (newText.length() > 1 && newText.charAt(0) == DECIMAL_SEPARATOR) {
 			newText = "0" + newText; //$NON-NLS-1$
 		} else if (newText.startsWith(MINUS_DEC)) {
 			boolean hasValue = false;
@@ -595,7 +607,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			String oldText = control.getText();
 			boolean isDecimal = isDecimal();
 			String newText = group(removeLeadingZeroes(ungroup(oldText)), isGrouping(), isDecimal);
-			if (isDecimal && newText.startsWith(String.valueOf(DECIMAL_SEPARATOR))) {
+			if (isDecimal && newText.startsWith(String.valueOf(DECIMAL_SEPARATOR)) && newText.length() > 1) {
 				newText = ZERO + newText;
 			}
 			if (!oldText.equals(newText)) {
