@@ -69,6 +69,20 @@ public class StringUtilsTest extends TestCase {
 
 		assertFalse(StringUtils.equals("b", "a"));
 		assertFalse(StringUtils.equals("a", "b"));
+	}
 
+	/**
+	 * Minima maxima sunt!
+	 */
+	public void testCount() {
+		assertEquals(1, StringUtils.count("abb", 'a'));
+		assertEquals(1, StringUtils.count("bba", 'a'));
+		assertEquals(1, StringUtils.count("bab", 'a'));
+
+		assertEquals(3, StringUtils.count("aaa", 'a'));
+
+		assertEquals(0, StringUtils.count("", 'a'));
+		assertEquals(0, StringUtils.count(null, 'a'));
+		assertEquals(0, StringUtils.count("bcd", 'a'));
 	}
 }

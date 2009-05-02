@@ -71,4 +71,24 @@ public final class StringUtils {
 		return sequence1.equals(sequence2);
 	}
 
+	/**
+	 * Returns the number of occurences of ch in string.
+	 * 
+	 * @param string
+	 *            the string to process; may be null
+	 * @param ch
+	 *            the character to look for
+	 */
+	public static int count(final String string, char ch) {
+		int result = 0;
+		if (string != null) {
+			for (int i = 0; i < string.length(); i++) {
+				if (string.charAt(i) == ch) {
+					result++;
+				}
+			}
+		}
+		return result;
+	}
+
 }
