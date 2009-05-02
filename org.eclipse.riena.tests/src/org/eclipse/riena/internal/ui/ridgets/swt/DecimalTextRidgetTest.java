@@ -674,7 +674,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(localize(","), control.getText());
 		assertEquals(localize(""), ridget.getText());
-		assertEquals(localize(null), bean.getValue());
+		assertEquals("", bean.getValue());
 
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), localize("\b,-\t"));
@@ -785,6 +785,16 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.updateFromModel();
 
 		assertTrue(ridget.isErrorMarked());
+	}
+
+	public void testRemoveLeadingCruft() {
+		assertEquals(localize("0,"), NumericTextRidget.removeLeadingCruft(localize("0,")));
+		assertEquals(localize("0,"), NumericTextRidget.removeLeadingCruft(localize("00,")));
+		assertEquals(localize("1,"), NumericTextRidget.removeLeadingCruft(localize("001,")));
+		assertEquals(localize(","), NumericTextRidget.removeLeadingCruft(localize("-,")));
+		assertEquals(localize("0,"), NumericTextRidget.removeLeadingCruft(localize("-0,")));
+		assertEquals(localize("0,"), NumericTextRidget.removeLeadingCruft(localize("-00,")));
+		assertEquals(localize("-10,"), NumericTextRidget.removeLeadingCruft(localize("-0010,")));
 	}
 
 	// helping methods

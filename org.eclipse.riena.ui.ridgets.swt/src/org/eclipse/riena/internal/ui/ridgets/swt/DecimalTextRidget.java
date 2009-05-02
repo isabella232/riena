@@ -55,7 +55,7 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 
 	@Override
 	protected boolean isNotEmpty(String text) {
-		String stripped = removeLeadingZeroes(removeTrailingPadding(text));
+		String stripped = removeLeadingCruft(removeTrailingPadding(text));
 		return stripped.length() > 0;
 	}
 

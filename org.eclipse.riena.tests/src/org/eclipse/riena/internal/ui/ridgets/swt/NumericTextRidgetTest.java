@@ -1065,18 +1065,18 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(1, ridget.getMarkersOfType(NegativeMarker.class).size());
 	}
 
-	public void testRemoveLeadingZeroes() {
-		assertEquals("0", NumericTextRidget.removeLeadingZeroes("-"));
-		assertEquals("0", NumericTextRidget.removeLeadingZeroes("-0"));
-		assertEquals("0", NumericTextRidget.removeLeadingZeroes("0"));
-		assertEquals("-1", NumericTextRidget.removeLeadingZeroes("-01"));
-		assertEquals("-10", NumericTextRidget.removeLeadingZeroes("-010"));
-		assertEquals("-101", NumericTextRidget.removeLeadingZeroes("-0101"));
-		assertEquals("-23", NumericTextRidget.removeLeadingZeroes("-0023"));
-		assertEquals("1", NumericTextRidget.removeLeadingZeroes("01"));
-		assertEquals("10", NumericTextRidget.removeLeadingZeroes("010"));
-		assertEquals("101", NumericTextRidget.removeLeadingZeroes("0101"));
-		assertEquals("23", NumericTextRidget.removeLeadingZeroes("0023"));
+	public void testRemoveLeadingCruft() {
+		assertEquals("0", NumericTextRidget.removeLeadingCruft("-"));
+		assertEquals("0", NumericTextRidget.removeLeadingCruft("-0"));
+		assertEquals("0", NumericTextRidget.removeLeadingCruft("0"));
+		assertEquals("-1", NumericTextRidget.removeLeadingCruft("-01"));
+		assertEquals("-10", NumericTextRidget.removeLeadingCruft("-010"));
+		assertEquals("-101", NumericTextRidget.removeLeadingCruft("-0101"));
+		assertEquals("-23", NumericTextRidget.removeLeadingCruft("-0023"));
+		assertEquals("1", NumericTextRidget.removeLeadingCruft("01"));
+		assertEquals("10", NumericTextRidget.removeLeadingCruft("010"));
+		assertEquals("101", NumericTextRidget.removeLeadingCruft("0101"));
+		assertEquals("23", NumericTextRidget.removeLeadingCruft("0023"));
 	}
 
 	public void testDelete() {

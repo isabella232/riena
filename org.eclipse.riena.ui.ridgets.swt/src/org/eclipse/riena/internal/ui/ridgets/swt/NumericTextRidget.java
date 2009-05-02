@@ -85,7 +85,16 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 * This is not API and should not be called by clients. Public for testing
 	 * only.
 	 */
-	public static String removeLeadingZeroes(String input) {
+	public static String removeLeadingCruft(String input) {
+		if (Pattern.matches("0+.", input) && input.endsWith(String.valueOf(DECIMAL_SEPARATOR))) { //$NON-NLS-1$
+			return ZERO_DEC;
+		}
+		if (MINUS_DEC.matches(input)) {
+			return String.valueOf(DECIMAL_SEPARATOR);
+		}
+		if (Pattern.matches(MINUS_SIGN + "0+.", input) && input.endsWith(String.valueOf(DECIMAL_SEPARATOR))) { //$NON-NLS-1$
+			return ZERO_DEC;
+		}
 		if (String.valueOf(MINUS_SIGN).equals(input) || MINUS_ZERO.equals(input) || String.valueOf(ZERO).equals(input)) {
 			return String.valueOf(ZERO);
 		}
@@ -165,6 +174,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	protected static final char GROUPING_SEPARATOR = new DecimalFormatSymbols().getGroupingSeparator();
 	private static final char MINUS_SIGN = new DecimalFormatSymbols().getMinusSign();
 	protected static final char ZERO = '0';
+	protected static final String ZERO_DEC = String.valueOf('0') + DECIMAL_SEPARATOR;
 	private static final String MINUS_ZERO = String.valueOf(MINUS_SIGN) + ZERO;
 	private static final String MINUS_DEC = String.valueOf(MINUS_SIGN) + DECIMAL_SEPARATOR;
 
@@ -606,7 +616,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			Text control = (Text) e.widget;
 			String oldText = control.getText();
 			boolean isDecimal = isDecimal();
-			String newText = group(removeLeadingZeroes(ungroup(oldText)), isGrouping(), isDecimal);
+			String newText = group(removeLeadingCruft(ungroup(oldText)), isGrouping(), isDecimal);
 			if (isDecimal && newText.startsWith(String.valueOf(DECIMAL_SEPARATOR)) && newText.length() > 1) {
 				newText = ZERO + newText;
 			}
