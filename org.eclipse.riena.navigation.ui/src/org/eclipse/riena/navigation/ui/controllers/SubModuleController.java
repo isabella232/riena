@@ -131,9 +131,23 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		}
 	}
 
+	/**
+	 * Returns the full title of this sub-module. The title exits of the label
+	 * of parent module node and all parent sub-module nodes. One exception
+	 * exits: If the module has one one sub-module (and this is not visible in
+	 * the tree), the label of the module is returned.
+	 * 
+	 * @return full title of the sub-module
+	 */
 	protected String getFullTitle() {
+
 		String title = getNavigationNode().getLabel();
-		if (!getModuleController().hasSingleLeafChild()) {
+
+		IModuleNode moduleNode = getModuleController().getNavigationNode();
+		boolean moduleTitle = getModuleController().hasSingleLeafChild() && !moduleNode.isPresentSingleSubModule();
+		if (moduleTitle) {
+			title = moduleNode.getLabel();
+		} else {
 			INavigationNode<?> parent = getNavigationNode().getParent();
 			while (!(parent instanceof IModuleNode)) {
 				title = parent.getLabel() + TITLE_SEPARATOR + title;
@@ -142,6 +156,24 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 			title = parent.getLabel() + TITLE_SEPARATOR + title;
 		}
 		return title;
+
+	}
+
+	@Override
+	protected void updateIcon(IWindowRidget windowRidget) {
+
+		IModuleNode moduleNode = getModuleController().getNavigationNode();
+		boolean moduleIcon = getModuleController().hasSingleLeafChild() && !moduleNode.isPresentSingleSubModule();
+		if (moduleIcon) {
+			if (windowRidget == null) {
+				return;
+			}
+			String nodeIcon = moduleNode.getIcon();
+			windowRidget.setIcon(nodeIcon);
+		} else {
+			super.updateIcon(windowRidget);
+		}
+
 	}
 
 	private void updateIcon() {
