@@ -32,7 +32,6 @@ public abstract class AbstractWindowController implements IController {
 	private boolean blocked;
 
 	public AbstractWindowController() {
-
 		super();
 
 		ridgets = new HashMap<String, IRidget>();
@@ -55,58 +54,31 @@ public abstract class AbstractWindowController implements IController {
 		this.windowRidget = windowRidget;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#addRidget(java.lang.String,
-	 *      org.eclipse.riena.ui.internal.ridgets.IRidget)
-	 */
 	public void addRidget(String id, IRidget ridget) {
 		ridgets.put(id, ridget);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidget(java.lang.String)
-	 */
 	public IRidget getRidget(String id) {
 		return ridgets.get(id);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidgets()
-	 */
 	public Collection<? extends IRidget> getRidgets() {
 		return ridgets.values();
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.controller.IController#setBlocked(boolean)
-	 */
 	public void setBlocked(boolean blocked) {
 		this.blocked = blocked;
 		// TODO: ausimplementieren
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.controller.IController#isBlocked()
-	 */
 	public boolean isBlocked() {
 		return this.blocked;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
-	 */
 	public void configureRidgets() {
 		setWindowRidget((IWindowRidget) getRidget(RIDGET_ID_WINDOW));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.controller.IController#afterBind()
-	 */
 	public void afterBind() {
 		getWindowRidget().updateFromModel();
 	}
