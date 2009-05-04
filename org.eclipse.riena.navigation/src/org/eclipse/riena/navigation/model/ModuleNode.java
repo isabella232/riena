@@ -15,6 +15,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.IModuleNodeListener;
+import org.eclipse.riena.navigation.listener.INavigationNodeListener;
 
 /**
  * Default implementation for the module node
@@ -96,8 +97,11 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	}
 
 	private void notifyPresentSingleSubModuleChanged() {
-		for (IModuleNodeListener next : getListeners()) {
-			next.presentSingleSubModuleChanged(this);
+		for (INavigationNodeListener<?, ?> next : getListeners()) {
+			if (next instanceof IModuleNodeListener) {
+				IModuleNodeListener moduleNodeListener = (IModuleNodeListener) next;
+				moduleNodeListener.presentSingleSubModuleChanged(this);
+			}
 		}
 	}
 

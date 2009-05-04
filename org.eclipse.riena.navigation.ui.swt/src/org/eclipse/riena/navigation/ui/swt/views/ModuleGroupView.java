@@ -166,6 +166,12 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 			fireUpdated(null);
 		}
 
+		@Override
+		public void presentSingleSubModuleChanged(IModuleNode source) {
+			super.presentSingleSubModuleChanged(source);
+			fireUpdated(null);
+		}
+
 	}
 
 	/**

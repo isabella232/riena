@@ -158,7 +158,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * Subclasses should overide to configure their ridget.
+	 * Subclasses should override to configure their ridget.
 	 * <p>
 	 * {@inheritDoc}
 	 */
