@@ -27,8 +27,15 @@ import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
  */
 public class BasicMarkerSupport extends AbstractMarkerSupport {
 
+	private boolean alwaysSkipRedraw = false;
+
 	public BasicMarkerSupport(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
+		// workaround for 272863
+		String osname = System.getProperty("org.osgi.framework.os.name"); //$NON-NLS-1$
+		if (osname != null && osname.equalsIgnoreCase("macosx")) {
+			alwaysSkipRedraw = true;
+		}
 	}
 
 	@Override
@@ -70,8 +77,8 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	private void startRedraw(Control control) {
 		if (!skipRedrawForBug258176(control)) {
 			control.setRedraw(true);
-			control.redraw();
 		}
+		control.redraw();
 	}
 
 	private void stopRedraw(Control control) {
@@ -84,6 +91,8 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	 * These controls are affected by bug 258176 in SWT.
 	 */
 	private boolean skipRedrawForBug258176(Control control) {
+		if (alwaysSkipRedraw)
+			return true;
 		return (control instanceof Combo) || (control instanceof Table) || (control instanceof List);
 	}
 
