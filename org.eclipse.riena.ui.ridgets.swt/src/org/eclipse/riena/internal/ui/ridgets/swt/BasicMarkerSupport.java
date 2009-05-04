@@ -27,14 +27,18 @@ import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
  */
 public class BasicMarkerSupport extends AbstractMarkerSupport {
 
-	private boolean alwaysSkipRedraw = false;
+	private static boolean alwaysSkipRedraw = false;
+	private static boolean osChecked = false;
 
 	public BasicMarkerSupport(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
 		// workaround for 272863
-		String osname = System.getProperty("org.osgi.framework.os.name"); //$NON-NLS-1$
-		if (osname != null && osname.equalsIgnoreCase("macosx")) {
-			alwaysSkipRedraw = true;
+		if (!osChecked) {
+			osChecked = true;
+			String osname = System.getProperty("org.osgi.framework.os.name"); //$NON-NLS-1$
+			if (osname != null && osname.equalsIgnoreCase("macosx")) { //$NON-NLS-1$
+				alwaysSkipRedraw = true;
+			}
 		}
 	}
 
