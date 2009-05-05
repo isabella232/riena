@@ -17,9 +17,13 @@ import org.eclipse.riena.navigation.INavigationNode.State;
 import org.eclipse.riena.ui.filter.IUIFilter;
 
 /**
- *
+ * This adapter provides an empty implemenentation of all methods declared in
+ * {@link ISimpleNavigationNodeListener}.
+ * <p>
+ * Implementors wishing to implement this interface should extend this class and
+ * override only the methods they need.
  */
-public class SimpleNavigationNodeAdapater implements ISimpleNavigationNodeListener {
+public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListener {
 
 	/*
 	 * (non-Javadoc)

@@ -16,7 +16,7 @@ import java.util.Set;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
-import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
+import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 
 /**
  * This implementation of {@link IUIProcessMarkupStrategy} adds an
@@ -79,7 +79,7 @@ public class TypeHierarchyMarkerStrategy implements IUIProcessMarkupStrategy {
 	 * listener just forwarding to removeNavigationNodeMarker when node is
 	 * activated
 	 */
-	class NodeObserver extends SimpleNavigationNodeAdapater {
+	class NodeObserver extends SimpleNavigationNodeAdapter {
 
 		@SuppressWarnings("unchecked")
 		@Override

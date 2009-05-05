@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
+import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 import org.eclipse.riena.ui.ridgets.IContextUpdateListener;
 import org.eclipse.riena.ui.ridgets.IVisualContextManager;
 
 @SuppressWarnings("unchecked")
-public class NodeEventDelegation extends SimpleNavigationNodeAdapater implements IVisualContextManager {
+public class NodeEventDelegation extends SimpleNavigationNodeAdapter implements IVisualContextManager {
 
 	public NodeEventDelegation() {
 	}

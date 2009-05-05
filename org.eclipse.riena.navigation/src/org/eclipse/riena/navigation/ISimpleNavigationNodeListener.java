@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode.State;
-import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
+import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 import org.eclipse.riena.ui.filter.IUIFilter;
 
 /**
@@ -20,9 +20,9 @@ import org.eclipse.riena.ui.filter.IUIFilter;
  * <p>
  * Because this interface has many methods, but implementors are typically only
  * interested in a few of them, it is is recommended to extend the
- * {@link SimpleNavigationNodeAdapater}.
+ * {@link SimpleNavigationNodeAdapter}.
  * 
- * @see SimpleNavigationNodeAdapater
+ * @see SimpleNavigationNodeAdapter
  */
 public interface ISimpleNavigationNodeListener {
 
