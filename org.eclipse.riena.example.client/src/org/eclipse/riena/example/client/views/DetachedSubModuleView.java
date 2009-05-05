@@ -66,7 +66,7 @@ public class DetachedSubModuleView extends SubModuleView<DetachedSubModuleContro
 		public void activated(INavigationNode<?> source) {
 			// System.out.println("DetachedSubModuleView.NodeListener.activated()"); //$NON-NLS-1$
 			dvManager.showView(TreeSubModuleView.ID, TreeSubModuleView.class, SWT.RIGHT);
-			// dvManager.showView(ChoiceSubModuleView.ID, ChoiceSubModuleView.class, SWT.BOTTOM);
+			dvManager.showView(ChoiceSubModuleView.ID, ChoiceSubModuleView.class, SWT.BOTTOM);
 		}
 
 		@Override
