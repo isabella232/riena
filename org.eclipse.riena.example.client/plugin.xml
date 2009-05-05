@@ -229,6 +229,13 @@
       </view>
       <view
             allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.DetachedSubModuleView"
+            id="org.eclipse.riena.example.client.views.DetachedSubModuleView"
+            name="org.eclipse.riena.example.client.views.DetachedSubModuleView"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
             class="org.eclipse.riena.example.client.views.MessageBoxSubModuleView"
             id="org.eclipse.riena.example.client.views.MessageBoxSubModuleView"
             name="org.eclipse.riena.example.client.views.MessageBoxSubModuleView"

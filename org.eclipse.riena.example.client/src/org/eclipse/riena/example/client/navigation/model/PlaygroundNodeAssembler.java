@@ -20,6 +20,7 @@ import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
 import org.eclipse.riena.example.client.controllers.CompositeTableSubModuleController;
 import org.eclipse.riena.example.client.controllers.DateTimeSubModuleController;
+import org.eclipse.riena.example.client.controllers.DetachedSubModuleController;
 import org.eclipse.riena.example.client.controllers.DialogSubModuleController;
 import org.eclipse.riena.example.client.controllers.FocusableSubModuleController;
 import org.eclipse.riena.example.client.controllers.ListSubModuleController;
@@ -42,6 +43,7 @@ import org.eclipse.riena.example.client.views.ChoiceSubModuleView;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.example.client.views.CompositeTableSubModuleView;
 import org.eclipse.riena.example.client.views.DateTimeSubModuleView;
+import org.eclipse.riena.example.client.views.DetachedSubModuleView;
 import org.eclipse.riena.example.client.views.DialogSubModuleView;
 import org.eclipse.riena.example.client.views.FocusableSubModuleView;
 import org.eclipse.riena.example.client.views.ListSubModuleView;
@@ -75,7 +77,9 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
- *
+ * Configures the contents ofthe 'Playground' module.
+ * <p>
+ * This class is contributed via the plugin.xml (assembly extension).
  */
 public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
@@ -131,6 +135,12 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 				new NavigationNodeId("org.eclipse.riena.example.dialog"), "Dialog"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(dialogSubModule, DialogSubModuleController.class, DialogSubModuleView.ID, false);
 		playgroundModule.addChild(dialogSubModule);
+
+		ISubModuleNode detachedSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.detached"), "Detached View"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(detachedSubModule, DetachedSubModuleController.class, DetachedSubModuleView.ID,
+				false);
+		playgroundModule.addChild(detachedSubModule);
 
 		ISubModuleNode focusableSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.focusable"), "Focusable"); //$NON-NLS-1$ //$NON-NLS-2$
