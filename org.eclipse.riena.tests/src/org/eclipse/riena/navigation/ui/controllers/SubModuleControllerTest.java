@@ -103,23 +103,23 @@ public class SubModuleControllerTest extends TestCase {
 	/**
 	 * Tests the <i>private</i> method {@code isVisibleInTree()}.
 	 */
-	public void testIsVisibleInTree() {
+	public void testIsHiddenInTree() {
 
 		SubModuleNode subModule1 = new SubModuleNode("sm1");
 		SubModuleController smController1 = new SubModuleController(subModule1);
-		boolean ret = ReflectionUtils.invokeHidden(smController1, "isVisibleInTree");
-		assertTrue(ret);
+		boolean ret = ReflectionUtils.invokeHidden(smController1, "isHiddenInTree");
+		assertFalse(ret);
 
 		ModuleNode module = new ModuleNode("m");
 		new ModuleController(module);
 		subModule1.setParent(module);
 		module.addChild(subModule1);
-		ret = ReflectionUtils.invokeHidden(smController1, "isVisibleInTree");
-		assertFalse(ret);
+		ret = ReflectionUtils.invokeHidden(smController1, "isHiddenInTree");
+		assertTrue(ret);
 
 		module.setPresentSingleSubModule(true);
-		ret = ReflectionUtils.invokeHidden(smController1, "isVisibleInTree");
-		assertTrue(ret);
+		ret = ReflectionUtils.invokeHidden(smController1, "isHiddenInTree");
+		assertFalse(ret);
 
 		module.setPresentSingleSubModule(false);
 		SubModuleNode subModule2 = new SubModuleNode("sm2");
@@ -127,10 +127,10 @@ public class SubModuleControllerTest extends TestCase {
 		SubModuleController smController2 = new SubModuleController(subModule2);
 		subModule2.setParent(module);
 		module.addChild(subModule2);
-		ret = ReflectionUtils.invokeHidden(smController1, "isVisibleInTree");
-		assertTrue(ret);
-		ret = ReflectionUtils.invokeHidden(smController2, "isVisibleInTree");
-		assertTrue(ret);
+		ret = ReflectionUtils.invokeHidden(smController1, "isHiddenInTree");
+		assertFalse(ret);
+		ret = ReflectionUtils.invokeHidden(smController2, "isHiddenInTree");
+		assertFalse(ret);
 
 	}
 

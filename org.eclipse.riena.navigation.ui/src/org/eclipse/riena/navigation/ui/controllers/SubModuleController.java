@@ -143,7 +143,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 
 		String title = getNavigationNode().getLabel();
 
-		if (!isVisibleInTree()) {
+		if (isHiddenInTree()) {
 			IModuleNode moduleNode = getModuleController().getNavigationNode();
 			title = moduleNode.getLabel();
 		} else {
@@ -159,20 +159,17 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * Returns whether the sub-module is visible in the navigation tree.
+	 * Returns whether the sub-module is hidden in the navigation tree. A
+	 * sub-module is hidden if it is the only child of a module unless its
+	 * parent is configured to show a single child.
 	 * 
-	 * @return {@code true} if sub-module is visible; otherwise {@code false}
+	 * @return {@code true} if there is a navigation tree but the sub-module is
+	 *         not shown; otherwise {@code false}
 	 */
-	private boolean isVisibleInTree() {
+	private boolean isHiddenInTree() {
 
-		if (getModuleController() == null) {
-			return true;
-		}
-		if (!getModuleController().hasSingleLeafChild()) {
-			return true;
-		}
-		if (getModuleController().getNavigationNode().isPresentSingleSubModule()) {
-			return true;
+		if (getModuleController() != null && getModuleController().hasSingleLeafChild()) {
+			return !getModuleController().getNavigationNode().isPresentSingleSubModule();
 		}
 		return false;
 
@@ -181,7 +178,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	@Override
 	protected void updateIcon(IWindowRidget windowRidget) {
 
-		if (!isVisibleInTree()) {
+		if (isHiddenInTree()) {
 			if (windowRidget == null) {
 				return;
 			}
