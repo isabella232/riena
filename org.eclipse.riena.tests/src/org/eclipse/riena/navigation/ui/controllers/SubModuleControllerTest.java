@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.ui.controllers;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.EmbeddedTitleBarRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
@@ -96,6 +97,40 @@ public class SubModuleControllerTest extends TestCase {
 		assertEquals("sm1Icon", windowRidget.getIcon());
 		smController2.updateIcon(windowRidget);
 		assertEquals("sm2Icon", windowRidget.getIcon());
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code isVisibleInTree()}.
+	 */
+	public void testIsVisibleInTree() {
+
+		SubModuleNode subModule1 = new SubModuleNode("sm1");
+		SubModuleController smController1 = new SubModuleController(subModule1);
+		boolean ret = ReflectionUtils.invokeHidden(smController1, "isVisibleInTree");
+		assertTrue(ret);
+
+		ModuleNode module = new ModuleNode("m");
+		new ModuleController(module);
+		subModule1.setParent(module);
+		module.addChild(subModule1);
+		ret = ReflectionUtils.invokeHidden(smController1, "isVisibleInTree");
+		assertFalse(ret);
+
+		module.setPresentSingleSubModule(true);
+		ret = ReflectionUtils.invokeHidden(smController1, "isVisibleInTree");
+		assertTrue(ret);
+
+		module.setPresentSingleSubModule(false);
+		SubModuleNode subModule2 = new SubModuleNode("sm2");
+		subModule2.setIcon("sm2Icon");
+		SubModuleController smController2 = new SubModuleController(subModule2);
+		subModule2.setParent(module);
+		module.addChild(subModule2);
+		ret = ReflectionUtils.invokeHidden(smController1, "isVisibleInTree");
+		assertTrue(ret);
+		ret = ReflectionUtils.invokeHidden(smController2, "isVisibleInTree");
+		assertTrue(ret);
 
 	}
 

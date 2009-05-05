@@ -143,9 +143,8 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 
 		String title = getNavigationNode().getLabel();
 
-		IModuleNode moduleNode = getModuleController().getNavigationNode();
-		boolean moduleTitle = getModuleController().hasSingleLeafChild() && !moduleNode.isPresentSingleSubModule();
-		if (moduleTitle) {
+		if (!isVisibleInTree()) {
+			IModuleNode moduleNode = getModuleController().getNavigationNode();
 			title = moduleNode.getLabel();
 		} else {
 			INavigationNode<?> parent = getNavigationNode().getParent();
@@ -159,15 +158,34 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 
 	}
 
+	/**
+	 * Returns whether the sub-module is visible in the navigation tree.
+	 * 
+	 * @return {@code true} if sub-module is visible; otherwise {@code false}
+	 */
+	private boolean isVisibleInTree() {
+
+		if (getModuleController() == null) {
+			return true;
+		}
+		if (!getModuleController().hasSingleLeafChild()) {
+			return true;
+		}
+		if (getModuleController().getNavigationNode().isPresentSingleSubModule()) {
+			return true;
+		}
+		return false;
+
+	}
+
 	@Override
 	protected void updateIcon(IWindowRidget windowRidget) {
 
-		IModuleNode moduleNode = getModuleController().getNavigationNode();
-		boolean moduleIcon = getModuleController().hasSingleLeafChild() && !moduleNode.isPresentSingleSubModule();
-		if (moduleIcon) {
+		if (!isVisibleInTree()) {
 			if (windowRidget == null) {
 				return;
 			}
+			IModuleNode moduleNode = getModuleController().getNavigationNode();
 			String nodeIcon = moduleNode.getIcon();
 			windowRidget.setIcon(nodeIcon);
 		} else {
@@ -183,10 +201,16 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	/**
 	 * Returns the controller of the parent module.
 	 * 
-	 * @return module controller
+	 * @return module controller or {@code null} if not parent module controller
+	 *         exits.
 	 */
 	public ModuleController getModuleController() {
-		return (ModuleController) getNavigationNode().getParentOfType(IModuleNode.class).getNavigationNodeController();
+		IModuleNode moduleNode = getNavigationNode().getParentOfType(IModuleNode.class);
+		if (moduleNode == null) {
+			return null;
+		} else {
+			return (ModuleController) moduleNode.getNavigationNodeController();
+		}
 	}
 
 	/**
