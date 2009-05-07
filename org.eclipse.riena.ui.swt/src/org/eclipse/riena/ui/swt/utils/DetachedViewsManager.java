@@ -19,11 +19,8 @@ import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchSite;
 import org.eclipse.ui.part.ViewPart;
-
-import org.eclipse.riena.core.util.ReflectionUtils;
 
 /**
  * Manages one or more "detached" views.
@@ -213,8 +210,8 @@ public class DetachedViewsManager {
 			}
 		});
 		// TODO [ev] - need help - blocked by 274916
-		IViewPart viewPart = (IViewPart) ReflectionUtils.newInstance(viewClazz, (Object[]) null);
-		viewPart.createPartControl(result);
+		//		IViewPart viewPart = (IViewPart) ReflectionUtils.newInstance(viewClazz, (Object[]) null);
+		//		viewPart.createPartControl(result);
 		result.setBounds(bounds);
 		result.open();
 		return result;
