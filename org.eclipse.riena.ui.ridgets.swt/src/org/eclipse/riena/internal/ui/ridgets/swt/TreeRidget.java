@@ -501,14 +501,12 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				}
 			}
 		};
-		// how to get the parent from a give object
+		// how to get the parent from a given object
 		TreeStructureAdvisor structureAdvisor = new GenericTreeStructureAdvisor(parentAccessor, treeElementClass);
 
 		// how to create the content/structure for the tree
-		ObservableListTreeContentProvider viewerCP = new TreeRidgetContentProvider(listFactory, structureAdvisor);
-		// replace above with this:
-		//		ObservableListTreeContentProvider viewerCP = new ObservableListTreeContentProvider(listFactory,
-		//				structureAdvisor);
+		ObservableListTreeContentProvider viewerCP = new ObservableListTreeContentProvider(listFactory,
+				structureAdvisor);
 
 		// refresh icons on addition / removal
 		viewer.setContentProvider(viewerCP);
@@ -988,7 +986,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private static final class TreeContentChangeListener implements ISetChangeListener {
 
 		private final TreeViewer viewer;
-		private final TreeRidgetContentProvider viewerCP;
 		private final TreeStructureAdvisor structureAdvisor;
 
 		private TreeContentChangeListener(TreeViewer viewer, TreeStructureAdvisor structureAdvisor) {
@@ -996,14 +993,13 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			this.structureAdvisor = structureAdvisor;
 			this.viewer = viewer;
 			Assert.isNotNull(viewer.getContentProvider());
-			this.viewerCP = (TreeRidgetContentProvider) viewer.getContentProvider();
 		}
 
 		/**
 		 * Updates the icons of the parent elements on addition / removal
 		 */
 		public void handleSetChange(SetChangeEvent event) {
-			if (viewer.getLabelProvider(0) == null || !viewerCP.hasInput()) {
+			if (viewer.getLabelProvider(0) == null) {
 				return;
 			}
 			Set<Object> parents = new HashSet<Object>();
