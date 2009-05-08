@@ -220,11 +220,8 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 */
 	protected void checkNumber(String number) {
 		if (!"".equals(number)) { //$NON-NLS-1$
-			try {
-				new BigInteger(ungroup(number));
-			} catch (NumberFormatException nfe) {
-				throw new NumberFormatException("Not a valid number: " + number); //$NON-NLS-1$
-			}
+			BigInteger bigInteger = checkIsNumber(number);
+			checkSigned(bigInteger);
 		}
 	}
 
@@ -412,6 +409,21 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			}
 		}
 		return newText;
+	}
+
+	private BigInteger checkIsNumber(String number) {
+		try {
+			return new BigInteger(ungroup(number));
+		} catch (NumberFormatException nfe) {
+			throw new NumberFormatException("Not a valid number: " + number); //$NON-NLS-1$
+		}
+	}
+
+	private void checkSigned(BigInteger value) {
+		if (!isSigned() && value.compareTo(BigInteger.ZERO) == -1) {
+			throw new NumberFormatException("Negative numbers not allowed: " + value); //$NON-NLS-1$
+		}
+
 	}
 
 	private void startModifyListener() {

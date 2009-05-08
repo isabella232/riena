@@ -41,7 +41,8 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 	@Override
 	protected void checkNumber(String number) {
 		if (!"".equals(number)) { //$NON-NLS-1$
-			checkIsNumber(number);
+			BigDecimal value = checkIsNumber(number);
+			checkSigned(value);
 			checkMaxLength(number);
 			checkPrecision(number);
 		}
@@ -109,9 +110,9 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 	// helping methods
 	//////////////////
 
-	private void checkIsNumber(String number) {
+	private BigDecimal checkIsNumber(String number) {
 		try {
-			new BigDecimal(localStringToBigDecimal(number));
+			return new BigDecimal(localStringToBigDecimal(number));
 		} catch (NumberFormatException nfe) {
 			throw new NumberFormatException("Not a valid decimal: " + number); //$NON-NLS-1$
 		}
@@ -142,6 +143,12 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 				String msg = String.format("Precision (%d) exceeded: %s", precision, number); //$NON-NLS-1$
 				throw new NumberFormatException(msg);
 			}
+		}
+	}
+
+	private void checkSigned(BigDecimal value) {
+		if (!isSigned() && value.compareTo(BigDecimal.ZERO) == -1) {
+			throw new NumberFormatException("Negative numbers not allowed: " + value); //$NON-NLS-1$
 		}
 	}
 

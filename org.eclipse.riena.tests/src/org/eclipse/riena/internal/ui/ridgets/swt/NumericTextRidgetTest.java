@@ -332,6 +332,24 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(caretPos, control.getCaretPosition());
 	}
 
+	/**
+	 * As per bug #275134.
+	 */
+	public void testSetSignedThrowsException() {
+		INumericTextRidget ridget = getRidget();
+		ridget.setText("1234");
+
+		ridget.setSigned(false);
+
+		try {
+			ridget.setText("-4711");
+			fail();
+		} catch (RuntimeException exc) {
+			ok("expected");
+		}
+		assertEquals(localize("1.234"), ridget.getText());
+	}
+
 	public void testSetGrouping() {
 		INumericTextRidget ridget = getRidget();
 		IntegerBean model = new IntegerBean(1337);

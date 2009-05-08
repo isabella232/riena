@@ -45,6 +45,10 @@ public interface INumericTextRidget extends ITextRidget {
 
 	/**
 	 * Sets whether negative values are allowed.
+	 * <p>
+	 * Note that {@link #setText(String)} and {@link #updateFromModel()} will
+	 * throw a RuntimeException with negative values after {@code
+	 * setSigned(false)} has been called.
 	 * 
 	 * @param signed
 	 *            The new signed state.

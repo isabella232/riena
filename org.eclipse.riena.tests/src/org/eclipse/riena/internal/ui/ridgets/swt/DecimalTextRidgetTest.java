@@ -26,6 +26,7 @@ import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
+import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
@@ -795,6 +796,24 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("0,"), NumericTextRidget.removeLeadingCruft(localize("-0,")));
 		assertEquals(localize("0,"), NumericTextRidget.removeLeadingCruft(localize("-00,")));
 		assertEquals(localize("-10,"), NumericTextRidget.removeLeadingCruft(localize("-0010,")));
+	}
+
+	/**
+	 * As per bug #275134.
+	 */
+	public void testSetSignedThrowsException() {
+		INumericTextRidget ridget = getRidget();
+		ridget.setText(localize("1234,56"));
+
+		ridget.setSigned(false);
+
+		try {
+			ridget.setText(localize("-47,11"));
+			fail();
+		} catch (RuntimeException exc) {
+			ok("expected");
+		}
+		assertEquals(localize("1.234,56"), ridget.getText());
 	}
 
 	// helping methods
