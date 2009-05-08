@@ -41,12 +41,9 @@ public class DetachedSubModuleView extends SubModuleView<DetachedSubModuleContro
 		GridDataFactory fillFactory = GridDataFactory.fillDefaults().grab(true, true);
 
 		String msg = "This sample opens two detached views.\n" //$NON-NLS-1$
-				+ "One of them is only visible when the corresponding navigation node is selected.\n" //$NON-NLS-1$
-				+ "The other one is visibile as long as the 'Playground' module is open."; //$NON-NLS-1$
+				+ "Both of them are only visible when the corresponding navigation node is selected.\n"; //$NON-NLS-1$
 		Label msgLabel = UIControlsFactory.createLabel(parent, msg);
 		fillFactory.applyTo(msgLabel);
-
-		// TODO [ev] how to listen to sub-application (i.e. perspective) changes ?
 
 		new NodeListener();
 	}
@@ -54,6 +51,10 @@ public class DetachedSubModuleView extends SubModuleView<DetachedSubModuleContro
 	// helping classes
 	//////////////////
 
+	/**
+	 * Listens to selection / de-selection / disposal of this view's navigation
+	 * node.
+	 */
 	private final class NodeListener extends SimpleNavigationNodeAdapter {
 
 		private final DetachedViewsManager dvManager = new DetachedViewsManager(getSite());
@@ -64,21 +65,20 @@ public class DetachedSubModuleView extends SubModuleView<DetachedSubModuleContro
 
 		@Override
 		public void activated(INavigationNode<?> source) {
-			// System.out.println("DetachedSubModuleView.NodeListener.activated()"); //$NON-NLS-1$
 			dvManager.showView(TreeSubModuleView.ID, TreeSubModuleView.class, SWT.RIGHT);
 			dvManager.showView(ChoiceSubModuleView.ID, ChoiceSubModuleView.class, SWT.BOTTOM);
 		}
 
 		@Override
 		public void deactivated(INavigationNode<?> source) {
-			// System.out.println("DetachedSubModuleView.NodeListener.deactivated()"); //$NON-NLS-1$
 			dvManager.hideView(TreeSubModuleView.ID);
+			dvManager.hideView(ChoiceSubModuleView.ID);
 		}
 
 		@Override
 		public void disposed(INavigationNode<?> source) {
-			// System.out.println("DetachedSubModuleView.NodeListener.disposed()"); //$NON-NLS-1$
-			dvManager.dispose(); // closes all detached views by this manager
+			// closes all detached views by this manager
+			dvManager.dispose();
 			// remove this listener - if not removing here, this can also be done in in 
 			// the view's dispose method.
 			getNavigationNode().removeSimpleListener(this);

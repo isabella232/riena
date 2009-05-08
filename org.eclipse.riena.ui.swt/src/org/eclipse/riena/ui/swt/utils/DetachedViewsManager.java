@@ -13,14 +13,23 @@ package org.eclipse.riena.ui.swt.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchSite;
 import org.eclipse.ui.part.ViewPart;
+
+import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.ui.swt.Activator;
+import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 
 /**
  * Manages one or more "detached" views.
@@ -28,6 +37,10 @@ import org.eclipse.ui.part.ViewPart;
  * Client code must {@link #dispose()} instances when no longer needed.
  */
 public class DetachedViewsManager {
+
+	// TODO [ev] tests
+
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), LnFUpdater.class);
 
 	private final Map<String, Shell> id2shell;
 	private final IWorkbenchSite site;
@@ -209,9 +222,14 @@ public class DetachedViewsManager {
 				e.doit = false; // prevent manual close just in case
 			}
 		});
-		// TODO [ev] - need help - blocked by 274916
-		//		IViewPart viewPart = (IViewPart) ReflectionUtils.newInstance(viewClazz, (Object[]) null);
-		//		viewPart.createPartControl(result);
+		try {
+			IViewPart viewPart = (IViewPart) ReflectionUtils.newInstance(viewClazz, (Object[]) null);
+			viewPart.createPartControl(result);
+		} catch (Exception exc) {
+			// calling unknown code - catch exception just in case
+			String msg = "Exception while creating view: " + viewClazz.getName(); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_ERROR, msg, exc);
+		}
 		result.setBounds(bounds);
 		result.open();
 		return result;
