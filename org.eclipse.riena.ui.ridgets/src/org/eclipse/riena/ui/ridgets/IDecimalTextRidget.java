@@ -12,13 +12,17 @@ package org.eclipse.riena.ui.ridgets;
 
 /**
  * Ridget for decimal text fields.
- * 
+ * <p>
  * On the view-side we have to use the appropriate control-creation method of
  * the UIControlsFactory (see UIControlsFactory.createTextDecimal() /
  * UIControlFactory.createSegmentedDecimalValueTextField())
- * 
+ * <p>
  * It is recommended to use String, Double or BigDecimal based-values as the
- * model for this ridget (see {@link #bindToModel(Object, String)}.
+ * model for this ridget (see {@link #bindToModel(Object, String)}. Model values
+ * have to conform to the maximum length, precision and signage settings.
+ * <p>
+ * The input will be formatted using the decimal and grouping separator of the
+ * default locale.
  */
 public interface IDecimalTextRidget extends INumericTextRidget {
 

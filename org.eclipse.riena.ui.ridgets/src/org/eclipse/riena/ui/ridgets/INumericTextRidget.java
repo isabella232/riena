@@ -12,13 +12,14 @@ package org.eclipse.riena.ui.ridgets;
 
 /**
  * Ridget for a numeric text field.
- * 
+ * <p>
  * On the view-side we have to use the appropriate control-creation method of
  * the UIControlsFactory (see UIControlsFactory.createTextNumeric()).
- * 
+ * <p>
  * The ridget uses strings internally. It can be bound to any model that is
  * supported by the JFace databinding, provided the bounds value can be
- * converted to a string representing a number.
+ * converted to a string representing a number. Model values have to conform to
+ * signage setting of the ridget.
  */
 public interface INumericTextRidget extends ITextRidget {
 
@@ -32,6 +33,8 @@ public interface INumericTextRidget extends ITextRidget {
 
 	/**
 	 * Sets whether grouping is used to separate thousands.
+	 * <p>
+	 * This will use the grouping separator of the default locale.
 	 * 
 	 * @param useGrouping
 	 *            The new grouping state.

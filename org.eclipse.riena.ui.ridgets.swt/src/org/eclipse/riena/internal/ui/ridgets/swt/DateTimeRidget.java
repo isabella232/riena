@@ -192,6 +192,11 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	 * validation the error marker will be set and the date will <b>not</b> be
 	 * copied into the model. If validation passes the date will be copied into
 	 * the model as well.
+	 * <p>
+	 * Because of limitations of the underlying SWT {@link DateTime} widget, the
+	 * timestamp will be formatted according to the date/time format of the
+	 * operating system. See <a href="http://bugs.eclipse.org/248075">Bug
+	 * #248075</a>.
 	 */
 	public void setDate(Date date) {
 		getRidgetObservable().setValue(date);

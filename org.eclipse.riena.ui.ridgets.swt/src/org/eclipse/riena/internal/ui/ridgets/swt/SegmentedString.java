@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 
 /**
@@ -19,18 +20,8 @@ import org.eclipse.riena.ui.ridgets.IDateTextRidget;
  * separator.
  * <p>
  * Implementation note regarding valid format patterns: this class has been
- * tested with the format patterns in {@link IDateTextRidget}. In general,
- * supported patterns consist of a segment of 1-n digits followed by zero or
- * more groups of consistring of a single separator followed by another segment;
- * i.e.: {@code segment(separator,segment)*}. The following characters are
- * treated as digits: {@code d, M, y, H, m, s}. The following characters are
- * treated as separators: {@code ., :, /, -, ' ' (space)}. Separators are copied
- * verbatim into the output string and cannot be modified. Digits within a
- * segment will be right aligned.
- * <p>
- * Examples are: 'dd.MM.yyyy' for strings like '27.02.1980' or 'HH:mm' for
- * strings like '13:55'
- * 
+ * tested with the format patterns in {@link IDateTextRidget}. For details
+ * regarding the pattern format see {@link IDateTextRidget#setFormat(String).
  */
 public class SegmentedString {
 
