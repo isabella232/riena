@@ -11,6 +11,8 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.beans.Beans;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.osgi.service.log.LogService;
 
@@ -62,6 +64,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubModuleView.class);
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
+	private final static Map<SubModuleView<? extends SubModuleController>, SubModuleNode> fallbackNodes = new HashMap<SubModuleView<? extends SubModuleController>, SubModuleNode>();
 
 	private AbstractViewBindingDelegate binding;
 	private SubModuleController currentController;
@@ -228,10 +231,16 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	protected Cursor createArrowCursor() {
+		if (getSite() == null) {
+			return null;
+		}
 		return getSite().getShell().getDisplay().getSystemCursor(SWT.CURSOR_ARROW);
 	}
 
 	protected Cursor createWaitCursor() {
+		if (getSite() == null) {
+			return null;
+		}
 		return getSite().getShell().getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
 	}
 
@@ -360,13 +369,43 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	public SubModuleNode getNavigationNode() {
+
+		if (getViewSite() == null) {
+			return getFallbackNavigationNode();
+		}
+
 		String viewId = this.getViewSite().getId();
 		String secondaryId = this.getViewSite().getSecondaryId();
 		SubModuleNode result = (SubModuleNode) getSubModuleNode(viewId, secondaryId);
 		if (result == null) {
 			result = getRCPSubModuleNode();
 		}
+		if (result == null) {
+			result = getFallbackNavigationNode();
+		}
 		return result;
+	}
+
+	/**
+	 * @return Returns a fallback navigation node for views that are not
+	 *         associated with a node in the navigation tree.
+	 */
+	private SubModuleNode getFallbackNavigationNode() {
+		SubModuleNode fallbackNode = fallbackNodes.get(this);
+		if (fallbackNode == null) {
+			fallbackNode = new SubModuleNode(new NavigationNodeId(getClass().getName() + fallbackNodes.size()));
+			fallbackNodes.put(this, fallbackNode);
+		}
+		return fallbackNode;
+	}
+
+	/**
+	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+	 */
+	@Override
+	public void dispose() {
+		fallbackNodes.remove(this);
+		super.dispose();
 	}
 
 	public void unbind() {

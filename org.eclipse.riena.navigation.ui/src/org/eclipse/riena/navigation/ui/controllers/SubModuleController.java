@@ -148,11 +148,13 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 			title = moduleNode.getLabel();
 		} else {
 			INavigationNode<?> parent = getNavigationNode().getParent();
-			while (!(parent instanceof IModuleNode)) {
+			if (parent != null) {
+				while (parent != null && !(parent instanceof IModuleNode)) {
+					title = parent.getLabel() + TITLE_SEPARATOR + title;
+					parent = parent.getParent();
+				}
 				title = parent.getLabel() + TITLE_SEPARATOR + title;
-				parent = parent.getParent();
 			}
-			title = parent.getLabel() + TITLE_SEPARATOR + title;
 		}
 		return title;
 
