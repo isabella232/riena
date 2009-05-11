@@ -15,6 +15,10 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.beans.common.DoubleBean;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -22,9 +26,6 @@ import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Demonstrates how to use a {@link IDecimalTextRidget}.
@@ -46,11 +47,9 @@ public final class SnippetDecimalTextRidget001 {
 			Text txtOutput = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtOutput);
 
-			IDecimalTextRidget rInput = (IDecimalTextRidget) SwtRidgetFactory
-					.createRidget(txtInput);
+			IDecimalTextRidget rInput = (IDecimalTextRidget) SwtRidgetFactory.createRidget(txtInput);
 			rInput.setMaxLength(9);
 			rInput.setPrecision(4);
-			rInput.setSigned(true);
 			rInput.setDirectWriting(true);
 
 			ITextRidget rOutput = (ITextRidget) SwtRidgetFactory.createRidget(txtOutput);

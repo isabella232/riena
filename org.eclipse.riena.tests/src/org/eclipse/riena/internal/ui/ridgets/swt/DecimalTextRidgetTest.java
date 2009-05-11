@@ -601,10 +601,6 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
-		assertFalse(ridget.isSigned());
-
-		ridget.setSigned(true);
-
 		assertTrue(ridget.isSigned());
 
 		control.setFocus();

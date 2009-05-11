@@ -69,7 +69,6 @@ public class MarkerSubModuleController extends SubModuleController {
 		textName.setText("Chateau Schaedelbrummer"); //$NON-NLS-1$
 
 		final IDecimalTextRidget textPrice = (IDecimalTextRidget) getRidget("textPrice"); //$NON-NLS-1$
-		textPrice.setSigned(true);
 		textPrice.setGrouping(true);
 		textPrice.setText(Double.toString(-29.99));
 

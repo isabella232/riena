@@ -42,7 +42,8 @@ public interface INumericTextRidget extends ITextRidget {
 	void setGrouping(boolean useGrouping);
 
 	/**
-	 * @return Indicates whether negative values are allowed.
+	 * @return Indicates whether negative values are allowed. The default value
+	 *         is true.
 	 */
 	boolean isSigned();
 

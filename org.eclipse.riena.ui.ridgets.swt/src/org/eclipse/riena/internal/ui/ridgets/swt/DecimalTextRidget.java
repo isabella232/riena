@@ -35,7 +35,7 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 		setMaxLength(10);
 		setPrecision(2);
 		setText("0"); //$NON-NLS-1$
-		setSigned(false);
+		setSigned(true);
 	}
 
 	@Override
