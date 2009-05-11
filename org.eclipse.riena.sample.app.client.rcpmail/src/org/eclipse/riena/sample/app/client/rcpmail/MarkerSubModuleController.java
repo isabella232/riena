@@ -23,11 +23,11 @@ import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.TestBean;
 import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
+import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
@@ -55,9 +55,9 @@ public class MarkerSubModuleController extends SubModuleController {
 		final ITextRidget textName = (ITextRidget) getRidget("textName"); //$NON-NLS-1$
 		textName.setText("Chateau Schaedelbrummer"); //$NON-NLS-1$
 
-		final ITextRidget textPrice = (ITextRidget) getRidget("textPrice"); //$NON-NLS-1$
-		textPrice.addMarker(new NegativeMarker());
-		textPrice.setText("-29,99"); //$NON-NLS-1$
+		final IDecimalTextRidget textPrice = (IDecimalTextRidget) getRidget("textPrice"); //$NON-NLS-1$
+		textPrice.setSigned(true);
+		textPrice.setText(Double.toString(-29.99));
 
 		final IComboRidget comboAge = (IComboRidget) getRidget("comboAge"); //$NON-NLS-1$
 		List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$

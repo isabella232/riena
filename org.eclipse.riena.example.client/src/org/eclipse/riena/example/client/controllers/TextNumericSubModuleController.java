@@ -97,11 +97,9 @@ public class TextNumericSubModuleController extends SubModuleController {
 
 	private void bindToModel(String id, TypedBean<?> value, boolean signed) {
 		INumericTextRidget inputRidget = (INumericTextRidget) getRidget("in" + id); //$NON-NLS-1$
+		inputRidget.setSigned(signed);
 		inputRidget.bindToModel(value, TypedBean.PROP_VALUE);
 		inputRidget.updateFromModel();
-		if (signed) {
-			inputRidget.setSigned(true);
-		}
 	}
 
 	private void bindToModel(String id, TypedBean<?> value) {
