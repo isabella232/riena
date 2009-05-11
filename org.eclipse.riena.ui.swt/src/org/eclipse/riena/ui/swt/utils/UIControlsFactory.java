@@ -62,30 +62,30 @@ public final class UIControlsFactory {
 	}
 
 	/**
-	 * @wbp.factory.parameter.source caption "myLabelText"
+	 * @wbp.factory.parameter.source text "myLabelText"
 	 */
-	public static Label createLabel(Composite parent, String caption) {
-		return createLabel(parent, caption, SWT.NONE);
+	public static Label createLabel(Composite parent, String text) {
+		return createLabel(parent, text, SWT.NONE);
 	}
 
 	/**
-	 * @wbp.factory.parameter.source caption "myLabelText"
+	 * @wbp.factory.parameter.source text "myLabelText"
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 */
-	public static Label createLabel(Composite parent, String caption, int style) {
+	public static Label createLabel(Composite parent, String text, int style) {
 		Label label = new Label(parent, style);
-		label.setText(caption);
+		label.setText(text);
 		label.setBackground(SHARED_BG_COLOR);
 		return label;
 	}
 
 	/**
-	 * @wbp.factory.parameter.source caption "myLabelText"
+	 * @wbp.factory.parameter.source text "myLabelText"
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 * @wbp.factory.parameter.source bindingId "myLabelId"
 	 */
-	public static Label createLabel(Composite parent, String caption, int style, String bindingId) {
-		Label label = createLabel(parent, caption, style);
+	public static Label createLabel(Composite parent, String text, int style, String bindingId) {
+		Label label = createLabel(parent, text, style);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(label, bindingId);
 		return label;
 	}
@@ -181,20 +181,20 @@ public final class UIControlsFactory {
 	}
 
 	/**
-	 * @wbp.factory.parameter.source caption "myButtonText"
+	 * @wbp.factory.parameter.source text "myButtonText"
 	 */
-	public static Button createButton(Composite parent, String caption) {
+	public static Button createButton(Composite parent, String text) {
 		Button result = new Button(parent, SWT.PUSH);
-		result.setText(caption);
+		result.setText(text);
 		return result;
 	}
 
 	/**
-	 * @wbp.factory.parameter.source caption "myButtonText"
+	 * @wbp.factory.parameter.source text "myButtonText"
 	 * @wbp.factory.parameter.source bindingId "myButtonId"
 	 */
-	public static Button createButton(Composite parent, String caption, String bindingId) {
-		Button result = createButton(parent, caption);
+	public static Button createButton(Composite parent, String text, String bindingId) {
+		Button result = createButton(parent, text);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
 		return result;
 	}
@@ -332,11 +332,11 @@ public final class UIControlsFactory {
 	}
 
 	/**
-	 * @wbp.factory.parameter.source caption "myGroupText"
+	 * @wbp.factory.parameter.source text "myGroupText"
 	 */
-	public static Group createGroup(Composite parent, String caption) {
+	public static Group createGroup(Composite parent, String text) {
 		Group group = new Group(parent, SWT.NONE);
-		group.setText(caption);
+		group.setText(text);
 		group.setBackground(SHARED_BG_COLOR);
 		return group;
 	}
