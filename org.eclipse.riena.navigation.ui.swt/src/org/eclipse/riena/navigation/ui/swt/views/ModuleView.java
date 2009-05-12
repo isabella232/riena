@@ -505,8 +505,17 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * 
 	 * @return tree
 	 */
-	private Tree getTree() {
+	protected Tree getTree() {
 		return subModuleTree;
+	}
+
+	/**
+	 * Returns the title for the module
+	 * 
+	 * @return title
+	 */
+	protected ModuleTitleBar getTitle() {
+		return title;
 	}
 
 	/**
