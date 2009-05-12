@@ -18,6 +18,8 @@ import org.osgi.service.log.LogService;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Rectangle;
@@ -36,9 +38,8 @@ import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
  * <p>
  * Client code must {@link #dispose()} instances when no longer needed.
  */
+// TODO [ev] docs / wiki / snippets
 public class DetachedViewsManager {
-
-	// TODO [ev] tests
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), LnFUpdater.class);
 
@@ -60,9 +61,11 @@ public class DetachedViewsManager {
 	 * Close (=dispose) thew view / shell view the given id.
 	 * 
 	 * @param id
-	 *            id of the view to show; must be unique within this instance
+	 *            id of the view to show; must be unique within this instance;
+	 *            never null
 	 */
 	public void closeView(String id) {
+		Assert.isNotNull(id);
 		Shell shell = id2shell.remove(id);
 		if (shell != null) {
 			if (!shell.isDisposed()) {
@@ -86,10 +89,11 @@ public class DetachedViewsManager {
 	 * Return the shell hosting the view with the given id
 	 * 
 	 * @param id
-	 *            the view / shell id;
+	 *            the view / shell id; never null
 	 * @return a Shell instance or null
 	 */
 	public Shell getShell(String id) {
+		Assert.isNotNull(id);
 		return id2shell.get(id);
 	}
 
@@ -97,9 +101,10 @@ public class DetachedViewsManager {
 	 * Hide the view / shell with the given id
 	 * 
 	 * @param id
-	 *            id of the view / shell to hide
+	 *            id of the view / shell to hide; never null
 	 */
 	public void hideView(String id) {
+		Assert.isNotNull(id);
 		Shell shell = id2shell.get(id);
 		if (shell != null) {
 			shell.setVisible(false);
@@ -113,9 +118,10 @@ public class DetachedViewsManager {
 	 * @param id
 	 *            id of the view / shell to show; must be unique within this
 	 *            instance; not tied to the view-part id, since the view is
-	 *            created by reflection
+	 *            created by reflection; never null
 	 * @param viewClazz
-	 *            the class of the view; must have parameterless constructor
+	 *            the class of the view; must have parameterless constructor;
+	 *            never null
 	 * @param position
 	 *            one of SWT.LEFT, SWT.RIGHT, SWT.TOP, SWT.BOTTOM. Will place
 	 *            the view to the specified edge of the main window. Note the
@@ -123,12 +129,15 @@ public class DetachedViewsManager {
 	 *            created.
 	 */
 	public void showView(String id, Class<? extends ViewPart> viewClazz, int position) {
-		Rectangle viewBounds = site.getWorkbenchWindow().getShell().getBounds();
+		Assert.isNotNull(id, "id"); //$NON-NLS-1$
+		Assert.isLegal(id.trim().length() > 0, String.format("id cannot be null or empty: '%s'", id)); //$NON-NLS-1$
+		Assert.isNotNull(viewClazz);
 		Shell shell = id2shell.get(id);
 		if (shell == null) {
 			int x;
 			int y;
 			Rectangle bounds;
+			Rectangle viewBounds = site.getWorkbenchWindow().getShell().getBounds();
 			switch (position) {
 			case SWT.RIGHT:
 				x = viewBounds.x + viewBounds.width;
@@ -223,8 +232,14 @@ public class DetachedViewsManager {
 			}
 		});
 		try {
-			IViewPart viewPart = (IViewPart) ReflectionUtils.newInstance(viewClazz, (Object[]) null);
+			final IViewPart viewPart = (IViewPart) ReflectionUtils.newInstance(viewClazz, (Object[]) null);
 			viewPart.createPartControl(result);
+			result.addDisposeListener(new DisposeListener() {
+				public void widgetDisposed(DisposeEvent e) {
+					// dispose part when shell is disposed
+					viewPart.dispose();
+				}
+			});
 		} catch (Exception exc) {
 			// calling unknown code - catch exception just in case
 			String msg = "Exception while creating view: " + viewClazz.getName(); //$NON-NLS-1$
