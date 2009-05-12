@@ -26,7 +26,7 @@ import org.eclipse.riena.ui.swt.utils.DetachedViewsManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Example of opening "detached" views for a given node.
+ * Example of opening "detached" views when a navigation node is selected.
  * 
  * @see DetachedViewsManager
  */
@@ -53,7 +53,7 @@ public class DetachedSubModuleView extends SubModuleView<DetachedSubModuleContro
 
 	/**
 	 * Listens to selection / de-selection / disposal of this view's navigation
-	 * node.
+	 * node and shows / hides / disposes the detached views.
 	 */
 	private final class NodeListener extends SimpleNavigationNodeAdapter {
 
