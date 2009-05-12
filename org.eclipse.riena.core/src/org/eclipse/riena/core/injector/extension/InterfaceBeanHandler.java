@@ -165,7 +165,13 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		if (wire) {
 			// Try wiring the created executable extension
 			Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
-			BundleContext context = bundle != null ? bundle.getBundleContext() : Activator.getDefault().getContext();
+			BundleContext context = null;
+			if (bundle != null) {
+				context = bundle.getBundleContext();
+			}
+			if (context == null) {
+				context = Activator.getDefault().getContext();
+			}
 			Wire.instance(result).andStart(context);
 		}
 		return Result.noCache(result);
