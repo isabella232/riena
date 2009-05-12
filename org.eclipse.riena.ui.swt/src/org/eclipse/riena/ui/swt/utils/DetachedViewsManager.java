@@ -41,7 +41,6 @@ import org.eclipse.riena.internal.ui.swt.Activator;
  * <p>
  * Client code must {@link #dispose()} instances when no longer needed.
  */
-// TODO [ev] docs / wiki / snippets
 public class DetachedViewsManager {
 
 	/**
@@ -51,22 +50,45 @@ public class DetachedViewsManager {
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), DetachedViewsManager.class);
 
+	/**
+	 * Maps a String ('id') to a shell instance holding a detached view.
+	 */
 	private final Map<String, Shell> id2shell;
-	private final IWorkbenchSite site;
+
+	/**
+	 * The main shell; detached windows use it as their parent shell.
+	 */
+	private final Shell shell;
 
 	/**
 	 * Create a new DetachedViewsManager instance.
 	 * <p>
 	 * Client code must {@link #dispose()} instances when no longer needed.
+	 * 
+	 * @param site
+	 *            the workbench site; never null
 	 */
 	public DetachedViewsManager(IWorkbenchSite site) {
-		Assert.isNotNull(site);
-		id2shell = new HashMap<String, Shell>();
-		this.site = site;
+		this(site.getShell());
 	}
 
 	/**
-	 * Close (=dispose) thew view / shell view the given id.
+	 * Create a new DetachedViewsManager instance.
+	 * <p>
+	 * Client code must {@link #dispose()} instances when no longer needed.
+	 * 
+	 * @param shell
+	 *            the main shell; never null; detached windows will use this
+	 *            shell as their parent shell
+	 */
+	public DetachedViewsManager(Shell shell) {
+		Assert.isNotNull(shell);
+		id2shell = new HashMap<String, Shell>();
+		this.shell = shell;
+	}
+
+	/**
+	 * Close (=dispose) thew view / shell with the given id.
 	 * 
 	 * @param id
 	 *            id of the view to show; must be unique within this instance;
@@ -145,7 +167,7 @@ public class DetachedViewsManager {
 			int x;
 			int y;
 			Rectangle bounds;
-			Rectangle viewBounds = site.getWorkbenchWindow().getShell().getBounds();
+			Rectangle viewBounds = this.shell.getBounds();
 			switch (position) {
 			case SWT.RIGHT:
 				x = viewBounds.x + viewBounds.width;
@@ -234,7 +256,7 @@ public class DetachedViewsManager {
 	private Shell openShell(Class<? extends ViewPart> viewClazz, Rectangle bounds) {
 		Shell result = null;
 
-		result = new Shell(site.getShell(), getShellStyle());
+		result = new Shell(this.shell, getShellStyle());
 		result.addShellListener(new ShellAdapter() {
 			@Override
 			public void shellClosed(ShellEvent e) {
