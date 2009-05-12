@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.log.LogService;
@@ -31,7 +35,6 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
-import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 
 /**
  * Manages one or more "detached" views.
@@ -41,7 +44,12 @@ import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 // TODO [ev] docs / wiki / snippets
 public class DetachedViewsManager {
 
-	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), LnFUpdater.class);
+	/**
+	 * Name of the method that creates the controller for SubModuleViews.
+	 */
+	private static final String METHOD_CREATE_CONTROLLER = "createController"; //$NON-NLS-1$
+
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), DetachedViewsManager.class);
 
 	private final Map<String, Shell> id2shell;
 	private final IWorkbenchSite site;
@@ -182,13 +190,15 @@ public class DetachedViewsManager {
 	 * @param viewClazz
 	 *            the class of the view; must have parameterless constructor
 	 * @param bounds
-	 *            the desired size and location for the shell. Note that this is
-	 *            applied only if a new shell is created.
+	 *            the desired size and location for the shell. The {@code x} and
+	 *            {@code y} values set the upper left corner of the shell,
+	 *            relative to the display. Note that this is applied only if a
+	 *            new shell is created.
 	 */
 	public void showView(String viewId, Class<? extends ViewPart> viewClazz, Rectangle bounds) {
 		Shell shell = id2shell.get(viewId);
 		if (shell == null) {
-			openShell(viewClazz, bounds);
+			shell = openShell(viewClazz, bounds);
 			if (shell != null) {
 				id2shell.put(viewId, shell);
 			}
@@ -240,6 +250,11 @@ public class DetachedViewsManager {
 					viewPart.dispose();
 				}
 			});
+			if (!checkController(viewPart)) {
+				String msg = String.format("%s does not override %s()", viewPart.getClass().getName(), //$NON-NLS-1$
+						METHOD_CREATE_CONTROLLER);
+				LOGGER.log(LogService.LOG_WARNING, msg);
+			}
 		} catch (Exception exc) {
 			// calling unknown code - catch exception just in case
 			String msg = "Exception while creating view: " + viewClazz.getName(); //$NON-NLS-1$
@@ -247,6 +262,46 @@ public class DetachedViewsManager {
 		}
 		result.setBounds(bounds);
 		result.open();
+		return result;
+	}
+
+	/**
+	 * Non-API. Package public for testing
+	 * 
+	 * @return true if the check passed; false otherwise.
+	 */
+	@SuppressWarnings("unchecked")
+	boolean checkController(IViewPart viewPart) {
+		boolean result = true;
+		Class clazz = viewPart.getClass();
+		Method method = findMethod(clazz, METHOD_CREATE_CONTROLLER);
+		if (method != null) {
+			String declClazz = method.getDeclaringClass().getName();
+			if (declClazz.equals("org.eclipse.riena.navigation.ui.swt.views.SubModuleView")) { //$NON-NLS-1$
+				result = false;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Return the first Method matching {@code methodName} or null. Will start
+	 * at the most specific class and search upwards.
+	 */
+	private Method findMethod(final Class<?> viewClazz, String methodName) {
+		Method result = null;
+		List<Method> declaredMethods = new ArrayList<Method>();
+		Class<?> clazz = viewClazz;
+		while (clazz != null) {
+			declaredMethods.addAll(Arrays.asList(clazz.getDeclaredMethods()));
+			clazz = clazz.getSuperclass();
+		}
+		for (int i = 0; result == null && i < declaredMethods.size(); i++) {
+			Method method = declaredMethods.get(i);
+			if (methodName.equals(method.getName())) {
+				result = method;
+			}
+		}
 		return result;
 	}
 }

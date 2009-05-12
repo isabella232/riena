@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.dynamichelpers.IExtensionTracker;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -31,6 +32,10 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.part.ViewPart;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
 
@@ -61,7 +66,7 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 		display.dispose();
 		shell.dispose();
 		manager.dispose();
-	};
+	}
 
 	public void testShowView() {
 		assertEquals(0, COUNT);
@@ -110,6 +115,17 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 		} catch (RuntimeException rex) {
 			ok("expected");
 		}
+	}
+
+	public void testShowViewWithBounds() {
+		manager.showView("viewOne", FTViewPart.class, new Rectangle(20, 30, 400, 500));
+		Shell shell = manager.getShell("viewOne");
+		Rectangle shellBounds = shell.getBounds();
+
+		assertEquals(20, shellBounds.x);
+		assertEquals(30, shellBounds.y);
+		assertEquals(400, shellBounds.width);
+		assertEquals(500, shellBounds.height);
 	}
 
 	public void testHideView() {
@@ -206,6 +222,19 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 		} catch (RuntimeException rex) {
 			ok("expected");
 		}
+	}
+
+	public void testCreateController() {
+		Boolean result;
+
+		result = ReflectionUtils.invokeHidden(manager, "checkController", new FTViewPart());
+		assertTrue(result.booleanValue());
+
+		result = ReflectionUtils.invokeHidden(manager, "checkController", new FTViewWithController());
+		assertTrue(result.booleanValue());
+
+		result = ReflectionUtils.invokeHidden(manager, "checkController", new FTViewWithoutController());
+		assertFalse(result.booleanValue());
 	}
 
 	// helping classes
@@ -371,6 +400,39 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 
 		@Override
 		public void setFocus() {
+			// unused
+		}
+	}
+
+	/**
+	 * Mock implementation of a {@link SubModuleController}.
+	 */
+	public static final class FTViewController extends SubModuleController {
+	}
+
+	/**
+	 * A SubModuleView that returns a controller.
+	 */
+	public static final class FTViewWithController extends SubModuleView<FTViewController> {
+		private FTViewController controller = new FTViewController();
+
+		@Override
+		protected FTViewController createController(ISubModuleNode node) {
+			return controller;
+		}
+
+		@Override
+		protected void basicCreatePartControl(Composite parent) {
+			// unused
+		}
+	}
+
+	/**
+	 * A SubModuleView that does not return a controller.
+	 */
+	public static final class FTViewWithoutController extends SubModuleView<FTViewController> {
+		@Override
+		protected void basicCreatePartControl(Composite parent) {
 			// unused
 		}
 	}
