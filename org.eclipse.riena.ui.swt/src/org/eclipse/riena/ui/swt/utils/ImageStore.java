@@ -200,7 +200,18 @@ public final class ImageStore {
 			}
 		}
 
-		LOGGER.log(LogService.LOG_WARNING, "Image resource \"" + fullName + "\" not found!"); //$NON-NLS-1$ //$NON-NLS-2$
+		StringBuilder sb = new StringBuilder();
+		sb.append("Image resource \""); //$NON-NLS-1$
+		sb.append(fullName);
+		sb.append("\" not found in:"); //$NON-NLS-1$
+
+		for (IImagePathExtension iconPath : iconPathes) {
+			sb.append("\n  "); //$NON-NLS-1$
+			sb.append(iconPath.getContributingBundle().getLocation());
+			sb.append(iconPath.getPath());
+		}
+
+		LOGGER.log(LogService.LOG_WARNING, sb.toString());
 		return null;
 
 	}

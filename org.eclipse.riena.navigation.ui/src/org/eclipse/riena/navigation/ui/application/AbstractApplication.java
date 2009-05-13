@@ -38,7 +38,6 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.NavigationNodeProvider;
 import org.eclipse.riena.navigation.model.NavigationNodeProviderAccessor;
 import org.eclipse.riena.navigation.ui.login.ILoginDialogViewDefinition;
-import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
 
 /**
@@ -141,21 +140,18 @@ public abstract class AbstractApplication implements IApplication {
 	}
 
 	protected void initializeNodeDefaults(IApplicationNode node) {
-
 		for (ISubApplicationNode child : node.getChildren()) {
 			initializeNodeDefaults(child);
 		}
 	}
 
 	protected void initializeNodeDefaults(ISubApplicationNode node) {
-
 		for (IModuleGroupNode child : node.getChildren()) {
 			initializeNodeDefaults(child);
 		}
 	}
 
 	protected void initializeNodeDefaults(IModuleGroupNode node) {
-
 		for (IModuleNode child : node.getChildren()) {
 			initializeNodeDefaults(child);
 		}
@@ -169,6 +165,7 @@ public abstract class AbstractApplication implements IApplication {
 		//		}
 	}
 
+	//
 	//	protected void initializeNodeDefaults(ISubModuleNode node) {
 	//
 	//		initializeNodeDefaultIcon(node);
@@ -178,10 +175,9 @@ public abstract class AbstractApplication implements IApplication {
 	//	}
 
 	protected void initializeNodeDefaultIcon(INavigationNode<?> node) {
-
-		if (node.getIcon() == null) {
-			node.setIcon(IIconManager.DEFAULT_ICON);
-		}
+		//		if (node.getIcon() == null) {
+		//			node.setIcon("defaultNode"); //$NON-NLS-1$
+		//		}
 	}
 
 	abstract protected Object createView(IApplicationContext context, IApplicationNode pNode) throws Exception;
