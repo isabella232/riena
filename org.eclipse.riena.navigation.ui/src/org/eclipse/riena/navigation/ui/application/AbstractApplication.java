@@ -61,8 +61,8 @@ public abstract class AbstractApplication implements IApplication {
 			throw new RuntimeException(
 					"Application did not return an ApplicationModel in method 'createModel' but returned NULL. Cannot continue"); //$NON-NLS-1$
 		}
-		createStartupsFromExtensions(node);
 		ApplicationNodeManager.registerApplicationNode(node);
+		createStartupsFromExtensions(node);
 		initializeNode(node);
 		setProgressProviderBridge();
 		return createView(context, node);
