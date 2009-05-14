@@ -45,7 +45,7 @@ public class DetachedSubModuleView extends SubModuleView<DetachedSubModuleContro
 		Label msgLabel = UIControlsFactory.createLabel(parent, msg);
 		fillFactory.applyTo(msgLabel);
 
-		new NodeListener();
+		getNavigationNode().addSimpleListener(new NodeListener());
 	}
 
 	// helping classes
@@ -59,20 +59,16 @@ public class DetachedSubModuleView extends SubModuleView<DetachedSubModuleContro
 
 		private final DetachedViewsManager dvManager = new DetachedViewsManager(getSite());
 
-		private NodeListener() {
-			getNavigationNode().addSimpleListener(this);
-		}
-
 		@Override
 		public void activated(INavigationNode<?> source) {
-			dvManager.showView(TreeSubModuleView.ID, TreeSubModuleView.class, SWT.RIGHT);
-			dvManager.showView(ChoiceSubModuleView.ID, ChoiceSubModuleView.class, SWT.BOTTOM);
+			dvManager.showView("viewRight", TreeSubModuleView.class, SWT.RIGHT); //$NON-NLS-1$
+			dvManager.showView("viewLeft", ChoiceSubModuleView.class, SWT.BOTTOM); //$NON-NLS-1$
 		}
 
 		@Override
 		public void deactivated(INavigationNode<?> source) {
-			dvManager.hideView(TreeSubModuleView.ID);
-			dvManager.hideView(ChoiceSubModuleView.ID);
+			dvManager.hideView("viewRight"); //$NON-NLS-1$
+			dvManager.hideView("viewLeft"); //$NON-NLS-1$
 		}
 
 		@Override
