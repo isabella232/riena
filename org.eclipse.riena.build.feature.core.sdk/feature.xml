@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.riena.build.feature.sdk"
-      label="Riena Feature SDK (used for source generation)"
-      version="1.1.0.M7"
-      provider-name="Eclipse.org">
+      id="org.eclipse.riena.build.feature.core.sdk"
+      label="Riena Core SDK (with Source code)"
+      version="1.0.0.qualifier">
 
-   <description url="http://www.eclipse.org/riena">
-      This is the feature used for the PDE Build of Riena.
-
-This Feature is used to pick up the source code.
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
    </description>
 
-   <copyright url="http://www.compeople.de">
+   <copyright url="http://www.example.com/copyright">
       /*******************************************************************************
 * Copyright (c) 2007, 2008 compeople AG and others.
 * All rights reserved. This program and the accompanying materials
@@ -25,16 +22,15 @@ v1.0
 *******************************************************************************/
    </copyright>
 
-   <license url="http://www.eclipse.org/legal/epl-v10.html">
+   <license url="http://www.example.com/license">
       Supplied under EPL 1.0
    </license>
 
    <includes
-         id="org.eclipse.riena.build.feature"
+         id="org.eclipse.riena.build.feature.core"
          version="0.0.0"/>
-
    <includes
-         id="org.eclipse.riena.build.feature.source"
+         id="org.eclipse.riena.build.feature.core.source"
          version="0.0.0"/>
 
 </feature>
