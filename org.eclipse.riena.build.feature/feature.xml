@@ -27,6 +27,14 @@ v1.0
       Supplied under EPL 1.0
    </license>
 
+   <includes
+         id="org.eclipse.riena.build.feature.core"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.riena.build.feature.samples"
+         version="0.0.0"/>
+
    <plugin
          id="com.caucho.hessian"
          download-size="0"
