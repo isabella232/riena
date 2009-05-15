@@ -28,11 +28,11 @@ v1.0
    </license>
 
    <includes
-         id="org.eclipse.riena.build.feature.core"
+         id="org.eclipse.riena.build.feature.core.sdk"
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.riena.build.feature.samples"
+         id="org.eclipse.riena.build.feature.samples.sdk"
          version="0.0.0"/>
 
    <plugin
