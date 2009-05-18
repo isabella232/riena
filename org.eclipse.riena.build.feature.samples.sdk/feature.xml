@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.riena.build.feature.samples.sdk"
-      label="Riena Samples (with source)"
+      label="Riena SDK Samples (NOT IDE Install)"
       version="1.1.0.RC1">
 
    <description url="http://www.example.com/description">
@@ -41,7 +41,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.sample.app.common.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.sample.app.server"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.sample.app.server.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -55,7 +69,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.sample.app.client.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.sample.app.client.mail"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.sample.app.client.mail.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -69,7 +97,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.example.client.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.security.simpleservices"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.security.simpleservices.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -83,7 +125,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.sample.snippets.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.sample.app.client.rcpmail"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.sample.app.client.rcpmail.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -97,7 +153,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.demo.client.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.demo.common"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.demo.common.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -111,7 +181,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.demo.server.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.tests.source"
          download-size="0"
          install-size="0"
          version="0.0.0"

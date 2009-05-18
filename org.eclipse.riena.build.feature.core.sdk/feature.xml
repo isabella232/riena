@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.riena.build.feature.core.sdk"
-      label="Riena Core SDK"
+      label="Riena Core SDK (NOT IDE Install)"
       version="1.1.0.RC1">
 
    <description url="http://www.example.com/description">
