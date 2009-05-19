@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.riena.build.feature.samples.sdk"
-      label="Riena SDK Samples (NOT IDE Install)"
+      label="Riena SDK Samples (TP Only)"
       version="1.1.0.RC1">
 
    <description url="http://www.example.com/description">
