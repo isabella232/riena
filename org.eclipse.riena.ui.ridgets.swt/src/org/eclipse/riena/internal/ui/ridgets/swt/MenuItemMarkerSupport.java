@@ -13,7 +13,6 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeSupport;
 
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.ui.menus.CommandContributionItem;
 
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 
@@ -60,10 +59,6 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 			return;
 		}
 		boolean enabled = getRidget().isEnabled();
-		CommandContributionItem commandItem = getContributionItem(item);
-		if (commandItem != null) {
-			enabled = enabled && commandItem.isEnabled();
-		}
 		item.setEnabled(enabled);
 	}
 
@@ -97,29 +92,6 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 				updateDisabled(item);
 			}
 		}
-	}
-
-	/**
-	 * Returns form the data of the given item the
-	 * {@link CommandContributionItem}.
-	 * 
-	 * @param item
-	 *            - menu item
-	 * @return the {@code CommandContributionItem} or <{@code null} if the item
-	 *         has no {@code CommandContributionItem}.
-	 */
-	private CommandContributionItem getContributionItem(MenuItem item) {
-
-		if (item.isDisposed()) {
-			return null;
-		}
-
-		if ((item.getData() instanceof CommandContributionItem)) {
-			return (CommandContributionItem) item.getData();
-		} else {
-			return null;
-		}
-
 	}
 
 }

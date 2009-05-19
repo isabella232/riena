@@ -14,7 +14,6 @@ import java.beans.PropertyChangeSupport;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.ui.menus.CommandContributionItem;
 
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
@@ -62,10 +61,6 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 			return;
 		}
 		boolean enabled = getRidget().isEnabled();
-		CommandContributionItem commandItem = getContributionItem(item);
-		if (commandItem != null) {
-			enabled = enabled && commandItem.isEnabled();
-		}
 		item.setEnabled(enabled);
 	}
 
@@ -107,29 +102,6 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 
 		if ((item.getData() instanceof MenuManager)) {
 			return (MenuManager) item.getData();
-		} else {
-			return null;
-		}
-
-	}
-
-	/**
-	 * Returns form the data of the given item the
-	 * {@link CommandContributionItem}.
-	 * 
-	 * @param item
-	 *            - tool item
-	 * @return the {@code CommandContributionItem} or <{@code null} if the item
-	 *         has no {@code CommandContributionItem}.
-	 */
-	private CommandContributionItem getContributionItem(ToolItem item) {
-
-		if (item.isDisposed()) {
-			return null;
-		}
-
-		if ((item.getData() instanceof CommandContributionItem)) {
-			return (CommandContributionItem) item.getData();
 		} else {
 			return null;
 		}

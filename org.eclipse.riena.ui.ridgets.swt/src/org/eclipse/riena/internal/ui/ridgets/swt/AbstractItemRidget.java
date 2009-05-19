@@ -14,8 +14,10 @@ import java.beans.EventHandler;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Item;
+import org.eclipse.ui.menus.CommandContributionItem;
 
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
@@ -142,6 +144,52 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	public final void setText(String newText) {
 		this.text = newText;
 		updateUIText();
+	}
+
+	/**
+	 * Returns form the data of the item the {@link CommandContributionItem}.
+	 * 
+	 * @return the {@code CommandContributionItem} or <{@code null} if the item
+	 *         has no {@code CommandContributionItem}.
+	 */
+	protected CommandContributionItem getContributionItem() {
+
+		Item uiItem = getUIControl();
+		if ((uiItem == null) || uiItem.isDisposed()) {
+			return null;
+		}
+
+		if ((uiItem.getData() instanceof CommandContributionItem)) {
+			return (CommandContributionItem) uiItem.getData();
+		} else {
+			return null;
+		}
+
+	}
+
+	public boolean isVisible() {
+		// check for "hidden.marker". This marker overrules any other visibility rule
+		if (!getMarkersOfType(HiddenMarker.class).isEmpty()) {
+			return false;
+		}
+
+		if (getUIControl() != null) {
+			return !getUIControl().isDisposed();
+		}
+		// control is not bound
+		return savedVisibleState;
+	}
+
+	@Override
+	public boolean isEnabled() {
+
+		boolean enabled = super.isEnabled();
+		CommandContributionItem commandItem = getContributionItem();
+		if (commandItem != null) {
+			enabled = enabled && commandItem.isEnabled();
+		}
+		return enabled;
+
 	}
 
 	// helping methods

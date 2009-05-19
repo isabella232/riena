@@ -14,11 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.databinding.BindingException;
-import org.eclipse.riena.ui.ridgets.IMenuRidget;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.MenuItem;
+
+import org.eclipse.riena.ui.ridgets.IMenuRidget;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * Ridget of a menu item that is a cascade menu item.
@@ -74,10 +75,10 @@ public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 	 * @return child ridget or {@code null} if none was found
 	 */
 	private MenuItemRidget getChild(String id) {
-		List<MenuItemRidget> children = getChildren();
-		for (MenuItemRidget child : children) {
-			if ((child.getID() != null) && child.getID().equals(id)) {
-				return child;
+		List<MenuItemRidget> menuItems = getChildren();
+		for (MenuItemRidget menuItem : menuItems) {
+			if ((menuItem.getID() != null) && menuItem.getID().equals(id)) {
+				return menuItem;
 			}
 		}
 		return null;

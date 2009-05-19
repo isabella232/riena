@@ -381,11 +381,11 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
-	public final boolean isEnabled() {
+	public boolean isEnabled() {
 		return getMarkersOfType(DisabledMarker.class).isEmpty();
 	}
 
-	public final synchronized void setEnabled(boolean enabled) {
+	public synchronized void setEnabled(boolean enabled) {
 		if (enabled) {
 			if (disabledMarker != null) {
 				removeMarker(disabledMarker);
