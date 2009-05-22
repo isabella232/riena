@@ -394,6 +394,31 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("r2", control.getItem(1).getText());
 	}
 
+	/**
+	 * As per bug 277283.
+	 */
+	public void testSetRootsVisibleFiresEvents() {
+		ITreeRidget ridget = getRidget();
+
+		assertTrue(ridget.getRootsVisible());
+
+		expectPropertyChangeEvent(ITreeRidget.PROPERTY_ROOTS_VISIBLE, true, false);
+		ridget.setRootsVisible(false);
+		verifyPropertyChangeEvents();
+
+		assertFalse(ridget.getRootsVisible());
+
+		expectPropertyChangeEvent(ITreeRidget.PROPERTY_ROOTS_VISIBLE, false, true);
+		ridget.setRootsVisible(true);
+		verifyPropertyChangeEvents();
+
+		assertTrue(ridget.getRootsVisible());
+
+		expectNoPropertyChangeEvent();
+		ridget.setRootsVisible(true);
+		verifyPropertyChangeEvents();
+	}
+
 	// helping methods
 	// ////////////////
 

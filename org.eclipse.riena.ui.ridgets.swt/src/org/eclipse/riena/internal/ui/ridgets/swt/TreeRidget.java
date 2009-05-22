@@ -403,7 +403,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * </ul>
 	 */
 	public void setRootsVisible(boolean showRoots) {
-		this.showRoots = showRoots;
+		firePropertyChange(ITreeRidget.PROPERTY_ROOTS_VISIBLE, this.showRoots, this.showRoots = showRoots);
 	}
 
 	@Override

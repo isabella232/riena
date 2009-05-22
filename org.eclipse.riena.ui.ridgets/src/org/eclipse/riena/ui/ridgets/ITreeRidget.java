@@ -10,11 +10,22 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
-
 /**
- * Ridget for a tree. The model value is an ITreeModel.
+ * Ridget for a tree.
+ * <p>
+ * The model value can be any type conforming to the rules outlined by the
+ * bindToModel(...) methods.
  */
 public interface ITreeRidget extends IRidget, ISelectableRidget {
+
+	/**
+	 * The name of the PropertyChangeEvent that will be fired when the ridget's
+	 * 'roots visible' setting changed ({@value} ).
+	 * 
+	 * @see #getRootsVisible();
+	 * @since 1.2.0
+	 */
+	String PROPERTY_ROOTS_VISIBLE = "rootsVisible"; //$NON-NLS-1$
 
 	/**
 	 * Creates a binding between the Tree Ridget and the specified treeRoots.
