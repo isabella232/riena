@@ -244,6 +244,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 			}
 			updateSelection(control);
 			LNF_UPDATER.updateUIControlsAfterBind(control);
+			control.layout();
 		}
 	}
 
