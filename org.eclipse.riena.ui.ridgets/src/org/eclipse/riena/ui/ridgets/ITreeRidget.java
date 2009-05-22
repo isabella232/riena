@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
-
 /**
- * Ridget for a tree. The model value is an ITreeModel.
+ * Ridget for a tree.
+ * <p>
+ * The model value can be any type conforming to the rules outlined by the
+ * bindToModel(...) methods.
  */
 public interface ITreeRidget extends IRidget, ISelectableRidget {
 
