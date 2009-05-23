@@ -18,8 +18,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
-import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -261,19 +261,6 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 		event.type = SWT.Selection;
 		event.widget = control;
 		control.notifyListeners(SWT.Selection, event);
-	}
-
-	private static final class FTActionListener implements IActionListener {
-		private int count;
-
-		public void callback() {
-			count++;
-		}
-
-		int getCount() {
-			return count;
-		}
-
 	}
 
 }

@@ -18,11 +18,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
-import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
@@ -257,16 +257,4 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 		control.notifyListeners(SWT.Selection, event);
 	}
 
-	private static final class FTActionListener implements IActionListener {
-		private int count;
-
-		public void callback() {
-			count++;
-		}
-
-		int getCount() {
-			return count;
-		}
-
-	}
 }
