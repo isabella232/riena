@@ -11,13 +11,6 @@
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -27,6 +20,14 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
+
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Renderer of the title bar of an embedded view.
@@ -208,9 +209,10 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		// Icon
 		x = getBounds().x + TITLEBAR_LABEL_PADDING_LEFT;
 		if (getImage() != null) {
-			y = getBounds().y + (getHeight() - getImage().getImageData().height) / 2;
+			Rectangle imageBounds = getImage().getBounds();
+			y = getBounds().y + (getHeight() - imageBounds.height) / 2;
 			gc.drawImage(getImage(), x, y);
-			x += getImage().getImageData().width + TITLEBAR_ICON_TEXT_GAP;
+			x += imageBounds.width + TITLEBAR_ICON_TEXT_GAP;
 		}
 
 		// Text
@@ -322,8 +324,8 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		if (closeImage == null) {
 			return closeBounds;
 		}
-		closeBounds.width = closeImage.getImageData().width;
-		closeBounds.height = closeImage.getImageData().height;
+		closeBounds.width = closeImage.getBounds().width;
+		closeBounds.height = closeImage.getBounds().height;
 		closeBounds.x = getBounds().x + getWidth() - closeBounds.width - TITLEBAR_LABEL_PADDING;
 		closeBounds.y = getBounds().y + (getHeight() - closeBounds.height) / 2;
 
@@ -415,7 +417,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 		textBounds.x = getBounds().x + TITLEBAR_LABEL_PADDING_LEFT;
 		if (getImage() != null) {
-			textBounds.x += getImage().getImageData().width + TITLEBAR_ICON_TEXT_GAP;
+			textBounds.x += getImage().getBounds().width + TITLEBAR_ICON_TEXT_GAP;
 		}
 
 		textBounds.width = getWidth() - (textBounds.x - getBounds().x) - TITLEBAR_LABEL_PADDING;

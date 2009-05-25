@@ -122,15 +122,15 @@ public class ApplicationViewAdvisorTest extends TestCase {
 		lnf.setLogo(ICON_ECLIPSE);
 		Image logoImage = ReflectionUtils.invokeHidden(advisor, "getLogoImage");
 		assertNotNull(logoImage);
-		assertEquals(eclipseImage.getImageData().width, logoImage.getImageData().width);
-		assertEquals(eclipseImage.getImageData().height, logoImage.getImageData().height);
+		assertEquals(eclipseImage.getBounds().width, logoImage.getBounds().width);
+		assertEquals(eclipseImage.getBounds().height, logoImage.getBounds().height);
 
 		Image missingImage = ImageStore.getInstance().getMissingImage();
 		lnf.setLogo(ICON_ECLIPSE + "4711");
 		logoImage = ReflectionUtils.invokeHidden(advisor, "getLogoImage");
 		assertNotNull(logoImage);
-		assertEquals(missingImage.getImageData().width, logoImage.getImageData().width);
-		assertEquals(missingImage.getImageData().height, logoImage.getImageData().height);
+		assertEquals(missingImage.getBounds().width, logoImage.getBounds().width);
+		assertEquals(missingImage.getBounds().height, logoImage.getBounds().height);
 
 	}
 

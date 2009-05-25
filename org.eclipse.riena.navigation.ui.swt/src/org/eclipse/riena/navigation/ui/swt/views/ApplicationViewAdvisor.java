@@ -20,7 +20,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -470,11 +469,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		if (logoImage == null) {
 			return;
 		}
-		ImageData imageData = logoImage.getImageData();
-		if (imageData == null) {
+		Rectangle imageBounds = logoImage.getBounds();
+		if (imageBounds == null) {
 			return;
 		}
-		logoData.width = imageData.width + ShellLogoRenderer.getHorizontalLogoMargin() * 2;
+		logoData.width = imageBounds.width + ShellLogoRenderer.getHorizontalLogoMargin() * 2;
 		Integer hPos = getHorizontalLogoPosition();
 		switch (hPos) {
 		case SWT.CENTER:

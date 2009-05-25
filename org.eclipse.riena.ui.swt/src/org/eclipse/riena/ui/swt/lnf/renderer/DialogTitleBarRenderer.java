@@ -10,15 +10,16 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
-import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
+
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Renderer of the title bar of a dialog.
@@ -140,8 +141,8 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 		}
 
 		int x = BORDER_IMAGE_GAP;
-		int imageWidth = image.getImageData().width;
-		int imageHeight = image.getImageData().height;
+		int imageWidth = image.getBounds().width;
+		int imageHeight = image.getBounds().height;
 		int y = getHeight() / 2 - imageHeight / 2;
 
 		gc.drawImage(image, x, y);

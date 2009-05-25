@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.lnf.FontLnfResource;
@@ -18,11 +24,6 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Tests of the class {@link DialogTitleBarRenderer}.
@@ -94,8 +95,8 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 
 		Rectangle bounds = renderer.paintImage(gc);
 		assertFalse(bounds.equals(new Rectangle(0, 0, 0, 0)));
-		assertEquals(image.getImageData().width, bounds.width);
-		assertEquals(image.getImageData().height, bounds.height);
+		assertEquals(image.getBounds().width, bounds.width);
+		assertEquals(image.getBounds().height, bounds.height);
 
 		lnf.setHideOsBorder(false);
 		bounds = renderer.paintImage(gc);

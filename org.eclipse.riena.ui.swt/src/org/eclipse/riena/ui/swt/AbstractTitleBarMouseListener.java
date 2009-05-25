@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -26,6 +22,11 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * TODO After any mouse operation a method of this listener is called.
@@ -382,9 +383,10 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 
 		Image cursorImage = LnfManager.getLnf().getImage(lnfKey);
 		if (cursorImage != null) {
+			Rectangle imageBounds = cursorImage.getBounds();
+			int x = imageBounds.width / 2;
+			int y = imageBounds.height / 2;
 			ImageData imageData = cursorImage.getImageData();
-			int x = imageData.width / 2;
-			int y = imageData.height / 2;
 			cursor = new Cursor(control.getDisplay(), imageData, x, y);
 		}
 		return cursor;
