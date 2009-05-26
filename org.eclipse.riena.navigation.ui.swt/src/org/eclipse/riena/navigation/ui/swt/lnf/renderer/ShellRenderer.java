@@ -10,17 +10,18 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
-import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
+
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Renderer of the buttons (min.,max. and close) and the title of the shell.
@@ -156,7 +157,7 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 		gc.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
 		Image logo = getBackgroundImage();
 		if (logo != null) {
-			int y = logo.getImageData().height;
+			int y = logo.getBounds().height;
 			int h = getBounds().height - y;
 			gc.fillRectangle(0, y, getBounds().width, h);
 		}

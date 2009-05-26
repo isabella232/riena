@@ -11,13 +11,14 @@
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Renderer of the buttons (min.,max. and close), the title , the image and
@@ -178,12 +179,13 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 		}
 		int y = 0;
 		if (image != null) {
-			y = getBounds().height / 2 - image.getImageData().height / 2;
+			Rectangle imgBounds = image.getBounds();
+			y = getBounds().height / 2 - imgBounds.height / 2;
 			y -= 2;
-			x -= image.getImageData().width;
+			x -= imgBounds.width;
 			gc.drawImage(image, x, y);
-			btnBounds[btnIndex].width = image.getImageData().width;
-			btnBounds[btnIndex].height = image.getImageData().height;
+			btnBounds[btnIndex].width = imgBounds.width;
+			btnBounds[btnIndex].height = imgBounds.height;
 		}
 		btnBounds[btnIndex].x = x;
 		btnBounds[btnIndex].y = y;

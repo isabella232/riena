@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
@@ -18,11 +23,6 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Tests of the class {@link AbstractTitleBarRenderer}.
@@ -87,7 +87,7 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 	public void testPaintButton() {
 
 		Image image = ImageStore.getInstance().getImage(ICON_ECLIPSE);
-		ImageData imageData = image.getImageData();
+		Rectangle imageBounds = image.getBounds();
 
 		LnfManager.setLnf(new TitleBarLnf());
 		renderer.setCloseable(true);
@@ -100,8 +100,8 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 		assertTrue(btnBounds[0].x < 100);
 		assertTrue(btnBounds[0].x > 0);
 		assertTrue(btnBounds[0].y > 0);
-		assertEquals(imageData.width, btnBounds[0].width);
-		assertEquals(imageData.height, btnBounds[0].height);
+		assertEquals(imageBounds.width, btnBounds[0].width);
+		assertEquals(imageBounds.height, btnBounds[0].height);
 		for (int i = 1; i < btnBounds.length; i++) {
 			assertEquals(new Rectangle(0, 0, 0, 0), btnBounds[i]);
 		}
@@ -111,8 +111,8 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 		assertTrue(btnBounds[1].x > 0);
 		assertTrue(btnBounds[1].x < btnBounds[0].x);
 		assertEquals(btnBounds[0].y, btnBounds[1].y);
-		assertEquals(imageData.width, btnBounds[1].width);
-		assertEquals(imageData.height, btnBounds[1].height);
+		assertEquals(imageBounds.width, btnBounds[1].width);
+		assertEquals(imageBounds.height, btnBounds[1].height);
 		for (int i = 2; i < btnBounds.length; i++) {
 			assertEquals(new Rectangle(0, 0, 0, 0), btnBounds[i]);
 		}

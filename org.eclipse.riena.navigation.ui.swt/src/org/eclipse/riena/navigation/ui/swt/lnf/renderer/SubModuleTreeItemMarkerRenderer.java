@@ -13,18 +13,18 @@ package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 import java.util.Collection;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.TreeItem;
+
 import org.eclipse.riena.ui.core.marker.IIconizableMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * Renderer of the markers (e.g. error or mandatory marker) of a item in the
@@ -116,13 +116,13 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 
 		Rectangle itemImageBounds = new Rectangle(0, 0, 0, 0);
 		if (itemImage != null) {
-			ImageData imageData = itemImage.getImageData();
-			itemImageBounds = new Rectangle(imageData.x, imageData.y, imageData.width, imageData.height);
+			Rectangle imageBounds = itemImage.getBounds();
+			itemImageBounds = new Rectangle(imageBounds.x, imageBounds.y, imageBounds.width, imageBounds.height);
 		}
 		Rectangle itemMarkerBounds = new Rectangle(0, 0, 0, 0);
 		if (markerImage != null) {
-			ImageData imageData = markerImage.getImageData();
-			itemMarkerBounds = new Rectangle(imageData.x, imageData.y, imageData.width, imageData.height);
+			Rectangle markerBounds = markerImage.getBounds();
+			itemMarkerBounds = new Rectangle(markerBounds.x, markerBounds.y, markerBounds.width, markerBounds.height);
 		}
 
 		int x = getBounds().x;

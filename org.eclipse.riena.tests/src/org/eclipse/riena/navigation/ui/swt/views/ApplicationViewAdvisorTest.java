@@ -17,6 +17,7 @@ import org.easymock.EasyMock;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 
@@ -122,15 +123,19 @@ public class ApplicationViewAdvisorTest extends TestCase {
 		lnf.setLogo(ICON_ECLIPSE);
 		Image logoImage = ReflectionUtils.invokeHidden(advisor, "getLogoImage");
 		assertNotNull(logoImage);
-		assertEquals(eclipseImage.getImageData().width, logoImage.getImageData().width);
-		assertEquals(eclipseImage.getImageData().height, logoImage.getImageData().height);
+		Rectangle imageBounds = eclipseImage.getBounds();
+		Rectangle logoBounds = logoImage.getBounds();
+		assertEquals(imageBounds.width, logoBounds.width);
+		assertEquals(imageBounds.height, logoBounds.height);
 
 		Image missingImage = ImageStore.getInstance().getMissingImage();
 		lnf.setLogo(ICON_ECLIPSE + "4711");
 		logoImage = ReflectionUtils.invokeHidden(advisor, "getLogoImage");
 		assertNotNull(logoImage);
-		assertEquals(missingImage.getImageData().width, logoImage.getImageData().width);
-		assertEquals(missingImage.getImageData().height, logoImage.getImageData().height);
+		logoBounds = logoImage.getBounds();
+		Rectangle missingBounds = missingImage.getBounds();
+		assertEquals(missingBounds.width, logoBounds.width);
+		assertEquals(missingBounds.height, logoBounds.height);
 
 	}
 

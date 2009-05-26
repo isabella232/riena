@@ -14,8 +14,8 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
@@ -75,9 +75,9 @@ public class GrabCorner extends Composite {
 		Point grabCornerSize = new Point(getShellBorderWidth(), getShellBorderWidth());
 		Image grabCorner = getGrabCornerImage();
 		if ((grabCorner != null) && isResizeable()) {
-			ImageData imageData = grabCorner.getImageData();
-			int width = grabCornerSize.x + imageData.width;
-			int height = grabCornerSize.y + imageData.height;
+			Rectangle imageBounds = grabCorner.getBounds();
+			int width = grabCornerSize.x + imageBounds.width;
+			int height = grabCornerSize.y + imageBounds.height;
 			grabCornerSize = new Point(width, height);
 		}
 		return grabCornerSize;

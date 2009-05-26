@@ -11,13 +11,6 @@
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.riena.ui.swt.utils.ImageStore;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -25,6 +18,14 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
+
+import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Renderer of a tab of the switcher between sub-applications.
@@ -191,9 +192,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 			y = getBounds().y + BORDER_TOP_WIDTH + TEXT_TOP_INSET;
 			FontMetrics fontMetrics = gc.getFontMetrics();
 			y += fontMetrics.getHeight() / 2;
-			y -= getImage().getImageData().height / 2;
+			y -= getImage().getBounds().height / 2;
 			gc.drawImage(getImage(), x, y);
-			x += getImage().getImageData().width + ICON_TEXT_GAP;
+			x += getImage().getBounds().width + ICON_TEXT_GAP;
 		}
 
 		// Text
@@ -279,7 +280,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		width = width + BORDER_LEFT_WIDTH + BORDER_RIGHT_WIDTH + TEXT_LEFT_INSET + TEXT_RIGHT_INSET;
 		// Icon
 		if (getImage() != null) {
-			width += getImage().getImageData().width + ICON_TEXT_GAP;
+			width += getImage().getBounds().width + ICON_TEXT_GAP;
 		}
 
 		int height = fontMetrics.getHeight();

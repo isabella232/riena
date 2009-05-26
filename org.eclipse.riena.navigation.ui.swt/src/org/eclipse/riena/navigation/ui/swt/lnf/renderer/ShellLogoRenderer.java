@@ -42,8 +42,8 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 		if (logo == null) {
 			return;
 		}
-		int logoWidth = logo.getImageData().width;
-		int logoHeight = logo.getImageData().height;
+		int logoWidth = logo.getBounds().width;
+		int logoHeight = logo.getBounds().height;
 		int hMargin = getHorizontalLogoMargin();
 		int vMargin = getVerticalLogoMargin();
 

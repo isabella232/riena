@@ -10,10 +10,24 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.application;
 
+import org.osgi.framework.Bundle;
+
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.Workbench;
+import org.eclipse.ui.splash.AbstractSplashHandler;
+
 import org.eclipse.riena.core.exception.ExceptionFailure;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -28,18 +42,6 @@ import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewDefinition;
 import org.eclipse.riena.navigation.ui.swt.splashHandlers.AbstractLoginSplashHandler;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationAdvisor;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.Workbench;
-import org.eclipse.ui.splash.AbstractSplashHandler;
-import org.osgi.framework.Bundle;
 
 /**
  * Creates and starts an empty swt application Subclass to create own model or
@@ -263,7 +265,8 @@ public abstract class SwtApplication extends AbstractApplication {
 
 	private void initilizeShellBackgroundImage(Shell shell, String imageName) {
 		Image bi = ImageStore.getInstance().getImage(imageName);
-		shell.setSize(bi.getImageData().width, bi.getImageData().height);
+		Rectangle imageBounds = bi.getBounds();
+		shell.setSize(imageBounds.width, imageBounds.height);
 		shell.setBackgroundImage(bi);
 	}
 
