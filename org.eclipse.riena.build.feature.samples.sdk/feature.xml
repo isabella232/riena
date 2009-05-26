@@ -4,7 +4,7 @@
       label="Riena SDK Samples (TP Only)"
       version="1.1.0.RC1">
 
-   <description url="http://www.example.com/description">
+   <description>
       This feature contains the corresponding components for Riena
 Samples 
 that is intended to be added to target platforms at development
@@ -15,9 +15,9 @@ DONT INSTALL into your Eclipse IDE. Only install into your target
 platform.
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      /*******************************************************************************
-* Copyright (c) 2007, 2008 compeople AG and others.
+   <copyright>
+      *******************************************************************************
+* Copyright (c) 2007, 2008, 2009 compeople AG and others.
 * All rights reserved. This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License
 v1.0
@@ -26,11 +26,11 @@ v1.0
 *
 * Contributors:
 *    compeople AG - initial API and implementation
-*******************************************************************************/
+*******************************************************************************
    </copyright>
 
-   <license url="http://www.example.com/license">
-      Supplied under EPL 1.0
+   <license url="%licenseURL">
+      %license
    </license>
 
    <plugin
