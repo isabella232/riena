@@ -66,9 +66,9 @@ public class LnfManagerTest extends TestCase {
 	public void testDispose() throws Exception {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		assertNotNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
+		assertNotNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
 		LnfManager.dispose();
-		assertNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
+		assertNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
 
 	}
 

@@ -218,8 +218,13 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		// Text
 		String text = getTitle();
 		if (!StringUtils.isEmpty(text)) {
-			gc.setForeground(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
-			if (!isEnabled()) {
+			if (isEnabled()) {
+				if (isActive() || flasherSupport.isProcessMarkerVisible()) {
+					gc.setForeground(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
+				} else {
+					gc.setForeground(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND));
+				}
+			} else {
 				gc.setForeground(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND));
 			}
 			int y2 = (getHeight() - gc.getFontMetrics().getHeight()) / 2;
