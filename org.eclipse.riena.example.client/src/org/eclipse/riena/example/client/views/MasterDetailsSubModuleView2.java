@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
-import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -34,13 +34,18 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * @see MasterDetailsSubModuleController
  */
 public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubModuleController> {
+	public MasterDetailsSubModuleView2() {
+	}
 
 	public static final String ID = MasterDetailsSubModuleView2.class.getName();
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		parent.setLayout(createFillLayout(5));
+		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
+		layout.marginHeight = 5;
+		layout.marginWidth = 5;
+		parent.setLayout(layout);
 		createMasterDetails(parent);
 	}
 
@@ -49,25 +54,12 @@ public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubM
 
 	private Group createMasterDetails(Composite parent) {
 		Group result = UIControlsFactory.createGroup(parent, "Master/Details:"); //$NON-NLS-1$
-		result.setLayout(createFillLayout(20));
+		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
+		layout.marginHeight = 20;
+		layout.marginWidth = 20;
+		result.setLayout(layout);
 
 		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.TOP) {
-			@Override
-			protected void createDetails(Composite parent) {
-				GridLayoutFactory.fillDefaults().numColumns(3).spacing(6, 0).equalWidth(false).applyTo(parent);
-
-				Text txtFirst = UIControlsFactory.createText(parent);
-				GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(txtFirst);
-				addUIControl(txtFirst, "first"); //$NON-NLS-1$
-
-				Text txtLast = UIControlsFactory.createText(parent);
-				GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(txtLast);
-				addUIControl(txtLast, "last"); //$NON-NLS-1$
-
-				Button btnApply = new Button(parent, SWT.PUSH | SWT.FLAT);
-				addUIControl(btnApply, MasterDetailsComposite.BIND_ID_APPLY);
-			}
-
 			@Override
 			protected Button createButtonApply(Composite btnComposite) {
 				return null;
@@ -75,13 +67,23 @@ public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubM
 		};
 		addUIControl(mdComposite, "master2"); //$NON-NLS-1$
 
-		return result;
-	}
+		Composite details = mdComposite.getDetails();
+		GridLayout gridLayout = new GridLayout(3, false);
+		gridLayout.horizontalSpacing = 6;
+		details.setLayout(gridLayout);
+		{
+			Text txtFirst = UIControlsFactory.createText(details);
+			txtFirst.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			mdComposite.addUIControl(txtFirst, "first"); //$NON-NLS-1$
 
-	private FillLayout createFillLayout(int margin) {
-		FillLayout result = new FillLayout(SWT.HORIZONTAL);
-		result.marginHeight = margin;
-		result.marginWidth = margin;
+			Text txtLast = UIControlsFactory.createText(details);
+			txtLast.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			mdComposite.addUIControl(txtLast, "last"); //$NON-NLS-1$
+
+			Button btnApply = new Button(details, SWT.PUSH | SWT.FLAT);
+			mdComposite.addUIControl(btnApply, MasterDetailsComposite.BIND_ID_APPLY);
+		}
+
 		return result;
 	}
 }

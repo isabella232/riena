@@ -179,7 +179,7 @@ public class MasterDetailsComposite extends Composite implements IComplexCompone
 	 *            unique within this composite
 	 * @see #getUIControls()
 	 */
-	protected final void addUIControl(Object uiControl, String bindingId) {
+	public final void addUIControl(Object uiControl, String bindingId) {
 		Assert.isNotNull(uiControl);
 		Assert.isNotNull(bindingId);
 		controls.add(uiControl);
