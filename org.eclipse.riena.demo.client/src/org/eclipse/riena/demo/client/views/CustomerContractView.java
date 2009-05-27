@@ -12,10 +12,10 @@ package org.eclipse.riena.demo.client.views;
 
 import com.swtdesigner.SWTResourceManager;
 
-import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -80,40 +80,40 @@ public class CustomerContractView extends SubModuleView<CustomerContractControll
 		group.setLayout(new FillLayout());
 		group.setBounds(130, 120, 537, 310);
 
-		MasterDetailsComposite mdComposite = new MasterDetailsComposite(group, SWT.NONE, SWT.BOTTOM) {
-			@Override
-			protected void createDetails(Composite parent) {
-				GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(parent);
+		MasterDetailsComposite mdComposite = new MasterDetailsComposite(group, SWT.NONE, SWT.BOTTOM);
+		{
+			Composite details = mdComposite.getDetails();
+			details.setLayout(new GridLayout(2, false));
 
-				Label lcontractNo = UIControlsFactory.createLabel(parent, "ContractNo"); //$NON-NLS-1$
-				Text contractNo = UIControlsFactory.createText(parent);
-				lcontractNo.setForeground(SWTResourceManager.getColor(1, 0, 0));
-				GridDataFactory.fillDefaults().grab(true, false).applyTo(contractNo);
-				//				contractNo.setData("binding_property", "contractno");
-				addUIControl(contractNo, "contractno"); //$NON-NLS-1$
+			Label lcontractNo = UIControlsFactory.createLabel(details, "ContractNo"); //$NON-NLS-1$
+			Text contractNo = UIControlsFactory.createText(details);
+			lcontractNo.setForeground(SWTResourceManager.getColor(1, 0, 0));
+			contractNo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+			//				contractNo.setData("binding_property", "contractno");
+			mdComposite.addUIControl(contractNo, "contractno"); //$NON-NLS-1$
 
-				Label lDescription = UIControlsFactory.createLabel(parent, "Description"); //$NON-NLS-1$
-				Text description = UIControlsFactory.createText(parent);
-				lDescription.setForeground(SWTResourceManager.getColor(1, 0, 0));
-				GridDataFactory.fillDefaults().grab(true, false).applyTo(description);
-				//				description.setData("binding_property", "description");
-				addUIControl(description, "description"); //$NON-NLS-1$
+			Label lDescription = UIControlsFactory.createLabel(details, "Description"); //$NON-NLS-1$
+			Text description = UIControlsFactory.createText(details);
+			lDescription.setForeground(SWTResourceManager.getColor(1, 0, 0));
+			description.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+			//				description.setData("binding_property", "description");
+			mdComposite.addUIControl(description, "description"); //$NON-NLS-1$
 
-				Label lValue = UIControlsFactory.createLabel(parent, "Value"); //$NON-NLS-1$
-				Text value = UIControlsFactory.createText(parent);
-				lValue.setForeground(SWTResourceManager.getColor(1, 0, 0));
-				GridDataFactory.fillDefaults().grab(true, false).applyTo(value);
-				//				value.setData("binding_property", "value");
-				addUIControl(value, "value"); //$NON-NLS-1$
+			Label lValue = UIControlsFactory.createLabel(details, "Value"); //$NON-NLS-1$
+			Text value = UIControlsFactory.createText(details);
+			lValue.setForeground(SWTResourceManager.getColor(1, 0, 0));
+			value.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+			//				value.setData("binding_property", "value");
+			mdComposite.addUIControl(value, "value"); //$NON-NLS-1$
 
-				Label lStatus = UIControlsFactory.createLabel(parent, "Status"); //$NON-NLS-1$
-				Text status = UIControlsFactory.createText(parent);
-				lStatus.setForeground(SWTResourceManager.getColor(1, 0, 0));
-				GridDataFactory.fillDefaults().grab(true, false).applyTo(status);
-				//				status.setData("binding_property", "status");
-				addUIControl(status, "status"); //$NON-NLS-1$
-			}
-		};
+			Label lStatus = UIControlsFactory.createLabel(details, "Status"); //$NON-NLS-1$
+			Text status = UIControlsFactory.createText(details);
+			lStatus.setForeground(SWTResourceManager.getColor(1, 0, 0));
+			status.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+			//				status.setData("binding_property", "status");
+			mdComposite.addUIControl(status, "status"); //$NON-NLS-1$
+		}
+
 		//		mdComposite.setData("binding_property","contracts");
 		addUIControl(mdComposite, "contracts"); //$NON-NLS-1$
 		mdComposite.setBounds(5, 15, 520, 350);

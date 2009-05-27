@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
-import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
@@ -34,13 +34,18 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * @see MasterDetailsSubModuleController
  */
 public class MasterDetailsSubModuleView extends SubModuleView<MasterDetailsSubModuleController> {
+	public MasterDetailsSubModuleView() {
+	}
 
 	public static final String ID = MasterDetailsSubModuleView.class.getName();
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		parent.setLayout(createFillLayout(5));
+		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
+		layout.marginHeight = 5;
+		layout.marginWidth = 5;
+		parent.setLayout(layout);
 		createMasterDetails(parent);
 	}
 
@@ -49,43 +54,39 @@ public class MasterDetailsSubModuleView extends SubModuleView<MasterDetailsSubMo
 
 	private Group createMasterDetails(Composite parent) {
 		Group result = UIControlsFactory.createGroup(parent, "Master/Details:"); //$NON-NLS-1$
-		result.setLayout(createFillLayout(20));
+		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
+		layout.marginHeight = 20;
+		layout.marginWidth = 20;
+		result.setLayout(layout);
 
-		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.BOTTOM) {
-			@Override
-			protected void createDetails(Composite parent) {
-				GridLayoutFactory.fillDefaults().numColumns(2).spacing(10, 10).equalWidth(false).applyTo(parent);
+		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.BOTTOM);
+		Composite details = mdComposite.getDetails();
+		details.setLayout(new GridLayout(2, false));
 
-				UIControlsFactory.createLabel(parent, "First Name:"); //$NON-NLS-1$
-				Text txtFirst = UIControlsFactory.createText(parent);
-				GridDataFactory.fillDefaults().grab(true, false).applyTo(txtFirst);
-				addUIControl(txtFirst, "first"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(details, "First Name:"); //$NON-NLS-1$
+		Text txtFirst = UIControlsFactory.createText(details);
+		txtFirst.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		mdComposite.addUIControl(txtFirst, "first"); //$NON-NLS-1$
 
-				UIControlsFactory.createLabel(parent, "Last Name:"); //$NON-NLS-1$
-				Text txtLast = UIControlsFactory.createText(parent);
-				GridDataFactory.fillDefaults().grab(true, false).applyTo(txtLast);
-				addUIControl(txtLast, "last"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(details, "Last Name:"); //$NON-NLS-1$
+		Text txtLast = UIControlsFactory.createText(details);
+		txtLast.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		mdComposite.addUIControl(txtLast, "last"); //$NON-NLS-1$
 
-				UIControlsFactory.createLabel(parent, "Gender:"); //$NON-NLS-1$
-				ChoiceComposite ccGender = new ChoiceComposite(parent, SWT.NONE, false);
-				ccGender.setOrientation(SWT.HORIZONTAL);
-				addUIControl(ccGender, "gender"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(details, "Gender:"); //$NON-NLS-1$
+		ChoiceComposite ccGender = new ChoiceComposite(details, SWT.NONE, false);
+		ccGender.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		ccGender.setOrientation(SWT.HORIZONTAL);
+		mdComposite.addUIControl(ccGender, "gender"); //$NON-NLS-1$
 
-				UIControlsFactory.createLabel(parent, "Pets:"); //$NON-NLS-1$
-				ChoiceComposite ccPets = new ChoiceComposite(parent, SWT.NONE, true);
-				ccPets.setOrientation(SWT.HORIZONTAL);
-				addUIControl(ccPets, "pets"); //$NON-NLS-1$
-			}
-		};
-		addUIControl(mdComposite, "master"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(details, "Pets:"); //$NON-NLS-1$
+		ChoiceComposite ccPets = new ChoiceComposite(details, SWT.NONE, true);
+		ccPets.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		ccPets.setOrientation(SWT.HORIZONTAL);
+		mdComposite.addUIControl(ccPets, "pets"); //$NON-NLS-1$
 
-		return result;
-	}
+		this.addUIControl(mdComposite, "master"); //$NON-NLS-1$
 
-	private FillLayout createFillLayout(int margin) {
-		FillLayout result = new FillLayout(SWT.HORIZONTAL);
-		result.marginHeight = margin;
-		result.marginWidth = margin;
 		return result;
 	}
 }
