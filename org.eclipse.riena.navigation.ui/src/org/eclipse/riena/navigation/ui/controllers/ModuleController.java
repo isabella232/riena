@@ -109,24 +109,24 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	}
 
 	private void updateIcon() {
-		updateIcon(windowRidget);
+		updateIcon(getWindowRidget());
 	}
 
 	private void updateLabel() {
-		if (windowRidget != null) {
-			windowRidget.setTitle(getNavigationNode().getLabel());
+		if (getWindowRidget() != null) {
+			getWindowRidget().setTitle(getNavigationNode().getLabel());
 		}
 	}
 
 	private void updateCloseable() {
-		if (windowRidget != null) {
-			windowRidget.setCloseable(getNavigationNode().isClosable());
+		if (getWindowRidget() != null) {
+			getWindowRidget().setCloseable(getNavigationNode().isClosable());
 		}
 	}
 
 	private void updateActive() {
-		if (windowRidget != null) {
-			windowRidget.setActive(getNavigationNode().isActivated());
+		if (getWindowRidget() != null) {
+			getWindowRidget().setActive(getNavigationNode().isActivated());
 		}
 	}
 
