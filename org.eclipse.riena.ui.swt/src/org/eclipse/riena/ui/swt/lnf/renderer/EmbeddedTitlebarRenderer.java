@@ -126,7 +126,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 
 		gc.setAdvanced(true);
-		gc.setAntialias(SWT.OFF);
+		gc.setAntialias(SWT.ON);
 
 		Font font = getTitlebarFont();
 		gc.setFont(font);
@@ -219,7 +219,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		String text = getTitle();
 		if (!StringUtils.isEmpty(text)) {
 			if (isEnabled()) {
-				if (isActive() || flasherSupport.isProcessMarkerVisible()) {
+				if (isActive()) {
 					gc.setForeground(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
 				} else {
 					gc.setForeground(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND));

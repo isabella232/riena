@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
-import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+
+import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Renderer of the border of the (undecorated (no OS-border, no OS-titlebar))
@@ -77,7 +78,7 @@ public class DialogBorderRenderer extends AbstractLnfRenderer {
 		}
 
 		gc.setAdvanced(true);
-		gc.setAntialias(SWT.OFF);
+		gc.setAntialias(SWT.ON);
 
 		// Border
 
