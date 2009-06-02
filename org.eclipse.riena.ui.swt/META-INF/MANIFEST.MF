@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Swt Plug-in 
 Bundle-SymbolicName: org.eclipse.riena.ui.swt;singleton:=true
-Bundle-Version: 1.1.0.RC2
+Bundle-Version: 1.1.0.RC3
 Bundle-Activator: org.eclipse.riena.internal.ui.swt.Activator
 Require-Bundle: org.eclipse.jface,
  org.eclipse.nebula.widgets.compositetable;bundle-version="1.0.0",
