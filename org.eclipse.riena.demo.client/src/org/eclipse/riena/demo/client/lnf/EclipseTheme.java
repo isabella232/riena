@@ -52,7 +52,8 @@ public class EclipseTheme extends RienaDefaultTheme {
 		//		table.put("Text.background", new ColorLnfResource(230, 230, 230)); //$NON-NLS-1$
 
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR, new ColorLnfResource(172, 167, 226));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_FOREGROUND, new ColorLnfResource(0, 0, 0));
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_FOREGROUND, new ColorLnfResource(0, 0, 0));
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND, new ColorLnfResource(0, 0, 0));
 
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR, table
 				.get(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR));

@@ -38,6 +38,8 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(GC gc, Object value) {
 
+		super.paint(gc, value);
+
 		Image logo = getLogoImage();
 		if (logo == null) {
 			return;

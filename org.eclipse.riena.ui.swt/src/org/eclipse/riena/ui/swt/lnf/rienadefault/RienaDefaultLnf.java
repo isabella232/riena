@@ -14,18 +14,20 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Resource;
+
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
+import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfRendererDesc;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Resource;
 
 /**
  * Default Look and Feel of Riena.
@@ -129,6 +131,10 @@ public class RienaDefaultLnf {
 	 * Puts the colors to resource table.
 	 */
 	protected void initColorDefaults() {
+
+		getResourceTable().put("black", new ColorLnfResource(0, 0, 0)); //$NON-NLS-1$
+		getResourceTable().put("white", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
+
 		if (getTheme() != null) {
 			getTheme().addCustomColors(getResourceTable());
 		}
@@ -292,14 +298,23 @@ public class RienaDefaultLnf {
 	 *         <code>false</code> if the map contains no mapping for this key.
 	 */
 	public Boolean getBooleanSetting(String key) {
+		return getBooleanSetting(key, false);
+	}
+
+	/**
+	 * Returns the boolean value of the setting for the given key
+	 * 
+	 * @param key
+	 *            - key whose associated setting is to be returned.
+	 * @return the setting to which this setting maps the specified key, or
+	 *         <code>false</code> if the map contains no mapping for this key.
+	 */
+	public Boolean getBooleanSetting(String key, boolean defalutValue) {
 		Object value = getSetting(key);
-		if (value == null) {
-			return false;
-		}
 		if (value instanceof Boolean) {
 			return (Boolean) value;
 		} else {
-			return false;
+			return defalutValue;
 		}
 	}
 

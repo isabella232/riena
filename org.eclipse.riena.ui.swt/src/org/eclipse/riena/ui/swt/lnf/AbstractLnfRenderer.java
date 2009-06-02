@@ -12,11 +12,14 @@ package org.eclipse.riena.ui.swt.lnf;
 
 import java.util.Collection;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Rectangle;
+
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Rectangle;
 
 /**
  * Renderer of a widget or a part of a widget.
@@ -30,7 +33,10 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#paint(org.eclipse.swt.graphics.GC,
 	 *      java.lang.Object)
 	 */
-	public abstract void paint(GC gc, Object value);
+	public void paint(GC gc, Object value) {
+		Assert.isNotNull(gc);
+		initGC(gc);
+	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#getBounds()
@@ -81,4 +87,18 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 	protected boolean isEnabled() {
 		return getMarkersOfType(DisabledMarker.class).isEmpty();
 	}
+
+	/**
+	 * Inits the given graphics context.
+	 * 
+	 * @param gc
+	 *            - graphics context
+	 */
+	protected void initGC(GC gc) {
+
+		gc.setAdvanced(true);
+		gc.setAntialias(SWT.ON);
+
+	}
+
 }

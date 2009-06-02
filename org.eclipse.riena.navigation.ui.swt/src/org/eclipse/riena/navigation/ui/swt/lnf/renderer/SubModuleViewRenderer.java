@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Rectangle;
+
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Rectangle;
 
 /**
  * Renderer of the active sub module
@@ -35,6 +36,8 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	 */
 	@Override
 	public void paint(GC gc, Object value) {
+
+		super.paint(gc, value);
 
 		// border
 		getBorderRenderer().setActive(true);

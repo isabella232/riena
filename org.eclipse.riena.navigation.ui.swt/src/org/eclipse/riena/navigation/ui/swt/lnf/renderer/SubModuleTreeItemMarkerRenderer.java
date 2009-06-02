@@ -51,7 +51,8 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(GC gc, Object value) {
 
-		Assert.isNotNull(gc);
+		super.paint(gc, value);
+
 		Assert.isNotNull(value);
 		Assert.isTrue(value instanceof TreeItem);
 

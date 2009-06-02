@@ -32,6 +32,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
+	private final static Color DEFAULT_COLOR = LnfManager.getLnf().getColor("black"); //$NON-NLS-1$
+
 	public final static int ACTIVE_Y_OFFSET = 2;
 	private final static int BORDER_TOP_WIDTH = 3;
 	private final static int BORDER_BOTTOM_WIDTH = 1;
@@ -51,7 +53,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	private Image image;
 	private String icon;
 	private String label;
-	private boolean activated;
+	private boolean active;
 	private Control control;
 	private FlasherSupportForRenderer flasherSupport;
 
@@ -71,6 +73,8 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(GC gc, Object value) {
 
+		super.paint(gc, value);
+
 		Assert.isNotNull(gc);
 		Assert.isNotNull(value);
 		Assert.isTrue(value instanceof Control);
@@ -78,27 +82,22 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		int leftInset = 0;
-		if (isActivated()) {
+		if (isActive()) {
 			leftInset = ACTIVE_LEFT_INSET;
 		}
 		int rightInset = 0;
-		if (isActivated()) {
+		if (isActive()) {
 			rightInset = ACTIVE_RIGHT_INSET;
 		}
 		Font font = getTabFont();
 		gc.setFont(font);
 
 		// Background
-		Color backgroundStartColor = lnf
-				.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR);
-		if (isActivated() || flasherSupport.isProcessMarkerVisible()) {
-			backgroundStartColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR);
-		}
+		Color backgroundStartColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR,
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR, null);
 		gc.setForeground(backgroundStartColor);
-		Color backgroundEndColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR);
-		if (isActivated() || flasherSupport.isProcessMarkerVisible()) {
-			backgroundEndColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR);
-		}
+		Color backgroundEndColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR,
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, null);
 		gc.setBackground(backgroundEndColor);
 		int x = getBounds().x + BORDER_LEFT_WIDTH - 1 - leftInset;
 		int y = getBounds().y + 1;
@@ -126,7 +125,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		if (!isEnabled()) {
 			innerBorderColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR);
 		}
-		if (!isActivated()) {
+		if (!isActive()) {
 			gc.setForeground(innerBorderColor);
 			x += 1;
 			x2 += 1;
@@ -168,14 +167,14 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		x2 = x;
 		y2 = getBounds().y + getHeight() - 1;
 		gc.drawLine(x, y, x2, y2);
-		if (!isActivated()) {
+		if (!isActive()) {
 			gc.setForeground(innerBorderColor);
 			x -= 1;
 			x2 -= 1;
 			gc.drawLine(x, y, x2, y2);
 		}
 		// - bottom
-		if (isActivated()) {
+		if (isActive()) {
 			gc.setForeground(backgroundEndColor);
 		} else {
 			gc.setForeground(borderBottomLeftColor);
@@ -198,16 +197,15 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		}
 
 		// Text
-		Color foreground = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_FOREGROUND);
-		if (!isEnabled()) {
-			foreground = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND);
-		}
-		gc.setForeground(foreground);
+		Color textColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_FOREGROUND,
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND,
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND);
+		gc.setForeground(textColor);
 		y = getBounds().y + BORDER_TOP_WIDTH + TEXT_TOP_INSET;
 		gc.drawText(getLabel(), x, y, true);
 
 		// Selection
-		if (isActivated() || flasherSupport.isProcessMarkerVisible()) {
+		if (isActive() || flasherSupport.isProcessMarkerVisible()) {
 			Color selColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
 			gc.setForeground(selColor);
 			gc.setBackground(selColor);
@@ -285,7 +283,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		int height = fontMetrics.getHeight();
 		height = height + BORDER_TOP_WIDTH + BORDER_BOTTOM_WIDTH + TEXT_TOP_INSET + TEXT_BOTTOM_INSET;
-		if (isActivated()) {
+		if (isActive()) {
 			height += ACTIVE_BOTTOM_INSET;
 		}
 
@@ -334,9 +332,6 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		this.image = image;
 	}
 
-	/**
-	 * @return the label
-	 */
 	public String getLabel() {
 		if (label == null) {
 			label = ""; //$NON-NLS-1$
@@ -344,27 +339,16 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		return label;
 	}
 
-	/**
-	 * @param label
-	 *            the label to set
-	 */
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
-	/**
-	 * @return the activated
-	 */
-	public boolean isActivated() {
-		return activated;
+	public boolean isActive() {
+		return active;
 	}
 
-	/**
-	 * @param activated
-	 *            the activated to set
-	 */
-	public void setActivated(boolean activated) {
-		this.activated = activated;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	/**
@@ -381,6 +365,73 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 				control.redraw();
 			}
 		}
+	}
+
+	/**
+	 * Returns according to the states of the title bar the color of one of the
+	 * given key.<br>
+	 * If one key is not needed, the parameter can be {@code null}.
+	 * 
+	 * @param activeColorKey
+	 * @param passiveColorKey
+	 * @param disabeldColorKey
+	 * @return color
+	 * @TODO same code in EmbeddedTitlebarRenderer
+	 */
+	private Color getColor(String activeColorKey, String passiveColorKey, String disabeldColorKey) {
+
+		Color color = null;
+
+		String colorKey = getKey(activeColorKey, passiveColorKey, disabeldColorKey);
+		if (colorKey == null) {
+			colorKey = activeColorKey;
+		}
+
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		color = lnf.getColor(colorKey);
+		if (color == null) {
+			return DEFAULT_COLOR;
+		}
+
+		return color;
+
+	}
+
+	/**
+	 * Returns according to the state of the title bar one of the given keys.<br>
+	 * If one key is not needed, the parameter can be {@code null}.
+	 * 
+	 * @param activeKey
+	 * @param passiveKey
+	 * @param disabeldKey
+	 * @return key
+	 * @TODO same code in EmbeddedTitlebarRenderer Returns according to the
+	 */
+	private String getKey(String activeKey, String passiveKey, String disabeldKey) {
+
+		String key = null;
+		if (isEnabled()) {
+			if (isActive() || flasherSupport.isProcessMarkerVisible()) {
+				key = activeKey;
+			} else {
+				key = passiveKey;
+			}
+		} else {
+			key = disabeldKey;
+		}
+
+		if (key == null) {
+			key = activeKey;
+		}
+		if (key == null) {
+			key = passiveKey;
+		}
+		if (key == null) {
+			key = disabeldKey;
+		}
+
+		return key;
+
 	}
 
 }

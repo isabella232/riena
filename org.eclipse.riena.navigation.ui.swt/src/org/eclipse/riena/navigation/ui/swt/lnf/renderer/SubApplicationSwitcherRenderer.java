@@ -14,17 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Control;
+
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationItem;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Control;
 
 /**
  * Renderer of the switcher between to sub applications.
@@ -41,6 +42,8 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(GC gc, Object value) {
 
+		super.paint(gc, value);
+
 		Assert.isNotNull(gc);
 		Assert.isNotNull(value);
 		Assert.isTrue(value instanceof Control);
@@ -54,7 +57,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 		int allTabWidth = 0;
 		for (SubApplicationItem item : getVisibleItems()) {
 			tabRenderer.setLabel(item.getLabel());
-			tabRenderer.setActivated(item.isActivated());
+			tabRenderer.setActive(item.isActivated());
 			Point size = tabRenderer.computeSize(gc, null);
 			allTabWidth += size.x;
 		}
@@ -138,7 +141,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 
 		tabRenderer.setLabel(item.getLabel());
 		tabRenderer.setIcon(item.getIcon());
-		tabRenderer.setActivated(item.isActivated());
+		tabRenderer.setActive(item.isActivated());
 		tabRenderer.setMarkers(item.getMarkers());
 
 	}

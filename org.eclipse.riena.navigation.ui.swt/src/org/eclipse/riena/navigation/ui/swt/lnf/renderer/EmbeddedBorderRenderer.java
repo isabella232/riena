@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
@@ -38,8 +37,7 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(GC gc, Object value) {
 
-		gc.setAdvanced(true);
-		gc.setAntialias(SWT.ON);
+		super.paint(gc, value);
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 

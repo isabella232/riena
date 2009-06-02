@@ -14,13 +14,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+
 import org.eclipse.riena.navigation.ui.swt.views.ModuleView;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
 
 /**
  * Renderer of the module group inside the navigation.
@@ -41,11 +42,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(GC gc, Object value) {
 
-		// if (gc.getAdvanced()) {
-		// gc.setTextAntialias(SWT.ON);
-		// }
-		// gc.setInterpolation(SWT.HIGH);
-		// gc.setAntialias(SWT.ON);
+		super.paint(gc, value);
 
 		// border of module group
 		Point size = computeSize(gc, getBounds().width, 0);

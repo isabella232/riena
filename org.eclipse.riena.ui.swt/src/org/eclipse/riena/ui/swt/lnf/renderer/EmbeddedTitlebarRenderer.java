@@ -34,6 +34,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
+	private final static Color DEFAULT_COLOR = LnfManager.getLnf().getColor("black"); //$NON-NLS-1$
 	private final static int TITLEBAR_LABEL_PADDING_LEFT = 5;
 	private final static int TITLEBAR_LABEL_PADDING = 4;
 	private final static int TITLEBAR_ICON_TEXT_GAP = 4;
@@ -132,13 +133,10 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		gc.setFont(font);
 
 		// Background
-		RienaDefaultLnf lnf = LnfManager.getLnf();
-		Color startColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR);
-		Color endColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR);
-		if (isActive() || flasherSupport.isProcessMarkerVisible()) {
-			startColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR);
-			endColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR);
-		}
+		Color startColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR,
+				LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, null);
+		Color endColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR,
+				LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, null);
 		gc.setForeground(startColor);
 		gc.setBackground(endColor);
 		int x = getBounds().x;
@@ -152,12 +150,10 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 
 		// Border
-		Color borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
-		if (isActive() || flasherSupport.isProcessMarkerVisible()) {
-			borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
-		} else if (!isEnabled()) {
-			borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
-		}
+
+		Color borderColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR,
+				LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR,
+				LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
 		gc.setForeground(borderColor);
 		// - top
 		x = getBounds().x;
@@ -218,15 +214,10 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		// Text
 		String text = getTitle();
 		if (!StringUtils.isEmpty(text)) {
-			if (isEnabled()) {
-				if (isActive()) {
-					gc.setForeground(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
-				} else {
-					gc.setForeground(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND));
-				}
-			} else {
-				gc.setForeground(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND));
-			}
+			Color fgColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND,
+					LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND,
+					LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND);
+			gc.setForeground(fgColor);
 			int y2 = (getHeight() - gc.getFontMetrics().getHeight()) / 2;
 			y = getBounds().y + y2;
 			text = getClippedText(gc, text);
@@ -480,4 +471,70 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 	}
 
+	/**
+	 * Returns according to the states of the title bar the color of one of the
+	 * given key.<br>
+	 * If one key is not needed, the parameter can be {@code null}.
+	 * 
+	 * @param activeColorKey
+	 * @param passiveColorKey
+	 * @param disabeldColorKey
+	 * @return color
+	 * @TODO same code in SubApplicationTabRenderer Returns according to the
+	 */
+	private Color getColor(String activeColorKey, String passiveColorKey, String disabeldColorKey) {
+
+		Color color = null;
+
+		String colorKey = getKey(activeColorKey, passiveColorKey, disabeldColorKey);
+		if (colorKey == null) {
+			colorKey = activeColorKey;
+		}
+
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		color = lnf.getColor(colorKey);
+		if (color == null) {
+			return DEFAULT_COLOR;
+		}
+
+		return color;
+
+	}
+
+	/**
+	 * Selects according to the state of the title bar one of the given keys.<br>
+	 * If one key is not needed, the parameter can be {@code null}.
+	 * 
+	 * @param activeKey
+	 * @param passiveKey
+	 * @param disabeldKey
+	 * @return key
+	 * @TODO same code in SubApplicationTabRenderer Returns according to the
+	 */
+	private String getKey(String activeKey, String passiveKey, String disabeldKey) {
+
+		String key = null;
+		if (isEnabled()) {
+			if (isActive() || flasherSupport.isProcessMarkerVisible()) {
+				key = activeKey;
+			} else {
+				key = passiveKey;
+			}
+		} else {
+			key = disabeldKey;
+		}
+
+		if (key == null) {
+			key = activeKey;
+		}
+		if (key == null) {
+			key = passiveKey;
+		}
+		if (key == null) {
+			key = disabeldKey;
+		}
+
+		return key;
+
+	}
 }

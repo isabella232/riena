@@ -19,7 +19,6 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
-import org.eclipse.swt.graphics.GC;
 
 /**
  * Tests of the class {@link FlasherSupportForRenderer}.
@@ -57,10 +56,6 @@ public class FlasherSupportForRendererTest extends TestCase {
 	 * This renderer doesn't paint anything. It only collects the markers.
 	 */
 	private static class MockRenderer extends AbstractLnfRenderer {
-
-		@Override
-		public void paint(GC gc, Object value) {
-		}
 
 		public void dispose() {
 		}

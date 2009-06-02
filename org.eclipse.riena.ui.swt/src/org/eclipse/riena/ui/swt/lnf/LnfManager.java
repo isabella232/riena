@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
+import org.osgi.framework.Bundle;
+
 import org.eclipse.core.runtime.Platform;
+
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.BundleUtil;
-import org.osgi.framework.Bundle;
 
 /**
  * <code>LnfManager</code> manages the current look and feel of the riena
