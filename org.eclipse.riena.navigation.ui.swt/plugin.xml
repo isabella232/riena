@@ -74,5 +74,49 @@
             lnfkey="SubModuleTreeItemMarker.renderer">
       </renderer>
    </extension>
-  
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="org.eclipse.riena.navigation.ui.swt"
+            name="Riena Navigation Commands">
+      </category>
+      <command
+            id="org.eclipse.riena.navigation.ui.nextSubApplication"
+            name="Next SubApplication"
+            categoryId="org.eclipse.riena.navigation.ui.swt">
+      </command>
+      <command
+            id="org.eclipse.riena.navigation.ui.previousSubApplication"
+            name="Previous SubApplication"
+            categoryId="org.eclipse.riena.navigation.ui.swt">
+      </command>
+      <command
+            id="org.eclipse.riena.navigation.ui.switchToWorkarea"
+            name="Switch to Workarea"
+            categoryId="org.eclipse.riena.navigation.ui.swt"
+            defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchToWorkarea">
+      </command>
+      <command
+            id="org.eclipse.riena.navigation.ui.switchToNavigation"
+            name="Switch to Navigation"
+            categoryId="org.eclipse.riena.navigation.ui.swt"
+            defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchToNavigation">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.eclipse.riena.navigation.ui.switchToNavigation"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="F6">
+      </key>
+      <key
+            commandId="org.eclipse.riena.navigation.ui.switchToWorkarea"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="F7">
+      </key>
+   </extension>
+
 </plugin>

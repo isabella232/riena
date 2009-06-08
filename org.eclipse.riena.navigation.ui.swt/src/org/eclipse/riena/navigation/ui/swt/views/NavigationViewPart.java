@@ -433,7 +433,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
+		navigationMainComposite.setFocus();
 	}
 
 	public Composite getNavigationComponent() {
