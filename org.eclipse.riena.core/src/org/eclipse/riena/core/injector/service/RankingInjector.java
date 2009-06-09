@@ -10,13 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.injector.service;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Comparator;
-
 import org.osgi.framework.ServiceReference;
-
-import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 
 /**
  * The specialized ranking implementation.
@@ -62,7 +56,7 @@ public class RankingInjector extends ServiceInjector {
 		if (serviceRef == null) {
 			return;
 		}
-		if (trackedServiceRef != null && serviceRef.compareTo(trackedServiceRef) > 0) {
+		if (trackedServiceRef != null && serviceRef.compareTo(trackedServiceRef) < 0) {
 			return;
 		}
 
@@ -107,26 +101,19 @@ public class RankingInjector extends ServiceInjector {
 	 * @return
 	 */
 	private static ServiceReference highestServiceRef(final ServiceReference[] serviceRefs) {
-		if (serviceRefs == null) {
+		if (serviceRefs == null || serviceRefs.length == 0) {
 			return null;
 		}
 		if (serviceRefs.length == 1) {
 			return serviceRefs[0];
 		}
-		Arrays.sort(serviceRefs, new ObjectRankingComparator());
-		return serviceRefs[0];
-	}
-
-	@IgnoreFindBugs(value = "SE_COMPARATOR_SHOULD_BE_SERIALIZABLE", justification = "only used locally")
-	private static final class ObjectRankingComparator implements Comparator<ServiceReference>, Serializable {
-		private static final long serialVersionUID = 1L;
-
-		/*
-		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-		 */
-		public int compare(ServiceReference sr1, ServiceReference sr2) {
-			return sr1.compareTo(sr2);
+		ServiceReference highest = serviceRefs[0];
+		for (int i = 1; i < serviceRefs.length; i++) {
+			if (serviceRefs[i].compareTo(highest) > 0) {
+				highest = serviceRefs[i];
+			}
 		}
+		return highest;
 	}
 
 }
