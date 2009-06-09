@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.core.util.PropertiesUtils;
 
 /**
@@ -47,7 +48,7 @@ public class MinLength implements IValidator, IExecutableExtension {
 			if (string.length() >= minLength) {
 				return ValidationRuleStatus.ok();
 			}
-			return ValidationRuleStatus.error(false, "String ''" + string + "' is less than " + minLength //$NON-NLS-1$ //$NON-NLS-2$
+			return ValidationRuleStatus.error(false, "String '" + string + "' is less than " + minLength //$NON-NLS-1$ //$NON-NLS-2$
 					+ " characters long.", this); //$NON-NLS-1$
 		}
 		throw new ValidationFailure(getClass().getName() + " can only validate objects of type " //$NON-NLS-1$
