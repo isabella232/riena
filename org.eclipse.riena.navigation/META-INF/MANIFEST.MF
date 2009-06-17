@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Application Model Plug-in 
 Bundle-SymbolicName: org.eclipse.riena.navigation;singleton:=true
-Bundle-Version: 1.1.0.RC4
+Bundle-Version: 1.1.0.0
 Bundle-Activator: org.eclipse.riena.internal.navigation.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.variables;bundle-version="[3.2.0,3.3.0)",
