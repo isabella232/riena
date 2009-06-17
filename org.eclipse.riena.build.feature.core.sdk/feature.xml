@@ -32,6 +32,10 @@ v1.0
       %license
    </license>
 
+   <url>
+      <update url="http://download.eclipse.org/rt/riena/1.1.0.0/update/"/>
+   </url>
+
    <plugin
          id="com.caucho.hessian"
          download-size="0"
