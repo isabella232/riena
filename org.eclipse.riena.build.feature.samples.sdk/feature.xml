@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.riena.build.feature.samples.sdk"
       label="Riena SDK Samples (TP Only)"
-      version="1.1.0.RC1">
+      version="1.2.0.M1">
 
    <description>
       This feature contains the corresponding components for Riena

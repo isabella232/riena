@@ -368,5 +368,13 @@
             path="icons">
       </path>
    </extension>
+     <extension
+           point="org.eclipse.core.variables.valueVariables">
+        <variable
+			description="Name of the host to connect to"
+			name="riena.host"
+			readOnly="true"
+			initialValue="localhost:8080"/>
+     </extension>
 
 </plugin>
