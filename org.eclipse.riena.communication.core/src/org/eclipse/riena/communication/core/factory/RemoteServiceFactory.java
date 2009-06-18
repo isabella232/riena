@@ -15,8 +15,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
@@ -25,12 +30,8 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
-import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.log.LogService;
 
 /**
  * The IRemoteServiceFactory creates {@link IRemoteServiceReference} for given
@@ -63,8 +64,8 @@ import org.osgi.service.log.LogService;
 public class RemoteServiceFactory {
 
 	private static IRemoteServiceRegistry registry;
-	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RemoteServiceFactory.class);
 	private static HashMap<String, IRemoteServiceFactory> remoteServiceFactoryImplementations = null;
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RemoteServiceFactory.class);
 
 	/**
 	 * Creates a RemoteServiceFactory instance with the default bundle context.
@@ -99,7 +100,6 @@ public class RemoteServiceFactory {
 		remoteServiceFactoryImplementations = new HashMap<String, IRemoteServiceFactory>();
 		for (IRemoteServiceFactoryProperties factory : factories) {
 			IRemoteServiceFactory remoteServiceFactory = factory.createRemoteServiceFactory();
-			Wire.instance(remoteServiceFactory).andStart(Activator.getDefault().getContext());
 			remoteServiceFactoryImplementations.put(factory.getProtocol(), remoteServiceFactory);
 		}
 	}
@@ -219,10 +219,9 @@ public class RemoteServiceFactory {
 		if (rsd.getProtocol() == null) {
 			return null;
 		}
-		// find a factory for this specific protocol
-		IRemoteServiceFactory factory = null;
 
-		factory = (remoteServiceFactoryImplementations.get(rsd.getProtocol()));
+		// find a factory for this specific protocol
+		final IRemoteServiceFactory factory = remoteServiceFactoryImplementations.get(rsd.getProtocol());
 
 		// could not get instance for existing reference
 		if (factory == null) {
