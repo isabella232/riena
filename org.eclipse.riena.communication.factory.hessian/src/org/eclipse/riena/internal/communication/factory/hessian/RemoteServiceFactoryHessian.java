@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.factory.RemoteServiceReference;
@@ -25,7 +26,7 @@ import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorList;
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorRegistry;
-import org.eclipse.riena.core.wire.WireWith;
+import org.eclipse.riena.core.wire.InjectService;
 
 /**
  * This is a Hessian based implementation of {@link IRemoteServiceFactory}.
@@ -40,7 +41,6 @@ import org.eclipse.riena.core.wire.WireWith;
  * @author Christian Campo
  * 
  */
-@WireWith(RemoteServiceFactoryHessianWiring.class)
 public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 	private IRemoteProgressMonitorRegistry remoteProgressMonitorRegistry;
 	private final ICallMessageContextAccessor messageContextAccessor;
@@ -61,7 +61,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 	 * @seexeval.rsd.core.IRemoteServiceFactory#create(xeval.rsd.core.
 	 * RemoteServiceDescription)
 	 */
-	public RemoteServiceReference createProxy(RemoteServiceDescription endpoint) {
+	public IRemoteServiceReference createProxy(RemoteServiceDescription endpoint) {
 		String uri = endpoint.getURL();
 		if (uri == null) {
 			uri = "http://localhost/" + PROTOCOL + endpoint.getPath(); //$NON-NLS-1$
@@ -77,6 +77,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 		}
 	}
 
+	@InjectService(service = IRemoteProgressMonitorRegistry.class, useRanking = true)
 	public void bind(IRemoteProgressMonitorRegistry pmr) {
 		this.remoteProgressMonitorRegistry = pmr;
 	}
