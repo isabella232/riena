@@ -20,18 +20,18 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandler;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
-import org.eclipse.riena.core.wire.WireWith;
+import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
  * 
  */
-@WireWith(SimpleExceptionHandlerManagerWiring.class)
 public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 
 	private List<ExceptionHandlerEntry> handlers;
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleExceptionHandlerManager.class);
 
+	@InjectExtension(id = IExceptionHandlerDefinition.EXTENSION_POINT)
 	public void update(IExceptionHandlerDefinition[] exceptionHandlerDefinitions) {
 		handlers = new ArrayList<ExceptionHandlerEntry>();
 		for (IExceptionHandlerDefinition handlerDefinition : exceptionHandlerDefinitions) {
