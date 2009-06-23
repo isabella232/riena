@@ -90,15 +90,15 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			return Result.noCache(proxiedEquals(args[0]));
 		}
 		final Class<?> returnType = method.getReturnType();
-		final String name = getAttributeName(method, methodKind);
+		final String attributeName = getAttributeName(method, methodKind);
 		if (returnType == String.class) {
 			final boolean methodSymbolReplace = !method.isAnnotationPresent(DoNotReplaceSymbols.class);
 			return Result.noCache(modify(method.isAnnotationPresent(MapContent.class) ? configurationElement.getValue()
-					: configurationElement.getAttribute(name), methodSymbolReplace));
+					: configurationElement.getAttribute(attributeName), methodSymbolReplace));
 		}
 		if (returnType.isPrimitive()) {
 			final boolean methodSymbolReplace = !method.isAnnotationPresent(DoNotReplaceSymbols.class);
-			return Result.noCache(coerce(returnType, modify(configurationElement.getAttribute(name),
+			return Result.noCache(coerce(returnType, modify(configurationElement.getAttribute(attributeName),
 					methodSymbolReplace)));
 		}
 		if (returnType == Bundle.class) {
@@ -108,7 +108,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			return Result.cache(configurationElement);
 		}
 		if (returnType == Class.class) {
-			String value = configurationElement.getAttribute(name);
+			String value = configurationElement.getAttribute(attributeName);
 			if (value == null) {
 				return Result.CACHED_NULL;
 			}
@@ -124,7 +124,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			return Result.cache(bundle.loadClass(value));
 		}
 		if (returnType.isInterface() && returnType.isAnnotationPresent(ExtensionInterface.class)) {
-			final IConfigurationElement[] cfgElements = configurationElement.getChildren(name);
+			final IConfigurationElement[] cfgElements = configurationElement.getChildren(attributeName);
 			if (cfgElements.length == 0) {
 				return Result.CACHED_NULL;
 			}
@@ -137,7 +137,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 							+ method);
 		}
 		if (returnType.isArray() && returnType.getComponentType().isInterface()) {
-			final IConfigurationElement[] cfgElements = configurationElement.getChildren(name);
+			final IConfigurationElement[] cfgElements = configurationElement.getChildren(attributeName);
 			final Object[] result = (Object[]) Array.newInstance(returnType.getComponentType(), cfgElements.length);
 			for (int i = 0; i < cfgElements.length; i++) {
 				result[i] = Proxy.newProxyInstance(returnType.getComponentType().getClassLoader(),
@@ -147,21 +147,20 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			return Result.cache(result);
 		}
 
-		if (method.getReturnType() == Void.class || (args != null && args.length > 0)) {
+		if (returnType == Void.class || (args != null && args.length > 0)) {
 			throw new UnsupportedOperationException("Can not handle method '" + method + "' in '" //$NON-NLS-1$ //$NON-NLS-2$
 					+ interfaceType.getName() + "'."); //$NON-NLS-1$
 		}
-		// Now try to create a fresh instance,i.e.
-		// createExecutableExtension() ()
-		if (configurationElement.getAttribute(name) == null && configurationElement.getChildren(name).length == 0) {
+		// Now try to create a fresh instance,i.e. createExecutableExtension()
+		if (configurationElement.getAttribute(attributeName) == null && configurationElement.getChildren(attributeName).length == 0) {
 			return Result.CACHED_NULL;
 		}
 		final boolean wire = !(method.isAnnotationPresent(DoNotWireExecutable.class) || Boolean
 				.getBoolean(ExtensionInjector.RIENA_EXTENSIONS_DONOTWIRE_SYSTEM_PROPERTY));
 		if (method.isAnnotationPresent(CreateLazy.class)) {
-			return Result.noCache(LazyExecutableExtension.newInstance(configurationElement, name, wire));
+			return Result.noCache(LazyExecutableExtension.newInstance(configurationElement, attributeName, wire));
 		}
-		Object result = configurationElement.createExecutableExtension(name);
+		Object result = configurationElement.createExecutableExtension(attributeName);
 		if (wire) {
 			// Try wiring the created executable extension
 			Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
