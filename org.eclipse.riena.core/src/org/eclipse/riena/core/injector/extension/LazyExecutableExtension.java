@@ -29,18 +29,18 @@ import org.eclipse.riena.internal.core.Activator;
 final class LazyExecutableExtension implements InvocationHandler {
 
 	private final IConfigurationElement configurationElement;
-	private final String name;
+	private final String attributeName;
 	private final boolean wire;
 	private volatile Object delegate;
 
 	/**
 	 * @param configurationElement
-	 * @param name
+	 * @param attributeName
 	 * @param wire
 	 * @return
 	 */
-	static Object newInstance(final IConfigurationElement configurationElement, final String name, boolean wire) {
-		final String className = configurationElement.getAttribute(name);
+	static Object newInstance(final IConfigurationElement configurationElement, final String attributeName, boolean wire) {
+		final String className = configurationElement.getAttribute(attributeName);
 		if (className == null) {
 			return null;
 		}
@@ -57,16 +57,16 @@ final class LazyExecutableExtension implements InvocationHandler {
 						+ configurationElement.getName() + " does not have any interfaces, but they are required."); //$NON-NLS-1$
 			}
 			return Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, new LazyExecutableExtension(
-					configurationElement, name, wire));
+					configurationElement, attributeName, wire));
 		} catch (ClassNotFoundException e) {
 			throw new IllegalStateException("Could not load class " + className + " from bundle " //$NON-NLS-1$ //$NON-NLS-2$
 					+ bundle.getSymbolicName(), e);
 		}
 	}
 
-	private LazyExecutableExtension(final IConfigurationElement configurationElement, final String name, boolean wire) {
+	private LazyExecutableExtension(final IConfigurationElement configurationElement, final String attributeName, boolean wire) {
 		this.configurationElement = configurationElement;
-		this.name = name;
+		this.attributeName = attributeName;
 		this.wire = wire;
 	}
 
@@ -79,7 +79,7 @@ final class LazyExecutableExtension implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		synchronized (this) {
 			if (delegate == null) {
-				delegate = configurationElement.createExecutableExtension(name);
+				delegate = configurationElement.createExecutableExtension(attributeName);
 				if (wire) {
 					// Try wiring the created executable extension
 					final Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
