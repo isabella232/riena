@@ -20,6 +20,8 @@ import org.eclipse.riena.core.injector.extension.MapName;
 @ExtensionInterface
 public interface IUIFilterExtension {
 
+	String EXTENSION_ID = "org.eclipse.riena.filter.uifilter"; //$NON-NLS-1$
+
 	/**
 	 * Returns the filterID
 	 */

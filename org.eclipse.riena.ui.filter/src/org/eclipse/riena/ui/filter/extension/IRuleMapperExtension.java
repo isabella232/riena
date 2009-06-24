@@ -18,6 +18,8 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 @ExtensionInterface
 public interface IRuleMapperExtension {
 
+	String EEXTENSIO_ID = "org.eclipse.riena.filter.rulemapper"; //$NON-NLS-1$
+
 	IRuleMarkerRidgetMapper getRidgetHiddenMarker();
 
 	IRuleMarkerRidgetMapper getRidgetDisabledMarker();

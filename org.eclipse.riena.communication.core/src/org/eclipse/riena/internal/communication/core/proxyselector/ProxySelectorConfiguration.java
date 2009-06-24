@@ -21,19 +21,19 @@ import org.osgi.service.log.LogService;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.wire.WireWith;
+import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.internal.communication.core.Activator;
 
 /**
  * Configure the {@code ProxySelector} used by the {@code UrlConnection}.
  */
-@WireWith(ProxySelectorConfigurationWiring.class)
 public class ProxySelectorConfiguration {
 
 	private final ProxySelector previousProxySlector = ProxySelector.getDefault();
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ProxySelectorConfiguration.class);
 
+	@InjectExtension(id = IProxySelectorExtension.EXTENSION_POINT_ID)
 	public void configure(IProxySelectorExtension[] proxySelectorExtensions) {
 		if (proxySelectorExtensions == null || proxySelectorExtensions.length == 0) {
 			ProxySelector.setDefault(previousProxySlector);

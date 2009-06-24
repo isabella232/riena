@@ -28,19 +28,20 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
-import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.util.Iter;
-import org.eclipse.riena.core.wire.WireWith;
-import org.eclipse.riena.internal.communication.core.Activator;
 import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
+
+import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.Iter;
+import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.internal.communication.core.Activator;
 
 /**
  * This class performs the configuration of the trust store for jre SSL Protocol
  * implementation.
  */
-@WireWith(SSLConfigurationWiring.class)
 public class SSLConfiguration {
 
 	private String protocol;
@@ -59,6 +60,7 @@ public class SSLConfiguration {
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SSLConfiguration.class);
 
+	@InjectExtension(id = ISSLProperties.EXTENSION_POINT_ID, min = 0, max = 1)
 	public void configure(ISSLProperties properties) {
 		if (configured && properties == null) {
 			restore();

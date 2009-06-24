@@ -14,8 +14,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.core.databinding.validation.IValidator;
+
+import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.ui.filter.Activator;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.filter.IUIFilterContainer;
@@ -34,7 +35,6 @@ import org.eclipse.riena.ui.filter.extension.IUIFilterExtension;
 /**
  * 
  */
-@WireWith(UIFilterProviderWiring.class)
 public class UIFilterProvider implements IUIFilterProvider {
 
 	private IUIFilterExtension[] data;
@@ -159,6 +159,7 @@ public class UIFilterProvider implements IUIFilterProvider {
 	 * 
 	 * @param data
 	 */
+	@InjectExtension(id = IUIFilterExtension.EXTENSION_ID)
 	public void update(IUIFilterExtension[] data) {
 		this.data = data;
 	}
