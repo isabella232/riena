@@ -55,19 +55,13 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 		rienaHessianProxyFactory.setCallMessageContextAccessor(messageContextAccessor);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seexeval.rsd.core.IRemoteServiceFactory#create(xeval.rsd.core.
-	 * RemoteServiceDescription)
-	 */
 	public IRemoteServiceReference createProxy(RemoteServiceDescription endpoint) {
-		String uri = endpoint.getURL();
-		if (uri == null) {
-			uri = "http://localhost/" + PROTOCOL + endpoint.getPath(); //$NON-NLS-1$
+		String url = endpoint.getURL();
+		if (url == null) {
+			url = "http://localhost/" + PROTOCOL + endpoint.getPath(); //$NON-NLS-1$
 		}
 		try {
-			Object proxy = rienaHessianProxyFactory.create(endpoint.getServiceInterfaceClass(), uri);
+			Object proxy = rienaHessianProxyFactory.create(endpoint.getServiceInterfaceClass(), url);
 			RemoteServiceReference serviceReference = new RemoteServiceReference(endpoint);
 			// set the create proxy as service instance
 			serviceReference.setServiceInstance(proxy);
@@ -88,11 +82,6 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see xeval.rsd.core.IRemoteServiceFactory#protocol()
-	 */
 	public String getProtocol() {
 		return PROTOCOL;
 	}
