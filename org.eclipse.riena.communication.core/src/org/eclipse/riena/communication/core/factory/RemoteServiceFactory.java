@@ -245,17 +245,14 @@ public class RemoteServiceFactory {
 	private IRemoteServiceReference createLazyProxy(RemoteServiceDescription rsd) {
 		try {
 			LazyProxyHandler lazyProxyHandler = new LazyProxyHandler(rsd);
-			Class<?> serviceClass;
-			serviceClass = RemoteServiceFactory.class.getClassLoader().loadClass(rsd.getServiceInterfaceClassName());
+			Class<?> serviceClass = RemoteServiceFactory.class.getClassLoader().loadClass(
+					rsd.getServiceInterfaceClassName());
+
 			Object serviceInstance = Proxy.newProxyInstance(this.getClass().getClassLoader(),
 					new Class[] { serviceClass }, lazyProxyHandler);
 			LazyRemoteServiceReference ref = new LazyRemoteServiceReference(serviceInstance, rsd
 					.getServiceInterfaceClassName(), rsd);
-
-			LazyProxyBuilder proxyBuilder = new LazyProxyBuilder(rsd, ref, lazyProxyHandler);
-			String filter = "(" + IRemoteServiceFactory.PROP_PROTOCOL + "=" + rsd.getProtocol() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			Inject.service(IRemoteServiceFactory.class.getName()).useFilter(filter).into(proxyBuilder).andStart(
-					Activator.getDefault().getContext());
+			lazyProxyHandler.setLazyRemoteServiceReference(ref);
 			return ref;
 		} catch (ClassNotFoundException e) {
 			LOGGER.log(LogService.LOG_ERROR, "Could not load service interface class '" //$NON-NLS-1$
@@ -277,55 +274,32 @@ public class RemoteServiceFactory {
 		return getClass().getClassLoader().loadClass(interfaceClassName);
 	}
 
-	public class LazyProxyBuilder {
-
-		private RemoteServiceDescription rsd;
-		private LazyRemoteServiceReference lazyRef;
-		private LazyProxyHandler lazyProxyHandler;
-
-		protected LazyProxyBuilder(RemoteServiceDescription rsd, LazyRemoteServiceReference ref,
-				LazyProxyHandler lazyProxyHandler) {
-			super();
-			this.rsd = rsd;
-			this.lazyRef = ref;
-			this.lazyProxyHandler = lazyProxyHandler;
-		}
-
-		public void bind(IRemoteServiceFactory factory) {
-			if (rsd != null) {
-				IRemoteServiceReference ref = createProxy(rsd);
-				Object proxyInstance = ref.getServiceInstance();
-				lazyProxyHandler.setDelegateHandler(Proxy.getInvocationHandler(proxyInstance));
-				lazyRef.setDelegateRef(ref);
-				rsd = null;
-			}
-
-		}
-
-		public void unbind(IRemoteServiceFactory factory) {
-
-		}
-	}
-
-	static class LazyProxyHandler implements InvocationHandler {
+	private class LazyProxyHandler implements InvocationHandler {
 
 		private InvocationHandler delegateHandler;
 		private RemoteServiceDescription rsd;
+		private LazyRemoteServiceReference lazyRemoteServiceReference;
 
 		protected LazyProxyHandler(RemoteServiceDescription rsd) {
 			super();
 			this.rsd = rsd;
 		}
 
-		public void setDelegateHandler(InvocationHandler delegateHandler) {
-			this.delegateHandler = delegateHandler;
+		public void setLazyRemoteServiceReference(LazyRemoteServiceReference ref) {
+			this.lazyRemoteServiceReference = ref;
 		}
 
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			if (delegateHandler == null) {
-				throw new RuntimeException("LazyProxy: missing IRemoteServiceFactory to create proxy for " //$NON-NLS-1$
-						+ "protocol=" + rsd.getProtocol() + " url=" + rsd.getURL() + " interface=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						+ rsd.getServiceInterfaceClassName());
+				IRemoteServiceReference ref = createProxy(rsd);
+				if (ref == null) {
+					throw new RuntimeException("LazyProxy: missing IRemoteServiceFactory to create proxy for " //$NON-NLS-1$
+							+ "protocol=" + rsd.getProtocol() + " url=" + rsd.getURL() + " interface=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							+ rsd.getServiceInterfaceClassName());
+				}
+				Object proxyInstance = ref.getServiceInstance();
+				delegateHandler = Proxy.getInvocationHandler(proxyInstance);
+				lazyRemoteServiceReference.setDelegateRef(ref);
 			}
 
 			return delegateHandler.invoke(proxy, method, args);
@@ -333,7 +307,7 @@ public class RemoteServiceFactory {
 
 	}
 
-	static class LazyRemoteServiceReference implements IRemoteServiceReference {
+	private static class LazyRemoteServiceReference implements IRemoteServiceReference {
 
 		private Object serviceInstance;
 		private String serviceClass;
@@ -349,7 +323,7 @@ public class RemoteServiceFactory {
 			this.rsd = rsd;
 		}
 
-		public void setDelegateRef(IRemoteServiceReference delegateRef) {
+		private void setDelegateRef(IRemoteServiceReference delegateRef) {
 			this.delegateReference = delegateRef;
 			if (tempBundleContext != null) {
 				delegateRef.setContext(tempBundleContext);
@@ -366,9 +340,8 @@ public class RemoteServiceFactory {
 		public boolean equals(Object obj) {
 			if (delegateReference != null) {
 				return delegateReference.equals(obj);
-			} else {
-				return false;
 			}
+			return false;
 		}
 
 		public RemoteServiceDescription getDescription() {
@@ -381,9 +354,8 @@ public class RemoteServiceFactory {
 		public BundleContext getContext() {
 			if (delegateReference == null) {
 				return tempBundleContext;
-			} else {
-				return delegateReference.getContext();
 			}
+			return delegateReference.getContext();
 		}
 
 		public Object getServiceInstance() {
@@ -415,9 +387,8 @@ public class RemoteServiceFactory {
 		public int hashCode() {
 			if (delegateReference != null) {
 				return delegateReference.hashCode();
-			} else {
-				return this.getClass().hashCode();
 			}
+			return this.getClass().hashCode();
 		}
 
 		public void setContext(BundleContext context) {
@@ -454,4 +425,5 @@ public class RemoteServiceFactory {
 		}
 
 	}
+
 }
