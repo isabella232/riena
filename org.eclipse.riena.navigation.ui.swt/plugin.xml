@@ -102,6 +102,18 @@
             categoryId="org.eclipse.riena.navigation.ui.swt"
             defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchToNavigation">
       </command>
+      <command
+            id="org.eclipse.riena.navigation.ui.previousSubApplication"
+            name="Previous sub-application"
+            categoryId="org.eclipse.riena.navigation.ui.swt"
+            defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchSubApplication:previous">
+      </command>
+      <command
+            id="org.eclipse.riena.navigation.ui.nextSubApplication"
+            name="Next sub-application"
+            categoryId="org.eclipse.riena.navigation.ui.swt"
+            defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchSubApplication:next">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -116,6 +128,18 @@
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="F7">
+      </key>
+      <key
+            commandId="org.eclipse.riena.navigation.ui.previousSubApplication"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+PAGE_UP">
+      </key>
+      <key
+            commandId="org.eclipse.riena.navigation.ui.nextSubApplication"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+PAGE_DOWN">
       </key>
    </extension>
 
