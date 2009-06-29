@@ -19,6 +19,7 @@ import org.eclipse.core.commands.ExecutionException;
 
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 
@@ -27,18 +28,11 @@ import org.eclipse.riena.navigation.INavigationNode;
  */
 public class CloseModule extends AbstractHandler {
 
-	@SuppressWarnings("unchecked")
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
-		INavigationNode<?> subApplication = findActive((List) application.getChildren());
-		if (subApplication != null) {
-			INavigationNode<?> moduleGroup = findActive((List) subApplication.getChildren());
-			if (moduleGroup != null) {
-				INavigationNode<?> module = findActive((List) moduleGroup.getChildren());
-				if (module instanceof IModuleNode) {
-					((IModuleNode) module).dispose();
-				}
-			}
+		IModuleNode module = findModule(application);
+		if (module != null) {
+			module.dispose();
 		}
 		return null;
 	}
@@ -46,7 +40,40 @@ public class CloseModule extends AbstractHandler {
 	// helping methods
 	//////////////////
 
-	protected final INavigationNode<?> findActive(List<INavigationNode<?>> children) {
+	/**
+	 * Not API; public for testing only.
+	 */
+	@SuppressWarnings("unchecked")
+	public final IModuleNode findModule(IApplicationNode application) {
+		IModuleNode result = null;
+		IModuleGroupNode moduleGroup = findModuleGroup(application);
+		if (moduleGroup != null) {
+			INavigationNode<?> module = findActive((List) moduleGroup.getChildren());
+			if (module instanceof IModuleNode) {
+				result = (IModuleNode) module;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Not API; public for testing only.
+	 */
+	@SuppressWarnings("unchecked")
+	public final IModuleGroupNode findModuleGroup(IApplicationNode application) {
+		IModuleGroupNode result = null;
+		INavigationNode<?> subApplication = findActive((List) application.getChildren());
+		if (subApplication != null) {
+			INavigationNode<?> moduleGroup = findActive((List) subApplication.getChildren());
+			if (moduleGroup instanceof IModuleGroupNode) {
+				result = (IModuleGroupNode) moduleGroup;
+			}
+		}
+
+		return result;
+	}
+
+	private final INavigationNode<?> findActive(List<INavigationNode<?>> children) {
 		INavigationNode<?> result = null;
 		Iterator<INavigationNode<?>> iter = children.iterator();
 		while (result == null && iter.hasNext()) {

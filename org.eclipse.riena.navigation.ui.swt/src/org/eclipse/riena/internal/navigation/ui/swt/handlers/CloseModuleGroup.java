@@ -10,49 +10,25 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.swt.handlers;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
-import org.eclipse.riena.navigation.INavigationNode;
 
 /**
  * Close the currently active module-group.
  */
-public class CloseModuleGroup extends AbstractHandler {
+public class CloseModuleGroup extends CloseModule {
 
-	@SuppressWarnings("unchecked")
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
-		INavigationNode<?> subApplication = findActive((List) application.getChildren());
-		if (subApplication != null) {
-			INavigationNode<?> moduleGroup = findActive((List) subApplication.getChildren());
-			if (moduleGroup instanceof IModuleGroupNode) {
-				((IModuleGroupNode) moduleGroup).dispose();
-			}
+		IModuleGroupNode moduleGroup = findModuleGroup(application);
+		if (moduleGroup != null) {
+			((IModuleGroupNode) moduleGroup).dispose();
 		}
 		return null;
-	}
-
-	// helping methods
-	//////////////////
-
-	protected final INavigationNode<?> findActive(List<INavigationNode<?>> children) {
-		INavigationNode<?> result = null;
-		Iterator<INavigationNode<?>> iter = children.iterator();
-		while (result == null && iter.hasNext()) {
-			INavigationNode<?> candidate = iter.next();
-			if (candidate.isActivated()) {
-				result = candidate;
-			}
-		}
-		return result;
 	}
 
 }
