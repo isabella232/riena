@@ -23,6 +23,7 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 public class CloseModuleGroup extends CloseModule {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		// assumes there is only one application node
 		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
 		IModuleGroupNode moduleGroup = findModuleGroup(application);
 		if (moduleGroup != null) {

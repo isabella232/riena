@@ -29,6 +29,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 public class CloseModule extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		// assumes there is only one application node
 		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
 		IModuleNode module = findModule(application);
 		if (module != null) {
