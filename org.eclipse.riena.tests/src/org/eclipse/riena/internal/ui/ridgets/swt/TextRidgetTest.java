@@ -197,6 +197,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 			return text1;
 		}
 
+		@SuppressWarnings("unused")
 		public void setText1(String text1) {
 			this.text1 = text1;
 		}
