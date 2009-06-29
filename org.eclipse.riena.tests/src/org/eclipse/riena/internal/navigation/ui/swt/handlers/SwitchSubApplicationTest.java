@@ -17,7 +17,7 @@ import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
- * Tests for the class SwitchSubApplication.
+ * Tests for the class {@link SwitchSubApplication}.
  */
 @NonUITestCase
 public class SwitchSubApplicationTest extends RienaTestCase {
