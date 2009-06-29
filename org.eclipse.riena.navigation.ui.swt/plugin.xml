@@ -114,6 +114,18 @@
             categoryId="org.eclipse.riena.navigation.ui.swt"
             defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchSubApplication:next">
       </command>
+      <command
+            id="org.eclipse.riena.navigation.ui.closeModule"
+            name="Close module"
+            categoryId="org.eclipse.riena.navigation.ui.swt"
+            defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.CloseModule">
+      </command>
+      <command
+            id="org.eclipse.riena.navigation.ui.closeModuleGroup"
+            name="Close module group"
+            categoryId="org.eclipse.riena.navigation.ui.swt"
+            defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.CloseModuleGroup">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -133,14 +145,42 @@
             commandId="org.eclipse.riena.navigation.ui.previousSubApplication"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+PAGE_UP">
+            sequence="M1+PAGE_UP">
       </key>
       <key
             commandId="org.eclipse.riena.navigation.ui.nextSubApplication"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+PAGE_DOWN">
+            sequence="M1+PAGE_DOWN">
       </key>
    </extension>
-
+   <extension
+         point="org.eclipse.ui.handlers">
+         <!-- org.eclipse.ui.file.close is by default bound to M1+W -->
+         <handler
+               class="org.eclipse.riena.internal.navigation.ui.swt.handlers.CloseModule"
+               commandId="org.eclipse.ui.file.close">
+            <activeWhen>
+               <with
+                     variable="activeWorkbenchWindow">
+                  <instanceof
+                        value="org.eclipse.ui.IWorkbenchWindow">
+                  </instanceof>
+               </with>
+            </activeWhen>
+         </handler>
+         <!-- org.eclipse.ui.file.closeAll is by default bound to M1+M2+W -->
+         <handler
+               class="org.eclipse.riena.internal.navigation.ui.swt.handlers.CloseModuleGroup"
+               commandId="org.eclipse.ui.file.closeAll">
+            <activeWhen>
+               <with
+                     variable="activeWorkbenchWindow">
+                  <instanceof
+                        value="org.eclipse.ui.IWorkbenchWindow">
+                  </instanceof>
+               </with>
+            </activeWhen>
+         </handler>
+   </extension>
 </plugin>
