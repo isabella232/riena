@@ -1223,6 +1223,32 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(TEXT_ONE, bean.getProperty());
 	}
 
+	/**
+	 * Bug 281891.
+	 * 
+	 * @see http://bugs.eclipse.org/281891
+	 */
+	public void testDisabledControlHasNoText() {
+		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			System.out.println("Skipping TextRidgetTest2.testDisabledHasNoTextBug55555()");
+			return;
+		}
+
+		ITextRidget ridget = getRidget();
+		Text control = getWidget();
+
+		ridget.setUIControl(null);
+		ridget.setText("text");
+		ridget.setEnabled(false);
+		ridget.setUIControl(control);
+
+		assertEquals("", control.getText());
+
+		ridget.setEnabled(true);
+
+		assertEquals("text", control.getText());
+	}
+
 	public void testShowOneValidationRuleMessageInTooltip() {
 		ITextRidget ridget = getRidget();
 		TooltipMessageMarkerViewer viewer = new TooltipMessageMarkerViewer();

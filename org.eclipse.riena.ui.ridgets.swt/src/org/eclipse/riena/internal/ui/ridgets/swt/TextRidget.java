@@ -107,7 +107,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	protected final synchronized void bindUIControl() {
 		Control control = getUIControl();
 		if (control != null) {
-			setUIText(textValue);
+			setUIText(getTextBasedOnEnablement(textValue));
 			updateEditable();
 			addListeners(control);
 		}
@@ -272,6 +272,11 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	// helping methods
 	// ////////////////
 
+	private String getTextBasedOnEnablement(String value) {
+		boolean hideValue = !isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT;
+		return hideValue ? EMPTY_STRING : value;
+	}
+
 	private synchronized void forceTextToControl(String newValue) {
 		Control control = getUIControl();
 		if (control != null) {
@@ -279,8 +284,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 			for (Listener listener : listeners) {
 				control.removeListener(SWT.Verify, listener);
 			}
-			boolean hideValue = !isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT;
-			TextRidget.this.setUIText(hideValue ? EMPTY_STRING : newValue);
+			TextRidget.this.setUIText(getTextBasedOnEnablement(newValue));
 			for (Listener listener : listeners) {
 				control.addListener(SWT.Verify, listener);
 			}
