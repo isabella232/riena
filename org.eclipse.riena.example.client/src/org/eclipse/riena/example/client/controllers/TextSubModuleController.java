@@ -37,7 +37,7 @@ public class TextSubModuleController extends SubModuleController {
 		ITextRidget textModel1 = (ITextRidget) getRidget("textModel1"); //$NON-NLS-1$
 		textModel1.setText("type something"); //$NON-NLS-1$
 		textModel1.setOutputOnly(true);
-		textModel1.setEnabled(false);
+		textModel1.setFocusable(false);
 		ITextRidget textField = (ITextRidget) getRidget("textField"); //$NON-NLS-1$
 		textField.bindToModel(textModel1, ITextRidget.PROPERTY_TEXT);
 		textField.updateFromModel();
@@ -45,7 +45,7 @@ public class TextSubModuleController extends SubModuleController {
 		ITextRidget textModel2 = (ITextRidget) getRidget("textModel2"); //$NON-NLS-1$
 		textModel2.setText("type something"); //$NON-NLS-1$
 		textModel2.setOutputOnly(true);
-		textModel2.setEnabled(false);
+		textModel2.setFocusable(false);
 		ITextRidget textDirectWrite = (ITextRidget) getRidget("textDirectWrite"); //$NON-NLS-1$
 		textDirectWrite.setDirectWriting(true);
 		textDirectWrite.bindToModel(textModel2, ITextRidget.PROPERTY_TEXT);
