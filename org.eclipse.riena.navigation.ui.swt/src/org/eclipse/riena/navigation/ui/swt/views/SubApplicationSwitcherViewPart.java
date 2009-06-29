@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import org.eclipse.riena.navigation.model.ApplicationNode;
-import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.part.ViewPart;
+
+import org.eclipse.riena.navigation.model.ApplicationNode;
+import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidget;
+import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
 
 /**
  * View of the sub-application switcher.<br>
@@ -43,8 +46,8 @@ public class SubApplicationSwitcherViewPart extends ViewPart {
 
 		// add the widget SubApplicationSwitcherWidget
 		parent.setLayout(new FillLayout());
-		new SubApplicationSwitcherWidget(parent, SWT.NONE, getApplicationModel());
-
+		Widget switcher = new SubApplicationSwitcherWidget(parent, SWT.NONE, getApplicationModel());
+		WidgetIdentificationSupport.setDefaultIdentification(switcher);
 	}
 
 	/**

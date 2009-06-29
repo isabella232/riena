@@ -75,6 +75,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
+import org.eclipse.riena.ui.swt.utils.TestingSupport;
+import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
 
 public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
@@ -143,7 +145,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		configurer.setTitle(controller.getNavigationNode().getLabel());
 		initApplicationSize(configurer);
-		if (LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
+		if (LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)
+				&& !TestingSupport.isTestingEnabled()) { // some testing UI tools might not work with windows w/o real decorations(menu, border, etc){
 			// don't show the shell border (with the minimize, maximize and
 			// close buttons) of the operation system
 			configurer.setShellStyle(SWT.NO_TRIM | SWT.DOUBLE_BUFFERED);
@@ -283,6 +286,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		if (getShellRenderer() != null) {
 			getShellRenderer().setShell(shell);
 		}
+		// TODO check if this is the main window. maybe support more then one workbench window.
+		WidgetIdentificationSupport.setIdentification(shell);
 	}
 
 	/**

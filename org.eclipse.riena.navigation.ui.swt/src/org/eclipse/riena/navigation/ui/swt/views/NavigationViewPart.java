@@ -48,6 +48,7 @@ import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupDesc;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
 
 public class NavigationViewPart extends ViewPart implements IModuleNavigationComponentProvider {
 
@@ -116,6 +117,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 		scrolledComposite.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.NAVIGATION_BACKGROUND));
 		scrolledComposite.setLayout(new FormLayout());
+		WidgetIdentificationSupport.setIdentification(scrolledComposite, "NavigationView"); //$NON-NLS-1$
 
 		scrollingSupport = new ScrollingSupport(parent, SWT.NONE, this);
 		FormData formData = new FormData();
@@ -279,6 +281,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	private void createModuleGroupView(IModuleGroupNode moduleGroupNode) {
 		// ModuleGroupView are directly rendered into the bodyComposite
 		ModuleGroupView moduleGroupView = getViewFactory().createModuleGroupView(scrolledComposite);
+		NodeIdentificationSupport.setIdentification(moduleGroupView, "moduleGroupView", moduleGroupNode); //$NON-NLS-1$
 		moduleGroupNodesToViews.put(moduleGroupNode, moduleGroupView);
 		moduleGroupView.addUpdateListener(new ModuleGroupViewObserver());
 
@@ -359,6 +362,8 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		moduleGroupBody.setLayout(layout);
 
 		ModuleView moduleView = viewFactory.createModuleView(moduleGroupBody);
+		NodeIdentificationSupport.setIdentification(moduleView.getTitle(), "titleBar", moduleNode); //$NON-NLS-1$
+		NodeIdentificationSupport.setIdentification(moduleView.getTree(), "tree", moduleNode); //$NON-NLS-1$
 		moduleNodesToViews.put(moduleNode, moduleView);
 		// now the SWTModuleController implementation can be replaced by your own implementation
 		getViewFactory().createModuleController(moduleNode);

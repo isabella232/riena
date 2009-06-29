@@ -53,6 +53,7 @@ import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
@@ -167,6 +168,13 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		if (!Beans.isDesignTime()) {
 			createViewFacade();
 			doBinding();
+		}
+
+		if (getViewSite() != null) {
+
+			if (getViewSite().getSecondaryId() != null)
+				WidgetIdentificationSupport.setIdentification(contentComposite,
+						"subModuleView", getViewSite().getId(), getViewSite().getSecondaryId()); //$NON-NLS-1$
 		}
 	}
 
