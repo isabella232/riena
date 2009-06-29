@@ -59,6 +59,18 @@ public class SwitchSubApplication extends AbstractHandler implements IExecutable
 	}
 
 	/**
+	 * This method is called by the framework. Not intented to be called by
+	 * clients.
+	 */
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+		toNext = "next".equalsIgnoreCase(String.valueOf(data)); //$NON-NLS-1$
+	}
+
+	// helping methods
+	//////////////////
+
+	/**
 	 * This is NOT API - public for testing only.
 	 */
 	public ISubApplicationNode findNextNode(ISubApplicationNode[] nodes) {
@@ -102,12 +114,4 @@ public class SwitchSubApplication extends AbstractHandler implements IExecutable
 		return selectedCount == 1 ? result : null;
 	}
 
-	/**
-	 * This method is called by the framework. Not intented to be called by
-	 * clients.
-	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
-			throws CoreException {
-		toNext = "next".equalsIgnoreCase(String.valueOf(data)); //$NON-NLS-1$
-	}
 }
