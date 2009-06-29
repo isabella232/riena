@@ -16,7 +16,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.menus.CommandContributionItem;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -49,14 +51,14 @@ public class AbstractItemRidgetTest extends TestCase {
 	 */
 	public void testGetContributionItem() {
 
-		assertNull(itemRidget.getContributionItem());
+		assertNull(getContributionItem(itemRidget));
 
 		ToolItem item = new ToolItem(toolbar, SWT.NONE);
 		itemRidget.setUIControl(item);
-		assertNull(itemRidget.getContributionItem());
+		assertNull(getContributionItem(itemRidget));
 
 		item.dispose();
-		assertNull(itemRidget.getContributionItem());
+		assertNull(getContributionItem(itemRidget));
 
 	}
 
@@ -73,6 +75,14 @@ public class AbstractItemRidgetTest extends TestCase {
 		itemRidget.setEnabled(false);
 		assertFalse(itemRidget.isEnabled());
 
+	}
+
+	// helping methods
+	//////////////////
+
+	private CommandContributionItem getContributionItem(AbstractItemRidget ridget) {
+		return ReflectionUtils.invokeHidden(ridget, "getContributionItem", (Object[]) null);
+		// return ridget.getContributionItem();
 	}
 
 }
