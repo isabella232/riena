@@ -126,6 +126,18 @@
             categoryId="org.eclipse.riena.navigation.ui.swt"
             defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.CloseModuleGroup">
       </command>
+      <command
+            id="org.eclipse.riena.navigation.ui.nextGroup"
+            name="Next group"
+            categoryId="org.eclipse.riena.navigation.ui.swt"
+            defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchGroup:next">
+      </command>
+      <command
+            id="org.eclipse.riena.navigation.ui.previousGroup"
+            name="Previous group"
+            categoryId="org.eclipse.riena.navigation.ui.swt"
+            defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchGroup:previous">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -152,6 +164,18 @@
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+PAGE_DOWN">
+      </key>
+      <key
+            commandId="org.eclipse.riena.navigation.ui.nextGroup"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+ARROW_DOWN">
+      </key>
+      <key
+            commandId="org.eclipse.riena.navigation.ui.previousGroup"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+ARROW_UP">
       </key>
    </extension>
    <extension
