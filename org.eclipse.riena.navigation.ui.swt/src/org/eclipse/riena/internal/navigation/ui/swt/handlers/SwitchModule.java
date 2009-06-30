@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.swt.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.CoreException;
@@ -21,10 +18,7 @@ import org.eclipse.core.runtime.IExecutableExtension;
 
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
-import org.eclipse.riena.navigation.IModuleGroupNode;
-import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.ISubApplicationNode;
 
 /**
  * Switch focus to the previous or next group in the navigation tree. The
@@ -52,7 +46,7 @@ public class SwitchModule extends AbstractNavigationHandler implements IExecutab
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// assumes there is only one application node
 		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
-		INavigationNode<?>[] subModules = collectSubModules(application);
+		INavigationNode<?>[] subModules = collectModules(application);
 		INavigationNode<?> nextNode = toNext ? findNextNode(subModules) : findPreviousNode(subModules, true);
 		if (nextNode != null) {
 			nextNode.activate();
@@ -67,22 +61,6 @@ public class SwitchModule extends AbstractNavigationHandler implements IExecutab
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
 			throws CoreException {
 		toNext = "next".equalsIgnoreCase(String.valueOf(data)); //$NON-NLS-1$
-	}
-
-	// helping methods
-	//////////////////
-
-	@SuppressWarnings("unchecked")
-	private IModuleNode[] collectSubModules(IApplicationNode application) {
-		List<IModuleNode> modules = new ArrayList<IModuleNode>();
-		INavigationNode<?> subApplication = findActive((List) application.getChildren());
-		if (subApplication instanceof ISubApplicationNode) {
-			List<IModuleGroupNode> groups = ((ISubApplicationNode) subApplication).getChildren();
-			for (IModuleGroupNode moduleGroup : groups) {
-				modules.addAll(moduleGroup.getChildren());
-			}
-		}
-		return modules.toArray(new IModuleNode[modules.size()]);
 	}
 
 }

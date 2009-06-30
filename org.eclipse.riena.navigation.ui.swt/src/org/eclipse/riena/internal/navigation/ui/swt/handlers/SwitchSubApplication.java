@@ -51,7 +51,7 @@ public class SwitchSubApplication extends AbstractNavigationHandler implements I
 		IApplicationNode applicationNode = ApplicationNodeManager.getApplicationNode();
 		List<ISubApplicationNode> children = applicationNode.getChildren();
 		INavigationNode<?>[] nodes = children.toArray(new ISubApplicationNode[children.size()]);
-		INavigationNode<?> nextNode = toNext ? findNextNode(nodes) : findPreviousNode(nodes);
+		INavigationNode<?> nextNode = toNext ? findNextNode(nodes) : findPreviousNode(nodes, true);
 		if (nextNode != null) {
 			nextNode.activate();
 		}

@@ -93,7 +93,7 @@ public class SwitchSubApplicationTest extends RienaTestCase {
 		EasyMock.replay(nodeC);
 		ISubApplicationNode[] nodes = { nodeA, nodeB, nodeC };
 
-		assertSame(nodeB, handler.findPreviousNode(nodes));
+		assertSame(nodeB, handler.findPreviousNode(nodes, true));
 	}
 
 	public void testFindPrevSubApplicationAtoC() {
@@ -103,12 +103,12 @@ public class SwitchSubApplicationTest extends RienaTestCase {
 		EasyMock.replay(nodeC);
 		ISubApplicationNode[] nodes = { nodeA, nodeB, nodeC };
 
-		assertSame(nodeC, handler.findPreviousNode(nodes));
+		assertSame(nodeC, handler.findPreviousNode(nodes, true));
 	}
 
 	public void testFindPrevSubApplicationEmpty() {
 		ISubApplicationNode[] nodes = {};
-		assertNull(handler.findPreviousNode(nodes));
+		assertNull(handler.findPreviousNode(nodes, true));
 	}
 
 	public void testFindPrevSubApplicationAtoA() {
@@ -116,13 +116,13 @@ public class SwitchSubApplicationTest extends RienaTestCase {
 		EasyMock.replay(nodeA);
 		ISubApplicationNode[] nodes = {};
 
-		assertNull(handler.findPreviousNode(nodes));
+		assertNull(handler.findPreviousNode(nodes, true));
 	}
 
 	public void testFindPrevSubApplicationNoneSelected() {
 		ISubApplicationNode[] nodes = { nodeA, nodeB, nodeC };
 
-		assertNull(handler.findPreviousNode(nodes));
+		assertNull(handler.findPreviousNode(nodes, true));
 	}
 
 	public void testFindPrevSubApplicationTwoSelected() {
@@ -132,7 +132,7 @@ public class SwitchSubApplicationTest extends RienaTestCase {
 		EasyMock.replay(nodeB);
 		ISubApplicationNode[] nodes = { nodeA, nodeB, nodeC };
 
-		assertNull(handler.findPreviousNode(nodes));
+		assertNull(handler.findPreviousNode(nodes, true));
 	}
 
 }

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.swt.handlers;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import org.eclipse.core.commands.AbstractHandler;
 
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 
 /**
  * Abstract handler for navigation related actions.
@@ -26,6 +29,25 @@ import org.eclipse.riena.navigation.INavigationNode;
  * {@link #execute(org.eclipse.core.commands.ExecutionEvent)} to use.
  */
 abstract class AbstractNavigationHandler extends AbstractHandler {
+
+	/**
+	 * TODO [ev] docs
+	 * 
+	 * @param application
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	protected final IModuleNode[] collectModules(IApplicationNode application) {
+		List<IModuleNode> modules = new ArrayList<IModuleNode>();
+		INavigationNode<?> subApplication = findActive((List) application.getChildren());
+		if (subApplication instanceof ISubApplicationNode) {
+			List<IModuleGroupNode> groups = ((ISubApplicationNode) subApplication).getChildren();
+			for (IModuleGroupNode moduleGroup : groups) {
+				modules.addAll(moduleGroup.getChildren());
+			}
+		}
+		return modules.toArray(new IModuleNode[modules.size()]);
+	}
 
 	/**
 	 * Return the first 'active' nodes from the list of nodes.
@@ -100,15 +122,15 @@ abstract class AbstractNavigationHandler extends AbstractHandler {
 	/**
 	 * Not API; public for testing only.
 	 * <p>
-	 * Find the currently 'selected' node and return it's predecessor. If the
-	 * 'selected' node is the first node of the array, return the last node. If
-	 * no predecessir can be determined (i.e. only one node, several selected
-	 * nodes) return null.
+	 * Find the currently 'selected' node and return it's predecessor. When
+	 * wrapping is on and the 'selected' node is the first node of the array,
+	 * return the last node. If no predecessir can be determined (i.e. only one
+	 * node, several selected nodes) return null.
 	 * <p>
 	 * The notion of 'selected' depends on the implementation of the
 	 * {@link #isSelected(INavigationNode)} method.
 	 */
-	public final INavigationNode<?> findPreviousNode(INavigationNode<?>[] nodes) {
+	public final INavigationNode<?> findPreviousNode(INavigationNode<?>[] nodes, boolean wrap) {
 		INavigationNode<?> result = null;
 		int selectedCount = 0;
 		for (int i = nodes.length - 1; i >= 0; i--) {
@@ -122,7 +144,7 @@ abstract class AbstractNavigationHandler extends AbstractHandler {
 			}
 		}
 		int lastApp = nodes.length - 1;
-		if (selectedCount == 1 && result == null && !isSelected(nodes[lastApp])) {
+		if (wrap && selectedCount == 1 && result == null && !isSelected(nodes[lastApp])) {
 			result = nodes[lastApp];
 		}
 		return selectedCount == 1 ? result : null;

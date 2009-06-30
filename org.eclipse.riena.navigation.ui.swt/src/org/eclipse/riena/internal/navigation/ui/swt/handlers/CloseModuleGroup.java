@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.swt.handlers;
 
+import java.util.List;
+
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
@@ -17,6 +19,7 @@ import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.INavigationNode;
 
 /**
  * Close the currently active module-group.
@@ -28,7 +31,10 @@ public class CloseModuleGroup extends AbstractNavigationHandler {
 		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
 		IModuleGroupNode moduleGroup = findModuleGroup(application);
 		if (moduleGroup != null && isCloseable(moduleGroup)) {
-			// TODO [ev] focus on previous module group 
+			INavigationNode<?> previous = findPreviousModuleGroup(moduleGroup);
+			if (previous != null) {
+				previous.activate();
+			}
 			((IModuleGroupNode) moduleGroup).dispose();
 		}
 		return null;
@@ -36,6 +42,13 @@ public class CloseModuleGroup extends AbstractNavigationHandler {
 
 	// helping methods
 	//////////////////
+
+	private INavigationNode<?> findPreviousModuleGroup(IModuleGroupNode moduleGroup) {
+		List<?> moduleGroups = moduleGroup.getParent().getChildren();
+		INavigationNode<?>[] nodes = (INavigationNode<?>[]) moduleGroups.toArray(new INavigationNode<?>[moduleGroups
+				.size()]);
+		return (INavigationNode<?>) findPreviousNode(nodes, false);
+	}
 
 	private boolean isCloseable(IModuleGroupNode moduleGroup) {
 		boolean result = true;

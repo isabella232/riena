@@ -31,7 +31,10 @@ public class CloseModule extends AbstractNavigationHandler {
 		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
 		IModuleNode module = findModule(application);
 		if (module != null && module.isClosable()) {
-			// TODO [ev] focus on previous module 
+			INavigationNode<?> previous = findPreviousModule(application);
+			if (previous != null) {
+				previous.activate();
+			}
 			module.dispose();
 		}
 		return null;
@@ -39,6 +42,11 @@ public class CloseModule extends AbstractNavigationHandler {
 
 	// helping methods
 	//////////////////
+
+	private INavigationNode<?> findPreviousModule(IApplicationNode application) {
+		IModuleNode[] modules = collectModules(application);
+		return (INavigationNode<?>) findPreviousNode(modules, false);
+	}
 
 	/**
 	 * Not API; public for testing only.
