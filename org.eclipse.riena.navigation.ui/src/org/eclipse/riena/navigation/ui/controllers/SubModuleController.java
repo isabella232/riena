@@ -16,6 +16,7 @@ import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
+import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
@@ -47,6 +48,17 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	public void setNavigationNode(ISubModuleNode navigationNode) {
 		super.setNavigationNode(navigationNode);
 
+		if (getModuleController() != null) {
+			getNavigationNode().getParent().addSimpleListener(new SimpleNavigationNodeAdapter() {
+
+				@Override
+				public void labelChanged(INavigationNode<?> arg0) {
+					super.labelChanged(arg0);
+					updateLabel();
+				}
+
+			});
+		}
 		getNavigationNode().addListener(new SubModuleNodeListener() {
 
 			@Override

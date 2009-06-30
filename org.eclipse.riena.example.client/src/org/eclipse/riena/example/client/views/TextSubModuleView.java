@@ -11,21 +11,24 @@
 package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.example.client.controllers.TextSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * SWT {@link ITextRidget} sample.
  */
 public class TextSubModuleView extends SubModuleView<TextSubModuleController> {
+	public TextSubModuleView() {
+	}
 
 	public static final String ID = TextSubModuleView.class.getName();
 
@@ -65,6 +68,11 @@ public class TextSubModuleView extends SubModuleView<TextSubModuleController> {
 		Text textField10 = UIControlsFactory.createText(parent);
 		textField10.setTextLimit(10);
 		addUIControl(textField10, "textField10"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(parent, "set Label:"); //$NON-NLS-1$
+		UIControlsFactory.createButton(parent, "setLabel", "setlabel"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createLabel(parent, "set ParentLabel:"); //$NON-NLS-1$
+		UIControlsFactory.createButton(parent, "setParentLabel", "setparentlabel"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

@@ -13,6 +13,8 @@ package org.eclipse.riena.example.client.controllers;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
@@ -50,6 +52,18 @@ public class TextSubModuleController extends SubModuleController {
 		textDirectWrite.setDirectWriting(true);
 		textDirectWrite.bindToModel(textModel2, ITextRidget.PROPERTY_TEXT);
 		textDirectWrite.updateFromModel();
-	}
 
+		((IActionRidget) getRidget("setlabel")).addListener(new IActionListener() { //$NON-NLS-1$
+
+					public void callback() {
+						getNavigationNode().setLabel("new Label " + System.currentTimeMillis()); //$NON-NLS-1$
+					}
+				});
+		((IActionRidget) getRidget("setparentlabel")).addListener(new IActionListener() { //$NON-NLS-1$
+
+					public void callback() {
+						getNavigationNode().getParent().setLabel("new ParentLabel " + System.currentTimeMillis()); //$NON-NLS-1$
+					}
+				});
+	}
 }

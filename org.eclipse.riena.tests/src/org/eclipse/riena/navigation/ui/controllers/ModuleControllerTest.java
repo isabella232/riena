@@ -14,13 +14,14 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.tests.collect.UITestCase;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Tests of the class <code>ModuleController</code>.
@@ -47,6 +48,74 @@ public class ModuleControllerTest extends TestCase {
 		assertFalse(controller.isCloseable());
 
 		shell.dispose();
+
+	}
+
+	public void testSetLabel() throws Exception {
+
+		// test setLabel() with one submodule
+		ModuleNode node = new ModuleNode();
+		SubModuleNode subNode1 = new SubModuleNode();
+		node.addChild(subNode1);
+
+		ModuleController controller = new ModuleController(node);
+		SubModuleController subModuleController1 = new SubModuleController(subNode1);
+
+		ShellRidget shellRidget = new ShellRidget();
+		Shell shell = new Shell();
+		shellRidget.setUIControl(shell);
+		controller.setWindowRidget(shellRidget);
+
+		ShellRidget subModuleShellRidget1 = new ShellRidget();
+		Shell subModuleShell1 = new Shell();
+		subModuleShellRidget1.setUIControl(subModuleShell1);
+		subModuleController1.setWindowRidget(subModuleShellRidget1);
+
+		node.setLabel("Hello");
+
+		assertEquals("Hello", shellRidget.getTitle());
+		assertEquals("Hello", subModuleShellRidget1.getTitle());
+
+		shell.dispose();
+		subModuleShell1.dispose();
+
+		// test setLabel() with two submodules
+		ModuleNode modNode = new ModuleNode();
+		SubModuleNode subModNode1 = new SubModuleNode();
+		SubModuleNode subModNode2 = new SubModuleNode();
+		modNode.addChild(subModNode1);
+		modNode.addChild(subModNode2);
+
+		ModuleController modController = new ModuleController(modNode);
+		SubModuleController subModController1 = new SubModuleController(subModNode1);
+		SubModuleController subModController2 = new SubModuleController(subModNode2);
+
+		ShellRidget shellRidgetMod = new ShellRidget();
+		Shell shellMod = new Shell();
+		shellRidgetMod.setUIControl(shellMod);
+		modController.setWindowRidget(shellRidgetMod);
+
+		ShellRidget subModShellRidget1 = new ShellRidget();
+		Shell subModShell1 = new Shell();
+		subModShellRidget1.setUIControl(subModShell1);
+		subModController1.setWindowRidget(subModShellRidget1);
+
+		ShellRidget subModShellRidget2 = new ShellRidget();
+		Shell subModShell2 = new Shell();
+		subModShellRidget2.setUIControl(subModShell2);
+		subModController2.setWindowRidget(subModShellRidget2);
+
+		modNode.setLabel("Module");
+		subModNode1.setLabel("SubModule 1");
+		subModNode2.setLabel("SubModule 2");
+
+		assertEquals("Module", shellRidgetMod.getTitle());
+		assertEquals("Module - SubModule 1", subModShellRidget1.getTitle());
+		assertEquals("Module - SubModule 2", subModShellRidget2.getTitle());
+
+		shellMod.dispose();
+		subModShell1.dispose();
+		subModShell2.dispose();
 
 	}
 
