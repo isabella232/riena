@@ -32,7 +32,8 @@ public class CloseModule extends AbstractHandler {
 		// assumes there is only one application node
 		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
 		IModuleNode module = findModule(application);
-		if (module != null) {
+		if (module != null && module.isClosable()) {
+			// TODO [ev] focus on previous module 
 			module.dispose();
 		}
 		return null;

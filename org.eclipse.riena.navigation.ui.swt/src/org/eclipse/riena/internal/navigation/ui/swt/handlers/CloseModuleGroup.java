@@ -16,6 +16,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.navigation.IModuleNode;
 
 /**
  * Close the currently active module-group.
@@ -26,10 +27,22 @@ public class CloseModuleGroup extends CloseModule {
 		// assumes there is only one application node
 		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
 		IModuleGroupNode moduleGroup = findModuleGroup(application);
-		if (moduleGroup != null) {
+		if (moduleGroup != null && isCloseable(moduleGroup)) {
+			// TODO [ev] focus on previous module group 
 			((IModuleGroupNode) moduleGroup).dispose();
 		}
 		return null;
+	}
+
+	// helping methods
+	//////////////////
+
+	private boolean isCloseable(IModuleGroupNode moduleGroup) {
+		boolean result = true;
+		for (IModuleNode module : moduleGroup.getChildren()) {
+			result = result && module.isClosable();
+		}
+		return result;
 	}
 
 }
