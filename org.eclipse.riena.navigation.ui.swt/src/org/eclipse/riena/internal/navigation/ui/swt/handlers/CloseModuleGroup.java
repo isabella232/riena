@@ -21,7 +21,7 @@ import org.eclipse.riena.navigation.IModuleNode;
 /**
  * Close the currently active module-group.
  */
-public class CloseModuleGroup extends CloseModule {
+public class CloseModuleGroup extends AbstractNavigationHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// assumes there is only one application node

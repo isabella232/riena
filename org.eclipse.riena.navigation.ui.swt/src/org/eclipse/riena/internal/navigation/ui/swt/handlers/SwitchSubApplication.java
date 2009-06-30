@@ -12,7 +12,6 @@ package org.eclipse.riena.internal.navigation.ui.swt.handlers;
 
 import java.util.List;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.CoreException;
@@ -21,6 +20,7 @@ import org.eclipse.core.runtime.IExecutableExtension;
 
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 
 /**
@@ -42,7 +42,7 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
  * first tab. If the first tab is reached is reached, the previous tab will be
  * the last tab.
  */
-public class SwitchSubApplication extends AbstractHandler implements IExecutableExtension {
+public class SwitchSubApplication extends AbstractNavigationHandler implements IExecutableExtension {
 
 	private boolean toNext;
 
@@ -50,8 +50,8 @@ public class SwitchSubApplication extends AbstractHandler implements IExecutable
 		// assumes there is only one application node
 		IApplicationNode applicationNode = ApplicationNodeManager.getApplicationNode();
 		List<ISubApplicationNode> children = applicationNode.getChildren();
-		ISubApplicationNode[] nodes = children.toArray(new ISubApplicationNode[children.size()]);
-		ISubApplicationNode nextNode = toNext ? findNextNode(nodes) : findPreviousNode(nodes);
+		INavigationNode<?>[] nodes = children.toArray(new ISubApplicationNode[children.size()]);
+		INavigationNode<?> nextNode = toNext ? findNextNode(nodes) : findPreviousNode(nodes);
 		if (nextNode != null) {
 			nextNode.activate();
 		}
@@ -67,51 +67,11 @@ public class SwitchSubApplication extends AbstractHandler implements IExecutable
 		toNext = "next".equalsIgnoreCase(String.valueOf(data)); //$NON-NLS-1$
 	}
 
-	// helping methods
-	//////////////////
-
 	/**
-	 * This is NOT API - public for testing only.
+	 * Returns true if this node is selected.
 	 */
-	public ISubApplicationNode findNextNode(ISubApplicationNode[] nodes) {
-		ISubApplicationNode result = null;
-		int selectedCount = 0;
-		for (ISubApplicationNode node : nodes) {
-			if (node.isSelected()) {
-				selectedCount++;
-			} else {
-				if (selectedCount == 1 && result == null) { // previous else implies !selected
-					result = node;
-				}
-			}
-		}
-		if (selectedCount == 1 && result == null && !nodes[0].isSelected()) { // wrap around
-			result = nodes[0];
-		}
-		return selectedCount == 1 ? result : null;
-	}
-
-	/**
-	 * This is NOT API - public for testing only.
-	 */
-	public ISubApplicationNode findPreviousNode(ISubApplicationNode[] nodes) {
-		ISubApplicationNode result = null;
-		int selectedCount = 0;
-		for (int i = nodes.length - 1; i >= 0; i--) {
-			ISubApplicationNode node = nodes[i];
-			if (node.isSelected()) {
-				selectedCount++;
-			} else {
-				if (selectedCount == 1 && result == null) { // previous else implies !selected
-					result = node;
-				}
-			}
-		}
-		int lastApp = nodes.length - 1;
-		if (selectedCount == 1 && result == null && !nodes[lastApp].isSelected()) {
-			result = nodes[lastApp];
-		}
-		return selectedCount == 1 ? result : null;
+	protected boolean isSelected(INavigationNode<?> node) {
+		return node.isSelected();
 	}
 
 }
