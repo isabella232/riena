@@ -55,20 +55,6 @@ public class MenuCoolBarComposite extends Composite {
 	}
 
 	/**
-	 * Creates the cool and tool bar. These build the menu bar of the Riena
-	 * sub-application.
-	 */
-	private void create() {
-
-		CoolBar coolBar = new CoolBar(this, SWT.FLAT);
-		coolItem = initCoolBar(coolBar);
-
-		toolBar = (ToolBar) coolItem.getControl();
-		toolBar.addMouseMoveListener(new ToolBarMouseListener());
-
-	}
-
-	/**
 	 * Initializes the given cool bar.<br>
 	 * E.g. sets the background of the cool bar and if the cool bar is empty
 	 * adds necessary cool item with the height 1.
@@ -96,19 +82,6 @@ public class MenuCoolBarComposite extends Composite {
 	}
 
 	/**
-	 * Calculates and sets the size of the given cool item.
-	 * 
-	 * @param item
-	 *            - item of cool bar
-	 */
-	private void calcSize(CoolItem item) {
-		Control control = item.getControl();
-		Point pt = control.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		pt = item.computeSize(pt.x, pt.y);
-		item.setSize(pt);
-	}
-
-	/**
 	 * Creates a top-level menu and adds it to the Riena menu bar.
 	 * 
 	 * @param menuManager
@@ -128,6 +101,33 @@ public class MenuCoolBarComposite extends Composite {
 		ToolItem[] toolItems = toolBar.getItems();
 		return Arrays.asList(toolItems);
 
+	}
+
+	/**
+	 * Calculates and sets the size of the given cool item.
+	 * 
+	 * @param item
+	 *            - item of cool bar
+	 */
+	private void calcSize(CoolItem item) {
+		Control control = item.getControl();
+		Point pt = control.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		pt = item.computeSize(pt.x, pt.y);
+		item.setSize(pt);
+	}
+
+	/**
+	 * Creates the cool and tool bar. These build the menu bar of the Riena
+	 * sub-application.
+	 */
+	private void create() {
+	
+		CoolBar coolBar = new CoolBar(this, SWT.FLAT);
+		coolItem = initCoolBar(coolBar);
+	
+		toolBar = (ToolBar) coolItem.getControl();
+		toolBar.addMouseMoveListener(new ToolBarMouseListener());
+	
 	}
 
 	/**
