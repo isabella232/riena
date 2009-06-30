@@ -36,6 +36,9 @@ public class SwitchToWorkarea extends AbstractHandler {
 		return null;
 	}
 
+	// helping methods
+	//////////////////
+
 	private EmbeddedTitleBar findEmbeddedTitleBar(Composite parent) {
 		EmbeddedTitleBar result = null;
 		Control[] children = parent.getChildren();
