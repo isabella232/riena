@@ -212,16 +212,21 @@
                </with>
             </activeWhen>
          </handler>
+         <!-- Use Alt+F4 to quit on Windows --> 
          <handler
                class="org.eclipse.riena.internal.navigation.ui.swt.handlers.ExitApplication"
                commandId="org.eclipse.ui.file.exit">
             <activeWhen>
-               <with
-                     variable="activeWorkbenchWindow">
-                  <instanceof
-                        value="org.eclipse.ui.IWorkbenchWindow">
-                  </instanceof>
-               </with>
+               <and>
+	               <with
+	                     variable="activeWorkbenchWindow">
+	                  <instanceof
+	                        value="org.eclipse.ui.IWorkbenchWindow">
+	                  </instanceof>
+	               </with>
+                   <systemTest property="osgi.os" value="win32">
+	               </systemTest>
+	           </and>
             </activeWhen>
          </handler>
    </extension>
