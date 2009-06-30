@@ -177,6 +177,12 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+ARROW_UP">
       </key>
+      <key
+            commandId="org.eclipse.ui.file.exit"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+F4">
+      </key>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -197,6 +203,18 @@
          <handler
                class="org.eclipse.riena.internal.navigation.ui.swt.handlers.CloseModuleGroup"
                commandId="org.eclipse.ui.file.closeAll">
+            <activeWhen>
+               <with
+                     variable="activeWorkbenchWindow">
+                  <instanceof
+                        value="org.eclipse.ui.IWorkbenchWindow">
+                  </instanceof>
+               </with>
+            </activeWhen>
+         </handler>
+         <handler
+               class="org.eclipse.riena.internal.navigation.ui.swt.handlers.ExitApplication"
+               commandId="org.eclipse.ui.file.exit">
             <activeWhen>
                <with
                      variable="activeWorkbenchWindow">
