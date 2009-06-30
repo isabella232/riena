@@ -38,14 +38,14 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
  *     id=&quot;org.eclipse.riena.navigation.ui.nextGroup&quot;
  *     name=&quot;Next group&quot;
  *     categoryId=&quot;org.eclipse.riena.navigation.ui.swt&quot;
- *     defaultHandler=&quot;org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchGroup:next&quot;/&gt;
+ *     defaultHandler=&quot;org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchModule:next&quot;/&gt;
  * </pre>
  * 
  * Implementation notes: if the last group is reached, the next group will be
  * the first group. If the first group is reached is reached, the previous group
  * will be the last group.
  */
-public class SwitchGroup extends AbstractNavigationHandler implements IExecutableExtension {
+public class SwitchModule extends AbstractNavigationHandler implements IExecutableExtension {
 
 	private boolean toNext;
 
@@ -53,7 +53,7 @@ public class SwitchGroup extends AbstractNavigationHandler implements IExecutabl
 		// assumes there is only one application node
 		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
 		INavigationNode<?>[] subModules = collectSubModules(application);
-		INavigationNode<?> nextNode = toNext ? findNextNode(subModules) : findPreviousNode(subModules);
+		INavigationNode<?> nextNode = toNext ? findNextNode(subModules) : findPreviousNode(subModules, true);
 		if (nextNode != null) {
 			nextNode.activate();
 		}
