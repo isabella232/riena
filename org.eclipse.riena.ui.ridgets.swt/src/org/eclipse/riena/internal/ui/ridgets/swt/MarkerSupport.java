@@ -37,8 +37,8 @@ public class MarkerSupport extends BasicMarkerSupport {
 	private static final String PRE_NEGATIVE_FOREGROUND_KEY = "org.eclipse.riena.MarkerSupport.preNegativeForeground"; //$NON-NLS-1$
 
 	/**
-	 * This flag controls wether disabled ridget do hide their content. The
-	 * default value is {@code true}. It can be overriden by setting the system
+	 * This flag controls whether disabled ridget do hide their content. The
+	 * default value is {@code true}. It can be overridden by setting the system
 	 * property {@code 'HIDE_DISABLED_RIDGET_CONTENT'} to {@code false}.
 	 * <p>
 	 * Note: this field was made public for testing purposes. It should not be
