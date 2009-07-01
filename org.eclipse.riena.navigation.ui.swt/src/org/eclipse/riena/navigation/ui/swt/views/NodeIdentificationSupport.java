@@ -20,7 +20,11 @@ import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
  * Helper class for setting 'rienaid' on widgets, that are related to riena
  * nodes.
  */
-public class NodeIdentificationSupport extends WidgetIdentificationSupport {
+public final class NodeIdentificationSupport {
+
+	private NodeIdentificationSupport() {
+		// utility class
+	}
 
 	/**
 	 * Sets rienaid for widget, identified by NavigationNodeId. Value for riena
@@ -37,12 +41,13 @@ public class NodeIdentificationSupport extends WidgetIdentificationSupport {
 	 *            : Node Id
 	 */
 	public static void setIdentification(Widget aWidget, String aWidgetId, NavigationNodeId aNodeId) {
-		if (aNodeId.getInstanceId() != null)
+		if (aNodeId.getInstanceId() != null) {
 			WidgetIdentificationSupport.setIdentification(aWidget, aWidgetId, String.format(
 					"%s.%s", aNodeId.getTypeId(), aNodeId //$NON-NLS-1$
 							.getInstanceId()));
-		else
+		} else {
 			WidgetIdentificationSupport.setIdentification(aWidget, aWidgetId, aNodeId.getTypeId());
+		}
 	}
 
 	/**
@@ -60,9 +65,10 @@ public class NodeIdentificationSupport extends WidgetIdentificationSupport {
 
 	@SuppressWarnings("unchecked")
 	public static void setIdentification(Widget aWidget, String aWidgetId, INavigationNode aNode) {
-		if (aNode.getNodeId() != null)
+		if (aNode.getNodeId() != null) {
 			setIdentification(aWidget, aWidgetId, aNode.getNodeId());
-		else
+		} else {
 			WidgetIdentificationSupport.setIdentification(aWidget, aWidgetId, aNode.getLabel());
+		}
 	}
 }
