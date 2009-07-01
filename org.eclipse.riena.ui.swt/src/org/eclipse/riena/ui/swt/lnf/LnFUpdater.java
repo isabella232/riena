@@ -171,10 +171,7 @@ public class LnFUpdater {
 	 * @return value of system property
 	 */
 	private boolean checkPropertyUpdateView() {
-
-		String updateStrg = System.getProperty(PROPERTY_RIENA_LNF_UPDATE_VIEW);
-		return Boolean.parseBoolean(updateStrg);
-
+		return Boolean.getBoolean(PROPERTY_RIENA_LNF_UPDATE_VIEW);
 	}
 
 	/**
