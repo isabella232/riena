@@ -21,10 +21,14 @@ import org.eclipse.riena.internal.ui.swt.Activator;
 /**
  * Helper class for setting 'rienaid' on widgets.
  */
-public class WidgetIdentificationSupport {
+public final class WidgetIdentificationSupport {
 
 	public static final String RIENA_ID = "rienaid"; //$NON-NLS-1$
-	private static Logger LOGGER = Activator.getDefault().getLogger(WidgetIdentificationSupport.class);
+	private final static Logger LOGGER = Activator.getDefault().getLogger(WidgetIdentificationSupport.class);
+
+	private WidgetIdentificationSupport() {
+		// utility class
+	}
 
 	/**
 	 * Sets rienaid for shell. If 'riena.testing.widgetid.mainshell' system
@@ -35,9 +39,7 @@ public class WidgetIdentificationSupport {
 	 *            - shell
 	 */
 	public static void setIdentification(Shell aShell) {
-		String id = System.getProperty("riena.testing.widgetid.mainshell"); //$NON-NLS-1$
-
-		aShell.setData(RIENA_ID, id != null ? id : "default"); //$NON-NLS-1$
+		aShell.setData(RIENA_ID, System.getProperty("riena.testing.widgetid.mainshell", "default")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -50,11 +52,12 @@ public class WidgetIdentificationSupport {
 	 *            - sequence of id parts
 	 */
 	public static void setIdentification(Widget aWidget, String... aParts) {
-		StringBuffer fullId = new StringBuffer();
+		StringBuilder fullId = new StringBuilder();
 
 		for (String part : aParts) {
-			if (fullId.length() != 0)
+			if (fullId.length() != 0) {
 				fullId.append('.');
+			}
 
 			fullId.append(part);
 		}
