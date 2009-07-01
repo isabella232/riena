@@ -13,14 +13,19 @@ package org.eclipse.riena.ui.swt.utils;
 /**
  * Utility class for UI testing
  */
-public class TestingSupport {
+public final class TestingSupport {
+
+	private TestingSupport() {
+		// utility class
+	}
 
 	/**
 	 * 
-	 * @return true if UI is started in testing mode. Currently it checks if
-	 *         'riena.testing' system property is set to any value.
+	 * @return true if UI is started in testing mode. It checks if
+	 *         'riena.testing' system property is set to {@code true} otherwise
+	 *         {@code false}.
 	 */
 	public static boolean isTestingEnabled() {
-		return System.getProperty("riena.testing") != null; //$NON-NLS-1$
+		return Boolean.getBoolean("riena.testing"); //$NON-NLS-1$
 	}
 }
