@@ -10,12 +10,24 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import junit.framework.TestCase;
 
+import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.ui.ridgets.swt.ComboRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.EmbeddedTitleBarRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
@@ -131,6 +143,45 @@ public class SubModuleControllerTest extends TestCase {
 		assertFalse(ret);
 		ret = ReflectionUtils.invokeHidden(smController2, "isInvisibleInTree");
 		assertFalse(ret);
+
+	}
+
+	public void testUpdateAllRidgetsFromModel() {
+
+		Display display = Display.getDefault();
+		Shell shell = new Shell(display);
+		shell.pack();
+		shell.setVisible(true);
+
+		Realm realm = SWTObservables.getRealm(display);
+		assertNotNull(realm);
+		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
+
+		SubModuleNode node = new SubModuleNode();
+		node.setNavigationProcessor(new NavigationProcessor());
+		SubModuleController controller = new SubModuleController(node);
+
+		LabelRidget labelRidget = new LabelRidget();
+		controller.addRidget("label", labelRidget);
+		assertNotNull(controller.getRidgets());
+		assertEquals(1, controller.getRidgets().size());
+
+		ComboRidget comboRidget = new ComboRidget();
+		controller.addRidget("combo ridget", comboRidget);
+		assertNotNull(controller.getRidgets());
+		assertEquals(2, controller.getRidgets().size());
+
+		PrintStream beforeErr = System.err;
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintStream err = new PrintStream(baos);
+		System.setErr(err);
+		controller.updateAllRidgetsFromModel();
+		System.setErr(beforeErr);
+		if (RienaStatus.isDevelopment()) {
+			assertEquals(true, baos.toString().contains("unsuccessful"));
+			assertEquals(true, baos.toString().contains("ridget"));
+		}
+		System.err.print(baos.toString());
 
 	}
 

@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.riena.example.client.controllers.BlockingSubModuleController;
 import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController;
+import org.eclipse.riena.example.client.controllers.ComboAndChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
 import org.eclipse.riena.example.client.controllers.CompositeTableSubModuleController;
 import org.eclipse.riena.example.client.controllers.DateTimeSubModuleController;
@@ -40,6 +41,7 @@ import org.eclipse.riena.example.client.controllers.TreeTableSubModuleController
 import org.eclipse.riena.example.client.controllers.ValidationSubModuleController;
 import org.eclipse.riena.example.client.views.BlockingSubModuleView;
 import org.eclipse.riena.example.client.views.ChoiceSubModuleView;
+import org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.example.client.views.CompositeTableSubModuleView;
 import org.eclipse.riena.example.client.views.DateTimeSubModuleView;
@@ -118,6 +120,12 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 				new NavigationNodeId("org.eclipse.riena.example.combo"), "Combo"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(comboSubModule, ComboSubModuleController.class, ComboSubModuleView.ID, false);
 		playgroundModule.addChild(comboSubModule);
+
+		ISubModuleNode comboAndChoiceSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.different"), "Combo and Choice"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(comboAndChoiceSubModule, ComboAndChoiceSubModuleController.class,
+				ComboAndChoiceSubModuleView.ID, false);
+		playgroundModule.addChild(comboAndChoiceSubModule);
 
 		ISubModuleNode tablexSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.compositetable"), "Composite Table"); //$NON-NLS-1$ //$NON-NLS-2$

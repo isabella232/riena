@@ -269,6 +269,13 @@
             name="org.eclipse.riena.example.client.views.OnePersonSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView"
+            id="org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView"
+            name="org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

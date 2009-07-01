@@ -12,6 +12,13 @@ package org.eclipse.riena.navigation.ui.controllers;
 
 import java.util.Iterator;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.core.databinding.BindingException;
+import org.eclipse.equinox.log.Logger;
+
+import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.internal.navigation.ui.Activator;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -32,6 +39,8 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	public static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
 
 	private static final String TITLE_SEPARATOR = " - "; //$NON-NLS-1$
+
+	private static Logger logger = Activator.getDefault().getLogger(SubModuleController.class);
 
 	public SubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
@@ -239,8 +248,19 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	public void updateAllRidgetsFromModel() {
 		Iterator<? extends IRidget> r = getRidgets().iterator();
 		while (r.hasNext()) {
-			r.next().updateFromModel();
+			if (RienaStatus.isDevelopment()) {
+				IRidget ridget = r.next();
+				try {
+					ridget.updateFromModel();
+				} catch (BindingException ex) {
+					logger
+							.log(
+									LogService.LOG_WARNING,
+									"Update from the model was unsuccessful for the ridget: " + ridget + ", with id: " + ridget.getID()); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+			} else {
+				r.next().updateFromModel();
+			}
 		}
 	}
-
 }
