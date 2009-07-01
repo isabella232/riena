@@ -14,7 +14,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.riena.demo.common.Customer;
 
@@ -26,6 +28,7 @@ public class CustomerRepository implements ICustomerRepository {
 	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy"); //$NON-NLS-1$
 
 	private List<Customer> customers = new ArrayList<Customer>();
+	private Map<String, Customer> email2customer = new HashMap<String, Customer>();
 
 	public CustomerRepository() {
 		System.out.println("repository started"); //$NON-NLS-1$
@@ -38,6 +41,22 @@ public class CustomerRepository implements ICustomerRepository {
 
 	public void store(Customer customer) {
 		customers.add(customer);
+		if (customer.getEmailAddress() != null) {
+			email2customer.put(customer.getEmailAddress(), customer);
+		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.demo.server.ICustomerRepository#searchWithEmailAddress
+	 * (java.lang.String)
+	 */
+	public Customer findCustomerWithEmailAddress(String emailAddress) {
+		return email2customer.get(emailAddress);
+
 	}
 
 	private void init() {
@@ -50,7 +69,11 @@ public class CustomerRepository implements ICustomerRepository {
 			crv.getAddress().setStreet("Musterstr.1"); //$NON-NLS-1$
 			crv.getAddress().setZipCode("12345"); //$NON-NLS-1$
 			crv.getAddress().setCity("Musterstadt"); //$NON-NLS-1$
+			crv.setEmailAddress("Josef.Mundl@mail.org"); //$NON-NLS-1$
 			customers.add(crv);
+			if (crv.getEmailAddress() != null) {
+				email2customer.put(crv.getEmailAddress(), crv);
+			}
 			// 2.
 			crv = new Customer();
 			crv.setLastName("Muster"); //$NON-NLS-1$
@@ -59,7 +82,11 @@ public class CustomerRepository implements ICustomerRepository {
 			crv.getAddress().setStreet("Willibaldgasse"); //$NON-NLS-1$
 			crv.getAddress().setZipCode("12366"); //$NON-NLS-1$
 			crv.getAddress().setCity("Musterhaus"); //$NON-NLS-1$
+			crv.setEmailAddress("Robert.Muster@mail.org"); //$NON-NLS-1$
 			customers.add(crv);
+			if (crv.getEmailAddress() != null) {
+				email2customer.put(crv.getEmailAddress(), crv);
+			}
 			// 3.
 			crv = new Customer();
 			crv.setLastName("Muster-Maier"); //$NON-NLS-1$
@@ -68,7 +95,11 @@ public class CustomerRepository implements ICustomerRepository {
 			crv.getAddress().setStreet("Willibaldgasse"); //$NON-NLS-1$
 			crv.getAddress().setZipCode("12345"); //$NON-NLS-1$
 			crv.getAddress().setCity("Musterstadt"); //$NON-NLS-1$
+			crv.setEmailAddress("Trulli.Muster-Maier@mail.org"); //$NON-NLS-1$
 			customers.add(crv);
+			if (crv.getEmailAddress() != null) {
+				email2customer.put(crv.getEmailAddress(), crv);
+			}
 			// 4.
 			crv = new Customer();
 			crv.setLastName("Mustermann"); //$NON-NLS-1$
@@ -77,7 +108,11 @@ public class CustomerRepository implements ICustomerRepository {
 			crv.getAddress().setStreet("Musterstr.1"); //$NON-NLS-1$
 			crv.getAddress().setZipCode("12345"); //$NON-NLS-1$
 			crv.getAddress().setCity("Musterstadt"); //$NON-NLS-1$
+			crv.setEmailAddress("Elfriede.Mustermann@mail.org"); //$NON-NLS-1$
 			customers.add(crv);
+			if (crv.getEmailAddress() != null) {
+				email2customer.put(crv.getEmailAddress(), crv);
+			}
 			// 5.
 			crv = new Customer();
 			crv.setLastName("Mustermann"); //$NON-NLS-1$
@@ -86,7 +121,11 @@ public class CustomerRepository implements ICustomerRepository {
 			crv.getAddress().setStreet("Musterstr.1"); //$NON-NLS-1$
 			crv.getAddress().setZipCode("12345"); //$NON-NLS-1$
 			crv.getAddress().setCity("Musterstadt"); //$NON-NLS-1$
+			crv.setEmailAddress("Ingo.Mustermann@mail.org"); //$NON-NLS-1$
 			customers.add(crv);
+			if (crv.getEmailAddress() != null) {
+				email2customer.put(crv.getEmailAddress(), crv);
+			}
 		} catch (ParseException p) {
 			System.out.println(p.getMessage());
 		}

@@ -50,6 +50,27 @@
             name="customerRecordOverview"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.demo.client.views.EmailView"
+            id="riena.demo.client.mail.folder"
+            name="mailFolder"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.demo.client.views.EmailView2"
+            id="riena.demo.client.mail.folder2"
+            name="mailFolder2"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.demo.client.views.EmailCustomerView"
+            id="riena.demo.client.customermail.mails"
+            name="customerMail"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -313,6 +334,63 @@
                typeId="org.eclipse.riena.demo.client.customer.order"
                view="order">
          </subapplication>
+      </assembly>
+      <assembly
+            autostartsequence="210"
+            id="riena.demo.client.mailfolders.assembly"
+            name="E-Mail"
+            parentTypeId="riena.demo.client.mail">
+         <modulegroup
+               name="E-Mail folders module group"
+               typeId="riena.demo.client.mailfolders.modulegroup">
+            <module
+                  label="E-Mails"
+                  name="E-Mail folders module"
+                  typeId="riena.demo.client.mailfolders.module"
+                  unclosable="true">
+               <submodule
+                     controller="org.eclipse.riena.demo.client.controllers.EmailInboxController"
+                     label="Inbox"
+                     name="inbox"
+                     typeId="riena.demo.client.mailfolders.inbox"
+                     view="riena.demo.client.mail.folder">
+               </submodule>
+               <submodule
+                     controller="org.eclipse.riena.demo.client.controllers.EmailSentController"
+                     label="Sent"
+                     name="sent"
+                     typeId="riena.demo.client.mailfolders.sent"
+                     view="riena.demo.client.mail.folder">
+               </submodule>
+               <submodule
+                     controller="org.eclipse.riena.demo.client.controllers.EmailDraftController"
+                     label="Draft"
+                     name="draft"
+                     typeId="riena.demo.client.mailfolders.draft"
+                     view="riena.demo.client.mail.folder">
+               </submodule>
+            </module>
+         </modulegroup>
+      </assembly>
+      <assembly
+            id="riena.demo.client.customermailfolders.assembly"
+            name="Customer E-Mail"
+            parentTypeId="riena.demo.client.mail">
+         <modulegroup
+               name="Customer E-Mail folders module group"
+               typeId="riena.demo.client.customermailfolders.modulegroup">
+            <module
+                  label="${riena.navigation.parameter:emailAddress}"
+                  typeId="riena.demo.client.customermailfolders.module">
+               <submodule
+                     controller="org.eclipse.riena.demo.client.controllers.EmailCustomerController"
+                     label="Inbox"
+                     name="customerEmails"
+                     typeId="riena.demo.client.customermailfolders.mails"
+                     view="riena.demo.client.mail.folder2">
+               </submodule>
+            </module>
+         </modulegroup>
       </assembly>
      </extension>
      <extension

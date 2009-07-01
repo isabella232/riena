@@ -18,9 +18,13 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.riena.communication.publisher.Publish;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.demo.common.ICustomerService;
+import org.eclipse.riena.demo.common.IEmailService;
 import org.eclipse.riena.demo.server.CustomerRepository;
 import org.eclipse.riena.demo.server.CustomerService;
+import org.eclipse.riena.demo.server.EmailRepository;
+import org.eclipse.riena.demo.server.EmailService;
 import org.eclipse.riena.demo.server.ICustomerRepository;
+import org.eclipse.riena.demo.server.IEmailRepository;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -44,6 +48,7 @@ public class Activator extends Plugin {
 		super.start(context);
 		plugin = this;
 
+		// Customer Service
 		CustomerService customerService = new CustomerService();
 		context.registerService(ICustomerService.class.getName(), customerService, null);
 		Publish.service(ICustomerService.class).usingPath(ICustomerService.WS_ID).withProtocol("hessian").andStart( //$NON-NLS-1$
@@ -60,6 +65,25 @@ public class Activator extends Plugin {
 		Assert.isNotNull(context.getService(context.getServiceReference(ICustomerRepository.class.getName())));
 		Assert.isNotNull(((CustomerService) context.getService(context.getServiceReference(ICustomerService.class
 				.getName()))).getRepository());
+
+		// Email Service
+		EmailService emailService = new EmailService();
+		context.registerService(IEmailService.class.getName(), emailService, null);
+		Publish.service(IEmailService.class).usingPath(IEmailService.WS_ID).withProtocol("hessian").andStart( //$NON-NLS-1$
+				context);
+
+		Inject.service(IEmailRepository.class).into(emailService).andStart(context);
+
+		context.registerService(IEmailRepository.class.getName(), new EmailRepository(), null);
+
+		// checks
+		Assert.isNotNull(context.getServiceReference(IEmailService.class.getName()));
+		Assert.isNotNull(context.getService(context.getServiceReference(IEmailService.class.getName())));
+		Assert.isNotNull(context.getServiceReference(IEmailRepository.class.getName()));
+		Assert.isNotNull(context.getService(context.getServiceReference(IEmailRepository.class.getName())));
+		Assert
+				.isNotNull(((EmailService) context.getService(context
+						.getServiceReference(IEmailService.class.getName()))).getRepository());
 	}
 
 	@Override

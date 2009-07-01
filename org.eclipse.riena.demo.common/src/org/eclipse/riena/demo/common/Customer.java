@@ -20,6 +20,7 @@ public class Customer {
 	private String lastName;
 	private String firstName;
 	private Address address;
+	private String emailAddress;
 	private Date birthDate;
 	private float salary;
 	private List<Contract> contracts;
@@ -30,6 +31,7 @@ public class Customer {
 		lastName = ""; //$NON-NLS-1$
 		firstName = ""; //$NON-NLS-1$
 		custno = ""; //$NON-NLS-1$
+		emailAddress = ""; //$NON-NLS-1$
 		birthDate = null;
 		salary = 0;
 	}
@@ -64,6 +66,21 @@ public class Customer {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	/**
+	 * @param emailAddress
+	 *            the emailAddress to set
+	 */
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	/**
+	 * @return the emailAddress
+	 */
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 
 	public Date getBirthDate() {

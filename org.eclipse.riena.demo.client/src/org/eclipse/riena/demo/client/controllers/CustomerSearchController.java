@@ -58,7 +58,8 @@ public class CustomerSearchController extends SubModuleController {
 
 		kunden.bindToModel(result, "customers", Customer.class, propertyNames, columnNames); //$NON-NLS-1$
 
-		kunden.setColumnFormatter(2, new DateColumnFormatter("dd.mm.yyyy") { //$NON-NLS-1$
+		kunden.setColumnFormatter(2, new DateColumnFormatter("dd.MM.yyyy") { //$NON-NLS-1$
+
 					@Override
 					protected Date getDate(Object element) {
 						return ((Customer) element).getBirthDate();
@@ -88,10 +89,11 @@ public class CustomerSearchController extends SubModuleController {
 					public void callback() {
 						int selectionIndex = kunden.getSelectionIndex();
 						if (selectionIndex >= 0) {
-							getNavigationNode().navigate(
-									new NavigationNodeId(
-											"riena.demo.client.CustomerRecord", String.valueOf(selectionIndex)), //$NON-NLS-1$
-									new NavigationArgument(result.getCustomers().get(selectionIndex)));
+							getNavigationNode()
+									.navigate(
+											new NavigationNodeId(
+													"riena.demo.client.CustomerRecord", result.getCustomers().get(selectionIndex).getEmailAddress()), //$NON-NLS-1$
+											new NavigationArgument(result.getCustomers().get(selectionIndex)));
 						}
 					}
 				});

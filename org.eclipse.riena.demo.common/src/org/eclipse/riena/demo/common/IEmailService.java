@@ -13,23 +13,16 @@ package org.eclipse.riena.demo.common;
 import java.util.List;
 
 /**
- * service methods for the CustomerDemoService
+ *
  */
-public interface ICustomerService {
+public interface IEmailService {
 
-	String ID = ICustomerService.class.getName();
-	String WS_ID = "/CustomerServiceWS"; //$NON-NLS-1$
+	String ID = IEmailService.class.getName();
+	String WS_ID = "/EmailServiceWS"; //$NON-NLS-1$
 
-	/**
-	 * 
-	 * @param lastName
-	 *            TODO
-	 * @return CustomerSearchResult
-	 */
-	List<Customer> search(String lastName);
+	List<Email> showEmailsList(String directoryName);
 
-	Customer findCustomerWithEmailAddress(String emailAddress);
+	List<Email> findEmailsForCustomer(String emailAddress);
 
-	boolean store(Customer customer);
-
+	boolean store(Email email);
 }

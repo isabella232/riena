@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.Plugin;
 
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.demo.common.ICustomerService;
+import org.eclipse.riena.demo.common.IEmailService;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -45,6 +46,9 @@ public class Activator extends Plugin {
 		super.start(context);
 		plugin = this;
 		Register.remoteProxy(ICustomerService.class).usingUrl("http://${riena.host}/hessian/CustomerServiceWS") //$NON-NLS-1$
+				.withProtocol("hessian").andStart(context); //$NON-NLS-1$
+
+		Register.remoteProxy(IEmailService.class).usingUrl("http://${riena.host}/hessian/EmailServiceWS") //$NON-NLS-1$
 				.withProtocol("hessian").andStart(context); //$NON-NLS-1$
 
 		//		Inject.service(ICustomerService.class).into(new RemoteClientTest()).andStart(context);

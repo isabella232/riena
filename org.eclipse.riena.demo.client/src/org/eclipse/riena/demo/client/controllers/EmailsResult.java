@@ -8,28 +8,32 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.common;
+package org.eclipse.riena.demo.client.controllers;
 
 import java.util.List;
 
-/**
- * service methods for the CustomerDemoService
- */
-public interface ICustomerService {
+import org.eclipse.riena.demo.common.Email;
 
-	String ID = ICustomerService.class.getName();
-	String WS_ID = "/CustomerServiceWS"; //$NON-NLS-1$
+/**
+ * contains emails
+ */
+public class EmailsResult {
+
+	private List<Email> emails;
 
 	/**
-	 * 
-	 * @param lastName
-	 *            TODO
-	 * @return CustomerSearchResult
+	 * @return the emails
 	 */
-	List<Customer> search(String lastName);
+	public List<Email> getEmails() {
+		return emails;
+	}
 
-	Customer findCustomerWithEmailAddress(String emailAddress);
-
-	boolean store(Customer customer);
+	/**
+	 * @param emails
+	 *            the emails to set
+	 */
+	public void setEmails(List<Email> emails) {
+		this.emails = emails;
+	}
 
 }

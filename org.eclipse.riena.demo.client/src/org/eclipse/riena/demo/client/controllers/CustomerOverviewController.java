@@ -14,6 +14,7 @@ import org.eclipse.riena.demo.common.Customer;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.filter.IUIFilter;
@@ -30,17 +31,19 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
  */
 public class CustomerOverviewController extends SubModuleController {
 
-	private IUIFilter assistent = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.assistent")
+	private IUIFilter assistent = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.assistent") //$NON-NLS-1$
 			.getFilter();
 
-	private IUIFilter mandatory = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.mandatory")
+	private IUIFilter mandatory = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.mandatory") //$NON-NLS-1$
 			.getFilter();
+
+	private Customer customer;
 
 	@Override
 	public void configureRidgets() {
 
 		// store context in parent node (Module) so that all Submodule can access it
-		Customer customer = (Customer) getNavigationNode().getParent().getContext("demo.customer"); //$NON-NLS-1$
+		customer = (Customer) getNavigationNode().getParent().getContext("demo.customer"); //$NON-NLS-1$
 
 		if (customer == null) { // we came here from a navigation from the search
 			NavigationArgument navigationArgument = getNavigationNode().getNavigationArgument();
@@ -63,11 +66,22 @@ public class CustomerOverviewController extends SubModuleController {
 		((ITextRidget) getRidget("zipcode")).bindToModel(customer.getAddress(), "zipCode"); //$NON-NLS-1$ //$NON-NLS-2$
 		((ITextRidget) getRidget("street")).bindToModel(customer.getAddress(), "street"); //$NON-NLS-1$ //$NON-NLS-2$
 		((ITextRidget) getRidget("city")).bindToModel(customer.getAddress(), "city"); //$NON-NLS-1$ //$NON-NLS-2$
+		((ITextRidget) getRidget("emailaddress")).bindToModel(customer, "emailAddress"); //$NON-NLS-1$ //$NON-NLS-2$
 		((IDateTextRidget) getRidget("birthdate")).bindToModel(customer, "birthDate"); //$NON-NLS-1$ //$NON-NLS-2$
 		((ITextRidget) getRidget("salary")).bindToModel(customer, "salary"); //$NON-NLS-1$ //$NON-NLS-2$
 		((IDecimalTextRidget) getRidget("salary")).setPrecision(2); //$NON-NLS-1$
 
 		updateAllRidgetsFromModel();
+
+		((IActionRidget) getRidget("openEmails_action")).addListener(new IActionListener() { //$NON-NLS-1$
+					public void callback() {
+						String emailAddress = customer.getEmailAddress();
+						getNavigationNode().navigate(
+								new NavigationNodeId("riena.demo.client.customermailfolders.module", emailAddress), //$NON-NLS-1$
+								new NavigationArgument(customer));
+
+					}
+				});
 
 		((IActionRidget) getRidget("assistent")).addListener(new IActionListener() { //$NON-NLS-1$
 
@@ -81,17 +95,17 @@ public class CustomerOverviewController extends SubModuleController {
 					}
 				});
 
-		((IActionRidget) getRidget("mandatory")).addListener(new IActionListener() {
+		((IActionRidget) getRidget("mandatory")).addListener(new IActionListener() { //$NON-NLS-1$
 
-			public void callback() {
-				IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-				if (((IToggleButtonRidget) getRidget("mandatory")).isSelected()) { //$NON-NLS-1$
-					applNode.addFilter(mandatory);
-				} else {
-					applNode.removeFilter(mandatory);
-				}
-			}
-		});
+					public void callback() {
+						IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+						if (((IToggleButtonRidget) getRidget("mandatory")).isSelected()) { //$NON-NLS-1$
+							applNode.addFilter(mandatory);
+						} else {
+							applNode.removeFilter(mandatory);
+						}
+					}
+				});
 
 		getNavigationNode().addListener(new SubModuleNodeListener() {
 			@Override

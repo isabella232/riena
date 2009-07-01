@@ -26,6 +26,7 @@ import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
  *
  */
 public class CustomerOverviewView extends SubModuleView<CustomerOverviewController> {
+
 	public CustomerOverviewView() {
 	}
 
@@ -44,6 +45,7 @@ public class CustomerOverviewView extends SubModuleView<CustomerOverviewControll
 		Text street;
 		Text lastname;
 		Text firstname;
+		Text emailaddress;
 
 		parent.setLayout(new FillLayout());
 		Composite container = new Composite(parent, SWT.NONE);
@@ -109,28 +111,39 @@ public class CustomerOverviewView extends SubModuleView<CustomerOverviewControll
 		personal.setBounds(30, 232, 86, 27);
 		personal.setText("Personal"); //$NON-NLS-1$
 
+		final Label lEmailAddress = new Label(container, SWT.NONE);
+		lEmailAddress.setForeground(SWTResourceManager.getColor(1, 0, 0));
+		lEmailAddress.setBounds(150, 233, 131, 32);
+		lEmailAddress.setFont(SWTResourceManager.getFont("", 14, SWT.NONE)); //$NON-NLS-1$
+		lEmailAddress.setText("E-mail address"); //$NON-NLS-1$
+
 		final Label lBirthday = new Label(container, SWT.NONE);
 		lBirthday.setForeground(SWTResourceManager.getColor(1, 0, 0));
-		lBirthday.setBounds(150, 233, 118, 32);
+		lBirthday.setBounds(150, 275, 132, 32);
 		lBirthday.setFont(SWTResourceManager.getFont("", 14, SWT.NONE)); //$NON-NLS-1$
 		lBirthday.setText("Birthdate"); //$NON-NLS-1$
 
 		final Label lSalary = new Label(container, SWT.NONE);
 		lSalary.setForeground(SWTResourceManager.getColor(1, 0, 0));
-		lSalary.setBounds(150, 275, 132, 32);
+		lSalary.setBounds(150, 317, 132, 32);
 		lSalary.setFont(SWTResourceManager.getFont("", 14, SWT.NONE)); //$NON-NLS-1$
 		lSalary.setText("Salary"); //$NON-NLS-1$
 		lSalary.setData("binding_property", "salaryLabel"); //$NON-NLS-1$ //$NON-NLS-2$
 
+		emailaddress = new Text(container, SWT.BORDER);
+		emailaddress.setData("binding_property", "emailaddress"); //$NON-NLS-1$ //$NON-NLS-2$
+		emailaddress.setBounds(291, 233, 250, 32);
+		emailaddress.setFont(SWTResourceManager.getFont("", 12, SWT.NORMAL)); //$NON-NLS-1$
+
 		birthdate = new Text(container, SWT.BORDER);
 		birthdate.setData("binding_property", "birthdate"); //$NON-NLS-1$ //$NON-NLS-2$
 		birthdate.setData("type", "date"); //$NON-NLS-1$ //$NON-NLS-2$
-		birthdate.setBounds(291, 233, 100, 32);
+		birthdate.setBounds(291, 275, 100, 32);
 		birthdate.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 
 		salary = new Text(container, SWT.BORDER);
 		salary.setData("binding_property", "salary"); //$NON-NLS-1$ //$NON-NLS-2$
-		salary.setBounds(291, 275, 100, 32);
+		salary.setBounds(291, 317, 100, 32);
 		salary.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 		salary.setData("type", "decimal"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -138,7 +151,13 @@ public class CustomerOverviewView extends SubModuleView<CustomerOverviewControll
 		saveButton.setData("binding_property", "savea_action"); //$NON-NLS-1$ //$NON-NLS-2$
 		saveButton.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 		saveButton.setText("Save"); //$NON-NLS-1$
-		saveButton.setBounds(625, 465, 109, 38);
+		saveButton.setBounds(500, 465, 109, 38);
+
+		final Button openEmailsButton = new Button(container, SWT.NONE);
+		openEmailsButton.setData("binding_property", "openEmails_action"); //$NON-NLS-1$ //$NON-NLS-2$
+		openEmailsButton.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
+		openEmailsButton.setText("Open Emails"); //$NON-NLS-1$
+		openEmailsButton.setBounds(625, 465, 109, 38);
 
 		final Button buttonA = new Button(container, SWT.TOGGLE);
 		buttonA.setText("A"); //$NON-NLS-1$
@@ -161,6 +180,7 @@ public class CustomerOverviewView extends SubModuleView<CustomerOverviewControll
 		final Composite composite3 = new Composite(container, SWT.NONE);
 		composite3.setBackground(SWTResourceManager.getColor(121, 117, 168));
 		composite3.setBounds(0, 450, 766, 2);
+
 	}
 
 }

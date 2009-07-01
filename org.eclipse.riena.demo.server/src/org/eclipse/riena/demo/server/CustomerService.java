@@ -64,4 +64,16 @@ public class CustomerService implements ICustomerService {
 			return false;
 		}
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.demo.common.ICustomerService#searchWithEmailAddress
+	 * (java.lang.String)
+	 */
+	public Customer findCustomerWithEmailAddress(String emailAddress) {
+		// perform search for customer by means of customer's email address
+		return repository.findCustomerWithEmailAddress(emailAddress);
+	}
 }

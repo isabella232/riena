@@ -14,7 +14,6 @@ import java.util.List;
 
 import org.eclipse.riena.demo.common.Customer;
 
-
 /**
  * ICustomerRepository 
  */
@@ -24,8 +23,13 @@ import org.eclipse.riena.demo.common.Customer;
  */
 public interface ICustomerRepository {
 
-
 	List<Customer> search(String lastName);
-	
+
 	void store(Customer customer);
+
+	/**
+	 * @param emailAddress
+	 * @return
+	 */
+	Customer findCustomerWithEmailAddress(String emailAddress);
 }
