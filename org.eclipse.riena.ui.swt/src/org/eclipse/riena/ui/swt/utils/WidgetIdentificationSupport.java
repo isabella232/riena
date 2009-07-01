@@ -16,6 +16,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.ui.swt.Activator;
 
 /**
@@ -24,7 +25,7 @@ import org.eclipse.riena.internal.ui.swt.Activator;
 public final class WidgetIdentificationSupport {
 
 	public static final String RIENA_ID = "rienaid"; //$NON-NLS-1$
-	private final static Logger LOGGER = Activator.getDefault().getLogger(WidgetIdentificationSupport.class);
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), WidgetIdentificationSupport.class);
 
 	private WidgetIdentificationSupport() {
 		// utility class
