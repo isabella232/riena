@@ -44,7 +44,6 @@ import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.WorkbenchWindow;
 
 import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -162,26 +161,20 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private void initApplicationSize(IWorkbenchWindowConfigurer configurer) {
 
-		int width = APPLICATION_MIN_SIZE.x;
-		String widthStrg = System.getProperty(PROPERTY_RIENA_APPLICATION_WIDTH);
-		if (!StringUtils.isEmpty(widthStrg)) {
-			width = Integer.parseInt(widthStrg);
-		}
+		int width = Integer.getInteger(PROPERTY_RIENA_APPLICATION_WIDTH, APPLICATION_MIN_SIZE.x);
 		if (width < APPLICATION_MIN_SIZE.x) {
 			width = APPLICATION_MIN_SIZE.x;
-			String message = "The initial width of the application is less than the minimum width!"; //$NON-NLS-1$
-			LOGGER.log(LogService.LOG_WARNING, message);
+			LOGGER.log(LogService.LOG_WARNING,
+					"The initial width of the application is less than the minimum width which is " //$NON-NLS-1$
+							+ APPLICATION_MIN_SIZE.x);
 		}
 
-		int height = APPLICATION_MIN_SIZE.y;
-		String heightStrg = System.getProperty(PROPERTY_RIENA_APPLICATION_HEIGHT);
-		if (!StringUtils.isEmpty(heightStrg)) {
-			height = Integer.parseInt(heightStrg);
-		}
+		int height = Integer.getInteger(PROPERTY_RIENA_APPLICATION_HEIGHT, APPLICATION_MIN_SIZE.y);
 		if (height < APPLICATION_MIN_SIZE.y) {
 			height = APPLICATION_MIN_SIZE.y;
-			String message = "The initial height of the application is less than the minimum height!"; //$NON-NLS-1$
-			LOGGER.log(LogService.LOG_WARNING, message);
+			LOGGER.log(LogService.LOG_WARNING,
+					"The initial height of the application is less than the minimum heightwhich is " //$NON-NLS-1$
+							+ APPLICATION_MIN_SIZE.y);
 		}
 
 		configurer.setInitialSize(new Point(width, height));
