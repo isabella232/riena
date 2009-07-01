@@ -28,26 +28,6 @@ import org.eclipse.riena.ui.swt.StatuslineNumber;
  */
 public class StatuslineNumberRidgetTest extends AbstractSWTRidgetTest {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see junit.framework.TestCase#tearDown()
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
 	/**
 	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidgetTest#createRidget()
 	 */
@@ -98,6 +78,7 @@ public class StatuslineNumberRidgetTest extends AbstractSWTRidgetTest {
 
 		getRidget().setNumber(Integer.valueOf((4711)));
 		assertEquals("0004711", getLabel().getText());
+		assertEquals(4711, (int) getRidget().getNumber());
 
 	}
 
@@ -108,6 +89,7 @@ public class StatuslineNumberRidgetTest extends AbstractSWTRidgetTest {
 
 		getRidget().setNumberString("0815-12");
 		assertEquals("0815-12", getLabel().getText());
+		assertEquals(0, (int) getRidget().getNumber());
 
 	}
 
