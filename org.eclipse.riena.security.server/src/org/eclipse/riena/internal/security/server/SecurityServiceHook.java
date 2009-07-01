@@ -51,8 +51,9 @@ public class SecurityServiceHook implements IServiceHook {
 	/** <code>SET_SESSION</code> */
 	public static final String SET_SESSION = "set-ssoid"; //$NON-NLS-1$
 
+	private static final String RIENA_SECURE_WEBSERVICES_PROPERTY = "riena.secure.webservices"; //$NON-NLS-1$
 	// private static final String UNSECURE_WEBSERVICES_ID =
-	// "spirit.security.server.UnsecureWebservices";
+	// "riena.security.server.UnsecureWebservices";
 
 	private IGenericObjectCache<String, Principal[]> principalCache;
 	private ISessionService sessionService;
@@ -194,8 +195,7 @@ public class SecurityServiceHook implements IServiceHook {
 		if (ssoid == null && requiresSSOID) {
 			LOGGER.log(LogService.LOG_ERROR, "error in call to webservice {" + callback.getInterfaceName() //$NON-NLS-1$
 					+ "} since it is not in the list of webservices that do not require a session but SSOID=null !!!"); //$NON-NLS-1$
-			if (System.getProperty("spirit.secure.webservices") == null //$NON-NLS-1$
-					|| Boolean.getBoolean("spirit.secure.webservices")) { //$NON-NLS-1$
+			if (Boolean.valueOf(System.getProperty(RIENA_SECURE_WEBSERVICES_PROPERTY, Boolean.TRUE.toString()))) {
 				throw new NotAuthorizedFailure("call to webservice " + callback.getInterfaceName() //$NON-NLS-1$
 						+ " failed, no valid session was given but is required."); //$NON-NLS-1$
 			}
