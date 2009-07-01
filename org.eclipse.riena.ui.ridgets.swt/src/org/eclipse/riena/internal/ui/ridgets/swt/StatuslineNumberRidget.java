@@ -72,7 +72,11 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 			number = null;
 		} else {
 			// TODO use Numberformatter instead of toString()
-			number = Integer.valueOf(numberString);
+			try {
+				number = Integer.valueOf(numberString);
+			} catch (NumberFormatException e) {
+				number = 0;
+			}
 		}
 		getUIControl().setNumber(numberString);
 	}
