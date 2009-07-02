@@ -56,21 +56,20 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 */
 	@Override
 	public void setNavigationNode(ISubModuleNode navigationNode) {
+
 		super.setNavigationNode(navigationNode);
 
 		if (getModuleController() != null) {
 			getNavigationNode().getParent().addSimpleListener(new SimpleNavigationNodeAdapter() {
-
 				@Override
-				public void labelChanged(INavigationNode<?> arg0) {
-					super.labelChanged(arg0);
+				public void labelChanged(INavigationNode<?> parent) {
+					super.labelChanged(parent);
 					updateLabel();
 				}
 
 			});
 		}
 		getNavigationNode().addListener(new SubModuleNodeListener() {
-
 			@Override
 			public void labelChanged(ISubModuleNode subModuleNode) {
 				updateLabel();
@@ -80,8 +79,8 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 			public void iconChanged(ISubModuleNode source) {
 				updateIcon();
 			}
-
 		});
+
 	}
 
 	/**
