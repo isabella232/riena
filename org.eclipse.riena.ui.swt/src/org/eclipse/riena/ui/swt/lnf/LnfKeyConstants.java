@@ -183,6 +183,8 @@ public final class LnfKeyConstants {
 	public static final String SHELL_HIDE_OS_BORDER = "Shell.hideOsBorder"; //$NON-NLS-1$
 
 	public static final String TITLELESS_SHELL_PADDING = "TitlelessShell.padding"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_NAVIGATION_HORIZONTAL_GAP = "TitlelessShellNavigationHorizontal.gap"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_SUB_MODULE_HORIZONTAL_GAP = "TitlelessShellSubModuleHorizontal.gap"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION = "TitlelessShell.horizontalLogoPosition"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_VERTICAL_LOGO_POSITION = "TitlelessShell.verticalLogoPosition"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_HORIZONTAL_LOGO_MARGIN = "TitlelessShell.horizontalLogoMargin"; //$NON-NLS-1$
@@ -199,10 +201,15 @@ public final class LnfKeyConstants {
 	public static final String SUB_APPLICATION_SWITCHER_HEIGHT = "SubApplicationSwitcher.height"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION = "SubApplicationSwitcher.horizontalTabPosition"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON = "SubApplicationSwitcher.tabShowIcon"; //$NON-NLS-1$
+	public static final String SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH = "SubApplicationSwitcher.tabMinWidth"; //$NON-NLS-1$
 
 	public static final String SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY = "SubModuleItemToolTip.popupDelay"; //$NON-NLS-1$
 
 	public static final String MODULE_ITEM_TOOLTIP_POPUP_DELAY = "ModuleItemToolTip.popupDelay"; //$NON-NLS-1$
+
+	public static final String NAVIGATION_SUB_MODULE_GAP = "NavigationSubModule.gap"; //$NON-NLS-1$
+	public static final String MENUBAR_TOP_MARGIN = "Menubar.topMargin"; //$NON-NLS-1$
+	public static final String TOOLBAR_TOP_MARGIN = "Toolbar.topMargin"; //$NON-NLS-1$
 
 	/**
 	 * Renderer keys

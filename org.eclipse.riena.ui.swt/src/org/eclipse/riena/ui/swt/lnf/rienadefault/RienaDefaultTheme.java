@@ -350,6 +350,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT, 40);
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.CENTER);
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, false);
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH, 120);
 
 		table.put(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY, 0);
 
