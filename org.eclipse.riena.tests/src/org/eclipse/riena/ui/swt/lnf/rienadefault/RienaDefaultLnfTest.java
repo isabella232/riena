@@ -28,6 +28,11 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 @NonUITestCase
 public class RienaDefaultLnfTest extends TestCase {
 
+	private static final boolean BOOLEAN_VALUE = true;
+	private static final Integer INTEGER_VALUE = 4;
+	private static final String BOOLEAN_KEY = "boolean";
+	private static final String INTEGER_KEY = "integer";
+
 	private RienaDefaultLnf lnf;
 
 	/**
@@ -147,6 +152,44 @@ public class RienaDefaultLnfTest extends TestCase {
 
 	}
 
+	/**
+	 * Test of the method {@code getIntegerSetting(String, Integer)}.
+	 * 
+	 * @throws Exception
+	 *             - handled by JUnit
+	 */
+	public void testGetIntegerSetting() throws Exception {
+
+		Integer value = lnf.getIntegerSetting(INTEGER_KEY, 300);
+		assertEquals(300, value.intValue());
+
+		lnf.setTheme(new DummyTheme());
+		lnf = LnfManager.getLnf();
+		value = lnf.getIntegerSetting(INTEGER_KEY, 300);
+		assertEquals(INTEGER_VALUE.intValue(), value.intValue());
+
+	}
+
+	/**
+	 * Test of the method {@code getBooleanSetting(String, boolean)}.
+	 * 
+	 * @throws Exception
+	 *             - handled by JUnit
+	 */
+	public void testGetBooleanSetting() throws Exception {
+
+		boolean value = lnf.getBooleanSetting(BOOLEAN_KEY, true);
+		assertTrue(value);
+		value = lnf.getBooleanSetting(BOOLEAN_KEY, false);
+		assertFalse(value);
+
+		lnf.setTheme(new DummyTheme());
+		lnf = LnfManager.getLnf();
+		value = lnf.getBooleanSetting(BOOLEAN_KEY, false);
+		assertEquals(BOOLEAN_VALUE, value);
+
+	}
+
 	private static class DummyTheme implements ILnfTheme {
 
 		/**
@@ -171,6 +214,8 @@ public class RienaDefaultLnfTest extends TestCase {
 		 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomSettings(java.util.Map)
 		 */
 		public void addCustomSettings(Map<String, Object> table) {
+			table.put(INTEGER_KEY, INTEGER_VALUE);
+			table.put(BOOLEAN_KEY, BOOLEAN_VALUE);
 		}
 
 	}
