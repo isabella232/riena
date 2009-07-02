@@ -12,27 +12,45 @@ package org.eclipse.riena.ui.ridgets.validation.tests;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
+import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 
 /**
- * Tests for the MaxLength rule.
+ * Tests for the {@link MaxLength} rule.
  */
 @NonUITestCase
 public class MaxLengthTest extends TestCase {
+
+	protected MaxLength createRule() {
+		return new MaxLength();
+	}
+
+	protected MaxLength createRule(int length) {
+		return new MaxLength(length);
+	}
 
 	/**
 	 * @throws Exception
 	 *             Handled by JUnit.
 	 */
-	public void testLength() throws Exception {
-
-		MaxLength rule = new MaxLength(10);
+	public void testLength() {
+		MaxLength rule = createRule(10);
 
 		assertTrue(rule.validate("abcde").isOK());
 		assertTrue(rule.validate("abcdeabcde").isOK());
 
 		assertFalse(rule.validate("abcdeabcdefg").isOK());
+	}
+
+	public void testIsBlocking() {
+		MaxLength rule = createRule(3);
+		IStatus status = rule.validate("abcd");
+
+		assertFalse(status.isOK());
+		assertEquals(ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH, status.getCode());
 	}
 
 	/**
@@ -42,17 +60,16 @@ public class MaxLengthTest extends TestCase {
 	 *             - Handled by JUnit.
 	 */
 	public void testSetInitializationData() throws Exception {
-
-		MaxLength rule = new MaxLength();
+		MaxLength rule = createRule();
 		assertTrue(rule.validate("").isOK());
 		assertFalse(rule.validate("1").isOK());
 
-		rule = new MaxLength();
+		rule = createRule();
 		rule.setInitializationData(null, null, "5");
 		assertTrue(rule.validate("1").isOK());
 		assertFalse(rule.validate("123456").isOK());
 
-		rule = new MaxLength();
+		rule = createRule();
 		rule.setInitializationData(null, null, "6,7");
 		assertTrue(rule.validate("123456").isOK());
 		assertFalse(rule.validate("1234567").isOK());
