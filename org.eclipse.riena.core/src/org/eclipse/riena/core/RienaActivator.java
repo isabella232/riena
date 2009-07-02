@@ -62,9 +62,12 @@ public abstract class RienaActivator implements BundleActivator, IRienaActivator
 	 * Get a logger for the specified name.<br>
 	 * <b>Hint:</b>The log levels are defined in <code>LogService</code>.
 	 * 
+	 * @deprecated Please use {@code Log4r.getLogger()} instead.
+	 * 
 	 * @param name
 	 * @return the logger
 	 */
+	@Deprecated
 	public Logger getLogger(String name) {
 		return loggerProvider.getLogger(name);
 	}
@@ -73,9 +76,12 @@ public abstract class RienaActivator implements BundleActivator, IRienaActivator
 	 * Get a logger for the specified class.<br>
 	 * <b>Hint:</b>The log levels are defined in <code>LogService</code>.
 	 * 
+	 * @deprecated Please use {@code Log4r.getLogger()} instead.
+	 * 
 	 * @param clazz
 	 * @return the logger
 	 */
+	@Deprecated
 	public Logger getLogger(Class<?> clazz) {
 		return loggerProvider.getLogger(clazz);
 	}
