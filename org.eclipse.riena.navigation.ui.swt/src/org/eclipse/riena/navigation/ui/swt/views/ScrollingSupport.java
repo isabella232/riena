@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import org.eclipse.riena.navigation.IModuleGroupNode;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -29,6 +28,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+
+import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * This class provides all scrolling logic for the navigation
@@ -60,12 +63,18 @@ public class ScrollingSupport {
 		this.navigationComponentProvider = navigationComponentProvider;
 		scrollControlComposite = new ScrollControlComposite(parent, flags);
 		setBodyCompositeOffset(0);
-		initMouseWheelObserver();
+		initMouseWheelObserver(this.navigationComponentProvider.getNavigationComponent());
 	}
 
-	private void initMouseWheelObserver() {
-		Display display = getNavigationComponent().getDisplay();
-		display.addFilter(SWT.MouseWheel, new MouseWheelAdapter());
+	private void initMouseWheelObserver(Composite navigationComponent) {
+		final Display display = navigationComponent.getDisplay();
+		final MouseWheelAdapter wheelAdapter = new MouseWheelAdapter();
+		display.addFilter(SWT.MouseWheel, wheelAdapter);
+		navigationComponent.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				display.removeFilter(SWT.MouseWheel, wheelAdapter);
+			}
+		});
 	}
 
 	private class MouseWheelAdapter implements Listener {
