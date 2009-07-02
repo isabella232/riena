@@ -15,25 +15,38 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.core.util.PropertiesUtils;
 
 /**
- * 
+ * Blocking 'maximum length' validation rule.
+ * <p>
+ * This rule will flag strings that exceed a certaing length as 'not valid' and
+ * will block changes if the <b>resulting</b> string exceeds the specified
+ * length.
  */
 public class MaxLength implements IValidator, IExecutableExtension {
 
+	/**
+	 * The maximum length of a valid string (>= 0).
+	 */
 	protected int maxLength;
 
+	private boolean isBlocking;
+
 	public MaxLength() {
+		this(0, true);
 	}
 
 	public MaxLength(int length) {
-		this.maxLength = length;
+		this(length, true);
 	}
 
-	/**
-	 * @see org.eclipse.core.databinding.validation.IValidator#validate(java.lang.Object)
-	 */
+	protected MaxLength(int length, boolean isBlocking) {
+		this.maxLength = length;
+		this.isBlocking = isBlocking;
+	}
+
 	public IStatus validate(Object value) {
 
 		if (value == null || maxLength < 0) {
@@ -45,7 +58,7 @@ public class MaxLength implements IValidator, IExecutableExtension {
 			int length = string.length();
 
 			if (length > maxLength) {
-				return ValidationRuleStatus.error(true, "'" + string + "' must not be longer than " + maxLength //$NON-NLS-1$ //$NON-NLS-2$
+				return ValidationRuleStatus.error(isBlocking, "'" + string + "' must not be longer than " + maxLength //$NON-NLS-1$ //$NON-NLS-2$
 						+ " characters.", this); //$NON-NLS-1$
 			}
 			return ValidationRuleStatus.ok();

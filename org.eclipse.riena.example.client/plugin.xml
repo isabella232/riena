@@ -708,7 +708,7 @@
          <ruleValidatorRidget
                ridgetId="/application/*/org.eclipse.riena.example.text/*"
                validationTime="onUIControlEdit"
-               validator="org.eclipse.riena.ui.ridgets.validation.MaxLength:12">
+               validator="org.eclipse.riena.ui.ridgets.validation.MaxLengthNonBlocking:12">
          </ruleValidatorRidget>
       </filter>
       <filter
