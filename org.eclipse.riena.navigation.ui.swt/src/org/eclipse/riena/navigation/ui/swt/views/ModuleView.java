@@ -218,9 +218,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * Adds listeners to the sub-module tree.
 	 */
 	private void addListeners() {
-
 		getTree().addListener(SWT.Selection, new Listener() {
-
 			public void handleEvent(Event event) {
 				// treeDirty = true;
 				TreeItem[] selection = getTree().getSelection();
@@ -236,24 +234,19 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		});
 
 		getTree().addListener(SWT.Paint, new Listener() {
-
 			public void handleEvent(Event event) {
 				onTreePaint(event.gc);
 			}
-
 		});
 
 		getTree().addListener(SWT.Expand, new Listener() {
-
 			public void handleEvent(Event event) {
 				// treeDirty = true;
 				handleExpandCollapse(event, true);
 			}
-
 		});
 
 		getTree().addListener(SWT.Collapse, new Listener() {
-
 			public void handleEvent(Event event) {
 				// treeDirty = true;
 				handleExpandCollapse(event, false);
@@ -262,13 +255,12 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		});
 
 		getTree().addListener(SWT.PaintItem, new Listener() {
-
 			public void handleEvent(Event event) {
 				paintTreeItem(event);
 			}
-
 		});
 
+		new ModuleKeyboardNavigationListener(getTree());
 	}
 
 	/**

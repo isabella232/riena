@@ -44,14 +44,18 @@ public class SwitchModule extends AbstractNavigationHandler implements IExecutab
 	private boolean toNext;
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		doSwitch(toNext);
+		return null;
+	}
+
+	public void doSwitch(boolean forward) {
 		// assumes there is only one application node
 		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
 		INavigationNode<?>[] subModules = collectModules(application);
-		INavigationNode<?> nextNode = toNext ? findNextNode(subModules) : findPreviousNode(subModules, true);
+		INavigationNode<?> nextNode = forward ? findNextNode(subModules) : findPreviousNode(subModules, true);
 		if (nextNode != null) {
 			nextNode.activate();
 		}
-		return null;
 	}
 
 	/**
