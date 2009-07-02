@@ -290,6 +290,25 @@ public class RienaDefaultLnf {
 	}
 
 	/**
+	 * Returns the integer value of the setting for the given key. If no value
+	 * is set, the given default value is returned.
+	 * 
+	 * @param key
+	 *            - key whose associated setting is to be returned.
+	 * @param defaultValue
+	 *            - value to return, if no value is set
+	 * @return the setting to which this setting maps the specified key, or the
+	 *         default value if the map contains no mapping for this key.
+	 */
+	public Integer getIntegerSetting(String key, Integer defaultValue) {
+		Integer value = getIntegerSetting(key);
+		if (value == null) {
+			value = defaultValue;
+		}
+		return value;
+	}
+
+	/**
 	 * Returns the boolean value of the setting for the given key
 	 * 
 	 * @param key
