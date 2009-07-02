@@ -392,11 +392,9 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		 */
 		@Override
 		public void activated(ISubModuleNode source) {
-
-			// fix for bug 269221
-			updateExpanded(source);
-
+			updateExpanded(source); // fix for bug 269221
 			resize();
+			getTree().setFocus();
 		}
 
 		private void updateExpanded(ISubModuleNode node) {
