@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+
 import org.eclipse.riena.core.IRienaActivator;
 import org.eclipse.riena.core.logging.LoggerProvider;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
 
 /**
  * Abstract base class for riena UI plugins.<br>
@@ -64,9 +66,12 @@ public abstract class AbstractRienaUIPlugin extends AbstractUIPlugin implements 
 	 * Get a logger for the specified name.<br>
 	 * <b>Hint:</b>The log levels are defined in <code>LogService</code>.
 	 * 
+	 * @deprecated Please use {@code Log4r.getLogger()} instead.
+	 * 
 	 * @param name
 	 * @return the logger
 	 */
+	@Deprecated
 	public Logger getLogger(String name) {
 		return loggerProvider.getLogger(name);
 	}
@@ -75,9 +80,12 @@ public abstract class AbstractRienaUIPlugin extends AbstractUIPlugin implements 
 	 * Get a logger for the specified class.<br>
 	 * <b>Hint:</b>The log levels are defined in <code>LogService</code>.
 	 * 
+	 * @deprecated Please use {@code Log4r.getLogger()} instead.
+	 * 
 	 * @param clazz
 	 * @return the logger
 	 */
+	@Deprecated
 	public Logger getLogger(Class<?> clazz) {
 		return loggerProvider.getLogger(clazz);
 	}
