@@ -45,6 +45,7 @@ public final class Log4r {
 	 *            categorizes the logger
 	 * @return the {@code Logger}
 	 */
+	@SuppressWarnings("deprecation")
 	public static Logger getLogger(IRienaActivator activator, Class<?> clazz) {
 		if (activator != null) {
 			return activator.getLogger(clazz);
@@ -67,6 +68,7 @@ public final class Log4r {
 	 *            categorizes the logger
 	 * @return the {@code Logger}
 	 */
+	@SuppressWarnings("deprecation")
 	public static Logger getLogger(IRienaActivator activator, String className) {
 		if (activator != null) {
 			return activator.getLogger(className);
