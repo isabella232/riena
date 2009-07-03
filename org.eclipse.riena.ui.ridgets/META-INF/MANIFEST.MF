@@ -9,8 +9,7 @@ Require-Bundle: org.eclipse.riena.beans.common,
  org.eclipse.riena.ui.core,
  org.eclipse.core.databinding,
  org.eclipse.core.databinding.beans,
- org.eclipse.riena.ui.common,
- com.ibm.icu;bundle-version="4.0.1"
+ org.eclipse.riena.ui.common
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.internal.ui.ridgets;x-internal:=true,
  org.eclipse.riena.ui.ridgets,
