@@ -75,11 +75,11 @@ public class Activator extends RienaActivator {
 		getContext().registerService(IAuthenticationService.class.getName(), authenticationService, properties);
 
 		// start injectors
-		Inject.service(ISessionService.class.getName()).useRanking().into(authenticationService).andStart(
+		Inject.service(ISessionService.class).useRanking().into(authenticationService).andStart(
 				Activator.getDefault().getContext());
-		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(authenticationService).andStart(
+		Inject.service(ISubjectHolderService.class).useRanking().into(authenticationService).andStart(
 				Activator.getDefault().getContext());
-		Inject.service(ISessionHolderService.class.getName()).useRanking().into(authenticationService).andStart(
+		Inject.service(ISessionHolderService.class).useRanking().into(authenticationService).andStart(
 				Activator.getDefault().getContext());
 
 	}
@@ -93,7 +93,7 @@ public class Activator extends RienaActivator {
 		properties.put("riena.remote.path", IAuthorizationService.WS_ID); //$NON-NLS-1$
 		getContext().registerService(IAuthorizationService.class.getName(), authorizationService, properties);
 
-		Inject.service(IPermissionStore.class.getName()).useRanking().into(authorizationService).andStart(
+		Inject.service(IPermissionStore.class).useRanking().into(authorizationService).andStart(
 				Activator.getDefault().getContext());
 
 	}
@@ -107,10 +107,8 @@ public class Activator extends RienaActivator {
 		ISessionService sessionService = new SessionService();
 		getContext().registerService(ISessionService.class.getName(), sessionService, properties);
 
-		Inject.service(ISessionStore.class.getName()).into(sessionService)
-				.andStart(Activator.getDefault().getContext());
-		Inject.service(ISessionProvider.class.getName()).into(sessionService).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(ISessionStore.class).into(sessionService).andStart(Activator.getDefault().getContext());
+		Inject.service(ISessionProvider.class).into(sessionService).andStart(Activator.getDefault().getContext());
 	}
 
 	private void createSessionProviderAndInjectors() {

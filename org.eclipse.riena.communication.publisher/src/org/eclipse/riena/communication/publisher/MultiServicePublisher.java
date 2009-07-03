@@ -10,20 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.publisher;
 
-import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_REMOTE_PATH;
+import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.*;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceEvent;
+import org.osgi.framework.ServiceListener;
+import org.osgi.framework.ServiceReference;
+
+import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.communication.publisher.Activator;
-
-import org.eclipse.core.runtime.Assert;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceListener;
-import org.osgi.framework.ServiceReference;
 
 /**
  * 
@@ -42,7 +43,7 @@ public class MultiServicePublisher {
 
 	public MultiServicePublisher() {
 		super();
-		Inject.service(IServicePublishBinder.class.getName()).useRanking().into(this).andStart(
+		Inject.service(IServicePublishBinder.class).useRanking().into(this).andStart(
 				Activator.getDefault().getContext());
 	}
 

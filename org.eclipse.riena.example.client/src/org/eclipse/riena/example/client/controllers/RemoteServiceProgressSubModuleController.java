@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorRegistry;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.example.client.communication.IInfoService;
@@ -33,7 +34,7 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 
 	public RemoteServiceProgressSubModuleController() {
 		remoteService = new InfoServiceFake();
-		Inject.service(IRemoteProgressMonitorRegistry.class.getName()).useRanking().into(this).andStart(
+		Inject.service(IRemoteProgressMonitorRegistry.class).useRanking().into(this).andStart(
 				Activator.getDefault().getContext());
 	}
 

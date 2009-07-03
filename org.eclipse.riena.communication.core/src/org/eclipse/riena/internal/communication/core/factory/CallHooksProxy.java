@@ -16,6 +16,9 @@ import java.util.HashSet;
 
 import javax.security.auth.Subject;
 
+import com.caucho.hessian.client.HessianRuntimeException;
+import com.caucho.hessian.io.HessianProtocolException;
+
 import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.hooks.AbstractHooksProxy;
@@ -26,9 +29,6 @@ import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.communication.core.Activator;
 
-import com.caucho.hessian.client.HessianRuntimeException;
-import com.caucho.hessian.io.HessianProtocolException;
-
 public class CallHooksProxy extends AbstractHooksProxy {
 
 	private HashSet<ICallHook> callHooks = new HashSet<ICallHook>();
@@ -37,7 +37,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 
 	public CallHooksProxy(Object proxiedInstance) {
 		super(proxiedInstance);
-		Inject.service(ICallHook.class.getName()).into(this).andStart(Activator.getDefault().getContext());
+		Inject.service(ICallHook.class).into(this).andStart(Activator.getDefault().getContext());
 	}
 
 	@Override

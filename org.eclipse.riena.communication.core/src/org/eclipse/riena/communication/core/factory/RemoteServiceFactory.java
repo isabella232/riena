@@ -77,7 +77,7 @@ public class RemoteServiceFactory {
 	 */
 	public RemoteServiceFactory() {
 		if (registry == null) {
-			Inject.service(IRemoteServiceRegistry.class.getName()).useRanking().into(this).andStart(
+			Inject.service(IRemoteServiceRegistry.class).useRanking().into(this).andStart(
 					Activator.getDefault().getContext());
 		}
 		if (remoteServiceFactoryImplementations == null) {

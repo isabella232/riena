@@ -40,7 +40,7 @@ public class Activator extends RienaActivator {
 
 		IServicePublishBinder binder = new ServicePublishBinder();
 		context.registerService(IServicePublishBinder.class.getName(), binder, null);
-		Inject.service(IServicePublisher.class.getName()).into(binder).andStart(context);
+		Inject.service(IServicePublisher.class).into(binder).andStart(context);
 
 		Publish.allServices().useFilter("(&(riena.remote=true)(riena.remote.protocol=*))").andStart(context); //$NON-NLS-1$
 	}

@@ -68,11 +68,11 @@ public class Activator extends RienaPlugin {
 		getContext().registerService(ISentinelService.class.getName(), sentinelService,
 				RienaConstants.newDefaultServiceProperties());
 
-		Inject.service(IPermissionCache.class.getName()).useRanking().into(sentinelService).andStart(
+		Inject.service(IPermissionCache.class).useRanking().into(sentinelService).andStart(
 				Activator.getDefault().getContext());
-		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(sentinelService).andStart(
+		Inject.service(ISubjectHolderService.class).useRanking().into(sentinelService).andStart(
 				Activator.getDefault().getContext());
-		Inject.service(IAuthorizationService.class.getName()).useRanking().into(sentinelService).andStart(
+		Inject.service(IAuthorizationService.class).useRanking().into(sentinelService).andStart(
 				Activator.getDefault().getContext());
 	}
 

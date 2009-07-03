@@ -65,14 +65,13 @@ public class Activator extends RienaPlugin {
 		getContext().registerService(IServiceHook.class.getName(), securityServiceHook, null);
 
 		// create and Start Injectors
-		Inject.service(IGenericObjectCache.class.getName())
-				.useFilter("(cache.type=PrincipalCache)").into(securityServiceHook) //$NON-NLS-1$
+		Inject.service(IGenericObjectCache.class).useFilter("(cache.type=PrincipalCache)").into(securityServiceHook) //$NON-NLS-1$
 				.andStart(Activator.getDefault().getContext());
-		Inject.service(ISessionService.class.getName()).useRanking().into(securityServiceHook).andStart(
+		Inject.service(ISessionService.class).useRanking().into(securityServiceHook).andStart(
 				Activator.getDefault().getContext());
-		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(securityServiceHook).andStart(
+		Inject.service(ISubjectHolderService.class).useRanking().into(securityServiceHook).andStart(
 				Activator.getDefault().getContext());
-		Inject.service(ISessionHolderService.class.getName()).useRanking().into(securityServiceHook).andStart(
+		Inject.service(ISessionHolderService.class).useRanking().into(securityServiceHook).andStart(
 				Activator.getDefault().getContext());
 	}
 

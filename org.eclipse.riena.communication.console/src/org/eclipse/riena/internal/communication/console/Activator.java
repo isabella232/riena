@@ -12,14 +12,16 @@ package org.eclipse.riena.internal.communication.console;
 
 import java.util.Hashtable;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+
 import org.eclipse.osgi.framework.console.CommandProvider;
+
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.injector.service.ServiceInjector;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 
 public class Activator extends RienaActivator {
 
@@ -40,10 +42,8 @@ public class Activator extends RienaActivator {
 		// e.g. server.
 		// String filter = "(" + RSDPublisherProperties.PROP_IS_REMOTE +
 		// "=true)";
-		publisherInjector = Inject.service(IServicePublishBinder.class.getName()).useRanking().into(console).andStart(
-				context);
-		registryInjector = Inject.service(IRemoteServiceRegistry.class.getName()).useRanking().into(console).andStart(
-				context);
+		publisherInjector = Inject.service(IServicePublishBinder.class).useRanking().into(console).andStart(context);
+		registryInjector = Inject.service(IRemoteServiceRegistry.class).useRanking().into(console).andStart(context);
 
 		consoleReg = context.registerService(CommandProvider.class.getName(), console, new Hashtable<String, String>());
 	}
