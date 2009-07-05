@@ -372,8 +372,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(2, ridget.getPrecision());
 
-		DoubleBean bean = new DoubleBean(null);
 		ridget.setText(localize("3,14"));
+		DoubleBean bean = new DoubleBean(null);
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 		ridget.updateFromModel();
 
@@ -810,6 +810,38 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			ok("expected");
 		}
 		assertEquals(localize("1.234,56"), ridget.getText());
+	}
+
+	/**
+	 * As per bug #280603.
+	 */
+	public void testSetPrecisionBeforeBindAndUpdateFromModel() {
+		IDecimalTextRidget ridget = getRidget();
+		Text control = getWidget();
+
+		DoubleBean doubleBean = new DoubleBean(3.141592d);
+		ridget.setPrecision(6);
+		ridget.bindToModel(doubleBean, DoubleBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		assertEquals(localize("3,141592"), ridget.getText());
+		assertEquals(localize("3,141592"), control.getText());
+	}
+
+	/**
+	 * As per bug #280603.
+	 */
+	public void testSetPrecisionAfterBindAndUpdateFromModel() {
+		IDecimalTextRidget ridget = getRidget();
+		Text control = getWidget();
+
+		DoubleBean doubleBean = new DoubleBean(0.123456789d);
+		ridget.bindToModel(doubleBean, DoubleBean.PROP_VALUE);
+		ridget.setPrecision(9);
+		ridget.updateFromModel();
+
+		assertEquals(localize("0,123456789"), ridget.getText());
+		assertEquals(localize("0,123456789"), control.getText());
 	}
 
 	// helping methods

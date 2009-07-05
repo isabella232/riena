@@ -13,12 +13,17 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import com.ibm.icu.text.NumberFormat;
+
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.conversion.NumberToStringConverter;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
+import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -30,6 +35,11 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * @see UIControlsFactory#createTextDecimal(org.eclipse.swt.widgets.Composite)
  */
 public class DecimalTextRidget extends NumericTextRidget implements IDecimalTextRidget {
+
+	/**
+	 * True, if this ridget has a custom model-to-control converter
+	 */
+	private boolean hasCustomConverter;
 
 	public DecimalTextRidget() {
 		setMaxLength(10);
@@ -61,6 +71,19 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 	}
 
 	@Override
+	public void bindToModel(IObservableValue observableValue) {
+		super.bindToModel(observableValue);
+		// the converter depends on the type of the bound model + precision;
+		// so we update it after the binding has been set-up
+		updateConverter(getPrecision());
+	}
+
+	@Override
+	public void bindToModel(Object valueHolder, String valuePropertyName) {
+		bindToModel(PojoObservables.observeValue(valueHolder, valuePropertyName));
+	}
+
+	@Override
 	public synchronized int getMaxLength() {
 		return super.getMaxLength();
 	}
@@ -85,9 +108,16 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 		Assert.isLegal(numberOfFractionDigits > -1, "numberOfFractionDigits must > -1: " + numberOfFractionDigits); //$NON-NLS-1$
 		int oldValue = getPrecision();
 		if (oldValue != numberOfFractionDigits) {
+			updateConverter(numberOfFractionDigits);
 			super.setPrecision(numberOfFractionDigits);
 			firePropertyChange(IDecimalTextRidget.PROPERTY_PRECISION, oldValue, numberOfFractionDigits);
 		}
+	}
+
+	@Override
+	public void setUIControlToModelConverter(IConverter converter) {
+		hasCustomConverter = converter != null;
+		super.setUIControlToModelConverter(converter);
 	}
 
 	/**
@@ -154,34 +184,36 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 
 	private void checkValue() {
 		Object value = getValueBindingSupport().getModelObservable().getValue();
-		if (value != null) {
-			IConverter converter = getConverter(value);
-			if (converter != null) {
-				checkNumber((String) converter.convert(value));
-			}
+		Class<?> type = (Class<?>) getValueBindingSupport().getModelObservable().getValueType();
+		IConverter converter = getConverter(type, Integer.MAX_VALUE);
+		if (converter != null) {
+			checkNumber((String) converter.convert(value));
 		}
 	}
 
-	private IConverter getConverter(Object value) {
-		Assert.isNotNull(value);
-		IConverter result = getValueBindingSupport().getModelToUIControlConverter();
-		if (result == null) {
-			if (value instanceof BigDecimal) {
-				result = NumberToStringConverter.fromBigDecimal();
-			} else if (value instanceof BigInteger) {
-				result = NumberToStringConverter.fromBigInteger();
-			} else if (value instanceof Byte) {
-				result = NumberToStringConverter.fromByte(false);
-			} else if (value instanceof Double) {
-				result = NumberToStringConverter.fromDouble(false);
-			} else if (value instanceof Float) {
-				result = NumberToStringConverter.fromFloat(false);
-			} else if (value instanceof Integer) {
-				result = NumberToStringConverter.fromInteger(false);
-			} else if (value instanceof Long) {
-				result = NumberToStringConverter.fromLong(false);
-			} else if (value instanceof Short) {
-				result = NumberToStringConverter.fromShort(false);
+	private IConverter getConverter(Class<?> type, int precision) {
+		IConverter result = null;
+		if (hasCustomConverter) {
+			result = getValueBindingSupport().getModelToUIControlConverter();
+		} else {
+			NumberFormat nf = NumberFormat.getNumberInstance();
+			nf.setMaximumFractionDigits(precision);
+			if (BigDecimal.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromBigDecimal(nf);
+			} else if (BigInteger.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromBigInteger(nf);
+			} else if (Byte.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromByte(nf, false);
+			} else if (Double.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromDouble(nf, false);
+			} else if (Float.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromFloat(nf, false);
+			} else if (Integer.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromInteger(nf, false);
+			} else if (Long.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromLong(nf, false);
+			} else if (Short.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromShort(nf, false);
 			}
 		}
 		return result;
@@ -189,6 +221,16 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 
 	private String localStringToBigDecimal(String number) {
 		return ungroup(number).replace(DECIMAL_SEPARATOR, '.');
+	}
+
+	private void updateConverter(int precision) {
+		ValueBindingSupport vbs = getValueBindingSupport();
+		if (vbs.getModelObservable() != null) {
+			Class<?> type = (Class<?>) vbs.getModelObservable().getValueType();
+			IConverter converter = getConverter(type, precision);
+			vbs.setModelToUIControlConverter(converter);
+			vbs.rebindToModel();
+		}
 	}
 
 }
