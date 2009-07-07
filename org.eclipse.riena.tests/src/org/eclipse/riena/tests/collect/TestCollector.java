@@ -15,13 +15,16 @@ import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.riena.core.util.Iter;
 import org.osgi.framework.Bundle;
+
+import org.eclipse.riena.core.util.Iter;
 
 /**
  * A helper for collecting test classes.
@@ -228,11 +231,13 @@ public final class TestCollector {
 		return testClasses;
 	}
 
-	private static int skipChars = -1;
+	private static Map<Bundle, Integer> skipCharsMap = new HashMap<Bundle, Integer>();
 
 	private static String getClassName(Bundle bundle, URL entryURL) {
 		String entry = entryURL.toExternalForm();
 		entry = entry.replace(".class", "").replace('/', '.');
+		Integer skippy = skipCharsMap.get(bundle);
+		int skipChars = skippy == null ? -1 : skippy;
 		if (skipChars == -1) {
 			// Brute force detecting of how many chars we have to skip to find a class within the url
 			String name = entry;
@@ -241,7 +246,7 @@ public final class TestCollector {
 				String className = name.substring(dot + 1);
 				try {
 					bundle.loadClass(className);
-					skipChars = entry.indexOf(className);
+					skipCharsMap.put(bundle, entry.indexOf(className));
 					return className;
 				} catch (ClassNotFoundException e) {
 					dot++;
@@ -250,8 +255,7 @@ public final class TestCollector {
 				}
 			}
 		}
-		String name = entry.substring(skipChars);
-		return name;
+		return entry.substring(skipChars);
 	}
 
 	private static void trace(Object... objects) {
