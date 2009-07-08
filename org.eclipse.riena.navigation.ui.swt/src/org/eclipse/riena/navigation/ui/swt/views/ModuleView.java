@@ -104,7 +104,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 
 	}
 
-	private Composite getBody() {
+	Composite getBody() {
 		return body;
 	}
 

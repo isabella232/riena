@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import org.eclipse.swt.widgets.Composite;
+
 import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * Describes the interface of a navigation component provider being interested
@@ -22,13 +24,11 @@ import org.eclipse.swt.widgets.Composite;
 public interface IModuleNavigationComponentProvider {
 
 	/**
-	 * 
 	 * @return - the main navigation component
 	 */
 	Composite getNavigationComponent();
 
 	/**
-	 * 
 	 * @return - the composite holding the real content being scrolled inside
 	 *         the main navigation component
 	 */
@@ -43,7 +43,14 @@ public interface IModuleNavigationComponentProvider {
 	ModuleGroupView getModuleGroupViewForNode(IModuleGroupNode moduleGroupNode);
 
 	/**
+	 * @param moduleGroupNode
+	 * @return - the {@link ModuleGroupView} for the parameter node
 	 * 
+	 * @since 1.2
+	 */
+	ModuleView getModuleViewForNode(IModuleNode moduleGroupNode);
+
+	/**
 	 * @return - the currently active {@link ModuleGroupNode}
 	 */
 	IModuleGroupNode getActiveModuleGroupNode();

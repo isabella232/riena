@@ -278,6 +278,10 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		return moduleGroupNodesToViews.get(source);
 	}
 
+	public ModuleView getModuleViewForNode(IModuleNode source) {
+		return moduleNodesToViews.get(source);
+	}
+
 	private void createModuleGroupView(IModuleGroupNode moduleGroupNode) {
 		// ModuleGroupView are directly rendered into the bodyComposite
 		ModuleGroupView moduleGroupView = getViewFactory().createModuleGroupView(scrolledComposite);
