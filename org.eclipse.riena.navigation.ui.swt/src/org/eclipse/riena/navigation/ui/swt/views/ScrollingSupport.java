@@ -329,8 +329,17 @@ public class ScrollingSupport {
 		}
 
 		private boolean acceptEvent(Event event) {
+			// check that this is the latest event
+			boolean isCurrent = event.time > lastEventTime;
+			// 282089: check this window is has the focus, to avoid scrolling when
+			// the mouse pointer happens to be over another overlapping window
 			Control control = (Control) event.widget;
-			return event.time > lastEventTime && control.getShell() == getActiveShell();
+			boolean isActive = control.getShell() == getActiveShell();
+			// 282091: check that this navigation component is visible. Since
+			// we are using a display filter the navigation componentes of _each_
+			// subapplicatio are notified when scrolling!
+			boolean isVisible = getNavigationComponent().isVisible();
+			return isCurrent && isActive && isVisible;
 		}
 
 		private Shell getActiveShell() {
