@@ -30,8 +30,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -299,7 +302,7 @@ public class ScrollingSupport {
 
 		public void handleEvent(Event event) {
 			// only go further if the event has a new time stamp
-			if (mayScroll() && event.time > lastEventTime) {
+			if (mayScroll() && acceptEvent(event)) {
 				lastEventTime = event.time;
 				Rectangle navigationComponentBounds = getNavigationComponent().getBounds();
 
@@ -323,6 +326,16 @@ public class ScrollingSupport {
 
 				}
 			}
+		}
+
+		private boolean acceptEvent(Event event) {
+			Control control = (Control) event.widget;
+			return event.time > lastEventTime && control.getShell() == getActiveShell();
+		}
+
+		private Shell getActiveShell() {
+			IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+			return activeWindow != null ? activeWindow.getShell() : null;
 		}
 	}
 
