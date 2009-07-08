@@ -31,12 +31,14 @@ import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.FTActionListener;
+import org.eclipse.riena.tests.TestSelectionListener;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
+import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
@@ -767,6 +769,59 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		ridget.updateFromModel();
 
 		assertEquals(lastName, table.getItem(0).getText(1));
+	}
+
+	public void testAddSelectionListener() {
+		TableRidget ridget = getRidget();
+		Table control = getWidget();
+
+		try {
+			ridget.addSelectionListener(null);
+			fail();
+		} catch (RuntimeException npe) {
+			ok();
+		}
+
+		TestSelectionListener selectionListener = new TestSelectionListener();
+		ridget.addSelectionListener(selectionListener);
+
+		ridget.setSelection(person1);
+		assertEquals(1, selectionListener.getCount());
+		ridget.removeSelectionListener(selectionListener);
+		ridget.setSelection(person2);
+		assertEquals(1, selectionListener.getCount());
+		ridget.clearSelection();
+
+		ridget.addSelectionListener(selectionListener);
+		ridget.setSelectionType(SelectionType.SINGLE);
+		assertEquals(0, ridget.getSelection().size());
+		assertEquals(0, control.getSelectionCount());
+
+		control.setFocus();
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
+
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(1, control.getSelectionCount());
+		assertEquals(2, selectionListener.getCount());
+		SelectionEvent selectionEvent = selectionListener.getSelectionEvent();
+		assertEquals(ridget, selectionEvent.getSource());
+		assertTrue(selectionEvent.getOldSelection().isEmpty());
+		assertEquals(ridget.getSelection(), selectionEvent.getNewSelection());
+		System.out.println("SelectionEvent: " + selectionListener.getSelectionEvent());
+
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
+
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(1, control.getSelectionCount());
+		assertEquals(3, selectionListener.getCount());
+		SelectionEvent selectionEvent2 = selectionListener.getSelectionEvent();
+		assertEquals(ridget, selectionEvent.getSource());
+		assertEquals(selectionEvent.getNewSelection(), selectionEvent2.getOldSelection());
+		assertEquals(ridget.getSelection(), selectionEvent2.getNewSelection());
+		System.out.println("SelectionEvent: " + selectionListener.getSelectionEvent());
+
+		ridget.removeSelectionListener(selectionListener);
+
 	}
 
 	// helping methods

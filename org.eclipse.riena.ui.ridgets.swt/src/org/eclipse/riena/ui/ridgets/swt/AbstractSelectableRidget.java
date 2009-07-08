@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,7 +33,10 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
 
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
+import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
+import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 
 /**
  * Default implementation of an {@link ISelectableRidget}. This ridget than can
@@ -50,10 +55,30 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	private ListBinding multiSelectionBinding;
 	/** The selection type. */
 	private SelectionType selectionType = SelectionType.SINGLE;
+	/** A list of selection listeners. */
+	private ListenerList<ISelectionListener> selectionListeners;
 
 	public AbstractSelectableRidget() {
 		singleSelectionObservable = new SingleSelectionObservable();
 		multiSelectionObservable = new MultiSelectionObservable();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 1.2
+	 */
+	public void addSelectionListener(ISelectionListener selectionListener) {
+		Assert.isNotNull(selectionListener, "selectionListener is null"); //$NON-NLS-1$
+		if (selectionListeners == null) {
+			selectionListeners = new ListenerList<ISelectionListener>(ISelectionListener.class);
+			addPropertyChangeListener(ISelectableRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					notifySelectionListeners((List<?>) evt.getOldValue(), (List<?>) evt.getNewValue());
+				}
+			});
+		}
+		selectionListeners.add(selectionListener);
 	}
 
 	public final void bindMultiSelectionToModel(IObservableList observableList) {
@@ -118,6 +143,17 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 
 	public final IObservableValue getSingleSelectionObservable() {
 		return singleSelectionObservable;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 1.2
+	 */
+	public void removeSelectionListener(ISelectionListener selectionListener) {
+		if (selectionListeners != null) {
+			selectionListeners.remove(selectionListener);
+		}
 	}
 
 	public void setSelection(List<?> newSelection) {
@@ -197,6 +233,15 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 			}
 		}
 		return result;
+	}
+
+	private void notifySelectionListeners(List<?> oldSelectionList, List<?> newSelectionList) {
+		if (selectionListeners != null) {
+			SelectionEvent event = new SelectionEvent(this, oldSelectionList, newSelectionList);
+			for (ISelectionListener listener : selectionListeners.getListeners()) {
+				listener.ridgetSelected(event);
+			}
+		}
 	}
 
 	// helping classes

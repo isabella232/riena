@@ -51,6 +51,7 @@ import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRowRidget;
+import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableIndexedRidget;
@@ -358,6 +359,28 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			applyComparator();
 			firePropertyChange(ISortableByColumn.PROPERTY_SORTED_COLUMN, oldSortedColumn, sortedColumn);
 		}
+	}
+
+	/**
+	 * {@link CompositeTableRidget} does currently not support this operation.
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             when invoked
+	 */
+	@Override
+	public void addSelectionListener(ISelectionListener selectionListener) {
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
+	}
+
+	/**
+	 * {@link CompositeTableRidget} does currently not support this operation.
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             when invoked
+	 */
+	@Override
+	public void removeSelectionListener(ISelectionListener selectionListener) {
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
 	// helping methods

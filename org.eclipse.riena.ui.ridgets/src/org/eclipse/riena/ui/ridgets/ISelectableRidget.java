@@ -15,6 +15,8 @@ import java.util.List;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 
+import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
+
 /**
  * A Ridget that supports single and multiple selection.
  */
@@ -177,5 +179,31 @@ public interface ISelectableRidget extends IMarkableRidget {
 	 *         otherwise.
 	 */
 	boolean containsOption(Object option);
+
+	/**
+	 * Adds the listener to the collection of listeners who will be notified
+	 * when the bound control is selected.
+	 * <p>
+	 * Adding the same listener several times has no effect.
+	 * 
+	 * @param listener
+	 *            a non-null {@link ISelectionListener} instance
+	 * @throws RuntimeException
+	 *             if listener is null
+     * @since 1.2
+	 */
+	void addSelectionListener(ISelectionListener listener);
+
+	/**
+	 * Removes the listener from the collection of listeners who will be
+	 * notified when the bound control is selected.
+	 * 
+	 * @param listener
+	 *            a non-null {@link ISelectionListener} instance
+	 * @throws RuntimeException
+	 *             if listener is null
+     * @since 1.2
+	 */
+	void removeSelectionListener(ISelectionListener listener);
 
 }

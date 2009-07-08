@@ -55,7 +55,7 @@ public class TableSubModuleView extends SubModuleView<TableSubModuleController> 
 		Composite tableComposite = new Composite(group, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(tableComposite);
 
-		Table table = UIControlsFactory.createTable(tableComposite, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
+		Table table = UIControlsFactory.createTable(tableComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		addUIControl(table, "table"); //$NON-NLS-1$
@@ -78,12 +78,14 @@ public class TableSubModuleView extends SubModuleView<TableSubModuleController> 
 
 	private Composite createButtonComposite(Group group) {
 		Composite buttonComposite = UIControlsFactory.createComposite(group);
-		GridLayoutFactory.fillDefaults().numColumns(3).equalWidth(false).applyTo(buttonComposite);
+		GridLayoutFactory.fillDefaults().numColumns(4).equalWidth(false).applyTo(buttonComposite);
+
+		Button buttonPrintSelection = UIControlsFactory.createButtonCheck(buttonComposite);
+		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.CENTER).hint(120, SWT.DEFAULT).applyTo(
+				buttonPrintSelection);
+		addUIControl(buttonPrintSelection, "buttonPrintSelection"); //$NON-NLS-1$
 
 		Button buttonAddSibling = UIControlsFactory.createButton(buttonComposite);
-		int widthHint = UIControlsFactory.getWidthHint(buttonAddSibling);
-		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).hint(widthHint, SWT.DEFAULT)
-				.applyTo(buttonAddSibling);
 		addUIControl(buttonAddSibling, "buttonAddSibling"); //$NON-NLS-1$
 
 		Button buttonRename = UIControlsFactory.createButton(buttonComposite);

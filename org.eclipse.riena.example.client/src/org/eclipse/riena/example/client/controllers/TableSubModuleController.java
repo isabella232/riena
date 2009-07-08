@@ -34,6 +34,9 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
+import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
+import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 
 /**
  * Controller for the {@link TableSubModuleView} example.
@@ -70,7 +73,8 @@ public class TableSubModuleController extends SubModuleController {
 		table.setComparator(0, new TypedComparator<String>());
 		table.setComparator(1, new TypedComparator<Boolean>());
 		table.setColumnSortable(2, false);
-		table.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
+		// table.setSelectionType(ISelectableRidget.SelectionType.SINGLE); 
+		table.setSelectionType(ISelectableRidget.SelectionType.MULTI); // TODO [ev] switch to single selection
 		table.setSelection(0);
 	}
 
@@ -79,11 +83,11 @@ public class TableSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-
 		table = (ITableRidget) getRidget("table"); //$NON-NLS-1$
-		final IActionRidget buttonAddSibling = (IActionRidget) getRidget("buttonAddSibling"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonPrintSelection = (IToggleButtonRidget) getRidget("buttonPrintSelection"); //$NON-NLS-1$
+		IActionRidget buttonAddSibling = (IActionRidget) getRidget("buttonAddSibling"); //$NON-NLS-1$
 		buttonRename = (IActionRidget) getRidget("buttonRename"); //$NON-NLS-1$
-		final IActionRidget buttonDelete = (IActionRidget) getRidget("buttonDelete"); //$NON-NLS-1$
+		IActionRidget buttonDelete = (IActionRidget) getRidget("buttonDelete"); //$NON-NLS-1$
 
 		table.addDoubleClickListener(new IActionListener() {
 			public void callback() {
@@ -94,6 +98,17 @@ public class TableSubModuleController extends SubModuleController {
 				}
 			}
 		});
+
+		table.addSelectionListener(new ISelectionListener() {
+			public void ridgetSelected(SelectionEvent event) {
+				if (buttonPrintSelection.isSelected()) {
+					System.out.println(event);
+				}
+			}
+		});
+
+		buttonPrintSelection.setText("&Echo Selection"); //$NON-NLS-1$
+		buttonPrintSelection.setSelected(true);
 
 		buttonAddSibling.setText("&Add"); //$NON-NLS-1$
 		buttonAddSibling.addListener(new IActionListener() {

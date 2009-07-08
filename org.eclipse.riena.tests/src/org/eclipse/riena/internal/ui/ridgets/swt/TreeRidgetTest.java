@@ -20,9 +20,12 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import org.eclipse.riena.tests.FTActionListener;
+import org.eclipse.riena.tests.TestSelectionListener;
 import org.eclipse.riena.tests.TreeUtils;
+import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
+import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
@@ -374,6 +377,50 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		control.notifyListeners(SWT.MouseDoubleClick, doubleClick);
 
 		assertEquals(1, listener1.getCount());
+	}
+
+	public void testAddSelectionListener() {
+		ITreeRidget ridget = getRidget();
+		Tree control = getWidget();
+
+		try {
+			ridget.addSelectionListener(null);
+			fail();
+		} catch (RuntimeException npe) {
+			ok();
+		}
+
+		TestSelectionListener selectionListener = new TestSelectionListener();
+
+		ridget.addSelectionListener(selectionListener);
+		assertEquals(0, ridget.getSelection().size());
+		assertEquals(0, control.getSelectionCount());
+
+		control.setFocus();
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
+
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(1, control.getSelectionCount());
+		assertEquals(1, selectionListener.getCount());
+		SelectionEvent selectionEvent = selectionListener.getSelectionEvent();
+		assertEquals(ridget, selectionEvent.getSource());
+		assertTrue(selectionEvent.getOldSelection().isEmpty());
+		assertEquals(ridget.getSelection(), selectionEvent.getNewSelection());
+		System.out.println("SelectionEvent: " + selectionListener.getSelectionEvent());
+
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
+
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(1, control.getSelectionCount());
+		assertEquals(2, selectionListener.getCount());
+		SelectionEvent selectionEvent2 = selectionListener.getSelectionEvent();
+		assertEquals(ridget, selectionEvent.getSource());
+		assertEquals(selectionEvent.getNewSelection(), selectionEvent2.getOldSelection());
+		assertEquals(ridget.getSelection(), selectionEvent2.getNewSelection());
+		System.out.println("SelectionEvent: " + selectionListener.getSelectionEvent());
+
+		ridget.removeSelectionListener(selectionListener);
+
 	}
 
 	public void testBug266042() {
