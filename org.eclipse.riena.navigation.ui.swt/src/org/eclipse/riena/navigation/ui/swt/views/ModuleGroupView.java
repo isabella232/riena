@@ -88,6 +88,12 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 		return null;
 	}
 
+	@Override
+	public boolean setFocus() {
+		// accept focus is this group is the active group
+		return getNavigationNode().isActivated() ? super.setFocus() : false;
+	}
+
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#bind(org.eclipse.riena.navigation.INavigationNode)
 	 */
