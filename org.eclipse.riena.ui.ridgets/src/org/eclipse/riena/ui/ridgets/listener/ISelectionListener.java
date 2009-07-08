@@ -23,6 +23,6 @@ public interface ISelectionListener {
 	 * @param event
 	 *            the SelectionEvent.
 	 */
-	void ridgetSelected(SelectionEvent e);
+	void ridgetSelected(SelectionEvent event);
 
 }

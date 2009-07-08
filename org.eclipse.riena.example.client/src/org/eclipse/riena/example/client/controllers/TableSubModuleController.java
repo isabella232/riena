@@ -73,8 +73,7 @@ public class TableSubModuleController extends SubModuleController {
 		table.setComparator(0, new TypedComparator<String>());
 		table.setComparator(1, new TypedComparator<Boolean>());
 		table.setColumnSortable(2, false);
-		// table.setSelectionType(ISelectableRidget.SelectionType.SINGLE); 
-		table.setSelectionType(ISelectableRidget.SelectionType.MULTI); // TODO [ev] switch to single selection
+		table.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		table.setSelection(0);
 	}
 
