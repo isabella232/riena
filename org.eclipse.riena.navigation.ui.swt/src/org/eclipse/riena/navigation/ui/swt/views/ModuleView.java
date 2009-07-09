@@ -229,6 +229,8 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 					}
 				}
 				resize();
+				// after activation (i.e. view creation), return focus to the navigation tree 
+				getTree().setFocus();
 			}
 
 		});
