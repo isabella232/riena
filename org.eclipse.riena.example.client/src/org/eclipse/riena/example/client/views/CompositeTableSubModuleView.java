@@ -105,6 +105,8 @@ public class CompositeTableSubModuleView extends SubModuleView<CompositeTableSub
 
 	}
 
+	private CompositeTable table;
+
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
@@ -114,6 +116,15 @@ public class CompositeTableSubModuleView extends SubModuleView<CompositeTableSub
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(group1);
 	}
 
+	@Override
+	public void setFocus() {
+		if (canRestoreFocus()) {
+			super.setFocus();
+		} else if (table.getRowControls().length > 0) {
+			table.getRowControls()[0].setFocus();
+		}
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -121,7 +132,7 @@ public class CompositeTableSubModuleView extends SubModuleView<CompositeTableSub
 		Group group = UIControlsFactory.createGroup(parent, "Composite Table:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(1).applyTo(group);
 
-		CompositeTable table = UIControlsFactory.createCompositeTable(group, SWT.BORDER);
+		table = UIControlsFactory.createCompositeTable(group, SWT.BORDER);
 		new Header(table, SWT.NONE);
 		new Row(table, SWT.NONE);
 		table.setInsertHint("Press 'Add' to add more rows..."); //$NON-NLS-1$
