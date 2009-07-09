@@ -204,11 +204,13 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * This implementation will automatically focus on the control that had
 	 * previously the focus, or, the first focusable control.
 	 * <p>
-	 * You may overwrite it, but it typically is not necessary to do so.
+	 * You may overwrite it, but it typically is not necessary to do so. If you
+	 * still want to use the 'restore focus to last control' functionality,
+	 * check {@link #canRestoreFocus()} and the invoke this method.
 	 */
 	@Override
 	public void setFocus() {
-		if (!SwtUtilities.isDisposed(lastFocusedControl)) {
+		if (canRestoreFocus()) {
 			lastFocusedControl.setFocus();
 		} else {
 			contentComposite.setFocus();
@@ -235,6 +237,16 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 *            - composite for the content of the sub module view
 	 */
 	protected abstract void basicCreatePartControl(Composite parent);
+
+	/**
+	 * Returns true if {@link #setFocus()} can restore the focus to the control
+	 * that last had the focus in this view; false otherwise.
+	 * 
+	 * @since 1.2
+	 */
+	protected final boolean canRestoreFocus() {
+		return !SwtUtilities.isDisposed(lastFocusedControl);
+	}
 
 	protected void createViewFacade() {
 		addUIControls(getParentComposite());
