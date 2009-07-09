@@ -103,8 +103,8 @@
             defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchToNavigation">
       </command>
       <command
-            id="org.eclipse.riena.navigation.ui.switchToToolbar"
-            name="Switch to Toolbar"
+            id="org.eclipse.riena.navigation.ui.switchToWindowMenu"
+            name="Switch to the Window Menu"
             categoryId="org.eclipse.riena.navigation.ui.swt">
       </command>
       <command
@@ -159,7 +159,7 @@
             sequence="F7">
       </key>
       <key
-            commandId="org.eclipse.riena.navigation.ui.switchToToolbar"
+            commandId="org.eclipse.riena.navigation.ui.switchToWindowMenu"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="F10">
@@ -242,8 +242,8 @@
          </handler>
          <!-- Focus on toolbar on F10; Windows only -->
          <handler
-               class="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchToToolbar"
-               commandId="org.eclipse.riena.navigation.ui.switchToToolbar">
+               class="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchToWindowMenu"
+               commandId="org.eclipse.riena.navigation.ui.switchToWindowMenu">
             <activeWhen>
                <and>
 	               <with

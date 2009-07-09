@@ -21,10 +21,10 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 
 /**
- * Moves the focus to the window's toolbar (technically a
+ * Moves the focus to Riena's window menu (technically a
  * {@link MenuCoolBarComposite}.
  */
-public class SwitchToToolbar extends AbstractHandler {
+public class SwitchToWindowMenu extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
