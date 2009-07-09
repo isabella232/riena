@@ -103,6 +103,11 @@
             defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchToNavigation">
       </command>
       <command
+            id="org.eclipse.riena.navigation.ui.switchToToolbar"
+            name="Switch to Toolbar"
+            categoryId="org.eclipse.riena.navigation.ui.swt">
+      </command>
+      <command
             id="org.eclipse.riena.navigation.ui.previousSubApplication"
             name="Previous sub-application"
             categoryId="org.eclipse.riena.navigation.ui.swt"
@@ -152,6 +157,12 @@
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="F7">
+      </key>
+      <key
+            commandId="org.eclipse.riena.navigation.ui.switchToToolbar"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="F10">
       </key>
       <key
             commandId="org.eclipse.riena.navigation.ui.previousSubApplication"
@@ -212,10 +223,27 @@
                </with>
             </activeWhen>
          </handler>
-         <!-- Use Alt+F4 to quit on Windows --> 
+         <!-- Use Alt+F4 to Quit; Windows only --> 
          <handler
                class="org.eclipse.riena.internal.navigation.ui.swt.handlers.ExitApplication"
                commandId="org.eclipse.ui.file.exit">
+            <activeWhen>
+               <and>
+	               <with
+	                     variable="activeWorkbenchWindow">
+	                  <instanceof
+	                        value="org.eclipse.ui.IWorkbenchWindow">
+	                  </instanceof>
+	               </with>
+                   <systemTest property="osgi.os" value="win32">
+	               </systemTest>
+	           </and>
+            </activeWhen>
+         </handler>
+         <!-- Focus on toolbar on F10; Windows only -->
+         <handler
+               class="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchToToolbar"
+               commandId="org.eclipse.riena.navigation.ui.switchToToolbar">
             <activeWhen>
                <and>
 	               <with
