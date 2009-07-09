@@ -186,10 +186,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 						"subModuleView", getViewSite().getId(), getViewSite().getSecondaryId()); //$NON-NLS-1$
 		}
 
-		contentComposite.getDisplay().addFilter(SWT.FocusOut, focusListener);
+		contentComposite.getDisplay().addFilter(SWT.FocusIn, focusListener);
 		contentComposite.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent event) {
-				event.widget.getDisplay().removeFilter(SWT.FocusOut, focusListener);
+				event.widget.getDisplay().removeFilter(SWT.FocusIn, focusListener);
 			}
 		});
 	}
@@ -204,7 +204,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * This implementation will automatically focus on the control that had
 	 * previously the focus, or, the first focusable control.
 	 * <p>
-	 * You can overwrite it, but it should not be necessary to do so.
+	 * You may overwrite it, but it typically is not necessary to do so.
 	 */
 	@Override
 	public void setFocus() {
