@@ -32,19 +32,22 @@ import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPerspectiveDescriptor;
+import org.eclipse.ui.IPerspectiveRegistry;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
-import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.WorkbenchWindow;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
+import org.eclipse.riena.internal.navigation.ui.swt.CoolbarUtils;
+import org.eclipse.riena.internal.navigation.ui.swt.RestoreFocusOnEscListener;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
@@ -225,12 +228,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	}
 
-	/**
-	 * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#createWindowContents(org.eclipse.swt.widgets.Shell)
-	 */
 	@Override
 	public void createWindowContents(final Shell shell) {
-
 		initShell(shell);
 
 		// create and layouts the composite of switcher, menu, tool bar etc.
@@ -241,6 +240,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		Composite menuBarComposite = createMenuBarComposite(shell, titleComposite);
 		Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
 		createMainComposite(shell, coolBarComposite);
+
+		RestoreFocusOnEscListener focusListener = new RestoreFocusOnEscListener(shell);
+		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(menuBarComposite));
+		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(coolBarComposite));
 	}
 
 	private void createStatusLine(Composite shell, Composite grabCorner) {
@@ -369,10 +372,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		public void disposed(ISubApplicationNode source) {
 			SwtViewProvider viewProvider = SwtViewProviderAccessor.getViewProvider();
 			String id = viewProvider.getSwtViewId(source).getId();
-			IPerspectiveDescriptor perspDesc = WorkbenchPlugin.getDefault().getPerspectiveRegistry()
-					.findPerspectiveWithId(id);
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closePerspective(perspDesc, false,
-					false);
+			IWorkbench workbench = PlatformUI.getWorkbench();
+			IPerspectiveRegistry registry = workbench.getPerspectiveRegistry();
+			IPerspectiveDescriptor perspDesc = registry.findPerspectiveWithId(id);
+			workbench.getActiveWorkbenchWindow().getActivePage().closePerspective(perspDesc, false, false);
 			viewProvider.unregisterSwtViewId(source);
 		}
 	}
@@ -544,7 +547,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @return composite
 	 */
 	private Composite createMenuBarComposite(Composite parent, Composite previous) {
-
 		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
 		int padding = getShellPadding();
@@ -562,7 +564,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		composite.setLayoutData(formData);
 
 		return composite;
-
 	}
 
 	/**
@@ -593,7 +594,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @return composite
 	 */
 	private Composite createCoolBarComposite(Composite parent, Composite previous) {
-
 		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
 		int padding = getCoolBarSeparatorPadding();
@@ -606,22 +606,21 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		separator.setLayoutData(formData);
 
 		padding = getShellPadding();
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new FillLayout());
+		Composite result = new Composite(parent, SWT.NONE);
+		result.setLayout(new FillLayout());
 		formData = new FormData();
 		formData.top = new FormAttachment(previous, COOLBAR_TOP_MARGIN);
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
-		composite.setLayoutData(formData);
+		result.setLayoutData(formData);
 
-		Control control = getWindowConfigurer().createCoolBarControl(composite);
+		Control control = getWindowConfigurer().createCoolBarControl(result);
 		if (control instanceof CoolBar) {
 			CoolBar coolbar = (CoolBar) control;
-			MenuCoolBarComposite.initCoolBar(coolbar);
+			CoolbarUtils.initCoolBar(coolbar);
 		}
 
-		return composite;
-
+		return result;
 	}
 
 	private int getCoolBarSeparatorPadding() {
