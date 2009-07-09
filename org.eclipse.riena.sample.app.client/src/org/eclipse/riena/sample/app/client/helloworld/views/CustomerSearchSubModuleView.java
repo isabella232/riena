@@ -10,13 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.client.helloworld.views;
 
-import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.sample.app.client.helloworld.controllers.CustomerSearchSubModuleController;
-import org.eclipse.riena.sample.app.common.model.Customer;
-import org.eclipse.riena.ui.workarea.WorkareaManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -28,6 +21,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.sample.app.client.helloworld.controllers.CustomerSearchSubModuleController;
+import org.eclipse.riena.sample.app.common.model.Customer;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 public class CustomerSearchSubModuleView extends SubModuleView<CustomerSearchSubModuleController> {
 
@@ -189,8 +190,7 @@ public class CustomerSearchSubModuleView extends SubModuleView<CustomerSearchSub
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-
+		super.setFocus();
 	}
 
 	@Override

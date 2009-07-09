@@ -85,13 +85,6 @@ public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSub
 	@Override
 	public void setFocus() {
 		super.setFocus();
-		// FIXME implement generic way to rebind controllers. just for
-		// evaluation.
-		// if (ta != null && getController() != null) {
-		// getController().setLabelFacade(labelFacade);
-		// getController().setTextFacade(ta);
-		// }
-		// getController().afterBind();
 	}
 
 }

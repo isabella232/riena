@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.client.helloworld.views;
 
-import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.sample.app.client.helloworld.controllers.HelloServerSubModuleController;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
@@ -23,6 +20,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.sample.app.client.helloworld.controllers.HelloServerSubModuleController;
 
 public class HelloServerSubModuleView extends SubModuleView<HelloServerSubModuleController> {
 
@@ -73,6 +74,7 @@ public class HelloServerSubModuleView extends SubModuleView<HelloServerSubModule
 
 	@Override
 	public void setFocus() {
+		super.setFocus();
 	}
 
 	@Override
