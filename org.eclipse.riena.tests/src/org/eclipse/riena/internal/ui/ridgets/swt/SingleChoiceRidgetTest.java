@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.tests.TestSelectionListener;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -566,6 +567,36 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		ridget.updateFromModel();
 
 		assertEquals("male", getSelectedControlValue(control));
+	}
+
+	public void testAddSelectionListener() {
+
+		ISingleChoiceRidget ridget = getRidget();
+
+		try {
+			ridget.addSelectionListener(null);
+			fail();
+		} catch (RuntimeException npe) {
+			ok();
+		}
+
+		assertEquals(optionProvider.getSelectedOption(), ridget.getSelection());
+
+		TestSelectionListener selectionListener = new TestSelectionListener();
+		ridget.addSelectionListener(selectionListener);
+
+		ridget.setSelection(optionProvider.getOptions().get(1));
+		assertEquals(ridget.getSelection(), optionProvider.getSelectedOption());
+		assertEquals(1, selectionListener.getCount());
+
+		ridget.setSelection(optionProvider.getOptions().get(2));
+		assertEquals(ridget.getSelection(), optionProvider.getSelectedOption());
+		assertEquals(2, selectionListener.getCount());
+
+		ridget.removeSelectionListener(selectionListener);
+		ridget.setSelection(null);
+		assertEquals(ridget.getSelection(), optionProvider.getSelectedOption());
+		assertEquals(2, selectionListener.getCount());
 	}
 
 	// helping methods

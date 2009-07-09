@@ -35,8 +35,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 
 import org.eclipse.riena.beans.common.ListBean;
+import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.ui.ridgets.IChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
@@ -56,6 +59,9 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 	private Binding optionsBinding;
 	private Binding selectionBinding;
 	private String[] optionLabels;
+
+	/** A list of selection listeners. */
+	private ListenerList<ISelectionListener> selectionListeners;
 
 	public MultipleChoiceRidget() {
 		optionsObservable = new WritableList();
@@ -175,6 +181,35 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 	@Override
 	public boolean isDisableMandatoryMarker() {
 		return hasInput();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 1.2
+	 */
+	public void addSelectionListener(ISelectionListener selectionListener) {
+		Assert.isNotNull(selectionListener, "selectionListener is null"); //$NON-NLS-1$
+		if (selectionListeners == null) {
+			selectionListeners = new ListenerList<ISelectionListener>(ISelectionListener.class);
+			addPropertyChangeListener(IChoiceRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					notifySelectionListeners((List<?>) evt.getOldValue(), (List<?>) evt.getNewValue());
+				}
+			});
+		}
+		selectionListeners.add(selectionListener);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 1.2
+	 */
+	public void removeSelectionListener(ISelectionListener selectionListener) {
+		if (selectionListeners != null) {
+			selectionListeners.remove(selectionListener);
+		}
 	}
 
 	// helping methods
@@ -301,6 +336,16 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 				Button button = (Button) child;
 				boolean isSelected = canSelect && selectionObservable.contains(button.getData());
 				button.setSelection(isSelected);
+			}
+		}
+	}
+
+	private void notifySelectionListeners(List<?> oldSelectionList, List<?> newSelectionList) {
+		if (selectionListeners != null) {
+			org.eclipse.riena.ui.ridgets.listener.SelectionEvent event = new org.eclipse.riena.ui.ridgets.listener.SelectionEvent(
+					this, oldSelectionList, newSelectionList);
+			for (ISelectionListener listener : selectionListeners.getListeners()) {
+				listener.ridgetSelected(event);
 			}
 		}
 	}

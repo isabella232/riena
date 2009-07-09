@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
@@ -35,8 +36,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 
+import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.ui.ridgets.IChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
@@ -56,6 +60,9 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 	private Binding optionsBinding;
 	private Binding selectionBinding;
 	private String[] optionLabels;
+
+	/** A list of selection listeners. */
+	private ListenerList<ISelectionListener> selectionListeners;
 
 	public SingleChoiceRidget() {
 		optionsObservable = new WritableList();
@@ -165,6 +172,35 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 	@Override
 	public final boolean isDisableMandatoryMarker() {
 		return hasInput();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 1.2
+	 */
+	public void addSelectionListener(ISelectionListener selectionListener) {
+		Assert.isNotNull(selectionListener, "selectionListener is null"); //$NON-NLS-1$
+		if (selectionListeners == null) {
+			selectionListeners = new ListenerList<ISelectionListener>(ISelectionListener.class);
+			addPropertyChangeListener(IChoiceRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					notifySelectionListeners(Arrays.asList(evt.getOldValue()), Arrays.asList(evt.getNewValue()));
+				}
+			});
+		}
+		selectionListeners.add(selectionListener);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 1.2
+	 */
+	public void removeSelectionListener(ISelectionListener selectionListener) {
+		if (selectionListeners != null) {
+			selectionListeners.remove(selectionListener);
+		}
 	}
 
 	// helping methods
@@ -281,6 +317,16 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 				Button button = (Button) child;
 				boolean isSelected = canSelect && (value != null) && (value.equals(child.getData()));
 				button.setSelection(isSelected);
+			}
+		}
+	}
+
+	private void notifySelectionListeners(List<?> oldSelectionList, List<?> newSelectionList) {
+		if (selectionListeners != null) {
+			org.eclipse.riena.ui.ridgets.listener.SelectionEvent event = new org.eclipse.riena.ui.ridgets.listener.SelectionEvent(
+					this, oldSelectionList, newSelectionList);
+			for (ISelectionListener listener : selectionListeners.getListeners()) {
+				listener.ridgetSelected(event);
 			}
 		}
 	}

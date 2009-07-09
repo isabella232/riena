@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.tests.TestSelectionListener;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IChoiceRidget;
@@ -690,6 +691,50 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		assertTrue(control.isEnabled());
 		assertEquals(1, getSelectionCount(control));
 		assertEquals("Option B", getSelectedControlValues(control).get(0));
+	}
+
+	public void testAddSelectionListener() {
+
+		IMultipleChoiceRidget ridget = getRidget();
+
+		try {
+			ridget.addSelectionListener(null);
+			fail();
+		} catch (RuntimeException npe) {
+			ok();
+		}
+
+		TestSelectionListener selectionListener = new TestSelectionListener();
+		ridget.addSelectionListener(selectionListener);
+
+		String element0 = optionProvider.getOptions().get(0);
+		String element1 = optionProvider.getOptions().get(1);
+		List<String> selection1 = Arrays.asList(new String[] { element0 });
+		List<String> selection2 = Arrays.asList(new String[] { element0, element1 });
+
+		ridget.setSelection(selection1);
+
+		assertEquals(1, ridget.getSelection().size());
+		assertSame(element0, ridget.getSelection().get(0));
+		assertEquals(1, optionProvider.getSelectedOptions().size());
+		assertSame(element0, optionProvider.getSelectedOptions().get(0));
+		assertEquals(1, selectionListener.getCount());
+
+		ridget.setSelection(selection2);
+
+		assertEquals(2, ridget.getSelection().size());
+		assertSame(element0, ridget.getSelection().get(0));
+		assertSame(element1, ridget.getSelection().get(1));
+		assertEquals(2, optionProvider.getSelectedOptions().size());
+		assertSame(element0, optionProvider.getSelectedOptions().get(0));
+		assertSame(element1, optionProvider.getSelectedOptions().get(1));
+		assertEquals(2, selectionListener.getCount());
+
+		ridget.removeSelectionListener(selectionListener);
+		ridget.setSelection(null);
+		assertEquals(0, ridget.getSelection().size());
+		assertEquals(0, optionProvider.getSelectedOptions().size());
+		assertEquals(2, selectionListener.getCount());
 	}
 
 	// helping methods
