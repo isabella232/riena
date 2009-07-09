@@ -13,12 +13,17 @@ package org.eclipse.riena.internal.navigation.ui.swt.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
+import org.eclipse.riena.navigation.ApplicationNodeManager;
+import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 
 /**
  * Switch focus to the 'work area'.
@@ -26,11 +31,18 @@ import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 public class SwitchToWorkarea extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		if (window != null) {
-			EmbeddedTitleBar titleBar = findEmbeddedTitleBar(window.getShell());
-			if (titleBar != null) {
-				titleBar.getParent().setFocus();
+		String viewId = getViewId(getActiveNode());
+		if (viewId != null) {
+			IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
+			IWorkbenchPage page = window.getActivePage();
+			for (IViewReference viewRef : page.getViewReferences()) {
+				if (viewId.equals(getFullId(viewRef))) {
+					IViewPart view = viewRef.getView(false);
+					if (view != null) {
+						view.setFocus();
+					}
+					break;
+				}
 			}
 		}
 		return null;
@@ -39,17 +51,25 @@ public class SwitchToWorkarea extends AbstractHandler {
 	// helping methods
 	//////////////////
 
-	private EmbeddedTitleBar findEmbeddedTitleBar(Composite parent) {
-		EmbeddedTitleBar result = null;
-		Control[] children = parent.getChildren();
-		for (int i = 0; result == null && i < children.length; i++) {
-			if (children[i] instanceof EmbeddedTitleBar) {
-				result = (EmbeddedTitleBar) children[i];
-			}
+	private INavigationNode<?> getActiveNode() {
+		IApplicationNode appNode = ApplicationNodeManager.getApplicationNode();
+		return appNode.getNavigationProcessor().getSelectedNode();
+	}
+
+	private String getFullId(IViewReference viewRef) {
+		String result = viewRef.getId();
+		if (viewRef.getSecondaryId() != null) {
+			result = result + ":" + viewRef.getSecondaryId(); //$NON-NLS-1$
 		}
-		for (int i = 0; result == null && i < children.length; i++) {
-			if (children[i] instanceof Composite) {
-				result = findEmbeddedTitleBar((Composite) children[i]);
+		return result;
+	}
+
+	private String getViewId(INavigationNode<?> node) {
+		String result = null;
+		if (node != null) {
+			SwtViewId viewId = SwtViewProviderAccessor.getViewProvider().getSwtViewId(node);
+			if (viewId != null) {
+				result = viewId.getCompoundId();
 			}
 		}
 		return result;

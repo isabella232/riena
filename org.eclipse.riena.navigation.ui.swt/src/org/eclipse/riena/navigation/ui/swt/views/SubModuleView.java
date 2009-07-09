@@ -22,6 +22,8 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FormAttachment;
@@ -29,6 +31,8 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.part.ViewPart;
 
 import org.eclipse.riena.core.Log4r;
@@ -53,6 +57,7 @@ import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
@@ -67,7 +72,9 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
 	private final static Map<SubModuleView<? extends SubModuleController>, SubModuleNode> fallbackNodes = new HashMap<SubModuleView<? extends SubModuleController>, SubModuleNode>();
 
-	private AbstractViewBindingDelegate binding;
+	private final AbstractViewBindingDelegate binding;
+	private final FocusListener focusListener;
+
 	private SubModuleController currentController;
 
 	/**
@@ -84,16 +91,19 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	private Composite parentComposite;
 	private Composite contentComposite;
-	/** Shared (system) cursor. No need to dispose it. */
-	private Cursor cursorWait;
-	/** Shared (system) cursor. No need to dispose it. */
-	private Cursor cursorArrow;
+
+	/**
+	 * The control from withing the {@code contentComposite} that last had the
+	 * focus; may be null or disposed.
+	 */
+	private Control lastFocusedControl;
 
 	/**
 	 * Creates a new instance of {@code SubModuleView}.
 	 */
 	public SubModuleView() {
 		binding = createBinding();
+		focusListener = new FocusListener();
 	}
 
 	/**
@@ -171,10 +181,37 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 
 		if (getViewSite() != null) {
-
 			if (getViewSite().getSecondaryId() != null)
 				WidgetIdentificationSupport.setIdentification(contentComposite,
 						"subModuleView", getViewSite().getId(), getViewSite().getSecondaryId()); //$NON-NLS-1$
+		}
+
+		contentComposite.getDisplay().addFilter(SWT.FocusOut, focusListener);
+		contentComposite.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent event) {
+				event.widget.getDisplay().removeFilter(SWT.FocusOut, focusListener);
+			}
+		});
+	}
+
+	@Override
+	public void dispose() {
+		fallbackNodes.remove(this);
+		super.dispose();
+	}
+
+	/**
+	 * This implementation will automatically focus on the control that had
+	 * previously the focus, or, the first focusable control.
+	 * <p>
+	 * You can overwrite it, but it should not be necessary to do so.
+	 */
+	@Override
+	public void setFocus() {
+		if (!SwtUtilities.isDisposed(lastFocusedControl)) {
+			lastFocusedControl.setFocus();
+		} else {
+			contentComposite.setFocus();
 		}
 	}
 
@@ -186,109 +223,8 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		return contentComposite;
 	}
 
-	/**
-	 * Creates the composite for the content of the view. Its a container that
-	 * holds the UI controls of the view.<br>
-	 * Above this container the title bar of the view is located.
-	 * 
-	 * @param parent
-	 * @return
-	 */
-	private Composite createContentComposite(Composite parent) {
-
-		Color bgColor = LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND);
-		parent.setBackground(bgColor);
-
-		parent.setLayout(new FormLayout());
-
-		if (!isRCP()) {
-			title = new EmbeddedTitleBar(parent, SWT.NONE);
-			addUIControl(title, SubModuleController.WINDOW_RIDGET);
-			title.setWindowActive(true);
-			FormData formData = new FormData();
-			// don't show the top border of the title => -1
-			formData.top = new FormAttachment(0, -1);
-			// don't show the left border of the title => -1
-			formData.left = new FormAttachment(0, -1);
-			// don't show the top border of the title, but show the bottom
-			// border => -1
-			formData.bottom = new FormAttachment(0, title.getSize().y - 1);
-			// don't show the right (and left) border of the title => 2
-			formData.right = new FormAttachment(100, 2);
-			title.setLayoutData(formData);
-		}
-
-		Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
-		composite.setBackground(bgColor);
-		FormData formData = new FormData();
-		if (title != null) {
-			formData.top = new FormAttachment(title, 0, 0);
-		} else {
-			formData.top = new FormAttachment(0, -1);
-		}
-		formData.left = new FormAttachment(0, 0);
-		formData.bottom = new FormAttachment(100);
-		formData.right = new FormAttachment(100);
-		composite.setLayoutData(formData);
-
-		// initialize cursors
-		cursorWait = createWaitCursor();
-		cursorArrow = createArrowCursor();
-
-		return composite;
-	}
-
-	protected Cursor createArrowCursor() {
-		if (getSite() == null) {
-			return null;
-		}
-		return getSite().getShell().getDisplay().getSystemCursor(SWT.CURSOR_ARROW);
-	}
-
-	protected Cursor createWaitCursor() {
-		if (getSite() == null) {
-			return null;
-		}
-		return getSite().getShell().getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
-	}
-
-	private void observeRoot() {
-		INavigationNode<?> node = getNavigationNode();
-		while (node.getParent() != null) {
-			node = node.getParent();
-		}
-		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
-		navigationTreeObserver.addListener(new SubModuleNodesListener());
-		IApplicationNode appNode = node.getTypecastedAdapter(IApplicationNode.class);
-		if (appNode != null) {
-			navigationTreeObserver.addListenerTo(appNode);
-		}
-	}
-
-	/**
-	 * A listener for all submodules in the navigation tree! Needed i.e. to
-	 * support shared views. When adding a method be sure to check the node.
-	 */
-	private final class SubModuleNodesListener extends SubModuleNodeListener {
-		@Override
-		public void activated(ISubModuleNode source) {
-			if (source.equals(getNavigationNode())) {
-				doBinding();
-			}
-		}
-
-		@Override
-		public void block(ISubModuleNode source, boolean block) {
-			if (source.equals(getNavigationNode())) {
-				ControllerUtils.blockRidgets(getController().getRidgets(), block);
-				blockView(block);
-			}
-		}
-
-	}
-
 	protected void blockView(boolean block) {
-		parentComposite.setCursor(block ? cursorWait : cursorArrow);
+		parentComposite.setCursor(block ? getWaitCursor() : getArrowCursor());
 		contentComposite.setEnabled(!block);
 	}
 
@@ -299,11 +235,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 *            - composite for the content of the sub module view
 	 */
 	protected abstract void basicCreatePartControl(Composite parent);
-
-	@Override
-	public void setFocus() {
-		// doBinding();
-	}
 
 	protected void createViewFacade() {
 		addUIControls(getParentComposite());
@@ -340,10 +271,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 
 		return controller;
-	}
-
-	private void doBinding() {
-		bind(getNavigationNode());
 	}
 
 	public void addUpdateListener(IComponentUpdateListener listener) {
@@ -394,28 +321,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		return result;
 	}
 
-	/**
-	 * @return Returns a fallback navigation node for views that are not
-	 *         associated with a node in the navigation tree.
-	 */
-	private SubModuleNode getFallbackNavigationNode() {
-		SubModuleNode fallbackNode = fallbackNodes.get(this);
-		if (fallbackNode == null) {
-			fallbackNode = new SubModuleNode(new NavigationNodeId(getClass().getName() + fallbackNodes.size()));
-			fallbackNodes.put(this, fallbackNode);
-		}
-		return fallbackNode;
-	}
-
-	/**
-	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
-	 */
-	@Override
-	public void dispose() {
-		fallbackNodes.remove(this);
-		super.dispose();
-	}
-
 	public void unbind() {
 		SubModuleController controller = getController();
 		if (controller != null) {
@@ -423,45 +328,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 	}
 
-	/**
-	 * Returns true if we are running without the navigation tree
-	 */
-	private boolean isRCP() {
-		getNavigationNode();
-		return rcpSubModuleNode != null;
-	}
-
-	private SubModuleNode getRCPSubModuleNode() {
-
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IConfigurationElement[] elements = registry
-				.getConfigurationElementsFor("org.eclipse.riena.navigation.assemblies"); //$NON-NLS-1$
-		String viewId = getViewSite().getId();
-
-		return getRCPSubModuleNode(viewId, elements);
-	}
-
-	private SubModuleNode getRCPSubModuleNode(String viewId, IConfigurationElement[] elements) {
-
-		for (int i = 0; rcpSubModuleNode == null && i < elements.length; i++) {
-			IConfigurationElement element = elements[i];
-			if ("submodule".equals(element.getName())) { //$NON-NLS-1$
-				String view = element.getAttribute("view"); //$NON-NLS-1$
-				if (viewId.equals(view)) {
-					String typeId = element.getAttribute("typeId"); //$NON-NLS-1$
-					if (typeId != null) {
-						rcpSubModuleNode = new SubModuleNode(new NavigationNodeId(typeId), getPartName());
-					}
-				}
-			} else if (element.getChildren().length > 0) {
-				rcpSubModuleNode = getRCPSubModuleNode(viewId, element.getChildren());
-			}
-		}
-		return rcpSubModuleNode;
-	}
+	// helping methods
+	//////////////////
 
 	private void addUIControls(Composite composite) {
-
 		Control[] controls = composite.getChildren();
 		for (Control uiControl : controls) {
 
@@ -480,8 +350,106 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	}
 
-	private boolean isChildOfComplexComponent(Control uiControl) {
+	/**
+	 * Creates the composite for the content of the view. Its a container that
+	 * holds the UI controls of the view.<br>
+	 * Above this container the title bar of the view is located.
+	 * 
+	 * @param parent
+	 * @return
+	 */
+	private Composite createContentComposite(Composite parent) {
+		Color bgColor = LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND);
+		parent.setBackground(bgColor);
 
+		parent.setLayout(new FormLayout());
+
+		if (!isRCP()) {
+			title = new EmbeddedTitleBar(parent, SWT.NONE);
+			addUIControl(title, SubModuleController.WINDOW_RIDGET);
+			title.setWindowActive(true);
+			FormData formData = new FormData();
+			// don't show the top border of the title => -1
+			formData.top = new FormAttachment(0, -1);
+			// don't show the left border of the title => -1
+			formData.left = new FormAttachment(0, -1);
+			// don't show the top border of the title, but show the bottom
+			// border => -1
+			formData.bottom = new FormAttachment(0, title.getSize().y - 1);
+			// don't show the right (and left) border of the title => 2
+			formData.right = new FormAttachment(100, 2);
+			title.setLayoutData(formData);
+		}
+
+		Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		composite.setBackground(bgColor);
+		FormData formData = new FormData();
+		if (title != null) {
+			formData.top = new FormAttachment(title, 0, 0);
+		} else {
+			formData.top = new FormAttachment(0, -1);
+		}
+		formData.left = new FormAttachment(0, 0);
+		formData.bottom = new FormAttachment(100);
+		formData.right = new FormAttachment(100);
+		composite.setLayoutData(formData);
+
+		return composite;
+	}
+
+	private void doBinding() {
+		bind(getNavigationNode());
+	}
+
+	private Cursor getArrowCursor() {
+		return contentComposite.getDisplay().getSystemCursor(SWT.CURSOR_ARROW);
+	}
+
+	/**
+	 * @return Returns a fallback navigation node for views that are not
+	 *         associated with a node in the navigation tree.
+	 */
+	private SubModuleNode getFallbackNavigationNode() {
+		SubModuleNode fallbackNode = fallbackNodes.get(this);
+		if (fallbackNode == null) {
+			fallbackNode = new SubModuleNode(new NavigationNodeId(getClass().getName() + fallbackNodes.size()));
+			fallbackNodes.put(this, fallbackNode);
+		}
+		return fallbackNode;
+	}
+
+	private SubModuleNode getRCPSubModuleNode() {
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IConfigurationElement[] elements = registry
+				.getConfigurationElementsFor("org.eclipse.riena.navigation.assemblies"); //$NON-NLS-1$
+		String viewId = getViewSite().getId();
+
+		return getRCPSubModuleNode(viewId, elements);
+	}
+
+	private SubModuleNode getRCPSubModuleNode(String viewId, IConfigurationElement[] elements) {
+		for (int i = 0; rcpSubModuleNode == null && i < elements.length; i++) {
+			IConfigurationElement element = elements[i];
+			if ("submodule".equals(element.getName())) { //$NON-NLS-1$
+				String view = element.getAttribute("view"); //$NON-NLS-1$
+				if (viewId.equals(view)) {
+					String typeId = element.getAttribute("typeId"); //$NON-NLS-1$
+					if (typeId != null) {
+						rcpSubModuleNode = new SubModuleNode(new NavigationNodeId(typeId), getPartName());
+					}
+				}
+			} else if (element.getChildren().length > 0) {
+				rcpSubModuleNode = getRCPSubModuleNode(viewId, element.getChildren());
+			}
+		}
+		return rcpSubModuleNode;
+	}
+
+	private Cursor getWaitCursor() {
+		return contentComposite.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
+	}
+
+	private boolean isChildOfComplexComponent(Control uiControl) {
 		if (uiControl.getParent() == null) {
 			return false;
 		}
@@ -489,6 +457,77 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			return true;
 		}
 		return isChildOfComplexComponent(uiControl.getParent());
+	}
+
+	/**
+	 * Returns true if we are running without the navigation tree
+	 */
+	private boolean isRCP() {
+		getNavigationNode();
+		return rcpSubModuleNode != null;
+	}
+
+	private void observeRoot() {
+		INavigationNode<?> node = getNavigationNode();
+		while (node.getParent() != null) {
+			node = node.getParent();
+		}
+		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
+		navigationTreeObserver.addListener(new SubModuleNodesListener());
+		IApplicationNode appNode = node.getTypecastedAdapter(IApplicationNode.class);
+		if (appNode != null) {
+			navigationTreeObserver.addListenerTo(appNode);
+		}
+	}
+
+	// helping classes
+	//////////////////
+
+	/**
+	 * A listener for all submodules in the navigation tree! Needed i.e. to
+	 * support shared views. When adding a method be sure to check the node.
+	 */
+	private final class SubModuleNodesListener extends SubModuleNodeListener {
+		@Override
+		public void activated(ISubModuleNode source) {
+			if (source.equals(getNavigationNode())) {
+				doBinding();
+			}
+		}
+
+		@Override
+		public void block(ISubModuleNode source, boolean block) {
+			if (source.equals(getNavigationNode())) {
+				ControllerUtils.blockRidgets(getController().getRidgets(), block);
+				blockView(block);
+			}
+		}
+
+	}
+
+	/**
+	 * Keeps track of the last focused control within this view.
+	 */
+	private final class FocusListener implements Listener {
+
+		public void handleEvent(Event event) {
+			if (contentComposite.isVisible() && event.widget instanceof Control) {
+				Control control = (Control) event.widget;
+				if (contains(contentComposite, control)) {
+					lastFocusedControl = control;
+				}
+			}
+		}
+
+		private boolean contains(Composite container, Control control) {
+			boolean result = false;
+			Composite parent = control.getParent();
+			while (!result && parent != null) {
+				result = container == parent;
+				parent = parent.getParent();
+			}
+			return result;
+		}
 
 	}
 

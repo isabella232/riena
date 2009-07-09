@@ -18,7 +18,6 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -88,9 +87,11 @@ public class SubModuleViewTest extends RienaTestCase {
 		Composite parentComposite = ReflectionUtils.invokeHidden(subModuleNodeView, "getParentComposite");
 		Composite contentComposite = ReflectionUtils.invokeHidden(subModuleNodeView, "getContentComposite");
 		assertFalse(contentComposite.isEnabled());
+		Cursor waitCursor = parentComposite.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
 		assertSame(waitCursor, parentComposite.getCursor());
 		node.setBlocked(false);
 		assertTrue(contentComposite.isEnabled());
+		Cursor arrowCursor = parentComposite.getDisplay().getSystemCursor(SWT.CURSOR_ARROW);
 		assertSame(arrowCursor, parentComposite.getCursor());
 	}
 
@@ -143,26 +144,11 @@ public class SubModuleViewTest extends RienaTestCase {
 		assertSame(node, nodesBoundToView.get(0));
 	}
 
-	private Cursor waitCursor;
-	private Cursor arrowCursor;
-
 	private class TestView extends SubModuleView<SubModuleController> {
 
 		@Override
 		public void bind(SubModuleNode node) {
 			nodesBoundToView.add(node);
-		}
-
-		@Override
-		protected Cursor createWaitCursor() {
-			waitCursor = Display.getDefault().getSystemCursor(SWT.CURSOR_WAIT);
-			return waitCursor;
-		}
-
-		@Override
-		protected Cursor createArrowCursor() {
-			arrowCursor = Display.getDefault().getSystemCursor(SWT.CURSOR_ARROW);
-			return arrowCursor;
 		}
 
 		@Override
