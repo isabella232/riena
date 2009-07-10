@@ -21,7 +21,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
- * TODO [ev] docs
+ * Utility class for working with {@link CoolBar}s.
  */
 public final class CoolbarUtils {
 

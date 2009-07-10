@@ -31,10 +31,12 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 abstract class AbstractNavigationHandler extends AbstractHandler {
 
 	/**
-	 * TODO [ev] docs
+	 * Starting with an {@link IApplicationNode}, find the active
+	 * sub-application and return all {@link IModuleNode}s in it.
 	 * 
 	 * @param application
-	 * @return
+	 *            a non-null IApplicationNode
+	 * @return an array of {@link IModuleNode}s; never null; may be empty.
 	 */
 	@SuppressWarnings("unchecked")
 	protected final IModuleNode[] collectModules(IApplicationNode application) {
