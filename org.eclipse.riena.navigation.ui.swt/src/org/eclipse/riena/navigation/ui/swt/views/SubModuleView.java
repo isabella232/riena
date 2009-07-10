@@ -93,10 +93,13 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	private Composite contentComposite;
 
 	/**
-	 * The control from withing the {@code contentComposite} that last had the
-	 * focus; may be null or disposed.
+	 * Keep a reference to the control that was last focused for a given
+	 * controller id.
+	 * 
+	 * @see #getControllerId()
+	 * @see #canRestoreFocus()
 	 */
-	private Control lastFocusedControl;
+	private Map<Integer, Control> focusControlMap = new HashMap<Integer, Control>(1);
 
 	/**
 	 * Creates a new instance of {@code SubModuleView}.
@@ -211,6 +214,8 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	@Override
 	public void setFocus() {
 		if (canRestoreFocus()) {
+			Integer id = Integer.valueOf(getControllerId());
+			Control lastFocusedControl = focusControlMap.get(id);
 			lastFocusedControl.setFocus();
 		} else {
 			contentComposite.setFocus();
@@ -245,7 +250,9 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * @since 1.2
 	 */
 	protected final boolean canRestoreFocus() {
-		return !SwtUtilities.isDisposed(lastFocusedControl);
+		Integer id = Integer.valueOf(getControllerId());
+		Control control = focusControlMap.get(id);
+		return !SwtUtilities.isDisposed(control);
 	}
 
 	protected void createViewFacade() {
@@ -418,6 +425,14 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	/**
+	 * Returns the id (hashcode) of the controller if available, or zero.
+	 */
+	private int getControllerId() {
+		SubModuleController controller = getController();
+		return controller == null ? 0 : controller.hashCode();
+	}
+
+	/**
 	 * @return Returns a fallback navigation node for views that are not
 	 *         associated with a node in the navigation tree.
 	 */
@@ -526,7 +541,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			if (contentComposite.isVisible() && event.widget instanceof Control) {
 				Control control = (Control) event.widget;
 				if (contains(contentComposite, control)) {
-					lastFocusedControl = control;
+					int id = getControllerId();
+					if (id != 0) {
+						focusControlMap.put(Integer.valueOf(id), control);
+					}
 				}
 			}
 		}
