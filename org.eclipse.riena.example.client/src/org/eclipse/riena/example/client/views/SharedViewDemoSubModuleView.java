@@ -13,10 +13,9 @@ package org.eclipse.riena.example.client.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -27,59 +26,39 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
+/**
+ * Demonstrates shared views (i.e. one view instance, with several distrinct
+ * controllers and data).
+ */
 public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSubModuleController> {
 
 	public static final String ID = SharedViewDemoSubModuleView.class.getName();
 	private static List<SharedViewDemoSubModuleView> instances = new ArrayList<SharedViewDemoSubModuleView>();
 
-	private static final int FIELD_WIDTH = 100;
-	private static final int TOP = 10;
-	private static final int LEFT = 10;
-	private static final int GAP_LABEL_TEXT = 10;
-	private static final int GAP_FIRST_SECOND_ROW = 10;
-
 	private int instanceIndex = 0;
 
 	public SharedViewDemoSubModuleView() {
-
 		instances.add(this);
 		instanceIndex = instances.size();
 	}
 
-	/**
-	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
-	 */
 	@Override
 	public void basicCreatePartControl(Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		final Label helloLabel = UIControlsFactory.createLabel(parent, "", SWT.CENTER); //$NON-NLS-1$
 
-		// layout
-		FormLayout layout = new FormLayout();
-		parent.setLayout(layout);
-		addUIControl(helloLabel, "labelFacade"); //$NON-NLS-1$
-		// getController().setLabelFacade(labelFacade);
+		GridLayoutFactory.fillDefaults().numColumns(2).margins(20, 20).applyTo(parent);
 
-		Label someText = UIControlsFactory.createLabel(parent, "(Instance " + instanceIndex + ") Data", SWT.LEFT); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
-		FormData fd = new FormData();
-		fd.top = new FormAttachment(0, TOP);
-		fd.left = new FormAttachment(0, LEFT);
-		someText.setLayoutData(fd);
+		String text = String.format("(Instance %d Data)", instanceIndex); //$NON-NLS-1$
+		Label lblInfo = UIControlsFactory.createLabel(parent, text);
+		GridDataFactory.fillDefaults().span(2, 1).applyTo(lblInfo);
 
-		Text someData = new Text(parent, SWT.BORDER | SWT.SINGLE);
-		fd = new FormData();
-		fd.top = new FormAttachment(someText, 0, SWT.TOP);
-		fd.left = new FormAttachment(someText, GAP_LABEL_TEXT);
-		fd.width = FIELD_WIDTH;
-		someData.setLayoutData(fd);
-		// ta = new TextFieldRidget(someData);
-		addUIControl(someData, "textFacade"); //$NON-NLS-1$
-		// getController().setTextFacade(ta);
-		// layout
-		FormData data = new FormData();
-		data.top = new FormAttachment(someText, GAP_FIRST_SECOND_ROW);
-		data.left = new FormAttachment(someText, GAP_LABEL_TEXT);
-		helloLabel.setLayoutData(data);
+		UIControlsFactory.createLabel(parent, "&First Name:"); //$NON-NLS-1$
+		Text txtFirst = UIControlsFactory.createText(parent, SWT.SINGLE, "txtFirst"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().hint(200, SWT.DEFAULT).applyTo(txtFirst);
+
+		UIControlsFactory.createLabel(parent, "&Last Name:"); //$NON-NLS-1$
+		Text txtLast = UIControlsFactory.createText(parent, SWT.SINGLE, "txtLast"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().hint(200, SWT.DEFAULT).applyTo(txtLast);
 	}
 
 	@Override

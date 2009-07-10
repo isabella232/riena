@@ -10,14 +10,18 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
+/**
+ * Controller for {@link SharedViewDemoSubModuleView}.
+ */
 public class SharedViewDemoSubModuleController extends SubModuleController {
 
-	private TxtBean bean;
+	private Person personBean;
 
 	public SharedViewDemoSubModuleController() {
 		this(null);
@@ -25,48 +29,16 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 
 	public SharedViewDemoSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
-		bean = new TxtBean();
-		bean.setTxt("Shared View Demo"); //$NON-NLS-1$
-		bean.setName(""); //$NON-NLS-1$
+		personBean = new Person("Max", "Muster"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
-	 */
 	@Override
 	public void configureRidgets() {
+		ITextRidget txtFirst = (ITextRidget) getRidget("txtFirst"); //$NON-NLS-1$
+		txtFirst.bindToModel(personBean, Person.PROPERTY_FIRSTNAME);
 
-		ILabelRidget labelFacade = (ILabelRidget) getRidget("labelFacade"); //$NON-NLS-1$
-		ITextRidget textFacade = (ITextRidget) getRidget("textFacade"); //$NON-NLS-1$
-
-		if (labelFacade != null) {
-			labelFacade.bindToModel(bean, "txt"); //$NON-NLS-1$
-			labelFacade.updateFromModel();
-			textFacade.bindToModel(bean, "name"); //$NON-NLS-1$
-			textFacade.updateFromModel();
-		}
-	}
-
-	private static class TxtBean {
-		private String txt;
-		private String name;
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public String getTxt() {
-			return txt;
-		}
-
-		public void setTxt(String txt) {
-			this.txt = txt;
-		}
-
+		ITextRidget txtLast = (ITextRidget) getRidget("txtLast"); //$NON-NLS-1$
+		txtLast.bindToModel(personBean, Person.PROPERTY_LASTNAME);
 	}
 
 }
