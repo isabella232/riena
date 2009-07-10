@@ -30,6 +30,7 @@ import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.tests.TestSelectionListener;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
+import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -58,13 +59,13 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	@Override
-	protected ListRidget getRidget() {
-		return (ListRidget) super.getRidget();
+	protected IListRidget getRidget() {
+		return (IListRidget) super.getRidget();
 	}
 
 	@Override
 	protected void bindRidgetToModel() {
-		getRidget().bindToModel(manager, "persons", Person.class, new String[] { "firstname" }, new String[] { "" });
+		getRidget().bindToModel(manager, "persons", Person.class, "firstname");
 	}
 
 	// test methods
@@ -153,7 +154,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testAddDoubleClickListener() {
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 		List control = getWidget();
 
 		try {
@@ -186,7 +187,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetComparator() {
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 		List control = getWidget();
 
 		// sorts from a to z
@@ -224,7 +225,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testGetSortedColumn() {
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 
 		try {
 			ridget.setSortedColumn(1);
@@ -265,7 +266,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testIsColumnSortable() {
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 
 		try {
 			assertFalse(ridget.isColumnSortable(-1));
@@ -293,7 +294,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetColumnSortable() {
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 
 		try {
 			// TODO warning suppression: Ignore FindBugs warning about the
@@ -307,8 +308,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetSortedAscending() {
+		IListRidget ridget = getRidget();
 		List control = getWidget();
-		ListRidget ridget = getRidget();
 
 		ridget.bindToModel(manager, "persons", Person.class, new String[] { "lastname" }, new String[] { "" });
 		ridget.updateFromModel();
@@ -342,7 +343,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetSortedAscendingFiresEvents() {
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 
 		assertTrue(ridget.isSortedAscending());
 
@@ -371,7 +372,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetSortedColumnFiresEvents() {
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 
 		assertEquals(-1, ridget.getSortedColumn());
 
@@ -395,7 +396,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testHasMoveableColumns() {
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 
 		assertFalse(ridget.hasMoveableColumns());
 
@@ -416,7 +417,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * "output only".
 	 */
 	public void testOutputSingleSelectionCannotBeChangedFromUI() {
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 		List control = getWidget();
 
 		ridget.setSelectionType(SelectionType.SINGLE);
@@ -447,7 +448,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * "output only".
 	 */
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 		List control = getWidget();
 
 		ridget.setSelectionType(SelectionType.MULTI);
@@ -476,7 +477,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * Tests that toggling output state on/off does not change the selection.
 	 */
 	public void testTogglingOutputDoesNotChangeSelection() {
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 
 		ridget.setSelection(0);
 
@@ -505,7 +506,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			return;
 		}
 
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 		List control = getWidget();
 		// the single selection is bound to another object in the parent class
 		getRidget().bindSingleSelectionToModel(manager, "selectedPerson");
@@ -545,7 +546,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			return;
 		}
 
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 		List control = getWidget();
 		// the single selection is bound to another object in the parent class
 		getRidget().bindSingleSelectionToModel(manager, "selectedPerson");
@@ -582,7 +583,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * (because the list is modified internally).
 	 */
 	public void testDisabledDoesNotFireSelection() {
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 		FTPropertyChangeListener listener = new FTPropertyChangeListener();
 		ridget.addPropertyChangeListener(ISelectableRidget.PROPERTY_SELECTION, listener);
 
@@ -633,7 +634,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			return;
 		}
 
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 		List control = getWidget();
 		// the single selection is bound to another object in the parent class
 		getRidget().bindSingleSelectionToModel(manager, "selectedPerson");
@@ -659,7 +660,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testAddSelectionListener() {
-		ListRidget ridget = getRidget();
+		IListRidget ridget = getRidget();
 		List control = getWidget();
 
 		try {

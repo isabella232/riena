@@ -49,15 +49,15 @@ import org.eclipse.riena.internal.ui.ridgets.swt.OutputAwareValidator;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
+import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.ITableRidget;
 
 /**
  * An abstract Ridget for lists that does not depend on the class
  * org.eclipse.swt.widgets.List. May be used for Ridgets for custom lists.
  */
-public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget implements ITableRidget {
+public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget implements IListRidget {
 	protected SelectionListener selectionTypeEnforcer;
 	protected final MouseListener doubleClickForwarder;
 	private ListenerList<IActionListener> doubleClickListeners;
@@ -146,14 +146,28 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		doubleClickListeners.add(listener);
 	}
 
+	public void bindToModel(IObservableList rowValues, Class<? extends Object> rowClass, String columnPropertyName) {
+		Assert.isNotNull(columnPropertyName, "columnPropertyName"); //$NON-NLS-1$
+		String[] columns = { columnPropertyName };
+		bindToModel(rowValues, rowClass, columns, null);
+	}
+
+	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
+			String columnPropertyName) {
+		Assert.isNotNull(columnPropertyName, "columnPropertyName"); //$NON-NLS-1$
+		String[] columns = { columnPropertyName };
+		bindToModel(listHolder, listPropertyName, rowClass, columns, null);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Implementation note: the ListRidget ignoeres columnHeaders.
+	 * Implementation note: the ListRidget ignores columnHeaders.
+	 * 
+	 * @see #bindToModel(IObservableList, Class, String)
 	 */
 	public void bindToModel(IObservableList rowValues, Class<? extends Object> rowClass, String[] columnPropertyNames,
 			String[] columnHeaders) {
-
 		unbindUIControl();
 
 		rowBeanClass = rowClass;
@@ -164,6 +178,13 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		bindUIControl();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Implementation note: the ListRidget ignores columnHeaders.
+	 * 
+	 * @see #bindToModel(Object, String, Class, String)
+	 */
 	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
 		IObservableList rowValues;

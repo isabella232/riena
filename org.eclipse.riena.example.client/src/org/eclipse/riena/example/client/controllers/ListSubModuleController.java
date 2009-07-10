@@ -28,6 +28,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -63,11 +64,11 @@ public class ListSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		final ITableRidget listPersons = (ITableRidget) getRidget("listPersons"); //$NON-NLS-1$
+		final IListRidget listPersons = (IListRidget) getRidget("listPersons"); //$NON-NLS-1$ 
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		listPersons.setComparator(0, new TypedComparator<String>());
 		listPersons.setSortedColumn(0);
-		listPersons.bindToModel(manager, "persons", Person.class, new String[] { "listEntry" }, null); //$NON-NLS-1$//$NON-NLS-2$
+		listPersons.bindToModel(manager, "persons", Person.class, "listEntry"); //$NON-NLS-1$ //$NON-NLS-2$
 		listPersons.updateFromModel();
 
 		listPersons.bindSingleSelectionToModel(manager, PersonManager.PROPERTY_SELECTED_PERSON);

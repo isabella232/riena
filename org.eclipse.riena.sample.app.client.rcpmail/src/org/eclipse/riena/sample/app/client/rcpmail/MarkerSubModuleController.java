@@ -29,6 +29,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
+import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -77,9 +78,9 @@ public class MarkerSubModuleController extends SubModuleController {
 		choiceFlavor.updateFromModel();
 		choiceFlavor.setSelection(Arrays.asList("dry")); //$NON-NLS-1$
 
-		final ITableRidget listPersons = (ITableRidget) getRidget("listPersons"); //$NON-NLS-1$
+		final IListRidget listPersons = (IListRidget) getRidget("listPersons"); //$NON-NLS-1$
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		listPersons.bindToModel(createPersonList(), Person.class, new String[] { "listEntry" }, new String[] { "" }); //$NON-NLS-1$//$NON-NLS-2$
+		listPersons.bindToModel(createPersonList(), Person.class, "listEntry"); //$NON-NLS-1$
 		listPersons.updateFromModel();
 
 		final ITableRidget tablePersons = (ITableRidget) getRidget("tablePersons"); //$NON-NLS-1$
