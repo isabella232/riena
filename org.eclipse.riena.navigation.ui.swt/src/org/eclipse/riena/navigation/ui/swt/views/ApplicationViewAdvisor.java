@@ -99,7 +99,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * The default and the minimum size of the application.
 	 */
 	private static final Point APPLICATION_MIN_SIZE = new Point(800, 600);
-	private static final int COOLBAR_TOP_MARGIN = 2;
+	private static final int DEFAULT_COOLBAR_TOP_MARGIN = 2;
 	public static final String SHELL_RIDGET_PROPERTY = "applicationWindow"; //$NON-NLS-1$
 
 	enum BtnState {
@@ -558,7 +558,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		createMenuBar(composite);
 
 		FormData formData = new FormData();
-		formData.top = new FormAttachment(previous, COOLBAR_TOP_MARGIN);
+		formData.top = new FormAttachment(previous, getMenuBarTopMargin());
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
 		composite.setLayoutData(formData);
@@ -609,7 +609,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		Composite result = new Composite(parent, SWT.NONE);
 		result.setLayout(new FillLayout());
 		formData = new FormData();
-		formData.top = new FormAttachment(previous, COOLBAR_TOP_MARGIN);
+		formData.top = new FormAttachment(previous, getToolBarTopMargin());
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
 		result.setLayoutData(formData);
@@ -761,6 +761,15 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				shellRenderer.setMinimizable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_MIN));
 				shellRenderer.paint(e.gc, shell);
 
+				// idea: set background image here !?!
+				//				if (shellBounds.width > 1000) {
+				//					Image image = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);
+				//					shell.setBackgroundImage(image);
+				//				} else {
+				//					Image image = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
+				//					shell.setBackgroundImage(image);
+				//				}
+
 			}
 
 		}
@@ -845,6 +854,26 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			return getShellRenderer();
 		}
 
+	}
+
+	/**
+	 * Returns the margin above the menu bar.
+	 * 
+	 * @return top margin
+	 */
+	private int getMenuBarTopMargin() {
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		return lnf.getIntegerSetting(LnfKeyConstants.MENUBAR_TOP_MARGIN, DEFAULT_COOLBAR_TOP_MARGIN);
+	}
+
+	/**
+	 * Returns the margin above the tool bar.
+	 * 
+	 * @return top margin
+	 */
+	private int getToolBarTopMargin() {
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		return lnf.getIntegerSetting(LnfKeyConstants.TOOLBAR_TOP_MARGIN, DEFAULT_COOLBAR_TOP_MARGIN);
 	}
 
 }

@@ -332,8 +332,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.SHELL_HIDE_OS_BORDER, hideOsBorder());
 
 		table.put(LnfKeyConstants.TITLELESS_SHELL_PADDING, 2);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_NAVIGATION_HORIZONTAL_GAP, 7);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_SUB_MODULE_HORIZONTAL_GAP, 7);
+		table.put(LnfKeyConstants.TITLELESS_SHELL_NAVIGATION_HORIZONTAL_GAP, 5);
+		table.put(LnfKeyConstants.TITLELESS_SHELL_SUB_MODULE_HORIZONTAL_GAP, 5);
 		table.put(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.LEFT);
 		table.put(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.CENTER);
 		table.put(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_MARGIN, 17);
@@ -350,15 +350,15 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT, 40);
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.CENTER);
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, false);
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH, 120);
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH, 0);
 
 		table.put(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY, 0);
 
 		table.put(LnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY, 500);
 
-		table.put(LnfKeyConstants.NAVIGATION_SUB_MODULE_GAP, 8);
-		table.put(LnfKeyConstants.MENUBAR_TOP_MARGIN, 1);
-		table.put(LnfKeyConstants.TOOLBAR_TOP_MARGIN, 1);
+		table.put(LnfKeyConstants.NAVIGATION_SUB_MODULE_GAP, 5);
+		table.put(LnfKeyConstants.MENUBAR_TOP_MARGIN, 0);
+		table.put(LnfKeyConstants.TOOLBAR_TOP_MARGIN, 0);
 
 	}
 

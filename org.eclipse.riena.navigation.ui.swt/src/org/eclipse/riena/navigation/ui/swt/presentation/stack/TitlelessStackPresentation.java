@@ -41,6 +41,7 @@ import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisor;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
  * <pre>
@@ -68,7 +69,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  * 
  * legend: *1 - navigation
  *         *2 - sub-module view (with title bar and border)
- *         *3 - content area of the sub-module view
+ *         *3 - content area of the sub-module view (active sub module)
  * </pre>
  */
 public class TitlelessStackPresentation extends StackPresentation {
@@ -86,12 +87,12 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * Left padding of the navigation.<br>
 	 * Gap between left shell border and navigation.
 	 */
-	public static final int PADDING_LEFT = 2;
+	public static final int DEFAULT_PADDING_LEFT = 2;
 	/**
 	 * Right padding of the sub-module view.<br>
 	 * Gap between right shell border and sub-module view.
 	 */
-	public static final int PADDING_RIGHT = PADDING_LEFT;
+	public static final int DEFAULT_PADDING_RIGHT = DEFAULT_PADDING_LEFT;
 	/**
 	 * Top padding of the sub-module view.<br>
 	 * Gap between application switcher and sub-module view.
@@ -105,7 +106,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	/**
 	 * Gap between navigation and sub-module view
 	 */
-	public static final int NAVIGATION_SUB_MODULE_GAP = 4;
+	public static final int DEFAULT_NAVIGATION_SUB_MODULE_GAP = 4;
 
 	private Set<IPresentablePart> knownParts = new HashSet<IPresentablePart>();
 	private IPresentablePart current;
@@ -289,9 +290,9 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 		Rectangle naviBounds = calcNavigationBounds(parent);
 
-		int x = naviBounds.x + naviBounds.width + NAVIGATION_SUB_MODULE_GAP;
+		int x = naviBounds.x + naviBounds.width + getNavigationSubModuleGap();
 		int y = naviBounds.y;
-		int width = parent.getBounds().width - x - PADDING_RIGHT;
+		int width = parent.getBounds().width - x - getShellSubModuleGap();
 		int height = naviBounds.height;
 		Rectangle outerBounds = new Rectangle(x, y, width, height);
 
@@ -309,7 +310,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 		try {
 			Point size = getModuleGroupRenderer().computeSize(gc, SWT.DEFAULT, SWT.DEFAULT);
 
-			int x = PADDING_LEFT;
+			int x = getShellNavigationGap();
 			int y = PADDING_TOP;
 			int width = size.x;
 			int height = parent.getBounds().height - PADDING_BOTTOM - PADDING_TOP
@@ -441,6 +442,43 @@ public class TitlelessStackPresentation extends StackPresentation {
 		if (parent != null && !parent.isDisposed()) {
 			parent.redraw();
 		}
+	}
+
+	/**
+	 * Returns the gap between the right side of the navigation and the left
+	 * side of the active sub module.
+	 * 
+	 * @return gap
+	 */
+	private int getNavigationSubModuleGap() {
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		return lnf.getIntegerSetting(LnfKeyConstants.NAVIGATION_SUB_MODULE_GAP, DEFAULT_NAVIGATION_SUB_MODULE_GAP);
+	}
+
+	/**
+	 * Returns the gap between the border of the shell and the left side of the
+	 * navigation.<br>
+	 * <i>Note: The shell has also a padding (
+	 * {@linkplain LnfKeyConstants.TITLELESS_SHELL_PADDING}).</i>
+	 * 
+	 * @return gap
+	 */
+	private static int getShellNavigationGap() {
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		return lnf.getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_NAVIGATION_HORIZONTAL_GAP, DEFAULT_PADDING_LEFT);
+	}
+
+	/**
+	 * Returns the gap between right side of the active sub module and the
+	 * border of the shell.<br>
+	 * <i>Note: The shell has also a padding (
+	 * {@linkplain LnfKeyConstants.TITLELESS_SHELL_PADDING}).</i>
+	 * 
+	 * @return gap
+	 */
+	private static int getShellSubModuleGap() {
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		return lnf.getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_SUB_MODULE_HORIZONTAL_GAP, DEFAULT_PADDING_RIGHT);
 	}
 
 }

@@ -154,13 +154,13 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 
 	@Override
 	protected void paintBackground(GC gc) {
-		gc.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
-		Image logo = getBackgroundImage();
-		if (logo != null) {
-			int y = logo.getBounds().height;
-			int h = getBounds().height - y;
-			gc.fillRectangle(0, y, getBounds().width, h);
-		}
+		//		gc.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
+		//		Image logo = getBackgroundImage();
+		//		if (logo != null) {
+		//			int y = logo.getBounds().height;
+		//			int h = getBounds().height - y;
+		//			gc.fillRectangle(0, y, getBounds().width, h);
+		//		}
 	}
 
 }

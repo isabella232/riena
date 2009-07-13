@@ -186,7 +186,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		gc.drawLine(x, y, x2, y2);
 
 		// Icon
-		x = getBounds().x + BORDER_LEFT_WIDTH + TEXT_LEFT_INSET;
+		x = getBounds().x + getBounds().width / 2 - getImageTextWidth(gc) / 2;
 		if (getImage() != null) {
 			y = getBounds().y + BORDER_TOP_WIDTH + TEXT_TOP_INSET;
 			FontMetrics fontMetrics = gc.getFontMetrics();
@@ -274,12 +274,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		gc.setFont(font);
 		FontMetrics fontMetrics = gc.getFontMetrics();
 
-		int width = SwtUtilities.calcTextWidth(gc, getLabel());
+		int width = getImageTextWidth(gc);
 		width = width + BORDER_LEFT_WIDTH + BORDER_RIGHT_WIDTH + TEXT_LEFT_INSET + TEXT_RIGHT_INSET;
-		// Icon
-		if (getImage() != null) {
-			width += getImage().getBounds().width + ICON_TEXT_GAP;
-		}
+		int minWidth = getSubApplicationSwitcherTabMinWidth();
+		width = Math.max(width, minWidth);
 
 		int height = fontMetrics.getHeight();
 		height = height + BORDER_TOP_WIDTH + BORDER_BOTTOM_WIDTH + TEXT_TOP_INSET + TEXT_BOTTOM_INSET;
@@ -288,6 +286,27 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		}
 
 		return new Point(width, height);
+
+	}
+
+	/**
+	 * Adds the width of the image, the text and the gap between both.
+	 * 
+	 * @param gc
+	 * @return width
+	 */
+	private int getImageTextWidth(GC gc) {
+
+		Font font = getTabFont();
+		gc.setFont(font);
+
+		int width = SwtUtilities.calcTextWidth(gc, getLabel());
+		// Icon
+		if (getImage() != null) {
+			width += getImage().getBounds().width + ICON_TEXT_GAP;
+		}
+
+		return width;
 
 	}
 
@@ -432,6 +451,16 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		return key;
 
+	}
+
+	/**
+	 * Returns the minimum width of a tab.
+	 * 
+	 * @return minimum width or 0, if no minimum width is set
+	 */
+	private int getSubApplicationSwitcherTabMinWidth() {
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		return lnf.getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH, 0);
 	}
 
 }
