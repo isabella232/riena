@@ -11,15 +11,14 @@
 package org.eclipse.riena.beans.common;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import org.eclipse.core.runtime.AssertionFailedException;
 
 /**
  * Utility class for getting and setting properties according to the
  * PropertyDescriptor
+ * 
+ * @deprecated please use instead {@code BeanPropertyUtils}.
  */
+@Deprecated
 public final class BeanPropertyAccessor {
 
 	private BeanPropertyAccessor() {
@@ -33,53 +32,24 @@ public final class BeanPropertyAccessor {
 	 * @param bean
 	 * @param descriptor
 	 * @return
+	 * @deprecated please use instead {@code
+	 *             BeanPropertyUtils.getPropertyValue(bean, descriptor)}.
 	 */
+	@Deprecated
 	public static Object getPropertyValue(Object bean, PropertyDescriptor descriptor) {
-		if (descriptor == null) {
-			throw new AssertionFailedException("descriptor cannot be null"); //$NON-NLS-1$
-		}
-		Method readMethod = descriptor.getReadMethod();
-		if (readMethod == null) {
-			throw new UnsupportedOperationException("Property '" + descriptor.getName() + "' has no getter method"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		if (!readMethod.isAccessible()) {
-			readMethod.setAccessible(true);
-		}
-
-		// call getter and return the value
-		try {
-			return readMethod.invoke(bean, new Object[0]);
-		} catch (IllegalArgumentException e) {
-			throw new PropertyAccessFailure("unexpected error getting the property", e); //$NON-NLS-1$
-		} catch (IllegalAccessException e) {
-			throw new PropertyAccessFailure("unexpected error getting the property", e); //$NON-NLS-1$
-		} catch (InvocationTargetException e) {
-			throw new PropertyAccessFailure("unexpected error getting the property", e); //$NON-NLS-1$
-		}
+		return BeanPropertyUtils.getPropertyValue(bean, descriptor);
 	}
 
+	/**
+	 * @param bean
+	 * @param descriptor
+	 * @param value
+	 * @deprecated please use instead {@code
+	 *             BeanPropertyUtils.setPropertyValue(bean, descriptor, value)}.
+	 */
+	@Deprecated
 	public static void setPropertyValue(Object bean, PropertyDescriptor descriptor, Object value) {
-		Method writeMethod = descriptor.getWriteMethod();
-		if (writeMethod == null) {
-			throw new UnsupportedOperationException("Property '" + descriptor.getName() + "' has no setter method"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		if (!writeMethod.isAccessible()) {
-			writeMethod.setAccessible(true);
-		}
-
-		// call setter
-		Object[] values = new Object[1];
-		values[0] = value;
-		try {
-			writeMethod.invoke(bean, values);
-		} catch (IllegalArgumentException e) {
-			throw new PropertyAccessFailure("unexpected error setting the property", e); //$NON-NLS-1$
-		} catch (IllegalAccessException e) {
-			throw new PropertyAccessFailure("unexpected error setting the property", e); //$NON-NLS-1$
-		} catch (InvocationTargetException e) {
-			throw new PropertyAccessFailure("unexpected error setting the property", e); //$NON-NLS-1$
-		}
+		BeanPropertyUtils.setPropertyValue(bean, descriptor, value);
 	}
 
 }
