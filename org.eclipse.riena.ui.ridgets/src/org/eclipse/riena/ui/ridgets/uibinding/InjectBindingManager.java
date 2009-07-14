@@ -21,7 +21,7 @@ import org.osgi.service.log.LogService;
 
 import org.eclipse.equinox.log.Logger;
 
-import org.eclipse.riena.beans.common.BeanPropertyAccessor;
+import org.eclipse.riena.beans.common.BeanPropertyUtils;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.StringUtils;
@@ -77,7 +77,7 @@ public class InjectBindingManager extends DefaultBindingManager {
 		if (desc == null) {
 			throw new UnsupportedOperationException("Property '" + bindingProperty + "' unkown"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		BeanPropertyAccessor.setPropertyValue(controller, desc, ridget);
+		BeanPropertyUtils.setPropertyValue(controller, desc, ridget);
 	}
 
 	private PropertyDescriptor getPropertyDescriptor(String bindingProperty, IRidgetContainer ridgetContainer) {
@@ -154,7 +154,7 @@ public class InjectBindingManager extends DefaultBindingManager {
 	@Override
 	protected IRidget getRidget(String bindingProperty, IRidgetContainer controller) {
 		PropertyDescriptor desc = getPropertyDescriptor(bindingProperty, controller);
-		return (IRidget) BeanPropertyAccessor.getPropertyValue(controller, desc);
+		return (IRidget) BeanPropertyUtils.getPropertyValue(controller, desc);
 	}
 
 }
