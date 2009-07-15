@@ -17,7 +17,7 @@ import org.eclipse.riena.tests.collect.NonUITestCase;
  *
  */
 @NonUITestCase
-public class RieanStatusTest extends RienaTestCase {
+public class RienaStatusTest extends RienaTestCase {
 
 	public void testIsDevelopment() {
 		System.clearProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY);
