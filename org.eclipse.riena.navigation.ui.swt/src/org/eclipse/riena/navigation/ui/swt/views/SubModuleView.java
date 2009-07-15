@@ -176,7 +176,9 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		} else {
 			contentComposite = parent;
 		}
-		basicCreatePartControl(contentComposite);
+
+		createWorkarea(contentComposite);
+
 		LNF_UPDATER.updateUIControls(getParentComposite());
 		if (!Beans.isDesignTime()) {
 			createViewFacade();
@@ -195,6 +197,27 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 				event.widget.getDisplay().removeFilter(SWT.FocusIn, focusListener);
 			}
 		});
+	}
+
+	/**
+	 * Creates the workarea. Subclasses can override this method to get full
+	 * control over the workarea layout.
+	 * 
+	 * @param parent
+	 */
+	protected void createWorkarea(Composite parent) {
+		basicCreatePartControl(parent);
+		afterBasicCreatePartControl(parent);
+	}
+
+	/**
+	 * Is called by the SubModuleView after
+	 * {@link #basicCreatePartControl(Composite)}
+	 * 
+	 * @param parent
+	 */
+	protected void afterBasicCreatePartControl(Composite parent) {
+
 	}
 
 	@Override
