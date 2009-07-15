@@ -13,6 +13,8 @@ package org.eclipse.riena.security.common.authentication;
 import java.io.Serializable;
 import java.security.Principal;
 
+import org.eclipse.core.runtime.Assert;
+
 /**
  * The <code>SimplePrincipal</code> is a <code>java.security.Principal</code>.
  * 
@@ -24,13 +26,6 @@ public class SimplePrincipal implements Principal, Serializable {
 	private String name;
 
 	/**
-	 * constructor.
-	 */
-	public SimplePrincipal() {
-		super();
-	}
-
-	/**
 	 * Create a <code>SimplePrincipal</code> with a given <code>name</code>.
 	 * 
 	 * @param name
@@ -39,10 +34,8 @@ public class SimplePrincipal implements Principal, Serializable {
 	 */
 	public SimplePrincipal(String name) {
 		super();
-		// Assert.isTrue( name != null && name.length() > 0 ,"the Name must not
-		// be null or empty");
-
-		setName(name);
+		Assert.isTrue(name != null && name.length() > 0, "the Name must not be null or empty");
+		this.name = name;
 	}
 
 	/**
@@ -62,21 +55,6 @@ public class SimplePrincipal implements Principal, Serializable {
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * Sets the name of this principal
-	 * 
-	 * @param name
-	 *            The name to set.
-	 * @pre name != null && name.length() > 0
-	 * @pre getName() == null;
-	 */
-	public void setName(String name) {
-		// Assert.isTrue( "the Name must not be null or empty!", name != null &&
-		// name.length() > 0 );
-		// Assert.isTrue( "Name can only by set once!", this.name == null );
-		this.name = name;
 	}
 
 	/**
