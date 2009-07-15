@@ -12,37 +12,36 @@ package org.eclipse.riena.security.common;
 
 import javax.security.auth.Subject;
 
-import org.eclipse.riena.core.util.ServiceAccessor;
-import org.eclipse.riena.core.wire.WireWith;
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.internal.security.common.Activator;
 
 /**
  * A convenient class to access the current Subject from the
  * SubjectHolderService
  */
-@WireWith(SubjectAccessorWiring.class)
-public final class SubjectAccessor extends ServiceAccessor<ISubjectHolderService> {
-
-	private final static SubjectAccessor SUBJECT_ACCESSOR = new SubjectAccessor();
+public final class SubjectAccessor {
 
 	private SubjectAccessor() {
-		super(Activator.getDefault().getContext());
+		// utility
 	}
 
 	public static Subject getSubject() {
-		return SUBJECT_ACCESSOR.getCurrentSubject();
+		ISubjectHolderService holder = get();
+		if (holder == null) {
+			return null;
+		}
+		return holder.fetchSubjectHolder().getSubject();
 	}
 
 	public static void setSubject(Subject subject) {
-		SUBJECT_ACCESSOR.setCurrentSubject(subject);
+		ISubjectHolderService holder = get();
+		if (holder == null) {
+			return;
+		}
+		holder.fetchSubjectHolder().setSubject(subject);
 	}
 
-	private Subject getCurrentSubject() {
-		return getService().fetchSubjectHolder().getSubject();
+	private static ISubjectHolderService get() {
+		return Service.get(Activator.getDefault().getContext(), ISubjectHolderService.class);
 	}
-
-	private void setCurrentSubject(Subject subject) {
-		getService().fetchSubjectHolder().setSubject(subject);
-	}
-
 }
