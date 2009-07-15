@@ -41,6 +41,7 @@ import org.eclipse.riena.core.wire.Wire;
  * services it can define a {@code IBindHook} and pass it to the to the {@code
  * ServiceAccessor} super class via its constructor.
  */
+@Deprecated
 public abstract class ServiceAccessor<S> {
 
 	private S service;
