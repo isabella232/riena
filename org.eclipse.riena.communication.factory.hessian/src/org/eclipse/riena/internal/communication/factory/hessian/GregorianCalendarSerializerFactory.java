@@ -13,7 +13,6 @@ package org.eclipse.riena.internal.communication.factory.hessian;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import com.caucho.hessian.io.AbstractSerializerFactory;
 import com.caucho.hessian.io.CalendarHandle;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
@@ -23,7 +22,7 @@ import com.caucho.hessian.io.Serializer;
 /**
  * Deserializer for the {@code GregorianCalendar}.
  */
-public class GregorianCalendarSerializerFactory extends AbstractSerializerFactory {
+public class GregorianCalendarSerializerFactory extends AbstractRienaSerializerFactory {
 
 	@SuppressWarnings("unchecked")
 	@Override

@@ -16,7 +16,6 @@ import java.security.Permission;
 
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
-import com.caucho.hessian.io.AbstractSerializerFactory;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.JavaDeserializer;
@@ -28,7 +27,7 @@ import org.eclipse.riena.internal.core.ignore.Nop;
 /**
  * {@code AbstractSerializerFactory} for the {@code Permission} classes.
  */
-public class JavaPermissionSerializerFactory extends AbstractSerializerFactory {
+public class JavaPermissionSerializerFactory extends AbstractRienaSerializerFactory {
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -46,6 +45,11 @@ public class JavaPermissionSerializerFactory extends AbstractSerializerFactory {
 			return null;
 		}
 		return new JavaPermissionSerializer(cl);
+	}
+
+	@Override
+	public int getSalience() {
+		return GENERIC;
 	}
 
 	private static final String ACTIONS_FIELD = "actions"; //$NON-NLS-1$

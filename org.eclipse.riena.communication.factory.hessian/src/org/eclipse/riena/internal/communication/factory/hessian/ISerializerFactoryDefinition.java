@@ -12,15 +12,15 @@ package org.eclipse.riena.internal.communication.factory.hessian;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
-import com.caucho.hessian.io.AbstractSerializerFactory;
-
 /**
- *
+ * Extension interface for defining Riena specific serializer factories.
  */
 @ExtensionInterface
-public interface IAbstractSerializerFactory {
+public interface ISerializerFactoryDefinition {
 
-	AbstractSerializerFactory createImplementation();
+	String EXTENSION_ID = "org.eclipse.riena.communication.hessian.AbstractSerializerFactory"; //$NON-NLS-1$
+
+	AbstractRienaSerializerFactory createImplementation();
 
 	String getImplementation();
 

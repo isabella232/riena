@@ -12,7 +12,6 @@ package org.eclipse.riena.communication.publisher.hessian;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
@@ -22,24 +21,25 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.communication.core.RemoteServiceDescription;
-import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.internal.communication.publisher.hessian.Activator;
-import org.eclipse.riena.internal.communication.publisher.hessian.HessianRemoteServicePublisher;
-import org.eclipse.riena.internal.communication.publisher.hessian.MessageContext;
-import org.eclipse.riena.internal.communication.publisher.hessian.MessageContextAccessor;
-import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
-import org.osgi.service.log.LogService;
-
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
 import com.caucho.hessian.io.HessianOutput;
 import com.caucho.hessian.io.SerializerFactory;
 import com.caucho.hessian.server.HessianSkeleton;
+
+import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
+
+import org.eclipse.riena.communication.core.RemoteServiceDescription;
+import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.internal.communication.factory.hessian.RienaSerializerFactory;
+import org.eclipse.riena.internal.communication.publisher.hessian.Activator;
+import org.eclipse.riena.internal.communication.publisher.hessian.HessianRemoteServicePublisher;
+import org.eclipse.riena.internal.communication.publisher.hessian.MessageContext;
+import org.eclipse.riena.internal.communication.publisher.hessian.MessageContextAccessor;
+import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
 
 /**
  * @author Christian Campo
@@ -57,17 +57,9 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 		super.init(config);
 		serializerFactory = new SerializerFactory();
 		serializerFactory.setAllowNonSerializable(true);
-		removeInputStreamSerializerDeserializer(serializerFactory);
-		Inject.extension("org.eclipse.riena.communication.hessian.AbstractSerializerFactory").into(this).update( //$NON-NLS-1$
-				"setFactory").andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
+		serializerFactory.addFactory(new RienaSerializerFactory());
 
 		LOGGER.log(LogService.LOG_DEBUG, "initialized"); //$NON-NLS-1$
-	}
-
-	public void setFactory(IAbstractSerializerFactory[] factories) {
-		for (IAbstractSerializerFactory factory : factories) {
-			serializerFactory.addFactory(factory.createImplementation());
-		}
 	}
 
 	@Override
@@ -157,14 +149,6 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 		} finally {
 			out.close(); // Hessian2Output forgets to close if the service throws an exception
 		}
-	}
-
-	private void removeInputStreamSerializerDeserializer(SerializerFactory serializerFactory) {
-		HashMap<?, ?> staticDeSerMap = ReflectionUtils
-				.getHidden(serializerFactory.getClass(), "_staticDeserializerMap"); //$NON-NLS-1$
-		staticDeSerMap.remove(java.io.InputStream.class);
-		HashMap<?, ?> staticSerMap = ReflectionUtils.getHidden(serializerFactory.getClass(), "_staticSerializerMap"); //$NON-NLS-1$
-		staticSerMap.remove(java.io.InputStream.class);
 	}
 
 	/**

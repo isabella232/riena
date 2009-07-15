@@ -6,8 +6,9 @@ Bundle-Version: 1.2.0.M1
 Bundle-Activator: org.eclipse.riena.internal.communication.publisher.hessian.Activator
 Require-Bundle: org.eclipse.equinox.http.registry,
  org.eclipse.equinox.http.servlet,
- org.eclipse.riena.communication.core,
  org.eclipse.riena.core,
+ org.eclipse.riena.communication.core,
+ org.eclipse.riena.communication.factory.hessian,
  org.eclipse.equinox.log;bundle-version="1.1.0"
 Import-Package: com.caucho.hessian.io,
  com.caucho.hessian.server,

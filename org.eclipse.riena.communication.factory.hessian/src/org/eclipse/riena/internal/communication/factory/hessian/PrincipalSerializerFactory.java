@@ -10,45 +10,60 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.factory.hessian;
 
+import java.lang.reflect.Constructor;
 import java.security.Principal;
 
-import com.caucho.hessian.io.AbstractSerializerFactory;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.JavaDeserializer;
 import com.caucho.hessian.io.Serializer;
 
-/**
- * SerializerFactory for Hessian Protocol that supports serializer the Principal
- * objects. Used on client and server
- */
-public class PrincipalSerializerFactory extends AbstractSerializerFactory {
+import org.eclipse.riena.internal.core.ignore.Nop;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.caucho.hessian.io.AbstractSerializerFactory#getDeserializer(java.
-	 * lang.Class)
-	 */
+/**
+ * An {@code AbstractSerializerFactory} for the Hessian protocol that supports
+ * serializing {@code Principal} objects if they have a constructor with a
+ * {@code String} parameter.
+ */
+public class PrincipalSerializerFactory extends AbstractRienaSerializerFactory {
+
 	@Override
 	public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
-		if (cl.isInterface() && (!cl.getPackage().getName().startsWith("java") || cl == Principal.class)) { //$NON-NLS-1$
-			return new JavaDeserializer(cl);
+		final Constructor<?> constructor;
+		if (Principal.class.isAssignableFrom(cl) && (constructor = getStringConstructor(cl)) != null) {
+			return new JavaDeserializer(cl) {
+				@Override
+				protected Object instantiate() throws Exception {
+					return constructor.newInstance("o@o"); //$NON-NLS-1$
+				}
+			};
 		}
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.caucho.hessian.io.AbstractSerializerFactory#getSerializer(java.lang
-	 * .Class)
+	/**
+	 * @param cl
+	 * @return
 	 */
+	private Constructor<?> getStringConstructor(Class<?> cl) {
+		try {
+			return cl.getConstructor(String.class);
+		} catch (SecurityException e) {
+			Nop.reason("Fall through"); //$NON-NLS-1$
+		} catch (NoSuchMethodException e) {
+			Nop.reason("Fall through"); //$NON-NLS-1$
+		}
+		return null;
+	}
+
 	@Override
 	public Serializer getSerializer(Class cl) throws HessianProtocolException {
 		return null;
+	}
+
+	@Override
+	public int getSalience() {
+		return GENERIC;
 	}
 
 }

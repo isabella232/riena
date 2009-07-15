@@ -19,7 +19,6 @@ import com.caucho.hessian.io.AbstractDeserializer;
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.AbstractSerializer;
-import com.caucho.hessian.io.AbstractSerializerFactory;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.Serializer;
@@ -29,7 +28,7 @@ import org.eclipse.riena.core.util.Iter;
 /**
  * {@code AbstractSerializerFactory} for the {@code Permissions} class.
  */
-public class PermissionsSerializerFactory extends AbstractSerializerFactory {
+public class PermissionsSerializerFactory extends AbstractRienaSerializerFactory {
 
 	private static final String PERMISSIONS_FIELD_NAME = "permissions"; //$NON-NLS-1$
 
@@ -115,4 +114,5 @@ public class PermissionsSerializerFactory extends AbstractSerializerFactory {
 		}
 
 	}
+
 }

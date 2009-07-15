@@ -16,51 +16,27 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
-import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
-import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.osgi.service.log.LogService;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
-import com.caucho.hessian.io.AbstractSerializerFactory;
-import com.caucho.hessian.io.SerializerFactory;
+
+import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
+import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 
 public class RienaHessianProxyFactory extends HessianProxyFactory {
 
 	private ICallMessageContextAccessor mca;
-
 	private final static ThreadLocal<HttpURLConnection> CONNECTIONS = new ThreadLocal<HttpURLConnection>();
-	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RienaHessianProxyFactory.class);
 
 	public RienaHessianProxyFactory() {
 		super();
-		Inject.extension("org.eclipse.riena.communication.hessian.AbstractSerializerFactory").into(this).update( //$NON-NLS-1$
-				"setFactory").andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
+		getSerializerFactory().setAllowNonSerializable(true);
+		getSerializerFactory().addFactory(new RienaSerializerFactory());
 		setHessian2Request(true);
 		setHessian2Reply(true);
-	}
-
-	public void setFactory(IAbstractSerializerFactory[] factories) {
-		for (IAbstractSerializerFactory factory : factories) {
-			try {
-				AbstractSerializerFactory serializerFactory = factory.createImplementation();
-				getSerializerFactory().addFactory(serializerFactory);
-			} catch (Exception e) {
-				LOGGER.log(LogService.LOG_ERROR, "Error instantiation AbstractSerializerFactor = " //$NON-NLS-1$
-						+ factory.getImplementation());
-				throw new RuntimeException("Error instantiation AbstractSerializerFactor = " //$NON-NLS-1$
-						+ factory.getImplementation(), e);
-			}
-		}
 	}
 
 	@Override
@@ -128,23 +104,6 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 
 			});
 		}
-	}
-
-	@Override
-	public SerializerFactory getSerializerFactory() {
-		SerializerFactory serializerFactory = super.getSerializerFactory();
-		serializerFactory.setAllowNonSerializable(true);
-		removeInputStreamSerializerDeserializer(serializerFactory);
-		return serializerFactory;
-	}
-
-	private void removeInputStreamSerializerDeserializer(SerializerFactory serializerFactory) {
-		HashMap<?, ?> staticDeSerMap = ReflectionUtils
-				.getHidden(serializerFactory.getClass(), "_staticDeserializerMap"); //$NON-NLS-1$
-		staticDeSerMap.remove(java.io.InputStream.class);
-		staticDeSerMap.remove(StackTraceElement.class);
-		HashMap<?, ?> staticSerMap = ReflectionUtils.getHidden(serializerFactory.getClass(), "_staticSerializerMap"); //$NON-NLS-1$
-		staticSerMap.remove(java.io.InputStream.class);
 	}
 
 	public void setCallMessageContextAccessor(ICallMessageContextAccessor mca) {

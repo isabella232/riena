@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.factory.hessian;
 
-import com.caucho.hessian.io.AbstractSerializerFactory;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.JavaDeserializer;
@@ -19,15 +18,8 @@ import com.caucho.hessian.io.Serializer;
 /**
  *
  */
-public class StacktraceElementSerializerFactory extends AbstractSerializerFactory {
+public class StacktraceElementSerializerFactory extends AbstractRienaSerializerFactory {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.caucho.hessian.io.AbstractSerializerFactory#getDeserializer(java.
-	 * lang.Class)
-	 */
 	@Override
 	public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
 		if (cl.equals(StackTraceElement.class)) {
@@ -42,13 +34,6 @@ public class StacktraceElementSerializerFactory extends AbstractSerializerFactor
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.caucho.hessian.io.AbstractSerializerFactory#getSerializer(java.lang
-	 * .Class)
-	 */
 	@Override
 	public Serializer getSerializer(Class cl) throws HessianProtocolException {
 		return null;

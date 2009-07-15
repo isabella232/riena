@@ -12,16 +12,17 @@ package org.eclipse.riena.internal.monitor.common;
 
 import java.util.UUID;
 
-import com.caucho.hessian.io.AbstractSerializerFactory;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.JavaDeserializer;
 import com.caucho.hessian.io.Serializer;
 
+import org.eclipse.riena.internal.communication.factory.hessian.AbstractRienaSerializerFactory;
+
 /**
  * A hessian de/serializer for the {@code UUID} class.
  */
-public class UUIDSerializerFactory extends AbstractSerializerFactory {
+public class UUIDSerializerFactory extends AbstractRienaSerializerFactory {
 
 	@SuppressWarnings("unchecked")
 	@Override

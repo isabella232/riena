@@ -18,7 +18,6 @@ import com.caucho.hessian.io.AbstractDeserializer;
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.AbstractSerializer;
-import com.caucho.hessian.io.AbstractSerializerFactory;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.Serializer;
@@ -29,7 +28,7 @@ import org.eclipse.riena.communication.core.RemoteFailure;
  * SerializerFactory used to serialize and deserialize InputStream, used for the
  * Attachment object.
  */
-public class InputStreamSerializerFactory extends AbstractSerializerFactory {
+public class InputStreamSerializerFactory extends AbstractRienaSerializerFactory {
 
 	/*
 	 * (non-Javadoc)
@@ -119,6 +118,11 @@ public class InputStreamSerializerFactory extends AbstractSerializerFactory {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public int getSalience() {
+		return GENERIC;
 	}
 
 }
