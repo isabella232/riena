@@ -24,7 +24,8 @@ import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.statushandlers.AbstractStatusHandler;
 import org.eclipse.ui.statushandlers.StatusAdapter;
 
-import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
+import org.eclipse.riena.core.exception.IExceptionHandlerManager;
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentationFactory;
 
@@ -60,8 +61,8 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 
 			@Override
 			public void handle(StatusAdapter statusAdapter, int style) {
-				ExceptionHandlerManagerAccessor.getExceptionHandlerManager().handleException(
-						statusAdapter.getStatus().getException(), statusAdapter.getStatus().getMessage());
+				Service.get(IExceptionHandlerManager.class).handleException(statusAdapter.getStatus().getException(),
+						statusAdapter.getStatus().getMessage());
 			}
 		};
 	}

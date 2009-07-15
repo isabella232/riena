@@ -21,10 +21,10 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.InjectExtension;
-import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 
 /**
@@ -42,8 +42,9 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 	 * @see org.eclipse.core.runtime.ISafeRunnable#handleException(java.lang.
 	 * Throwable)
 	 */
-	public void handleException(Throwable exception) {
-		IExceptionHandlerManager manager = ExceptionHandlerManagerAccessor.getExceptionHandlerManager();
+	public void handleException(final Throwable exception) {
+
+		IExceptionHandlerManager manager = Service.get(IExceptionHandlerManager.class);
 		if (manager != null) {
 			manager.handleException(exception, "Error activating bundels.", LOGGER); //$NON-NLS-1$
 			return;
