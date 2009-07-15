@@ -10,28 +10,31 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter.impl;
 
-import org.eclipse.riena.core.util.ServiceAccessor;
-import org.eclipse.riena.core.wire.WireWith;
-import org.eclipse.riena.internal.ui.filter.Activator;
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.ui.filter.IUIFilterProvider;
 
 /**
  *
  */
-@WireWith(UIFilterProviderAccessorWiring.class)
-public final class UIFilterProviderAccessor extends ServiceAccessor<UIFilterProvider> {
-
-	private final static UIFilterProviderAccessor FILTER_PROVIDER_ACCESSOR = new UIFilterProviderAccessor();
+public final class UIFilterProviderAccessor {
 
 	/**
 	 * Default Constructor
 	 */
 	private UIFilterProviderAccessor() {
-		super(Activator.getDefault().getContext());
+		// utility
 	}
 
+	/**
+	 * @return
+	 * @deprecated This should be replaced with {@code
+	 *             Service.get(Activator.getDefault().getContext(),
+	 *             IUIFilterProvider.class);} or with {@code
+	 *             With.service(..).doo(...);}
+	 */
+	@Deprecated
 	static public IUIFilterProvider getFilterProvider() {
-		return FILTER_PROVIDER_ACCESSOR.getService();
+		return Service.get(IUIFilterProvider.class);
 	}
 
 }

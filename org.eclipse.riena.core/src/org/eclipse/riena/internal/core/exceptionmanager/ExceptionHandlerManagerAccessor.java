@@ -11,27 +11,30 @@
 package org.eclipse.riena.internal.core.exceptionmanager;
 
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
-import org.eclipse.riena.core.util.ServiceAccessor;
-import org.eclipse.riena.core.wire.WireWith;
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
  * returns the current ExceptionHandlerManger
  */
-@WireWith(ExceptionHandlerManagerAccessorWiring.class)
-public final class ExceptionHandlerManagerAccessor extends ServiceAccessor<IExceptionHandlerManager> {
-
-	private final static ExceptionHandlerManagerAccessor EXCEPTION_HANDLER_MANAGER_ACCESSOR = new ExceptionHandlerManagerAccessor();
+public final class ExceptionHandlerManagerAccessor {
 
 	/**
 	 * @param context
 	 */
 	private ExceptionHandlerManagerAccessor() {
-		super(Activator.getDefault().getContext());
+		// utility
 	}
 
+	/**
+	 * @return
+	 * @deprecated This should be replaced with {@code
+	 *             Service.get(Activator.getDefault().getContext(),
+	 *             IExceptionHandlerManager.class);} or with {@code
+	 *             With.service(..).doo(...);}
+	 */
+	@Deprecated
 	public static IExceptionHandlerManager getExceptionHandlerManager() {
-		return EXCEPTION_HANDLER_MANAGER_ACCESSOR.getService();
+		return Service.get(Activator.getDefault().getContext(), IExceptionHandlerManager.class);
 	}
-
 }
