@@ -61,7 +61,7 @@ public class MarkerSupportTest extends RienaTestCase {
 				baos.write(ch);
 			}
 			byte[] bytes = baos.toByteArray();
-			Class<?> cl = super.defineClass(null, bytes, 0, bytes.length);
+			Class<?> cl = super.defineClass(MarkerSupport.class.getName(), bytes, 0, bytes.length);
 			resolveClass(cl);
 			return cl;
 		}
