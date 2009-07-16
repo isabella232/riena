@@ -43,7 +43,7 @@ public class SwtViewProvider {
 	/**
 	 * Create new instance and initialize
 	 */
-	SwtViewProvider() {
+	protected SwtViewProvider() {
 		super();
 		viewCounter = new LinkedHashMap<String, Integer>();
 		views = new LinkedHashMap<INavigationNode<?>, SwtViewId>();
