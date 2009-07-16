@@ -14,22 +14,22 @@ package org.eclipse.riena.navigation.ui.swt.presentation;
  * Gives the access to the global presentation manager casting it to the
  * SwtViewProvider
  * 
+ * @deprecated use instead {@code SwtViewProvider.getInstance()}
  */
+@Deprecated
 public final class SwtViewProviderAccessor {
-
-	private static volatile SwtViewProvider provider;
 
 	private SwtViewProviderAccessor() {
 		// utility
 	}
 
+	/**
+	 * @return
+	 * @deprecated use instead {@code SwtViewProvider.getInstance()}
+	 */
+	@Deprecated
 	public static SwtViewProvider getViewProvider() {
-
-		if (provider == null) {
-			provider = new SwtViewProvider();
-		}
-
-		return provider;
+		return SwtViewProvider.getInstance();
 	}
 
 }

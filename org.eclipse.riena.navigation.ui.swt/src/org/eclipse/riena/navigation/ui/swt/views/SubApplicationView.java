@@ -48,7 +48,7 @@ import org.eclipse.riena.navigation.ui.swt.binding.DelegatingRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.controller.IController;
@@ -263,7 +263,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	private ISubApplicationNode locateSubApplication(String id) {
-		return SwtViewProviderAccessor.getViewProvider().getNavigationNode(id, ISubApplicationNode.class);
+		return SwtViewProvider.getInstance().getNavigationNode(id, ISubApplicationNode.class);
 	}
 
 	/**
@@ -360,7 +360,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		 * @return view ID
 		 */
 		private SwtViewId getViewId(ISubModuleNode node) {
-			return SwtViewProviderAccessor.getViewProvider().getSwtViewId(node);
+			return SwtViewProvider.getInstance().getSwtViewId(node);
 		}
 
 		/**

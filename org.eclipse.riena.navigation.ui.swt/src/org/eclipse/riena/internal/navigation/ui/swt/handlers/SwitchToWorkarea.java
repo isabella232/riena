@@ -23,7 +23,7 @@ import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 
 /**
  * Switch focus to the 'work area'.
@@ -67,7 +67,7 @@ public class SwitchToWorkarea extends AbstractHandler {
 	private String getViewId(INavigationNode<?> node) {
 		String result = null;
 		if (node != null) {
-			SwtViewId viewId = SwtViewProviderAccessor.getViewProvider().getSwtViewId(node);
+			SwtViewId viewId = SwtViewProvider.getInstance().getSwtViewId(node);
 			if (viewId != null) {
 				result = viewId.getCompoundId();
 			}

@@ -64,7 +64,6 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
@@ -357,8 +356,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		private void showPerspective(ISubApplicationNode source) {
 			try {
-				PlatformUI.getWorkbench().showPerspective(
-						SwtViewProviderAccessor.getViewProvider().getSwtViewId(source).getId(),
+				PlatformUI.getWorkbench().showPerspective(SwtViewProvider.getInstance().getSwtViewId(source).getId(),
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 			} catch (WorkbenchException e) {
 				throw new UIViewFailure(e.getMessage(), e);
@@ -370,7 +368,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 */
 		@Override
 		public void disposed(ISubApplicationNode source) {
-			SwtViewProvider viewProvider = SwtViewProviderAccessor.getViewProvider();
+			SwtViewProvider viewProvider = SwtViewProvider.getInstance();
 			String id = viewProvider.getSwtViewId(source).getId();
 			IWorkbench workbench = PlatformUI.getWorkbench();
 			IPerspectiveRegistry registry = workbench.getPerspectiveRegistry();

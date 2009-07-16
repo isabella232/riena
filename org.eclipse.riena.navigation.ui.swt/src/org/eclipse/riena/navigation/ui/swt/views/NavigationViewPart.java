@@ -41,7 +41,7 @@ import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleDesc;
 import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupDesc;
@@ -90,7 +90,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 	public ISubApplicationNode getSubApplicationNode() {
 		String perspectiveID = getViewSite().getPage().getPerspective().getId();
-		return SwtViewProviderAccessor.getViewProvider().getNavigationNode(perspectiveID, ISubApplicationNode.class);
+		return SwtViewProvider.getInstance().getNavigationNode(perspectiveID, ISubApplicationNode.class);
 	}
 
 	@Override

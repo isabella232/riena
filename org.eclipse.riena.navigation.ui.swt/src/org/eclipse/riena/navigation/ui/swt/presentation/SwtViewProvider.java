@@ -25,14 +25,25 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
  */
 public class SwtViewProvider {
 
-	private Map<INavigationNode<?>, SwtViewId> views;
-	private Map<String, Integer> viewCounter;
-	private HashMap<String, Boolean> viewShared;
+	private final Map<INavigationNode<?>, SwtViewId> views;
+	private final Map<String, Integer> viewCounter;
+	private final HashMap<String, Boolean> viewShared;
+
+	private static final SwtViewProvider SWT_VIEW_PROVIDER = new SwtViewProvider();
+
+	/**
+	 * Gets the singleton SwtViewProvider.
+	 * 
+	 * @return
+	 */
+	public static SwtViewProvider getInstance() {
+		return SWT_VIEW_PROVIDER;
+	}
 
 	/**
 	 * Create new instance and initialize
 	 */
-	public SwtViewProvider() {
+	SwtViewProvider() {
 		super();
 		viewCounter = new LinkedHashMap<String, Integer>();
 		views = new LinkedHashMap<INavigationNode<?>, SwtViewId>();

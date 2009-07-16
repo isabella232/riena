@@ -48,7 +48,7 @@ import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ControllerUtils;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
@@ -148,7 +148,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * @return the subModule node if found
 	 */
 	protected ISubModuleNode getSubModuleNode(String pId, String pSecondary) {
-		return SwtViewProviderAccessor.getViewProvider().getNavigationNode(pId, pSecondary, ISubModuleNode.class);
+		return SwtViewProvider.getInstance().getNavigationNode(pId, pSecondary, ISubModuleNode.class);
 	}
 
 	/**
