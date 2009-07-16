@@ -15,13 +15,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterContainer;
-import org.eclipse.riena.ui.filter.impl.UIFilterProviderAccessor;
+import org.eclipse.riena.ui.filter.IUIFilterProvider;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
@@ -60,8 +61,7 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 */
 	private void doAddFilters() {
 
-		IUIFilterContainer container = UIFilterProviderAccessor.getFilterProvider().provideFilter(
-				"rienaExample.offline"); //$NON-NLS-1$
+		IUIFilterContainer container = Service.get(IUIFilterProvider.class).provideFilter("rienaExample.offline"); //$NON-NLS-1$
 		IUIFilter filter = container.getFilter();
 		Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
 		List<INavigationNode<?>> nodes = findNodes(targetNodeIds);
@@ -78,8 +78,7 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 */
 	private void doRemoveFilters() {
 
-		IUIFilterContainer container = UIFilterProviderAccessor.getFilterProvider().provideFilter(
-				"rienaExample.offline"); //$NON-NLS-1$
+		IUIFilterContainer container = Service.get(IUIFilterProvider.class).provideFilter("rienaExample.offline"); //$NON-NLS-1$
 		IUIFilter filter = container.getFilter();
 		Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
 		List<INavigationNode<?>> nodes = findNodes(targetNodeIds);

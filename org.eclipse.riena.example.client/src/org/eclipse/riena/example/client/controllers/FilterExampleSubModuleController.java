@@ -12,13 +12,14 @@ package org.eclipse.riena.example.client.controllers;
 
 import java.util.Collection;
 
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.NavigationNodeUtility;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterContainer;
-import org.eclipse.riena.ui.filter.impl.UIFilterProviderAccessor;
+import org.eclipse.riena.ui.filter.IUIFilterProvider;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
@@ -122,7 +123,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 		IToggleButtonRidget menuToolAction = (IToggleButtonRidget) getRidget(buttonRidgetId);
 
 		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-		IUIFilterContainer container = UIFilterProviderAccessor.getFilterProvider().provideFilter(filterId.toString());
+		IUIFilterContainer container = Service.get(IUIFilterProvider.class).provideFilter(filterId.toString());
 		IUIFilter filter = container.getFilter();
 		Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
 		for (String targetNodeId : targetNodeIds) {

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.demo.client.controllers;
 
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.demo.common.Customer;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -18,7 +19,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.filter.IUIFilter;
-import org.eclipse.riena.ui.filter.impl.UIFilterProviderAccessor;
+import org.eclipse.riena.ui.filter.IUIFilterProvider;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
@@ -31,10 +32,10 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
  */
 public class CustomerOverviewController extends SubModuleController {
 
-	private IUIFilter assistent = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.assistent") //$NON-NLS-1$
+	private IUIFilter assistent = Service.get(IUIFilterProvider.class).provideFilter("demo.assistent") //$NON-NLS-1$
 			.getFilter();
 
-	private IUIFilter mandatory = UIFilterProviderAccessor.getFilterProvider().provideFilter("demo.mandatory") //$NON-NLS-1$
+	private IUIFilter mandatory = Service.get(IUIFilterProvider.class).provideFilter("demo.mandatory") //$NON-NLS-1$
 			.getFilter();
 
 	private Customer customer;
