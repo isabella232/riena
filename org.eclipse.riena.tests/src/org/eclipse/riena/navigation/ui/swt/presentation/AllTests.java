@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.viewprovider;
+package org.eclipse.riena.navigation.ui.swt.presentation;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

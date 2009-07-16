@@ -8,14 +8,13 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.viewprovider;
+package org.eclipse.riena.navigation.ui.swt.presentation;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
@@ -29,9 +28,8 @@ public class SwtViewProviderTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-
 		super.setUp();
-		swtPresentationManager = new SwtViewProvider();
+		swtPresentationManager = ReflectionUtils.newInstanceHidden(SwtViewProvider.class);//new SwtViewProvider();//.getInstance();
 		addPluginXml(SwtViewProviderTest.class, "SwtViewProviderTest.xml");
 	}
 
