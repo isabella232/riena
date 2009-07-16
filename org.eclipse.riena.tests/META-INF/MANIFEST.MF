@@ -29,7 +29,8 @@ Require-Bundle: org.eclipse.core.databinding,
  org.junit,
  org.eclipse.riena.ui.filter,
  org.eclipse.riena.monitor.client,
- org.eclipse.riena.client
+ org.eclipse.riena.client,
+ org.eclipse.riena.monitor.common
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
 Export-Package: org.eclipse.riena.internal.ui.ridgets.swt,
