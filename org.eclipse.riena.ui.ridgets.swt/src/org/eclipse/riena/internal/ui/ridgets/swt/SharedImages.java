@@ -63,7 +63,7 @@ public final class SharedImages {
 		doPut(reg, IMG_CHECKED, SharedImages.class, "checkbox_checked.gif"); //$NON-NLS-1$
 		doPut(reg, IMG_UNCHECKED, SharedImages.class, "checkbox_unchecked.gif"); //$NON-NLS-1$
 		if (Activator.getDefault() != null) { // running as plug-in
-			Image lnfImage = LnfManager.getLnf().getImage(LnfKeyConstants.ERROR_MARKER_ICON);
+			Image lnfImage = LnfManager.getLnf().getImage(LnfKeyConstants.SUB_MODULE_TREE_ERROR_MARKER_ICON);
 			// create an independent copy so we can keep using it, even if  
 			// lnfImage is disposed by the LnfManager. Note: if the L&F is  
 			// changed later, we 'll still keep using our copy.

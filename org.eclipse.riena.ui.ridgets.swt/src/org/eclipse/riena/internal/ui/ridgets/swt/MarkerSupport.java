@@ -13,25 +13,34 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeSupport;
 import java.util.Iterator;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractActionRidget;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
  * Helper class for SWT Ridgets to delegate their marker issues to.
  */
 public class MarkerSupport extends BasicMarkerSupport {
 
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), MarkerSupport.class);
 	private static final String PRE_MANDATORY_BACKGROUND_KEY = "org.eclipse.riena.MarkerSupport.preMandatoryBackground"; //$NON-NLS-1$
 	private static final String PRE_OUTPUT_BACKGROUND_KEY = "org.eclipse.riena.MarkerSupport.preOutputBackground"; //$NON-NLS-1$
 	private static final String PRE_NEGATIVE_FOREGROUND_KEY = "org.eclipse.riena.MarkerSupport.preNegativeForeground"; //$NON-NLS-1$
@@ -60,10 +69,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 
 	protected void addError(Control control) {
 		if (errorDecoration == null) {
-			errorDecoration = new ControlDecoration(control, SWT.LEFT | SWT.TOP);
-			// setMargin has to be before setImage!
-			errorDecoration.setMarginWidth(1);
-			errorDecoration.setImage(Activator.getSharedImage(SharedImages.IMG_ERROR_DECO));
+			errorDecoration = createErrorDecoration(control);
 			control.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
 					errorDecoration.dispose();
@@ -71,6 +77,47 @@ public class MarkerSupport extends BasicMarkerSupport {
 			});
 		}
 		errorDecoration.show();
+	}
+
+	/**
+	 * Creates a decoration with an error marker for the given control.
+	 * 
+	 * @param control
+	 *            - the control to be decorated with an error marker
+	 * @return decoration of the given control
+	 */
+	private ControlDecoration createErrorDecoration(Control control) {
+
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+
+		int position = 0;
+		int hPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
+		if (hPos == SWT.RIGHT || hPos == SWT.LEFT) {
+			position |= hPos;
+		} else {
+			LOGGER.log(LogService.LOG_WARNING, "Invalid horizonal error marker position!"); //$NON-NLS-1$
+			position |= SWT.LEFT;
+		}
+		int vPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);
+		if (vPos == SWT.TOP || vPos == SWT.CENTER || vPos == SWT.BOTTOM) {
+			position |= vPos;
+		} else {
+			LOGGER.log(LogService.LOG_WARNING, "Invalid vertical error marker position!"); //$NON-NLS-1$
+			position |= SWT.TOP;
+		}
+		ControlDecoration ctrlDecoration = new ControlDecoration(control, position);
+
+		// setMargin has to be before setImage!
+		int margin = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
+		ctrlDecoration.setMarginWidth(margin);
+		Image image = lnf.getImage(LnfKeyConstants.ERROR_MARKER_ICON);
+		if (image == null) {
+			image = Activator.getSharedImage(SharedImages.IMG_ERROR_DECO);
+		}
+		ctrlDecoration.setImage(image);
+
+		return ctrlDecoration;
+
 	}
 
 	protected void clearError(Control control) {
@@ -85,7 +132,11 @@ public class MarkerSupport extends BasicMarkerSupport {
 	private void addMandatory(Control control) {
 		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) == null) {
 			control.setData(PRE_MANDATORY_BACKGROUND_KEY, control.getBackground());
-			Color color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY);
+			RienaDefaultLnf lnf = LnfManager.getLnf();
+			Color color = lnf.getColor(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND);
+			if (color == null) {
+				color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY);
+			}
 			control.setBackground(color);
 		}
 	}

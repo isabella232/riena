@@ -154,6 +154,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND, new ColorLnfResource(183, 216, 236));
 
 		table.put(LnfKeyConstants.GRAB_CORNER_BACKGROUND, getPrimaryBackground());
+		table.put(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND, new ColorLnfResource(255, 255, 175));
 
 		// Standard SWT controls
 		table.put("Button.background", getPrimaryBackground()); //$NON-NLS-1$
@@ -301,9 +302,10 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.DEFAULT_NODE_ICON, new ImageLnfResource(IMAGE_DEFAULT_NODE_ICON));
 		table.put(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(IMAGE_EMPTY_DOCUMENT));
 		table.put(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(IMAGE_FOLDER_CLOSED));
-		table.put(LnfKeyConstants.ERROR_MARKER_ICON, new ImageLnfResource(IMAGE_ERROR_MARKER));
-		table.put(LnfKeyConstants.MANDATORY_MARKER_ICON, new ImageLnfResource(IMAGE_MANDATORY_MARKER));
-		table.put(LnfKeyConstants.PROCESSED_FINISHED_MARKER_ICON, new ImageLnfResource(IMAGE_PROCESS_FINISHED_MARKER));
+		table.put(LnfKeyConstants.SUB_MODULE_TREE_ERROR_MARKER_ICON, new ImageLnfResource(IMAGE_ERROR_MARKER));
+		table.put(LnfKeyConstants.SUB_MODULE_TREE_MANDATORY_MARKER_ICON, new ImageLnfResource(IMAGE_MANDATORY_MARKER));
+		table.put(LnfKeyConstants.SUB_MODULE_TREE_PROCESSED_FINISHED_MARKER_ICON, new ImageLnfResource(
+				IMAGE_PROCESS_FINISHED_MARKER));
 		// table.put(LnfKeyConstants."treeFolderOpen.icon",
 		// getSharedImageResource(ISharedImages.IMG_OBJ_FOLDER));
 		table.put(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));
@@ -321,6 +323,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		table.put(LnfKeyConstants.NAVIGATION_SCROLL_UP_ICON, new ImageLnfResource(IMAGE_SCROLL_UP));
 		table.put(LnfKeyConstants.NAVIGATION_SCROLL_DOWN_ICON, new ImageLnfResource(IMAGE_SCROLL_DOWN));
+
+		table.put(LnfKeyConstants.ERROR_MARKER_ICON, new ImageLnfResource(IMAGE_ERROR_MARKER));
 
 	}
 
@@ -359,6 +363,10 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.NAVIGATION_SUB_MODULE_GAP, 5);
 		table.put(LnfKeyConstants.MENUBAR_TOP_MARGIN, 0);
 		table.put(LnfKeyConstants.TOOLBAR_TOP_MARGIN, 0);
+
+		table.put(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
+		table.put(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);
+		table.put(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
 
 	}
 

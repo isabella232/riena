@@ -96,6 +96,7 @@ public final class LnfKeyConstants {
 	public static final String STATUSLINE_UI_PROCESS_LIST_BACKGROUND = "statusline.uiProcessListBackground"; //$NON-NLS-1$
 
 	public static final String GRAB_CORNER_BACKGROUND = "grabCorner.background"; //$NON-NLS-1$
+	public static final String MANDATORY_MARKER_BACKGROUND = "mandatoryMarker.background"; //$NON-NLS-1$
 
 	/**
 	 * Font keys
@@ -160,9 +161,9 @@ public final class LnfKeyConstants {
 	public static final String SUB_MODULE_TREE_FOLDER_OPEN_ICON = "subModuleTreeFolderOpen.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_FOLDER_CLOSED_ICON = "subModuleTreeFolderClosed.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_DOCUMENT_LEAF_ICON = "subModuleTreeDocumentLeaf.icon"; //$NON-NLS-1$
-	public static final String ERROR_MARKER_ICON = ErrorMarker.MARKER_KEY;
-	public static final String MANDATORY_MARKER_ICON = MandatoryMarker.MARKER_KEY;
-	public static final String PROCESSED_FINISHED_MARKER_ICON = UIProcessFinishedMarker.MARKER_KEY;
+	public static final String SUB_MODULE_TREE_ERROR_MARKER_ICON = "subModuleTreeErrorMarker.icon"; //$NON-NLS-1$
+	public static final String SUB_MODULE_TREE_MANDATORY_MARKER_ICON = MandatoryMarker.MARKER_KEY;
+	public static final String SUB_MODULE_TREE_PROCESSED_FINISHED_MARKER_ICON = UIProcessFinishedMarker.MARKER_KEY;
 
 	public static final String EMBEDDED_TITLEBAR_CLOSE_ICON = "EmbeddedTitlebar.closeIcon"; //$NON-NLS-1$
 	public static final String EMBEDDED_TITLEBAR_CLOSE_HOVER_ICON = "EmbeddedTitlebar.closeHoverIcon"; //$NON-NLS-1$
@@ -176,6 +177,8 @@ public final class LnfKeyConstants {
 
 	public static final String NAVIGATION_SCROLL_UP_ICON = "navigation.scrollup"; //$NON-NLS-1$
 	public static final String NAVIGATION_SCROLL_DOWN_ICON = "navigation.scrollDown"; //$NON-NLS-1$
+
+	public static final String ERROR_MARKER_ICON = ErrorMarker.MARKER_KEY;
 
 	/**
 	 * Setting keys
@@ -210,6 +213,10 @@ public final class LnfKeyConstants {
 	public static final String NAVIGATION_SUB_MODULE_GAP = "NavigationSubModule.gap"; //$NON-NLS-1$
 	public static final String MENUBAR_TOP_MARGIN = "Menubar.topMargin"; //$NON-NLS-1$
 	public static final String TOOLBAR_TOP_MARGIN = "Toolbar.topMargin"; //$NON-NLS-1$
+
+	public static final String ERROR_MARKER_HORIZONTAL_POSITION = "errorMarker.horizontalPosition"; //$NON-NLS-1$
+	public static final String ERROR_MARKER_VERTICAL_POSITION = "errorMarker.verticalPosition"; //$NON-NLS-1$
+	public static final String ERROR_MARKER_MARGIN = "errorMarker.margin"; //$NON-NLS-1$
 
 	/**
 	 * Renderer keys
