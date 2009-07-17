@@ -32,6 +32,10 @@ v1.0
    <license url="%licenseURL">
       %license
    </license>
+   
+   <includes
+         id="org.eclipse.riena.build.feature.samples.source"
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.riena.sample.app.common"
@@ -40,12 +44,6 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.sample.app.common.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.sample.app.server"
@@ -54,12 +52,6 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.sample.app.server.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.sample.app.client"
@@ -68,12 +60,7 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.sample.app.client.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+
 
    <plugin
          id="org.eclipse.riena.sample.app.client.mail"
@@ -82,12 +69,6 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.sample.app.client.mail.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.example.client"
@@ -96,12 +77,7 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.example.client.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+
 
    <plugin
          id="org.eclipse.riena.security.simpleservices"
@@ -110,12 +86,7 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.security.simpleservices.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+
 
    <plugin
          id="org.eclipse.riena.sample.snippets"
@@ -124,12 +95,6 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.sample.snippets.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.sample.app.client.rcpmail"
@@ -138,12 +103,7 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.sample.app.client.rcpmail.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+
 
    <plugin
          id="org.eclipse.riena.demo.client"
@@ -152,12 +112,7 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.demo.client.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+
 
    <plugin
          id="org.eclipse.riena.demo.common"
@@ -166,12 +121,7 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.demo.common.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+
 
    <plugin
          id="org.eclipse.riena.demo.server"
@@ -180,12 +130,7 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.demo.server.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+
 
    <plugin
          id="org.eclipse.riena.tests"
@@ -194,12 +139,6 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.tests.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.junit"
@@ -221,22 +160,9 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.communication.sample.pingpong.client.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.communication.sample.pingpong.client.config"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.riena.communication.sample.pingpong.client.config.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -249,22 +175,10 @@ v1.0
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.riena.communication.sample.pingpong.common.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+
 
    <plugin
          id="org.eclipse.riena.communication.sample.pingpong.server"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.riena.communication.sample.pingpong.server.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
