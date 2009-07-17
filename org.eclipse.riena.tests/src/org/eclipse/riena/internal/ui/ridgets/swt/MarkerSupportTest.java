@@ -15,9 +15,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Test the {@code MarkSupport} class.
@@ -26,6 +36,23 @@ import org.eclipse.riena.tests.collect.UITestCase;
 public class MarkerSupportTest extends RienaTestCase {
 
 	private static final String HIDE_DISABLED_RIDGET_CONTENT = "HIDE_DISABLED_RIDGET_CONTENT";
+
+	private Display display;
+	private Shell shell;
+
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		display = Display.getDefault();
+		shell = new Shell(display);
+	}
+
+	@Override
+	protected void tearDown() {
+		SwtUtilities.disposeWidget(shell);
+		display.dispose();
+		display = null;
+	}
 
 	public void testHideDiabledRidgetContentSystemProperty() throws IOException {
 		System.clearProperty(HIDE_DISABLED_RIDGET_CONTENT);
@@ -36,6 +63,32 @@ public class MarkerSupportTest extends RienaTestCase {
 
 		System.setProperty(HIDE_DISABLED_RIDGET_CONTENT, Boolean.TRUE.toString());
 		assertTrue(getHideDisabledRidgetContent());
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code createErrorDecoration}.
+	 * 
+	 * @throws Exception
+	 *             - handled by JUnit
+	 */
+	public void testCreateErrorDecoration() throws Exception {
+
+		MarkerSupport support = new MarkerSupport(null, null);
+		Text text = new Text(shell, SWT.NONE);
+
+		LnfManager.setLnf(new MyLnf());
+		ControlDecoration deco = ReflectionUtils.invokeHidden(support, "createErrorDecoration", text);
+		assertEquals(100, deco.getMarginWidth());
+		assertNotNull(deco.getImage());
+
+		LnfManager.setLnf(new MyNonsenseLnf());
+		deco = ReflectionUtils.invokeHidden(support, "createErrorDecoration", text);
+		assertEquals(1, deco.getMarginWidth());
+		assertNotNull(deco.getImage());
+
+		support = null;
+		SwtUtilities.disposeWidget(text);
+
 	}
 
 	private static boolean getHideDisabledRidgetContent() throws IOException {
@@ -66,4 +119,34 @@ public class MarkerSupportTest extends RienaTestCase {
 			return cl;
 		}
 	}
+
+	/**
+	 * Look and Feel with correct setting.
+	 */
+	private static class MyLnf extends RienaDefaultLnf {
+
+		@Override
+		protected void initSettingsDefaults() {
+			getSettingTable().put(LnfKeyConstants.ERROR_MARKER_MARGIN, 100);
+			getSettingTable().put(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.RIGHT);
+			getSettingTable().put(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.BOTTOM);
+		}
+
+	}
+
+	/**
+	 * Look and Feel with invalid setting: no setting and no images
+	 */
+	private static class MyNonsenseLnf extends RienaDefaultLnf {
+
+		@Override
+		protected void initSettingsDefaults() {
+		}
+
+		@Override
+		protected void initImageDefaults() {
+		}
+
+	}
+
 }
