@@ -29,7 +29,7 @@ public class SwtViewProviderTest extends RienaTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		swtPresentationManager = ReflectionUtils.newInstanceHidden(SwtViewProvider.class);//new SwtViewProvider();//.getInstance();
+		swtPresentationManager = ReflectionUtils.newInstanceHidden(SwtViewProvider.class);
 		addPluginXml(SwtViewProviderTest.class, "SwtViewProviderTest.xml");
 	}
 
