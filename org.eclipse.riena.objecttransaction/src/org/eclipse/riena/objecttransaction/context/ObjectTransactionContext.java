@@ -13,7 +13,7 @@ package org.eclipse.riena.objecttransaction.context;
 import java.util.Stack;
 
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
-import org.eclipse.riena.objecttransaction.ObjectTransactionManagerAccessor;
+import org.eclipse.riena.objecttransaction.ObjectTransactionManager;
 
 /**
  * This class describes an object Transaction Context, which can be passed to
@@ -57,8 +57,8 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 	 * Activates the contained Transaction
 	 */
 	public void activate() {
-		replaced.push(ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent());
-		ObjectTransactionManagerAccessor.fetchObjectTransactionManager().setCurrent(objectTransaction);
+		replaced.push(ObjectTransactionManager.getInstance().getCurrent());
+		ObjectTransactionManager.getInstance().setCurrent(objectTransaction);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 	 */
 	public void passivate() {
 		if (isActivated()) {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().setCurrent(replaced.pop());
+			ObjectTransactionManager.getInstance().setCurrent(replaced.pop());
 		} else {
 			throw new ObjectTransactionContextFailure("Inconsistency while passivating object transaction context!"); //$NON-NLS-1$
 		}
@@ -89,7 +89,7 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 	public void setObjectTransaction(IObjectTransaction pObjectTransaction) {
 		this.objectTransaction = pObjectTransaction;
 		if (isActivated()) {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().setCurrent(objectTransaction);
+			ObjectTransactionManager.getInstance().setCurrent(objectTransaction);
 		}
 	}
 

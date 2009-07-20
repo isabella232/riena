@@ -10,16 +10,17 @@
  *******************************************************************************/
 package org.eclipse.riena.objecttransaction;
 
+import org.eclipse.riena.internal.objecttransaction.impl.ObjectTransactionFactoryImpl;
+
 /**
  * Accessor that gives access to the ObjectTransactionFactory
  * 
- * @deprecated use instead {@code ObjectTransactionFactory.getInstance()}
  */
-@Deprecated
-public final class ObjectTransactionFactoryAccessor {
+public final class ObjectTransactionFactory {
 
-	private ObjectTransactionFactoryAccessor() {
-		super();
+	private static IObjectTransactionFactory singleton = null;
+
+	private ObjectTransactionFactory() {
 		// utility
 	}
 
@@ -28,10 +29,13 @@ public final class ObjectTransactionFactoryAccessor {
 	 * singleton)
 	 * 
 	 * @return ObjectTransactionFactory
-	 * @deprecated use instead {@code ObjectTransactionFactory.getInstance()}
 	 */
-	@Deprecated
-	public static IObjectTransactionFactory fetchObjectTransactionFactory() {
-		return ObjectTransactionFactory.getInstance();
+	public static IObjectTransactionFactory getInstance() {
+		synchronized (ObjectTransactionFactory.class) {
+			if (singleton == null) {
+				singleton = new ObjectTransactionFactoryImpl(ObjectTransactionManager.getInstance());
+			}
+			return singleton;
+		}
 	}
 }

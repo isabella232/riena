@@ -26,7 +26,7 @@ public abstract class AbstractTransactedObject implements ITransactedObject {
 	 */
 	protected AbstractTransactedObject() {
 		super();
-		objectTransactionManager = ObjectTransactionManagerAccessor.fetchObjectTransactionManager();
+		objectTransactionManager = ObjectTransactionManager.getInstance();
 	}
 
 	/**

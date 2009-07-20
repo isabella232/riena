@@ -10,15 +10,17 @@
  *******************************************************************************/
 package org.eclipse.riena.objecttransaction;
 
-/**
- * Accessor to get access to the ObjectTransactionManager
- * 
- * @deprecated use instead {@code ObjectTransactionManager.getInstance()}
- */
-@Deprecated
-public final class ObjectTransactionManagerAccessor {
+import org.eclipse.riena.internal.objecttransaction.impl.ObjectTransactionManagerImpl;
 
-	private ObjectTransactionManagerAccessor() {
+/**
+ * ObjectTransactionManager
+ * 
+ */
+public final class ObjectTransactionManager {
+
+	private static final ThreadLocal<IObjectTransactionManager> THREAD_LOCAL_OTM = new ThreadLocal<IObjectTransactionManager>();
+
+	private ObjectTransactionManager() {
 		// utility
 	}
 
@@ -26,10 +28,15 @@ public final class ObjectTransactionManagerAccessor {
 	 * Returns the ObjectTransactionManager (currently defined as threaded)
 	 * 
 	 * @return ObjectTransactionManager
-	 * @deprecated use instead {@code ObjectTransactionManager.getInstance()}
 	 */
-	@Deprecated
-	public static IObjectTransactionManager fetchObjectTransactionManager() {
-		return ObjectTransactionManager.getInstance();
+	public static IObjectTransactionManager getInstance() {
+		synchronized (ObjectTransactionManager.class) {
+			IObjectTransactionManager otm = THREAD_LOCAL_OTM.get();
+			if (otm == null) {
+				otm = new ObjectTransactionManagerImpl();
+				THREAD_LOCAL_OTM.set(otm);
+			}
+			return otm;
+		}
 	}
 }

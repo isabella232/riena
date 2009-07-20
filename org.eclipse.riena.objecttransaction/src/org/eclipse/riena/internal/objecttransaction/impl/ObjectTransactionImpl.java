@@ -33,7 +33,7 @@ import org.eclipse.riena.objecttransaction.IObjectTransactionExtract;
 import org.eclipse.riena.objecttransaction.ITransactedObject;
 import org.eclipse.riena.objecttransaction.InvalidTransactionFailure;
 import org.eclipse.riena.objecttransaction.ObjectTransactionFailure;
-import org.eclipse.riena.objecttransaction.ObjectTransactionManagerAccessor;
+import org.eclipse.riena.objecttransaction.ObjectTransactionManager;
 import org.eclipse.riena.objecttransaction.delta.AbstractBaseChange;
 import org.eclipse.riena.objecttransaction.delta.MultipleChange;
 import org.eclipse.riena.objecttransaction.delta.MultipleChangeEntry;
@@ -112,7 +112,7 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 */
 	public IObjectTransaction createSubObjectTransaction() {
 		IObjectTransaction objectTransaction = new ObjectTransactionImpl(this);
-		ObjectTransactionManagerAccessor.fetchObjectTransactionManager().setCurrent(objectTransaction);
+		ObjectTransactionManager.getInstance().setCurrent(objectTransaction);
 		return objectTransaction;
 	}
 
@@ -1136,7 +1136,7 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		// invalidate();
 		// make the current transaction the parent transaction of this
 		// transaction
-		ObjectTransactionManagerAccessor.fetchObjectTransactionManager().setCurrent(parentTransaction);
+		ObjectTransactionManager.getInstance().setCurrent(parentTransaction);
 	}
 
 	private Method findMethod(Class<?> clazz, String name, String methodPrefix, Object arg) {
@@ -1287,7 +1287,7 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		if (!isRootTransaction()) {
 			// UPDATE: no longer invalidated so that it can be reused
 			// invalidate();
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().setCurrent(parentTransaction);
+			ObjectTransactionManager.getInstance().setCurrent(parentTransaction);
 		}
 	}
 

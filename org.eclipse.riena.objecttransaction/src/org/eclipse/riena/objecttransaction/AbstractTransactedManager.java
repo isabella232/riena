@@ -84,9 +84,9 @@ public abstract class AbstractTransactedManager {
 	protected final IObjectTransaction createObjectTransaction() {
 		// TODO: the object Transaction shold not aktivate itself, talk about
 		// with cc, this moment the current context is reactivated!
-		IObjectTransaction oldTransaction = ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent();
-		IObjectTransaction result = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory().createObjectTransaction();
-		ObjectTransactionManagerAccessor.fetchObjectTransactionManager().setCurrent(oldTransaction);
+		IObjectTransaction oldTransaction = ObjectTransactionManager.getInstance().getCurrent();
+		IObjectTransaction result = ObjectTransactionFactory.getInstance().createObjectTransaction();
+		ObjectTransactionManager.getInstance().setCurrent(oldTransaction);
 		return result;
 	}
 
@@ -114,9 +114,9 @@ public abstract class AbstractTransactedManager {
 	protected final IObjectTransaction createSubObjectTransaction(IObjectTransaction pParentTransaction) {
 		// TODO: the object Transaction shold not aktivate itself, talk about
 		// with cc, this moment the current context is reactivated!
-		IObjectTransaction oldTransaction = ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent();
+		IObjectTransaction oldTransaction = ObjectTransactionManager.getInstance().getCurrent();
 		IObjectTransaction result = pParentTransaction.createSubObjectTransaction();
-		ObjectTransactionManagerAccessor.fetchObjectTransactionManager().setCurrent(oldTransaction);
+		ObjectTransactionManager.getInstance().setCurrent(oldTransaction);
 		return result;
 	}
 
@@ -144,7 +144,8 @@ public abstract class AbstractTransactedManager {
 	// During uncovering the object will be automatically castet
 	public final <T> T uncover(T pCovered) {
 		T result = null;
-		if (pCovered != null && Proxy.isProxyClass(pCovered.getClass()) && (Proxy.getInvocationHandler(pCovered) instanceof ContextProxy)) {
+		if (pCovered != null && Proxy.isProxyClass(pCovered.getClass())
+				&& (Proxy.getInvocationHandler(pCovered) instanceof ContextProxy)) {
 			result = (T) ((ContextProxy) Proxy.getInvocationHandler(pCovered)).getService();
 		} else {
 			result = pCovered;
