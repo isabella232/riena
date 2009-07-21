@@ -284,6 +284,26 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		injector.stop();
 	}
 
+	public void testWithUnknownTypeDefaultValues() {
+		printTestName();
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext8.xml");
+		ConfigurableThingSingleData8 target = new ConfigurableThingSingleData8();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).update(
+				"configure").andStart(getContext());
+		assertNotNull(target.getData());
+		// required is not defined but the default says that it should be true
+		assertTrue(target.getData().isRequired());
+		// text is defined with a default, however is should return not the default 
+		assertEquals("not empty", target.getData().getText());
+		// moreText is not defined and no default is defined so null should be returned
+		assertNull(target.getData().getMoreText());
+
+		removeExtension("core.test.extpoint.id8");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+	}
+
 	public void testCachingWithUnknownTypeAndSingleDataAndOneNestedSingleElementAndTwoNestedMultipleElements() {
 		printTestName();
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
