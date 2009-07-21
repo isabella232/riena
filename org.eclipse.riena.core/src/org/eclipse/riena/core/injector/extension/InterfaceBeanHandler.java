@@ -90,22 +90,21 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			return Result.noCache(proxiedEquals(args[0]));
 		}
 		final Class<?> returnType = method.getReturnType();
-		final String attributeName = getAttributeName(method, methodKind);
-		if (returnType == String.class) {
-			final boolean methodSymbolReplace = !method.isAnnotationPresent(DoNotReplaceSymbols.class);
-			return Result.noCache(modify(method.isAnnotationPresent(MapContent.class) ? configurationElement.getValue()
-					: configurationElement.getAttribute(attributeName), methodSymbolReplace));
-		}
-		if (returnType.isPrimitive()) {
-			final boolean methodSymbolReplace = !method.isAnnotationPresent(DoNotReplaceSymbols.class);
-			return Result.noCache(coerce(returnType, modify(configurationElement.getAttribute(attributeName),
-					methodSymbolReplace)));
-		}
 		if (returnType == Bundle.class) {
 			return Result.cache(ContributorFactoryOSGi.resolve(configurationElement.getContributor()));
 		}
 		if (returnType == IConfigurationElement.class) {
 			return Result.cache(configurationElement);
+		}
+		final String attributeName = getAttributeName(method, methodKind);
+		if (returnType == String.class) {
+			final boolean methodSymbolReplace = !method.isAnnotationPresent(DoNotReplaceSymbols.class);
+			return Result.noCache(modify(method.isAnnotationPresent(MapContent.class) ? configurationElement.getValue()
+					: getAttribute(attributeName, method), methodSymbolReplace));
+		}
+		if (returnType.isPrimitive()) {
+			final boolean methodSymbolReplace = !method.isAnnotationPresent(DoNotReplaceSymbols.class);
+			return Result.noCache(coerce(returnType, modify(getAttribute(attributeName, method), methodSymbolReplace)));
 		}
 		if (returnType == Class.class) {
 			String value = configurationElement.getAttribute(attributeName);
@@ -152,7 +151,8 @@ final class InterfaceBeanHandler implements InvocationHandler {
 					+ interfaceType.getName() + "'."); //$NON-NLS-1$
 		}
 		// Now try to create a fresh instance,i.e. createExecutableExtension()
-		if (configurationElement.getAttribute(attributeName) == null && configurationElement.getChildren(attributeName).length == 0) {
+		if (configurationElement.getAttribute(attributeName) == null
+				&& configurationElement.getChildren(attributeName).length == 0) {
 			return Result.CACHED_NULL;
 		}
 		final boolean wire = !(method.isAnnotationPresent(DoNotWireExecutable.class) || Boolean
@@ -229,6 +229,18 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		}
 		final String name = method.getName().substring(methodKind.prefix.length());
 		return name.substring(0, 1).toLowerCase() + name.substring(1);
+	}
+
+	private String getAttribute(final String attributeName, final Method method) {
+		final String value = configurationElement.getAttribute(attributeName);
+		if (value != null) {
+			return value;
+		}
+		final Annotation annotation = method.getAnnotation(DefaultValue.class);
+		if (annotation != null) {
+			return ((DefaultValue) annotation).value();
+		}
+		return null;
 	}
 
 	private Object coerce(final Class<?> toType, final String value) {
