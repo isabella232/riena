@@ -44,12 +44,12 @@ public @interface InjectService {
 	String unbind() default "";
 
 	/**
-	 * A filter for selecting the service/s.
+	 * A filter for selecting the service/s. Default is NO filter.
 	 */
 	String useFilter() default "";
 
 	/**
-	 * Should ranking be used.
+	 * Should ranking be used. Default is {@code false}.
 	 */
 	boolean useRanking() default false;
 }
