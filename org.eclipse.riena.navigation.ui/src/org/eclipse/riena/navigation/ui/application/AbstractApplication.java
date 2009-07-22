@@ -32,7 +32,7 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.StartupNodeInfo;
 import org.eclipse.riena.navigation.model.ApplicationNode;
-import org.eclipse.riena.navigation.model.NavigationNodeProviderAccessor;
+import org.eclipse.riena.navigation.model.NavigationNodeProvider;
 import org.eclipse.riena.navigation.ui.login.ILoginDialogViewDefinition;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
 
@@ -82,7 +82,7 @@ public abstract class AbstractApplication implements IApplication {
 	}
 
 	protected void createStartupsFromExtensions(IApplicationNode applicationNode) {
-		INavigationNodeProvider navigationNodeProvider = NavigationNodeProviderAccessor.getNavigationNodeProvider();
+		INavigationNodeProvider navigationNodeProvider = NavigationNodeProvider.getInstance();
 		List<StartupNodeInfo> startups = navigationNodeProvider.getSortedStartupNodeInfos();
 		for (StartupNodeInfo startup : startups) {
 			LOGGER.log(LogService.LOG_INFO, "creating " + startup.toString()); //$NON-NLS-1$

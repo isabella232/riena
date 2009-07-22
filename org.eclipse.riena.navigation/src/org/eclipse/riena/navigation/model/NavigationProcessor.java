@@ -346,7 +346,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	protected INavigationNodeProvider getNavigationNodeProvider() {
-		return NavigationNodeProviderAccessor.getNavigationNodeProvider();
+		return NavigationNodeProvider.getInstance();
 	}
 
 	/**
