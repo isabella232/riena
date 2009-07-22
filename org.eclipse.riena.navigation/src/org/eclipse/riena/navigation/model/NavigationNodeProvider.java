@@ -12,8 +12,11 @@ package org.eclipse.riena.navigation.model;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -32,10 +35,13 @@ import org.eclipse.riena.navigation.INavigationAssembler;
 import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
+import org.eclipse.riena.navigation.INodeExtension;
 import org.eclipse.riena.navigation.ISubApplicationNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.StartupNodeInfo;
+import org.eclipse.riena.navigation.StartupNodeInfo.Level;
 
 /**
  * This class provides service methods to get information provided by
@@ -152,6 +158,59 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 			NavigationArgument argument) {
 
 		return provideNodeHook(sourceNode, targetId, argument);
+	}
+
+	public List<StartupNodeInfo> getSortedStartupNodeInfos() {
+		List<StartupNodeInfo> startups = new ArrayList<StartupNodeInfo>();
+
+		for (INavigationAssembler assembler : getNavigationAssemblers()) {
+			Integer sequence = getAutostartSequence(assembler.getAssembly());
+			if (sequence != null) {
+				StartupNodeInfo startupNodeInfo = createStartupSortable(assembler.getAssembly(), sequence);
+				if (startupNodeInfo != null) {
+					startups.add(startupNodeInfo);
+				}
+			}
+		}
+		Collections.sort(startups);
+		return startups;
+	}
+
+	private Integer getAutostartSequence(INavigationAssemblyExtension assembly) {
+		try {
+			return assembly.getAutostartSequence();
+		} catch (Exception ignore) {
+			// does not seem to be an integer, assume no autostart
+			return null;
+		}
+	}
+
+	private StartupNodeInfo createStartupSortable(final INavigationAssemblyExtension assembly, final Integer sequence) {
+		String id = getTypeId(assembly.getSubApplicationNode());
+		if (id != null) {
+			return new StartupNodeInfo(Level.SUBAPPLICATION, sequence, id);
+		}
+		id = getTypeId(assembly.getModuleGroupNode());
+		if (id != null) {
+			return new StartupNodeInfo(Level.MODULEGROUP, sequence, id);
+		}
+		id = getTypeId(assembly.getModuleNode());
+		if (id != null) {
+			return new StartupNodeInfo(Level.MODULE, sequence, id);
+		}
+		id = getTypeId(assembly.getSubModuleNode());
+		if (id != null) {
+			return new StartupNodeInfo(Level.SUBMODULE, sequence, id);
+		}
+		id = assembly.getId();
+		if (id != null) {
+			return new StartupNodeInfo(Level.CUSTOM, sequence, id);
+		}
+		return null;
+	}
+
+	private String getTypeId(INodeExtension extension) {
+		return extension == null ? null : extension.getTypeId();
 	}
 
 	/**

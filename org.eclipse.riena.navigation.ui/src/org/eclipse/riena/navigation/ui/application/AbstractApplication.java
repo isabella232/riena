@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.application;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.List;
 
 import org.osgi.service.log.LogService;
 
@@ -27,15 +26,12 @@ import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.INavigationAssembler;
-import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
-import org.eclipse.riena.navigation.INodeExtension;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.StartupNodeInfo;
 import org.eclipse.riena.navigation.model.ApplicationNode;
-import org.eclipse.riena.navigation.model.NavigationNodeProvider;
 import org.eclipse.riena.navigation.model.NavigationNodeProviderAccessor;
 import org.eclipse.riena.navigation.ui.login.ILoginDialogViewDefinition;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
@@ -86,49 +82,12 @@ public abstract class AbstractApplication implements IApplication {
 	}
 
 	protected void createStartupsFromExtensions(IApplicationNode applicationNode) {
-
-		SortedSet<StartupSortable> startups = new TreeSet<StartupSortable>();
-
-		INavigationNodeProvider nnp = NavigationNodeProviderAccessor.getNavigationNodeProvider();
-		for (INavigationAssembler assembler : ((NavigationNodeProvider) nnp).getNavigationAssemblers()) {
-			Integer sequence = getAutostartSequence(assembler.getAssembly());
-			if (sequence != null) {
-				StartupSortable startupSortable = createStartupSortable(assembler.getAssembly(), sequence);
-				if (startupSortable != null) {
-					startups.add(startupSortable);
-				}
-			}
+		INavigationNodeProvider navigationNodeProvider = NavigationNodeProviderAccessor.getNavigationNodeProvider();
+		List<StartupNodeInfo> startups = navigationNodeProvider.getSortedStartupNodeInfos();
+		for (StartupNodeInfo startup : startups) {
+			LOGGER.log(LogService.LOG_INFO, "creating " + startup.toString()); //$NON-NLS-1$
+			applicationNode.create(new NavigationNodeId(startup.getId()));
 		}
-
-		for (StartupSortable startup : startups) {
-			String message = "creating startup module %s [level=%s sequence=%d]"; //$NON-NLS-1$
-			LOGGER.log(LogService.LOG_INFO, String.format(message, startup.id, startup.level, startup.sequence));
-			applicationNode.create(new NavigationNodeId(startup.id));
-		}
-	}
-
-	private StartupSortable createStartupSortable(final INavigationAssemblyExtension assembly, final Integer sequence) {
-		String id = getTypeId(assembly.getSubApplicationNode());
-		if (id != null) {
-			return new StartupSortable(StartupLevel.SUBAPPLICATION, sequence, id);
-		}
-		id = getTypeId(assembly.getModuleGroupNode());
-		if (id != null) {
-			return new StartupSortable(StartupLevel.MODULEGROUP, sequence, id);
-		}
-		id = getTypeId(assembly.getModuleNode());
-		if (id != null) {
-			return new StartupSortable(StartupLevel.MODULE, sequence, id);
-		}
-		id = getTypeId(assembly.getSubModuleNode());
-		if (id != null) {
-			return new StartupSortable(StartupLevel.SUBMODULE, sequence, id);
-		}
-		id = assembly.getId();
-		if (id != null) {
-			return new StartupSortable(StartupLevel.CUSTOM, sequence, id);
-		}
-		return null;
 	}
 
 	protected void initializeNode(IApplicationNode model) {
@@ -228,92 +187,7 @@ public abstract class AbstractApplication implements IApplication {
 	}
 
 	protected void initializeLoginViewDefinition() {
-
 		Inject.extension(ILoginDialogViewDefinition.EP_TYPE).useType(ILoginDialogViewDefinition.class).into(this)
 				.andStart(Activator.getDefault().getContext());
-	}
-
-	private Integer getAutostartSequence(INavigationAssemblyExtension assembly) {
-
-		try {
-			return assembly.getAutostartSequence();
-		} catch (Exception ignore) {
-			// does not seem to be an integer, assume no autostart
-			return null;
-		}
-	}
-
-	private String getTypeId(INodeExtension extension) {
-
-		if (extension == null) {
-			return null;
-		} else {
-			return extension.getTypeId();
-		}
-	}
-
-	enum StartupLevel {
-		SUBAPPLICATION, MODULEGROUP, MODULE, SUBMODULE, CUSTOM
-	}
-
-	static class StartupSortable implements Comparable<StartupSortable> {
-
-		private final StartupLevel level;
-		private final int sequence;
-		private final String id;
-
-		public StartupSortable(StartupLevel level, Integer sequence, String id) {
-			this.level = level;
-			this.sequence = sequence;
-			this.id = id;
-		}
-
-		public int compareTo(StartupSortable o) {
-			if (sequence == o.sequence) {
-				return level.compareTo(o.level);
-			} else {
-				return sequence - o.sequence;
-			}
-			//			if (level.compareTo(o.level) != 0) {
-			//				return level.compareTo(o.level);
-			//			} else {
-			//				return sequence - o.sequence;
-			//			}
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((level == null) ? 0 : level.hashCode());
-			result = prime * result + sequence;
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (obj == null) {
-				return false;
-			}
-			if (getClass() != obj.getClass()) {
-				return false;
-			}
-			StartupSortable other = (StartupSortable) obj;
-			if (level == null) {
-				if (other.level != null) {
-					return false;
-				}
-			} else if (!level.equals(other.level)) {
-				return false;
-			}
-			if (sequence != other.sequence) {
-				return false;
-			}
-			return true;
-		}
-
 	}
 }

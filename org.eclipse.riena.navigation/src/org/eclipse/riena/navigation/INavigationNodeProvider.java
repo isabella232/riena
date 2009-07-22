@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import java.util.List;
+
 /**
  * Implementation of this service interface provides service methods to get
  * information provided by WorkAreaPresentationDefinitions and
@@ -29,7 +31,15 @@ public interface INavigationNodeProvider {
 	INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
+	 * Return a sorted list of startup nodes.
+	 * 
+	 * @return
+	 */
+	List<StartupNodeInfo> getSortedStartupNodeInfos();
+
+	/**
 	 * Perform some housekeeping
 	 */
 	void cleanUp();
+
 }
