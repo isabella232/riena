@@ -133,7 +133,7 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 		}
 
 		public IServiceMessageContext getMessageContext() {
-			return MessageContextAccessor.getMessageContext();
+			return MessageContextHolder.getMessageContext();
 		}
 	}
 }

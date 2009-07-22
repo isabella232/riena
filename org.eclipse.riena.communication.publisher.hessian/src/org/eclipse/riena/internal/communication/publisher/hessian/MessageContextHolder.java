@@ -14,18 +14,18 @@ package org.eclipse.riena.internal.communication.publisher.hessian;
  * @author [user:firstname] [user:lastname]
  * 
  */
-public final class MessageContextAccessor {
+public final class MessageContextHolder {
 
-	private static ThreadLocal<MessageContext> messageContexts = new ThreadLocal<MessageContext>();
+	private static final ThreadLocal<MessageContext> MESSAGE_CONTEXT = new ThreadLocal<MessageContext>();
 
-	private MessageContextAccessor() {
+	private MessageContextHolder() {
 	}
 
 	public static MessageContext getMessageContext() {
-		return messageContexts.get();
+		return MESSAGE_CONTEXT.get();
 	}
 
 	public static void setMessageContext(MessageContext msgCtx) {
-		messageContexts.set(msgCtx);
+		MESSAGE_CONTEXT.set(msgCtx);
 	}
 }
