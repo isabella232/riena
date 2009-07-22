@@ -150,13 +150,9 @@ public class Activator extends RienaPlugin {
 
 	private void startCollectibleReceiver(BundleContext context) {
 
-		Hashtable<String, String> properties = new Hashtable<String, String>(3);
-
-		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
-		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
-		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/CollectibleReceiverWS"); //$NON-NLS-1$
-
-		regCollectibleReceiver = context.registerService(IReceiver.class.getName(), monitoringReceiver, properties);
+		regCollectibleReceiver = context.registerService(IReceiver.class.getName(), monitoringReceiver, null);
+		Publish.service(IReceiver.class).usingPath("/CollectibleReceiverWS").withProtocol(REMOTE_PROTOCOL_HESSIAN) //$NON-NLS-1$
+				.andStart(context);
 	}
 
 	private void startTestGregorianCalendar(BundleContext context) {
