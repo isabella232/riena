@@ -34,12 +34,13 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.exception.IExceptionHandlerManager;
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.internal.communication.factory.hessian.RienaSerializerFactory;
 import org.eclipse.riena.internal.communication.publisher.hessian.Activator;
 import org.eclipse.riena.internal.communication.publisher.hessian.HessianRemoteServicePublisher;
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContext;
-import org.eclipse.riena.internal.communication.publisher.hessian.MessageContextAccessor;
-import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
+import org.eclipse.riena.internal.communication.publisher.hessian.MessageContextHolder;
 
 /**
  * @author Christian Campo
@@ -69,7 +70,7 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 		HttpServletResponse httpRes = (HttpServletResponse) res;
 
 		// set the message context
-		MessageContextAccessor.setMessageContext(new MessageContext(httpReq, httpRes));
+		MessageContextHolder.setMessageContext(new MessageContext(httpReq, httpRes));
 
 		HessianRemoteServicePublisher publisher = getPublisher();
 		if (publisher == null) {
@@ -144,7 +145,7 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 				t2 = t2.getCause();
 			}
 			LOGGER.log(LogService.LOG_ERROR, t.getMessage(), t2);
-			ExceptionHandlerManagerAccessor.getExceptionHandlerManager().handleException(t2);
+			Service.get(IExceptionHandlerManager.class).handleException(t2);
 			throw new ServletException(t);
 		} finally {
 			out.close(); // Hessian2Output forgets to close if the service throws an exception
