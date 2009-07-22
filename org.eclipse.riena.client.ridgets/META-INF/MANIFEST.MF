@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ridgets Client Ridgets Plug-in
 Bundle-SymbolicName: org.eclipse.riena.client.ridgets
-Bundle-Version: 1.2.0.M1
+Bundle-Version: 1.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.databinding;bundle-version="1.2.0";visibility:=reexport,
  org.eclipse.core.databinding.beans;bundle-version="1.2.0";visibility:=reexport,

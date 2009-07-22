@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.riena.build.feature.core.sdk"
       label="Riena Core SDK (TP ONLY)"
-      version="1.2.0.M1">
+      version="1.2.0.qualifier">
 
    <description>
       This feature contains the corresponding components for Riena
@@ -276,6 +276,13 @@ v1.0
 
    <plugin
          id="org.eclipse.core.variables"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.net"
          download-size="0"
          install-size="0"
          version="0.0.0"
