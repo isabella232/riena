@@ -52,7 +52,7 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 		sample = new Customer();
 	}
 
-	@InjectService(service = ICustomerSearch.class)
+	@InjectService()
 	public void bind(ICustomerSearch service) {
 		this.service = service;
 	}

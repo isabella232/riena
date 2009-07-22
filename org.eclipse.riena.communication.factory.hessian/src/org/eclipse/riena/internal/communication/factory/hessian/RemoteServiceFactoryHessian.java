@@ -71,7 +71,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 		}
 	}
 
-	@InjectService(service = IRemoteProgressMonitorRegistry.class, useRanking = true)
+	@InjectService(useRanking = true)
 	public void bind(IRemoteProgressMonitorRegistry pmr) {
 		this.remoteProgressMonitorRegistry = pmr;
 	}
