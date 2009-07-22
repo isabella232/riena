@@ -289,6 +289,9 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 			submodule = new SubModuleNode(createNavigationNodeIdFromTemplate(targetId, submoduleDefinition,
 					navigationArgument), submoduleDefinition.getLabel());
 			submodule.setIcon(submoduleDefinition.getIcon());
+
+			submodule.setSelectable(submoduleDefinition.isSelectable());
+
 			updateContext(submodule, navigationArgument);
 
 			Map<IConfigurationElement, Object> elementMap = createElementMap(submoduleDefinition);

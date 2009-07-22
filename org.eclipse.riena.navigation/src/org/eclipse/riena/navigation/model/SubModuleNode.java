@@ -20,6 +20,8 @@ import org.eclipse.riena.navigation.listener.ISubModuleNodeListener;
 public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode, ISubModuleNodeListener> implements
 		ISubModuleNode {
 
+	private boolean selectable = true;
+
 	/**
 	 * Creates a SubModuleNode.
 	 */
@@ -64,4 +66,19 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	public SubModuleNode(String label) {
 		this(null, label);
 	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.riena.navigation.ISubModuleNode#isSelectable()
+	 */
+	public boolean isSelectable() {
+		return selectable;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.riena.navigation.ISubModuleNode#setSelectable(boolean)
+	 */
+	public void setSelectable(boolean folderNode) {
+		this.selectable = folderNode;
+	}
+
 }

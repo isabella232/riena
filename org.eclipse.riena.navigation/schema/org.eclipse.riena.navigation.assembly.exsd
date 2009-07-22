@@ -356,6 +356,15 @@
                </appinfo>
             </annotation>
          </attribute>
+         
+         <attribute name="selectable" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  Indicates whether the view is selectable or not.
+               </documentation>
+            </annotation>
+         </attribute>
+         
       </complexType>
    </element>
 

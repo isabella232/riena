@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.core.injector.extension.DefaultValue;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 
@@ -72,4 +73,13 @@ public interface ISubModuleNodeExtension extends INodeExtension {
 	ISubModuleNodeExtension[] getChildNodes();
 
 	IForEachExtension getForeach();
+
+	/**
+	 * Indicates whether or not this node is selectable. The default value is
+	 * true.
+	 * 
+	 * @return true if selectable, otherwise false
+	 */
+	@DefaultValue("true")
+	boolean isSelectable();
 }

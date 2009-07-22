@@ -276,6 +276,34 @@
             name="org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.SalaryView"
+            id="org.eclipse.riena.example.client.views.SalaryView"
+            name="org.eclipse.riena.example.client.views.SalaryView"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.ContractsView"
+            id="org.eclipse.riena.example.client.views.ContractsView"
+            name="org.eclipse.riena.example.client.views.ContractsView"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.OutlineContractsView"
+            id="org.eclipse.riena.example.client.views.OutlineContractsView"
+            name="org.eclipse.riena.example.client.views.OutlineContractsView"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.ServiceContractsView"
+            id="org.eclipse.riena.example.client.views.ServiceContractsView"
+            name="org.eclipse.riena.example.client.views.ServiceContractsView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -554,6 +582,56 @@
                      controller="org.eclipse.riena.example.client.controllers.RemoteServiceProgressSubModuleController"/>
             </module>
             
+         </modulegroup>
+      </assembly>
+      <assembly
+            autostartsequence="100"
+            id="org.eclipse.riena.example.deselectablenodes.assembly"
+            name="Selectable SUbmodule Assembly"
+            parentTypeId="playground">
+         <modulegroup
+               name="Selectable Submodule"
+               typeId="org.eclipse.riena.example.selectablesubmodule.modulegroup">
+            <module
+                  label="Selectable Submodule"
+                  name="Selectable Submodule"
+                  unclosable="false">
+               <submodule
+                     controller="org.eclipse.riena.example.client.controllers.SalaryController"
+                     label="Salary"
+                     name="Salary"
+                     selectable="true"
+                     shared="false"
+                     typeId="org.eclipse.riena.example.selectablesubmodule.salary"
+                     view="org.eclipse.riena.example.client.views.SalaryView">
+               </submodule>
+               <submodule
+                     label="Contracts (not selectable)"
+                     name="Contracts"
+                     selectable="false"
+                     shared="false"
+                     typeId="org.eclipse.riena.example.selectablesubmodule.contracts">
+                 
+                  <submodule
+                        controller="org.eclipse.riena.example.client.controllers.ServiceContractsController"
+                        label="ServiceContracts"
+                        name="ServiceContracts"
+                        selectable="true"
+                        shared="false"
+                        typeId="org.eclipse.riena.example.selectablesubmodule.servicecontracts"
+                        view="org.eclipse.riena.example.client.views.ServiceContractsView">
+                  </submodule>
+                  <submodule
+                        controller="org.eclipse.riena.example.client.controllers.OutlineContractsController"
+                        label="OutlineContracts"
+                        name="OutlineContracts"
+                        selectable="true"
+                        shared="false"
+                        typeId="org.eclipse.riena.example.selectablesubmodule.outlinecontracts"
+                        view="org.eclipse.riena.example.client.views.OutlineContractsView">
+                  </submodule>
+               </submodule>
+            </module>
          </modulegroup>
       </assembly>
       <assembly

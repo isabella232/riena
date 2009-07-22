@@ -339,6 +339,11 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		@Override
 		public void activated(ISubModuleNode source) {
 			checkBaseStructure();
+
+			if (null != source && !source.isSelectable()) {
+				return;
+			}
+
 			SwtViewId id = getViewId(source);
 			showMultiView(id);
 		}
