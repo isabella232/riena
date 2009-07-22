@@ -33,7 +33,7 @@
           point="org.eclipse.riena.navigation.navigationNodeProvider">
       <navigationNodeProvider
              id="defaultNavigationNodeProvider"
-             class="org.eclipse.riena.navigation.model.NavigationNodeProvider"
+             class="org.eclipse.riena.navigation.model.SimpleNavigationNodeProvider"
              priority="-100">
       </navigationNodeProvider>
    </extension>
