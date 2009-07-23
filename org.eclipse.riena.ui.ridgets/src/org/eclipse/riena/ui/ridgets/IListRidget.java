@@ -47,4 +47,15 @@ public interface IListRidget extends ITableRidget {
 	 */
 	void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
 			String columnPropertyName);
+
+	/**
+	 * Binds the list to the model data. Uses toString-Method for accessing the
+	 * row value.
+	 * 
+	 * @param listHolder
+	 *            An object that has a property with a list of objects.
+	 * @param listPropertyName
+	 *            Property for accessing the list of objects.
+	 */
+	public void bindToModel(Object listHolder, String listPropertyName);
 }

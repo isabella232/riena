@@ -159,6 +159,10 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		bindToModel(listHolder, listPropertyName, rowClass, columns, null);
 	}
 
+	public void bindToModel(Object listHolder, String listPropertyName) {
+		bindToModel(listHolder, listPropertyName, Object.class, new String[] {}, null);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -173,7 +177,10 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		rowBeanClass = rowClass;
 		modelObservables = rowValues;
 		viewerObservables = null;
-		renderingMethod = columnPropertyNames[0];
+
+		if (columnPropertyNames.length > 0) {
+			renderingMethod = columnPropertyNames[0];
+		}
 
 		bindUIControl();
 	}
@@ -221,12 +228,17 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	protected void configureViewer(AbstractListViewer viewer) {
 		ObservableListContentProvider viewerCP = new ObservableListContentProvider();
 		String[] propertyNames = new String[] { renderingMethod };
-		IObservableMap[] attributeMap;
-		if (AbstractSWTWidgetRidget.isBean(rowBeanClass)) {
-			attributeMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass, propertyNames);
-		} else {
-			attributeMap = PojoObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass, propertyNames);
+		IObservableMap[] attributeMap = null;
+
+		// if renderingMethod is null, toString-Method will be used in ListLabelProvider
+		if (null != renderingMethod) {
+			if (AbstractSWTWidgetRidget.isBean(rowBeanClass)) {
+				attributeMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass, propertyNames);
+			} else {
+				attributeMap = PojoObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass, propertyNames);
+			}
 		}
+
 		viewer.setLabelProvider(new ListLabelProvider(attributeMap));
 		viewer.setContentProvider(viewerCP);
 		viewer.setInput(viewerObservables);
@@ -445,8 +457,11 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 
 	private final class ListLabelProvider extends ObservableMapLabelProvider {
 
+		private boolean useToString;
+
 		public ListLabelProvider(IObservableMap[] attributeMap) {
-			super(attributeMap);
+			super((IObservableMap[]) (null == attributeMap ? new IObservableMap[] {} : attributeMap));
+			useToString = null == attributeMap;
 		}
 
 		@Override
@@ -454,6 +469,15 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 			if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT && !isEnabled()) {
 				return ""; //$NON-NLS-1$
 			} else {
+				if (useToString) {
+					if (null != element) {
+						String out = element.toString();
+						if (null != element) {
+							return out;
+						}
+					}
+					throw new NullPointerException("Element in ListLabelProvider is null");
+				}
 				return super.getColumnText(element, columnIndex);
 			}
 		}

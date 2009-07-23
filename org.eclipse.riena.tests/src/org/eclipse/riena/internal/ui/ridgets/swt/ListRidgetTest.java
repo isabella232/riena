@@ -15,12 +15,17 @@ import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
@@ -36,6 +41,7 @@ import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
+import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
@@ -70,6 +76,63 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 	// test methods
 	// /////////////
+
+	private class SimplifiedModel {
+		private java.util.List<String> values;
+		private final static String NAME_ONE = "Janet";
+		private final static String NAME_TWO = "Jermaine";
+		private final static String NAME_THREE = "John";
+
+		public SimplifiedModel() {
+			values = Arrays.asList(new String[] { NAME_ONE, NAME_TWO, NAME_THREE });
+		}
+
+		public java.util.List<String> getValues() {
+			return values;
+		}
+	}
+
+	private Shell createSimplifiedTestList() {
+		Display display = Display.getDefault();
+
+		Realm realm = SWTObservables.getRealm(display);
+		assertNotNull(realm);
+		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
+		Shell shell = new Shell(SWT.SYSTEM_MODAL | SWT.ON_TOP);
+		shell.setLayout(new RowLayout(SWT.VERTICAL));
+
+		shell.setSize(130, 100);
+		shell.setLocation(0, 0);
+		shell.open();
+		return shell;
+	}
+
+	public void testSimplifiedBinding() {
+		Shell shell = createSimplifiedTestList();
+		List control = new List(shell, SWT.None);
+
+		IListRidget ridget = (IListRidget) SwtRidgetFactory.createRidget(control);
+		UITestHelper.readAndDispatch(getWidget());
+
+		SimplifiedModel model = new SimplifiedModel();
+		ridget.bindToModel(model, "values");
+		ridget.updateFromModel();
+
+		assertEquals(model.getValues().size(), control.getItemCount());
+
+		assertNotNull(control.getItem(0));
+		assertEquals(SimplifiedModel.NAME_ONE, control.getItem(0));
+
+		assertNotNull(control.getItem(1));
+		assertEquals(SimplifiedModel.NAME_TWO, control.getItem(1));
+
+		assertNotNull(control.getItem(2));
+		assertEquals(SimplifiedModel.NAME_THREE, control.getItem(2));
+
+		control = null;
+		shell.dispose();
+		shell = null;
+	}
 
 	public void testRidgetMapping() {
 		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
