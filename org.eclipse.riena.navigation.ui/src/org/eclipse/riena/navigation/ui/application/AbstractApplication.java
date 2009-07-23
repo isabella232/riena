@@ -51,16 +51,16 @@ public abstract class AbstractApplication implements IApplication {
 			return result;
 		}
 
-		IApplicationNode node = createModel();
-		if (node == null) {
+		IApplicationNode applicationNode = createModel();
+		if (applicationNode == null) {
 			throw new RuntimeException(
 					"Application did not return an ApplicationModel in method 'createModel' but returned NULL. Cannot continue"); //$NON-NLS-1$
 		}
-		ApplicationNodeManager.registerApplicationNode(node);
-		createStartupsFromExtensions(node);
-		initializeNode(node);
+		ApplicationNodeManager.registerApplicationNode(applicationNode);
+		createStartupNodes(applicationNode);
+		initializeNode(applicationNode);
 		setProgressProviderBridge();
-		return createView(context, node);
+		return createView(context, applicationNode);
 	}
 
 	private void setProgressProviderBridge() {
@@ -81,7 +81,7 @@ public abstract class AbstractApplication implements IApplication {
 		return applicationModel;
 	}
 
-	protected void createStartupsFromExtensions(IApplicationNode applicationNode) {
+	protected void createStartupNodes(IApplicationNode applicationNode) {
 		INavigationNodeProvider navigationNodeProvider = NavigationNodeProvider.getInstance();
 		List<StartupNodeInfo> startups = navigationNodeProvider.getSortedStartupNodeInfos();
 		for (StartupNodeInfo startup : startups) {
