@@ -37,6 +37,8 @@ import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
+import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 
 /**
  * Default implementation for the navigation processor
@@ -260,9 +262,31 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (activateNode != null) {
 			navigationMap.put(activateNode, sourceNode);
 			activateNode.activate();
+			setFocusOnRidget(activateNode, navigation);
 		} else {
 			navigationMap.put(targetNode, sourceNode);
 			targetNode.activate();
+			setFocusOnRidget(targetNode, navigation);
+		}
+	}
+
+	/**
+	 * Requests focus on given ridget. If the ridget is not found a
+	 * {@link RuntimeException} is thrown
+	 * 
+	 * @param activateNode
+	 * @param navigation
+	 */
+	private void setFocusOnRidget(INavigationNode<?> activateNode, NavigationArgument navigation) {
+		if (null != navigation && null != navigation.getRidgetId()) {
+			IRidgetContainer ridgetContainer = activateNode.getNavigationNodeController().getTypecastedAdapter(
+					IRidgetContainer.class);
+			IRidget ridget = ridgetContainer.getRidget(navigation.getRidgetId());
+			if (null != ridget) {
+				ridget.requestFocus();
+			} else {
+				throw new RuntimeException(String.format("Ridget not found '%s'", navigation.getRidgetId())); //$NON-NLS-1$
+			}
 		}
 	}
 

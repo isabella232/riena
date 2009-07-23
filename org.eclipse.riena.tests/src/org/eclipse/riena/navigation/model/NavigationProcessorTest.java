@@ -13,6 +13,8 @@ package org.eclipse.riena.navigation.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easymock.EasyMock;
+
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -22,13 +24,16 @@ import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.ui.controllers.NavigationNodeController;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
+import org.eclipse.riena.ui.ridgets.IRidget;
 
 /**
  * Tests for the NavigationProcessor.
@@ -61,6 +66,56 @@ public class NavigationProcessorTest extends RienaTestCase {
 		moduleGroup.addChild(module);
 		subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule"));
 		module.addChild(subModule);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.tests.RienaTestCase#tearDown()
+	 */
+	@Override
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		applicationNode = null;
+	}
+
+	public void testNavigateToRidget() throws Exception {
+		// create a IRidgetMock that returns false on hasFocus
+		final IRidget ridgetStubWithoutFocus = EasyMock.createStrictMock(IRidget.class);
+		EasyMock.expect(ridgetStubWithoutFocus.hasFocus()).andReturn(false);
+		EasyMock.replay(ridgetStubWithoutFocus);
+
+		// create a IRidgetMock that ensures that the requestFocus-Method is called
+		final IRidget ridgetStub = EasyMock.createStrictMock(IRidget.class);
+		ridgetStub.requestFocus();
+		EasyMock.expect(ridgetStub.hasFocus()).andReturn(true);
+		EasyMock.replay(ridgetStub);
+
+		final String ridgetId = "myRidget";
+
+		// create a NavigationNodeControllerStub that returns the IRidgetMock
+		NavigationNodeController<ISubModuleNode> nodeControllerStub = new NavigationNodeController<ISubModuleNode>() {
+			public void configureRidgets() {
+			}
+
+			@Override
+			public IRidget getRidget(String id) {
+				return ridgetId.equals(id) ? ridgetStub : ridgetStubWithoutFocus;
+			}
+		};
+
+		subModule.setNavigationNodeController(nodeControllerStub);
+
+		navigationProcessor.activate(subApplication);
+		navigationProcessor.navigate(subApplication, new NavigationNodeId(
+				"org.eclipse.riena.navigation.model.test.subModule"), new NavigationArgument(null, ridgetId));
+		assertTrue(subModule.isActivated());
+		assertTrue(ridgetStub.hasFocus());
+
+		assertFalse(ridgetStubWithoutFocus.hasFocus());
+
+		EasyMock.verify(ridgetStub);
+		EasyMock.reset(ridgetStub);
 	}
 
 	public void testActivateChildren() throws Exception {
@@ -608,5 +663,4 @@ public class NavigationProcessorTest extends RienaTestCase {
 		}
 
 	}
-
 }

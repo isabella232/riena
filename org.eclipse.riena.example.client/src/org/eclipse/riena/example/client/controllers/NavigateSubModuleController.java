@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -42,6 +43,15 @@ public class NavigateSubModuleController extends SubModuleController /*
 		IActionRidget tableTextAndTree = (IActionRidget) getRidget("tableTextAndTree"); //$NON-NLS-1$
 		tableTextAndTree.setText("Table, Text and Tree (SubApplication 2)"); //$NON-NLS-1$
 		tableTextAndTree.addListener(new TableTextAndTreeListener());
+
+		IActionRidget navigateRidget = (IActionRidget) getRidget("btnNavigateToRidget"); //$NON-NLS-1$
+		navigateRidget.addListener(new IActionListener() {
+			public void callback() {
+				getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.combo"), //$NON-NLS-1$
+						new NavigationArgument(null, "textFirst")); //$NON-NLS-1$
+
+			}
+		});
 	}
 
 	private class ComboAndListListener implements IActionListener {

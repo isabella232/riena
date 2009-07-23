@@ -32,6 +32,7 @@ public class NavigationArgument {
 	private Object parameter;
 	private NavigationNodeId parentNodeId;
 	private IUpdateListener updateListener = null;
+	private String ridgetId;
 
 	/**
 	 */
@@ -49,6 +50,16 @@ public class NavigationArgument {
 
 	/**
 	 * @param parameter
+	 * @param ridgetId
+	 *            requestFocus on a ridget
+	 */
+	public NavigationArgument(Object parameter, String ridgetId) {
+		this(parameter);
+		this.ridgetId = ridgetId;
+	}
+
+	/**
+	 * @param parameter
 	 * @param argumentListener
 	 * @param parentNodeId
 	 */
@@ -56,6 +67,18 @@ public class NavigationArgument {
 		super();
 		this.parameter = parameter;
 		this.parentNodeId = parentNodeId;
+	}
+
+	/**
+	 * @param parameter
+	 * @param argumentListener
+	 * @param parentNodeId
+	 */
+	public NavigationArgument(Object parameter, NavigationNodeId parentNodeId, String ridgetId) {
+		super();
+		this.parameter = parameter;
+		this.parentNodeId = parentNodeId;
+		this.ridgetId = ridgetId;
 	}
 
 	/**
@@ -68,6 +91,10 @@ public class NavigationArgument {
 		this.parameter = parameter;
 		this.parentNodeId = parentNodeId;
 		this.updateListener = updateListener;
+	}
+
+	public String getRidgetId() {
+		return ridgetId;
 	}
 
 	/**
