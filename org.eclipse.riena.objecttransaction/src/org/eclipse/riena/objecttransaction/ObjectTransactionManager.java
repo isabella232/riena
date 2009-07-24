@@ -18,7 +18,12 @@ import org.eclipse.riena.internal.objecttransaction.impl.ObjectTransactionManage
  */
 public final class ObjectTransactionManager {
 
-	private static final ThreadLocal<IObjectTransactionManager> THREAD_LOCAL_OTM = new ThreadLocal<IObjectTransactionManager>();
+	private static final ThreadLocal<IObjectTransactionManager> THREAD_LOCAL_OTM = new ThreadLocal<IObjectTransactionManager>() {
+		@Override
+		protected IObjectTransactionManager initialValue() {
+			return new ObjectTransactionManagerImpl();
+		}
+	};
 
 	private ObjectTransactionManager() {
 		// utility
@@ -30,13 +35,6 @@ public final class ObjectTransactionManager {
 	 * @return ObjectTransactionManager
 	 */
 	public static IObjectTransactionManager getInstance() {
-		synchronized (ObjectTransactionManager.class) {
-			IObjectTransactionManager otm = THREAD_LOCAL_OTM.get();
-			if (otm == null) {
-				otm = new ObjectTransactionManagerImpl();
-				THREAD_LOCAL_OTM.set(otm);
-			}
-			return otm;
-		}
+		return THREAD_LOCAL_OTM.get();
 	}
 }
