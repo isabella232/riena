@@ -67,14 +67,60 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 		this(null, label);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.navigation.model.NavigationNode#activate()
+	 */
+	@Override
+	public void activate() {
+		if (isSelectable()) {
+			// if node is selectable we just activate it
+			super.activate();
+		} else {
+
+			ISubModuleNode selectableChild = getFirstSelectableChild();
+
+			if (selectableChild == null) {
+				return;
+			}
+
+			if (selectableChild.isActivated()) {
+				// force reactivation of first child
+				super.activate();
+			} else {
+				selectableChild.activate();
+			}
+		}
+	}
+
+	/**
+	 * return the first direct seletable child of this node
+	 */
+	private ISubModuleNode getFirstSelectableChild() {
+		if (getChildren().size() == 0) {
+			return null;
+		}
+		for (ISubModuleNode child : getChildren()) {
+			if (child.isSelectable()) {
+				return child;
+			}
+		}
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.riena.navigation.ISubModuleNode#isSelectable()
 	 */
 	public boolean isSelectable() {
 		return selectable;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.riena.navigation.ISubModuleNode#setSelectable(boolean)
 	 */
 	public void setSelectable(boolean folderNode) {
