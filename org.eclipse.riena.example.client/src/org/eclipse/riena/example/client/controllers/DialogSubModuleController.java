@@ -35,12 +35,15 @@ public class DialogSubModuleController extends SubModuleController {
 		IActionRidget openShellAction = (IActionRidget) getRidget(RIDGET_ID_OPEN_DIALOG);
 		openShellAction.setText("&Open dialog"); //$NON-NLS-1$
 		openShellAction.addListener(new IActionListener() {
+
 			private HelloDialogView dialog;
 
 			public void callback() {
 				if (dialog == null) {
 					dialog = new HelloDialogView();
 				}
+				// the dialog controller is now available
+				dialog.getController().setContext("key", "value"); //$NON-NLS-1$//$NON-NLS-2$
 				dialog.build();
 			}
 		});

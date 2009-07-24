@@ -41,28 +41,25 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 		if (parent != null) {
 			parentShell = parent.getShell();
 		}
+		setController(createController());
 	}
 
 	/**
 	 * Creates the dialog of this view
 	 */
 	protected ControlledRienaDialog createDialog() {
-
-		return new ControlledRienaDialog(getParentShell());
+		ControlledRienaDialog controlledRienaDialog = new ControlledRienaDialog(getParentShell());
+		return controlledRienaDialog;
 	}
 
-	protected void createAndBindController() {
-
-		AbstractWindowController controller = createController();
-		initialize(controller);
-		bind(controller);
+	protected void bindController() {
+		initialize(getController());
+		bind(getController());
 
 	}
 
 	protected Control buildView(Composite parent) {
-
 		addUIControl(dialog.getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
-
 		return parent;
 	}
 
@@ -72,11 +69,9 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 	 * Build and open the a dialog.
 	 */
 	public void build() {
-
 		if (dialog == null) {
 			dialog = createDialog();
 		}
-
 		dialog.open();
 	}
 
@@ -126,7 +121,7 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 
 			super.create();
 
-			createAndBindController();
+			bindController();
 			LNF_UPDATER.updateUIControlsAfterBind(getShell());
 
 			getShell().addDisposeListener(new DisposeListener() {

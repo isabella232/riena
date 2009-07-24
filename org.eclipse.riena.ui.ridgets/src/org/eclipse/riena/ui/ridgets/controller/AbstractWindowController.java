@@ -14,13 +14,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.riena.internal.ui.core.context.IContext;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
 /**
  * Controller for a view that is or has a window.
  */
-public abstract class AbstractWindowController implements IController {
+public abstract class AbstractWindowController implements IController, IContext {
 
 	/**
 	 * The ridget id to use for the window ridget.
@@ -30,11 +31,12 @@ public abstract class AbstractWindowController implements IController {
 	private IWindowRidget windowRidget;
 	private Map<String, IRidget> ridgets;
 	private boolean blocked;
+	private Map<String, Object> context;
 
 	public AbstractWindowController() {
 		super();
-
 		ridgets = new HashMap<String, IRidget>();
+		context = new HashMap<String, Object>();
 	}
 
 	/**
@@ -81,5 +83,27 @@ public abstract class AbstractWindowController implements IController {
 
 	public void afterBind() {
 		getWindowRidget().updateFromModel();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.internal.ui.core.context.IContext#setContext(java.lang
+	 * .String, java.lang.Object)
+	 */
+	public void setContext(String key, Object value) {
+		context.put(key, value);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.internal.ui.core.context.IContext#getContext(java.lang
+	 * .String)
+	 */
+	public Object getContext(String key) {
+		return context.get(key);
 	}
 }

@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.Markable;
+import org.eclipse.riena.internal.ui.core.context.IContext;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.navigation.INavigationContext;
@@ -59,7 +60,7 @@ import org.eclipse.riena.ui.ridgets.tree2.ITreeNode2;
  *            the type of the listener
  */
 public abstract class NavigationNode<S extends INavigationNode<C>, C extends INavigationNode<?>, L extends INavigationNodeListener<S, C>>
-		extends TypecastingObject implements INavigationNode<C>, INavigationNodeListenerable<S, C, L> {
+		extends TypecastingObject implements INavigationNode<C>, INavigationNodeListenerable<S, C, L>, IContext {
 
 	private NavigationNodeId nodeId;
 	private State state;

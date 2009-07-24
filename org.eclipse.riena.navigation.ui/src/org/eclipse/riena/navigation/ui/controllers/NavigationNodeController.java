@@ -18,7 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.internal.ui.core.context.IContext;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
@@ -40,7 +43,7 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
  *            Type of the navigation node
  */
 public abstract class NavigationNodeController<N extends INavigationNode<?>> extends TypecastingObject implements
-		INavigationNodeController, IController {
+		INavigationNodeController, IController, IContext {
 
 	private N navigationNode;
 	private Map<String, IRidget> ridgets;
@@ -259,6 +262,27 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		public void propertyChange(PropertyChangeEvent evt) {
 			updateNavigationNodeMarkers();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.navigation.IContext#setContext(java.lang.String,
+	 * java.lang.Object)
+	 */
+	public void setContext(String key, Object value) {
+		Assert.isNotNull(getNavigationNode(), "NavigationNode may not be null"); //$NON-NLS-1$
+		getNavigationNode().setContext(key, value);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.navigation.IContext#getContext(java.lang.String)
+	 */
+	public Object getContext(String key) {
+		Assert.isNotNull(getNavigationNode(), "NavigationNode may not be null"); //$NON-NLS-1$
+		return getNavigationNode().getContext(key);
 	}
 
 }
