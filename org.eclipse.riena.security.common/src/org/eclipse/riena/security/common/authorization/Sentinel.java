@@ -26,7 +26,7 @@ public final class Sentinel {
 	private ISentinelService sentinelService;
 	// this private instance is only held in the class so that it does not get garbage collected
 	// because it holds the injected reference to the SentinelService
-	private static Sentinel myself = new Sentinel();
+	private static final Sentinel SENTINEL = new Sentinel();
 
 	private Sentinel() {
 		super();
@@ -34,7 +34,7 @@ public final class Sentinel {
 	}
 
 	private static Sentinel getInstance() {
-		return myself;
+		return SENTINEL;
 	}
 
 	private ISentinelService getSentinelService() {
