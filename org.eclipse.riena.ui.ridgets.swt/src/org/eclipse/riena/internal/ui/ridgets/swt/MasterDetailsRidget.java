@@ -295,8 +295,8 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	public void handleAdd() {
 		getTableRidget().clearSelection();
 		editable = delegate.createWorkingCopy();
-		updateDetails(editable);
 		setEnabled(false, true);
+		updateDetails(editable);
 		getUIControl().getDetails().setFocus();
 	}
 
@@ -336,8 +336,8 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	private void handleSelectionChange(Object newSelection) {
 		if (newSelection != null) { // selection changed
 			editable = newSelection;
-			updateDetails(editable);
 			setEnabled(false, true);
+			updateDetails(editable);
 		} else { // nothing selected
 			clearSelection();
 			setEnabled(false, false);

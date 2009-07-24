@@ -52,6 +52,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	private final String[] columnHeaders = { "TestColumn1Header", "TestColumn2Header" };
 
 	private List<MDBean> input;
+	private MDDelegate delegate;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -61,8 +62,16 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		List<Object> uiControls = getWidget().getUIControls();
 		BINDING_MAN.injectRidgets(ridget, uiControls);
 		BINDING_MAN.bind(ridget, uiControls);
-		ridget.setDelegate(new MDDelegate());
+		delegate = new MDDelegate();
+		ridget.setDelegate(delegate);
 		getShell().setSize(300, 300);
+	}
+
+	@Override
+	protected void tearDown() throws Exception {
+		delegate = null;
+		input = null;
+		super.tearDown();
 	}
 
 	@Override
@@ -150,6 +159,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	public void testAddBean() {
 		MasterDetailsRidget ridget = getRidget();
 		MDWidget widget = getWidget();
+		ITextRidget txtColumn1 = (ITextRidget) ridget.getRidget("txtColumn1");
+		ITextRidget txtColumn2 = (ITextRidget) ridget.getRidget("txtColumn2");
 
 		bindToModel(true);
 		int oldSize = input.size();
@@ -160,6 +171,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("TestR0C2", widget.txtColumn2.getText());
 
 		ridget.handleAdd();
+		assertTrue(txtColumn1.isEnabled());
+		assertTrue(txtColumn2.isEnabled());
 
 		assertTrue(widget.txtColumn1.isFocusControl());
 
@@ -180,12 +193,20 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("B", newEntry.column2);
 
 		assertEquals(newEntry, ridget.getSelection());
+
+		delegate.setTxtColumn1IsEnabled(false);
+		ridget.handleAdd();
+		assertFalse(txtColumn1.isEnabled());
+		assertTrue(txtColumn2.isEnabled());
+
 	}
 
 	public void testDeleteBean() {
 		MasterDetailsRidget ridget = getRidget();
 		MDWidget widget = getWidget();
 		Table table = widget.getTable();
+		ITextRidget txtColumn1 = (ITextRidget) ridget.getRidget("txtColumn1");
+		ITextRidget txtColumn2 = (ITextRidget) ridget.getRidget("txtColumn2");
 
 		bindToModel(true);
 
@@ -194,10 +215,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		MDBean toDelete = input.get(1);
 		ridget.setSelection(toDelete);
+		assertTrue(txtColumn1.isEnabled());
+		assertTrue(txtColumn2.isEnabled());
 		ridget.handleRemove();
 
 		assertEquals(2, input.size());
 		assertFalse(input.contains(toDelete));
+		assertFalse(txtColumn1.isEnabled());
+		assertFalse(txtColumn2.isEnabled());
 	}
 
 	public void testModifyBean() {
@@ -361,6 +386,40 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 	}
 
+	/**
+	 * Tests the <i>private</i> method {@code handleSelectionChange(Object)}.
+	 */
+	public void testHandleSelectionChange() {
+
+		IMasterDetailsRidget masterDetails = getRidget();
+		bindToModel(true);
+		ITextRidget txtColumn1 = (ITextRidget) masterDetails.getRidget("txtColumn1");
+		ITextRidget txtColumn2 = (ITextRidget) masterDetails.getRidget("txtColumn2");
+
+		MDBean item0 = input.get(0);
+		masterDetails.setSelection(item0);
+
+		assertTrue(txtColumn1.isEnabled());
+		assertTrue(txtColumn2.isEnabled());
+
+		masterDetails.setSelection(null);
+
+		assertFalse(txtColumn1.isEnabled());
+		assertFalse(txtColumn2.isEnabled());
+
+		delegate.setTxtColumn1IsEnabled(false);
+		masterDetails.setSelection(item0);
+
+		assertFalse(txtColumn1.isEnabled());
+		assertTrue(txtColumn2.isEnabled());
+
+		masterDetails.setSelection(null);
+
+		assertFalse(txtColumn1.isEnabled());
+		assertFalse(txtColumn2.isEnabled());
+
+	}
+
 	// helping methods
 	//////////////////
 
@@ -481,9 +540,10 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	 * Implements a delegate with two text ridgets. This class is a companion
 	 * class to {@link MDBean} and {@link MDWidget}.
 	 */
-	private static final class MDDelegate implements IMasterDetailsDelegate {
+	private static class MDDelegate implements IMasterDetailsDelegate {
 
 		private final MDBean workingCopy = createWorkingCopy();
+		private boolean txtColumn1Isenabled = true;
 
 		public void configureRidgets(IRidgetContainer container) {
 			ITextRidget txtColumn1 = (ITextRidget) container.getRidget("txtColumn1");
@@ -520,10 +580,21 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		}
 
 		public void updateDetails(IRidgetContainer container) {
+			ITextRidget txtColumn1 = (ITextRidget) container.getRidget("txtColumn1");
+			txtColumn1.setEnabled(isTxtColumn1IsEnabled());
 			for (IRidget ridget : container.getRidgets()) {
 				ridget.updateFromModel();
 			}
 		}
+
+		public void setTxtColumn1IsEnabled(boolean enabled) {
+			this.txtColumn1Isenabled = enabled;
+		}
+
+		public boolean isTxtColumn1IsEnabled() {
+			return txtColumn1Isenabled;
+		}
+
 	}
 
 	/**
