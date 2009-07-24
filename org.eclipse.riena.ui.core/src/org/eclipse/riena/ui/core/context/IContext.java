@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.core.context;
+package org.eclipse.riena.ui.core.context;
 
 /**
  * Interface representing the ability to hold key value pairs of context data.
