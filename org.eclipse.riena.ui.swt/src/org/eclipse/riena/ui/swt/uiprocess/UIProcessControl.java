@@ -12,14 +12,15 @@ package org.eclipse.riena.ui.swt.uiprocess;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.window.Window;
-import org.eclipse.riena.core.util.ListenerList;
-import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.core.uiprocess.UIProcess;
-import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.ui.core.uiprocess.UIProcess;
+import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 
 /**
  * Control for showing a progress or process info window.
@@ -115,8 +116,15 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		// only if not allready processing
 		if (!isProcessing()) {// use the synched way..
 			setProcessing(true);
-			getProgressBar().setMaximum(90);
-			getPercentLabel().setText(""); //$NON-NLS-1$
+
+			if (null != getProgressBar() && !getProgressBar().isDisposed()) {
+				getProgressBar().setMaximum(90);
+			}
+
+			if (null != getPercentLabel() && !getPercentLabel().isDisposed()) {
+				getPercentLabel().setText(""); //$NON-NLS-1$
+			}
+
 			if (processUpdateThread == null || !processUpdateThread.isAlive()) {
 				startUpdateThread();
 			}
@@ -157,7 +165,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 			} else {
 				selection[0] = 0;
 			}
-			if (!getProgressBar().isDisposed()) {
+			if (null != getProgressBar() && !getProgressBar().isDisposed()) {
 				getProgressBar().getDisplay().asyncExec(new Runnable() {
 
 					public void run() {

@@ -241,13 +241,17 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		if (getActiveContexts().size() == 0) {
 			close();
 		} else {
-			if (getCurrentVisualizer() != null) {
+
+			IProgressVisualizer currentVisualizer = getCurrentVisualizer();
+
+			// if this is a user-job, show the ProgressWindow 
+			if (currentVisualizer != null && currentVisualizer.getProcessInfo().isDialogVisible()) {
 				open();
 				Object currentContext = null;
 
 				for (Object context : contexts.keySet()) {
 					VisualizerContainer container = contexts.get(context);
-					if (container.getCurrentVisualizer() == getCurrentVisualizer()) {
+					if (container.getCurrentVisualizer() == currentVisualizer) {
 						currentContext = context;
 						break;
 					}
@@ -255,10 +259,12 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 				if (currentContext != null) {
 					getUIControl().getWindow().getShell().setBounds(contexts.get(currentContext).getBounds());
 				}
-				int progress = getProgress(getCurrentVisualizer()).completed;
+				int progress = getProgress(currentVisualizer).completed;
 				if (progress <= 0) {
 					showProcessing();
 				}
+			} else {
+				showProcessing();
 			}
 		}
 	}
