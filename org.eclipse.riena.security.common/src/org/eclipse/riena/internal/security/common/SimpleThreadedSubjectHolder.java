@@ -16,13 +16,13 @@ import org.eclipse.riena.security.common.ISubjectChangeListener;
 import org.eclipse.riena.security.common.ISubjectHolder;
 
 /**
- * The <code>SimpleTrheadedSubjectHolder</code> is a very simple implementation
+ * The <code>SimpleThreadedSubjectHolder</code> is a very simple implementation
  * of the <code>ISubjectHolder</code> interface which should be sufficient for
  * the server side.
  */
 public class SimpleThreadedSubjectHolder implements ISubjectHolder {
 
-	private final ThreadLocal<SimpleSubjectHolder> subjectHolders = new ThreadLocal<SimpleSubjectHolder>() {
+	private final ThreadLocal<ISubjectHolder> subjectHolders = new ThreadLocal<ISubjectHolder>() {
 		@Override
 		protected SimpleSubjectHolder initialValue() {
 			return new SimpleSubjectHolder();
