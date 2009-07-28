@@ -16,9 +16,10 @@ import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.util.ContainerModel;
 import org.eclipse.riena.internal.security.common.authorization.PermissionCache;
 import org.eclipse.riena.internal.security.common.session.SimpleSessionHolderService;
-import org.eclipse.riena.security.common.ISubjectHolderService;
+import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.IPermissionCache;
 import org.eclipse.riena.security.common.authorization.ISentinelService;
@@ -56,7 +57,8 @@ public class Activator extends RienaPlugin {
 
 		context.registerService(ICallHook.class.getName(), new SecurityCallHook(), null);
 
-		context.registerService(ISubjectHolderService.class.getName(), new SubjectHolderService(), null);
+		context.registerService(ISubjectHolder.class.getName(), ContainerModel.isClient() ? new SimpleSubjectHolder()
+				: new SimpleThreadedSubjectHolder(), null);
 
 		context.registerService(IPermissionCache.class.getName(), new PermissionCache(), null);
 
@@ -70,7 +72,7 @@ public class Activator extends RienaPlugin {
 
 		Inject.service(IPermissionCache.class).useRanking().into(sentinelService).andStart(
 				Activator.getDefault().getContext());
-		Inject.service(ISubjectHolderService.class).useRanking().into(sentinelService).andStart(
+		Inject.service(ISubjectHolder.class).useRanking().into(sentinelService).andStart(
 				Activator.getDefault().getContext());
 		Inject.service(IAuthorizationService.class).useRanking().into(sentinelService).andStart(
 				Activator.getDefault().getContext());

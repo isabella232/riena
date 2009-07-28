@@ -26,20 +26,19 @@ import sun.misc.BASE64Encoder;
  */
 public class BasicAuthenticationCallHook implements ICallHook {
 
-	private ISubjectHolderService subjectHolderService = null;
+	private ISubjectHolder subjectHolder = null;
 
 	public BasicAuthenticationCallHook() {
 		super();
-		Inject.service(ISubjectHolderService.class).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(ISubjectHolder.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
 	}
 
-	public void bind(ISubjectHolderService subjectHolderService) {
-		this.subjectHolderService = subjectHolderService;
+	public void bind(ISubjectHolder subjectHolderService) {
+		this.subjectHolder = subjectHolderService;
 	}
 
-	public void unbind(ISubjectHolderService subjectHolderService) {
-		this.subjectHolderService = null;
+	public void unbind(ISubjectHolder subjectHolderService) {
+		this.subjectHolder = null;
 	}
 
 	/*
@@ -61,23 +60,24 @@ public class BasicAuthenticationCallHook implements ICallHook {
 	 * .riena.communication.core.hooks.CallContext)
 	 */
 	public void beforeCall(CallContext context) {
-		ISubjectHolder subjectHolder = subjectHolderService.fetchSubjectHolder();
-		if (subjectHolder != null) {
-			Subject subject = subjectHolder.getSubject();
-			if (subject != null) {
-				Object psw = subject.getPrivateCredentials().iterator().next();
-				String password;
-				if (psw != null && psw instanceof String) {
-					password = (String) psw;
-				} else {
-					password = ""; //$NON-NLS-1$
-				}
-				for (Principal principal : subject.getPrincipals()) {
-					String useridPlusPassword = principal.getName() + ":" + password; //$NON-NLS-1$
-					String authorizationInBase64 = new BASE64Encoder().encode(useridPlusPassword.getBytes());
-					context.getMessageContext().addRequestHeader("Authorization", "Basic " + authorizationInBase64); //$NON-NLS-1$//$NON-NLS-2$
-				}
-			}
+		if (subjectHolder == null) {
+			return;
+		}
+		Subject subject = subjectHolder.getSubject();
+		if (subject == null) {
+			return;
+		}
+		Object psw = subject.getPrivateCredentials().iterator().next();
+		String password;
+		if (psw != null && psw instanceof String) {
+			password = (String) psw;
+		} else {
+			password = ""; //$NON-NLS-1$
+		}
+		for (Principal principal : subject.getPrincipals()) {
+			String useridPlusPassword = principal.getName() + ":" + password; //$NON-NLS-1$
+			String authorizationInBase64 = new BASE64Encoder().encode(useridPlusPassword.getBytes());
+			context.getMessageContext().addRequestHeader("Authorization", "Basic " + authorizationInBase64); //$NON-NLS-1$//$NON-NLS-2$
 		}
 	}
 

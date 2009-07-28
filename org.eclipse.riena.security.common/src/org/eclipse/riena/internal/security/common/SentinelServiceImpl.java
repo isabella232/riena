@@ -20,7 +20,6 @@ import java.util.Set;
 import javax.security.auth.Subject;
 
 import org.eclipse.riena.security.common.ISubjectHolder;
-import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.IPermissionCache;
 import org.eclipse.riena.security.common.authorization.ISentinelService;
@@ -32,7 +31,7 @@ import org.eclipse.riena.security.common.authorization.ISentinelService;
 public class SentinelServiceImpl implements ISentinelService {
 
 	private IPermissionCache permCache;
-	private ISubjectHolderService subjectHolderService;
+	private ISubjectHolder subjectHolder;
 	private IAuthorizationService authService;
 
 	public void bind(IPermissionCache permCache) {
@@ -45,13 +44,13 @@ public class SentinelServiceImpl implements ISentinelService {
 		}
 	}
 
-	public void bind(ISubjectHolderService subjectHolderService) {
-		this.subjectHolderService = subjectHolderService;
+	public void bind(ISubjectHolder subjectHolder) {
+		this.subjectHolder = subjectHolder;
 	}
 
-	public void unbind(ISubjectHolderService subjectHolderService) {
-		if (subjectHolderService == this.subjectHolderService) {
-			this.subjectHolderService = null;
+	public void unbind(ISubjectHolder subjectHolder) {
+		if (subjectHolder == this.subjectHolder) {
+			this.subjectHolder = null;
 		}
 	}
 
@@ -75,8 +74,7 @@ public class SentinelServiceImpl implements ISentinelService {
 	 * @return
 	 */
 	public boolean checkAccess(Permission permission) {
-		ISubjectHolder subjectHolder = getSubjectHolderService().fetchSubjectHolder();
-		Subject subject = subjectHolder.getSubject();
+		Subject subject = getSubjectHolder().getSubject();
 		if (subject != null) {
 			Permissions permissions = getPermissions(subject);
 			boolean result = permissions.implies(permission);
@@ -90,8 +88,8 @@ public class SentinelServiceImpl implements ISentinelService {
 		return permCache;
 	}
 
-	protected ISubjectHolderService getSubjectHolderService() {
-		return subjectHolderService;
+	protected ISubjectHolder getSubjectHolder() {
+		return subjectHolder;
 	}
 
 	/**

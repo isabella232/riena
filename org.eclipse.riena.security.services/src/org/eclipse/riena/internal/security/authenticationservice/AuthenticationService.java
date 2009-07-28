@@ -16,7 +16,10 @@ import java.util.Set;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.login.LoginException;
 
-import org.eclipse.riena.security.common.ISubjectHolderService;
+import org.eclipse.equinox.security.auth.ILoginContext;
+import org.eclipse.equinox.security.auth.LoginContextFactory;
+
+import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authentication.AuthenticationFailure;
 import org.eclipse.riena.security.common.authentication.AuthenticationTicket;
 import org.eclipse.riena.security.common.authentication.Callback2CredentialConverter;
@@ -25,9 +28,6 @@ import org.eclipse.riena.security.common.authentication.credentials.AbstractCred
 import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
-
-import org.eclipse.equinox.security.auth.ILoginContext;
-import org.eclipse.equinox.security.auth.LoginContextFactory;
 
 /**
  * The <code>AuthenticationService</code> will perform the authentication
@@ -52,7 +52,7 @@ public class AuthenticationService implements IAuthenticationService {
 
 	// private IAuthenticationModule authenticationModule;
 	private ISessionService sessionService;
-	private ISubjectHolderService subjectHolderService;
+	private ISubjectHolder subjectHolder;
 	private ISessionHolderService sessionHolderService;
 
 	/**
@@ -73,13 +73,13 @@ public class AuthenticationService implements IAuthenticationService {
 		}
 	}
 
-	public void bind(ISubjectHolderService principalHolderService) {
-		this.subjectHolderService = principalHolderService;
+	public void bind(ISubjectHolder subjectHolder) {
+		this.subjectHolder = subjectHolder;
 	}
 
-	public void unbind(ISubjectHolderService principalHolderService) {
-		if (this.subjectHolderService == principalHolderService) {
-			this.subjectHolderService = null;
+	public void unbind(ISubjectHolder subjectHolder) {
+		if (this.subjectHolder == subjectHolder) {
+			this.subjectHolder = null;
 		}
 	}
 

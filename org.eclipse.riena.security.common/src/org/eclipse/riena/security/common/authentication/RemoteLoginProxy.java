@@ -19,7 +19,7 @@ import javax.security.auth.login.LoginException;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.security.common.Activator;
-import org.eclipse.riena.security.common.ISubjectHolderService;
+import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authentication.credentials.AbstractCredential;
 
 /**
@@ -28,7 +28,7 @@ import org.eclipse.riena.security.common.authentication.credentials.AbstractCred
 public class RemoteLoginProxy {
 
 	private IAuthenticationService authenticationService;
-	private ISubjectHolderService subjectHolderService;
+	private ISubjectHolder subjectHolder;
 	private final String loginContext;
 	private AuthenticationTicket ticket;
 	private Subject subject;
@@ -39,8 +39,7 @@ public class RemoteLoginProxy {
 		this.subject = subject;
 		Inject.service(IAuthenticationService.class).useRanking().into(this).andStart(
 				Activator.getDefault().getContext());
-		Inject.service(ISubjectHolderService.class).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(ISubjectHolder.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
 	}
 
 	public void bind(IAuthenticationService authenticationService) {
@@ -53,13 +52,13 @@ public class RemoteLoginProxy {
 		}
 	}
 
-	public void bind(ISubjectHolderService subjectHolderService) {
-		this.subjectHolderService = subjectHolderService;
+	public void bind(ISubjectHolder subjectHolderService) {
+		this.subjectHolder = subjectHolderService;
 	}
 
-	public void unbind(ISubjectHolderService subjectHolderService) {
-		if (this.subjectHolderService == subjectHolderService) {
-			this.subjectHolderService = null;
+	public void unbind(ISubjectHolder subjectHolderService) {
+		if (this.subjectHolder == subjectHolderService) {
+			this.subjectHolder = null;
 		}
 	}
 
@@ -73,7 +72,7 @@ public class RemoteLoginProxy {
 			for (Principal principal : ticket.getPrincipals()) {
 				subject.getPrincipals().add(principal);
 			}
-			subjectHolderService.fetchSubjectHolder().setSubject(subject);
+			subjectHolder.setSubject(subject);
 			return true;
 		} catch (AuthenticationFailure failure) {
 			throw new LoginException(failure.getMessage());
@@ -85,7 +84,7 @@ public class RemoteLoginProxy {
 		for (Principal p : ticket.getPrincipals()) {
 			pSet.add(p);
 		}
-		subjectHolderService.fetchSubjectHolder().setSubject(subject);
+		subjectHolder.setSubject(subject);
 		return true;
 	}
 

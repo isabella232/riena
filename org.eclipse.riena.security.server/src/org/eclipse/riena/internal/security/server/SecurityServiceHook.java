@@ -24,7 +24,7 @@ import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.cache.IGenericObjectCache;
-import org.eclipse.riena.security.common.ISubjectHolderService;
+import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.NotAuthorizedFailure;
 import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.security.common.session.Session;
@@ -57,7 +57,7 @@ public class SecurityServiceHook implements IServiceHook {
 
 	private IGenericObjectCache<String, Principal[]> principalCache;
 	private ISessionService sessionService;
-	private ISubjectHolderService subjectHolderService;
+	private ISubjectHolder subjectHolder;
 	private ISessionHolderService sessionHolderService;
 
 	// private HashMap<String, Boolean> freeHivemindWebservices = new
@@ -138,13 +138,13 @@ public class SecurityServiceHook implements IServiceHook {
 		}
 	}
 
-	public void bind(ISubjectHolderService subjectHolderService) {
-		this.subjectHolderService = subjectHolderService;
+	public void bind(ISubjectHolder subjectHolder) {
+		this.subjectHolder = subjectHolder;
 	}
 
-	public void unbind(ISubjectHolderService subjectHolderService) {
-		if (this.subjectHolderService == subjectHolderService) {
-			this.subjectHolderService = null;
+	public void unbind(ISubjectHolder subjectHolder) {
+		if (this.subjectHolder == subjectHolder) {
+			this.subjectHolder = null;
 		}
 	}
 
@@ -225,7 +225,7 @@ public class SecurityServiceHook implements IServiceHook {
 				for (Principal p : principals) {
 					subject.getPrincipals().add(p);
 				}
-				subjectHolderService.fetchSubjectHolder().setSubject(subject);
+				subjectHolder.setSubject(subject);
 				callback.setProperty("riena.subject", subject); //$NON-NLS-1$
 			}
 		}
@@ -283,6 +283,6 @@ public class SecurityServiceHook implements IServiceHook {
 		}
 
 		sessionHolderService.fetchSessionHolder().setSession(null);
-		subjectHolderService.fetchSubjectHolder().setSubject(null);
+		subjectHolder.setSubject(null);
 	}
 }

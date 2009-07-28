@@ -10,11 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.security.common;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.security.auth.Subject;
 
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.security.common.ISubjectChangeListener;
 import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.SubjectChangeEvent;
@@ -28,13 +26,13 @@ import org.eclipse.riena.security.common.SubjectChangeEvent;
 public class SimpleSubjectHolder implements ISubjectHolder {
 
 	private Subject subject;
-	private List<ISubjectChangeListener> principalChangeListeners;
+	private final ListenerList<ISubjectChangeListener> subjectChangeListeners = new ListenerList<ISubjectChangeListener>(
+			ISubjectChangeListener.class);
 
 	/**
 	 * Creates a SimpleSubjectHolder
 	 */
 	public SimpleSubjectHolder() {
-		principalChangeListeners = new ArrayList<ISubjectChangeListener>();
 	}
 
 	/*
@@ -61,22 +59,23 @@ public class SimpleSubjectHolder implements ISubjectHolder {
 
 	private void notifySubjectChange(Subject newSubject, Subject oldSubject) {
 		// check avoids SubjectChangeEvent object if there is no listener
-		if (principalChangeListeners.size() > 0) {
-			SubjectChangeEvent event = new SubjectChangeEvent(newSubject, oldSubject);
-			for (ISubjectChangeListener listener : principalChangeListeners) {
-				listener.changed(event);
-			}
+		if (subjectChangeListeners.size() == 0) {
+			return;
+		}
+		SubjectChangeEvent event = new SubjectChangeEvent(newSubject, oldSubject);
+		for (ISubjectChangeListener listener : subjectChangeListeners.getListeners()) {
+			listener.changed(event);
 		}
 	}
 
 	public void addSubjectChangeListener(ISubjectChangeListener listener) {
 		if (listener != null) {
-			principalChangeListeners.add(listener);
+			subjectChangeListeners.add(listener);
 		}
 	}
 
 	public void removeSubjectChangeListener(ISubjectChangeListener listener) {
-		principalChangeListeners.remove(listener);
+		subjectChangeListeners.remove(listener);
 	}
 
 }
