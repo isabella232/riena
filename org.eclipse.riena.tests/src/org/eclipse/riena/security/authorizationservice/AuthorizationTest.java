@@ -18,9 +18,10 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.internal.security.authorizationservice.AuthorizationService;
 import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.riena.security.common.SubjectAccessor;
+import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
@@ -66,7 +67,7 @@ public class AuthorizationTest extends RienaTestCase {
 	public void testWithValidUser() {
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("testuser"));
-		SubjectAccessor.setSubject(subject);
+		Service.get(ISubjectHolder.class).setSubject(subject);
 
 		boolean result = new BusinessTestCase().hasPermission();
 
@@ -76,7 +77,7 @@ public class AuthorizationTest extends RienaTestCase {
 	public void testWithInvalidUser() {
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("anotheruser"));
-		SubjectAccessor.setSubject(subject);
+		Service.get(ISubjectHolder.class).setSubject(subject);
 
 		boolean result = new BusinessTestCase().hasPermission();
 

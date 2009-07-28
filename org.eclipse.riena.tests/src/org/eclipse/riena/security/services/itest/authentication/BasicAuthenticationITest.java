@@ -12,19 +12,20 @@ package org.eclipse.riena.security.services.itest.authentication;
 
 import javax.security.auth.Subject;
 
+import org.osgi.framework.ServiceRegistration;
+
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.security.common.BasicAuthenticationCallHook;
-import org.eclipse.riena.security.common.ISubjectHolderService;
+import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.IntegrationTestCase;
-
-import org.osgi.framework.ServiceRegistration;
 
 /**
  * 
@@ -101,13 +102,13 @@ public class BasicAuthenticationITest extends RienaTestCase {
 			ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
 					new BasicAuthenticationCallHook(), null);
 
-			ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
-					getContext().getServiceReference(ISubjectHolderService.class.getName()));
+			//			ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
+			//					getContext().getServiceReference(ISubjectHolderService.class.getName()));
 
 			Subject subject = new Subject();
 			subject.getPrincipals().add(new SimplePrincipal("christian"));
 			subject.getPrivateCredentials().add("password");
-			subjectHolderService.fetchSubjectHolder().setSubject(subject);
+			Service.get(ISubjectHolder.class).setSubject(subject);
 
 			customerSearch.findCustomer(null);
 
@@ -124,19 +125,18 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	 */
 	public void testWithCallHookWithValidAuthorization() {
 		try {
-			ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
-					getContext().getServiceReference(ICustomerSearch.class.getName()));
+			ICustomerSearch customerSearch = Service.get(ICustomerSearch.class);
 
 			ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
 					new BasicAuthenticationCallHook(), null);
 
-			ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
-					getContext().getServiceReference(ISubjectHolderService.class.getName()));
+			//			ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
+			//					getContext().getServiceReference(ISubjectHolderService.class.getName()));
 
 			Subject subject = new Subject();
 			subject.getPrincipals().add(new SimplePrincipal("scp")); //$NON-NLS-1$
 			subject.getPrivateCredentials().add("scptestpassword"); //$NON-NLS-1$
-			subjectHolderService.fetchSubjectHolder().setSubject(subject);
+			Service.get(ISubjectHolder.class).setSubject(subject);
 
 			customerSearch.findCustomer(null);
 
@@ -157,13 +157,13 @@ public class BasicAuthenticationITest extends RienaTestCase {
 		ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
 				new BasicAuthenticationCallHook(), null);
 
-		ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
-				getContext().getServiceReference(ISubjectHolderService.class.getName()));
+		//		ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
+		//				getContext().getServiceReference(ISubjectHolderService.class.getName()));
 
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("scp")); //$NON-NLS-1$
 		subject.getPrivateCredentials().add("scptestpassword"); //$NON-NLS-1$
-		subjectHolderService.fetchSubjectHolder().setSubject(subject);
+		Service.get(ISubjectHolder.class).setSubject(subject);
 
 		// first call
 		try {

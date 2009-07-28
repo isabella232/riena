@@ -18,9 +18,10 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.internal.security.authorizationservice.AuthorizationService;
 import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.riena.security.common.SubjectAccessor;
+import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.Sentinel;
@@ -29,7 +30,7 @@ import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
- * Tests the Sentinal which means we are testing for permissions without
+ * Tests the Sentinel which means we are testing for permissions without
  * actually activating java security. Permissions are checked by the Sentinel
  * instead
  */
@@ -80,7 +81,7 @@ public class SentinelTest extends RienaTestCase {
 	public void testValidUser() {
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("testuser"));
-		SubjectAccessor.setSubject(subject);
+		Service.get(ISubjectHolder.class).setSubject(subject);
 
 		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
 		assertTrue("has permission since valid subject", result);
@@ -89,7 +90,7 @@ public class SentinelTest extends RienaTestCase {
 	public void testValidUserMissingPermissions() {
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("anotheruser"));
-		SubjectAccessor.setSubject(subject);
+		Service.get(ISubjectHolder.class).setSubject(subject);
 
 		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
 		assertFalse("has no permission since subject has no permission", result);

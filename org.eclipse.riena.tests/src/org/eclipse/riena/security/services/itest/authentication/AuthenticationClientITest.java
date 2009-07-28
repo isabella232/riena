@@ -23,8 +23,9 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.riena.security.common.ISubjectHolderService;
+import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authentication.AuthenticationFailure;
 import org.eclipse.riena.security.common.authentication.AuthenticationTicket;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
@@ -148,11 +149,11 @@ public class AuthenticationClientITest extends RienaTestCase {
 		for (Principal p : ticket.getPrincipals()) {
 			subject.getPrincipals().add(p);
 		}
-		ServiceReference ref2 = getContext().getServiceReference(ISubjectHolderService.class.getName());
-		ISubjectHolderService subHolderService = (ISubjectHolderService) getContext().getService(ref2);
-		subHolderService.fetchSubjectHolder().setSubject(subject);
+		//		ServiceReference ref2 = getContext().getServiceReference(ISubjectHolderService.class.getName());
+		//		ISubjectHolderService subHolderService = (ISubjectHolderService) getContext().getService(ref2);
+		Service.get(ISubjectHolder.class).setSubject(subject);
 
-		assertTrue(subHolderService.fetchSubjectHolder().getSubject() == subject);
+		assertTrue(Service.get(ISubjectHolder.class).getSubject() == subject);
 	}
 
 	private void trace(String msg) {
