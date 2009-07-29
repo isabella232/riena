@@ -21,7 +21,7 @@ import org.eclipse.riena.core.cache.GenericObjectCache;
 import org.eclipse.riena.core.cache.IGenericObjectCache;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.security.common.ISubjectHolder;
-import org.eclipse.riena.security.common.session.ISessionHolderService;
+import org.eclipse.riena.security.common.session.ISessionHolder;
 import org.eclipse.riena.security.server.session.ISessionService;
 
 /**
@@ -71,7 +71,7 @@ public class Activator extends RienaPlugin {
 				Activator.getDefault().getContext());
 		Inject.service(ISubjectHolder.class).useRanking().into(securityServiceHook).andStart(
 				Activator.getDefault().getContext());
-		Inject.service(ISessionHolderService.class).useRanking().into(securityServiceHook).andStart(
+		Inject.service(ISessionHolder.class).useRanking().into(securityServiceHook).andStart(
 				Activator.getDefault().getContext());
 	}
 

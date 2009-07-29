@@ -26,12 +26,12 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.cache.IGenericObjectCache;
 import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.NotAuthorizedFailure;
-import org.eclipse.riena.security.common.session.ISessionHolderService;
+import org.eclipse.riena.security.common.session.ISessionHolder;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
 
 /**
- * This Service Hook deals with security issues of a webservice invocation. It
+ * This Service Hook deals with security issues of a web-service invocation. It
  * reads the cookies and set SessionHolder, PrincipalLocationHolder and
  * PrincipalHolder. It also sets "Set-Cookie" on return, when the session has
  * changed.
@@ -58,7 +58,7 @@ public class SecurityServiceHook implements IServiceHook {
 	private IGenericObjectCache<String, Principal[]> principalCache;
 	private ISessionService sessionService;
 	private ISubjectHolder subjectHolder;
-	private ISessionHolderService sessionHolderService;
+	private ISessionHolder sessionHolder;
 
 	// private HashMap<String, Boolean> freeHivemindWebservices = new
 	// HashMap<String, Boolean>();
@@ -148,13 +148,13 @@ public class SecurityServiceHook implements IServiceHook {
 		}
 	}
 
-	public void bind(ISessionHolderService sessionHolderService) {
-		this.sessionHolderService = sessionHolderService;
+	public void bind(ISessionHolder sessionHolder) {
+		this.sessionHolder = sessionHolder;
 	}
 
-	public void unbind(ISessionHolderService sessionHolderService) {
-		if (this.sessionHolderService == sessionHolderService) {
-			this.sessionHolderService = null;
+	public void unbind(ISessionHolder sessionHolder) {
+		if (this.sessionHolder == sessionHolder) {
+			this.sessionHolder = null;
 		}
 	}
 
@@ -233,7 +233,7 @@ public class SecurityServiceHook implements IServiceHook {
 		// set ssoid and plid in the sessionholder and the ssoid as attribute
 		if (ssoid != null) {
 			Session beforeSession = new Session(ssoid);
-			sessionHolderService.fetchSessionHolder().setSession(beforeSession);
+			sessionHolder.setSession(beforeSession);
 			callback.setProperty("de.compeople.ssoid", beforeSession); //$NON-NLS-1$
 		}
 
@@ -247,7 +247,7 @@ public class SecurityServiceHook implements IServiceHook {
 	 * org.eclipse.riena.communication.core.hooks.ServiceContext)
 	 */
 	public void afterService(ServiceContext context) {
-		Session afterSession = sessionHolderService.fetchSessionHolder().getSession();
+		Session afterSession = sessionHolder.getSession();
 		Session beforeSession = (Session) context.getProperty("de.compeople.ssoid"); //$NON-NLS-1$
 		String ssoid = null;
 		if (afterSession != null) {
@@ -282,7 +282,7 @@ public class SecurityServiceHook implements IServiceHook {
 			LOGGER.log(LogService.LOG_DEBUG, "doing nothing in afterService"); //$NON-NLS-1$
 		}
 
-		sessionHolderService.fetchSessionHolder().setSession(null);
+		sessionHolder.setSession(null);
 		subjectHolder.setSubject(null);
 	}
 }

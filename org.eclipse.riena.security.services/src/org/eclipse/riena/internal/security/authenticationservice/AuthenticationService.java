@@ -25,7 +25,7 @@ import org.eclipse.riena.security.common.authentication.AuthenticationTicket;
 import org.eclipse.riena.security.common.authentication.Callback2CredentialConverter;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
 import org.eclipse.riena.security.common.authentication.credentials.AbstractCredential;
-import org.eclipse.riena.security.common.session.ISessionHolderService;
+import org.eclipse.riena.security.common.session.ISessionHolder;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
 
@@ -53,7 +53,7 @@ public class AuthenticationService implements IAuthenticationService {
 	// private IAuthenticationModule authenticationModule;
 	private ISessionService sessionService;
 	private ISubjectHolder subjectHolder;
-	private ISessionHolderService sessionHolderService;
+	private ISessionHolder sessionHolder;
 
 	/**
 	 * default constructor
@@ -93,13 +93,13 @@ public class AuthenticationService implements IAuthenticationService {
 	// }
 	// }
 
-	public void bind(ISessionHolderService sessionHolderService) {
-		this.sessionHolderService = sessionHolderService;
+	public void bind(ISessionHolder sessionHolder) {
+		this.sessionHolder = sessionHolder;
 	}
 
-	public void unbind(ISessionHolderService sessionHolderService) {
-		if (this.sessionHolderService == sessionHolderService) {
-			this.sessionHolderService = null;
+	public void unbind(ISessionHolder sessionHolder) {
+		if (this.sessionHolder == sessionHolder) {
+			this.sessionHolder = null;
 		}
 	}
 
@@ -129,13 +129,13 @@ public class AuthenticationService implements IAuthenticationService {
 			// add only new principals to ticket (not the ones that might exist
 			// in the session)
 			AuthenticationTicket ticket = new AuthenticationTicket();
-			Session session = sessionHolderService.fetchSessionHolder().getSession();
+			Session session = sessionHolder.getSession();
 			if (session != null) {
 				sessionService.invalidateSession(session);
 			}
 			Principal[] pArray = principals.toArray(new Principal[principals.size()]);
 			session = sessionService.generateSession(pArray);
-			sessionHolderService.fetchSessionHolder().setSession(session);
+			sessionHolder.setSession(session);
 			for (Principal p : principals) {
 				ticket.getPrincipals().add(p);
 			}
@@ -150,11 +150,11 @@ public class AuthenticationService implements IAuthenticationService {
 	}
 
 	public void logout() throws AuthenticationFailure {
-		Session session = sessionHolderService.fetchSessionHolder().getSession();
+		Session session = sessionHolder.getSession();
 		if (session == null) {
 			throw new AuthenticationFailure("no valid session"); //$NON-NLS-1$
 		}
 		sessionService.invalidateSession(session);
-		sessionHolderService.fetchSessionHolder().setSession(null);
+		sessionHolder.setSession(null);
 	}
 }

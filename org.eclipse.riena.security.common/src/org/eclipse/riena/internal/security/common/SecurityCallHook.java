@@ -16,11 +16,10 @@ import org.eclipse.riena.communication.core.hooks.CallContext;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.security.common.session.ISessionHolder;
-import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.security.common.session.Session;
 
 /**
- * This Call Hook deals with security issues of a webservice calls, it sets the
+ * This Call Hook deals with security issues of a web-service calls, it sets the
  * cookie of the session and principal location before the call and checks for
  * set-cookies after the call returns.
  * 
@@ -28,21 +27,20 @@ import org.eclipse.riena.security.common.session.Session;
 public class SecurityCallHook implements ICallHook {
 
 	private static final String SSOID = "x-compeople-ssoid"; //$NON-NLS-1$
-	private ISessionHolderService shService;
+	private ISessionHolder sessionHolder;
 
 	public SecurityCallHook() {
 		super();
-		Inject.service(ISessionHolderService.class).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(ISessionHolder.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
 	}
 
-	public void bind(ISessionHolderService shService) {
-		this.shService = shService;
+	public void bind(ISessionHolder sessionHolder) {
+		this.sessionHolder = sessionHolder;
 	}
 
-	public void unbind(ISessionHolderService shService) {
-		if (this.shService == shService) {
-			this.shService = null;
+	public void unbind(ISessionHolder sessionHolder) {
+		if (this.sessionHolder == sessionHolder) {
+			this.sessionHolder = null;
 		}
 	}
 
@@ -54,7 +52,6 @@ public class SecurityCallHook implements ICallHook {
 	 * .riena.communication.core.hooks.CallContext)
 	 */
 	public void beforeCall(CallContext callback) {
-		ISessionHolder sessionHolder = shService.fetchSessionHolder();
 		Session session = sessionHolder.getSession();
 
 		if (session != null) {
@@ -70,7 +67,6 @@ public class SecurityCallHook implements ICallHook {
 	 * .riena.communication.core.hooks.CallContext)
 	 */
 	public void afterCall(CallContext callback) {
-		ISessionHolder sessionHolder = shService.fetchSessionHolder();
 		Map<String, String> map = callback.getSetCookies();
 		if (map == null) {
 			return;

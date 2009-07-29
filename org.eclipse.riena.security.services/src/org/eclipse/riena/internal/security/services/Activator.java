@@ -24,7 +24,7 @@ import org.eclipse.riena.security.authorizationservice.IPermissionStore;
 import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
-import org.eclipse.riena.security.common.session.ISessionHolderService;
+import org.eclipse.riena.security.common.session.ISessionHolder;
 import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.security.sessionservice.ISessionProvider;
 import org.eclipse.riena.security.sessionservice.ISessionStore;
@@ -79,7 +79,7 @@ public class Activator extends RienaActivator {
 				Activator.getDefault().getContext());
 		Inject.service(ISubjectHolder.class).useRanking().into(authenticationService).andStart(
 				Activator.getDefault().getContext());
-		Inject.service(ISessionHolderService.class).useRanking().into(authenticationService).andStart(
+		Inject.service(ISessionHolder.class).useRanking().into(authenticationService).andStart(
 				Activator.getDefault().getContext());
 	}
 
@@ -94,7 +94,6 @@ public class Activator extends RienaActivator {
 
 		Inject.service(IPermissionStore.class).useRanking().into(authorizationService).andStart(
 				Activator.getDefault().getContext());
-
 	}
 
 	private void createSessionServiceAndInjectors() {

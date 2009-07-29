@@ -18,12 +18,13 @@ import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ContainerModel;
 import org.eclipse.riena.internal.security.common.authorization.PermissionCache;
-import org.eclipse.riena.internal.security.common.session.SimpleSessionHolderService;
+import org.eclipse.riena.internal.security.common.session.SimpleSessionHolder;
+import org.eclipse.riena.internal.security.common.session.SimpleThreadedSessionHolder;
 import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.IPermissionCache;
 import org.eclipse.riena.security.common.authorization.ISentinelService;
-import org.eclipse.riena.security.common.session.ISessionHolderService;
+import org.eclipse.riena.security.common.session.ISessionHolder;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -53,7 +54,8 @@ public class Activator extends RienaPlugin {
 		super.start(context);
 		Activator.plugin = this;
 
-		context.registerService(ISessionHolderService.class.getName(), new SimpleSessionHolderService(), null);
+		context.registerService(ISessionHolder.class.getName(), ContainerModel.isClient() ? new SimpleSessionHolder()
+				: new SimpleThreadedSessionHolder(), null);
 
 		context.registerService(ICallHook.class.getName(), new SecurityCallHook(), null);
 
