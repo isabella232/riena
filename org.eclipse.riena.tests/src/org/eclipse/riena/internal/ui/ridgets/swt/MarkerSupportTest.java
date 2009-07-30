@@ -54,7 +54,7 @@ public class MarkerSupportTest extends RienaTestCase {
 		display = null;
 	}
 
-	public void testHideDiabledRidgetContentSystemProperty() throws IOException {
+	public void testHideDisabledRidgetContentSystemProperty() throws IOException {
 		System.clearProperty(HIDE_DISABLED_RIDGET_CONTENT);
 		assertTrue(getHideDisabledRidgetContent());
 
