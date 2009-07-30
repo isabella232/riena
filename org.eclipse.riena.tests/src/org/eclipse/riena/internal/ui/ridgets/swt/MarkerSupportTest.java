@@ -104,6 +104,10 @@ public class MarkerSupportTest extends RienaTestCase {
 	 */
 	private static class MarkSupportClassLoader extends ClassLoader {
 
+		public MarkSupportClassLoader() {
+			super(MarkSupportClassLoader.class.getClassLoader());
+		}
+
 		public Class<?> getFreshMarkSupportClass() throws IOException {
 			String resource = MarkerSupport.class.getName().replace('.', '/') + ".class";
 			URL classURL = MarkerSupportTest.class.getClassLoader().getResource(resource);
