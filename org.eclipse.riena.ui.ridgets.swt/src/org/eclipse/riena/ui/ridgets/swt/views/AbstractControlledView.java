@@ -62,7 +62,7 @@ public abstract class AbstractControlledView<C extends IController> {
 
 	public void unbind(C controller) {
 		binding.unbind(controller);
-		setController(null);
+		//		setController(null);
 	}
 
 	/**
