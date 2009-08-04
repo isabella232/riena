@@ -11,8 +11,11 @@
 package org.eclipse.riena.ui.ridgets.marker;
 
 import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.core.marker.AbstractMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
+import org.eclipse.riena.ui.core.marker.MessageMarker;
 
 public class ValidationMessageMarker extends AbstractMarker implements IMessageMarker {
 
@@ -20,13 +23,29 @@ public class ValidationMessageMarker extends AbstractMarker implements IMessageM
 
 	private IValidator validationRule;
 
+	/**
+	 * Create a new {@link ValidationMessageMarker} with the given messageMarker
+	 * 
+	 * @param messageMarker
+	 *            an {@link IMessageMarker}; never null
+	 */
 	public ValidationMessageMarker(IMessageMarker messageMarker) {
-		super(false);
-		setAttribute(MESSAGE_MARKER_ATTRIBUTE, messageMarker);
+		this(messageMarker, null);
 	}
 
+	/**
+	 * Create a new {@link ValidationMessageMarker} with the given messageMarker
+	 * 
+	 * @param messageMarker
+	 *            an {@link IMessageMarker}; never null
+	 * @param validationRule
+	 *            the validationRule associated with the {@link MessageMarker};
+	 *            may be null
+	 */
 	public ValidationMessageMarker(IMessageMarker messageMarker, IValidator validationRule) {
-		this(messageMarker);
+		super(false);
+		Assert.isNotNull(messageMarker, "messageMarker cannot be null"); //$NON-NLS-1$
+		setAttribute(MESSAGE_MARKER_ATTRIBUTE, messageMarker);
 		this.validationRule = validationRule;
 	}
 
@@ -34,17 +53,20 @@ public class ValidationMessageMarker extends AbstractMarker implements IMessageM
 		return getMessageMarker().getMessage();
 	}
 
+	/**
+	 * Return the IValidator held by this instance; may be null.
+	 */
 	public IValidator getValidationRule() {
 		return validationRule;
 	}
 
+	/**
+	 * Return the {@link IMessageMarker} held by this instance; never null.
+	 */
 	public IMessageMarker getMessageMarker() {
 		return (IMessageMarker) getAttribute(MESSAGE_MARKER_ATTRIBUTE);
 	}
 
-	/**
-	 * @see org.eclipse.riena.core.marker.AbstractMarker#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof ValidationMessageMarker) {
@@ -56,9 +78,6 @@ public class ValidationMessageMarker extends AbstractMarker implements IMessageM
 		return false;
 	}
 
-	/**
-	 * @see Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		return getClass().hashCode();
