@@ -91,6 +91,7 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 				if (sw.toString().trim().length() > 0) {
 					sw.write("; "); //$NON-NLS-1$
 				}
+				// TODO [ev] string builder + empty message + duplicate code
 				if (nextMarker.getMessage() != null) {
 					sw.write(nextMarker.getMessage());
 				}

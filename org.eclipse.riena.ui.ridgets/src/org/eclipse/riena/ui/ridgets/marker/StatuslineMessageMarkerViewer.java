@@ -129,6 +129,7 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 				if (sw.toString().trim().length() > 0) {
 					sw.write(" "); //$NON-NLS-1$
 				}
+				// TODO [ev] string builder + empty message + duplicate code
 				if (nextMarker.getMessage() != null) {
 					sw.write(nextMarker.getMessage());
 				}
@@ -171,7 +172,8 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName().equals(IBasicMarkableRidget.PROPERTY_MARKER)
-					&& evt.getSource() instanceof IBasicMarkableRidget && ((IBasicMarkableRidget) evt.getSource()).hasFocus()) {
+					&& evt.getSource() instanceof IBasicMarkableRidget
+					&& ((IBasicMarkableRidget) evt.getSource()).hasFocus()) {
 				showMessages((IBasicMarkableRidget) evt.getSource());
 			}
 		}

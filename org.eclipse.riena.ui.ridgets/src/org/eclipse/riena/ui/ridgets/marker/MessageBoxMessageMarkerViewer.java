@@ -85,6 +85,7 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 				if (sw.toString().trim().length() > 0) {
 					sw.write("\n"); //$NON-NLS-1$
 				}
+				// TODO [ev] StringBuilder + Check for empty message
 				if (nextMarker.getMessage() != null) {
 					sw.write(nextMarker.getMessage());
 				}
