@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.marker;
 
+import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.core.marker.AbstractMarker;
 
 /**
@@ -32,13 +34,13 @@ public class MessageMarker extends AbstractMarker implements IMessageMarker {
 	/**
 	 * Basic constructor for the Message marker
 	 * 
-	 * @param pMessage
-	 *            - the Message of the Marker
+	 * @param message
+	 *            - the Message of the Marker; never null
 	 */
-	public MessageMarker(String pMessage) {
+	public MessageMarker(String message) {
 		super();
-		assert pMessage != null : "The message of the message marker mus not be null"; //$NON-NLS-1$
-		setAttribute(MESSAGE, pMessage);
+		Assert.isNotNull(message, "The message of the message marker must not be null"); //$NON-NLS-1$
+		setAttribute(MESSAGE, message);
 	}
 
 }
