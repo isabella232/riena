@@ -89,7 +89,7 @@ public class ValidationMessageMarkerTest extends RienaTestCase {
 		assertFalse(result2a.equals(result1a));
 	}
 
-	public void testHashCode() {
+	public void testHashCodeEqual() {
 		ValidationMessageMarker result1a = new ValidationMessageMarker(new MessageMarker("1"), validationRule);
 		ValidationMessageMarker result1b = new ValidationMessageMarker(new MessageMarker("1"), validationRule);
 		int hash1 = result1a.hashCode();
@@ -98,5 +98,15 @@ public class ValidationMessageMarkerTest extends RienaTestCase {
 
 		assertTrue(result1a.equals(result1b));
 		assertEquals(hash1, result1b.hashCode());
+	}
+
+	public void testHashCodeNotEqual() {
+		ValidationMessageMarker result1 = new ValidationMessageMarker(new MessageMarker("1"), validationRule);
+		ValidationMessageMarker result2 = new ValidationMessageMarker(new MessageMarker("2"), validationRule);
+		ValidationMessageMarker result3 = new ValidationMessageMarker(new MessageMarker("1"));
+
+		assertFalse(result1.hashCode() == result2.hashCode());
+		assertFalse(result1.hashCode() == result3.hashCode());
+		assertFalse(result2.hashCode() == result3.hashCode());
 	}
 }

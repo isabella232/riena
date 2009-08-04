@@ -24,11 +24,9 @@ public class MessageMarker extends AbstractMarker implements IMessageMarker {
 		super(false);
 	}
 
-	/**
-	 * @return the Message in this Marker
-	 */
 	public String getMessage() {
-		return (String) super.getAttribute(MESSAGE);
+		String result = (String) super.getAttribute(MESSAGE);
+		return result == null ? "" : result; //$NON-NLS-1$
 	}
 
 	/**

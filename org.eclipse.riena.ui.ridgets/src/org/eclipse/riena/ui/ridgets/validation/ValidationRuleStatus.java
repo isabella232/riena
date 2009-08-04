@@ -14,25 +14,39 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
+
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 
 /**
+ * TODO [ev] fix javadoc
+ * <p>
  * Result of a validation performed by an IValidationRule. Extends the IStatus
  * by adding some specific code for validation of Ridgets.
  */
-public final class ValidationRuleStatus extends Status implements IValidationRuleStatus {
+public final class ValidationRuleStatus {
 
-	private IValidator source;
+	/**
+	 * Status code indicating that the effects of the last edit that was
+	 * verified must be undone and that the UI-control must be marked with a
+	 * temporary ErrorMarker.
+	 * 
+	 * @see IStatus#getCode()
+	 * 
+	 * @since 1.2
+	 */
+	public static final int ERROR_BLOCK_WITH_FLASH = 1024;
 
-	private ValidationRuleStatus(int severity, int code, String message, IValidator source) {
-		super(severity, Activator.PLUGIN_ID, code, message, null);
-		this.source = source;
-	}
-
-	public IValidator getSource() {
-		return source;
-	}
+	/**
+	 * Status code indicating that the effects of the last edit that was
+	 * verified should be allowed for the UI-control. The UI-control must be
+	 * marked with an ErrorMarker until the next validation.
+	 * 
+	 * @see IStatus#getCode()
+	 * 
+	 * @since 1.2
+	 */
+	public static final int ERROR_ALLOW_WITH_MESSAGE = 1025;
 
 	/**
 	 * Returns an OK status.
@@ -53,15 +67,32 @@ public final class ValidationRuleStatus extends Status implements IValidationRul
 	 * @param message
 	 *            A message.
 	 * @param source
-	 *            The validation rule that failed.
-	 * @return An ERROR status.
+	 *            <b>is UNUSED</b>
+	 * @return An ERROR status; never null.
+	 * 
+	 * @deprecated use {@link #error(boolean, String)}
 	 */
 	public static IStatus error(boolean blocker, String message, IValidator source) {
-		int code = ERROR_ALLOW_WITH_MESSAGE;
-		if (blocker) {
-			code = ERROR_BLOCK_WITH_FLASH;
-		}
-		return new ValidationRuleStatus(IStatus.ERROR, code, message, source);
+		return error(blocker, message);
+	}
+
+	/**
+	 * Returns an ERROR status
+	 * 
+	 * @param blocker
+	 *            Indicates whether the effects of the input that lead to the
+	 *            error status must be undone i.e. whether the input must be
+	 *            blocked.
+	 * @param message
+	 *            A message.
+	 * 
+	 * @return An ERROR status; never null.
+	 * 
+	 * @since 1.2
+	 */
+	public static IStatus error(boolean blocker, String message) {
+		int code = blocker ? ERROR_BLOCK_WITH_FLASH : ERROR_ALLOW_WITH_MESSAGE;
+		return new Status(IStatus.ERROR, Activator.PLUGIN_ID, code, message, null);
 	}
 
 	/**
@@ -78,11 +109,11 @@ public final class ValidationRuleStatus extends Status implements IValidationRul
 		if (statuses.length == 1) {
 			result = statuses[0];
 		} else {
-			int code = IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
+			int code = ValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
 			StringBuilder allMessages = new StringBuilder();
 			for (IStatus status : statuses) {
-				if (status.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
-					code = IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH;
+				if (status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
+					code = ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH;
 				}
 				if (!StringUtils.isDeepEmpty(status.getMessage())) {
 					allMessages.append(status.getMessage() + "\n"); //$NON-NLS-1$
@@ -92,6 +123,10 @@ public final class ValidationRuleStatus extends Status implements IValidationRul
 			result = new MultiStatus(Activator.PLUGIN_ID, code, statuses, message, null);
 		}
 		return result;
+	}
+
+	private ValidationRuleStatus() {
+		// prevent instantiation
 	}
 
 }

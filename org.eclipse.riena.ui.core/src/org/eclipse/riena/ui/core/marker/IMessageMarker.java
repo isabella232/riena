@@ -27,7 +27,7 @@ public interface IMessageMarker extends IMarker {
 	String MESSAGE = "message"; //$NON-NLS-1$
 
 	/**
-	 * @return A message explaining the marker.
+	 * @return A message explaining the marker; never null
 	 */
 	String getMessage();
 

@@ -80,7 +80,11 @@ public class ValidationMessageMarker extends AbstractMarker implements IMessageM
 
 	@Override
 	public int hashCode() {
-		return getClass().hashCode();
+		int result = getMessage().hashCode();
+		if (validationRule != null) {
+			result = result + (17 * validationRule.hashCode());
+		}
+		return result;
 	}
 
 }

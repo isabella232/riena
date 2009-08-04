@@ -11,10 +11,12 @@
 package org.eclipse.riena.ui.ridgets.validation;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 /**
- * Result of a validation performed by an IValidationRule. Extends the IStatus
- * by adding some specific code for validation of Ridgets.
+ * Result of a validation.
+ * 
+ * @deprecated use {@link Status} or {@link IStatus}
  */
 public interface IValidationRuleStatus extends IStatus {
 
@@ -24,8 +26,10 @@ public interface IValidationRuleStatus extends IStatus {
 	 * temporary ErrorMarker.
 	 * 
 	 * @see IStatus#getCode()
+	 * 
+	 * @deprecated use {@link ValidationRuleStatus#ERROR_BLOCK_WITH_FLASH}
 	 */
-	int ERROR_BLOCK_WITH_FLASH = 1024;
+	int ERROR_BLOCK_WITH_FLASH = ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH;
 
 	/**
 	 * Status code indicating that the effects of the last edit that was
@@ -33,7 +37,9 @@ public interface IValidationRuleStatus extends IStatus {
 	 * marked with an ErrorMarker until the next validation.
 	 * 
 	 * @see IStatus#getCode()
+	 * 
+	 * @deprecated use {@link ValidationRuleStatus#ERROR_ALLOW_WITH_MESSAGE}
 	 */
-	int ERROR_ALLOW_WITH_MESSAGE = 1025;
+	int ERROR_ALLOW_WITH_MESSAGE = ValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
 
 }
