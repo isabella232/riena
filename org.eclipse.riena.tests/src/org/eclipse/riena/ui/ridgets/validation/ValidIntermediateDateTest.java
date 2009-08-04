@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.validation.tests;
+package org.eclipse.riena.ui.ridgets.validation;
 
 import junit.framework.TestCase;
 
