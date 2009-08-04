@@ -16,13 +16,6 @@ package org.eclipse.riena.ui.core.marker;
 public class ErrorMessageMarker extends ErrorMarker implements IMessageMarker {
 
 	/**
-	 * @return the Message in this Marker
-	 */
-	public String getMessage() {
-		return (String) super.getAttribute(MESSAGE);
-	}
-
-	/**
 	 * Basic constructor for the Message marker
 	 * 
 	 * @param pMessage
@@ -31,6 +24,13 @@ public class ErrorMessageMarker extends ErrorMarker implements IMessageMarker {
 	public ErrorMessageMarker(String pMessage) {
 		super();
 		setMessage(pMessage);
+	}
+
+	/**
+	 * @return the Message in this Marker
+	 */
+	public String getMessage() {
+		return (String) super.getAttribute(MESSAGE);
 	}
 
 	/**
