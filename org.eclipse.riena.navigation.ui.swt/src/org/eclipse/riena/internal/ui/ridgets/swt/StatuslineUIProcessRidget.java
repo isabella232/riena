@@ -27,6 +27,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.DefaultProcessDetailC
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.IProcessDetailComparatorContrib;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.ProcessDetail;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.TimerUtil;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
@@ -427,6 +428,16 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	private boolean checkStillNeeded(IProgressVisualizer visualizer) {
 		List<Object> contexts = new ArrayList<Object>(1);
 		contexts.add(visualizer.getProcessInfo().getContext());
+
+		// if context is disposed, unregister contextUpdateListener
+		Object context = visualizer.getProcessInfo().getContext();
+
+		if (context instanceof INavigationNode<?> && ((INavigationNode<?>) context).isDisposed()) {
+			getProcessManager().unregister(getProcessManager().detailForVisualizer(visualizer));
+			unregisterContextUpdateListener(visualizer, false);
+			return false;
+		}
+
 		ProcessDetail detail = getProcessManager().detailForVisualizer(visualizer);
 		if (detail != null
 				&& (detail.getState().equals(ProcessState.FINISHED) || detail.getState().equals(ProcessState.CANCELED))

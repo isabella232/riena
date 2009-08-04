@@ -19,6 +19,12 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.core.runtime.jobs.ProgressProvider;
+import org.eclipse.equinox.log.Logger;
+
+import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.exception.IExceptionHandlerManager;
+import org.eclipse.riena.core.service.Service;
+import org.eclipse.riena.internal.ui.core.Activator;
 
 /**
  * This class is used in conjunction with {@link UIProcess} and provides a
@@ -38,6 +44,8 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	private boolean visualize;
 
 	private ThreadSwitcher threadSwitcher;
+
+	private Logger logger = Log4r.getLogger(Activator.getDefault(), UIProcess.class);
 
 	public UICallbackDispatcher(IUISynchronizer syncher) {
 		this.uiMonitors = new ArrayList<IUIMonitor>();
@@ -136,7 +144,14 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 			@Override
 			public void done() {
 				for (IUIMonitor monitor : getActiveMonitors()) {
-					monitor.finalUpdateUI();
+					try {
+						monitor.finalUpdateUI();
+					} catch (Exception e) {
+						Service.get(Activator.getDefault().getContext(), IExceptionHandlerManager.class)
+								.handleException(e);
+						//						logger.log(LogService.LOG_ERROR, "Exception in finalUpdateUI", e);
+					}
+
 				}
 			}
 		};

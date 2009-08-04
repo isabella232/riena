@@ -87,6 +87,11 @@ class ModuleKeyboardNavigationListener implements KeyListener {
 
 	private boolean isFirst(TreeItem item) {
 		boolean result = false;
+
+		if (null == item) {
+			return false;
+		}
+
 		Tree tree = item.getParent();
 		if (tree.getItemCount() > 0) {
 			result = tree.getItem(0) == item;
@@ -95,6 +100,9 @@ class ModuleKeyboardNavigationListener implements KeyListener {
 	}
 
 	private boolean isLast(TreeItem item) {
+		if (null == item) {
+			return false;
+		}
 		return item == findLast(item.getParent());
 	}
 }
