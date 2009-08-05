@@ -30,8 +30,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
  */
 public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 
-	private final static String PLUGIN_ID = "org.eclipse.riena.tests:";
-	private final static String ICON_ECLIPSE = PLUGIN_ID + "/icons/eclipse.gif";
+	private final static String ICON_ECLIPSE = "eclipse.gif";
 
 	private final static String LABEL = "testlabel";
 	private final static String LABEL2 = "testlabel2";
