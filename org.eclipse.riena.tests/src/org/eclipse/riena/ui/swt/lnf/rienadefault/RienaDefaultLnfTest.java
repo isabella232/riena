@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    compeople AG - initial API and implementation
+ *    Florian Pirchner - FontDescriptor
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.rienadefault;
 
@@ -14,7 +15,10 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
@@ -118,6 +122,30 @@ public class RienaDefaultLnfTest extends TestCase {
 		assertNotNull(lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
 		assertNull(lnf.getFont("dummy"));
 
+	}
+
+	/**
+	 * Test of the method <code>getFont(String, int, int)</code>.
+	 * 
+	 * @throws Exception
+	 *             - handled by JUnit
+	 */
+	public void testGetFontWithProps() throws Exception {
+
+		lnf.initialize();
+		Font font = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, 10, SWT.BOLD | SWT.ITALIC);
+		FontData data = font.getFontData()[0];
+		assertEquals(SWT.BOLD | SWT.ITALIC, data.getStyle());
+
+		Font font1 = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, 12, SWT.BOLD);
+		data = font1.getFontData()[0];
+		assertEquals(SWT.BOLD, data.getStyle());
+
+		Font font2 = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, 12, SWT.BOLD);
+		assertSame(font1, font2);
+
+		Font fontNull = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND, 12, SWT.BOLD);
+		assertNull(fontNull);
 	}
 
 	/**

@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    compeople AG - initial API and implementation
+ *    Florian Pirchner - FontDescriptor
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.rienadefault;
 
@@ -16,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Resource;
 
@@ -23,6 +25,7 @@ import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
+import org.eclipse.riena.ui.swt.lnf.FontDescriptor;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfRendererDesc;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
@@ -229,6 +232,29 @@ public class RienaDefaultLnf {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * Returns the font for the given key. The passed properties height and
+	 * style will be applied to the font. <br>
+	 * 
+	 * @param key
+	 *            - key whose associated font is to be returned.
+	 * @param height
+	 *            - the font height to use. If it is < 0, the
+	 *            <code>LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT</code>
+	 *            will be used. See also {@link FontData#setHeight(int)}.
+	 * @param style
+	 *            - the font style to use. See also
+	 *            {@link FontData#setStyle(int)}.
+	 * 
+	 * @return the font to which this map maps the specified key with differing
+	 *         height and style, or <code>null</code> if the map contains no
+	 *         mapping for this lnfKeyConstants key.
+	 */
+	public Font getFont(String key, int height, int style) {
+		FontDescriptor fontDescriptor = new FontDescriptor(key, height, style, this);
+		return fontDescriptor.getFont();
 	}
 
 	/**

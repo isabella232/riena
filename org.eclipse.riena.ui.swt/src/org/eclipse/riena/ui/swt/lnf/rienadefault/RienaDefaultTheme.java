@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    compeople AG - initial API and implementation
+ *    Florian Pirchner - FontDescriptor
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.rienadefault;
 
@@ -367,6 +368,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
 		table.put(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);
 		table.put(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
+
+		table.put(LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT, 8);
 
 	}
 

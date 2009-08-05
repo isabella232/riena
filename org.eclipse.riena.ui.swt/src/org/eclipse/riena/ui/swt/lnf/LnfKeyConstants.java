@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    compeople AG - initial API and implementation
+ *    Florian Pirchner - FontDescriptor
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
@@ -217,6 +218,8 @@ public final class LnfKeyConstants {
 	public static final String ERROR_MARKER_HORIZONTAL_POSITION = "errorMarker.horizontalPosition"; //$NON-NLS-1$
 	public static final String ERROR_MARKER_VERTICAL_POSITION = "errorMarker.verticalPosition"; //$NON-NLS-1$
 	public static final String ERROR_MARKER_MARGIN = "errorMarker.margin"; //$NON-NLS-1$
+
+	public static final String FONTDESCRIPTOR_DEFAULT_HEIGHT = "FontDescriptor.defaultHeight"; //$NON-NLS-1$
 
 	/**
 	 * Renderer keys
