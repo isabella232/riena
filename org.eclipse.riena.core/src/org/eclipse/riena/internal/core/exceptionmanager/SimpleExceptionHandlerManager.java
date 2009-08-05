@@ -28,37 +28,23 @@ import org.eclipse.riena.internal.core.Activator;
  */
 public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 
-	private List<ExceptionHandlerEntry> handlers;
+	private List<IExceptionHandler> handlers;
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleExceptionHandlerManager.class);
 
 	@InjectExtension(id = IExceptionHandlerDefinition.EXTENSION_POINT)
 	public void update(IExceptionHandlerDefinition[] exceptionHandlerDefinitions) {
-		handlers = new ArrayList<ExceptionHandlerEntry>();
+		List<TopologicalNode<IExceptionHandler>> nodes = new ArrayList<TopologicalNode<IExceptionHandler>>(
+				exceptionHandlerDefinitions.length);
 		for (IExceptionHandlerDefinition handlerDefinition : exceptionHandlerDefinitions) {
 			IExceptionHandler exceptionHandler = handlerDefinition.createExceptionHandler();
 			if (exceptionHandler == null) {
 				LOGGER.log(LogService.LOG_ERROR, "could not instantiate exception handler " //$NON-NLS-1$
 						+ handlerDefinition.getName() + " for class " + handlerDefinition.getExceptionHandler()); //$NON-NLS-1$
 			}
-			handlers = sort(handlers, exceptionHandler, handlerDefinition);
+			nodes.add(new TopologicalNode<IExceptionHandler>(handlerDefinition.getName(),
+					handlerDefinition.getBefore(), exceptionHandler));
 		}
-	}
-
-	private List<ExceptionHandlerEntry> sort(List<ExceptionHandlerEntry> existingHandlers, IExceptionHandler handler,
-			IExceptionHandlerDefinition definition) {
-		List<TopologicalNode<ExceptionHandlerEntry>> nodes = new ArrayList<TopologicalNode<ExceptionHandlerEntry>>(
-				existingHandlers.size() + 1);
-		ExceptionHandlerEntry exceptionHandlerEntry = new ExceptionHandlerEntry(handler, definition.getName(),
-				definition.getBefore());
-		TopologicalNode<ExceptionHandlerEntry> node = new TopologicalNode<ExceptionHandlerEntry>(definition.getName(),
-				definition.getBefore(), exceptionHandlerEntry);
-		nodes.add(node);
-		for (ExceptionHandlerEntry nextHandler : existingHandlers) {
-			node = new TopologicalNode<ExceptionHandlerEntry>(nextHandler.getName(), nextHandler.getBefore(),
-					nextHandler);
-			nodes.add(node);
-		}
-		return TopologicalSort.sort(nodes);
+		handlers = TopologicalSort.sort(nodes);
 	}
 
 	/*
@@ -102,39 +88,12 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 	 * (java.lang.Throwable, java.lang.String, org.eclipse.equinox.log.Logger)
 	 */
 	public Action handleException(Throwable t, String msg, Logger logger) {
-		for (ExceptionHandlerEntry handler : handlers) {
-			Action action = handler.getExceptionHandler().handleException(t, msg, logger);
+		for (IExceptionHandler handler : handlers) {
+			Action action = handler.handleException(t, msg, logger);
 			if (action != Action.NOT_HANDLED) {
 				return action;
 			}
 		}
 		return Action.NOT_HANDLED;
 	}
-
-	static class ExceptionHandlerEntry {
-		private final IExceptionHandler exceptionHandler;
-		private final String before;
-		private final String name;
-
-		public ExceptionHandlerEntry(IExceptionHandler exceptionHandler, String name, String before) {
-			super();
-			this.exceptionHandler = exceptionHandler;
-			this.name = name;
-			this.before = before;
-		}
-
-		public IExceptionHandler getExceptionHandler() {
-			return exceptionHandler;
-		}
-
-		public String getBefore() {
-			return before;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-	}
-
 }

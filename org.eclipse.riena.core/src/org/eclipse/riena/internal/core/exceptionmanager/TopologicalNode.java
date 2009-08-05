@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core.exceptionmanager;
 
+import org.eclipse.core.runtime.Assert;
+
 /**
  * 
  */
@@ -20,8 +22,9 @@ public class TopologicalNode<T> {
 	private int pointToMe;
 
 	public TopologicalNode(String name, String before, T element) {
+		Assert.isLegal(name != null && name.length() > 0, "name is required"); //$NON-NLS-1$
 		this.name = name;
-		this.before = before;
+		this.before = before == null ? "" : before; //$NON-NLS-1$
 		this.element = element;
 	}
 

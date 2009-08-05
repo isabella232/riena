@@ -21,6 +21,12 @@ import java.util.Map;
  */
 public final class TopologicalSort {
 
+	/**
+	 * Denotes within the {@code getBefore()} that a node is before all other
+	 * nodes.
+	 */
+	public static final String ALL_NODES = "*"; //$NON-NLS-1$
+
 	private TopologicalSort() {
 		// utility class
 	}
@@ -32,7 +38,13 @@ public final class TopologicalSort {
 		}
 
 		for (TopologicalNode<T> node : nodes) {
-			if (node.getBefore() != null) {
+			if (node.getBefore().equals(ALL_NODES)) {
+				for (TopologicalNode<T> incNode : nodes) {
+					if (!incNode.equals(node)) {
+						incNode.increase();
+					}
+				}
+			} else {
 				TopologicalNode<T> beforeNode = topSort.get(node.getBefore());
 				if (beforeNode != null) {
 					beforeNode.increase();
@@ -49,20 +61,27 @@ public final class TopologicalSort {
 			while (itr.hasNext()) {
 				TopologicalNode<T> node = itr.next();
 				if (node.getPointToMe() == 0) {
-					TopologicalNode<T> beforeNode = topSort.get(node.getBefore());
-					if (beforeNode != null) {
-						beforeNode.decrease();
+					if (ALL_NODES.equals(node.getBefore())) {
+						for (TopologicalNode<T> decNode : nodes) {
+							if (!decNode.equals(node)) {
+								decNode.decrease();
+							}
+						}
 						foundNode = true;
+					} else {
+						TopologicalNode<T> beforeNode = topSort.get(node.getBefore());
+						if (beforeNode != null) {
+							beforeNode.decrease();
+							foundNode = true;
+						}
 					}
 					itr.remove();
 					result.add(node.getElement());
-
 				}
 			}
 			if (!foundNode) {
-				// A recursion was detected, i.e. the nodes are not present a
-				// directed graph.
-				// The sorting stops here
+				// A recursion was detected, i.e. the nodes do not present a
+				// directed graph. The sorting stops here.
 				for (TopologicalNode<T> node : workNodes) {
 					result.add(node.getElement());
 				}

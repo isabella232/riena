@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.core.exceptionmanager;
 
 import org.eclipse.riena.core.exception.IExceptionHandler;
+import org.eclipse.riena.core.injector.extension.DefaultValue;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 import org.eclipse.riena.internal.core.Activator;
@@ -31,6 +32,7 @@ public interface IExceptionHandlerDefinition {
 	@MapName("class")
 	String getExceptionHandler();
 
+	@DefaultValue("*")
 	String getBefore();
 
 }
