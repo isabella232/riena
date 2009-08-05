@@ -36,7 +36,6 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractEditableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 
 /**
@@ -392,7 +391,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 			}
 			String newText = getText(e);
 			IStatus status = checkOnEditRules(newText);
-			boolean doit = !(status.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH);
+			boolean doit = !(status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH);
 			e.doit = doit;
 			validationRulesChecked(status);
 		}
