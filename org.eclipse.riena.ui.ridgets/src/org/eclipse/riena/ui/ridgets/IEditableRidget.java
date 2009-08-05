@@ -14,9 +14,11 @@ import java.util.Collection;
 
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
+import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 
 /**
  * Ridget with a value that can be edited, validated and converted.
@@ -39,6 +41,7 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 
 	/**
 	 * @return The validation rules.
+	 * 
 	 * @see #addValidationRule(IValidator)
 	 */
 	Collection<IValidator> getValidationRules();
@@ -52,13 +55,10 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * <p>
 	 * Failed validators cause an error marker to appear next to the UI-control.
 	 * "On edit" validators may choose to block user input. The reaction to a
-	 * failed validation can be changed by using a validator that returns an
-	 * IValidationRuleStatus.
+	 * failed validation can be changed by return an {@link IStatus} instance
+	 * with a special code - see {@link ValidationRuleStatus}.
 	 * <p>
 	 * Adding the same validator several times has no effect.
-	 * 
-	 * @see IValidator
-	 * @see IValidationRuleStatus
 	 * 
 	 * @param validator
 	 *            The validator to add (non-null).
@@ -66,8 +66,11 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 *            a value specifying when to evaluate the validator (non-null)
 	 * @throws RuntimeException
 	 *             if the validator or validationTime is null
+	 * 
 	 * @see #removeValidationRule(IValidator)
 	 * @see #revalidate()
+	 * @see IValidator
+	 * @see ValidationRuleStatus
 	 */
 	void addValidationRule(IValidator validator, ValidationTime validationTime);
 
@@ -76,6 +79,7 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * 
 	 * @param validator
 	 *            The validation rule to remove.
+	 * 
 	 * @see #addValidationRule(IValidator, ValidationTime)
 	 * @see #revalidate()
 	 */
@@ -99,11 +103,12 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * <p>
 	 * Adding the same message several times has no effect.
 	 * 
-	 * @see #addValidationRule(IValidator)
 	 * @param message
 	 *            A message related to the failed validation.
 	 * @param validationRule
 	 *            The validation rule related to the message.
+	 * 
+	 * @see #addValidationRule(IValidator)
 	 */
 	void addValidationMessage(String message, IValidator validationRule);
 
@@ -113,10 +118,11 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * <p>
 	 * Adding the same message several times has no effect.
 	 * 
-	 * @see org.eclipse.riena.core.marker.IMarkable#addMarker(org.eclipse.riena.core.marker.IMarker)
-	 * @see org.eclipse.riena.core.marker.IMarkable#removeMarker(org.eclipse.riena.core.marker.IMarker)
 	 * @param messageMarker
 	 *            An IMessageMarker related to the failed validation.
+	 * 
+	 * @see org.eclipse.riena.core.marker.IMarkable#addMarker(org.eclipse.riena.core.marker.IMarker)
+	 * @see org.eclipse.riena.core.marker.IMarkable#removeMarker(org.eclipse.riena.core.marker.IMarker)
 	 */
 	void addValidationMessage(IMessageMarker messageMarker);
 
@@ -128,13 +134,14 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * <p>
 	 * Adding the same message several times has no effect.
 	 * 
-	 * @see #addValidationRule(IValidator)
-	 * @see org.eclipse.riena.core.marker.IMarkable#addMarker(org.eclipse.riena.core.marker.IMarker)
-	 * @see org.eclipse.riena.core.marker.IMarkable#removeMarker(org.eclipse.riena.core.marker.IMarker)
 	 * @param messageMarker
 	 *            An IMessageMarker related to the failed validation.
 	 * @param validationRule
 	 *            The validation rule related to the IMessageMarker.
+	 * 
+	 * @see #addValidationRule(IValidator)
+	 * @see org.eclipse.riena.core.marker.IMarkable#addMarker(org.eclipse.riena.core.marker.IMarker)
+	 * @see org.eclipse.riena.core.marker.IMarkable#removeMarker(org.eclipse.riena.core.marker.IMarker)
 	 */
 	void addValidationMessage(IMessageMarker messageMarker, IValidator validationRule);
 
