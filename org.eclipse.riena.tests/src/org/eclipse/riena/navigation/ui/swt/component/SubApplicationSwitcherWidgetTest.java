@@ -14,6 +14,12 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
@@ -24,11 +30,6 @@ import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Tests of the class {@link SubApplicationSwitcherWidget}.
@@ -120,9 +121,9 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 	}
 
 	/**
-	 * Tests the method {@code getItem}.
+	 * Tests the method {@code getItem(Point)}.
 	 */
-	public void testGetItem() {
+	public void testGetItemPoint() {
 
 		SubApplicationNode node = new SubApplicationNode();
 		SubApplicationItem item = new SubApplicationItem(switcher, node);
@@ -153,6 +154,38 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 
 		point = new Point(31, 31);
 		retItem = ReflectionUtils.invokeHidden(switcher, "getItem", new Object[] { point });
+		assertNull(retItem);
+
+	}
+
+	/**
+	 * Tests the method {@code getItem(char)}.
+	 */
+	public void testGetItemChar() {
+
+		SubApplicationNode node1 = new SubApplicationNode("abcd");
+		ReflectionUtils.invokeHidden(switcher, "registerSubApplication", node1);
+		SubApplicationNode node2 = new SubApplicationNode("e&fgh");
+		ReflectionUtils.invokeHidden(switcher, "registerSubApplication", node2);
+		SubApplicationNode node3 = new SubApplicationNode("IJ&K&L");
+		ReflectionUtils.invokeHidden(switcher, "registerSubApplication", node3);
+
+		SubApplicationItem retItem = ReflectionUtils.invokeHidden(switcher, "getItem", new Object[] { 'a' });
+		assertNull(retItem);
+
+		retItem = ReflectionUtils.invokeHidden(switcher, "getItem", new Object[] { 'f' });
+		assertSame(node2, retItem.getSubApplicationNode());
+
+		retItem = ReflectionUtils.invokeHidden(switcher, "getItem", new Object[] { 'F' });
+		assertSame(node2, retItem.getSubApplicationNode());
+
+		retItem = ReflectionUtils.invokeHidden(switcher, "getItem", new Object[] { 'k' });
+		assertSame(node3, retItem.getSubApplicationNode());
+
+		retItem = ReflectionUtils.invokeHidden(switcher, "getItem", new Object[] { 'K' });
+		assertSame(node3, retItem.getSubApplicationNode());
+
+		retItem = ReflectionUtils.invokeHidden(switcher, "getItem", new Object[] { 'L' });
 		assertNull(retItem);
 
 	}

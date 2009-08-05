@@ -45,7 +45,7 @@ public class NavigationSubApplicationNodeAssembler extends AbstractNavigationAss
 	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
 
 		ISubApplicationNode subApplication = new SubApplicationNode(new NavigationNodeId(
-				"org.eclipse.riena.example.navigation.subapplication"), "Navigation"); //$NON-NLS-1$ //$NON-NLS-2$
+				"org.eclipse.riena.example.navigation.subapplication"), "Na&vigation"); //$NON-NLS-1$ //$NON-NLS-2$
 		subApplication.setIcon(ExampleIcons.ICON_APPLICATION);
 		WorkareaManager.getInstance().registerDefinition(subApplication, "subapplication.1", false); //$NON-NLS-1$
 		subApplication.setSelected(true);

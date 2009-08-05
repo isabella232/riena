@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -202,7 +203,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 				LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND);
 		gc.setForeground(textColor);
 		y = getBounds().y + BORDER_TOP_WIDTH + TEXT_TOP_INSET;
-		gc.drawText(getLabel(), x, y, true);
+		gc.drawText(getLabel(), x, y, SWT.DRAW_TRANSPARENT | SWT.DRAW_MNEMONIC);
 
 		// Selection
 		if (isActive() || flasherSupport.isProcessMarkerVisible()) {
@@ -300,7 +301,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		Font font = getTabFont();
 		gc.setFont(font);
 
-		int width = SwtUtilities.calcTextWidth(gc, getLabel());
+		String tabLabel = getLabel();
+		tabLabel = tabLabel.replaceFirst("&", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		int width = SwtUtilities.calcTextWidth(gc, tabLabel);
 		// Icon
 		if (getImage() != null) {
 			width += getImage().getBounds().width + ICON_TEXT_GAP;

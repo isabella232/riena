@@ -81,7 +81,7 @@ public class SwtExampleApplication extends SwtApplication {
 		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.navigate.form")); //$NON-NLS-1$
 
 		// Playground SubApplication
-		subApplication = new SubApplicationNode(new NavigationNodeId("playground"), "Playground"); //$NON-NLS-1$ //$NON-NLS-2$
+		subApplication = new SubApplicationNode(new NavigationNodeId("playground"), "Pla&yground"); //$NON-NLS-1$ //$NON-NLS-2$
 		subApplication.setIcon(ExampleIcons.ICON_SAMPLE);
 		//		presentation.present(subApplication, "subapplication.2"); //$NON-NLS-1$
 		WorkareaManager.getInstance().registerDefinition(subApplication, "subapplication.2", false); //$NON-NLS-1$

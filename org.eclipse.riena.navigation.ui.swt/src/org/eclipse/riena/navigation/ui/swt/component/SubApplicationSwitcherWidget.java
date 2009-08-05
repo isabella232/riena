@@ -18,6 +18,8 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
@@ -42,6 +44,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 
 	private List<SubApplicationItem> items;
 	private TabSelector tabSelector;
+	private MnemonicListener mnemonicListener;
 	private PaintDelegation paintDelegation;
 	private Control control;
 	private ApplicationListener applicationListener;
@@ -75,6 +78,8 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 * Adds listeners to the widget.
 	 */
 	private void addListeners() {
+		mnemonicListener = new MnemonicListener();
+		addTraverseListener(mnemonicListener);
 		tabSelector = new TabSelector();
 		addMouseListener(tabSelector);
 		paintDelegation = new PaintDelegation();
@@ -87,6 +92,24 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	private void removeListeners() {
 		removePaintListener(paintDelegation);
 		removeMouseListener(tabSelector);
+		removeTraverseListener(mnemonicListener);
+	}
+
+	/**
+	 * Activates the Sub-Application of the given item.
+	 * 
+	 * @param item
+	 *            - item to activate
+	 * @return {@code true} if the sub-application was activated; otherwise
+	 *         {@code false}
+	 */
+	private boolean activateItem(SubApplicationItem item) {
+		if (isTabEnabled(item)) {
+			item.getSubApplicationNode().activate();
+			redraw();
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -121,13 +144,22 @@ public class SubApplicationSwitcherWidget extends Canvas {
 		 */
 		@Override
 		public void mouseDown(MouseEvent e) {
-
 			SubApplicationItem item = getItem(new Point(e.x, e.y));
-			if (isTabEnabled(item)) {
-				item.getSubApplicationNode().activate();
-				redraw();
-			}
+			activateItem(item);
+		}
 
+	}
+
+	/**
+	 * After entering a mnemonic the sub-application it will be activated.
+	 */
+	private final class MnemonicListener implements TraverseListener {
+
+		public void keyTraversed(TraverseEvent evt) {
+			if (evt.detail == SWT.TRAVERSE_MNEMONIC) {
+				SubApplicationItem item = getItem(evt.character);
+				activateItem(item);
+			}
 		}
 
 	}
@@ -144,6 +176,34 @@ public class SubApplicationSwitcherWidget extends Canvas {
 		for (SubApplicationItem item : getItems()) {
 			if (item.getBounds().contains(point)) {
 				return item;
+			}
+		}
+
+		return null;
+
+	}
+
+	/**
+	 * Returns the sub-application with given mnemonic.
+	 * 
+	 * @param Mnemonic
+	 *            -
+	 * @return module item; or null, if not item was found
+	 */
+	private SubApplicationItem getItem(char mnemonic) {
+
+		String mnemonicStrg = "&" + mnemonic; //$NON-NLS-1$
+		mnemonicStrg = mnemonicStrg.toLowerCase();
+
+		for (SubApplicationItem item : getItems()) {
+			String label = item.getLabel();
+			if (label != null) {
+				label = label.toLowerCase();
+				if (label.contains(mnemonicStrg)) {
+					if (label.indexOf('&') == label.indexOf(mnemonicStrg)) {
+						return item;
+					}
+				}
 			}
 		}
 
