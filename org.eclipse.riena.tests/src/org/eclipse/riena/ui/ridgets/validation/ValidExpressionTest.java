@@ -14,9 +14,6 @@ import org.eclipse.core.runtime.IStatus;
 
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
-import org.eclipse.riena.ui.ridgets.validation.ValidExpression;
-import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
 /**
  * 
@@ -135,7 +132,7 @@ public class ValidExpressionTest extends RienaTestCase {
 		IStatus result = rule.validate("XX123");
 
 		assertFalse(result.isOK());
-		assertEquals(IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE, result.getCode());
+		assertEquals(ValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE, result.getCode());
 	}
 
 	/**

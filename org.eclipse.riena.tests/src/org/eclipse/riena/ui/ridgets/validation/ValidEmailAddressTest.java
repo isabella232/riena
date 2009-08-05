@@ -11,11 +11,9 @@
 package org.eclipse.riena.ui.ridgets.validation;
 
 import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
-import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
-import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
 /**
  * Tests for the RequiredField rule.
@@ -142,7 +140,7 @@ public class ValidEmailAddressTest extends RienaTestCase {
 		IStatus result = rule.validate("invalid");
 
 		assertFalse(result.isOK());
-		assertEquals(IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE, result.getCode());
+		assertEquals(ValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE, result.getCode());
 	}
 
 }
