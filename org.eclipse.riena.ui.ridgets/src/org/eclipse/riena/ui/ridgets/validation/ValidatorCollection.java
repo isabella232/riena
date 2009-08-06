@@ -94,15 +94,35 @@ public class ValidatorCollection implements IValidator, Iterable<IValidator> {
 	/**
 	 * Validates the value using all validators and returns a joined status.
 	 * 
-	 * @see org.eclipse.core.databinding.validation.IValidator#validate(java.lang.Object)
+	 * @param value
+	 *            the value to validate
+	 * 
+	 * @see IValidator#validate(java.lang.Object)
 	 */
 	public IStatus validate(final Object value) {
+		return validate(value, null);
+	}
+
+	/**
+	 * Validates the value using all validators, notified the supplied
+	 * {@link IValidationCallback} instance and returns a joined status.
+	 * 
+	 * @param value
+	 *            the value to validate
+	 * @param callback
+	 *            an {@link IValidationCallback} instance; may be null
+	 * 
+	 * @since 1.2
+	 */
+	public IStatus validate(final Object value, IValidationCallback callback) {
 		final IStatus[] statuses = new IStatus[validators.size()];
 		int index = -1;
 		for (final IValidator validator : validators) {
 			statuses[++index] = validator.validate(value);
+			if (callback != null) {
+				callback.validationRuleChecked(validator, statuses[index]);
+			}
 		}
 		return ValidationRuleStatus.join(statuses);
 	}
-
 }

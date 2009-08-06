@@ -10,14 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation;
 
+import static org.easymock.EasyMock.*;
+
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
-import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
-import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
-import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
 /**
  * Tests for the MinLength rule.
@@ -27,25 +27,25 @@ public class ValidatorCollectionTest extends RienaTestCase {
 
 	private static final IValidator ALWAYS_SUCCEED_1 = new IValidator() {
 		public IStatus validate(final Object value) {
-			return ValidationRuleStatus.ok();
+			return Status.OK_STATUS;
 		}
 	};
 
 	private static final IValidator ALWAYS_SUCCEED_2 = new IValidator() {
 		public IStatus validate(final Object value) {
-			return ValidationRuleStatus.ok();
+			return Status.OK_STATUS;
 		}
 	};
 
 	private static final IValidator ALWAYS_FAIL_1 = new IValidator() {
 		public IStatus validate(final Object value) {
-			return ValidationRuleStatus.error(false, "always fails", this);
+			return Status.CANCEL_STATUS;
 		}
 	};
 
 	private static final IValidator ALWAYS_FAIL_2 = new IValidator() {
 		public IStatus validate(final Object value) {
-			return ValidationRuleStatus.error(false, "always fails", this);
+			return Status.CANCEL_STATUS;
 		}
 	};
 
@@ -55,11 +55,7 @@ public class ValidatorCollectionTest extends RienaTestCase {
 		}
 	};
 
-	/**
-	 * @throws Exception
-	 *             Handled by JUnit.
-	 */
-	public void testJointStatus() throws Exception {
+	public void testJointStatus() {
 		ValidatorCollection rule = new ValidatorCollection();
 		rule.add(ALWAYS_SUCCEED_1);
 		rule.add(ALWAYS_SUCCEED_2);
@@ -81,7 +77,7 @@ public class ValidatorCollectionTest extends RienaTestCase {
 		assertFalse(rule.validate(null).isOK());
 	}
 
-	public void testConcurrentModification() throws Exception {
+	public void testConcurrentModification() {
 		// this test may not fail with a ConcurrentModificationException
 		ValidatorCollection rule = new ValidatorCollection();
 		rule.add(ALWAYS_SUCCEED_1);
@@ -120,10 +116,9 @@ public class ValidatorCollectionTest extends RienaTestCase {
 		} catch (final RuntimeException e) {
 			ok("passed test");
 		}
-
 	}
 
-	public void testExceptions() throws Exception {
+	public void testExceptions() {
 		ValidatorCollection rule = new ValidatorCollection();
 		rule.add(ALWAYS_THROW_EXCEPTION);
 		try {
@@ -219,6 +214,20 @@ public class ValidatorCollectionTest extends RienaTestCase {
 		} catch (RuntimeException e) {
 			fail("expected a thrown ValidationFailure instead");
 		}
+	}
 
+	public void testValidationCallback() {
+		ValidatorCollection rule = new ValidatorCollection();
+		rule.add(ALWAYS_FAIL_1);
+		rule.add(ALWAYS_SUCCEED_1);
+
+		IValidationCallback callback = createMock(IValidationCallback.class);
+		callback.validationRuleChecked(ALWAYS_FAIL_1, Status.CANCEL_STATUS);
+		callback.validationRuleChecked(ALWAYS_SUCCEED_1, Status.OK_STATUS);
+		replay(callback);
+
+		rule.validate(new Object(), callback);
+
+		verify(callback);
 	}
 }

@@ -11,10 +11,14 @@
 package org.eclipse.riena.ui.ridgets;
 
 import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 
 /**
  * Callback invoked after a validation.
+ * 
+ * @deprecated see
+ *             {@link org.eclipse.riena.ui.ridgets.validation.IValidationCallback}
  */
 public interface IValidationCallback {
 
@@ -26,6 +30,7 @@ public interface IValidationCallback {
 	 * 
 	 * @param status
 	 *            The result of the validation.
+	 * @deprecated
 	 */
 	void validationRulesChecked(IStatus status);
 
