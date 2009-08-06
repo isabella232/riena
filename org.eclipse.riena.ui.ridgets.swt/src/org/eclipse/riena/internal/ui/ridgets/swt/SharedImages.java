@@ -12,10 +12,11 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Provides access to a set of shared images. The images can be accessed using
@@ -62,8 +63,8 @@ public final class SharedImages {
 		doPut(reg, IMG_LEAF, SharedImages.class, "leaf.gif"); //$NON-NLS-1$
 		doPut(reg, IMG_CHECKED, SharedImages.class, "checkbox_checked.gif"); //$NON-NLS-1$
 		doPut(reg, IMG_UNCHECKED, SharedImages.class, "checkbox_unchecked.gif"); //$NON-NLS-1$
-		if (Activator.getDefault() != null) { // running as plug-in
-			Image lnfImage = LnfManager.getLnf().getImage(LnfKeyConstants.SUB_MODULE_TREE_ERROR_MARKER_ICON);
+		Image lnfImage = getLnfImage(LnfKeyConstants.SUB_MODULE_TREE_ERROR_MARKER_ICON);
+		if (lnfImage != null) {
 			// create an independent copy so we can keep using it, even if  
 			// lnfImage is disposed by the LnfManager. Note: if the L&F is  
 			// changed later, we 'll still keep using our copy.
@@ -87,6 +88,14 @@ public final class SharedImages {
 			descr = ImageDescriptor.getMissingImageDescriptor();
 		}
 		reg.put(key, descr);
+	}
+
+	private static Image getLnfImage(String key) {
+		Image result = null;
+		if (Activator.getDefault() != null) { // running as plug-in
+			result = LnfManager.getLnf().getImage(key);
+		}
+		return result;
 	}
 
 }
