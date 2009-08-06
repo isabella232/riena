@@ -472,6 +472,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 				if (useToString) {
 					if (null != element) {
 						String out = element.toString();
+						// TODO [ev] simplify -- it is impossible for element to be null here
 						if (null != element) {
 							return out;
 						}
