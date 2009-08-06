@@ -22,7 +22,7 @@ import com.caucho.hessian.io.JavaDeserializer;
 import com.caucho.hessian.io.JavaSerializer;
 import com.caucho.hessian.io.Serializer;
 
-import org.eclipse.riena.internal.core.ignore.Nop;
+import org.eclipse.riena.core.util.Nop;
 
 /**
  * {@code AbstractSerializerFactory} for the {@code Permission} classes.

@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.internal.core.Activator;
-import org.eclipse.riena.internal.core.ignore.Nop;
 
 /**
  * The {@code JavaLogCatcher} can attach to the Java logging and route the log

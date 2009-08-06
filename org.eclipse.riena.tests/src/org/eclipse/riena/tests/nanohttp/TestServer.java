@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
-import org.eclipse.riena.internal.core.ignore.Nop;
+import org.eclipse.riena.core.util.Nop;
 
 /**
  * Embedded simple web server for unit tests based on NanoHTTPD.

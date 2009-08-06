@@ -18,7 +18,6 @@ import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 

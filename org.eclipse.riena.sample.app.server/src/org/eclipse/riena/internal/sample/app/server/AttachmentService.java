@@ -29,7 +29,7 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.communication.core.attachment.Attachment;
 import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.internal.core.ignore.Nop;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
 
 /**

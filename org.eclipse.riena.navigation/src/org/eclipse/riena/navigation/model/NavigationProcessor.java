@@ -23,7 +23,7 @@ import java.util.Vector;
 import org.eclipse.core.runtime.AssertionFailedException;
 
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.internal.core.ignore.Nop;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationHistory;

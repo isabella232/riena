@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.eclipse.riena.internal.core.ignore.Nop;
+import org.eclipse.riena.core.util.Nop;
 
 /**
  *

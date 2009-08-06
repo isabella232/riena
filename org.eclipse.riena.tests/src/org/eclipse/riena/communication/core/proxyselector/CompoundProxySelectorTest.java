@@ -18,8 +18,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.internal.communication.core.proxyselector.CompoundProxySelector;
-import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 

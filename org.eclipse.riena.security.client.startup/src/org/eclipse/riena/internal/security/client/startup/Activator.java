@@ -15,7 +15,7 @@ import org.osgi.framework.BundleContext;
 import org.eclipse.riena.communication.core.factory.ProxyAlreadyRegisteredFailure;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.core.RienaActivator;
-import org.eclipse.riena.internal.core.ignore.Nop;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 

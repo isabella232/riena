@@ -42,9 +42,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableColumn;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;

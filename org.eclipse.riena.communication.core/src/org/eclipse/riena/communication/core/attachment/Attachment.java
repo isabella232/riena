@@ -18,7 +18,7 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.Assert;
 
-import org.eclipse.riena.internal.core.ignore.Nop;
+import org.eclipse.riena.core.util.Nop;
 
 /**
  * This class contains data constructed from a File object or a URL. If this

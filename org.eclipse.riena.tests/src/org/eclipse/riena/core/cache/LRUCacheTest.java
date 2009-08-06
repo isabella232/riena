@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.cache;
 
-import org.eclipse.riena.internal.core.ignore.Nop;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.ManualTestCase;
 

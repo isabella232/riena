@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core.ignore;
+package org.eclipse.riena.core.util;
 
 /**
  * Provide a simple solution for documenting empty code blocks, e.g. empty

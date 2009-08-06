@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.eclipse.riena.communication.core.attachment.Attachment;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.internal.communication.factory.hessian.InputStreamSerializerFactory;
-import org.eclipse.riena.internal.core.ignore.Nop;
 
 /**
  * Test the {@code InputStreamSerializerFactory} class.

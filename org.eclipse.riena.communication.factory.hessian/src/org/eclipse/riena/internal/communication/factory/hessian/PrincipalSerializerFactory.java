@@ -18,7 +18,7 @@ import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.JavaDeserializer;
 import com.caucho.hessian.io.Serializer;
 
-import org.eclipse.riena.internal.core.ignore.Nop;
+import org.eclipse.riena.core.util.Nop;
 
 /**
  * An {@code AbstractSerializerFactory} for the Hessian protocol that supports
