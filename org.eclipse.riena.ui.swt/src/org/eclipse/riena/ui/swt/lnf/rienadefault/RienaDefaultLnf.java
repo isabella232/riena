@@ -15,12 +15,16 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Resource;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
@@ -36,6 +40,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  * Default Look and Feel of Riena.
  */
 public class RienaDefaultLnf {
+
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RienaDefaultLnf.class);
 
 	private static final String LNF_RENDERER_EXTENSION_ID = "org.eclipse.riena.ui.swt.lnfrenderer"; //$NON-NLS-1$
 	private static final String DEFAULT_THEME_CLASSNAME = RienaDefaultTheme.class.getName();
@@ -408,8 +414,9 @@ public class RienaDefaultLnf {
 			try {
 				theme = createTheme(DEFAULT_THEME_CLASSNAME);
 			} catch (Exception e) {
-				e.printStackTrace();
-				throw new Error("can't load " + DEFAULT_THEME_CLASSNAME); //$NON-NLS-1$
+				String message = "can't load " + DEFAULT_THEME_CLASSNAME; //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_ERROR, message, e);
+				throw new Error(message);
 			}
 		}
 		if (!isInitialized()) {
