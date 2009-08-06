@@ -51,8 +51,8 @@ public class BasicAuthenticationITest extends RienaTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		customerSearchRegistration.unregister();
+		super.tearDown();
 	}
 
 	/**
