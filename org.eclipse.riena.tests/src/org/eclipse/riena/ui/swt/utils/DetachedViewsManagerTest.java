@@ -63,7 +63,6 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 	}
 
 	protected void tearDown() {
-		display.dispose();
 		shell.dispose();
 		manager.dispose();
 	}
