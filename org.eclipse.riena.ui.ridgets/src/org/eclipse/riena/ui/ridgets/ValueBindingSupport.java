@@ -35,7 +35,6 @@ import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.databinding.RidgetUpdateValueStrategy;
 import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
-import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
 /**
@@ -319,9 +318,12 @@ public class ValueBindingSupport implements IValidationCallback {
 	}
 
 	private boolean isSourceOf(IValidator validationRule, IStatus status) {
-		if (status instanceof ValidationRuleStatus) {
-			return validationRule.equals(((ValidationRuleStatus) status).getSource());
-		} else if (status instanceof MultiStatus) {
+		// TODO: the following statement brings a compile error
+		/*
+		 * if (status instanceof ValidationRuleStatus) { return
+		 * validationRule.equals(((ValidationRuleStatus) status).getSource()); }
+		 * else
+		 */if (status instanceof MultiStatus) {
 			for (IStatus childStatus : ((MultiStatus) status).getChildren()) {
 				if (isSourceOf(validationRule, childStatus)) {
 					return true;
