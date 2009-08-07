@@ -382,12 +382,12 @@ public abstract class RienaTestCase extends TestCase {
 		if (excludePattern == null) {
 			excludePattern = ""; //$NON-NLS-1$
 		}
-		Pattern inlcude = Pattern.compile(includePattern);
+		Pattern include = Pattern.compile(includePattern);
 		Pattern exclude = Pattern.compile(excludePattern);
 
 		Bundle[] bundles = getContext().getBundles();
 		for (Bundle bundle : bundles) {
-			if (inlcude.matcher(bundle.getSymbolicName()).matches()
+			if (include.matcher(bundle.getSymbolicName()).matches()
 					&& !(exclude.matcher(bundle.getSymbolicName()).matches())) {
 				closure.execute(bundle);
 			}
