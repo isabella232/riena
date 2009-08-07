@@ -19,6 +19,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.beans.common.TestBean;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.Markable;
@@ -69,7 +70,6 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	}
 
 	public void testUpdateFromModelOnRequest() throws Exception {
-
 		assertNull(target.getValue());
 
 		bean.setProperty("TestValue");
@@ -82,7 +82,6 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	}
 
 	public void testUpdateFromTargetImmediately() throws Exception {
-
 		assertNull(bean.getProperty());
 
 		target.setValue("TestValue");
@@ -91,7 +90,6 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	}
 
 	public void testValidationMessagesAddAndRemove() throws Exception {
-
 		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UPDATE_TO_MODEL);
 		valueBindingSupport.addValidationMessage("TestMessage1");
 		valueBindingSupport.addValidationMessage("TestMessage2");
@@ -136,6 +134,27 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		assertEquals(0, markable.getMarkers().size());
 	}
 
+	public void testAddValidationMessageForUnknownRule() {
+		AlwaysWrongValidator rule = new AlwaysWrongValidator();
+		valueBindingSupport.addValidationMessage("foo", rule);
+
+		assertEquals(0, markable.getMarkers().size());
+	}
+
+	public void testRemoveValidationMessageWhenRemovingRule() {
+		IValidator rule = new AlwaysWrongValidator();
+		valueBindingSupport.addValidationMessage("foo", rule);
+		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
+
+		target.setValue("value");
+
+		assertEquals(1, markable.getMarkersOfType(IMessageMarker.class).size());
+
+		valueBindingSupport.removeValidationRule(rule);
+
+		assertEquals(0, markable.getMarkersOfType(IMessageMarker.class).size());
+	}
+
 	/**
 	 * Tests that adding the same validation several times has no effect
 	 */
@@ -162,11 +181,9 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		target.setValue("even");
 
 		assertEquals(0, markable.getMarkers().size());
-
 	}
 
 	public void testValidationMessagesAddAndRemoveWhileActive() throws Exception {
-
 		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UPDATE_TO_MODEL);
 		target.setValue("odd");
 
@@ -196,7 +213,6 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	}
 
 	public void testSpecialValidationMessages() throws Exception {
-
 		EvenNumberOfCharacters evenNumberOfCharacters = new EvenNumberOfCharacters();
 		NotEndingWithDisaster notEndingWithDisaster = new NotEndingWithDisaster();
 		valueBindingSupport.addValidationRule(evenNumberOfCharacters, ValidationTime.ON_UPDATE_TO_MODEL);
@@ -277,7 +293,6 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	// ///////////////
 
 	private static class EvenNumberOfCharacters implements IValidator {
-
 		public IStatus validate(final Object value) {
 			if (value == null) {
 				return ValidationRuleStatus.ok();
@@ -287,7 +302,7 @@ public class ValueBindingSupportTest extends RienaTestCase {
 				if (string.length() % 2 == 0) {
 					return ValidationRuleStatus.ok();
 				}
-				return ValidationRuleStatus.error(false, "Odd number of characters.", this);
+				return ValidationRuleStatus.error(false, "Odd number of characters.");
 			}
 			throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
 					+ String.class.getName());
@@ -296,7 +311,6 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	}
 
 	private static class NotEndingWithDisaster implements IValidator {
-
 		public IStatus validate(final Object value) {
 			if (value == null) {
 				return ValidationRuleStatus.ok();
@@ -306,12 +320,17 @@ public class ValueBindingSupportTest extends RienaTestCase {
 				if (!string.toLowerCase().endsWith("disaster")) {
 					return ValidationRuleStatus.ok();
 				}
-				return ValidationRuleStatus.error(false, "It ends with disaster.", this);
+				return ValidationRuleStatus.error(false, "It ends with disaster.");
 			}
 			throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
 					+ String.class.getName());
 		}
+	}
 
+	private static final class AlwaysWrongValidator implements IValidator {
+		public IStatus validate(Object value) {
+			return ValidationRuleStatus.error(false, "wrong"); //$NON-NLS-1$
+		}
 	}
 
 }

@@ -61,6 +61,7 @@ public class ValueBindingSupport {
 	private final ValidatorCollection onEditValidators;
 
 	private Map<IValidator, Set<ValidationMessageMarker>> rule2messages;
+	private Map<IValidator, IStatus> rule2status;
 
 	private DataBindingContext context;
 	private IObservableValue targetOV;
@@ -112,11 +113,11 @@ public class ValueBindingSupport {
 	 */
 	public ValidatorCollection getAllValidators() {
 		ValidatorCollection result = new ValidatorCollection();
-		for (IValidator validator : onEditValidators) {
-			result.add(validator);
+		for (IValidator validationRule : onEditValidators) {
+			result.add(validationRule);
 		}
-		for (IValidator validator : afterGetValidators) {
-			result.add(validator);
+		for (IValidator validationRule : afterGetValidators) {
+			result.add(validationRule);
 		}
 		return result;
 	}
@@ -135,7 +136,8 @@ public class ValueBindingSupport {
 	 * @param validationRule
 	 *            The validation rule to add (non null)
 	 * @param validationTime
-	 *            a value specifying when to evalute the validator (non-null)
+	 *            a value specifying when to evalute the validationRule
+	 *            (non-null)
 	 * @return true, if the onEditValidators were changed, false otherwise
 	 * @see #getOnEditValidators()
 	 * @throws RuntimeException
@@ -167,10 +169,11 @@ public class ValueBindingSupport {
 		if (validationRule == null) {
 			return false;
 		}
+		removeMessages(validationRule);
+		clearStatus(validationRule);
 		// first remove in the list of afterGetValidators
 		afterGetValidators.remove(validationRule);
-		// if it is in the list of On_edit validators, also remove and return
-		// true
+		// if it is in the list of On_edit validators, also remove and return true
 		if (onEditValidators.contains(validationRule)) {
 			onEditValidators.remove(validationRule);
 			return true;
@@ -259,7 +262,7 @@ public class ValueBindingSupport {
 				if (targetOV != null) {
 					Object value = targetOV.getValue();
 					updateValidationMessageMarker(DEFAULT_RULE, newStatus);
-					for (IValidator rule : getValidationRules()) {
+					for (IValidator rule : getAfterGetValidators()) {
 						if (rule2messages != null && rule2messages.containsKey(rule)) {
 							updateValidationMessageMarker(rule, rule.validate(value));
 						}
@@ -361,6 +364,7 @@ public class ValueBindingSupport {
 	 */
 	public void updateValidationMessageMarker(IValidator validationRule, IStatus status) {
 		trace("updating rule " + validationRule + " with " + status); // TODO [ev] ex //$NON-NLS-1$ //$NON-NLS-2$
+		storeStatus(validationRule, status);
 		if (!status.isOK()) {
 			addMessages(validationRule);
 		} else {
@@ -370,13 +374,6 @@ public class ValueBindingSupport {
 
 	// helping methods
 	//////////////////
-
-	private void updateValidationMessageMarker(IValidator validationRule) {
-		if (targetOV != null) {
-			Object value = targetOV.getValue();
-			updateValidationMessageMarker(validationRule, validationRule.validate(value));
-		}
-	}
 
 	private void addMessages(IValidator validationRule) {
 		if (rule2messages != null && rule2messages.containsKey(validationRule)) {
@@ -388,6 +385,23 @@ public class ValueBindingSupport {
 		}
 	}
 
+	private void clearStatus(IValidator validationRule) {
+		if (rule2status != null) {
+			rule2status.remove(validationRule);
+		}
+	}
+
+	private IStatus getStatus(IValidator validationRule) {
+		return rule2status != null ? rule2status.get(validationRule) : null;
+	}
+
+	private void storeStatus(IValidator validationRule, IStatus status) {
+		if (rule2status == null) {
+			rule2status = new HashMap<IValidator, IStatus>();
+		}
+		rule2status.put(validationRule, status);
+	}
+
 	private void removeMessages(IValidator validationRule) {
 		if (rule2messages != null && rule2messages.containsKey(validationRule)) {
 			Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
@@ -395,6 +409,13 @@ public class ValueBindingSupport {
 				trace("- " + message.getMessage()); //$NON-NLS-1$ // TODO [ev] ex
 				markable.removeMarker(message);
 			}
+		}
+	}
+
+	private void updateValidationMessageMarker(IValidator validationRule) {
+		IStatus status = getStatus(validationRule);
+		if (status != null) {
+			updateValidationMessageMarker(validationRule, status);
 		}
 	}
 
