@@ -14,6 +14,10 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -21,9 +25,6 @@ import org.eclipse.riena.ui.ridgets.marker.TooltipMessageMarkerViewer;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Text ridgets using a {@link TooltipMessageMarkerViewer} for showing error
@@ -49,7 +50,7 @@ public final class SnippetTextRidget002 {
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(text1);
 			ITextRidget textRidget1 = (ITextRidget) SwtRidgetFactory.createRidget(text1);
 			textRidget1.setText("Hover over this..."); //$NON-NLS-1$
-			textRidget1.addMarker(new ErrorMessageMarker("Brought to you by an ErrorMessageMarker!")); //$NON-NLS-1$
+			textRidget1.addMarker(new ErrorMessageMarker("Brought to you by an ErrorMessageMarker")); //$NON-NLS-1$
 
 			// #3 Showing error message via addValidationMessage(...)
 			Text text2 = UIControlsFactory.createText(shell);
@@ -85,7 +86,7 @@ public final class SnippetTextRidget002 {
 	 */
 	private static final class AlwaysWrongValidator implements IValidator {
 		public IStatus validate(Object value) {
-			return ValidationRuleStatus.error(false, "Brought to you by an IStatus", this); //$NON-NLS-1$
+			return ValidationRuleStatus.error(false, "This comes from the IStatus returned by the validator"); //$NON-NLS-1$
 		}
 
 	}
