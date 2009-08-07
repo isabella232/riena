@@ -20,15 +20,16 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.riena.beans.common.AbstractBean;
-import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.swt.DateColumnFormatter;
-import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+
+import org.eclipse.riena.beans.common.AbstractBean;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.swt.DateColumnFormatter;
+import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 
 /**
  * Demonstrates using a custom {@link LabelProvider} to provide date-formatting,
@@ -122,6 +123,7 @@ public class SnippetTableRidget003 {
 			this.date = date;
 		}
 
+		@SuppressWarnings("unused")
 		public String getDescription() {
 			return descr;
 		}

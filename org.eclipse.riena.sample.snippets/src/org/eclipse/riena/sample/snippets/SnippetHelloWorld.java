@@ -13,12 +13,13 @@ package org.eclipse.riena.sample.snippets;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.ui.ridgets.ILabelRidget;
-import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 
 /**
  * 'Hello World' using an {@link ILabelRidget}.
@@ -53,10 +54,12 @@ public final class SnippetHelloWorld {
 	private static final class HelloModel {
 		private String text = "Hello Riena !"; //$NON-NLS-1$
 
+		@SuppressWarnings("unused")
 		public String getText() {
 			return text;
 		}
 
+		@SuppressWarnings("unused")
 		public void setText(String text) {
 			this.text = text;
 		}

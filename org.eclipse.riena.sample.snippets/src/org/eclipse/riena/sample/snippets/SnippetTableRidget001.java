@@ -16,14 +16,15 @@ import java.util.List;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.riena.beans.common.AbstractBean;
-import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+
+import org.eclipse.riena.beans.common.AbstractBean;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 
 /**
  * Demonstrates binding a table ridget to a model.
@@ -106,22 +107,27 @@ public class SnippetTableRidget001 {
 			this.italian = italian;
 		}
 
+		@SuppressWarnings("unused")
 		public String getEnglish() {
 			return english;
 		}
 
+		@SuppressWarnings("unused")
 		public String getGerman() {
 			return german;
 		}
 
+		@SuppressWarnings("unused")
 		public String getFrench() {
 			return french;
 		}
 
+		@SuppressWarnings("unused")
 		public String getSpain() {
 			return spain;
 		}
 
+		@SuppressWarnings("unused")
 		public String getItalian() {
 			return italian;
 		}

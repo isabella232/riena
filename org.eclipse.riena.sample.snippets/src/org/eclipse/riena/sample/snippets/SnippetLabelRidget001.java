@@ -18,13 +18,14 @@ import java.util.TimerTask;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.ui.ridgets.ILabelRidget;
-import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Text field ridget with minimum length validation rule and direct writing.
@@ -92,6 +93,7 @@ public final class SnippetLabelRidget001 {
 			time = Calendar.getInstance().getTime();
 		}
 
+		@SuppressWarnings("unused")
 		public Date getTime() {
 			return time;
 		}
