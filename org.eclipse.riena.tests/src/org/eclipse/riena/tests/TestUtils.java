@@ -21,6 +21,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
@@ -169,11 +170,11 @@ public final class TestUtils {
 	}
 
 	/**
-	 * Print all markers in this ridget.
+	 * Print all markers in this markable.
 	 */
 	@SuppressWarnings("unchecked")
-	public static void printMarkers(IMarkableRidget ridget) {
-		Collection<IMarker> markers = (Collection<IMarker>) ridget.getMarkers();
+	public static void printMarkers(IMarkable markable) {
+		Collection<IMarker> markers = (Collection<IMarker>) markable.getMarkers();
 		System.out.println(String.format("Have %d markers::", markers.size()));
 		for (IMarker m : markers) {
 			System.out.println(m.toString());
