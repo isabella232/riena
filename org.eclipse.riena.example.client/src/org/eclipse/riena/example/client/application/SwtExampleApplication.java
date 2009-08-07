@@ -72,7 +72,7 @@ public class SwtExampleApplication extends SwtApplication {
 		String bundleVersion = (String) Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
 
 		final IApplicationNode applicationNode = new ApplicationNode(
-				new NavigationNodeId("application"), "Riena Playground Example - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
+				new NavigationNodeId("application"), "Example & Playground - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
 		applicationNode.setIcon(ExampleIcons.ICON_APPLICATION);
 
 		// Navigation SubApplication
