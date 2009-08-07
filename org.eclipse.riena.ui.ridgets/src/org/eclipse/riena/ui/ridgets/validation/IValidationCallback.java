@@ -30,4 +30,11 @@ public interface IValidationCallback {
 	 */
 	void validationRuleChecked(IValidator validationRule, IStatus status);
 
+	/**
+	 * Invoked after all validations are performed.
+	 * 
+	 * @param status
+	 *            The aggregate result of the validation.
+	 */
+	void validationResult(IStatus status);
 }

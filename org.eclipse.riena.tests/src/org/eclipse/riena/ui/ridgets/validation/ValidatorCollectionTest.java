@@ -224,6 +224,7 @@ public class ValidatorCollectionTest extends RienaTestCase {
 		IValidationCallback callback = createMock(IValidationCallback.class);
 		callback.validationRuleChecked(ALWAYS_FAIL_1, Status.CANCEL_STATUS);
 		callback.validationRuleChecked(ALWAYS_SUCCEED_1, Status.OK_STATUS);
+		callback.validationResult((IStatus) anyObject());
 		replay(callback);
 
 		rule.validate(new Object(), callback);

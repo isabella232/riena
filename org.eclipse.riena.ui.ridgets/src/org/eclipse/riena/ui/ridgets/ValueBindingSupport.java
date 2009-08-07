@@ -12,6 +12,10 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.Binding;
@@ -26,7 +30,7 @@ import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Status;
 
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
@@ -40,24 +44,36 @@ import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 /**
  * Helper class for Ridgets to delegate their value binding issues to.
  */
-public class ValueBindingSupport implements IValidationCallback {
+public class ValueBindingSupport {
+
+	/**
+	 * This rule fails if the ridget is marked with the error marker
+	 */
+	private final IValidator DEFAULT_RULE = new IValidator() {
+		public IStatus validate(Object value) {
+			boolean isOk = markable.getMarkersOfType(ErrorMarker.class).isEmpty();
+			return isOk ? Status.OK_STATUS : Status.CANCEL_STATUS;
+		}
+	};
+
+	private final ErrorMarker errorMarker;
+	private final ValidatorCollection afterGetValidators;
+	private final ValidatorCollection onEditValidators;
+
+	private Map<IValidator, Set<ValidationMessageMarker>> rule2messages;
 
 	private DataBindingContext context;
 	private IObservableValue targetOV;
 	private IObservableValue modelOV;
 	private Binding modelBinding;
-	private ValidatorCollection afterGetValidators;
-	private ValidatorCollection onEditValidators;
 	private IConverter uiControlToModelConverter;
 	private IConverter modelToUIControlConverter;
 
-	private ErrorMarker errorMarker = new ErrorMarker();
 	private IMarkable markable;
-	private Collection<ValidationMessageMarker> validationMessageMarkers = new ArrayList<ValidationMessageMarker>(0);
-	private IStatus lastValidationStatus;
 
 	public ValueBindingSupport(IObservableValue target) {
 		bindToTarget(target);
+		errorMarker = new ErrorMarker();
 		afterGetValidators = new ValidatorCollection();
 		onEditValidators = new ValidatorCollection();
 	}
@@ -87,6 +103,22 @@ public class ValueBindingSupport implements IValidationCallback {
 		ArrayList<IValidator> allValidationRules = new ArrayList<IValidator>(onEditValidators.getValidators());
 		allValidationRules.addAll(afterGetValidators.getValidators());
 		return allValidationRules;
+	}
+
+	/**
+	 * TODO [ev] javadoc
+	 * 
+	 * @since 1.2
+	 */
+	public ValidatorCollection getAllValidators() {
+		ValidatorCollection result = new ValidatorCollection();
+		for (IValidator validator : onEditValidators) {
+			result.add(validator);
+		}
+		for (IValidator validator : afterGetValidators) {
+			result.add(validator);
+		}
+		return result;
 	}
 
 	public ValidatorCollection getOnEditValidators() {
@@ -209,12 +241,30 @@ public class ValueBindingSupport implements IValidationCallback {
 		validationStatus.addValueChangeListener(new IValueChangeListener() {
 			public void handleValueChange(ValueChangeEvent event) {
 				IStatus newStatus = (IStatus) ((ComputedValue) event.getSource()).getValue();
+				updateErrorMarker(newStatus);
+				updateValidationMessages(newStatus);
+			}
+
+			private void updateErrorMarker(IStatus newStatus) {
 				if (newStatus.isOK()) {
+					trace("- errorMarker"); //$NON-NLS-1$
 					markable.removeMarker(errorMarker);
 				} else {
+					trace("+ errorMarker"); //$NON-NLS-1$
 					markable.addMarker(errorMarker);
 				}
-				updateValidationMessageMarkers(newStatus);
+			}
+
+			private void updateValidationMessages(IStatus newStatus) {
+				if (targetOV != null) {
+					Object value = targetOV.getValue();
+					updateValidationMessageMarker(DEFAULT_RULE, newStatus);
+					for (IValidator rule : getValidationRules()) {
+						if (rule2messages != null && rule2messages.containsKey(rule)) {
+							updateValidationMessageMarker(rule, rule.validate(value));
+						}
+					}
+				}
 			}
 		});
 	}
@@ -250,17 +300,12 @@ public class ValueBindingSupport implements IValidationCallback {
 		return context;
 	}
 
-	public void validationRulesChecked(IStatus status) {
-		updateValidationMessageMarkers(status);
-	}
-
 	public void addValidationMessage(String message) {
-		addValidationMessage(new MessageMarker(message));
+		addValidationMessage(message, DEFAULT_RULE);
 	}
 
 	public void addValidationMessage(IMessageMarker messageMarker) {
-		ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker);
-		doAddMessageMarker(validationMessageMarker);
+		addValidationMessage(messageMarker, DEFAULT_RULE);
 	}
 
 	public void addValidationMessage(String message, IValidator validationRule) {
@@ -268,20 +313,27 @@ public class ValueBindingSupport implements IValidationCallback {
 	}
 
 	public void addValidationMessage(IMessageMarker messageMarker, IValidator validationRule) {
+		Assert.isNotNull(messageMarker, "messageMarker cannot be null"); //$NON-NLS-1$
+		Assert.isNotNull(validationRule, "validationRule cannot be null"); //$NON-NLS-1$
 		ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker, validationRule);
-		doAddMessageMarker(validationMessageMarker);
+		if (rule2messages == null) {
+			rule2messages = new HashMap<IValidator, Set<ValidationMessageMarker>>();
+		}
+		Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
+		if (messages == null) {
+			messages = new HashSet<ValidationMessageMarker>();
+			rule2messages.put(validationRule, messages);
+		}
+		messages.add(validationMessageMarker);
+		updateValidationMessageMarker(validationRule);
 	}
 
 	public void removeValidationMessage(String message) {
-		removeValidationMessage(new MessageMarker(message));
+		removeValidationMessage(message, DEFAULT_RULE);
 	}
 
 	public void removeValidationMessage(IMessageMarker messageMarker) {
-		ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker);
-		validationMessageMarkers.remove(validationMessageMarker);
-		if (isErrorMarked()) {
-			removeValidationMessageMarker(validationMessageMarker);
-		}
+		removeValidationMessage(messageMarker, DEFAULT_RULE);
 	}
 
 	public void removeValidationMessage(String message, IValidator validationRule) {
@@ -290,62 +342,64 @@ public class ValueBindingSupport implements IValidationCallback {
 
 	public void removeValidationMessage(IMessageMarker messageMarker, IValidator validationRule) {
 		ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker, validationRule);
-		validationMessageMarkers.remove(validationMessageMarker);
-		if (isErrorMarked()) {
-			removeValidationMessageMarker(validationMessageMarker);
+		if (rule2messages != null) {
+			Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
+			messages.remove(validationMessageMarker);
+			markable.removeMarker(validationMessageMarker);
+			if (messages.isEmpty()) {
+				rule2messages.remove(validationRule);
+			}
+		}
+	}
+
+	public void updateValidationMessageMarker(IStatus status) {
+		updateValidationMessageMarker(DEFAULT_RULE, status);
+	}
+
+	/**
+	 * TODO [ev] javadoc
+	 */
+	public void updateValidationMessageMarker(IValidator validationRule, IStatus status) {
+		trace("updating rule " + validationRule + " with " + status); // TODO [ev] ex //$NON-NLS-1$ //$NON-NLS-2$
+		if (!status.isOK()) {
+			addMessages(validationRule);
+		} else {
+			removeMessages(validationRule);
 		}
 	}
 
 	// helping methods
 	//////////////////
 
-	private void addValidationMessageMarker(ValidationMessageMarker validationMessageMarker) {
-		if (validationMessageMarker.getValidationRule() == null
-				|| isSourceOf(validationMessageMarker.getValidationRule(), lastValidationStatus)) {
-			markable.addMarker(validationMessageMarker);
+	private void updateValidationMessageMarker(IValidator validationRule) {
+		if (targetOV != null) {
+			Object value = targetOV.getValue();
+			updateValidationMessageMarker(validationRule, validationRule.validate(value));
 		}
 	}
 
-	private void doAddMessageMarker(ValidationMessageMarker messageMarker) {
-		validationMessageMarkers.add(messageMarker);
-		if (isErrorMarked()) {
-			addValidationMessageMarker(messageMarker);
-		}
-	}
-
-	private boolean isErrorMarked() {
-		return markable.getMarkers().contains(errorMarker);
-	}
-
-	private boolean isSourceOf(IValidator validationRule, IStatus status) {
-		// TODO: the following statement brings a compile error
-		/*
-		 * if (status instanceof ValidationRuleStatus) { return
-		 * validationRule.equals(((ValidationRuleStatus) status).getSource()); }
-		 * else
-		 */if (status instanceof MultiStatus) {
-			for (IStatus childStatus : ((MultiStatus) status).getChildren()) {
-				if (isSourceOf(validationRule, childStatus)) {
-					return true;
-				}
+	private void addMessages(IValidator validationRule) {
+		if (rule2messages != null && rule2messages.containsKey(validationRule)) {
+			Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
+			for (ValidationMessageMarker message : messages) {
+				trace("+ " + message.getMessage()); //$NON-NLS-1$ // TODO [ev] ex
+				markable.addMarker(message);
 			}
 		}
-		return false;
 	}
 
-	private void removeValidationMessageMarker(ValidationMessageMarker validationMessageMarker) {
-		markable.removeMarker(validationMessageMarker);
-	}
-
-	private void updateValidationMessageMarkers(IStatus status) {
-		lastValidationStatus = status;
-		for (ValidationMessageMarker validationMessageMarker : validationMessageMarkers) {
-			removeValidationMessageMarker(validationMessageMarker);
-
-			if (!status.isOK()) {
-				addValidationMessageMarker(validationMessageMarker);
+	private void removeMessages(IValidator validationRule) {
+		if (rule2messages != null && rule2messages.containsKey(validationRule)) {
+			Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
+			for (ValidationMessageMarker message : messages) {
+				trace("- " + message.getMessage()); //$NON-NLS-1$ // TODO [ev] ex
+				markable.removeMarker(message);
 			}
 		}
+	}
+
+	private void trace(String message) {
+		//		// System.out.println(message); // TODO [ev] ex
 	}
 
 }

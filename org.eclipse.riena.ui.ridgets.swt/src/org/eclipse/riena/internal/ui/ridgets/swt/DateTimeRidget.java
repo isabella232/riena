@@ -167,8 +167,7 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 
 	public boolean revalidate() {
 		Date date = getDate();
-		IStatus onUpdate = checkOnUpdateRules(date);
-		validationRulesChecked(suppressBlockWithFlash(onUpdate));
+		IStatus onUpdate = checkOnUpdateRules(date, new ValidationCallback(false));
 		if (onUpdate.isOK()) {
 			getValueBindingSupport().updateFromTarget();
 		}
@@ -203,10 +202,7 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		if (controlBinding != null) {
 			controlBinding.updateModelToTarget(); // update widget
 		}
-		IStatus onEdit = checkOnEditRules(date);
-		IStatus onUpdate = checkOnUpdateRules(date);
-		IStatus status = suppressBlockWithFlash(onEdit, onUpdate);
-		validationRulesChecked(status);
+		IStatus status = checkAllRules(date, new ValidationCallback(false));
 		if (status.isOK()) {
 			getValueBindingSupport().updateFromTarget();
 		}
@@ -228,9 +224,7 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		if (controlBinding != null) {
 			controlBinding.updateModelToTarget(); // updateWidget
 		}
-		IStatus onEdit = checkOnEditRules(getDate());
-		IStatus onUpdate = checkOnUpdateRules(getDate());
-		validationRulesChecked(suppressBlockWithFlash(onEdit, onUpdate));
+		checkAllRules(getDate(), new ValidationCallback(false));
 	}
 
 	// helping methods
@@ -278,9 +272,7 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	 */
 	private final class EditRulesValidator implements IValidator {
 		public IStatus validate(Object value) {
-			IStatus result = getValueBindingSupport().getOnEditValidators().validate(value);
-			validationRulesChecked(result);
-			return result;
+			return checkOnEditRules(value, new ValidationCallback(true));
 		}
 	}
 

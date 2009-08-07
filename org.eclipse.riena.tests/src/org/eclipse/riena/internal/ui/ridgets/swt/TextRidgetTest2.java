@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.riena.beans.common.DateBean;
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.beans.common.TestBean;
+import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.UITestHelper;
@@ -40,6 +41,7 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
 import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
 import org.eclipse.riena.ui.ridgets.marker.TooltipMessageMarkerViewer;
+import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
@@ -832,6 +834,50 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(0, ridget.getMarkers().size());
 	}
 
+	/**
+	 * As per Bug 279665 comment #3
+	 */
+	public void testValidationMessageWithOnUpdateAndOnEditRules() {
+		Text control = getWidget();
+		ITextRidget ridget = getRidget();
+
+		IValidator ruleMin3 = new MinLength(3);
+		IValidator ruleMin5 = new MinLength(5);
+		ridget.addValidationRule(ruleMin3, ValidationTime.ON_UI_CONTROL_EDIT);
+		ridget.addValidationRule(ruleMin5, ValidationTime.ON_UPDATE_TO_MODEL);
+		ridget.addValidationMessage("need 3", ruleMin3);
+		ridget.addValidationMessage("need 5", ruleMin5);
+
+		bean.setProperty("a");
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+		ridget.updateFromModel();
+
+		assertMessage("need 3", ridget);
+		assertMessage("need 5", ridget);
+		assertMessageCount(2, ridget);
+
+		control.setSelection(1, 1);
+		UITestHelper.sendString(control.getDisplay(), "b");
+
+		assertMessage("need 3", ridget);
+		assertMessage("need 5", ridget);
+		assertMessageCount(2, ridget);
+
+		UITestHelper.sendString(control.getDisplay(), "c");
+
+		assertMessage("need 5", ridget);
+		assertMessageCount(1, ridget);
+
+		UITestHelper.sendString(control.getDisplay(), "de");
+
+		assertMessage("need 5", ridget);
+		assertMessageCount(1, ridget);
+
+		UITestHelper.sendString(control.getDisplay(), "\r");
+
+		assertMessageCount(0, ridget);
+	}
+
 	public void testRevalidateOnEditRule() {
 		ITextRidget ridget = getRidget();
 		ValidCharacters numbersOnly = new ValidCharacters(ValidCharacters.VALID_NUMBERS);
@@ -1353,6 +1399,29 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	// helping methods
 	// ////////////////
 
+	private void assertMessageCount(int count, IMarkable ridget) {
+		Collection<ValidationMessageMarker> collection = ridget.getMarkersOfType(ValidationMessageMarker.class);
+		if (count != collection.size()) {
+			System.out.println(String.format("assertion failed on Validation Messages -- expected %d, got %d:", count,
+					collection.size()));
+			for (ValidationMessageMarker messageMarker : collection) {
+				System.out.println("\t" + messageMarker.getMessage());
+			}
+		}
+		assertEquals(count, collection.size());
+	}
+
+	private void assertMessage(String message, IMarkable ridget) {
+		Collection<ValidationMessageMarker> collection = ridget.getMarkersOfType(ValidationMessageMarker.class);
+		boolean found = false;
+		Iterator<ValidationMessageMarker> iter = collection.iterator();
+		while (!found && iter.hasNext()) {
+			ValidationMessageMarker marker = iter.next();
+			found = message.equals(marker.getMessage());
+		}
+		assertEquals(String.format("Validation Message '%s'", message), true, found);
+	}
+
 	private IMessageMarker getMessageMarker(Collection<? extends IMarker> markers) {
 		for (IMarker marker : markers) {
 			if (marker instanceof IMessageMarker) {
@@ -1375,7 +1444,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 				if (string.length() % 2 == 0) {
 					return ValidationRuleStatus.ok();
 				}
-				return ValidationRuleStatus.error(false, "Odd number of characters.", this);
+				return ValidationRuleStatus.error(false, "Odd number of characters.");
 			}
 			throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
 					+ String.class.getName());
@@ -1387,7 +1456,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		public IStatus validate(Object value) {
 			i++;
-			return ValidationRuleStatus.error(false, "message" + i, this); //$NON-NLS-1$
+			return ValidationRuleStatus.error(false, "message" + i); //$NON-NLS-1$
 		}
 	}
 

@@ -23,7 +23,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 /**
  * Ridget with a value that can be edited, validated and converted.
  */
-public interface IEditableRidget extends IValueRidget, IValidationCallback {
+public interface IEditableRidget extends IValueRidget {
 
 	/**
 	 * @return The converter used when updating from the UI-control to the

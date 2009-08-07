@@ -27,9 +27,8 @@ import org.eclipse.riena.internal.ui.ridgets.swt.SharedColors;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IEditableRidget;
-import org.eclipse.riena.ui.ridgets.IValidationCallback;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
+import org.eclipse.riena.ui.ridgets.validation.IValidationCallback;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
@@ -51,11 +50,11 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * status code which is downgraded to ERROR_ALLOW_WITH_MESSAGE. Other status
 	 * codes are not modified.
 	 */
-	protected static final IStatus suppressBlockWithFlash(IStatus... statuses) {
+	protected static final IStatus suppressBlock(IStatus... statuses) {
 		IStatus status = ValidationRuleStatus.join(statuses);
 		IStatus result;
-		if (status.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
-			final int newCode = IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
+		if (status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
+			final int newCode = ValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
 			result = new Status(status.getSeverity(), status.getPlugin(), newCode, status.getMessage(), status
 					.getException());
 		} else {
@@ -84,28 +83,6 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 
 	public void setUIControlToModelConverter(IConverter converter) {
 		getValueBindingSupport().setUIControlToModelConverter(converter);
-	}
-
-	/**
-	 * Subclasses should call this method to update validation state of the
-	 * ridget.
-	 * 
-	 * @see IValidationCallback#validationRulesChecked(IStatus)
-	 * 
-	 * @param status
-	 *            The result of validation.
-	 */
-	public void validationRulesChecked(IStatus status) {
-		getValueBindingSupport().validationRulesChecked(status);
-		if (status.isOK()) {
-			setErrorMarked(false);
-		} else {
-			if (status.getCode() != IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
-				setErrorMarked(true, status.getMessage());
-			} else {
-				flash();
-			}
-		}
 	}
 
 	public void addValidationMessage(IMessageMarker messageMarker, IValidator validationRule) {
@@ -144,27 +121,57 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	////////////////////
 
 	/**
+	 * Validates the given {@code value} against ALL validators.
+	 * 
+	 * @param value
+	 *            the value to validate
+	 * @param IValidationCallback
+	 *            a callback object; may be null
+	 * @return an IStatus with the most severe validation result; IStatus.isOK()
+	 *         indicates valdiation success or failure.
+	 * @see ValidationCallback
+	 * @since 1.2
+	 */
+	protected final IStatus checkAllRules(Object value, IValidationCallback callback) {
+		ValueBindingSupport vbs = getValueBindingSupport();
+		ValidatorCollection allValidators = vbs.getAllValidators();
+		return allValidators.validate(value, callback);
+	}
+
+	/**
 	 * Validates the given {@code value} against all 'on edit' validators.
 	 * 
+	 * @param value
+	 *            the value to validate
+	 * @param IValidationCallback
+	 *            a callback object; may be null
 	 * @return an IStatus with the most severe validation result; IStatus.isOK()
 	 *         indicates validation success or failure.
+	 * @see ValidationCallback
+	 * @since 1.2
 	 */
-	protected final IStatus checkOnEditRules(Object value) {
+	protected final IStatus checkOnEditRules(Object value, IValidationCallback callback) {
 		ValueBindingSupport vbs = getValueBindingSupport();
 		ValidatorCollection onEditValidators = vbs.getOnEditValidators();
-		return onEditValidators.validate(value);
+		return onEditValidators.validate(value, callback);
 	}
 
 	/**
 	 * Validates the given {@code value} against all 'on update' validators.
 	 * 
+	 * @param value
+	 *            the value to validate
+	 * @param IValidationCallback
+	 *            a callback object; may be null
 	 * @return an IStatus with the most severe validation result; IStatus.isOK()
 	 *         indicates valdiation success or failure.
+	 * @see ValidationCallback
+	 * @since 1.2
 	 */
-	protected final IStatus checkOnUpdateRules(Object value) {
+	protected final IStatus checkOnUpdateRules(Object value, IValidationCallback callback) {
 		ValueBindingSupport vbs = getValueBindingSupport();
 		ValidatorCollection afterGetValidators = vbs.getAfterGetValidators();
-		return afterGetValidators.validate(value);
+		return afterGetValidators.validate(value, callback);
 	}
 
 	/**
@@ -199,6 +206,54 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 				}
 			};
 			new Thread(op).start();
+		}
+	}
+
+	// helping classes
+	//////////////////
+
+	/**
+	 * Subclasses invoking the checkXXX methods of
+	 * {@link AbstractEditableRidget} may use instances of this class to update
+	 * the valdiation state of the ridget.
+	 */
+	protected final class ValidationCallback implements IValidationCallback {
+
+		private final boolean allowBlock;
+
+		/**
+		 * Create a new instance of this class.
+		 * 
+		 * @param allowBlock
+		 *            false will downgrade 'block' status codes to 'allow with
+		 *            message' -- see
+		 *            {@link AbstractEditableRidget#suppressBlock(IStatus...)}
+		 */
+		public ValidationCallback(boolean allowBlock) {
+			this.allowBlock = allowBlock;
+		}
+
+		public void validationRuleChecked(IValidator validationRule, IStatus status) {
+			getValueBindingSupport().updateValidationMessageMarker(validationRule, status);
+		}
+
+		public void validationResult(IStatus status) {
+			IStatus myStatus = allowBlock ? status : suppressBlock(status);
+			if (myStatus.isOK()) {
+				setErrorMarked(false);
+			} else {
+				if (myStatus.getCode() != ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
+					setErrorMarked(true, myStatus.getMessage());
+				} else {
+					flash();
+				}
+			}
+			/*
+			 * VBS only tracks aggregate changes of onUpdate-validation rules.
+			 * So when the aggregate status of onEdit rules has changed, it will
+			 * go undetected unless we do this:
+			 */
+			getValueBindingSupport().updateValidationMessageMarker(status);
 		}
 	}
 

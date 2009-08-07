@@ -123,6 +123,10 @@ public class ValidatorCollection implements IValidator, Iterable<IValidator> {
 				callback.validationRuleChecked(validator, statuses[index]);
 			}
 		}
-		return ValidationRuleStatus.join(statuses);
+		IStatus result = ValidationRuleStatus.join(statuses);
+		if (callback != null) {
+			callback.validationResult(result);
+		}
+		return result;
 	}
 }

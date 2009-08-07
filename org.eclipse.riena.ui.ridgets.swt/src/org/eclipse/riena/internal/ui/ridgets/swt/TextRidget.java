@@ -194,13 +194,11 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 * Passing a null value is equivalent to {@code setText("")}.
 	 */
 	public synchronized void setText(String text) {
-		// Assert.isNotNull(text);
 		String oldValue = textValue;
 		textValue = text != null ? text : ""; //$NON-NLS-1$
 		forceTextToControl(textValue);
 		disableMandatoryMarkers(isNotEmpty(textValue));
-		IStatus onEdit = checkOnEditRules(textValue);
-		validationRulesCheckedMarkFlash(onEdit);
+		IStatus onEdit = checkOnEditRules(textValue, new ValidationCallback(false));
 		if (onEdit.isOK()) {
 			firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, textValue);
 			firePropertyChange("textAfter", oldValue, textValue); //$NON-NLS-1$
@@ -213,10 +211,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		}
 		forceTextToControl(textValue);
 		disableMandatoryMarkers(isNotEmpty(textValue));
-		IStatus onEdit = checkOnEditRules(textValue);
-		IStatus onUpdate = checkOnUpdateRules(textValue);
-		IStatus status = ValidationRuleStatus.join(new IStatus[] { onEdit, onUpdate });
-		validationRulesCheckedMarkFlash(status);
+		IStatus status = checkAllRules(textValue, new ValidationCallback(false));
 		if (status.isOK()) {
 			getValueBindingSupport().updateFromTarget();
 		}
@@ -233,10 +228,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	@Override
 	public synchronized void updateFromModel() {
 		super.updateFromModel();
-		IStatus onEdit = checkOnEditRules(textValue);
-		IStatus onUpdate = checkOnUpdateRules(textValue);
-		IStatus status = ValidationRuleStatus.join(new IStatus[] { onEdit, onUpdate });
-		validationRulesCheckedMarkFlash(status);
+		checkAllRules(textValue, new ValidationCallback(false));
 	}
 
 	public synchronized boolean isDirectWriting() {
@@ -303,7 +295,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		String newValue = getUIText();
 		if (!oldValue.equals(newValue)) {
 			textValue = newValue;
-			if (checkOnEditRules(newValue).isOK()) {
+			if (checkOnEditRules(newValue, null).isOK()) {
 				firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, newValue);
 				firePropertyChange("textAfter", oldValue, newValue); //$NON-NLS-1$
 			}
@@ -314,18 +306,6 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		if (isDirectWriting) {
 			updateTextValue();
 		}
-	}
-
-	/*
-	 * This method is called from setText() / updateFromModel() which update the
-	 * validation state of the ridget programmatically. The method downgrades
-	 * block_with_flash to allow_with_message since the update happens
-	 * non-interactively. When the user is typing, you should invoke
-	 * validationRulesChecked(status) call directly - see event listeners below.
-	 */
-	private void validationRulesCheckedMarkFlash(IStatus status) {
-		IStatus newStatus = AbstractEditableRidget.suppressBlockWithFlash(status);
-		validationRulesChecked(newStatus);
 	}
 
 	// helping classes
@@ -390,10 +370,9 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 				return;
 			}
 			String newText = getText(e);
-			IStatus status = checkOnEditRules(newText);
+			IStatus status = checkOnEditRules(newText, new ValidationCallback(true));
 			boolean doit = !(status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH);
 			e.doit = doit;
-			validationRulesChecked(status);
 		}
 
 		private String getText(VerifyEvent e) {

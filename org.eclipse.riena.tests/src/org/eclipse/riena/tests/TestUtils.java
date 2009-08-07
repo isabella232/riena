@@ -21,6 +21,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 
@@ -165,6 +166,18 @@ public final class TestUtils {
 		char groupingSep = dfs.getGroupingSeparator();
 		String result = number.replace('.', '_').replace(',', decimalSep).replace('_', groupingSep);
 		return result;
+	}
+
+	/**
+	 * Print all markers in this ridget.
+	 */
+	@SuppressWarnings("unchecked")
+	public static void printMarkers(IMarkableRidget ridget) {
+		Collection<IMarker> markers = (Collection<IMarker>) ridget.getMarkers();
+		System.out.println(String.format("Have %d markers::", markers.size()));
+		for (IMarker m : markers) {
+			System.out.println(m.toString());
+		}
 	}
 
 	// helping methods
