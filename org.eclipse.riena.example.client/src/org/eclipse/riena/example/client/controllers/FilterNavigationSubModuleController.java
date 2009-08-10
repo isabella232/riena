@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
+
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationDisabledMarker;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHiddenMarker;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -238,6 +239,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 			return types;
 		}
 
+		@SuppressWarnings("unused")
 		public void setSelectedType(FilterType selectedType) {
 			this.selectedType = selectedType;
 		}
@@ -257,6 +259,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 			return selectedFilterTypeValue;
 		}
 
+		@SuppressWarnings("unused")
 		public void setNodeId(String nodeId) {
 			this.nodeId = nodeId;
 		}

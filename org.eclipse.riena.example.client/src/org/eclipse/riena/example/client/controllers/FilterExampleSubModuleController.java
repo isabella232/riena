@@ -159,10 +159,12 @@ public class FilterExampleSubModuleController extends SubModuleController {
 
 		private String text = ""; //$NON-NLS-1$
 
+		@SuppressWarnings("unused")
 		public void setText(String text) {
 			this.text = text;
 		}
 
+		@SuppressWarnings("unused")
 		public String getText() {
 			return text;
 		}

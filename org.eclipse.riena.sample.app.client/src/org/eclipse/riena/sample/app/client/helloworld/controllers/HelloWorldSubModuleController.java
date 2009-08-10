@@ -61,6 +61,7 @@ public class HelloWorldSubModuleController extends SubModuleController {
 		private String txt;
 		private String name;
 
+		@SuppressWarnings("unused")
 		public String getName() {
 			return name;
 		}
@@ -69,6 +70,7 @@ public class HelloWorldSubModuleController extends SubModuleController {
 			this.name = name;
 		}
 
+		@SuppressWarnings("unused")
 		public String getTxt() {
 			return txt;
 		}

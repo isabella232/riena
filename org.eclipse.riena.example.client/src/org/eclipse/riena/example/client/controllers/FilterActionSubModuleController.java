@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
+
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleMenuItemDisabledMarker;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleMenuItemHiddenMarker;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -235,6 +236,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 			return types;
 		}
 
+		@SuppressWarnings("unused")
 		public void setSelectedType(FilterType selectedType) {
 			this.selectedType = selectedType;
 		}

@@ -807,6 +807,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 			return ((Person) getValue()).getLastname();
 		}
 
+		@SuppressWarnings("unused")
 		public String getEntry() {
 			// 'Last Name' - 'First Name'
 			return ((Person) getValue()).getListEntry();

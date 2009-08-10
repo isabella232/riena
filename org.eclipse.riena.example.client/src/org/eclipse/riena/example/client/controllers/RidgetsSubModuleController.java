@@ -108,6 +108,7 @@ public class RidgetsSubModuleController extends SubModuleController {
 		private boolean toggleTwoSelected;
 		private boolean checkOneSelected;
 
+		@SuppressWarnings("unused")
 		public boolean isToggleOneSelected() {
 			return toggleOneSelected;
 		}
@@ -120,10 +121,12 @@ public class RidgetsSubModuleController extends SubModuleController {
 			this.toggleTwoSelected = toggleTwoSelected;
 		}
 
+		@SuppressWarnings("unused")
 		public boolean isToggleTwoSelected() {
 			return toggleTwoSelected;
 		}
 
+		@SuppressWarnings("unused")
 		public boolean isCheckOneSelected() {
 			return checkOneSelected;
 		}

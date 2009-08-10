@@ -160,6 +160,7 @@ public class HelloDialogController extends AbstractWindowController {
 		private CarWarranties warranty;
 		private List<String> plates = new ArrayList<String>();
 
+		@SuppressWarnings("unused")
 		public CarModels getModel() {
 			return model;
 		}
@@ -169,6 +170,7 @@ public class HelloDialogController extends AbstractWindowController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
+		@SuppressWarnings("unused")
 		public List<CarOptions> getOptions() {
 			return Collections.unmodifiableList(options);
 		}
@@ -178,6 +180,7 @@ public class HelloDialogController extends AbstractWindowController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
+		@SuppressWarnings("unused")
 		public CarWarranties getWarranty() {
 			return warranty;
 		}
@@ -187,6 +190,7 @@ public class HelloDialogController extends AbstractWindowController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
+		@SuppressWarnings("unused")
 		public List<String> getPlates() {
 			return Collections.unmodifiableList(plates);
 		}

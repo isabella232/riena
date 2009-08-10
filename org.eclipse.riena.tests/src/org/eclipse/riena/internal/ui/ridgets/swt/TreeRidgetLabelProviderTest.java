@@ -23,11 +23,6 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.riena.beans.common.WordNode;
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.tests.collect.UITestCase;
-import org.eclipse.riena.ui.ridgets.IColumnFormatter;
-import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -37,6 +32,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
+
+import org.eclipse.riena.beans.common.WordNode;
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.tests.collect.UITestCase;
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
+import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 
 /**
  * Tests for the class {@link TreeRidgetLabelProvider}.
@@ -358,6 +359,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 			this.icon = icon;
 		}
 
+		@SuppressWarnings("unused")
 		public String getIcon() {
 			return icon;
 		}

@@ -84,10 +84,12 @@ public class HelloServerSubModuleController extends SubModuleController {
 			pcSupport = new PropertyChangeSupport(this);
 		}
 
+		@SuppressWarnings("unused")
 		public void addPropertyChangeListener(PropertyChangeListener listener) {
 			pcSupport.addPropertyChangeListener(listener);
 		}
 
+		@SuppressWarnings("unused")
 		public void removePropertyChangeListener(PropertyChangeListener listener) {
 			pcSupport.removePropertyChangeListener(listener);
 		}
@@ -98,6 +100,7 @@ public class HelloServerSubModuleController extends SubModuleController {
 			pcSupport.firePropertyChange("message", old, message); //$NON-NLS-1$
 		}
 
+		@SuppressWarnings("unused")
 		public String getMessage() {
 			return message;
 		}

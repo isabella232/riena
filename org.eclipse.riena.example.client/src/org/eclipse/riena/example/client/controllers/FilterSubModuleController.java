@@ -20,6 +20,7 @@ import java.util.List;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.validation.IValidator;
+
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetDisabledMarker;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetHiddenMarker;
@@ -42,8 +43,8 @@ import org.eclipse.riena.ui.filter.IUIFilterRule;
 import org.eclipse.riena.ui.filter.impl.UIFilter;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -378,6 +379,7 @@ public class FilterSubModuleController extends SubModuleController {
 			return ids;
 		}
 
+		@SuppressWarnings("unused")
 		public void setSelectedId(String selectedId) {
 			this.selectedId = selectedId;
 		}
@@ -407,6 +409,7 @@ public class FilterSubModuleController extends SubModuleController {
 			return selectedMarker;
 		}
 
+		@SuppressWarnings("unused")
 		public List<MarkerWrapper> getMarkers() {
 			if (markerWrappers == null) {
 				markerWrappers = new ArrayList<MarkerWrapper>(markers.length);
@@ -438,6 +441,7 @@ public class FilterSubModuleController extends SubModuleController {
 			return types;
 		}
 
+		@SuppressWarnings("unused")
 		public void setSelectedType(FilterType selectedType) {
 			this.selectedType = selectedType;
 		}

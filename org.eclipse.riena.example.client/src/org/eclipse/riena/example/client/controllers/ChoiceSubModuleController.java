@@ -132,6 +132,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 		private CarWarranties warranty;
 		private List<String> plates = new ArrayList<String>();
 
+		@SuppressWarnings("unused")
 		public CarModels getModel() {
 			return model;
 		}
@@ -141,6 +142,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
+		@SuppressWarnings("unused")
 		public List<CarOptions> getOptions() {
 			return Collections.unmodifiableList(options);
 		}
@@ -150,6 +152,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
+		@SuppressWarnings("unused")
 		public CarWarranties getWarranty() {
 			return warranty;
 		}
@@ -159,6 +162,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
+		@SuppressWarnings("unused")
 		public List<String> getPlates() {
 			return Collections.unmodifiableList(plates);
 		}

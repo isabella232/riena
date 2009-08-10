@@ -11,6 +11,7 @@
 package org.eclipse.riena.sample.app.client.rcpmail;
 
 import org.eclipse.core.databinding.beans.PojoObservables;
+
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractRidgetController;
@@ -38,34 +39,42 @@ public class MessageController extends AbstractRidgetController {
 				"- use the default about dialog\n" + //$NON-NLS-1$
 				"- create a product definition\n"; //$NON-NLS-1$
 
+		@SuppressWarnings("unused")
 		public String getDate() {
 			return date;
 		}
 
+		@SuppressWarnings("unused")
 		public String getFrom() {
 			return from;
 		}
 
+		@SuppressWarnings("unused")
 		public String getMessage() {
 			return message;
 		}
 
+		@SuppressWarnings("unused")
 		public String getSubject() {
 			return subject;
 		}
 
+		@SuppressWarnings("unused")
 		public void setDate(String date) {
 			this.date = date;
 		}
 
+		@SuppressWarnings("unused")
 		public void setFrom(String from) {
 			this.from = from;
 		}
 
+		@SuppressWarnings("unused")
 		public void setMessage(String message) {
 			this.message = message;
 		}
 
+		@SuppressWarnings("unused")
 		public void setSubject(String subject) {
 			this.subject = subject;
 		}
