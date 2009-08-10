@@ -24,7 +24,6 @@ public class CustomersPermission extends Permission {
 	private String actions;
 	private String[] actionList;
 
-	@SuppressWarnings("unused")
 	private CustomersPermission() { // for hessian only
 		super(""); //$NON-NLS-1$
 	}
