@@ -44,7 +44,6 @@ public class EmailView extends SubModuleView<AbstractEmailController> {
 
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Font boldFont12 = SWTResourceManager.getFont("Arial", 12, SWT.BOLD); //$NON-NLS-1$
 		Font boldFont11 = SWTResourceManager.getFont("Arial", 11, SWT.BOLD); //$NON-NLS-1$
 		Font normalFont11 = SWTResourceManager.getFont("Arial", 11, SWT.NORMAL); //$NON-NLS-1$
 		Composite container = new Composite(parent, SWT.NONE);
@@ -77,7 +76,7 @@ public class EmailView extends SubModuleView<AbstractEmailController> {
 		subjectLabel.setLocation(103, 254);
 		subjectLabel.setSize(619, 17);
 		//		subjectLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
-		subjectLabel.setFont(SWTResourceManager.getFont("Arial", 11, SWT.BOLD));
+		subjectLabel.setFont(SWTResourceManager.getFont("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
 		subjectLabel.setForeground(SWTResourceManager.getColor(1, 1, 1));
 		addUIControl(subjectLabel, "emailSubject"); //$NON-NLS-1$
 

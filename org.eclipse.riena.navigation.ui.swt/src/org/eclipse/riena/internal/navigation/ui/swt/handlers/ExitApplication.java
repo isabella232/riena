@@ -27,8 +27,8 @@ public class ExitApplication extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = HandlerUtil.getActiveShell(event);
-		String message = String.format("Exit %s?", getName());
-		boolean isConfirmed = MessageDialog.openConfirm(shell, "Confirm Exit", message);
+		String message = String.format("Exit %s?", getName()); //$NON-NLS-1$
+		boolean isConfirmed = MessageDialog.openConfirm(shell, "Confirm Exit", message); //$NON-NLS-1$
 		if (isConfirmed) {
 			PlatformUI.getWorkbench().close();
 		}
@@ -40,7 +40,7 @@ public class ExitApplication extends AbstractHandler {
 
 	private String getName() {
 		IProduct product = Platform.getProduct();
-		return product != null ? product.getName() : "application";
+		return product != null ? product.getName() : "application"; //$NON-NLS-1$
 	}
 
 }

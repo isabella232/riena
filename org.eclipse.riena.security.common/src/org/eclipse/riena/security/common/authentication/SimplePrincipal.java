@@ -34,7 +34,7 @@ public class SimplePrincipal implements Principal, Serializable {
 	 */
 	public SimplePrincipal(String name) {
 		super();
-		Assert.isTrue(name != null && name.length() > 0, "the Name must not be null or empty");
+		Assert.isTrue(name != null && name.length() > 0, "the Name must not be null or empty"); //$NON-NLS-1$
 		this.name = name;
 	}
 

@@ -31,8 +31,8 @@ public class EmailInboxController extends AbstractEmailController {
 		super.configureRidgets();
 		ITableRidget emails = (ITableRidget) getRidget("emailsTable"); //$NON-NLS-1$
 
-		String[] columnHeaders = { "From", "Subject", "Date" }; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		String[] columnPropertyNames = { "emailFrom", "emailSubject", "emailDate" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+		String[] columnHeaders = { "From", "Subject", "Date" }; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+		String[] columnPropertyNames = { "emailFrom", "emailSubject", "emailDate" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		emails.bindToModel(emailsResult, "emails", Email.class, columnPropertyNames, columnHeaders); //$NON-NLS-1$
 
 		emails.setColumnFormatter(2, new DateColumnFormatter("dd.MMM. HH:mm") { //$NON-NLS-1$

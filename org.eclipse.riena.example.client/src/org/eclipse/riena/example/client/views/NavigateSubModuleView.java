@@ -46,7 +46,7 @@ public class NavigateSubModuleView extends SubModuleView<NavigateSubModuleContro
 		addUIControl(tableTextAndTree, "tableTextAndTree"); //$NON-NLS-1$
 
 		Button btnNavigateToRidget = UIControlsFactory.createButton(parent, "Navigate to First Name", //$NON-NLS-1$
-				"btnNavigateToRidget");
+				"btnNavigateToRidget"); //$NON-NLS-1$
 		fillFactory.applyTo(btnNavigateToRidget);
 	}
 

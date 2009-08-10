@@ -66,7 +66,7 @@ public class ComboAndChoiceSubModuleController extends SubModuleController {
 
 			public void callback() {
 				SingleSelectionListBean numbers = new SingleSelectionListBean(new Object[] {
-						"choice 1", "choice 2", "choice 3" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+						"choice 1", "choice 2", "choice 3" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				numbers.setSelection("choice 1"); //$NON-NLS-1$
 				compositeNumberModel.bindToModel(numbers, SingleSelectionListBean.PROPERTY_VALUES, numbers,
 						SingleSelectionListBean.PROPERTY_SELECTION);

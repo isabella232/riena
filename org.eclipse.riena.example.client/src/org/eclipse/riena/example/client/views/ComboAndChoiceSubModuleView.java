@@ -78,13 +78,13 @@ public class ComboAndChoiceSubModuleView extends SubModuleView<ComboAndChoiceSub
 		formDataLblComboboxWithoutModel.top = new FormAttachment(combo2, 0, SWT.TOP);
 		lblComboboxWithoutModel.setLayoutData(formDataLblComboboxWithoutModel);
 
-		Button btnBindToModel = UIControlsFactory.createButton(grpComboBoxes, "bind to model", "bindComboToModel");
+		Button btnBindToModel = UIControlsFactory.createButton(grpComboBoxes, "bind to model", "bindComboToModel"); //$NON-NLS-1$ //$NON-NLS-2$
 		FormData formDataBtnBindToModel = new FormData();
 		formDataBtnBindToModel.left = new FormAttachment(lblComboboxWithoutModel, 43);
 		formDataBtnBindToModel.bottom = new FormAttachment(combo2, 0, SWT.BOTTOM);
 		btnBindToModel.setLayoutData(formDataBtnBindToModel);
 
-		Group grpSingleChoice = UIControlsFactory.createGroup(parent, "Single choice");
+		Group grpSingleChoice = UIControlsFactory.createGroup(parent, "Single choice"); //$NON-NLS-1$
 		formDataGrpComboBoxes.bottom = new FormAttachment(grpSingleChoice, -23);
 		grpSingleChoice.setLayout(new FormLayout());
 		FormData formDataGrpSingleChoice = new FormData();

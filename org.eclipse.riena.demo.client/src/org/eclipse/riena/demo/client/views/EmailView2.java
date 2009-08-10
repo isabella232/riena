@@ -43,7 +43,6 @@ public class EmailView2 extends SubModuleView<AbstractEmailController> {
 	protected void basicCreatePartControl(Composite parent) {
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Font boldFont12 = SWTResourceManager.getFont("Arial", 12, SWT.BOLD); //$NON-NLS-1$
 		Font boldFont11 = SWTResourceManager.getFont("Arial", 11, SWT.BOLD); //$NON-NLS-1$
 		Font normalFont11 = SWTResourceManager.getFont("Arial", 11, SWT.NORMAL); //$NON-NLS-1$
 		Composite container = new Composite(parent, SWT.NONE);
@@ -54,7 +53,7 @@ public class EmailView2 extends SubModuleView<AbstractEmailController> {
 		table.setSize(703, 190);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		addUIControl(table, "emailsTable");
+		addUIControl(table, "emailsTable"); //$NON-NLS-1$
 
 		TableColumn tableColumn_1 = new TableColumn(table, SWT.NONE);
 		tableColumn_1.setWidth(532);
@@ -73,7 +72,7 @@ public class EmailView2 extends SubModuleView<AbstractEmailController> {
 		subjectLabel.setLocation(103, 254);
 		subjectLabel.setSize(619, 17);
 		//		subjectLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
-		subjectLabel.setFont(SWTResourceManager.getFont("Arial", 11, SWT.BOLD));
+		subjectLabel.setFont(SWTResourceManager.getFont("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
 		subjectLabel.setForeground(SWTResourceManager.getColor(1, 1, 1));
 		addUIControl(subjectLabel, "emailSubject"); //$NON-NLS-1$
 
