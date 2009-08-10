@@ -33,6 +33,7 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
@@ -826,7 +827,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		UITestHelper.sendString(control.getDisplay(), "a\r");
 
 		assertEquals(2, ridget.getMarkers().size());
-		assertEquals("TestTextTooShortMessage", getMessageMarker(ridget.getMarkers()).getMessage());
+		assertMessage(ridget, ValidationMessageMarker.class, "TestTextTooShortMessage");
 
 		// \r triggers update
 		UITestHelper.sendString(control.getDisplay(), "b\r");
@@ -852,30 +853,69 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 		ridget.updateFromModel();
 
-		assertMessage("need 3", ridget);
-		assertMessage("need 5", ridget);
-		assertMessageCount(2, ridget);
+		assertMessage(ridget, ValidationMessageMarker.class, "need 3");
+		assertMessage(ridget, ValidationMessageMarker.class, "need 5");
+		assertMessageCount(ridget, ValidationMessageMarker.class, 2);
 
 		control.setSelection(1, 1);
 		UITestHelper.sendString(control.getDisplay(), "b");
 
-		assertMessage("need 3", ridget);
-		assertMessage("need 5", ridget);
-		assertMessageCount(2, ridget);
+		assertMessage(ridget, ValidationMessageMarker.class, "need 3");
+		assertMessage(ridget, ValidationMessageMarker.class, "need 5");
+		assertMessageCount(ridget, ValidationMessageMarker.class, 2);
 
 		UITestHelper.sendString(control.getDisplay(), "c");
 
-		assertMessage("need 5", ridget);
-		assertMessageCount(1, ridget);
+		assertMessage(ridget, ValidationMessageMarker.class, "need 5");
+		assertMessageCount(ridget, ValidationMessageMarker.class, 1);
 
 		UITestHelper.sendString(control.getDisplay(), "de");
 
-		assertMessage("need 5", ridget);
-		assertMessageCount(1, ridget);
+		assertMessage(ridget, ValidationMessageMarker.class, "need 5");
+		assertMessageCount(ridget, ValidationMessageMarker.class, 1);
 
 		UITestHelper.sendString(control.getDisplay(), "\r");
 
-		assertMessageCount(0, ridget);
+		assertMessageCount(ridget, ValidationMessageMarker.class, 0);
+	}
+
+	public void testErrorMessageWithOnUpdateAndOnEditRules() {
+		Text control = getWidget();
+		ITextRidget ridget = getRidget();
+
+		IValidator ruleMin3 = new MinLength(3);
+		IValidator ruleMin5 = new MinLength(5);
+		ridget.addValidationRule(ruleMin3, ValidationTime.ON_UI_CONTROL_EDIT);
+		ridget.addValidationRule(ruleMin5, ValidationTime.ON_UPDATE_TO_MODEL);
+
+		bean.setProperty("a");
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+		ridget.updateFromModel();
+
+		assertMessage(ridget, ErrorMessageMarker.class, "String 'a' is less than 3 characters long.");
+		assertMessage(ridget, ErrorMessageMarker.class, "String 'a' is less than 5 characters long.");
+		assertMessageCount(ridget, ErrorMessageMarker.class, 2);
+
+		control.setSelection(1, 1);
+		UITestHelper.sendString(control.getDisplay(), "b");
+
+		assertMessage(ridget, ErrorMessageMarker.class, "String 'ab' is less than 3 characters long.");
+		assertMessage(ridget, ErrorMessageMarker.class, "String 'a' is less than 5 characters long.");
+		assertMessageCount(ridget, ErrorMessageMarker.class, 2);
+
+		UITestHelper.sendString(control.getDisplay(), "c");
+
+		assertMessage(ridget, ErrorMessageMarker.class, "String 'a' is less than 5 characters long.");
+		assertMessageCount(ridget, ErrorMessageMarker.class, 1);
+
+		UITestHelper.sendString(control.getDisplay(), "de");
+
+		assertMessage(ridget, ErrorMessageMarker.class, "String 'a' is less than 5 characters long.");
+		assertMessageCount(ridget, ErrorMessageMarker.class, 1);
+
+		UITestHelper.sendString(control.getDisplay(), "\r");
+
+		assertMessageCount(ridget, ErrorMessageMarker.class, 0);
 	}
 
 	public void testRevalidateOnEditRule() {
@@ -898,7 +938,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		ridget.removeValidationRule(numbersOnly);
 
-		assertTrue(ridget.isErrorMarked());
+		assertFalse(ridget.isErrorMarked()); // since 1.2: remove updates immediatelly
 
 		boolean isOk2 = ridget.revalidate();
 
@@ -926,7 +966,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		ridget.removeValidationRule(numbersOnly);
 
-		assertTrue(ridget.isErrorMarked());
+		assertFalse(ridget.isErrorMarked()); // since 1.2: remove updates immediatelly
 
 		boolean isOk2 = ridget.revalidate();
 
@@ -1276,7 +1316,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	 */
 	public void testDisabledControlHasNoText() {
 		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
-			System.out.println("Skipping TextRidgetTest2.testDisabledHasNoTextBug55555()");
+			System.out.println("Skipping TextRidgetTest2.testDisabledHasNoText()");
 			return;
 		}
 
@@ -1300,15 +1340,15 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		TooltipMessageMarkerViewer viewer = new TooltipMessageMarkerViewer();
 		viewer.addRidget(ridget);
 		ridget.setToolTipText("original text");
-		AlwaysWrongValidator rule = new AlwaysWrongValidator();
+		AlwaysWrongValidator rule = new AlwaysWrongValidator("ruleA_");
 		ridget.addValidationRule(rule, ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.revalidate();
 
-		assertEquals("message1", ridget.getToolTipText());
+		assertEquals("ruleA_1", ridget.getToolTipText());
 
 		ridget.revalidate();
 
-		assertEquals("message2", ridget.getToolTipText());
+		assertEquals("ruleA_2", ridget.getToolTipText());
 
 		ridget.removeValidationRule(rule);
 		ridget.revalidate();
@@ -1321,18 +1361,18 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		TooltipMessageMarkerViewer viewer = new TooltipMessageMarkerViewer();
 		viewer.addRidget(ridget);
 		ridget.setToolTipText("original text");
-		AlwaysWrongValidator rule1 = new AlwaysWrongValidator();
-		AlwaysWrongValidator rule2 = new AlwaysWrongValidator();
+		AlwaysWrongValidator rule1 = new AlwaysWrongValidator("ruleA_");
+		AlwaysWrongValidator rule2 = new AlwaysWrongValidator("ruleB_");
 		ridget.addValidationRule(rule1, ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.addValidationRule(rule2, ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.revalidate();
 
-		assertEquals("message1\nmessage1", ridget.getToolTipText());
+		assertEquals("ruleA_1; ruleB_1", ridget.getToolTipText());
 
 		ridget.removeValidationRule(rule1);
 		ridget.revalidate();
 
-		assertEquals("message2", ridget.getToolTipText());
+		assertEquals("ruleB_2", ridget.getToolTipText());
 
 		ridget.removeValidationRule(rule2);
 		ridget.revalidate();
@@ -1399,36 +1439,29 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	// helping methods
 	// ////////////////
 
-	private void assertMessageCount(int count, IMarkable ridget) {
-		Collection<ValidationMessageMarker> collection = ridget.getMarkersOfType(ValidationMessageMarker.class);
+	@SuppressWarnings("unchecked")
+	private void assertMessageCount(IMarkable ridget, Class markerType, int count) {
+		Collection<IMessageMarker> collection = ridget.getMarkersOfType(markerType);
 		if (count != collection.size()) {
 			System.out.println(String.format("assertion failed on Validation Messages -- expected %d, got %d:", count,
 					collection.size()));
-			for (ValidationMessageMarker messageMarker : collection) {
+			for (IMessageMarker messageMarker : collection) {
 				System.out.println("\t" + messageMarker.getMessage());
 			}
 		}
 		assertEquals(count, collection.size());
 	}
 
-	private void assertMessage(String message, IMarkable ridget) {
-		Collection<ValidationMessageMarker> collection = ridget.getMarkersOfType(ValidationMessageMarker.class);
+	@SuppressWarnings("unchecked")
+	private void assertMessage(IMarkable ridget, Class markerType, String message) {
+		Collection<IMessageMarker> collection = ridget.getMarkersOfType(markerType);
 		boolean found = false;
-		Iterator<ValidationMessageMarker> iter = collection.iterator();
+		Iterator<IMessageMarker> iter = collection.iterator();
 		while (!found && iter.hasNext()) {
-			ValidationMessageMarker marker = iter.next();
+			IMessageMarker marker = iter.next();
 			found = message.equals(marker.getMessage());
 		}
-		assertEquals(String.format("Validation Message '%s'", message), true, found);
-	}
-
-	private IMessageMarker getMessageMarker(Collection<? extends IMarker> markers) {
-		for (IMarker marker : markers) {
-			if (marker instanceof IMessageMarker) {
-				return (IMessageMarker) marker;
-			}
-		}
-		return null;
+		assertEquals(String.format("Message '%s'", message), true, found);
 	}
 
 	// helping classes
@@ -1452,11 +1485,17 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	private static final class AlwaysWrongValidator implements IValidator {
-		private int i = 0;
+
+		private String message;
+		private int invokeCount = 0;
+
+		AlwaysWrongValidator(String message) {
+			this.message = message;
+		}
 
 		public IStatus validate(Object value) {
-			i++;
-			return ValidationRuleStatus.error(false, "message" + i); //$NON-NLS-1$
+			invokeCount++;
+			return ValidationRuleStatus.error(false, message + String.valueOf(invokeCount)); //$NON-NLS-1$
 		}
 	}
 

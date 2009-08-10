@@ -34,11 +34,14 @@ import org.eclipse.core.runtime.Status;
 
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.databinding.RidgetUpdateValueStrategy;
 import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
+import org.eclipse.riena.ui.ridgets.validation.IValidationCallback;
+import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
 /**
@@ -47,21 +50,25 @@ import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 public class ValueBindingSupport {
 
 	/**
-	 * This rule fails if the ridget is marked with the error marker
+	 * This rule fails if the ridget is marked with an error marker
 	 */
-	private final IValidator DEFAULT_RULE = new IValidator() {
+	private final IValidator NO_ERRORS_RULE = new IValidator() {
 		public IStatus validate(Object value) {
 			boolean isOk = markable.getMarkersOfType(ErrorMarker.class).isEmpty();
 			return isOk ? Status.OK_STATUS : Status.CANCEL_STATUS;
 		}
+
+		public String toString() {
+			return "NO_ERRORS_RULE"; //$NON-NLS-1$
+		}
 	};
 
-	private final ErrorMarker errorMarker;
 	private final ValidatorCollection afterGetValidators;
 	private final ValidatorCollection onEditValidators;
 
 	private Map<IValidator, Set<ValidationMessageMarker>> rule2messages;
 	private Map<IValidator, IStatus> rule2status;
+	private Map<IValidator, ErrorMessageMarker> rule2error;
 
 	private DataBindingContext context;
 	private IObservableValue targetOV;
@@ -74,7 +81,6 @@ public class ValueBindingSupport {
 
 	public ValueBindingSupport(IObservableValue target) {
 		bindToTarget(target);
-		errorMarker = new ErrorMarker();
 		afterGetValidators = new ValidatorCollection();
 		onEditValidators = new ValidatorCollection();
 	}
@@ -107,7 +113,9 @@ public class ValueBindingSupport {
 	}
 
 	/**
-	 * TODO [ev] javadoc
+	 * Return all validation rules kept by this instance.
+	 * 
+	 * @return a ValidatorCollection with all rules; never null; may be empty.
 	 * 
 	 * @since 1.2
 	 */
@@ -122,10 +130,20 @@ public class ValueBindingSupport {
 		return result;
 	}
 
+	/**
+	 * Return all 'on edit' validation rules kept by this instance.
+	 * 
+	 * @return a ValidatorCollection; never null; may be empty.
+	 */
 	public ValidatorCollection getOnEditValidators() {
 		return onEditValidators;
 	}
 
+	/**
+	 * Return all 'on update' validation rules kept by this instance.
+	 * 
+	 * @return a ValidatorCollection; never null; may be empty.
+	 */
 	public ValidatorCollection getAfterGetValidators() {
 		return afterGetValidators;
 	}
@@ -136,8 +154,8 @@ public class ValueBindingSupport {
 	 * @param validationRule
 	 *            The validation rule to add (non null)
 	 * @param validationTime
-	 *            a value specifying when to evalute the validationRule
-	 *            (non-null)
+	 *            a value specifying when to evalute the validationRule (non
+	 *            null)
 	 * @return true, if the onEditValidators were changed, false otherwise
 	 * @see #getOnEditValidators()
 	 * @throws RuntimeException
@@ -169,6 +187,7 @@ public class ValueBindingSupport {
 		if (validationRule == null) {
 			return false;
 		}
+		removeErrorMarker(validationRule);
 		removeMessages(validationRule);
 		clearStatus(validationRule);
 		// first remove in the list of afterGetValidators
@@ -244,28 +263,15 @@ public class ValueBindingSupport {
 		validationStatus.addValueChangeListener(new IValueChangeListener() {
 			public void handleValueChange(ValueChangeEvent event) {
 				IStatus newStatus = (IStatus) ((ComputedValue) event.getSource()).getValue();
-				updateErrorMarker(newStatus);
 				updateValidationMessages(newStatus);
-			}
-
-			private void updateErrorMarker(IStatus newStatus) {
-				if (newStatus.isOK()) {
-					trace("- errorMarker"); //$NON-NLS-1$
-					markable.removeMarker(errorMarker);
-				} else {
-					trace("+ errorMarker"); //$NON-NLS-1$
-					markable.addMarker(errorMarker);
-				}
 			}
 
 			private void updateValidationMessages(IStatus newStatus) {
 				if (targetOV != null) {
 					Object value = targetOV.getValue();
-					updateValidationMessageMarker(DEFAULT_RULE, newStatus);
+					updateValidationStatus(NO_ERRORS_RULE, newStatus);
 					for (IValidator rule : getAfterGetValidators()) {
-						if (rule2messages != null && rule2messages.containsKey(rule)) {
-							updateValidationMessageMarker(rule, rule.validate(value));
-						}
+						updateValidationStatus(rule, rule.validate(value));
 					}
 				}
 			}
@@ -304,11 +310,11 @@ public class ValueBindingSupport {
 	}
 
 	public void addValidationMessage(String message) {
-		addValidationMessage(message, DEFAULT_RULE);
+		addValidationMessage(message, NO_ERRORS_RULE);
 	}
 
 	public void addValidationMessage(IMessageMarker messageMarker) {
-		addValidationMessage(messageMarker, DEFAULT_RULE);
+		addValidationMessage(messageMarker, NO_ERRORS_RULE);
 	}
 
 	public void addValidationMessage(String message, IValidator validationRule) {
@@ -332,11 +338,11 @@ public class ValueBindingSupport {
 	}
 
 	public void removeValidationMessage(String message) {
-		removeValidationMessage(message, DEFAULT_RULE);
+		removeValidationMessage(message, NO_ERRORS_RULE);
 	}
 
 	public void removeValidationMessage(IMessageMarker messageMarker) {
-		removeValidationMessage(messageMarker, DEFAULT_RULE);
+		removeValidationMessage(messageMarker, NO_ERRORS_RULE);
 	}
 
 	public void removeValidationMessage(String message, IValidator validationRule) {
@@ -355,19 +361,41 @@ public class ValueBindingSupport {
 		}
 	}
 
-	public void updateValidationMessageMarker(IStatus status) {
-		updateValidationMessageMarker(DEFAULT_RULE, status);
+	/**
+	 * Updates the aggregate error status (i.e. the sum of all rules). This will
+	 * update the error state and messages attached to the aggregate error
+	 * status -- see {@link #addValidationMessage(String)}.
+	 * <p>
+	 * Implementation note: This should be invoked when the aggregate state of
+	 * 'on_edit' rules has changed, since the status of such rules is not
+	 * 
+	 * @param status
+	 *            an IStatus instance with the aggregate status; never null
+	 * @see IValidationCallback
+	 */
+	public void updateValidationStatus(IStatus status) {
+		updateValidationStatus(NO_ERRORS_RULE, status);
 	}
 
 	/**
-	 * TODO [ev] javadoc
+	 * Update the status of a specific rule. This will update the error state
+	 * and messages attached to that rule -- see
+	 * {@link #addValidationMessage(String, IValidator)}.
+	 * 
+	 * @param validationRule
+	 *            an IValidator instance; never null
+	 * @param status
+	 *            an IStatus instance; never null
+	 * @see IValidationCallback
 	 */
-	public void updateValidationMessageMarker(IValidator validationRule, IStatus status) {
-		trace("updating rule " + validationRule + " with " + status); // TODO [ev] ex //$NON-NLS-1$ //$NON-NLS-2$
+	public void updateValidationStatus(IValidator validationRule, IStatus status) {
+		// trace("updating rule " + validationRule + " with " + status);
 		storeStatus(validationRule, status);
 		if (!status.isOK()) {
+			addErrorMarker(validationRule, status);
 			addMessages(validationRule);
 		} else {
+			removeErrorMarker(validationRule);
 			removeMessages(validationRule);
 		}
 	}
@@ -375,11 +403,29 @@ public class ValueBindingSupport {
 	// helping methods
 	//////////////////
 
+	private void addErrorMarker(IValidator validationRule, IStatus status) {
+		if (status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH || validationRule == NO_ERRORS_RULE) {
+			return;
+		}
+		if (rule2error == null) {
+			rule2error = new HashMap<IValidator, ErrorMessageMarker>();
+		}
+		ErrorMessageMarker errorMarker = rule2error.get(validationRule);
+		if (errorMarker == null) {
+			errorMarker = new ErrorMessageMarker(status.getMessage());
+			rule2error.put(validationRule, errorMarker);
+		} else {
+			((ErrorMessageMarker) errorMarker).setMessage(status.getMessage());
+		}
+		markable.addMarker(errorMarker);
+		// trace("+EM " + errorMarker + " " + markable.getMarkers().size());
+	}
+
 	private void addMessages(IValidator validationRule) {
 		if (rule2messages != null && rule2messages.containsKey(validationRule)) {
 			Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
 			for (ValidationMessageMarker message : messages) {
-				trace("+ " + message.getMessage()); //$NON-NLS-1$ // TODO [ev] ex
+				// trace("+VMM " + message);
 				markable.addMarker(message);
 			}
 		}
@@ -402,12 +448,22 @@ public class ValueBindingSupport {
 		rule2status.put(validationRule, status);
 	}
 
+	private void removeErrorMarker(IValidator validationRule) {
+		if (rule2error != null) {
+			ErrorMessageMarker errorMarker = rule2error.remove(validationRule);
+			if (errorMarker != null) {
+				markable.removeMarker(errorMarker);
+				// trace("-EM " + errorMarker + " " + (size - 1));
+			}
+		}
+	}
+
 	private void removeMessages(IValidator validationRule) {
 		if (rule2messages != null && rule2messages.containsKey(validationRule)) {
 			Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
 			for (ValidationMessageMarker message : messages) {
-				trace("- " + message.getMessage()); //$NON-NLS-1$ // TODO [ev] ex
 				markable.removeMarker(message);
+				// trace("-VMM " + message);
 			}
 		}
 	}
@@ -415,12 +471,12 @@ public class ValueBindingSupport {
 	private void updateValidationMessageMarker(IValidator validationRule) {
 		IStatus status = getStatus(validationRule);
 		if (status != null) {
-			updateValidationMessageMarker(validationRule, status);
+			updateValidationStatus(validationRule, status);
 		}
 	}
 
-	private void trace(String message) {
-		//		// System.out.println(message); // TODO [ev] ex
-	}
+	//	private void trace(String message) {
+	//		System.out.println(message); 
+	//	}
 
 }

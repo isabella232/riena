@@ -30,6 +30,7 @@ import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
@@ -148,11 +149,11 @@ public class ValueBindingSupportTest extends RienaTestCase {
 
 		target.setValue("value");
 
-		assertEquals(1, markable.getMarkersOfType(IMessageMarker.class).size());
+		assertEquals(1, markable.getMarkersOfType(ValidationMessageMarker.class).size());
 
 		valueBindingSupport.removeValidationRule(rule);
 
-		assertEquals(0, markable.getMarkersOfType(IMessageMarker.class).size());
+		assertEquals(0, markable.getMarkersOfType(ValidationMessageMarker.class).size());
 	}
 
 	/**
@@ -176,7 +177,7 @@ public class ValueBindingSupportTest extends RienaTestCase {
 
 		target.setValue("odd");
 
-		assertEquals(4, markable.getMarkersOfType(IMessageMarker.class).size());
+		assertEquals(4, markable.getMarkersOfType(ValidationMessageMarker.class).size());
 
 		target.setValue("even");
 
@@ -235,7 +236,7 @@ public class ValueBindingSupportTest extends RienaTestCase {
 
 		target.setValue("We are teetering on the brink of disaster");
 
-		assertEquals(4, markable.getMarkers().size());
+		assertEquals(5, markable.getMarkers().size());
 		assertMessageMarkers("TestNotEvenMessage1", "TestNotEvenMessage2", "TestDisasterMessage");
 
 		target.setValue("Save again");

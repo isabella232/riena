@@ -234,26 +234,21 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 		}
 
 		public void validationRuleChecked(IValidator validationRule, IStatus status) {
-			getValueBindingSupport().updateValidationMessageMarker(validationRule, status);
+			IStatus myStatus = allowBlock ? status : suppressBlock(status);
+			getValueBindingSupport().updateValidationStatus(validationRule, myStatus);
 		}
 
 		public void validationResult(IStatus status) {
 			IStatus myStatus = allowBlock ? status : suppressBlock(status);
-			if (myStatus.isOK()) {
-				setErrorMarked(false);
-			} else {
-				if (myStatus.getCode() != ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
-					setErrorMarked(true, myStatus.getMessage());
-				} else {
-					flash();
-				}
+			if (!myStatus.isOK() && myStatus.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
+				flash();
 			}
 			/*
 			 * VBS only tracks aggregate changes of onUpdate-validation rules.
 			 * So when the aggregate status of onEdit rules has changed, it will
 			 * go undetected unless we do this:
 			 */
-			getValueBindingSupport().updateValidationMessageMarker(status);
+			getValueBindingSupport().updateValidationStatus(status);
 		}
 	}
 

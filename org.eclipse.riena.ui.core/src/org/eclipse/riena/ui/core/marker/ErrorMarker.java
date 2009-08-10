@@ -20,17 +20,31 @@ public class ErrorMarker extends AbstractMarker implements IIconizableMarker {
 	public static final String MARKER_KEY = "ErrorMarker"; //$NON-NLS-1$
 
 	/**
-	 * @see org.eclipse.riena.ui.core.marker.IIconizableMarker#getIconConfigurationKey()
+	 * Create a 'unique' error marker instance.
 	 */
+	public ErrorMarker() {
+		super(true);
+	}
+
+	/**
+	 * Create an error marker instance.
+	 * 
+	 * @param unique
+	 *            true to create a 'unique' marker; false otherwise. See
+	 *            {@link AbstractMarker} more information.
+	 */
+	protected ErrorMarker(boolean unique) {
+		super(unique);
+	}
+
 	public String getIconConfigurationKey() {
 		return MARKER_KEY;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 * 
-	 * @see
-	 * org.eclipse.riena.ui.core.marker.IIconizableMarker#getPositionOfMarker()
+	 * @return {@value MarkerPosition.BOTTOM_RIGHT}
 	 */
 	public MarkerPosition getPositionOfMarker() {
 		return MarkerPosition.BOTTOM_RIGHT;

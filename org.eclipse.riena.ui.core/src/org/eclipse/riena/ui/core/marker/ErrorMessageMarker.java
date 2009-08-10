@@ -22,7 +22,7 @@ public class ErrorMessageMarker extends ErrorMarker implements IMessageMarker {
 	 *            - the Message of the Marker
 	 */
 	public ErrorMessageMarker(String pMessage) {
-		super();
+		super(false);
 		setMessage(pMessage);
 	}
 
