@@ -14,7 +14,7 @@ import org.eclipse.riena.internal.objecttransaction.impl.ObjectTransactionImpl;
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
 import org.eclipse.riena.objecttransaction.IObjectTransactionExtract;
 import org.eclipse.riena.objecttransaction.ITransactedObject;
-import org.eclipse.riena.objecttransaction.ObjectTransactionFactoryAccessor;
+import org.eclipse.riena.objecttransaction.ObjectTransactionFactory;
 import org.eclipse.riena.objecttransaction.interf.value.Addresse;
 import org.eclipse.riena.objecttransaction.interf.value.IAddresse;
 import org.eclipse.riena.objecttransaction.interf.value.Kunde;
@@ -35,8 +35,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleAllNew() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		Kunde kunde = new Kunde("4711");
 		kunde.setVorname("john");
@@ -64,8 +63,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleExistingKundeAllNew() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -95,8 +93,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleAllClean() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -133,8 +130,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleExistingKundeAllNewChangingAddresse() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -174,8 +170,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithNewKundeAndSetAndGet() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		Kunde kunde = new Kunde("4711");
 		kunde.setVorname("john");
@@ -192,8 +187,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithNewKundeAndSubTransaction() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		Kunde kunde = new Kunde("4711");
 		kunde.setVorname("john");
@@ -203,8 +197,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 		assertTrue("vorname=john", kunde.getVorname().equals("john"));
 		assertTrue("nachname=Miller", kunde.getNachname().equals("Miller"));
 
-		IObjectTransaction subObjectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createSubObjectTransaction(objectTransaction);
+		IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance().createSubObjectTransaction(
+				objectTransaction);
 		kunde.setVorname("jane");
 		kunde.setNachname("Stewart");
 		assertTrue("vorname=jane", kunde.getVorname().equals("jane"));
@@ -219,8 +213,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithNewKundeAndSubTransactionAndCommit() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		Kunde kunde = new Kunde("4711");
 		kunde.setVorname("john");
@@ -230,8 +223,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 		assertTrue("vorname=john", kunde.getVorname().equals("john"));
 		assertTrue("nachname=Miller", kunde.getNachname().equals("Miller"));
 
-		IObjectTransaction subObjectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createSubObjectTransaction(objectTransaction);
+		IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance().createSubObjectTransaction(
+				objectTransaction);
 		subObjectTransaction.toString();
 		kunde.setVorname("jane");
 		kunde.setNachname("Stewart");
@@ -252,8 +245,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithNewKundeAndSubTransactionWithNewAddress() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		Kunde kunde = new Kunde("4711");
 		kunde.setVorname("john");
@@ -263,8 +255,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 		assertTrue("vorname=john", kunde.getVorname().equals("john"));
 		assertTrue("nachname=Miller", kunde.getNachname().equals("Miller"));
 
-		IObjectTransaction subObjectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createSubObjectTransaction(objectTransaction);
+		IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance().createSubObjectTransaction(
+				objectTransaction);
 		subObjectTransaction.toString();
 		kunde.setVorname("jane");
 		kunde.setNachname("Stewart");
@@ -291,8 +283,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithNewKundeAndSubTransactionWithChangedAddress() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		Kunde kunde = new Kunde("4711");
 		kunde.setVorname("john");
@@ -312,8 +303,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 		assertTrue("plz in addresse ist nicht 60000", addresse.getPlz().equals("60000"));
 		assertTrue("strasse ist nicht Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
 
-		IObjectTransaction subObjectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createSubObjectTransaction(objectTransaction);
+		IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance().createSubObjectTransaction(
+				objectTransaction);
 		subObjectTransaction.toString();
 		kunde.setVorname("jane");
 		kunde.setNachname("Stewart");
@@ -343,8 +334,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithNewKundeAndSubTransactionWithChangedAddressAndCommit() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		Kunde kunde = new Kunde("4711");
 		kunde.setVorname("john");
@@ -364,8 +354,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 		assertTrue("plz in addresse ist nicht 60000", addresse.getPlz().equals("60000"));
 		assertTrue("strasse ist nicht Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
 
-		IObjectTransaction subObjectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createSubObjectTransaction(objectTransaction);
+		IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance().createSubObjectTransaction(
+				objectTransaction);
 		subObjectTransaction.toString();
 		kunde.setVorname("jane");
 		kunde.setNachname("Stewart");
@@ -402,8 +392,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithExistingKundeUndNewVertraege() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -432,8 +421,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithExistingKundeUndNewAndRemoveVertraege1() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -459,8 +447,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithExistingKundeUndNewAndRemoveVertraege2() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -493,8 +480,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithExistingKundeUndNewAndRemoveVertraege3() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -527,8 +513,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithExistingKundeUndNewVertraegeInSubTransaction() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -536,8 +521,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 		kunde.setNachname("Miller");
 		objectTransaction.setCleanModus(false);
 
-		IObjectTransaction subObjectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createSubObjectTransaction(objectTransaction);
+		IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance().createSubObjectTransaction(
+				objectTransaction);
 		Vertrag v1 = new Vertrag("0815");
 		v1.setVertragsBeschreibung("mein erster Vertrag");
 		kunde.addVertrag(v1);
@@ -561,8 +546,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithExistingKundeUndNewVertraegeInSubTransactionAndCommit() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -570,8 +554,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 		kunde.setNachname("Miller");
 		objectTransaction.setCleanModus(false);
 
-		IObjectTransaction subObjectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createSubObjectTransaction(objectTransaction);
+		IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance().createSubObjectTransaction(
+				objectTransaction);
 		Vertrag v1 = new Vertrag("0815");
 		v1.setVertragsBeschreibung("mein erster Vertrag");
 		kunde.addVertrag(v1);
@@ -598,8 +582,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithExistingKundeUndRemoveVertraegeInSubTransaction() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -618,8 +601,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0815") == v1);
 		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0816") == v2);
 
-		IObjectTransaction subObjectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createSubObjectTransaction(objectTransaction);
+		IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance().createSubObjectTransaction(
+				objectTransaction);
 		kunde.removeVertrag(v1);
 
 		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0816") == v2);
@@ -640,8 +623,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithExistingKundeUndRemoveVertraegeInSubTransactionAndCommit() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -660,8 +642,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0815") == v1);
 		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0816") == v2);
 
-		IObjectTransaction subObjectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createSubObjectTransaction(objectTransaction);
+		IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance().createSubObjectTransaction(
+				objectTransaction);
 		kunde.removeVertrag(v1);
 
 		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0816") == v2);
@@ -682,8 +664,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithExistingKundeUndRemoveVertraegeInSubTransactionAndCommitWithList() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -701,8 +682,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 
 		assertTrue("Es gibt nicht 2 Verträge sondern :" + kunde.listVertrag().length, kunde.listVertrag().length == 2);
 
-		IObjectTransaction subObjectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createSubObjectTransaction(objectTransaction);
+		IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance().createSubObjectTransaction(
+				objectTransaction);
 		kunde.removeVertrag(v1);
 		assertTrue("Es gibt nicht 1 Vertrag sondern :" + kunde.listVertrag().length, kunde.listVertrag().length == 1);
 
@@ -719,8 +700,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithExistingKundeUndRemoveVertraegeInSubTransactionAndCommitRoot() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -749,8 +729,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0815") == v1);
 		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0816") == v2);
 
-		IObjectTransaction subObjectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createSubObjectTransaction(objectTransaction);
+		IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance().createSubObjectTransaction(
+				objectTransaction);
 		kunde.removeVertrag(v1);
 
 		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0816") == v2);
@@ -779,8 +759,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleWithExistingKundeUndRemoveVertraegeInSubTransactionAndCommitRootWithList() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -798,8 +777,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 
 		assertTrue("Es gibt nicht 2 Verträge sondern :" + kunde.listVertrag().length, kunde.listVertrag().length == 2);
 
-		IObjectTransaction subObjectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createSubObjectTransaction(objectTransaction);
+		IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance().createSubObjectTransaction(
+				objectTransaction);
 		kunde.removeVertrag(v1);
 		assertTrue("Es gibt nicht 1 Vertrag sondern :" + kunde.listVertrag().length, kunde.listVertrag().length == 1);
 
@@ -818,8 +797,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testImport() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		// simulating a Kunde from the database
 		objectTransaction.setCleanModus(true);
@@ -838,8 +816,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
 		// create new objecttransaction
-		IObjectTransaction objectTransaction2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		// simulate of reloading the same data from the database as before
 		objectTransaction2.setCleanModus(true);
 		Kunde kunde2 = new Kunde("4711");
@@ -861,8 +838,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testImport2() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		// simulating a Kunde from the database
 		objectTransaction.setCleanModus(true);
@@ -891,8 +867,7 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
 		// create new objecttransaction
-		IObjectTransaction objectTransaction2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		// simulate of reloading the same data from the database as before
 		objectTransaction2.setCleanModus(true);
 		Kunde kunde2 = new Kunde("4711");
@@ -924,8 +899,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleCheckVersion() {
-		ObjectTransactionImpl objectTransaction = (ObjectTransactionImpl) ObjectTransactionFactoryAccessor
-				.fetchObjectTransactionFactory().createObjectTransaction();
+		ObjectTransactionImpl objectTransaction = (ObjectTransactionImpl) ObjectTransactionFactory.getInstance()
+				.createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -962,8 +937,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 	 * 
 	 */
 	public void testUpdateVersion() {
-		ObjectTransactionImpl objectTransaction = (ObjectTransactionImpl) ObjectTransactionFactoryAccessor
-				.fetchObjectTransactionFactory().createObjectTransaction();
+		ObjectTransactionImpl objectTransaction = (ObjectTransactionImpl) ObjectTransactionFactory.getInstance()
+				.createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -976,8 +951,8 @@ public class ObjectTransactionInterfTest extends RienaTestCase {
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
 		// simulate remote system with new objecttransaction
-		ObjectTransactionImpl objectTransaction2 = (ObjectTransactionImpl) ObjectTransactionFactoryAccessor
-				.fetchObjectTransactionFactory().createObjectTransaction();
+		ObjectTransactionImpl objectTransaction2 = (ObjectTransactionImpl) ObjectTransactionFactory.getInstance()
+				.createObjectTransaction();
 		objectTransaction2.setCleanModus(true);
 		Kunde kunde2 = new Kunde("4711");
 		kunde2.setVorname("john");

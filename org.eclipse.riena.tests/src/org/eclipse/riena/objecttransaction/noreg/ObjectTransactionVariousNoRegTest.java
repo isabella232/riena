@@ -11,7 +11,7 @@
 package org.eclipse.riena.objecttransaction.noreg;
 
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
-import org.eclipse.riena.objecttransaction.ObjectTransactionFactoryAccessor;
+import org.eclipse.riena.objecttransaction.ObjectTransactionFactory;
 import org.eclipse.riena.objecttransaction.noreg.value.Kunde;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
@@ -28,8 +28,7 @@ public class ObjectTransactionVariousNoRegTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testPreRegisteredWithNoObjectId() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");

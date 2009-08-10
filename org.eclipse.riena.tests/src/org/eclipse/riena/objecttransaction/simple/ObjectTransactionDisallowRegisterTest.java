@@ -11,7 +11,7 @@
 package org.eclipse.riena.objecttransaction.simple;
 
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
-import org.eclipse.riena.objecttransaction.ObjectTransactionFactoryAccessor;
+import org.eclipse.riena.objecttransaction.ObjectTransactionFactory;
 import org.eclipse.riena.objecttransaction.simple.value.Addresse;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
@@ -28,8 +28,7 @@ public class ObjectTransactionDisallowRegisterTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleAllowRegister() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.allowRegister(false);
 
 		Addresse addresse = new Addresse(true);

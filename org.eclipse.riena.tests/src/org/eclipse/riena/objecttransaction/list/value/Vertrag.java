@@ -13,7 +13,7 @@ package org.eclipse.riena.objecttransaction.list.value;
 import org.eclipse.riena.objecttransaction.AbstractTransactedObject;
 import org.eclipse.riena.objecttransaction.ITransactedObject;
 import org.eclipse.riena.objecttransaction.InvalidTransactionFailure;
-import org.eclipse.riena.objecttransaction.ObjectTransactionManagerAccessor;
+import org.eclipse.riena.objecttransaction.ObjectTransactionManager;
 
 /**
  * TODO Fehlender Klassen-Kommentar
@@ -29,76 +29,82 @@ public class Vertrag extends AbstractTransactedObject implements ITransactedObje
 	@SuppressWarnings("unused")
 	private Vertrag() {
 		super();
-		if ( ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus() ) {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().register( this );
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
+			ObjectTransactionManager.getInstance().getCurrent().register(this);
 		} else {
-			throw new InvalidTransactionFailure( "cannot instantiate Vertrag with private method if not in clean state" );
+			throw new InvalidTransactionFailure("cannot instantiate Vertrag with private method if not in clean state");
 		}
 	}
 
 	/**
 	 * @param vertragsnummer
 	 */
-	public Vertrag( String vertragsnummer ) {
-		super( new GenericOID( "vertrag", "vertragsnr", vertragsnummer ), "1" );
-		if ( ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus() ) {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().register( this );
+	public Vertrag(String vertragsnummer) {
+		super(new GenericOID("vertrag", "vertragsnr", vertragsnummer), "1");
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
+			ObjectTransactionManager.getInstance().getCurrent().register(this);
 		} else {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().registerNew( this );
+			ObjectTransactionManager.getInstance().getCurrent().registerNew(this);
 		}
-		setVertragsNummer( vertragsnummer );
+		setVertragsNummer(vertragsnummer);
 	}
 
 	/**
 	 * @return Returns the vertragsNummer.
 	 */
 	public String getVertragsNummer() {
-		return (String) ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().getReference( this, "vertragsNummer", vertragsNummer );
+		return (String) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "vertragsNummer",
+				vertragsNummer);
 	}
 
 	/**
-	 * @param vertragsNummer The vertragsNummer to set.
+	 * @param vertragsNummer
+	 *            The vertragsNummer to set.
 	 */
-	public void setVertragsNummer( String vertragsNummer ) {
-		if ( ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus() ) {
+	public void setVertragsNummer(String vertragsNummer) {
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			this.vertragsNummer = vertragsNummer;
 		}
-		ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().setReference( this, "vertragsNummer", vertragsNummer );
+		ObjectTransactionManager.getInstance().getCurrent().setReference(this, "vertragsNummer", vertragsNummer);
 	}
 
 	/**
 	 * @return Returns the vertragsBeschreibung.
 	 */
 	public String getVertragsBeschreibung() {
-		return (String) ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().getReference( this, "vertragsBeschreibung",
-			vertragsBeschreibung );
+		return (String) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "vertragsBeschreibung",
+				vertragsBeschreibung);
 	}
 
 	/**
-	 * @param vertragsBeschreibung The vertragsBeschreibung to set.
+	 * @param vertragsBeschreibung
+	 *            The vertragsBeschreibung to set.
 	 */
-	public void setVertragsBeschreibung( String vertragsBeschreibung ) {
-		if ( ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus() ) {
+	public void setVertragsBeschreibung(String vertragsBeschreibung) {
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			this.vertragsBeschreibung = vertragsBeschreibung;
 		}
-		ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().setReference( this, "vertragsBeschreibung", vertragsBeschreibung );
+		ObjectTransactionManager.getInstance().getCurrent().setReference(this, "vertragsBeschreibung",
+				vertragsBeschreibung);
 	}
 
 	/**
 	 * @return Returns the vertragsSumme.
 	 */
 	public Long getVertragsSumme() {
-		return (Long) ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().getReference( this, "vertragsSumme", vertragsSumme );
+		return (Long) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "vertragsSumme",
+				vertragsSumme);
 	}
 
 	/**
-	 * @param vertragsSumme The vertragsSumme to set.
+	 * @param vertragsSumme
+	 *            The vertragsSumme to set.
 	 */
-	public void setVertragsSumme( Long vertragsSumme ) {
-		if ( ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus() ) {
+	public void setVertragsSumme(Long vertragsSumme) {
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			this.vertragsSumme = vertragsSumme;
 		}
-		ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().setReference( this, "vertragsSumme", vertragsSumme );
+		ObjectTransactionManager.getInstance().getCurrent().setReference(this, "vertragsSumme", vertragsSumme);
 
 	}
 }

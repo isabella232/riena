@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.riena.objecttransaction.AbstractTransactedObject;
 import org.eclipse.riena.objecttransaction.ITransactedObject;
 import org.eclipse.riena.objecttransaction.InvalidTransactionFailure;
-import org.eclipse.riena.objecttransaction.ObjectTransactionManagerAccessor;
+import org.eclipse.riena.objecttransaction.ObjectTransactionManager;
 
 /**
  * Sample class for "Kunde"
@@ -35,8 +35,8 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	@SuppressWarnings("unused")
 	private Kunde() {
 		super();
-		if (ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus()) {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().register(this);
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
+			ObjectTransactionManager.getInstance().getCurrent().register(this);
 		} else {
 			throw new InvalidTransactionFailure("cannot instantiate Kunde with private method if not in clean state");
 		}
@@ -47,10 +47,10 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 */
 	public Kunde(String kundennr) {
 		super(new GenericOID("kunde", "kundennrpk", kundennr), "1");
-		if (ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus()) {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().register(this);
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
+			ObjectTransactionManager.getInstance().getCurrent().register(this);
 		} else {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().registerNew(this);
+			ObjectTransactionManager.getInstance().getCurrent().registerNew(this);
 		}
 		setKundennr(kundennr);
 		vertraege = new ArrayList<Vertrag>();
@@ -60,8 +60,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 * @return Returns the kundennr.
 	 */
 	public String getKundennr() {
-		return (String) ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().getReference(
-				this, "kundennr", kundennr);
+		return (String) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "kundennr", kundennr);
 	}
 
 	/**
@@ -73,11 +72,10 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 			throw new UnsupportedOperationException("cannot change kundennr (once it is set)");
 		}
 		// changeEvent
-		if (ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus()) {
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			this.kundennr = kundennr;
 		} else {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().setReference(this,
-					"kundennr", kundennr);
+			ObjectTransactionManager.getInstance().getCurrent().setReference(this, "kundennr", kundennr);
 		}
 	}
 
@@ -85,8 +83,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 * @return Returns the nachname.
 	 */
 	public String getNachname() {
-		return (String) ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().getReference(
-				this, "nachname", nachname);
+		return (String) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "nachname", nachname);
 	}
 
 	/**
@@ -95,11 +92,10 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 */
 	public void setNachname(String nachname) {
 		// changeEvent
-		if (ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus()) {
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			this.nachname = nachname;
 		} else {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().setReference(this,
-					"nachname", nachname);
+			ObjectTransactionManager.getInstance().getCurrent().setReference(this, "nachname", nachname);
 		}
 	}
 
@@ -107,8 +103,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 * @return Returns the vorname.
 	 */
 	public String getVorname() {
-		return (String) ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().getReference(
-				this, "vorname", vorname);
+		return (String) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "vorname", vorname);
 	}
 
 	/**
@@ -117,11 +112,10 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 */
 	public void setVorname(String vorname) {
 		// changeEvent
-		if (ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus()) {
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			this.vorname = vorname;
 		} else {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().setReference(this, "vorname",
-					vorname);
+			ObjectTransactionManager.getInstance().getCurrent().setReference(this, "vorname", vorname);
 		}
 	}
 
@@ -129,8 +123,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 * @return Returns the addresse.
 	 */
 	public Addresse getAddresse() {
-		return (Addresse) ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().getReference(
-				this, "addresse", addresse);
+		return (Addresse) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "addresse", addresse);
 	}
 
 	/**
@@ -139,11 +132,10 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 */
 	public void setAddresse(Addresse addresse) {
 		// changeEvent
-		if (ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus()) {
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			this.addresse = addresse;
 		} else {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().setReference(this,
-					"addresse", addresse);
+			ObjectTransactionManager.getInstance().getCurrent().setReference(this, "addresse", addresse);
 		}
 	}
 
@@ -151,11 +143,10 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 * @param vertrag
 	 */
 	public void addVertrag(Vertrag vertrag) {
-		if (ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus()) {
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			vertraege.add(vertrag);
 		} else {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().addReference(this, "vertrag",
-					vertrag);
+			ObjectTransactionManager.getInstance().getCurrent().addReference(this, "vertrag", vertrag);
 		}
 	}
 
@@ -165,11 +156,10 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	public void removeVertrag(String vertragsNummer) {
 		Vertrag tempVertrag = getVertrag(vertragsNummer);
 		// changeEvent
-		if (ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus()) {
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			vertraege.remove(getVertrag(vertragsNummer));
 		} else {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().removeReference(this,
-					"vertrag", tempVertrag);
+			ObjectTransactionManager.getInstance().getCurrent().removeReference(this, "vertrag", tempVertrag);
 		}
 	}
 
@@ -178,11 +168,10 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 */
 	public void removeVertrag(Vertrag vertrag) {
 		// changeEvent
-		if (ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().isCleanModus()) {
+		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			vertraege.remove(vertrag);
 		} else {
-			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent().removeReference(this,
-					"vertrag", vertrag);
+			ObjectTransactionManager.getInstance().getCurrent().removeReference(this, "vertrag", vertrag);
 		}
 	}
 
@@ -204,8 +193,8 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 * @return
 	 */
 	public Vertrag[] listVertrag() {
-		List<Vertrag> vertraegeSet = ObjectTransactionManagerAccessor.fetchObjectTransactionManager().getCurrent()
-				.listReference(this, "vertrag", vertraege);
+		List<Vertrag> vertraegeSet = ObjectTransactionManager.getInstance().getCurrent().listReference(this, "vertrag",
+				vertraege);
 		if (vertraegeSet.size() == 0) {
 			return new Vertrag[0];
 		}

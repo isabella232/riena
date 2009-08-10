@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
 import org.eclipse.riena.objecttransaction.IObjectTransactionExtract;
 import org.eclipse.riena.objecttransaction.InvalidTransactionFailure;
-import org.eclipse.riena.objecttransaction.ObjectTransactionFactoryAccessor;
+import org.eclipse.riena.objecttransaction.ObjectTransactionFactory;
 import org.eclipse.riena.objecttransaction.delta.TransactionDelta;
 import org.eclipse.riena.objecttransaction.simple.value.Addresse;
 import org.eclipse.riena.objecttransaction.simple.value.Kunde;
@@ -43,8 +43,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testNullValueAndCommitToObjects() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -65,8 +64,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testRegisterAsDeletedWithCommitToObjects() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -86,8 +84,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExtractIsImmutable() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -115,8 +112,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExportModified1() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -140,8 +136,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExportModified2() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -176,8 +171,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExportModified3() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -203,8 +197,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExportModified4() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -228,8 +221,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExportModified5() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -266,8 +258,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExportModified6() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -306,8 +297,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExportModified7() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -333,8 +323,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExportModified8() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -362,8 +351,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExportModified9() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -393,8 +381,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExportModified10() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -422,8 +409,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExportModified11() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -449,8 +435,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExportModified12() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -479,8 +464,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testExportModified13() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -508,8 +492,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testImportModified1() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -526,8 +509,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
-		IObjectTransaction objectTransaction2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction2.register(kunde);
 		objectTransaction2.importOnlyModifedObjectsFromExtract(extract);
 		assertTrue("kunde must be registered", objectTransaction2.isRegistered(kunde));
@@ -539,8 +521,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testImportModified2() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -557,8 +538,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
-		IObjectTransaction objectTransaction2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction2.register(kunde);
 		objectTransaction2.register(v2);
 		objectTransaction2.importOnlyModifedObjectsFromExtract(extract);
@@ -571,8 +551,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testImportModified3() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -589,8 +568,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
-		IObjectTransaction objectTransaction2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction2.register(kunde);
 		objectTransaction2.register(v2);
 		objectTransaction2.register(v1);
@@ -604,8 +582,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testImportModified4() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -622,8 +599,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
-		IObjectTransaction objectTransaction2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction2.register(kunde);
 		try {
 			objectTransaction2.importOnlyModifedObjectsFromExtract(extract);
@@ -637,8 +613,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testImportModified5() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -657,8 +632,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
-		IObjectTransaction objectTransaction2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction2.register(kunde);
 		try {
 			objectTransaction2.importOnlyModifedObjectsFromExtract(extract);
@@ -672,8 +646,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testCheckNullValue1() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -694,15 +667,13 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testAddDeleteImportExport() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		Kunde kunde = new Kunde("4711");
 		objectTransaction.registerAsDeleted(kunde);
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
-		IObjectTransaction ot2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction ot2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		ot2.importExtract(extract);
 	}
 
@@ -710,15 +681,13 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testAddDeleteImportExport2() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		Kunde kunde = new Kunde("4711");
 		objectTransaction.registerAsDeleted(kunde);
 		IObjectTransactionExtract extract = objectTransaction.exportOnlyModifedObjectsToExtract();
 
-		IObjectTransaction ot2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction ot2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		ot2.importExtract(extract);
 	}
 
@@ -726,15 +695,13 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testAddDeleteImportExport3() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		Kunde kunde = new Kunde("4711");
 		objectTransaction.registerAsDeleted(kunde);
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
-		IObjectTransaction ot2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction ot2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		ot2.importOnlyModifedObjectsFromExtract(extract);
 	}
 
@@ -742,8 +709,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testAddDeleteImportExport4() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		Kunde kunde = new Kunde("4711");
 		Vertrag v1 = new Vertrag("11");
@@ -755,8 +721,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 		objectTransaction.registerAsDeleted(v2);
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
-		IObjectTransaction ot2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction ot2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		ot2.importOnlyModifedObjectsFromExtract(extract);
 	}
 
@@ -764,8 +729,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testAddRemoveImportExportWithNewObjects() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		Kunde kunde = new Kunde("4711");
 		Addresse adresse = new Addresse(true);
@@ -774,8 +738,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 		objectTransaction.registerAsDeleted(adresse);
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
-		IObjectTransaction ot2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction ot2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		new Kunde("4711");
 		ot2.importExtract(extract);
 	}
@@ -784,8 +747,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testAddRemoveImportExportWithExistingObjects() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -796,8 +758,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 		objectTransaction.registerAsDeleted(adresse);
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
-		IObjectTransaction ot2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction ot2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		new Kunde("4711");
 		ot2.importExtract(extract);
 	}
@@ -806,8 +767,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testAddRemoveImportExportWithExistingObjectsOneToNRelation() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
 		Kunde kunde = new Kunde("4711");
@@ -818,8 +778,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 		objectTransaction.registerAsDeleted(v1);
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
-		IObjectTransaction ot2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction ot2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		ot2.setCleanModus(true);
 		new Kunde("4711");
 		ot2.setCleanModus(false);
@@ -830,8 +789,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testAddRemoveImportExportWithNewObjectsOneToNRelation() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		Kunde kunde = new Kunde("4711");
 		Vertrag v1 = new Vertrag("11");
@@ -841,8 +799,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 		objectTransaction.registerAsDeleted(kunde);
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
-		IObjectTransaction ot2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction ot2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		ot2.importExtract(extract);
 	}
 
@@ -851,8 +808,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 */
 	public void testComplex() throws Exception {
 		// simulierter client
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
@@ -862,8 +818,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 		IObjectTransactionExtract extract = objectTransaction.exportOnlyModifedObjectsToExtract();
 
 		// simulierter server
-		IObjectTransaction ot2 = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction ot2 = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		ot2.setCleanModus(true);
 		new Kunde("4711");
 		ot2.setCleanModus(false);
@@ -882,8 +837,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testSubSubTransaction() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactoryAccessor.fetchObjectTransactionFactory()
-				.createObjectTransaction();
+		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 
 		objectTransaction.setCleanModus(true);
 		Kunde kunde = new Kunde("4711");
