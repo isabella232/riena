@@ -31,7 +31,7 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
 		ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
-		assertEquals("test", id(injector));
+		assertEquals("testA", id(injector));
 		assertEquals(IData.class, useType(injector));
 		assertEquals(1, getMin(injector));
 		assertEquals(1, getMax(injector));
@@ -42,7 +42,7 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		assertFalse(getSpecific(injector));
 	}
 
-	@InjectExtension(id = "test")
+	@InjectExtension(id = "testA")
 	public void update1(IData data) {
 
 	}
@@ -53,7 +53,7 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
 		ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
-		assertEquals("test", id(injector));
+		assertEquals("testB", id(injector));
 		assertEquals(IData.class, useType(injector));
 		assertEquals(2, getMin(injector));
 		assertEquals(5, getMax(injector));
@@ -64,8 +64,30 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		assertTrue(getSpecific(injector));
 	}
 
-	@InjectExtension(id = "test", doNotReplaceSymbols = true, heterogeneous = true, specific = true, min = 2, max = 5)
+	@InjectExtension(id = "testB", doNotReplaceSymbols = true, heterogeneous = true, specific = true, min = 2, max = 5)
 	public void update2(IData[] data) {
+
+	}
+
+	public void testBuildForUpdate3() throws NoSuchMethodException {
+		Method bindMethod = ExtensionInjectorBuilderTest.class
+				.getDeclaredMethod("update3", new Class[] { IData.class });
+		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		ExtensionInjector injector = builder.build();
+		assertNotNull(injector);
+		assertEquals("testC", id(injector));
+		assertEquals(IData.class, useType(injector));
+		assertEquals(0, getMin(injector));
+		assertEquals(1, getMax(injector));
+		assertTrue(getHomogenious(injector));
+		assertSame(this, getBean(injector));
+		assertEquals("update1", getUpdate(injector));
+		assertFalse(getDoNotReplaceSymbols(injector));
+		assertFalse(getSpecific(injector));
+	}
+
+	@InjectExtension(id = "testC", heterogeneous = true, specific = true, min = 0, max = 1)
+	public void update3(IData data) {
 
 	}
 
