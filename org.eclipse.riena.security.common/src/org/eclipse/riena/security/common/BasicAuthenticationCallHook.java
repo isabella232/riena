@@ -11,6 +11,7 @@
 package org.eclipse.riena.security.common;
 
 import java.security.Principal;
+import java.util.Iterator;
 
 import javax.security.auth.Subject;
 
@@ -67,7 +68,11 @@ public class BasicAuthenticationCallHook implements ICallHook {
 		if (subject == null) {
 			return;
 		}
-		Object psw = subject.getPrivateCredentials().iterator().next();
+		Object psw = null;
+		Iterator<Object> iterator = subject.getPrivateCredentials().iterator();
+		if (iterator.hasNext()) {
+			psw = iterator.next();
+		}
 		String password;
 		if (psw != null && psw instanceof String) {
 			password = (String) psw;
