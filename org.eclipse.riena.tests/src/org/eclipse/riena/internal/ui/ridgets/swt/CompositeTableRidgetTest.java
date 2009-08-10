@@ -45,7 +45,6 @@ import org.eclipse.riena.ui.ridgets.IRowRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -479,28 +478,27 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(rowObservables.size(), ridget.getOptionCount());
 	}
 
-		public void testAddSelectionListener() {
-			ICompositeTableRidget ridget = getRidget();
-	
-			try {
-				ridget.addSelectionListener(null);
-				fail();
-			} catch (UnsupportedOperationException npe) {
-				ok();
-			}
-	
-			TestSelectionListener selectionListener = new TestSelectionListener();
-	
-			try {
-				ridget.addSelectionListener(selectionListener);
-				fail();
-			} catch (UnsupportedOperationException npe) {
-				ok();
-			}
-	
+	public void testAddSelectionListener() {
+		ICompositeTableRidget ridget = getRidget();
+
+		try {
+			ridget.addSelectionListener(null);
+			fail();
+		} catch (UnsupportedOperationException npe) {
+			ok();
 		}
 
-	
+		TestSelectionListener selectionListener = new TestSelectionListener();
+
+		try {
+			ridget.addSelectionListener(selectionListener);
+			fail();
+		} catch (UnsupportedOperationException npe) {
+			ok();
+		}
+
+	}
+
 	// helping methods
 	//////////////////
 
