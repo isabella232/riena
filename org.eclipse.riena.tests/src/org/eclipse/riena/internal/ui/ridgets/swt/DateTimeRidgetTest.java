@@ -280,7 +280,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.removeValidationRule(validator);
 
-		assertTrue(ridget.isErrorMarked());
+		assertFalse(ridget.isErrorMarked()); // since 1.2: remove updates immediately
 
 		ridget.revalidate();
 
@@ -338,23 +338,24 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
 
 		int count = validator.count;
-
 		ridget.updateFromModel();
 
-		assertEquals(count + 1, validator.count);
+		assertTrue(count < validator.count);
 		assertFalse(ridget.isErrorMarked());
 
+		count = validator.count;
 		dateBean.setValue(new Date(99));
 		ridget.updateFromModel();
 
-		assertEquals(count + 2, validator.count);
+		assertTrue(count < validator.count);
 		assertTrue(ridget.isErrorMarked());
 		assertEquals(new Date(99), ridget.getDate());
 
+		count = validator.count;
 		dateBean.setValue(new Date(0));
 		ridget.updateFromModel();
 
-		assertEquals(count + 3, validator.count);
+		assertTrue(count < validator.count);
 		assertFalse(ridget.isErrorMarked());
 	}
 
@@ -396,7 +397,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), input);
 
-		assertEquals(count + 3, validator.count);
+		assertTrue(count < validator.count);
 		assertEquals(true, ridget.isErrorMarked());
 	}
 
