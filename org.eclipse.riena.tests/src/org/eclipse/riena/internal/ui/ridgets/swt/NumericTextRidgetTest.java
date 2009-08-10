@@ -11,7 +11,6 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -39,6 +38,7 @@ import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MaxNumberLength;
@@ -779,7 +779,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		UITestHelper.sendString(control.getDisplay(), "1\r");
 
 		assertEquals(2, ridget.getMarkers().size());
-		assertEquals("ValidationErrorMessage", getMessageMarker(ridget.getMarkers()).getMessage());
+		TestUtils.assertMessage(ridget, ValidationMessageMarker.class, "ValidationErrorMessage");
 
 		// \r triggers update
 		UITestHelper.sendString(control.getDisplay(), "2\r");
@@ -807,7 +807,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		ridget.removeValidationRule(rule);
 
-		assertTrue(ridget.isErrorMarked());
+		assertFalse(ridget.isErrorMarked()); // since 1.2: remove updates immediately
 
 		boolean isOk2 = ridget.revalidate();
 
@@ -835,7 +835,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		ridget.removeValidationRule(rule);
 
-		assertTrue(ridget.isErrorMarked());
+		assertFalse(ridget.isErrorMarked()); // since 1.2: remove updates immediately
 
 		boolean isOk2 = ridget.revalidate();
 
@@ -1166,15 +1166,6 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		// clear focus
 		UITestHelper.sendString(control.getDisplay(), "\t");
 		assertFalse(control.isFocusControl());
-	}
-
-	private IMessageMarker getMessageMarker(Collection<? extends IMarker> markers) {
-		for (IMarker marker : markers) {
-			if (marker instanceof IMessageMarker) {
-				return (IMessageMarker) marker;
-			}
-		}
-		return null;
 	}
 
 	private String localize(String number) {
