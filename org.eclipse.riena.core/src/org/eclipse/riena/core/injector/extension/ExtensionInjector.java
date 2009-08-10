@@ -82,12 +82,12 @@ public class ExtensionInjector implements IStoppable {
 		// with the service injector.
 		// this.context = context;
 		updateMethod = findUpdateMethod();
-		Class<?> paramaterType = updateMethod.getParameterTypes()[0];
-		isArray = paramaterType.isArray();
+		Class<?> parameterType = updateMethod.getParameterTypes()[0];
+		isArray = parameterType.isArray();
 		// if the interface type is given explicitly it will be used; otherwise
 		// the formal parameter type of the update method will be used.
 		componentType = extensionDesc.getInterfaceType() != null ? extensionDesc.getInterfaceType()
-				: isArray ? paramaterType.getComponentType() : paramaterType;
+				: isArray ? parameterType.getComponentType() : parameterType;
 		populateInterfaceBeans(true);
 
 		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
