@@ -253,7 +253,7 @@ public class MarkerSubModuleController extends SubModuleController {
 	 */
 	private static final class AlwaysWrongValidator implements IValidator {
 		public IStatus validate(Object value) {
-			return ValidationRuleStatus.error(false, "", this); //$NON-NLS-1$
+			return ValidationRuleStatus.error(false, ""); //$NON-NLS-1$
 		}
 
 	}

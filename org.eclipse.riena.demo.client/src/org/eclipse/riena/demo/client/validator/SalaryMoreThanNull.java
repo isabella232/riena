@@ -37,9 +37,9 @@ public class SalaryMoreThanNull implements IValidator {
 			if (parseFloat > 0) {
 				return ValidationRuleStatus.ok();
 			}
-			return ValidationRuleStatus.error(false, "salary must be more than 0", this); //$NON-NLS-1$
+			return ValidationRuleStatus.error(false, "salary must be more than 0"); //$NON-NLS-1$
 		} catch (NumberFormatException e) {
-			return ValidationRuleStatus.error(false, "invalid value", this); //$NON-NLS-1$
+			return ValidationRuleStatus.error(false, "invalid value"); //$NON-NLS-1$
 		}
 	}
 

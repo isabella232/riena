@@ -11,12 +11,14 @@
 package org.eclipse.riena.ui.ridgets.validation;
 
 import org.apache.oro.text.perl.Perl5Util;
+
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.core.util.PropertiesUtils;
 
 /**
@@ -123,8 +125,7 @@ public class ValidExpression implements IValidator, IExecutableExtension {
 		if (matcher.match("/" + pattern + "/" + options, string)) { //$NON-NLS-1$//$NON-NLS-2$
 			return ValidationRuleStatus.ok();
 		}
-		return ValidationRuleStatus.error(false, "'String '" + string + "' does not match regex '" + pattern + "'.", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				this);
+		return ValidationRuleStatus.error(false, "'String '" + string + "' does not match regex '" + pattern + "'."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/**

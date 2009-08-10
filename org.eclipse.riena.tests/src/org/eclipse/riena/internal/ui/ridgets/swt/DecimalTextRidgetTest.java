@@ -761,10 +761,10 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 				try {
 					double value = Double.parseDouble(input.toString());
 					if (value == 0d) {
-						result = ValidationRuleStatus.error(false, "cannot be 0", this);
+						result = ValidationRuleStatus.error(false, "cannot be 0");
 					}
 				} catch (NumberFormatException nfe) {
-					result = ValidationRuleStatus.error(false, "number format exception", this);
+					result = ValidationRuleStatus.error(false, "number format exception");
 				}
 				return result;
 			}

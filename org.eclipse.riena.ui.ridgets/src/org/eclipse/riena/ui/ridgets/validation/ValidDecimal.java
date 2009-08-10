@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.core.util.ArraysUtil;
 import org.eclipse.riena.core.util.PropertiesUtils;
 
@@ -120,7 +121,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 				if (!partialCheckSupported) {
 					if (scanned.decimalSeperatorIndex < 0) {
 						return ValidationRuleStatus.error(true, "no decimal separator '" //$NON-NLS-1$
-								+ getSymbols().getDecimalSeparator() + "' in String '" + string + '\'', this); //$NON-NLS-1$
+								+ getSymbols().getDecimalSeparator() + "' in String '" + string + '\''); //$NON-NLS-1$
 					}
 					// test if grouping character is behind decimal separator:
 					if (scanned.groupingSeparatorIndex > scanned.decimalSeperatorIndex) {
@@ -129,20 +130,20 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 										true,
 										"grouping-separator '" + getSymbols().getGroupingSeparator() //$NON-NLS-1$
 												+ "' behind decimal-seperator '" + getSymbols().getDecimalSeparator() + "' in string '" //$NON-NLS-1$ //$NON-NLS-2$
-												+ string + '\'', this);
+												+ string + '\'');
 					}
 				}
 				// test if alien character present:
 				if (scanned.lastAlienCharIndex > -1) {
 					return ValidationRuleStatus.error(true, "unrecognized character '" + scanned.lastAlienCharacter //$NON-NLS-1$
-							+ "' in string '" + string + '\'', this); //$NON-NLS-1$
+							+ "' in string '" + string + '\''); //$NON-NLS-1$
 				}
 				try {
 					synchronized (getFormat()) {// NumberFormat not threadsafe!
 						getFormat().parse(string);
 					}
 				} catch (final ParseException e) {
-					return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number.", this); //$NON-NLS-1$ //$NON-NLS-2$
+					return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number."); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 		}

@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.ridgets.validation;
 
 import org.apache.commons.validator.GenericValidator;
+
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
@@ -37,7 +38,7 @@ public class ValidEmailAddress implements IValidator {
 		if (toBeChecked.length() == 0 || GenericValidator.isEmail(toBeChecked)) {
 			return ValidationRuleStatus.ok();
 		}
-		return ValidationRuleStatus.error(false, "String '" + toBeChecked + "' is no valid email address", this); //$NON-NLS-1$ //$NON-NLS-2$
+		return ValidationRuleStatus.error(false, "String '" + toBeChecked + "' is no valid email address"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override

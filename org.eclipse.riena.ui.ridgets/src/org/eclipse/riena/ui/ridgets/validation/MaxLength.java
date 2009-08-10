@@ -59,7 +59,7 @@ public class MaxLength implements IValidator, IExecutableExtension {
 
 			if (length > maxLength) {
 				return ValidationRuleStatus.error(isBlocking, "'" + string + "' must not be longer than " + maxLength //$NON-NLS-1$ //$NON-NLS-2$
-						+ " characters.", this); //$NON-NLS-1$
+						+ " characters."); //$NON-NLS-1$
 			}
 			return ValidationRuleStatus.ok();
 		} else {

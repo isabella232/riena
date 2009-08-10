@@ -1195,7 +1195,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 				if (string.length() % 2 == 0) {
 					return ValidationRuleStatus.ok();
 				}
-				return ValidationRuleStatus.error(false, "Odd number of characters.", this);
+				return ValidationRuleStatus.error(false, "Odd number of characters.");
 			}
 			throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
 					+ String.class.getName());

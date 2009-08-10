@@ -198,7 +198,7 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 				if (string.toLowerCase().startsWith("a")) { //$NON-NLS-1$
 					return ValidationRuleStatus.ok();
 				}
-				return ValidationRuleStatus.error(false, "Value does not start with A.", this); //$NON-NLS-1$
+				return ValidationRuleStatus.error(false, "Value does not start with A."); //$NON-NLS-1$
 			}
 			throw new ValidationFailure(getClass().getName() + " can only validate objects of type " //$NON-NLS-1$
 					+ String.class.getName());
@@ -217,7 +217,7 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 				if (string.toLowerCase().endsWith("z")) { //$NON-NLS-1$
 					return ValidationRuleStatus.ok();
 				}
-				return ValidationRuleStatus.error(false, "Value does not end with Z.", this); //$NON-NLS-1$
+				return ValidationRuleStatus.error(false, "Value does not end with Z."); //$NON-NLS-1$
 			}
 			throw new ValidationFailure(getClass().getName() + " can only validate objects of type " //$NON-NLS-1$
 					+ String.class.getName());
