@@ -19,9 +19,13 @@ import java.util.Set;
 import org.eclipse.core.runtime.Assert;
 
 /**
- * An abstract implementation of the {@link IMarker IMarker}interface which
+ * An abstract implementation of the {@link IMarker IMarker} interface which
  * implements managing the attributes.
- * 
+ * <p>
+ * An abstract marker can be 'unique'. In that case only one instance of the
+ * implementing type will be allowed per ridget instance. For example if
+ * FooMarker extends AbstractMarker and is 'unique', only one instance of
+ * FooMarker will be allowed for per ridget.
  */
 public abstract class AbstractMarker implements IMarker {
 
@@ -33,11 +37,20 @@ public abstract class AbstractMarker implements IMarker {
 
 	private boolean unique;
 
+	/**
+	 * Create a 'unique' marker.
+	 */
 	public AbstractMarker() {
 		this(true);
 		setAttribute(ATTRIBUTE_UNIQUE, Boolean.TRUE);
 	}
 
+	/**
+	 * Create a marker instance.
+	 * 
+	 * @param unique
+	 *            true to create a 'unique' marker; false otherwise.
+	 */
 	public AbstractMarker(boolean unique) {
 		this.unique = unique;
 
@@ -49,6 +62,9 @@ public abstract class AbstractMarker implements IMarker {
 
 	}
 
+	/**
+	 * Return true if this marker is 'unique'; false otherwise.
+	 */
 	public boolean isUnique() {
 		return unique;
 	}
