@@ -53,11 +53,11 @@ public class ExtensionInjectorBuilder {
 		ExtensionDescriptor descriptor = Inject.extension(annotation.id());
 		Class<?>[] types = method.getParameterTypes();
 		Assert.isLegal(types.length == 1, "only one parameter allowed on ´update´ method"); //$NON-NLS-1$
+		descriptor = descriptor.expectingMinMax(annotation.min(), annotation.max());
 		if (types[0].isArray()) {
-			descriptor = descriptor.expectingMinMax(annotation.min(), annotation.max()).useType(
-					types[0].getComponentType());
+			descriptor = descriptor.useType(types[0].getComponentType());
 		} else {
-			descriptor = descriptor.expectingExactly(1).useType(types[0]);
+			descriptor = descriptor.useType(types[0]);
 		}
 		if (annotation.heterogeneous()) {
 			descriptor = descriptor.heterogeneous();
