@@ -19,10 +19,15 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 
 /**
- * TODO [ev] fix javadoc
+ * Utility class for working with {@link IStatus} objects writing validation
+ * rules ({@link IValidator} implementations).
  * <p>
- * Result of a validation performed by an IValidationRule. Extends the IStatus
- * by adding some specific code for validation of Ridgets.
+ * This class defines Riena specific error codes that can be used in
+ * {@link IStatus} objects to trigger certain behavior in the ridgets (such as
+ * 'blocking' of user input).
+ * <p>
+ * It also provides helper methods for creating or joining {@link IStatus}
+ * instances.
  */
 public final class ValidationRuleStatus {
 
