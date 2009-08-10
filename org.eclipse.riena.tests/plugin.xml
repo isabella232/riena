@@ -2,14 +2,14 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
-         id="remoteSecurity"
+         id="testRemoteSecurity"
          point="org.eclipse.equinox.security.loginModule">
       <loginModule
             class="org.eclipse.riena.security.services.itest.authentication.module.TestRemoteLoginModule">
       </loginModule>
    </extension>
    <extension
-         id="localSecurity"
+         id="testLocalSecurity"
          point="org.eclipse.equinox.security.loginModule">
       <loginModule
             class="org.eclipse.riena.security.authentication.module.TestLocalLoginModule">
@@ -27,14 +27,14 @@
          point="org.eclipse.equinox.security.callbackHandlerMapping">
       <callbackHandlerMapping
             callbackHandlerId="org.eclipse.riena.tests.localCallback"
-            configName="Local">
+            configName="LocalTest">
       </callbackHandlerMapping>
    </extension>
    <extension
          point="org.eclipse.equinox.security.callbackHandlerMapping">
       <callbackHandlerMapping
             callbackHandlerId="org.eclipse.riena.tests.localCallback"
-            configName="Remote">
+            configName="RemoteTest">
       </callbackHandlerMapping>
    </extension>
    <extension

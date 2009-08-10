@@ -22,11 +22,13 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.common.authentication.RemoteLoginProxy;
-import org.osgi.service.log.LogService;
 
 /**
  * Test module that implements the JAAS LoginModule interface
@@ -96,7 +98,12 @@ public class TestRemoteLoginModule implements LoginModule {
 		try {
 			callbackHandler.handle(callbacks);
 			username = ((NameCallback) callbacks[0]).getName();
-			password = new String(((PasswordCallback) callbacks[1]).getPassword());
+			char[] password2 = ((PasswordCallback) callbacks[1]).getPassword();
+			if (password2 == null) {
+				password = null;
+			} else {
+				password = new String(password2);
+			}
 			return remoteLoginProxy.login(callbacks);
 		} catch (IOException e) {
 			e.printStackTrace();

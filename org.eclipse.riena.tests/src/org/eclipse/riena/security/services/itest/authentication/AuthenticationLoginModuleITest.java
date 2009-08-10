@@ -14,6 +14,9 @@ import java.net.URL;
 
 import javax.security.auth.login.LoginException;
 
+import org.eclipse.equinox.security.auth.ILoginContext;
+import org.eclipse.equinox.security.auth.LoginContextFactory;
+
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.internal.tests.Activator;
@@ -21,9 +24,6 @@ import org.eclipse.riena.security.authentication.callbackhandler.TestLocalCallba
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.IntegrationTestCase;
-
-import org.eclipse.equinox.security.auth.ILoginContext;
-import org.eclipse.equinox.security.auth.LoginContextFactory;
 
 /**
  * @author campo
@@ -42,6 +42,7 @@ public class AuthenticationLoginModuleITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.core", null);
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
+		stopBundles("org\\.eclipse\\.riena.example.client", null);
 		authenticationService = Register.remoteProxy(IAuthenticationService.class).usingUrl(
 				"http://localhost:8080/hessian/AuthenticationService").withProtocol("hessian").andStart(
 				Activator.getDefault().getContext());
@@ -58,7 +59,7 @@ public class AuthenticationLoginModuleITest extends RienaTestCase {
 		TestLocalCallbackHandler.setSuppliedCredentials("testuser", "testpass");
 
 		URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
-		ILoginContext secureContext = LoginContextFactory.createContext("Remote", configUrl);
+		ILoginContext secureContext = LoginContextFactory.createContext("RemoteTest", configUrl);
 
 		secureContext.login();
 

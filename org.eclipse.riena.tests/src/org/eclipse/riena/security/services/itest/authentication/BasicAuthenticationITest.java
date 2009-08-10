@@ -44,6 +44,7 @@ public class BasicAuthenticationITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.equinox\\.log.*", null); //$NON-NLS-1$
 		startBundles("org\\.eclipse\\.riena.communication.core", null); //$NON-NLS-1$
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null); //$NON-NLS-1$
+		stopBundles("org\\.eclipse\\.riena.example.client", null);
 
 		customerSearchRegistration = Register.remoteProxy(ICustomerSearch.class).usingUrl(TESTURL).withProtocol(
 				"hessian").andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
@@ -145,7 +146,7 @@ public class BasicAuthenticationITest extends RienaTestCase {
 		} catch (RemoteFailure e) {
 			assertFalse(e.getCause().getCause().getMessage().contains("401")); //$NON-NLS-1$
 			assertTrue(e.getCause().getCause().getMessage(), e.getCause().getCause().getMessage().contains(
-					"unknown code")); //$NON-NLS-1$
+					"unexpected end of file")); //$NON-NLS-1$
 		}
 
 	}
@@ -173,7 +174,7 @@ public class BasicAuthenticationITest extends RienaTestCase {
 		} catch (RemoteFailure e) {
 			assertFalse(e.getCause().getCause().getMessage().contains("401")); //$NON-NLS-1$
 			assertTrue(e.getCause().getCause().getMessage(), e.getCause().getCause().getMessage().contains(
-					"unknown code")); //$NON-NLS-1$
+					"unexpected end of file")); //$NON-NLS-1$
 		}
 
 		// second call
@@ -184,7 +185,7 @@ public class BasicAuthenticationITest extends RienaTestCase {
 		} catch (RemoteFailure e) {
 			assertFalse(e.getCause().getCause().getMessage().contains("401")); //$NON-NLS-1$
 			assertTrue(e.getCause().getCause().getMessage(), e.getCause().getCause().getMessage().contains(
-					"unknown code")); //$NON-NLS-1$
+					"unexpected end of file")); //$NON-NLS-1$
 		}
 
 		serviceReg.unregister();
