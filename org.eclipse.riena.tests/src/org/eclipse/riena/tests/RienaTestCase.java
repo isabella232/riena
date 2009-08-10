@@ -355,9 +355,11 @@ public abstract class RienaTestCase extends TestCase {
 					bundle.stop();
 				} else {
 					if (bundle.getState() != Bundle.UNINSTALLED) {
-						throw new RuntimeException(
-								"can't stop required bundle because it is not ACTIVE and not UNINSTALLED : " //$NON-NLS-1$
-										+ bundle.getSymbolicName());
+						Nop
+								.reason("testcase tried to stop this bundle which did not run, but we can ignore this ==> bundle is stopped already");
+						//						throw new RuntimeException(
+						//								"can't stop required bundle because it is not ACTIVE and not UNINSTALLED : " //$NON-NLS-1$
+						//										+ bundle.getSymbolicName());
 					}
 				}
 			}
