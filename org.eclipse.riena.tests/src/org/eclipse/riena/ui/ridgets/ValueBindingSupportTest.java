@@ -32,6 +32,7 @@ import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
+import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 
@@ -275,6 +276,38 @@ public class ValueBindingSupportTest extends RienaTestCase {
 
 		boolean result = valueBindingSupport.removeValidationRule(null);
 		assertFalse(result);
+	}
+
+	public void testAddAndRemoveValidationMessageWithRule() {
+		assertEquals(0, markable.getMarkersOfType(ValidationMessageMarker.class).size());
+
+		MinLength rule = new MinLength(3);
+		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
+		valueBindingSupport.addValidationMessage("too short", rule);
+		target.setValue("a");
+
+		assertEquals(1, markable.getMarkersOfType(ValidationMessageMarker.class).size());
+		assertMessageMarkers("too short");
+
+		valueBindingSupport.removeValidationMessage("too short", rule);
+
+		assertEquals(0, markable.getMarkersOfType(ValidationMessageMarker.class).size());
+	}
+
+	public void testAddAndRemoveValidationMessageWithoutRule() {
+		assertEquals(0, markable.getMarkersOfType(ValidationMessageMarker.class).size());
+
+		MinLength rule = new MinLength(3);
+		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
+		valueBindingSupport.addValidationMessage("too short");
+		target.setValue("a");
+
+		assertEquals(1, markable.getMarkersOfType(ValidationMessageMarker.class).size());
+		assertMessageMarkers("too short");
+
+		valueBindingSupport.removeValidationMessage("too short");
+
+		assertEquals(0, markable.getMarkersOfType(ValidationMessageMarker.class).size());
 	}
 
 	// helping methods
