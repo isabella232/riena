@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 
@@ -54,6 +55,53 @@ public final class TestUtils {
 			boolean isDisabled = iter.next().isDisabled();
 			Assert.assertEquals(disabledState, isDisabled);
 		}
+	}
+
+	/**
+	 * Asserts that given ridget has a certain number of markers of the given
+	 * type
+	 * 
+	 * @param ridget
+	 *            a IMarkable ridget; never null
+	 * @param markerType
+	 *            a marker type implementing IMessageMarker
+	 * @param count
+	 *            the expected count; 0 or greater
+	 */
+	@SuppressWarnings("unchecked")
+	public static void assertMessageCount(IMarkable ridget, Class markerType, int count) {
+		Collection<IMessageMarker> collection = ridget.getMarkersOfType(markerType);
+		if (count != collection.size()) {
+			System.out.println(String.format("assertion failed on message count -- expected %d, got %d:", count,
+					collection.size()));
+			for (IMessageMarker messageMarker : collection) {
+				System.out.println("\t" + messageMarker.getMessage());
+			}
+		}
+		Assert.assertEquals(count, collection.size());
+	}
+
+	/**
+	 * Asserts that an IMessageMarker with the given message is contained in the
+	 * ridget.
+	 * 
+	 * @param ridget
+	 *            a IMarkable ridget; never null
+	 * @param markerType
+	 *            a marker type implementing IMessageMarker
+	 * @param message
+	 *            the message to find
+	 */
+	@SuppressWarnings("unchecked")
+	public static void assertMessage(IMarkable ridget, Class markerType, String message) {
+		Collection<IMessageMarker> collection = ridget.getMarkersOfType(markerType);
+		boolean wasFound = false;
+		Iterator<IMessageMarker> iter = collection.iterator();
+		while (!wasFound && iter.hasNext()) {
+			IMessageMarker marker = iter.next();
+			wasFound = message.equals(marker.getMessage());
+		}
+		Assert.assertEquals(String.format("Message '%s'", message), true, wasFound);
 	}
 
 	/**

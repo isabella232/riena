@@ -10,9 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import static org.eclipse.riena.tests.TestUtils.*;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -28,9 +29,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.riena.beans.common.DateBean;
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.beans.common.TestBean;
-import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
@@ -938,7 +937,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		ridget.removeValidationRule(numbersOnly);
 
-		assertFalse(ridget.isErrorMarked()); // since 1.2: remove updates immediatelly
+		assertFalse(ridget.isErrorMarked()); // since 1.2: remove updates immediately
 
 		boolean isOk2 = ridget.revalidate();
 
@@ -966,7 +965,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		ridget.removeValidationRule(numbersOnly);
 
-		assertFalse(ridget.isErrorMarked()); // since 1.2: remove updates immediatelly
+		assertFalse(ridget.isErrorMarked()); // since 1.2: remove updates immediately
 
 		boolean isOk2 = ridget.revalidate();
 
@@ -1425,43 +1424,15 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		ridget.setText("abc");
 
-		TestUtils.assertMandatoryMarker(ridget, 1, true);
+		assertMandatoryMarker(ridget, 1, true);
 
 		ridget.setText(null);
 
-		TestUtils.assertMandatoryMarker(ridget, 1, false);
+		assertMandatoryMarker(ridget, 1, false);
 
 		ridget.setMandatory(false);
 
-		TestUtils.assertMandatoryMarker(ridget, 0, false);
-	}
-
-	// helping methods
-	// ////////////////
-
-	@SuppressWarnings("unchecked")
-	private void assertMessageCount(IMarkable ridget, Class markerType, int count) {
-		Collection<IMessageMarker> collection = ridget.getMarkersOfType(markerType);
-		if (count != collection.size()) {
-			System.out.println(String.format("assertion failed on Validation Messages -- expected %d, got %d:", count,
-					collection.size()));
-			for (IMessageMarker messageMarker : collection) {
-				System.out.println("\t" + messageMarker.getMessage());
-			}
-		}
-		assertEquals(count, collection.size());
-	}
-
-	@SuppressWarnings("unchecked")
-	private void assertMessage(IMarkable ridget, Class markerType, String message) {
-		Collection<IMessageMarker> collection = ridget.getMarkersOfType(markerType);
-		boolean found = false;
-		Iterator<IMessageMarker> iter = collection.iterator();
-		while (!found && iter.hasNext()) {
-			IMessageMarker marker = iter.next();
-			found = message.equals(marker.getMessage());
-		}
-		assertEquals(String.format("Message '%s'", message), true, found);
+		assertMandatoryMarker(ridget, 0, false);
 	}
 
 	// helping classes
