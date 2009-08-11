@@ -29,6 +29,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.ActionObserver;
 import org.eclipse.riena.internal.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 
@@ -146,8 +147,10 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	}
 
 	public final void setText(String newText) {
+		String oldText = this.text;
 		this.text = newText;
 		updateUIText();
+		firePropertyChange(IActionRidget.PROPERTY_TEXT, oldText, this.text);
 	}
 
 	public String getIcon() {

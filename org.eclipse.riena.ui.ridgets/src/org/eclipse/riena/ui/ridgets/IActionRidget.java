@@ -16,6 +16,15 @@ package org.eclipse.riena.ui.ridgets;
  */
 public interface IActionRidget extends IRidget {
 
+	/**
+	 * Property name of the text property.
+	 * 
+	 * @see #getText()
+	 * @see #setText(String)
+	 * @since 1.2
+	 */
+	String PROPERTY_TEXT = "text"; //$NON-NLS-1$
+
 	String BASE_ID_TOOLBARACTION = "toolbarAction."; //$NON-NLS-1$
 	String BASE_ID_MENUACTION = "menuAction."; //$NON-NLS-1$
 

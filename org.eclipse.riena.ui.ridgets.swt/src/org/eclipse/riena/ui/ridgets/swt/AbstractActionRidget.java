@@ -102,8 +102,10 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	}
 
 	public final void setText(String newText) {
+		String oldText = this.text;
 		this.text = newText;
 		updateUIText();
+		firePropertyChange(IActionRidget.PROPERTY_TEXT, oldText, this.text);
 	}
 
 	// helping methods

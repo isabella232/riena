@@ -142,8 +142,10 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	}
 
 	public final void setText(String newText) {
+		String oldText = this.text;
 		this.text = newText;
 		updateUIText();
+		firePropertyChange(IActionRidget.PROPERTY_TEXT, oldText, this.text);
 	}
 
 	/**
