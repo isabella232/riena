@@ -33,7 +33,7 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		assertNotNull(injector);
 		assertEquals("testA", id(injector));
 		assertEquals(IData.class, useType(injector));
-		assertEquals(1, getMin(injector));
+		assertEquals(0, getMin(injector));
 		assertEquals(1, getMax(injector));
 		assertTrue(getHomogenious(injector));
 		assertSame(this, getBean(injector));
@@ -44,6 +44,28 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 
 	@InjectExtension(id = "testA")
 	public void update1(IData data) {
+
+	}
+
+	public void testBuildForUpdate1Array() throws NoSuchMethodException {
+		Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("update1Array",
+				new Class[] { IData[].class });
+		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		ExtensionInjector injector = builder.build();
+		assertNotNull(injector);
+		assertEquals("testA[]", id(injector));
+		assertEquals(IData.class, useType(injector));
+		assertEquals(0, getMin(injector));
+		assertEquals(Integer.MAX_VALUE, getMax(injector));
+		assertTrue(getHomogenious(injector));
+		assertSame(this, getBean(injector));
+		assertEquals("update1Array", getUpdate(injector));
+		assertFalse(getDoNotReplaceSymbols(injector));
+		assertFalse(getSpecific(injector));
+	}
+
+	@InjectExtension(id = "testA[]")
+	public void update1Array(IData[] data) {
 
 	}
 
@@ -79,11 +101,11 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		assertEquals(IData.class, useType(injector));
 		assertEquals(0, getMin(injector));
 		assertEquals(1, getMax(injector));
-		assertTrue(getHomogenious(injector));
+		assertFalse(getHomogenious(injector));
 		assertSame(this, getBean(injector));
-		assertEquals("update1", getUpdate(injector));
+		assertEquals("update3", getUpdate(injector));
 		assertFalse(getDoNotReplaceSymbols(injector));
-		assertFalse(getSpecific(injector));
+		assertTrue(getSpecific(injector));
 	}
 
 	@InjectExtension(id = "testC", heterogeneous = true, specific = true, min = 0, max = 1)
