@@ -10,26 +10,28 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt.views;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.swt.RienaDialog;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * base class for SWT dialogs.
  */
-public abstract class DialogView extends AbstractControlledView<AbstractWindowController> {
+public abstract class DialogView extends RienaDialog {
 
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
-
-	protected Dialog dialog;
-
+	private boolean closing;
+	private AbstractControlledView<AbstractWindowController> controlledViewDelegate;
 	private Shell parentShell;
 
 	/**
@@ -37,29 +39,69 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 	 *            the parent control.
 	 */
 	public DialogView(Composite parent) {
-		super();
+		super(null != parent ? parent.getShell() : Display.getDefault().getActiveShell());
+
+		controlledViewDelegate = new AbstractControlledView<AbstractWindowController>() {
+		};
+		controlledViewDelegate.setController(createController());
+		closing = false;
+
 		if (parent != null) {
 			parentShell = parent.getShell();
 		}
-		setController(createController());
+	}
+
+	private boolean isChildOfComplexComponent(Control uiControl) {
+		if (uiControl.getParent() == null) {
+			return false;
+		}
+		if (uiControl.getParent() instanceof IComplexComponent) {
+			return true;
+		}
+		return isChildOfComplexComponent(uiControl.getParent());
+	}
+
+	private void addUIControls(Composite composite) {
+		Control[] controls = composite.getChildren();
+		for (Control uiControl : controls) {
+
+			String bindingProperty = SWTBindingPropertyLocator.getInstance().locateBindingProperty(uiControl);
+			if (!StringUtils.isEmpty(bindingProperty)) {
+				if (isChildOfComplexComponent(uiControl)) {
+					continue;
+				}
+				addUIControl(uiControl, bindingProperty);
+			}
+			if (uiControl instanceof Composite) {
+				addUIControls((Composite) uiControl);
+			}
+		}
 	}
 
 	/**
-	 * Creates the dialog of this view
+	 * @return
 	 */
-	protected ControlledRienaDialog createDialog() {
-		ControlledRienaDialog controlledRienaDialog = new ControlledRienaDialog(getParentShell());
-		return controlledRienaDialog;
+	public AbstractWindowController getController() {
+		return controlledViewDelegate.getController();
 	}
 
-	protected void bindController() {
-		initialize(getController());
-		bind(getController());
-
+	/**
+	 * @param shell
+	 * @param ridgetIdWindow
+	 */
+	public void addUIControl(Object uiControl, String ridgetId) {
+		controlledViewDelegate.addUIControl(uiControl, ridgetId);
 	}
 
+	private void bindController() {
+		controlledViewDelegate.initialize(getController());
+		controlledViewDelegate.bind(getController());
+	}
+
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	protected Control buildView(Composite parent) {
-		addUIControl(dialog.getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
 		return parent;
 	}
 
@@ -69,13 +111,10 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 	 * Build and open the a dialog.
 	 */
 	public void build() {
-		if (dialog == null) {
-			dialog = createDialog();
-		}
-		dialog.open();
+		open();
 	}
 
-	private Shell getParentShell() {
+	protected Shell getParentShell() {
 		return parentShell;
 	}
 
@@ -83,65 +122,48 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 		// Do nothing by default
 	}
 
-	private final class ControlledRienaDialog extends RienaDialog {
-
-		private boolean closing;
-
-		private ControlledRienaDialog(Shell shell) {
-			super(shell);
-			closing = false;
-		}
-
-		/**
-		 * Closes this dialog. But before closing the controller is unbinded.
-		 * 
-		 * @see org.eclipse.jface.dialogs.Dialog#close()
-		 */
-		@Override
-		public boolean close() {
-
-			closing = true;
-			onClose();
-			unbind(getController());
-			boolean result = super.close();
-			closing = false;
-
-			return result;
-
-		}
-
-		/**
-		 * Creates the dialog (also indirectly the view) and the corresponding
-		 * controller. Binds view and controller
-		 * 
-		 * @see org.eclipse.riena.ui.swt.RienaDialog#create()
-		 */
-		@Override
-		public void create() {
-
-			super.create();
-
-			bindController();
-			LNF_UPDATER.updateUIControlsAfterBind(getShell());
-
-			getShell().addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(DisposeEvent e) {
-					if (!closing) {
-						close();
-					}
-				}
-			});
-			getShell().pack();
-
-		}
-
-		@Override
-		protected Control createDialogArea(Composite parent) {
-			Control dlgContente = buildView(parent);
-			LNF_UPDATER.updateUIControls(parent);
-			return dlgContente;
-		}
-
+	/**
+	 * Closes this dialog. But before closing the controller is unbinded.
+	 * 
+	 * @see org.eclipse.jface.dialogs.Dialog#close()
+	 */
+	@Override
+	public boolean close() {
+		closing = true;
+		onClose();
+		controlledViewDelegate.unbind(getController());
+		boolean result = super.close();
+		closing = false;
+		return result;
 	}
 
+	/**
+	 * Creates the dialog (also indirectly the view) and the corresponding
+	 * controller. Binds view and controller
+	 * 
+	 * @see org.eclipse.riena.ui.swt.RienaDialog#create()
+	 */
+	@Override
+	public void create() {
+		super.create();
+		addUIControls(getShell());
+		bindController();
+		LNF_UPDATER.updateUIControlsAfterBind(getShell());
+
+		getShell().addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				if (!closing) {
+					close();
+				}
+			}
+		});
+	}
+
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Control dlgContente = buildView(parent);
+		addUIControl(getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
+		LNF_UPDATER.updateUIControls(parent);
+		return dlgContente;
+	}
 }

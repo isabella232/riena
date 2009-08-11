@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt.views;
 
+import java.beans.Beans;
+
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
@@ -36,7 +38,9 @@ public abstract class AbstractControlledView<C extends IController> {
 	}
 
 	public void initialize(C controller) {
-		binding.injectRidgets(controller);
+		if (!Beans.isDesignTime()) {
+			binding.injectRidgets(controller);
+		}
 	}
 
 	/**
@@ -55,13 +59,18 @@ public abstract class AbstractControlledView<C extends IController> {
 		}
 		if (controller != null) {
 			setController(controller);
-			binding.bind(controller);
-			controller.afterBind();
+
+			if (!Beans.isDesignTime()) {
+				binding.bind(controller);
+				controller.afterBind();
+			}
 		}
 	}
 
 	public void unbind(C controller) {
-		binding.unbind(controller);
+		if (!Beans.isDesignTime()) {
+			binding.unbind(controller);
+		}
 		//		setController(null);
 	}
 

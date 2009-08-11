@@ -10,12 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
-import org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer;
-import org.eclipse.riena.ui.swt.lnf.renderer.DialogTitleBarRenderer;
+import java.beans.Beans;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -27,6 +23,14 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+
+import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.ILnfRendererDesc;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
+import org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer;
+import org.eclipse.riena.ui.swt.lnf.renderer.DialogTitleBarRenderer;
 
 /**
  *
@@ -47,6 +51,14 @@ public class RienaDialogDelegate {
 
 	public RienaDialogDelegate(IRienaDialog dialog) {
 		this.dialog = dialog;
+
+		// if we are in designtime, supply default renderer
+		if (Beans.isDesignTime()) {
+			ILnfRendererDesc[] descs = new ILnfRendererDesc[] {
+					new LnfRenderer(new DialogBorderRenderer(), LnfKeyConstants.DIALOG_BORDER_RENDERER),
+					new LnfRenderer(new DialogTitleBarRenderer(), LnfKeyConstants.DIALOG_RENDERER) };
+			LnfManager.getLnf().update(descs);
+		}
 	}
 
 	/**
@@ -298,4 +310,32 @@ public class RienaDialogDelegate {
 		return centerComposite;
 	}
 
+	private static class LnfRenderer implements ILnfRendererDesc {
+		private String lnfId;
+		private ILnfRenderer renderer;
+		private String lnfKey;
+
+		/**
+		 * @param lnfId
+		 * @param renderer
+		 */
+		public LnfRenderer(ILnfRenderer renderer, String lnfKey) {
+			super();
+			this.lnfId = ""; //$NON-NLS-1$
+			this.renderer = renderer;
+			this.lnfKey = lnfKey;
+		}
+
+		public ILnfRenderer createRenderer() {
+			return renderer;
+		}
+
+		public String getLnfId() {
+			return lnfId;
+		}
+
+		public String getLnfKey() {
+			return lnfKey;
+		}
+	}
 }
