@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -88,6 +89,15 @@ public final class UIControlsFactory {
 		Label label = createLabel(parent, text, style);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(label, bindingId);
 		return label;
+	}
+
+	/**
+	 * @since 1.2
+	 */
+	public static Link createLink(Composite parent) {
+		Link result = new Link(parent, SWT.NONE);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	public static Text createText(Composite parent) {
