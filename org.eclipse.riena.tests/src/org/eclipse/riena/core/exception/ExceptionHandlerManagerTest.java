@@ -47,27 +47,6 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 		Assert.assertEquals("expected exception", testEH.getThrowable(), exception);
 	}
 
-	private IExceptionHandlerDefinition getTestDefinition(final TestExceptionHandler testEH) {
-		return new IExceptionHandlerDefinition() {
-
-			public IExceptionHandler createExceptionHandler() {
-				return testEH;
-			}
-
-			public String getBefore() {
-				return null;
-			}
-
-			public String getExceptionHandler() {
-				return TestExceptionHandler.class.getName();
-			}
-
-			public String getName() {
-				return testEH.getName();
-			}
-		};
-	}
-
 	public void testAddHandlerChain() {
 		TestExceptionHandler testEH1 = new TestExceptionHandler("test.exception.handler1", null, null);
 		TestExceptionHandler testEH2 = new TestExceptionHandler("test.exception.handler2", "test.exception.handler1",
@@ -79,6 +58,27 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 
 		Assert.assertEquals("expected exception", testEH2.getThrowable(), exception);
 		Assert.assertNull("expected no exception", testEH1.getThrowable());
+	}
+
+	private IExceptionHandlerDefinition getTestDefinition(final TestExceptionHandler testEH) {
+		return new IExceptionHandlerDefinition() {
+
+			public IExceptionHandler createExceptionHandler() {
+				return testEH;
+			}
+
+			public String getBefore() {
+				return testEH.getBefore();
+			}
+
+			public String getExceptionHandler() {
+				return testEH.getClass().getName();
+			}
+
+			public String getName() {
+				return testEH.getName();
+			}
+		};
 	}
 
 }
