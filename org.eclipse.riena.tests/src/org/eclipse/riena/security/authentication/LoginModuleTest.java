@@ -48,7 +48,7 @@ public class LoginModuleTest extends RienaTestCase {
 		TestLocalLoginModule.setCredentials("testuser", "testpass");
 
 		URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
-		ILoginContext secureContext = LoginContextFactory.createContext("Local", configUrl);
+		ILoginContext secureContext = LoginContextFactory.createContext("LocalTest", configUrl);
 
 		secureContext.login();
 
