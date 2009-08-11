@@ -15,9 +15,7 @@ import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -194,18 +192,16 @@ public final class TestCollector {
 				// Skip inner classes
 				continue;
 			}
-			String className = getClassName(bundle, entryURL);
-			if (className == null) {
+			Class<?> clazz = getClass(bundle, entryURL);
+			if (clazz == null) {
 				trace("Could not get class name from ", url);
 				continue;
 			}
-			Class<? extends TestCase> clazz = null;
-			try {
-				clazz = bundle.loadClass(className);
-			} catch (ClassNotFoundException e) {
-				System.out.println(e);
+			if (!TestCase.class.isAssignableFrom(clazz)) {
+				trace("Not a TestCase: ", clazz.getName());
 				continue;
 			}
+			String className = clazz.getName();
 			if (withinPackage != null) {
 				if (subPackages) {
 					if (!(className.startsWith(withinPackage.getName()) && className.endsWith(clazz.getSimpleName()))) {
@@ -217,45 +213,33 @@ public final class TestCollector {
 					}
 				}
 			}
-			if (!TestCase.class.isAssignableFrom(clazz)) {
-				continue;
-			}
 			if (clazz.isAnnotationPresent(NonGatherableTestCase.class)) {
 				continue;
 			}
 			if (Modifier.isAbstract(clazz.getModifiers())) {
 				continue;
 			}
-			testClasses.add(clazz);
+			testClasses.add((Class<TestCase>) clazz);
 		}
 		return testClasses;
 	}
 
-	private static Map<Bundle, Integer> skipCharsMap = new HashMap<Bundle, Integer>();
-
-	private static String getClassName(Bundle bundle, URL entryURL) {
-		String entry = entryURL.toExternalForm();
-		entry = entry.replace(".class", "").replace('/', '.');
-		Integer skippy = skipCharsMap.get(bundle);
-		int skipChars = skippy == null ? -1 : skippy;
-		if (skipChars == -1) {
-			// Brute force detecting of how many chars we have to skip to find a class within the url
-			String name = entry;
-			int dot = 0;
-			while ((dot = name.indexOf('.', dot)) != -1) {
-				String className = name.substring(dot + 1);
-				try {
-					bundle.loadClass(className);
-					skipCharsMap.put(bundle, entry.indexOf(className));
-					return className;
-				} catch (ClassNotFoundException e) {
-					dot++;
-				} catch (NoClassDefFoundError e) {
-					dot++;
-				}
+	private static Class<?> getClass(Bundle bundle, URL entryURL) {
+		String entry = entryURL.toExternalForm().replace(".class", "").replace('/', '.');
+		// Brute force detecting of how many chars we have to skip to find a class within the url
+		String name = entry;
+		int dot = 0;
+		while ((dot = name.indexOf('.', dot)) != -1) {
+			String className = name.substring(dot + 1);
+			try {
+				return bundle.loadClass(className);
+			} catch (ClassNotFoundException e) {
+				dot++;
+			} catch (NoClassDefFoundError e) {
+				dot++;
 			}
 		}
-		return entry.substring(skipChars);
+		return null;
 	}
 
 	private static void trace(Object... objects) {
