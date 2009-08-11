@@ -60,8 +60,6 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 		}
 	}
 
-	protected abstract String getUIControlText();
-
 	public final void addListener(IActionListener listener) {
 		actionObserver.addListener(listener);
 	}
@@ -117,6 +115,14 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 		}
 	}
 
+	/**
+	 * Return the text from the ui control.
+	 */
+	protected abstract String getUIControlText();
+
+	/**
+	 * Apply a text to the ui control.
+	 */
 	protected abstract void setUIControlText(String text);
 
 	protected void updateUIIcon() {
@@ -131,6 +137,9 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 		}
 	}
 
+	/**
+	 * Apply an image to the ui control.
+	 */
 	protected abstract void setUIControlImage(Image image);
 
 }
