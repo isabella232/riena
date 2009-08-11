@@ -55,9 +55,13 @@ public class ExtensionInjectorBuilder {
 		Assert.isLegal(types.length == 1, "only one parameter allowed on ´update´ method"); //$NON-NLS-1$
 		descriptor = descriptor.expectingMinMax(annotation.min(), annotation.max());
 		if (types[0].isArray()) {
-			descriptor = descriptor.useType(types[0].getComponentType());
+			descriptor = descriptor.expectingMinMax(annotation.min(), annotation.max()).useType(
+					types[0].getComponentType());
 		} else {
-			descriptor = descriptor.useType(types[0]);
+			// check default values - if no default values given take them (although they might be wrong) otherwise choose useful values  
+			int min = annotation.min() == 0 ? 0 : annotation.min();
+			int max = annotation.max() == Integer.MAX_VALUE ? 1 : annotation.max();
+			descriptor = descriptor.expectingMinMax(min, max).useType(types[0]);
 		}
 		if (annotation.heterogeneous()) {
 			descriptor = descriptor.heterogeneous();
