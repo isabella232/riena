@@ -25,6 +25,12 @@ public class CheckTestConstraintsTest extends TestCase {
 	public void testUnmarkedTests() {
 		List<Class<? extends TestCase>> unmarked = TestCollector.collectUnmarked(Activator.getDefault().getBundle(),
 				null);
+		if (unmarked.size() > 0) {
+			System.err.println(">> Found unmarked tests:");
+			for (Class<?> testCase : unmarked) {
+				System.err.println("  unmarked: " + testCase.getName());
+			}
+		}
 		assertEquals(unmarked.size() + " unmarked test(s) found: " + unmarked, 0, unmarked.size());
 	}
 
@@ -33,7 +39,13 @@ public class CheckTestConstraintsTest extends TestCase {
 	public void testBadlyNamedTests() {
 		List<Class<? extends TestCase>> badlyNamed = TestCollector.collectBadlyNamed(
 				Activator.getDefault().getBundle(), null);
-		assertEquals(badlyNamed.size() + " unmarked test(s) found: " + badlyNamed, 2, badlyNamed.size());
+		if (badlyNamed.size() > 0) {
+			System.err.println(">> Found badly named tests:");
+			for (Class<?> testCase : badlyNamed) {
+				System.err.println("  badly named: " + testCase.getName());
+			}
+		}
+		assertEquals(badlyNamed.size() + " badly named test(s) found: " + badlyNamed, 2, badlyNamed.size());
 	}
 
 }
