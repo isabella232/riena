@@ -1366,7 +1366,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.addValidationRule(rule2, ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.revalidate();
 
-		assertEquals("ruleA_1; ruleB_1", ridget.getToolTipText());
+		assertEquals("ruleA_1\nruleB_1", ridget.getToolTipText());
 
 		ridget.removeValidationRule(rule1);
 		ridget.revalidate();

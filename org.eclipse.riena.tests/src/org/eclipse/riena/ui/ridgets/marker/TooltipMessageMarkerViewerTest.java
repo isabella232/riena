@@ -12,14 +12,15 @@ package org.eclipse.riena.ui.ridgets.marker;
 
 import junit.framework.TestCase;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Tests for the TooltipMessageMarkerViewer.
@@ -158,7 +159,7 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 		tooltipMessageMarkerViewer.addMarkerType(MessageMarker.class);
 		ridget.addMarker(secondMarker);
 
-		assertEquals(errorMessage + "; " + secondMessage, ridget.getToolTipText());
+		assertEquals(errorMessage + "\n" + secondMessage, ridget.getToolTipText());
 
 		ridget.removeMarker(errorMessageMarker);
 
@@ -175,7 +176,7 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 		ridget.addMarker(new MessageMarker(errorMessage + 4));
 		ridget.addMarker(new MessageMarker(errorMessage + 5));
 
-		assertEquals(errorMessage + "; " + secondMessage + "; " + errorMessage + "3; " + errorMessage + "4; "
+		assertEquals(errorMessage + "\n" + secondMessage + "\n" + errorMessage + "3\n" + errorMessage + "4\n"
 				+ errorMessage + "5", ridget.getToolTipText());
 
 	}

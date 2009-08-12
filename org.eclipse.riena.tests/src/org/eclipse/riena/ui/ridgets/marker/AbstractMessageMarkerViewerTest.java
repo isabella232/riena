@@ -15,6 +15,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
@@ -22,6 +23,7 @@ import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 /**
  * Tests of the class {@link AbstractMessageMarkerViewer}.
  */
+@NonUITestCase
 public class AbstractMessageMarkerViewerTest extends TestCase {
 
 	private AbstractMessageMarkerViewer viewer;
