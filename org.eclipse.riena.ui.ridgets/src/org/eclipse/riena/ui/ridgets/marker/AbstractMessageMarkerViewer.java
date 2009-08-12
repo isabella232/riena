@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
@@ -31,6 +33,33 @@ import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
  * Common functionality of classes visualizing certain types of message markers.
  */
 public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewer {
+
+	/**
+	 * Creates a string with all messages of the given markers.
+	 * 
+	 * @param messageMarker
+	 *            a Collection of message markers; may be null
+	 * @param separator
+	 *            a String for separating the message markers; never null
+	 * @return string with all messages
+	 */
+	public static String constructMessage(Collection<IMessageMarker> messageMarker, String separator) {
+		Assert.isNotNull(separator);
+		StringWriter sw = new StringWriter();
+		if (messageMarker != null) {
+			for (Iterator<IMessageMarker> i = messageMarker.iterator(); i.hasNext();) {
+				IMessageMarker nextMarker = i.next();
+				if (sw.toString().trim().length() > 0) {
+					sw.write(separator);
+				}
+				if (nextMarker.getMessage() != null) {
+					sw.write(nextMarker.getMessage());
+				}
+			}
+		}
+
+		return sw.toString().trim();
+	}
 
 	private HashSet<Class<? extends IMessageMarker>> markerTypes;
 	private ListenerList<IBasicMarkableRidget> ridgets;
@@ -79,6 +108,14 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 		}
 	}
 
+	/**
+	 * Returns the string that separates the single messages of a composed
+	 * message.
+	 * 
+	 * @return separator
+	 */
+	protected abstract String getMessageSeparator();
+
 	protected abstract void showMessages(IBasicMarkableRidget ridget);
 
 	protected abstract void hideMessages(IBasicMarkableRidget ridget);
@@ -118,40 +155,6 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 			String message2 = o2.getMessage();
 			return message1.compareTo(message2);
 		}
-
-	}
-
-	/**
-	 * Returns the string that separates the single messages of a composed
-	 * meassge.
-	 * 
-	 * @return separator
-	 */
-	abstract String getMessageSeparator();
-
-	/**
-	 * Creates a string with all messages of the given markers.
-	 * 
-	 * @param pMessageMarker
-	 *            - collection of message markers
-	 * @return string with all messages
-	 */
-	protected String constructMessage(Collection<IMessageMarker> messageMarker) {
-
-		StringWriter sw = new StringWriter();
-		if (messageMarker != null) {
-			for (Iterator<IMessageMarker> i = messageMarker.iterator(); i.hasNext();) {
-				IMessageMarker nextMarker = i.next();
-				if (sw.toString().trim().length() > 0) {
-					sw.write(getMessageSeparator());
-				}
-				if (nextMarker.getMessage() != null) {
-					sw.write(nextMarker.getMessage());
-				}
-			}
-		}
-
-		return sw.toString().trim();
 
 	}
 

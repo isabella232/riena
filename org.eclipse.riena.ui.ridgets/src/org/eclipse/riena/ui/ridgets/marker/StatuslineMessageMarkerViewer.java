@@ -66,7 +66,7 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	protected void showMessages(IBasicMarkableRidget markableRidget) {
 		if (markableRidget.hasFocus()) {
 			Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
-			String message = constructMessage(messageMarker);
+			String message = constructMessage(messageMarker, getMessageSeparator());
 			Severity severity = getMaxSeverity(messageMarker);
 			// show the message only if there is something to show
 			if (message.length() > 0 && isVisible()) {
@@ -85,7 +85,7 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	@Override
-	String getMessageSeparator() {
+	protected String getMessageSeparator() {
 		return " "; //$NON-NLS-1$
 	}
 

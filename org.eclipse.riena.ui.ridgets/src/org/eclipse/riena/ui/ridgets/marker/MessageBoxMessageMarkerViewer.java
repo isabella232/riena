@@ -59,7 +59,7 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	@Override
-	String getMessageSeparator() {
+	protected String getMessageSeparator() {
 		return "\n"; //$NON-NLS-1$
 	}
 
@@ -79,7 +79,7 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		}
 		List<IMessageMarker> sortedMarkers = new ArrayList<IMessageMarker>(allMessageMarker);
 		Collections.sort(sortedMarkers, new MessageMarkerComparator());
-		return constructMessage(sortedMarkers);
+		return constructMessage(sortedMarkers, getMessageSeparator());
 	}
 
 }

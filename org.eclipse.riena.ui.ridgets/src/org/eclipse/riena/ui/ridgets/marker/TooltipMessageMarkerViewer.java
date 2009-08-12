@@ -49,7 +49,7 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	@Override
 	protected void showMessages(IBasicMarkableRidget markableRidget) {
 		Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
-		String message = constructMessage(messageMarker);
+		String message = constructMessage(messageMarker, getMessageSeparator());
 		// show the message only if there is something to show
 		String current = markableRidget.getToolTipText();
 		if (message.length() > 0 && isVisible()) {
@@ -78,7 +78,7 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	@Override
-	String getMessageSeparator() {
+	protected String getMessageSeparator() {
 		return "\n"; //$NON-NLS-1$
 	}
 
