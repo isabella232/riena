@@ -12,10 +12,8 @@ package org.eclipse.riena.ui.ridgets.marker;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import org.eclipse.riena.core.util.StringUtils;
@@ -79,25 +77,9 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		}
 	}
 
-	// helping methods
-	//////////////////
-
-	private String constructMessage(Collection<IMessageMarker> messageMarker) {
-		StringWriter sw = new StringWriter();
-		IMessageMarker nextMarker = null;
-		if (messageMarker != null) {
-			for (Iterator<IMessageMarker> i = messageMarker.iterator(); i.hasNext();) {
-				nextMarker = i.next();
-				if (sw.toString().trim().length() > 0) {
-					sw.write("; "); //$NON-NLS-1$
-				}
-				// TODO [ev] string builder + empty message + duplicate code
-				if (nextMarker.getMessage() != null) {
-					sw.write(nextMarker.getMessage());
-				}
-			}
-		}
-		return sw.toString().trim();
+	@Override
+	String getMessageSeparator() {
+		return "\n"; //$NON-NLS-1$
 	}
 
 	// helping classes

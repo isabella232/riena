@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.ridgets.marker;
 
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -113,8 +114,44 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 		private static final long serialVersionUID = 1L;
 
 		public int compare(IMessageMarker o1, IMessageMarker o2) {
-			return o1.getMessage().compareTo(o2.getMessage());
+			String message1 = o1.getMessage();
+			String message2 = o2.getMessage();
+			return message1.compareTo(message2);
 		}
+
+	}
+
+	/**
+	 * Returns the string that separates the single messages of a composed
+	 * meassge.
+	 * 
+	 * @return separator
+	 */
+	abstract String getMessageSeparator();
+
+	/**
+	 * Creates a string with all messages of the given markers.
+	 * 
+	 * @param pMessageMarker
+	 *            - collection of message markers
+	 * @return string with all messages
+	 */
+	protected String constructMessage(Collection<IMessageMarker> messageMarker) {
+
+		StringWriter sw = new StringWriter();
+		if (messageMarker != null) {
+			for (Iterator<IMessageMarker> i = messageMarker.iterator(); i.hasNext();) {
+				IMessageMarker nextMarker = i.next();
+				if (sw.toString().trim().length() > 0) {
+					sw.write(getMessageSeparator());
+				}
+				if (nextMarker.getMessage() != null) {
+					sw.write(nextMarker.getMessage());
+				}
+			}
+		}
+
+		return sw.toString().trim();
 
 	}
 

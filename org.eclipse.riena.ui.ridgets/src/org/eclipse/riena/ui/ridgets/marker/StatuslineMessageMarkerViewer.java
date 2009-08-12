@@ -12,9 +12,7 @@ package org.eclipse.riena.ui.ridgets.marker;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.StringWriter;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
@@ -68,7 +66,7 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	protected void showMessages(IBasicMarkableRidget markableRidget) {
 		if (markableRidget.hasFocus()) {
 			Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
-			String message = constructMessage(messageMarker).trim();
+			String message = constructMessage(messageMarker);
 			Severity severity = getMaxSeverity(messageMarker);
 			// show the message only if there is something to show
 			if (message.length() > 0 && isVisible()) {
@@ -84,6 +82,11 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		if (ridget.hasFocus()) {
 			resetStatuslineMessage();
 		}
+	}
+
+	@Override
+	String getMessageSeparator() {
+		return " "; //$NON-NLS-1$
 	}
 
 	private void setStatuslineMessage(String message, Severity severity) {
@@ -118,24 +121,6 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 			}
 			statuslineMessage = null;
 		}
-	}
-
-	private String constructMessage(Collection<IMessageMarker> messageMarker) {
-		StringWriter sw = new StringWriter();
-		IMessageMarker nextMarker = null;
-		if (messageMarker != null) {
-			for (Iterator<IMessageMarker> i = messageMarker.iterator(); i.hasNext();) {
-				nextMarker = i.next();
-				if (sw.toString().trim().length() > 0) {
-					sw.write(" "); //$NON-NLS-1$
-				}
-				// TODO [ev] string builder + empty message + duplicate code
-				if (nextMarker.getMessage() != null) {
-					sw.write(nextMarker.getMessage());
-				}
-			}
-		}
-		return sw.toString().trim();
 	}
 
 	private Severity getMaxSeverity(Collection<IMessageMarker> messageMarkers) {

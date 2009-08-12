@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.marker;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -59,6 +58,11 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		}
 	}
 
+	@Override
+	String getMessageSeparator() {
+		return "\n"; //$NON-NLS-1$
+	}
+
 	/**
 	 * Construct a Message of all Adapter for display, remove the marker!
 	 * 
@@ -73,25 +77,9 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 			nextMarkableAdapter = i.next();
 			allMessageMarker.addAll(getMessageMarker(nextMarkableAdapter, false));
 		}
-		return constructMessage(allMessageMarker);
-	}
-
-	private String constructMessage(Collection<IMessageMarker> pMessageMarker) {
-		StringWriter sw = new StringWriter();
-		if (pMessageMarker != null) {
-			List<IMessageMarker> sortedMarkers = new ArrayList<IMessageMarker>(pMessageMarker);
-			Collections.sort(sortedMarkers, new MessageMarkerComparator());
-			for (IMessageMarker nextMarker : sortedMarkers) {
-				if (sw.toString().trim().length() > 0) {
-					sw.write("\n"); //$NON-NLS-1$
-				}
-				// TODO [ev] StringBuilder + Check for empty message
-				if (nextMarker.getMessage() != null) {
-					sw.write(nextMarker.getMessage());
-				}
-			}
-		}
-		return sw.toString().trim();
+		List<IMessageMarker> sortedMarkers = new ArrayList<IMessageMarker>(allMessageMarker);
+		Collections.sort(sortedMarkers, new MessageMarkerComparator());
+		return constructMessage(sortedMarkers);
 	}
 
 }
