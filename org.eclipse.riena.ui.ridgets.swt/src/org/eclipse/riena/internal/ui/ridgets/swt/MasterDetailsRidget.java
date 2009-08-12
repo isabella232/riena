@@ -92,6 +92,10 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		delegate.configureRidgets(this);
 	}
 
+	public IMasterDetailsDelegate getDelegate() {
+		return this.delegate;
+	}
+
 	@Override
 	public MasterDetailsComposite getUIControl() {
 		return (MasterDetailsComposite) super.getUIControl();
