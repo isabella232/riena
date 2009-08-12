@@ -10,56 +10,26 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IRidget;
 
 /**
- * This class notifies a collection of action {@link IActionListener} when a
+ * This class notifies a collection of action {@link IActionListener}s when a
  * widget is selected.
  */
-public class ActionObserver extends SelectionAdapter {
+public class ActionObserver extends AbstractObserver<IActionListener> {
 
-	private ListenerList<IActionListener> actionListeners;
-
-	public ActionObserver() {
-		super();
+	public ActionObserver(IRidget source) {
+		super(source);
 	}
 
-	@Override
-	public void widgetSelected(SelectionEvent e) {
-		fireAction();
-	}
-
-	/**
-	 * Adds a listener to the collection of listeners which are notified. Adding
-	 * the same listener twice has no effect.
-	 * 
-	 * @param listener
-	 *            a IActionListener instance (non-null)
-	 * @throws RuntimeException
-	 *             if IActionListener is null
-	 */
-	public void addListener(IActionListener listener) {
-		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
-		if (actionListeners == null) {
-			actionListeners = new ListenerList<IActionListener>(IActionListener.class);
-		}
-		actionListeners.add(listener);
-	}
-
-	public void removeListener(IActionListener listener) {
-		if (actionListeners != null) {
-			actionListeners.remove(listener);
-		}
-	}
-
-	public void fireAction() {
-		if (actionListeners != null) {
-			for (IActionListener listener : actionListeners.getListeners()) {
+	protected void fireAction(SelectionEvent evt) {
+		ListenerList<IActionListener> listeners = getListeners();
+		if (listeners != null) {
+			for (IActionListener listener : listeners.getListeners()) {
 				listener.callback();
 			}
 		}

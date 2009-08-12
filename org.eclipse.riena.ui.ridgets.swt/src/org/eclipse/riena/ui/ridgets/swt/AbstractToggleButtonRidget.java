@@ -49,7 +49,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 
 	public AbstractToggleButtonRidget() {
 		super();
-		actionObserver = new ActionObserver();
+		actionObserver = new ActionObserver(this);
 		textAlreadyInitialized = false;
 		useRidgetIcon = false;
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
@@ -123,7 +123,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		if (this.selected != selected) {
 			boolean oldValue = this.selected;
 			this.selected = selected;
-			actionObserver.fireAction();
+			actionObserver.widgetSelected(null);
 			firePropertyChange(IToggleButtonRidget.PROPERTY_SELECTED, Boolean.valueOf(oldValue), Boolean
 					.valueOf(selected));
 		}

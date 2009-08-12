@@ -42,7 +42,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	 * Creates a new instance of {@link AbstractItemRidget}.
 	 */
 	public AbstractItemRidget() {
-		actionObserver = new ActionObserver();
+		actionObserver = new ActionObserver(this);
 		textAlreadyInitialized = false;
 		useRidgetIcon = false;
 	}

@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.ridgets.swt;
 import java.beans.EventHandler;
 
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionObserver;
 import org.eclipse.riena.internal.ui.ridgets.swt.BasicMarkerSupport;
@@ -27,14 +28,15 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 public abstract class AbstractActionRidget extends AbstractSWTRidget implements IActionRidget {
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
+	protected final ActionObserver actionObserver;
+
 	private String text;
 	private String icon;
-	protected ActionObserver actionObserver;
 	private boolean textAlreadyInitialized;
 	private boolean useRidgetIcon;
 
 	public AbstractActionRidget() {
-		actionObserver = new ActionObserver();
+		actionObserver = new ActionObserver(this);
 		textAlreadyInitialized = false;
 		useRidgetIcon = false;
 	}
@@ -49,8 +51,9 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	 * the UI control.
 	 */
 	protected void initText() {
-		if ((text == null) && (!textAlreadyInitialized)) {
-			if ((getUIControl()) != null && !(getUIControl().isDisposed())) {
+		if (text == null && !textAlreadyInitialized) {
+			Control control = getUIControl();
+			if (control != null && !control.isDisposed()) {
 				text = getUIControlText();
 				if (text == null) {
 					text = EMPTY_STRING;
