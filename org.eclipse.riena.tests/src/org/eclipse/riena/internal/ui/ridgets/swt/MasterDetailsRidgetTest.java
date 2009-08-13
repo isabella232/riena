@@ -367,30 +367,22 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSelection(item0);
 		assertEquals(1, listener.count);
 
-		// TODO this code can replace the 4 lines below once 272651 is fixed
-		//		MDBean item1 = input.get(1);
-		//		ridget.setSelection(item1);
-		//		oldSelection = newSelection;
-		//		newSelection = Arrays.asList(new Object[] { item1 });
-		//		assertPropertyChangeEvent(2, oldSelection, newSelection, listener);
-		//
-		//		ridget.setSelection(null);
-		//		oldSelection = newSelection;
-		//		newSelection = Collections.EMPTY_LIST;
-		//		assertPropertyChangeEvent(3, oldSelection, newSelection, listener);
+		MDBean item1 = input.get(1);
+		ridget.setSelection(item1);
+		oldSelection = newSelection;
+		newSelection = Arrays.asList(new Object[] { item1 });
+		assertPropertyChangeEvent(2, oldSelection, newSelection, listener);
 
 		ridget.setSelection(null);
 		oldSelection = newSelection;
 		newSelection = Collections.EMPTY_LIST;
-		assertPropertyChangeEvent(2, oldSelection, newSelection, listener);
-
+		assertPropertyChangeEvent(3, oldSelection, newSelection, listener);
 	}
 
 	/**
 	 * Tests the <i>private</i> method {@code handleSelectionChange(Object)}.
 	 */
 	public void testHandleSelectionChange() {
-
 		IMasterDetailsRidget masterDetails = getRidget();
 		bindToModel(true);
 		ITextRidget txtColumn1 = (ITextRidget) masterDetails.getRidget("txtColumn1");
@@ -417,7 +409,6 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		assertFalse(txtColumn1.isEnabled());
 		assertFalse(txtColumn2.isEnabled());
-
 	}
 
 	// helping methods
