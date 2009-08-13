@@ -144,7 +144,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private void configureWindow() {
 
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-		configurer.setTitle(controller.getNavigationNode().getLabel());
+		String label = controller.getNavigationNode().getLabel();
+		if (label != null) {
+			configurer.setTitle(label);
+		}
 		initApplicationSize(configurer);
 		if (LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)
 				&& !TestingSupport.isTestingEnabled()) { // some testing UI tools might not work with windows w/o real decorations(menu, border, etc){
