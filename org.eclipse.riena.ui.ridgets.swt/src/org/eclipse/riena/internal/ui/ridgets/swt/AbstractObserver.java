@@ -55,7 +55,7 @@ abstract class AbstractObserver<T> extends SelectionAdapter {
 	public final void addListener(T listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (listeners == null) {
-			listeners = new ListenerList<T>(listener.getClass());
+			listeners = createList();
 		}
 		listeners.add(listener);
 	}
@@ -71,6 +71,17 @@ abstract class AbstractObserver<T> extends SelectionAdapter {
 			listeners.remove(listener);
 		}
 	}
+
+	// protected methods
+	////////////////////
+
+	/**
+	 * Creates an instance of ListenerList&lt;T&gt;. This will be invoked when
+	 * the first listener is added.
+	 * 
+	 * @return a ListenerList; never null
+	 */
+	protected abstract ListenerList<T> createList();
 
 	/**
 	 * This method forwards the given SelectionEvent to the collection of

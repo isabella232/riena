@@ -26,6 +26,11 @@ public class ActionObserver extends AbstractObserver<IActionListener> {
 		super(source);
 	}
 
+	@Override
+	protected ListenerList<IActionListener> createList() {
+		return new ListenerList<IActionListener>(IActionListener.class);
+	}
+
 	protected void fireAction(SelectionEvent evt) {
 		ListenerList<IActionListener> listeners = getListeners();
 		if (listeners != null) {
