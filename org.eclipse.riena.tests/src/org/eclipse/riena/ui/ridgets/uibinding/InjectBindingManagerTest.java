@@ -141,32 +141,19 @@ public class InjectBindingManagerTest extends TestCase {
 	 */
 	private static class ControlRidgetMapper implements IControlRidgetMapper<Object> {
 
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#addMapping(java.lang.Class,
-		 *      java.lang.Class)
-		 */
 		public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
 			// not supported in this test
 		}
 
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#addSpecialMapping(java.lang.String,
-		 *      java.lang.Class)
-		 */
-		public void addSpecialMapping(String controlName, Class<? extends Object> ridgetClazz) {
+		public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
+				IMappingCondition condition) {
 			// not supported in this test
 		}
 
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#getRidgetClass(java.lang.Class)
-		 */
 		public Class<? extends IRidget> getRidgetClass(Class<? extends Object> controlClazz) {
 			return LabelRidget.class;
 		}
 
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#getRidgetClass(java.lang.Object)
-		 */
 		public Class<? extends IRidget> getRidgetClass(Object control) {
 			return LabelRidget.class;
 		}
@@ -183,25 +170,15 @@ public class InjectBindingManagerTest extends TestCase {
 			ridgets = new HashMap<String, IRidget>();
 		}
 
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#addRidget(java.lang.String,
-		 *      org.eclipse.riena.ui.ridgets.IRidget)
-		 */
 		public void addRidget(String id, IRidget ridget) {
 			ridgets.put(id, ridget);
 
 		}
 
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#getRidget(java.lang.String)
-		 */
 		public IRidget getRidget(String id) {
 			return ridgets.get(id);
 		}
 
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#getRidgets()
-		 */
 		public Collection<? extends IRidget> getRidgets() {
 			return ridgets.values();
 		}
@@ -222,9 +199,6 @@ public class InjectBindingManagerTest extends TestCase {
 			this.label2 = label2;
 		}
 
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
-		 */
 		public void configureRidgets() {
 		}
 

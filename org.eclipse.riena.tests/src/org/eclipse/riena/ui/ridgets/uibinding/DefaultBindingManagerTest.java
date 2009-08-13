@@ -15,6 +15,11 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -22,10 +27,6 @@ import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Tests of the class {@code DefaultBindingManager}
@@ -174,32 +175,19 @@ public class DefaultBindingManagerTest extends TestCase {
 	 */
 	private static class ControlRidgetMapper implements IControlRidgetMapper<Object> {
 
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#addMapping(java.lang.Class,
-		 *      java.lang.Class)
-		 */
 		public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
 			// not supported in this test
 		}
 
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#addSpecialMapping(java.lang.String,
-		 *      java.lang.Class)
-		 */
-		public void addSpecialMapping(String controlName, Class<? extends Object> ridgetClazz) {
+		public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
+				IMappingCondition condition) {
 			// not supported in this test
 		}
 
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#getRidgetClass(java.lang.Class)
-		 */
 		public Class<? extends IRidget> getRidgetClass(Class<? extends Object> controlClazz) {
 			return LabelRidget.class;
 		}
 
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#getRidgetClass(java.lang.Object)
-		 */
 		public Class<? extends IRidget> getRidgetClass(Object control) {
 			return LabelRidget.class;
 		}

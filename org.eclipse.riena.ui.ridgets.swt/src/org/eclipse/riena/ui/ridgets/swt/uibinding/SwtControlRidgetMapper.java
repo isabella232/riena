@@ -175,7 +175,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 	 * @param ridgetClazz
 	 *            - the class of the ridget
 	 * @param condition
-	 *            (non-null) - the condition to evaluate (non-null)
+	 *            - the condition to evaluate (non-null)
 	 * @see IMappingCondition
 	 */
 	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
@@ -214,10 +214,6 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 			}
 		}
 		return getRidgetClass(control.getClass());
-	}
-
-	public void addSpecialMapping(String controlName, Class<? extends Object> ridgetClazz) {
-		// TODO Auto-generated method stub
 	}
 
 	// helping classes

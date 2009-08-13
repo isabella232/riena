@@ -27,7 +27,6 @@ public abstract class AbstractViewBindingDelegate {
 	private List<Object> uiControls;
 
 	private IBindingManager bindingManager;
-	private IControlRidgetMapper<Object> mapper;
 
 	public AbstractViewBindingDelegate(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper<Object> mapper) {
 		bindingManager = createBindingManager(propertyStrategy, mapper);
@@ -41,7 +40,6 @@ public abstract class AbstractViewBindingDelegate {
 	 */
 	protected IBindingManager createBindingManager(IBindingPropertyLocator propertyStrategy,
 			IControlRidgetMapper<Object> mapper) {
-		this.mapper = mapper;
 		return new DefaultBindingManager(propertyStrategy, mapper);
 	}
 
@@ -111,17 +109,4 @@ public abstract class AbstractViewBindingDelegate {
 		bindingManager.unbind(controller, uiControls);
 	}
 
-	/**
-	 * Adds a special mapping of a specific UI-control to a Ridget class.
-	 * <p>
-	 * Adding the same mapping twice has no effect.
-	 * 
-	 * @param controlName
-	 *            The name of the UI-control.
-	 * @param ridgetClazz
-	 *            The class of the ridget.
-	 */
-	public void addSpecialMapping(String controlName, Class<? extends Object> ridgetClazz) {
-		mapper.addSpecialMapping(controlName, ridgetClazz);
-	}
 }

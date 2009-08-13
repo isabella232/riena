@@ -13,10 +13,12 @@ package org.eclipse.riena.navigation.ui.swt.binding;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.swt.widgets.Widget;
+
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
-import org.eclipse.swt.widgets.Widget;
+import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 
 /**
  *
@@ -41,9 +43,13 @@ public class DelegatingRidgetMapper implements IControlRidgetMapper<Object> {
 
 	}
 
-	public void addSpecialMapping(String controlName, Class<? extends Object> ridgetClazz) {
-		delegate.addSpecialMapping(controlName, ridgetClazz);
-
+	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
+			IMappingCondition condition) {
+		if (Widget.class.isAssignableFrom(controlClazz)) {
+			delegate.addMapping(controlClazz, ridgetClazz, condition);
+			return;
+		}
+		mappings.put(controlClazz, ridgetClazz); // do we need condition here?
 	}
 
 	public Class<? extends IRidget> getRidgetClass(Class<? extends Object> controlClazz) {

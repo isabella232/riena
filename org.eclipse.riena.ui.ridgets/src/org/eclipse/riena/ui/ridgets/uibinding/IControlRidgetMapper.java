@@ -48,15 +48,25 @@ public interface IControlRidgetMapper<C> {
 	void addMapping(Class<? extends C> controlClazz, Class<? extends IRidget> ridgetClazz);
 
 	/**
-	 * Adds a special mapping of a specific UI-control to a Ridget class.
+	 * Adds a mapping of a UI control-class to a ridget-class. The mapping will
+	 * only apply when the given condition evaluates to true.
 	 * <p>
-	 * Adding the same mapping twice has no effect.
+	 * Example:
+	 * <p>
+	 * {@code addMapping(Tree.class, TreeRidget.class, new
+	 * TreeWithoutColumnsCondition());}
+	 * <p>
+	 * Adding the same mapping twice has no effect (but is possible).
 	 * 
-	 * @param controlName
-	 *            The name of the UI-control.
+	 * @param controlClazz
+	 *            - the class of the UI control (<code>Object</code>)
 	 * @param ridgetClazz
-	 *            The class of the ridget.
+	 *            - the class of the ridget
+	 * @param condition
+	 *            - the condition to evaluate (non-null)
+	 * @see IMappingCondition
+	 * @since 1.2
 	 */
-	void addSpecialMapping(String controlName, Class<? extends Object> ridgetClazz);
-
+	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
+			IMappingCondition condition);
 }
