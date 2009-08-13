@@ -383,32 +383,53 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	 * Tests the <i>private</i> method {@code handleSelectionChange(Object)}.
 	 */
 	public void testHandleSelectionChange() {
-		IMasterDetailsRidget masterDetails = getRidget();
+		IMasterDetailsRidget ridget = getRidget();
 		bindToModel(true);
-		ITextRidget txtColumn1 = (ITextRidget) masterDetails.getRidget("txtColumn1");
-		ITextRidget txtColumn2 = (ITextRidget) masterDetails.getRidget("txtColumn2");
+		ITextRidget txtColumn1 = (ITextRidget) ridget.getRidget("txtColumn1");
+		ITextRidget txtColumn2 = (ITextRidget) ridget.getRidget("txtColumn2");
 
 		MDBean item0 = input.get(0);
-		masterDetails.setSelection(item0);
+		ridget.setSelection(item0);
 
 		assertTrue(txtColumn1.isEnabled());
 		assertTrue(txtColumn2.isEnabled());
 
-		masterDetails.setSelection(null);
+		ridget.setSelection(null);
 
 		assertFalse(txtColumn1.isEnabled());
 		assertFalse(txtColumn2.isEnabled());
 
 		delegate.setTxtColumn1IsEnabled(false);
-		masterDetails.setSelection(item0);
+		ridget.setSelection(item0);
 
 		assertFalse(txtColumn1.isEnabled());
 		assertTrue(txtColumn2.isEnabled());
 
-		masterDetails.setSelection(null);
+		ridget.setSelection(null);
 
 		assertFalse(txtColumn1.isEnabled());
 		assertFalse(txtColumn2.isEnabled());
+	}
+
+	/**
+	 * Test for <a href="http://bugs.eclipse.org/283694">Bug 283694</a>.
+	 */
+	public void testDeselectOnApplyWithOneItem() {
+		MasterDetailsRidget ridget = getRidget();
+		input = createInput(1);
+		bindToModel(true);
+
+		// select the the only row / item
+		MDBean item0 = input.get(0);
+		ridget.setSelection(item0);
+
+		assertEquals(item0, ridget.getSelection());
+
+		// invoke apply on the only row
+		ridget.handleApply();
+
+		// after apply the row should not be selected
+		assertEquals(null, ridget.getSelection());
 	}
 
 	// helping methods

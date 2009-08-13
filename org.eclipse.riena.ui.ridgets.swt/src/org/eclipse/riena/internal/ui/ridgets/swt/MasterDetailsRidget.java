@@ -92,6 +92,9 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		delegate.configureRidgets(this);
 	}
 
+	/**
+	 * Non API (not part of the interface); public for testing only.
+	 */
 	public IMasterDetailsDelegate getDelegate() {
 		return this.delegate;
 	}
@@ -333,7 +336,15 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		}
 		setEnabled(false, false);
 		Table table = getUIControl().getTable();
-		table.select(table.getSelectionIndex());
+		/*
+		 * Fix for bug 283694: if only one element is in the table, remove the
+		 * selection on apply, so it can be selected again for editing.
+		 */
+		if (table.getItemCount() == 1) {
+			getTableRidget().clearSelection();
+		} else {
+			table.select(table.getSelectionIndex());
+		}
 		table.setFocus();
 	}
 
