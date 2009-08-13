@@ -20,6 +20,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -71,6 +72,7 @@ public class MasterDetailsComposite extends Composite implements IComplexCompone
 
 	private Table table;
 	private Composite details;
+	private Composite master;
 
 	/**
 	 * Create an instance of MasterDetailsComposite with the details area at the
@@ -108,7 +110,7 @@ public class MasterDetailsComposite extends Composite implements IComplexCompone
 			details = createComposite(getDetailsStyle());
 			createDetails(details);
 		}
-		Composite master = createComposite(getMasterStyle());
+		master = createComposite(getMasterStyle());
 		createMaster(master);
 		if (orientation == SWT.BOTTOM) {
 			details = createComposite(getDetailsStyle());
@@ -184,6 +186,13 @@ public class MasterDetailsComposite extends Composite implements IComplexCompone
 		Assert.isNotNull(bindingId);
 		controls.add(uiControl);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(uiControl, bindingId);
+	}
+
+	@Override
+	public void setBackground(Color color) {
+		master.setBackground(color);
+		details.setBackground(color);
+		super.setBackground(color);
 	}
 
 	/**

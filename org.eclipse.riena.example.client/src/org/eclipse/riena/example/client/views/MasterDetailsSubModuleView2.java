@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -34,19 +37,26 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * @see MasterDetailsSubModuleController
  */
 public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubModuleController> {
-	public MasterDetailsSubModuleView2() {
-	}
+
+	private Color colorLightBlue;
 
 	public static final String ID = MasterDetailsSubModuleView2.class.getName();
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
+		colorLightBlue = new Color(parent.getDisplay(), 222, 232, 247);
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
 		layout.marginHeight = 5;
 		layout.marginWidth = 5;
 		parent.setLayout(layout);
 		createMasterDetails(parent);
+	}
+
+	@Override
+	public void dispose() {
+		colorLightBlue.dispose();
+		super.dispose();
 	}
 
 	// helping methods
@@ -61,10 +71,25 @@ public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubM
 
 		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.TOP) {
 			@Override
-			protected Button createButtonApply(Composite btnComposite) {
-				return null;
+			protected Composite createButtons(Composite parent) {
+				Composite result = UIControlsFactory.createComposite(parent, SWT.BORDER);
+				GridDataFactory.fillDefaults().applyTo(result);
+
+				RowLayout buttonLayout = new RowLayout(SWT.VERTICAL);
+				buttonLayout.marginTop = 10;
+				buttonLayout.fill = true;
+				result.setLayout(buttonLayout);
+
+				Button btnNew = createButtonNew(result);
+				addUIControl(btnNew, BIND_ID_NEW);
+
+				Button btnRemove = createButtonRemove(result);
+				addUIControl(btnRemove, BIND_ID_REMOVE);
+
+				return result;
 			}
 		};
+		mdComposite.setBackground(colorLightBlue);
 		addUIControl(mdComposite, "master2"); //$NON-NLS-1$
 
 		Composite details = mdComposite.getDetails();
