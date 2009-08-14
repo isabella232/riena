@@ -171,18 +171,17 @@ public class SubModuleControllerTest extends TestCase {
 		assertNotNull(controller.getRidgets());
 		assertEquals(2, controller.getRidgets().size());
 
-		PrintStream beforeErr = System.err;
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		PrintStream err = new PrintStream(baos);
-		System.setErr(err);
-		controller.updateAllRidgetsFromModel();
-		System.setErr(beforeErr);
 		if (RienaStatus.isDevelopment()) {
-			assertEquals(true, baos.toString().contains("unsuccessful"));
-			assertEquals(true, baos.toString().contains("ridget"));
+			PrintStream beforeErr = System.err;
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			PrintStream err = new PrintStream(baos);
+			System.setErr(err);
+			controller.updateAllRidgetsFromModel();
+			System.setErr(beforeErr);
+			String string = baos.toString();
+			assertEquals(String.format("Expected 'unsucessful' in '%s'", string), true, string.contains("unsuccessful"));
+			assertEquals(String.format("Expected 'ridget' in '%s'", string), true, string.contains("ridget"));
 		}
-		System.err.print(baos.toString());
-
 	}
 
 	/**
