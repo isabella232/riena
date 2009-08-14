@@ -22,11 +22,20 @@ import org.eclipse.riena.tests.collect.NonUITestCase;
 @NonUITestCase
 public class Log4rTest extends RienaTestCase {
 
+	private String savedValue;
+
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		assertNotNull("Test must be a plugin unit test.", Activator.getDefault());
+		savedValue = System.getProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY);
 		System.clearProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY);
+	}
+
+	@Override
+	protected void tearDown() throws Exception {
+		System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, savedValue);
+		super.tearDown();
 	}
 
 	public void testWithContext() {

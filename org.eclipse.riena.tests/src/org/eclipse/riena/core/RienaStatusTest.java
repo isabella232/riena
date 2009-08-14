@@ -20,11 +20,16 @@ import org.eclipse.riena.tests.collect.NonUITestCase;
 public class RienaStatusTest extends RienaTestCase {
 
 	public void testIsDevelopment() {
-		System.clearProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY);
-		assertTrue(RienaStatus.isDevelopment());
-		System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, "false");
-		assertFalse(RienaStatus.isDevelopment());
-		System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, "true");
-		assertTrue(RienaStatus.isDevelopment());
+		String savedValue = System.getProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY);
+		try {
+			System.clearProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY);
+			assertTrue(RienaStatus.isDevelopment());
+			System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, "false");
+			assertFalse(RienaStatus.isDevelopment());
+			System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, "true");
+			assertTrue(RienaStatus.isDevelopment());
+		} finally {
+			System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, savedValue);
+		}
 	}
 }
