@@ -29,7 +29,9 @@ public class RienaStatusTest extends RienaTestCase {
 			System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, "true");
 			assertTrue(RienaStatus.isDevelopment());
 		} finally {
-			System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, savedValue);
+			if (savedValue != null) {
+				System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, savedValue);
+			}
 		}
 	}
 }

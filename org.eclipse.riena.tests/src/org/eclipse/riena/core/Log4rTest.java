@@ -34,7 +34,9 @@ public class Log4rTest extends RienaTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, savedValue);
+		if (savedValue != null) {
+			System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, savedValue);
+		}
 		super.tearDown();
 	}
 
