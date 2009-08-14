@@ -14,4 +14,4 @@ Require-Bundle: org.eclipse.riena.communication.core,
  org.eclipse.equinox.log;bundle-version="1.1.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.riena.internal.communication.factory.hessian;x-internal:=true
+Export-Package: org.eclipse.riena.internal.communication.factory.hessian;x-friends:="org.eclipse.riena.tests"
