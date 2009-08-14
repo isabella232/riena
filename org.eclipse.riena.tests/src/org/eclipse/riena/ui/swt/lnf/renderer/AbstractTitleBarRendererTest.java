@@ -85,38 +85,41 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 	 * Tests the method {@code paintButton}.
 	 */
 	public void testPaintButton() {
+		RienaDefaultLnf originaLnf = LnfManager.getLnf();
+		try {
+			Image image = ImageStore.getInstance().getImage(ICON_ECLIPSE);
+			Rectangle imageBounds = image.getBounds();
 
-		Image image = ImageStore.getInstance().getImage(ICON_ECLIPSE);
-		Rectangle imageBounds = image.getBounds();
+			LnfManager.setLnf(new TitleBarLnf());
+			renderer.setCloseable(true);
+			renderer.setMaximizable(true);
+			renderer.setMinimizable(true);
 
-		LnfManager.setLnf(new TitleBarLnf());
-		renderer.setCloseable(true);
-		renderer.setMaximizable(true);
-		renderer.setMinimizable(true);
-
-		ReflectionUtils.invokeHidden(renderer, "resetBounds");
-		renderer.paintButton(gc, 0);
-		Rectangle[] btnBounds = renderer.getButtonsBounds();
-		assertTrue(btnBounds[0].x < 100);
-		assertTrue(btnBounds[0].x > 0);
-		assertTrue(btnBounds[0].y > 0);
-		assertEquals(imageBounds.width, btnBounds[0].width);
-		assertEquals(imageBounds.height, btnBounds[0].height);
-		for (int i = 1; i < btnBounds.length; i++) {
-			assertEquals(new Rectangle(0, 0, 0, 0), btnBounds[i]);
+			ReflectionUtils.invokeHidden(renderer, "resetBounds");
+			renderer.paintButton(gc, 0);
+			Rectangle[] btnBounds = renderer.getButtonsBounds();
+			assertTrue(btnBounds[0].x < 100);
+			assertTrue(btnBounds[0].x > 0);
+			assertTrue(btnBounds[0].y > 0);
+			assertEquals(imageBounds.width, btnBounds[0].width);
+			assertEquals(imageBounds.height, btnBounds[0].height);
+			for (int i = 1; i < btnBounds.length; i++) {
+				assertEquals(new Rectangle(0, 0, 0, 0), btnBounds[i]);
+			}
+			renderer.paintButton(gc, 1);
+			btnBounds = renderer.getButtonsBounds();
+			assertTrue(btnBounds[1].x < 100);
+			assertTrue(btnBounds[1].x > 0);
+			assertTrue(btnBounds[1].x < btnBounds[0].x);
+			assertEquals(btnBounds[0].y, btnBounds[1].y);
+			assertEquals(imageBounds.width, btnBounds[1].width);
+			assertEquals(imageBounds.height, btnBounds[1].height);
+			for (int i = 2; i < btnBounds.length; i++) {
+				assertEquals(new Rectangle(0, 0, 0, 0), btnBounds[i]);
+			}
+		} finally {
+			LnfManager.setLnf(originaLnf);
 		}
-		renderer.paintButton(gc, 1);
-		btnBounds = renderer.getButtonsBounds();
-		assertTrue(btnBounds[1].x < 100);
-		assertTrue(btnBounds[1].x > 0);
-		assertTrue(btnBounds[1].x < btnBounds[0].x);
-		assertEquals(btnBounds[0].y, btnBounds[1].y);
-		assertEquals(imageBounds.width, btnBounds[1].width);
-		assertEquals(imageBounds.height, btnBounds[1].height);
-		for (int i = 2; i < btnBounds.length; i++) {
-			assertEquals(new Rectangle(0, 0, 0, 0), btnBounds[i]);
-		}
-
 	}
 
 	/**

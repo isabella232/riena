@@ -70,23 +70,26 @@ public class MarkerSupportTest extends RienaTestCase {
 	 *             - handled by JUnit
 	 */
 	public void testCreateErrorDecoration() throws Exception {
+		RienaDefaultLnf originalLnf = LnfManager.getLnf();
+		try {
+			MarkerSupport support = new MarkerSupport(null, null);
+			Text text = new Text(shell, SWT.NONE);
 
-		MarkerSupport support = new MarkerSupport(null, null);
-		Text text = new Text(shell, SWT.NONE);
+			LnfManager.setLnf(new MyLnf());
+			ControlDecoration deco = ReflectionUtils.invokeHidden(support, "createErrorDecoration", text);
+			assertEquals(100, deco.getMarginWidth());
+			assertNotNull(deco.getImage());
 
-		LnfManager.setLnf(new MyLnf());
-		ControlDecoration deco = ReflectionUtils.invokeHidden(support, "createErrorDecoration", text);
-		assertEquals(100, deco.getMarginWidth());
-		assertNotNull(deco.getImage());
+			LnfManager.setLnf(new MyNonsenseLnf());
+			deco = ReflectionUtils.invokeHidden(support, "createErrorDecoration", text);
+			assertEquals(1, deco.getMarginWidth());
+			assertNotNull(deco.getImage());
 
-		LnfManager.setLnf(new MyNonsenseLnf());
-		deco = ReflectionUtils.invokeHidden(support, "createErrorDecoration", text);
-		assertEquals(1, deco.getMarginWidth());
-		assertNotNull(deco.getImage());
-
-		support = null;
-		SwtUtilities.disposeWidget(text);
-
+			support = null;
+			SwtUtilities.disposeWidget(text);
+		} finally {
+			LnfManager.setLnf(originalLnf);
+		}
 	}
 
 	private static boolean getHideDisabledRidgetContent() throws IOException {

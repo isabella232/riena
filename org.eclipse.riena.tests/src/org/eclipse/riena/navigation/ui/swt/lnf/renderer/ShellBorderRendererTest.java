@@ -27,26 +27,29 @@ public class ShellBorderRendererTest extends TestCase {
 	 * Test of the method <code>getCompelteBorderWidth</code>.
 	 */
 	public void testGetCompelteBorderWidth() {
+		RienaDefaultLnf originalLnf = LnfManager.getLnf();
+		try {
+			MyLnf lnf = new MyLnf();
+			LnfManager.setLnf(lnf);
+			lnf.initialize();
+			ShellBorderRenderer renderer = new ShellBorderRenderer();
 
-		MyLnf lnf = new MyLnf();
-		LnfManager.setLnf(lnf);
-		lnf.initialize();
-		ShellBorderRenderer renderer = new ShellBorderRenderer();
+			lnf.setPadding(20);
+			int expected = 20 + renderer.getBorderWidth();
+			assertEquals(expected, renderer.getCompleteBorderWidth());
 
-		lnf.setPadding(20);
-		int expected = 20 + renderer.getBorderWidth();
-		assertEquals(expected, renderer.getCompleteBorderWidth());
+			lnf.removePadding();
+			expected = renderer.getBorderWidth();
+			assertEquals(expected, renderer.getCompleteBorderWidth());
 
-		lnf.removePadding();
-		expected = renderer.getBorderWidth();
-		assertEquals(expected, renderer.getCompleteBorderWidth());
+			lnf.setPadding(1.2);
+			expected = renderer.getBorderWidth();
+			assertEquals(expected, renderer.getCompleteBorderWidth());
 
-		lnf.setPadding(1.2);
-		expected = renderer.getBorderWidth();
-		assertEquals(expected, renderer.getCompleteBorderWidth());
-
-		renderer.dispose();
-
+			renderer.dispose();
+		} finally {
+			LnfManager.setLnf(originalLnf);
+		}
 	}
 
 	/**

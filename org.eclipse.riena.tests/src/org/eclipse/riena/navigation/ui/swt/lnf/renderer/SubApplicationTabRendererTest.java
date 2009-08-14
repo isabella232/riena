@@ -31,12 +31,12 @@ public class SubApplicationTabRendererTest extends TestCase {
 
 	private Shell shell;
 	private GC gc;
+	private RienaDefaultLnf originalLnf;
 	private MyLnf lnf;
 
 	@SuppressWarnings("restriction")
 	@Override
 	protected void setUp() throws Exception {
-
 		super.setUp();
 
 		if (Activator.getDefault() == null) {
@@ -46,9 +46,9 @@ public class SubApplicationTabRendererTest extends TestCase {
 		shell = new Shell();
 		gc = new GC(shell);
 		lnf = new MyLnf();
+		originalLnf = LnfManager.getLnf();
 		LnfManager.setLnf(lnf);
 		LnfManager.getLnf().initialize();
-
 	}
 
 	@Override
@@ -59,6 +59,7 @@ public class SubApplicationTabRendererTest extends TestCase {
 		SwtUtilities.disposeWidget(shell);
 		lnf.uninitialize();
 		lnf = null;
+		LnfManager.setLnf(originalLnf);
 	}
 
 	/**

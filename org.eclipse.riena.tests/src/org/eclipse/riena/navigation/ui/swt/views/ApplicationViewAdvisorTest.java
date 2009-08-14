@@ -113,35 +113,35 @@ public class ApplicationViewAdvisorTest extends TestCase {
 	 * Tests the <i>private</i> method {@code getLogoImage()}.
 	 */
 	public void testGetLogoImage() {
+		RienaDefaultLnf originaLnf = LnfManager.getLnf();
 
-		MyLnf lnf = new MyLnf();
-		LnfManager.setLnf(lnf);
-		lnf.initialize();
+		try {
+			MyLnf lnf = new MyLnf();
+			LnfManager.setLnf(lnf);
+			lnf.initialize();
 
-		Image eclipseImage = ImageStore.getInstance().getImage(ICON_ECLIPSE);
-		lnf.setLogo(ICON_ECLIPSE);
-		Image logoImage = ReflectionUtils.invokeHidden(advisor, "getLogoImage");
-		assertNotNull(logoImage);
-		assertEquals(eclipseImage.getBounds().width, logoImage.getBounds().width);
-		assertEquals(eclipseImage.getBounds().height, logoImage.getBounds().height);
+			Image eclipseImage = ImageStore.getInstance().getImage(ICON_ECLIPSE);
+			lnf.setLogo(ICON_ECLIPSE);
+			Image logoImage = ReflectionUtils.invokeHidden(advisor, "getLogoImage");
+			assertNotNull(logoImage);
+			assertEquals(eclipseImage.getBounds().width, logoImage.getBounds().width);
+			assertEquals(eclipseImage.getBounds().height, logoImage.getBounds().height);
 
-		Image missingImage = ImageStore.getInstance().getMissingImage();
-		lnf.setLogo(ICON_ECLIPSE + "4711");
-		logoImage = ReflectionUtils.invokeHidden(advisor, "getLogoImage");
-		assertNotNull(logoImage);
-		assertEquals(missingImage.getBounds().width, logoImage.getBounds().width);
-		assertEquals(missingImage.getBounds().height, logoImage.getBounds().height);
-
+			Image missingImage = ImageStore.getInstance().getMissingImage();
+			lnf.setLogo(ICON_ECLIPSE + "4711");
+			logoImage = ReflectionUtils.invokeHidden(advisor, "getLogoImage");
+			assertNotNull(logoImage);
+			assertEquals(missingImage.getBounds().width, logoImage.getBounds().width);
+			assertEquals(missingImage.getBounds().height, logoImage.getBounds().height);
+		} finally {
+			LnfManager.setLnf(originaLnf);
+		}
 	}
 
 	/**
 	 * Look and Feel where it is possible to change the image of the logo.
 	 */
 	private static class MyLnf extends RienaDefaultLnf {
-
-		public void removeLogo() {
-			getResourceTable().remove(LnfKeyConstants.TITLELESS_SHELL_LOGO);
-		}
 
 		public void setLogo(String logo) {
 			getResourceTable().put(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(logo));

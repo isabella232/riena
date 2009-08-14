@@ -15,6 +15,15 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.eclipse.core.runtime.AssertionFailedException;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
@@ -26,14 +35,6 @@ import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * Tests of the class {@link SubModuleTreeItemMarkerRenderer}.
@@ -44,10 +45,8 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 	private Shell shell;
 	private GC gc;
 	private TreeItem item;
+	private RienaDefaultLnf originalLnf;
 
-	/**
-	 * @see junit.framework.TestCase#setUp()
-	 */
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -55,19 +54,18 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 		Tree tree = new Tree(shell, SWT.NONE);
 		item = new TreeItem(tree, SWT.NONE);
 		gc = new GC(tree);
+		originalLnf = LnfManager.getLnf();
 		LnfManager.setLnf(new MyLnf());
 		LnfManager.getLnf().initialize();
 	}
 
-	/**
-	 * @see junit.framework.TestCase#tearDown()
-	 */
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		gc.dispose();
 		gc = null;
 		SwtUtilities.disposeWidget(shell);
+		LnfManager.setLnf(originalLnf);
 	}
 
 	/**

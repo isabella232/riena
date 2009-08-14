@@ -36,6 +36,7 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 	private OpenDialogTitleBarRenderer renderer;
 	private Shell shell;
 	private GC gc;
+	private RienaDefaultLnf originalLnf;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -46,6 +47,7 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 		renderer.setShell(shell);
 		gc = new GC(shell);
 		renderer.setBounds(0, 0, 100, 100);
+		originalLnf = LnfManager.getLnf();
 	}
 
 	@Override
@@ -54,6 +56,7 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 		gc = null;
 		renderer.dispose();
 		renderer = null;
+		LnfManager.setLnf(originalLnf);
 
 		super.tearDown();
 	}

@@ -14,6 +14,10 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
@@ -25,9 +29,6 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Tests of the class {@link ModuleGroupView}.
@@ -61,28 +62,32 @@ public class ModuleGroupViewTest extends TestCase {
 	 * Tests the method {@code calculateBounds(int)}.
 	 */
 	public void testCalculateBounds() {
+		RienaDefaultLnf originalLnf = LnfManager.getLnf();
 
-		LnfManager.setLnf(new MyLnF());
+		try {
+			LnfManager.setLnf(new MyLnF());
 
-		int y = view.calculateBounds(10);
-		assertEquals(10, y);
+			int y = view.calculateBounds(10);
+			assertEquals(10, y);
 
-		ModuleView moduleView = new ModuleView(shell);
-		ModuleNode moduleNode = new ModuleNode();
-		node.addChild(moduleNode);
-		moduleView.bind(moduleNode);
+			ModuleView moduleView = new ModuleView(shell);
+			ModuleNode moduleNode = new ModuleNode();
+			node.addChild(moduleNode);
+			moduleView.bind(moduleNode);
 
-		view.registerModuleView(moduleView);
-		y = view.calculateBounds(10);
-		assertTrue(y > 10);
-		FormData data = (FormData) view.getLayoutData();
-		assertEquals(10, data.top.offset);
-		assertTrue((data.bottom.offset > 10) && (data.bottom.offset < y));
+			view.registerModuleView(moduleView);
+			y = view.calculateBounds(10);
+			assertTrue(y > 10);
+			FormData data = (FormData) view.getLayoutData();
+			assertEquals(10, data.top.offset);
+			assertTrue((data.bottom.offset > 10) && (data.bottom.offset < y));
 
-		node.setVisible(false);
-		y = view.calculateBounds(10);
-		assertEquals(10, y);
-
+			node.setVisible(false);
+			y = view.calculateBounds(10);
+			assertEquals(10, y);
+		} finally {
+			LnfManager.setLnf(originalLnf);
+		}
 	}
 
 	public void testUnbind() throws Exception {
