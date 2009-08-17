@@ -55,6 +55,7 @@ public class AuthorizationServiceITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
 		stopBundles("org\\.eclipse\\.riena.example.client", null);
+		stopBundles("org\\.eclipse\\.riena.security.client.startup", null);
 
 		authenticationServiceRegistration = Register.remoteProxy(IAuthenticationService.class).usingUrl(
 				"http://localhost:8080/hessian/AuthenticationService").withProtocol("hessian").andStart(
