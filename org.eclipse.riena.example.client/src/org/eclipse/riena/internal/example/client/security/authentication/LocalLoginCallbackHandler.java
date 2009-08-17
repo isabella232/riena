@@ -46,7 +46,11 @@ public class LocalLoginCallbackHandler implements CallbackHandler {
 			} else {
 				if (callbacks[i] instanceof PasswordCallback) {
 					PasswordCallback pc = (PasswordCallback) callbacks[i];
-					pc.setPassword(password.toCharArray());
+					if (password == null) {
+						pc.setPassword(null);
+					} else {
+						pc.setPassword(password.toCharArray());
+					}
 				} else {
 					if (callbacks[i] instanceof TextOutputCallback) {
 						TextOutputCallback toc = (TextOutputCallback) callbacks[i];
