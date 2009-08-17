@@ -57,7 +57,7 @@ public class Activator extends RienaActivator {
 
 		try {
 			Register.remoteProxy(IAuthorizationService.class).usingUrl(
-					"http://${riena.securehostname}/hessian/AuthorizationServiceWS").withProtocol("hessian").andStart( //$NON-NLS-1$ //$NON-NLS-2$
+					"http://${riena.securehostname}/hessian/AuthorizationService").withProtocol("hessian").andStart( //$NON-NLS-1$ //$NON-NLS-2$
 					context);
 		} catch (ProxyAlreadyRegisteredFailure e) {
 			Nop.reason("do nothing, can happen if other projects already registered this remote service"); //$NON-NLS-1$
