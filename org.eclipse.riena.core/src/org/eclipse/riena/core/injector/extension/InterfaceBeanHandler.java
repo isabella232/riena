@@ -27,6 +27,7 @@ import org.osgi.service.log.LogService;
 import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
@@ -120,7 +121,24 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			if (colon != -1) {
 				value = value.substring(0, colon);
 			}
-			return Result.cache(bundle.loadClass(value));
+			try {
+				Class<?> loadedClass = bundle.loadClass(value);
+				return Result.cache(loadedClass);
+			} catch (ClassNotFoundException e) {
+				// maybe its a fragment and thats why we couldnt load it
+				String fragmentHostName = (String) bundle.getHeaders().get("Fragment-Host"); //$NON-NLS-1$
+				if (fragmentHostName == null) {
+					throw new ClassNotFoundException(
+							"Class not found for extension and its not fragment, check cause.", e); //$NON-NLS-1$
+				}
+				int x = fragmentHostName.indexOf(";"); //$NON-NLS-1$
+				if (x > 0) {
+					fragmentHostName = fragmentHostName.substring(0, x);
+				}
+				Bundle bundleHost = Platform.getBundle(fragmentHostName);
+				Class<?> loadedClass = bundleHost.loadClass(value);
+				return Result.cache(loadedClass);
+			}
 		}
 		if (returnType.isInterface() && returnType.isAnnotationPresent(ExtensionInterface.class)) {
 			final IConfigurationElement[] cfgElements = configurationElement.getChildren(attributeName);
