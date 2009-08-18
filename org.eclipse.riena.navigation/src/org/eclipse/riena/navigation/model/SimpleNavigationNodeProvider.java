@@ -203,6 +203,8 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 		if (id != null) {
 			return new StartupNodeInfo(Level.SUBMODULE, sequence, id);
 		}
+		Assert.isNotNull(assembly.getNavigationAssembler(), "Assembly '" + assembly.getId()
+				+ "' must have an assembler specified since no immediate child has a typeId.");
 		id = assembly.getId();
 		if (id != null) {
 			return new StartupNodeInfo(Level.CUSTOM, sequence, id);
