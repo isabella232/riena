@@ -22,6 +22,7 @@ import java.util.Random;
 
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
@@ -232,6 +233,8 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	}
 
 	public void registerNavigationAssembler(String id, INavigationAssembler assembler) {
+		Assert.isTrue(assemblyId2AssemblerCache.get(id) == null, "There are two assembly extension definitions for '"
+				+ id + "'.");
 		assemblyId2AssemblerCache.put(id, assembler);
 	}
 
@@ -297,7 +300,7 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 				}
 			}
 			assemblyId = "Riena.random.assemblyid." + Long.valueOf(random.nextLong()).toString(); //$NON-NLS-1$
-			LOGGER.log(LogService.LOG_WARNING, "Assembly has no id. Generated a random '" + assemblyId //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_DEBUG, "Assembly has no id. Generated a random '" + assemblyId //$NON-NLS-1$
 					+ "'. For Assembler=" + assembly.getNavigationAssembler()); //$NON-NLS-1$
 		}
 
