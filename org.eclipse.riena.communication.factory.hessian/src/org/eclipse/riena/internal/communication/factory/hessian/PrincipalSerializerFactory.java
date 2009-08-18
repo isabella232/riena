@@ -28,10 +28,12 @@ import org.eclipse.riena.core.util.Nop;
 public class PrincipalSerializerFactory extends AbstractRienaSerializerFactory {
 
 	@Override
-	public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
-		final Constructor<?> constructor;
-		if (Principal.class.isAssignableFrom(cl) && (constructor = getStringConstructor(cl)) != null) {
+	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
+		if (Principal.class.isAssignableFrom(cl)) {
 			return new JavaDeserializer(cl) {
+
+				final private Constructor<?> constructor = getStringConstructor(cl);
+
 				@Override
 				protected Object instantiate() throws Exception {
 					return constructor.newInstance("o@o"); //$NON-NLS-1$
