@@ -50,13 +50,8 @@ public final class SnippetDialogView001 {
 			IActionRidget actionRidget = (IActionRidget) SwtRidgetFactory.createRidget(button);
 			actionRidget.setText("Open dialog"); //$NON-NLS-1$
 			actionRidget.addListener(new IActionListener() {
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
-				 */
 				public void callback() {
-					new HelloDialogView(shell).build();
+					new HelloDialogView(shell).open();
 				}
 			});
 
@@ -81,15 +76,8 @@ public final class SnippetDialogView001 {
 		public static final String RIDGET_ID_OK = "okButton"; //$NON-NLS-1$
 		public static final String RIDGET_ID_CANCEL = "cancelButton"; //$NON-NLS-1$
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @seeorg.eclipse.riena.ui.ridgets.controller.AbstractWindowController#
-		 * configureRidgets()
-		 */
 		@Override
 		public void configureRidgets() {
-
 			super.configureRidgets();
 
 			getWindowRidget().setTitle("Hello Dialog"); //$NON-NLS-1$
@@ -99,22 +87,12 @@ public final class SnippetDialogView001 {
 
 			IActionRidget okAction = (IActionRidget) getRidget(RIDGET_ID_OK);
 			okAction.addListener(new IActionListener() {
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
-				 */
 				public void callback() {
 					getWindowRidget().dispose();
 				}
 			});
 			IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
 			cancelAction.addListener(new IActionListener() {
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
-				 */
 				public void callback() {
 					getWindowRidget().dispose();
 				}
@@ -131,26 +109,13 @@ public final class SnippetDialogView001 {
 			super(shell);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.ui.swt.views.DialogView#createController
-		 * ()
-		 */
 		@Override
 		protected AbstractWindowController createController() {
 			return new HelloDialogController();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.riena.navigation.ui.swt.views.DialogView#buildView()
-		 */
 		@Override
 		protected Control buildView(Composite parent) {
-
 			super.buildView(parent);
 
 			Composite composite = new Composite(parent, SWT.NONE);
