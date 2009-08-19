@@ -12,15 +12,12 @@ package org.eclipse.riena.demo.client.application;
 
 import org.osgi.framework.Bundle;
 
-import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.demo.client.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
  * Define the model of the application
@@ -36,17 +33,17 @@ public class SwtDemoApplication extends SwtApplication {
 
 		super();
 
-		String lnfClassName = System.getProperty("riena.lnf", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		if (!StringUtils.isEmpty(lnfClassName)) {
-			try {
-				Class lnfClass = this.getBundle().loadClass(lnfClassName);
-				RienaDefaultLnf lnf;
-				lnf = (RienaDefaultLnf) lnfClass.newInstance();
-				LnfManager.setLnf(lnf);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		//		String lnfClassName = System.getProperty("riena.lnf", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		//		if (!StringUtils.isEmpty(lnfClassName)) {
+		//			try {
+		//				Class lnfClass = this.getBundle().loadClass(lnfClassName);
+		//				RienaDefaultLnf lnf;
+		//				lnf = (RienaDefaultLnf) lnfClass.newInstance();
+		//				LnfManager.setLnf(lnf);
+		//			} catch (Exception e) {
+		//				e.printStackTrace();
+		//			}
+		//		}
 	}
 
 	/**

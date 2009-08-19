@@ -47,7 +47,8 @@ public final class LnfManager {
 				setLnf(myLnf);
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new Error("can't load " + className); //$NON-NLS-1$
+				throw new Error(
+						"can't load " + className + " If you use -Driena.lnf, try prefixing the classname with the bundleId i.e. org.eclipse.riena.demo.client:org.eclipse.riena.demo.client.lnf.EclipseLnf"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		lnf.initialize();
@@ -112,7 +113,7 @@ public final class LnfManager {
 	public static String getLnfClassName() {
 		String className = lnfClassName;
 		if (className == null) {
-			className = DEFAULT_LNF_CLASSNAME;
+			className = System.getProperty("riena.lnf", DEFAULT_LNF_CLASSNAME); //$NON-NLS-1$
 		}
 		return className;
 	}
