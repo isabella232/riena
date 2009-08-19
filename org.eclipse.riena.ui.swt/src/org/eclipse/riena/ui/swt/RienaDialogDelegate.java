@@ -24,6 +24,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfRendererDesc;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -53,7 +54,7 @@ public class RienaDialogDelegate {
 		this.dialog = dialog;
 
 		// if we are in designtime, supply default renderer
-		if (Beans.isDesignTime()) {
+		if (Beans.isDesignTime() || Activator.getDefault() == null) {
 			ILnfRendererDesc[] descs = new ILnfRendererDesc[] {
 					new LnfRenderer(new DialogBorderRenderer(), LnfKeyConstants.DIALOG_BORDER_RENDERER),
 					new LnfRenderer(new DialogTitleBarRenderer(), LnfKeyConstants.DIALOG_RENDERER) };
