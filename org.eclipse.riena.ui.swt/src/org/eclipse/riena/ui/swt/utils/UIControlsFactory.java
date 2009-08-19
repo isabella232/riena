@@ -46,6 +46,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  */
 public final class UIControlsFactory {
 
+	public static final String KEY_LNF_STYLE = "lnfStyle"; //$NON-NLS-1$
 	public static final String KEY_TYPE = "type"; //$NON-NLS-1$
 	public static final String TYPE_NUMERIC = "numeric"; //$NON-NLS-1$
 	public static final String TYPE_DECIMAL = "decimal"; //$NON-NLS-1$

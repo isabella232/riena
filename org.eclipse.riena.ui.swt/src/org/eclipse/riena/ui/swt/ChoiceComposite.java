@@ -11,14 +11,16 @@
 package org.eclipse.riena.ui.swt;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+
+import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * This composite presents a list of single or multiple choices. It is mapped to
@@ -64,6 +66,7 @@ public class ChoiceComposite extends Composite {
 		this.orientation = SWT.VERTICAL;
 		applyOrientation();
 		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
+		LnFUpdater.addControlsAfterBind(this.getClass());
 	}
 
 	/**

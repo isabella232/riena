@@ -34,8 +34,8 @@ import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
-import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * This class updates the properties of the UI controls according the settings
@@ -54,21 +54,10 @@ public class LnFUpdater {
 	private final static Map<Class<? extends Control>, Map<String, Object>> DEFAULT_PROPERTY_VALUES = new Hashtable<Class<? extends Control>, Map<String, Object>>();
 	private final static List<Class<? extends Control>> CONTROLS_AFTER_BIND = new ArrayList<Class<? extends Control>>();
 
-	/**
-	 * Creates a new instance of {@code LnFUpdater}.
-	 */
-	public LnFUpdater() {
-		initListOfControlsAfterBind();
-	}
+	public static void addControlsAfterBind(Class<? extends Control> controlClass) {
 
-	/**
-	 * Initializes the list of controls which (and their children) must be
-	 * updated after bind.
-	 */
-	private void initListOfControlsAfterBind() {
-
-		if (CONTROLS_AFTER_BIND.isEmpty()) {
-			CONTROLS_AFTER_BIND.add(ChoiceComposite.class);
+		if (!CONTROLS_AFTER_BIND.contains(controlClass)) {
+			CONTROLS_AFTER_BIND.add(controlClass);
 		}
 
 	}
@@ -107,10 +96,6 @@ public class LnFUpdater {
 	 */
 	public void updateUIControlsAfterBind(Composite parent) {
 
-		if (!checkPropertyUpdateView()) {
-			return;
-		}
-
 		updateAfterBind(parent);
 		parent.layout();
 
@@ -124,6 +109,10 @@ public class LnFUpdater {
 	 */
 	private void updateAfterBind(Composite parent) {
 
+		if (!checkPropertyUpdateView()) {
+			return;
+		}
+
 		Control[] controls = parent.getChildren();
 		for (Control uiControl : controls) {
 
@@ -132,7 +121,7 @@ public class LnFUpdater {
 			}
 
 			if (uiControl instanceof Composite) {
-				updateUIControlsAfterBind((Composite) uiControl);
+				updateAfterBind((Composite) uiControl);
 			}
 
 		}
@@ -183,16 +172,15 @@ public class LnFUpdater {
 	 */
 	private void updateUIControl(Control control) {
 
-		Class<? extends Control> controlClass = control.getClass();
-		if (!checkLnfKeys(controlClass)) {
+		if (!checkLnfKeys(control)) {
 			return;
 		}
-		PropertyDescriptor[] properties = getProperties(controlClass);
+		PropertyDescriptor[] properties = getProperties(control);
 		for (PropertyDescriptor property : properties) {
 			if (hasNoDefaultValue(control, property)) {
 				continue;
 			}
-			Object newValue = getLnfValue(controlClass, property);
+			Object newValue = getLnfValue(control, property);
 			if (newValue == null) {
 				continue;
 			}
@@ -207,11 +195,11 @@ public class LnFUpdater {
 			try {
 				setter.invoke(control, newValue);
 			} catch (IllegalArgumentException e) {
-				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(controlClass, property), e);
+				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(control, property), e);
 			} catch (IllegalAccessException e) {
-				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(controlClass, property), e);
+				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(control, property), e);
 			} catch (InvocationTargetException e) {
-				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(controlClass, property), e);
+				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(control, property), e);
 			}
 		}
 
@@ -225,21 +213,34 @@ public class LnFUpdater {
 	 *            - class of the UI control
 	 * @return {@code true} if latest one key exists; otherwise {@code false}
 	 */
-	private boolean checkLnfKeys(Class<? extends Control> controlClass) {
+	private boolean checkLnfKeys(Control control) {
 
+		boolean exists = false;
+
+		Class<? extends Control> controlClass = control.getClass();
 		String className = getSimpleClassName(controlClass);
-		if (StringUtils.isEmpty(className)) {
-			return false;
-		}
-
-		Set<String> keys = LnfManager.getLnf().getResourceTable().keySet();
-		for (String key : keys) {
-			if (key.startsWith(className)) {
-				return true;
+		if (!StringUtils.isEmpty(className)) {
+			className += "."; //$NON-NLS-1$
+			Set<String> keys = LnfManager.getLnf().getResourceTable().keySet();
+			for (String key : keys) {
+				if (key.startsWith(className)) {
+					exists = true;
+				}
 			}
 		}
 
-		return false;
+		String style = (String) control.getData(UIControlsFactory.KEY_LNF_STYLE);
+		if (!StringUtils.isEmpty(style)) {
+			style += "."; //$NON-NLS-1$
+			Set<String> keys = LnfManager.getLnf().getResourceTable().keySet();
+			for (String key : keys) {
+				if (key.startsWith(style)) {
+					exists = true;
+				}
+			}
+		}
+
+		return exists;
 
 	}
 
@@ -318,7 +319,7 @@ public class LnFUpdater {
 				defaultControl = null;
 			}
 			if (defaultControl != null) {
-				PropertyDescriptor[] properties = getProperties(controlClass);
+				PropertyDescriptor[] properties = getProperties(control);
 				Map<String, Object> defaults = new Hashtable<String, Object>(properties.length);
 				for (PropertyDescriptor defaultProperty : properties) {
 					Object value = getPropertyValue(defaultControl, defaultProperty);
@@ -374,14 +375,15 @@ public class LnFUpdater {
 	/**
 	 * Creates the error message for a given class and a given property.
 	 * 
-	 * @param controlClass
-	 *            - class of UI control
+	 * @param control
+	 *            - the control
 	 * @param property
 	 *            - property
 	 * @return error message
 	 */
-	private String getErrorMessage(Class<? extends Control> controlClass, PropertyDescriptor property) {
+	private String getErrorMessage(Control control, PropertyDescriptor property) {
 
+		Class<? extends Control> controlClass = control.getClass();
 		StringBuilder sb = new StringBuilder("Cannot update property "); //$NON-NLS-1$
 		sb.append("\"" + property.getName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 		sb.append(" of the class "); //$NON-NLS-1$
@@ -392,16 +394,17 @@ public class LnFUpdater {
 	}
 
 	/**
-	 * Returns the properties of the given class.<br>
+	 * Returns the properties of the class of the given control.<br>
 	 * The properties of the classes are cached. So introspection is only
-	 * nessecary for new classes.
+	 * necessary for new classes.
 	 * 
-	 * @param controlClass
-	 *            - class of the control
+	 * @param control
+	 *            - the control
 	 * @return properties
 	 */
-	private PropertyDescriptor[] getProperties(Class<? extends Control> controlClass) {
+	private PropertyDescriptor[] getProperties(Control control) {
 
+		Class<? extends Control> controlClass = control.getClass();
 		if (!CONTROL_PROPERTIES.containsKey(controlClass)) {
 			BeanInfo beanInfo;
 			try {
@@ -418,20 +421,48 @@ public class LnFUpdater {
 	}
 
 	/**
-	 * Returns for the given class and the given property the corresponding
+	 * Returns for the given control and the given property the corresponding
 	 * value of the LnF.
 	 * 
-	 * @param controlClass
-	 *            - class of the control
+	 * @param control
+	 *            - the control
 	 * @param property
 	 *            - property
 	 * @return value of Lnf
 	 */
-	private Object getLnfValue(Class<? extends Control> controlClass, PropertyDescriptor property) {
+	private Object getLnfValue(Control control, PropertyDescriptor property) {
+
+		Object lnfValue = getLnfStyleValue(control, property);
+		if (lnfValue == null) {
+			Class<? extends Control> controlClass = control.getClass();
+			RienaDefaultLnf lnf = LnfManager.getLnf();
+			String controlName = getSimpleClassName(controlClass);
+			String lnfKey = controlName + "." + property.getName(); //$NON-NLS-1$
+			lnfValue = lnf.getResource(lnfKey);
+		}
+		return lnfValue;
+
+	}
+
+	/**
+	 * Returns for the given control and the given property the corresponding
+	 * value of the LnF style.
+	 * 
+	 * @param control
+	 *            - the control with style "attribute"
+	 * @param property
+	 *            - property
+	 * @return value of Lnf or {@code null} if not style exists
+	 */
+	private Object getLnfStyleValue(Control control, PropertyDescriptor property) {
+
+		String style = (String) control.getData(UIControlsFactory.KEY_LNF_STYLE);
+		if (StringUtils.isEmpty(style)) {
+			return null;
+		}
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		String controlName = getSimpleClassName(controlClass);
-		String lnfKey = controlName + "." + property.getName(); //$NON-NLS-1$
+		String lnfKey = style + "." + property.getName(); //$NON-NLS-1$
 		return lnf.getResource(lnfKey);
 
 	}

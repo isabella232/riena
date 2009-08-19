@@ -23,12 +23,12 @@ public class FontLnfResource extends AbstractLnfResource {
 	private FontData fontData;
 
 	/**
-	 * @param name -
-	 *            the name of the font (must not be null)
-	 * @param height -
-	 *            the font height in points
-	 * @param style -
-	 *            style of the font (a bit or combination of NORMAL, BOLD,
+	 * @param name
+	 *            - the name of the font (must not be null)
+	 * @param height
+	 *            - the font height in points
+	 * @param style
+	 *            - style of the font (a bit or combination of NORMAL, BOLD,
 	 *            ITALIC)
 	 */
 	public FontLnfResource(String name, int height, int style) {
@@ -36,8 +36,8 @@ public class FontLnfResource extends AbstractLnfResource {
 	}
 
 	/**
-	 * @param font -
-	 *            font to wrap
+	 * @param font
+	 *            - font to wrap
 	 */
 	public FontLnfResource(FontData fontData) {
 		super();
@@ -57,6 +57,15 @@ public class FontLnfResource extends AbstractLnfResource {
 	 */
 	public Resource createResource() {
 		return new Font(Display.getCurrent(), fontData);
+	}
+
+	/**
+	 * Returns the font data of this font resource.
+	 * 
+	 * @return font data
+	 */
+	public FontData getFontData() {
+		return fontData;
 	}
 
 }

@@ -34,6 +34,7 @@ import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Tests of the class {@link LnFUpdater}.
@@ -72,10 +73,12 @@ public class LnFUpdaterTest extends RienaTestCase {
 	public void testGetErrorMessage() throws IntrospectionException {
 
 		PropertyDescriptor property = getForegroundProperty();
-		String message = ReflectionUtils.invokeHidden(lnFUpdater, "getErrorMessage", Label.class, property);
+		Label label = new Label(shell, SWT.NONE);
+		String message = ReflectionUtils.invokeHidden(lnFUpdater, "getErrorMessage", label, property);
 		assertNotNull(message);
 		assertTrue(message.indexOf(Label.class.getSimpleName()) > 0);
 		assertTrue(message.indexOf(property.getName()) > 0);
+		SwtUtilities.disposeWidget(label);
 
 	}
 
@@ -85,11 +88,13 @@ public class LnFUpdaterTest extends RienaTestCase {
 	public void testGetLnfValue() throws IntrospectionException {
 
 		ILnfTheme oldTheme = LnfManager.getLnf().getTheme();
-		LnfManager.getLnf().setTheme(new MyTheme());
 
+		LnfManager.getLnf().setTheme(new MyTheme());
+		Label label = new Label(shell, SWT.NONE);
 		PropertyDescriptor property = getForegroundProperty();
-		Object value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfValue", Label.class, property);
+		Object value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfValue", label, property);
 		LnfManager.getLnf().setTheme(oldTheme);
+		SwtUtilities.disposeWidget(label);
 		assertNotNull(value);
 		assertTrue(value instanceof Color);
 		Color color = (Color) value;
@@ -97,8 +102,60 @@ public class LnFUpdaterTest extends RienaTestCase {
 		assertEquals(2, color.getGreen());
 		assertEquals(3, color.getBlue());
 
-		value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfValue", Object.class, property);
+		LnfManager.getLnf().setTheme(new MyTheme());
+		Text text = new Text(shell, SWT.NONE);
+		value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfValue", text, property);
+		LnfManager.getLnf().setTheme(oldTheme);
+		SwtUtilities.disposeWidget(text);
 		assertNull(value);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getLnfStyleValue}.
+	 */
+	public void testGetLnfStyleValue() throws IntrospectionException {
+
+		ILnfTheme oldTheme = LnfManager.getLnf().getTheme();
+
+		// Label widget with style (existing) "section"
+		LnfManager.getLnf().setTheme(new MyTheme());
+		Label label = new Label(shell, SWT.NONE);
+		label.setData(UIControlsFactory.KEY_LNF_STYLE, "section");
+		PropertyDescriptor property = getForegroundProperty();
+		Object value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfStyleValue", label, property);
+		LnfManager.getLnf().setTheme(oldTheme);
+		SwtUtilities.disposeWidget(label);
+		assertNotNull(value);
+		assertTrue(value instanceof Color);
+		Color color = (Color) value;
+		assertEquals(111, color.getRed());
+		assertEquals(22, color.getGreen());
+		assertEquals(3, color.getBlue());
+
+		// Label widget with style (not existing) "dummy"
+		LnfManager.getLnf().setTheme(new MyTheme());
+		label = new Label(shell, SWT.NONE);
+		label.setData(UIControlsFactory.KEY_LNF_STYLE, "dummy");
+		value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfStyleValue", label, property);
+		LnfManager.getLnf().setTheme(oldTheme);
+		SwtUtilities.disposeWidget(label);
+		assertNull(value);
+
+		// Text widget with style (existing) "section"
+		// (It also works for other widgets.)
+		LnfManager.getLnf().setTheme(new MyTheme());
+		Text text = new Text(shell, SWT.NONE);
+		text.setData(UIControlsFactory.KEY_LNF_STYLE, "section");
+		value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfStyleValue", text, property);
+		LnfManager.getLnf().setTheme(oldTheme);
+		SwtUtilities.disposeWidget(label);
+		assertNotNull(value);
+		assertTrue(value instanceof Color);
+		color = (Color) value;
+		assertEquals(111, color.getRed());
+		assertEquals(22, color.getGreen());
+		assertEquals(3, color.getBlue());
 
 	}
 
@@ -241,13 +298,17 @@ public class LnFUpdaterTest extends RienaTestCase {
 		ILnfTheme oldTheme = LnfManager.getLnf().getTheme();
 		MyTheme myTheme = new MyTheme();
 		LnfManager.getLnf().setTheme(myTheme);
-		boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "checkLnfKeys", Label.class);
+		Label label = new Label(shell, SWT.NONE);
+		boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "checkLnfKeys", label);
 		LnfManager.getLnf().setTheme(oldTheme);
+		SwtUtilities.disposeWidget(label);
 		assertTrue(ret);
 
 		LnfManager.getLnf().setTheme(myTheme);
-		ret = ReflectionUtils.invokeHidden(lnFUpdater, "checkLnfKeys", Text.class);
+		Text text = new Text(shell, SWT.NONE);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "checkLnfKeys", text);
 		LnfManager.getLnf().setTheme(oldTheme);
+		SwtUtilities.disposeWidget(text);
 		assertFalse(ret);
 
 	}
@@ -270,6 +331,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 
 		public void addCustomColors(Map<String, ILnfResource> table) {
 			table.put("Label.foreground", new ColorLnfResource(1, 2, 3));
+			table.put("section.foreground", new ColorLnfResource(111, 22, 3));
 		}
 
 		public void addCustomFonts(Map<String, ILnfResource> table) {
