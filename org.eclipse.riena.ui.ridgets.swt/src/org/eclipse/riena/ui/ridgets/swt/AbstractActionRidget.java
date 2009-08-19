@@ -67,6 +67,9 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 		actionObserver.addListener(listener);
 	}
 
+	/**
+	 * @deprecated use {@link #addListener(IActionListener)}
+	 */
 	public final void addListener(Object target, String action) {
 		addListener(EventHandler.create(IActionListener.class, target, action));
 	}

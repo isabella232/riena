@@ -133,6 +133,9 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		actionObserver.addListener(listener);
 	}
 
+	/**
+	 * @deprecated use {@link #addListener(IActionListener)}
+	 */
 	public void addListener(Object target, String action) {
 		IActionListener listener = EventHandler.create(IActionListener.class, target, action);
 		actionObserver.addListener(listener);
