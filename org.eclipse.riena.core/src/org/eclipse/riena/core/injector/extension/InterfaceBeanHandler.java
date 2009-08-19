@@ -33,6 +33,7 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.Activator;
 
@@ -121,24 +122,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			if (colon != -1) {
 				value = value.substring(0, colon);
 			}
-			try {
-				Class<?> loadedClass = bundle.loadClass(value);
-				return Result.cache(loadedClass);
-			} catch (ClassNotFoundException e) {
-				// maybe its a fragment and thats why we couldnt load it
-				String fragmentHostName = (String) bundle.getHeaders().get("Fragment-Host"); //$NON-NLS-1$
-				if (fragmentHostName == null) {
-					throw new ClassNotFoundException(
-							"Class not found for extension and its not fragment, check cause.", e); //$NON-NLS-1$
-				}
-				int x = fragmentHostName.indexOf(";"); //$NON-NLS-1$
-				if (x > 0) {
-					fragmentHostName = fragmentHostName.substring(0, x);
-				}
-				Bundle bundleHost = Platform.getBundle(fragmentHostName);
-				Class<?> loadedClass = bundleHost.loadClass(value);
-				return Result.cache(loadedClass);
-			}
+			return Result.cache(loadClass(bundle, value));
 		}
 		if (returnType.isInterface() && returnType.isAnnotationPresent(ExtensionInterface.class)) {
 			final IConfigurationElement[] cfgElements = configurationElement.getChildren(attributeName);
@@ -192,6 +176,26 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			Wire.instance(result).andStart(context);
 		}
 		return Result.noCache(result);
+	}
+
+	private Class<?> loadClass(Bundle bundle, String className) throws ClassNotFoundException {
+		try {
+			return bundle.loadClass(className);
+		} catch (ClassNotFoundException e) {
+			// Are we a fragment bundle
+			Bundle[] hosts = Platform.getHosts(bundle);
+			if (hosts == null) {
+				throw e;
+			}
+			for (Bundle host : hosts) {
+				try {
+					return host.loadClass(className);
+				} catch (ClassNotFoundException e2) {
+					Nop.reason("try next host"); //$NON-NLS-1$
+				}
+			}
+			throw e;
+		}
 	}
 
 	/*
