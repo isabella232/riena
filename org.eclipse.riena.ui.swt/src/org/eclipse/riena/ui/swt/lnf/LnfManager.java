@@ -23,10 +23,14 @@ import org.eclipse.riena.ui.swt.utils.BundleUtil;
  */
 public final class LnfManager {
 
-	private final static String DEFAULT_LNF_CLASSNAME = RienaDefaultLnf.class.getName();
+	private static RienaDefaultLnf defaultLnfClass = new RienaDefaultLnf();
 	private static String lnfClassName;
 
 	private static RienaDefaultLnf lnf;
+
+	public static void setDefaultLnf(RienaDefaultLnf parmDefaultLnfClazz) {
+		defaultLnfClass = parmDefaultLnfClazz;
+	}
 
 	private LnfManager() {
 		// cannot instantiated, because all method are static
@@ -42,15 +46,23 @@ public final class LnfManager {
 
 		if (lnf == null) {
 			String className = getLnfClassName();
-			try {
-				RienaDefaultLnf myLnf = createLnf(className);
-				setLnf(myLnf);
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new Error(
-						"can't load " + className + " If you use -Driena.lnf, try prefixing the classname with the bundleId i.e. org.eclipse.riena.demo.client:org.eclipse.riena.demo.client.lnf.EclipseLnf"); //$NON-NLS-1$ //$NON-NLS-2$
+			if (className != null) {
+				try {
+					RienaDefaultLnf myLnf = createLnf(className);
+					if (myLnf == null) {
+						throw new Error("can't load LnfClass '" + className + "' from the list of installed bundles."); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+					setLnf(myLnf);
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new Error(
+							"can't load " + className + " If you use -Driena.lnf, try prefixing the classname with the bundleId i.e. org.eclipse.riena.demo.client:org.eclipse.riena.demo.client.lnf.EclipseLnf"); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+			} else {
+				setLnf(defaultLnfClass);
 			}
 		}
+		System.out.println(lnf);
 		lnf.initialize();
 
 		return lnf;
@@ -113,7 +125,7 @@ public final class LnfManager {
 	public static String getLnfClassName() {
 		String className = lnfClassName;
 		if (className == null) {
-			className = System.getProperty("riena.lnf", DEFAULT_LNF_CLASSNAME); //$NON-NLS-1$
+			className = System.getProperty("riena.lnf"); //$NON-NLS-1$
 		}
 		return className;
 	}
