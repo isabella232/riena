@@ -59,8 +59,7 @@ public class UIControlsFactory {
 		Assert.isNotNull(SHARED_BG_COLOR);
 	}
 
-	private UIControlsFactory() {
-		// prevent instantiation
+	protected UIControlsFactory() {
 	}
 
 	/**
