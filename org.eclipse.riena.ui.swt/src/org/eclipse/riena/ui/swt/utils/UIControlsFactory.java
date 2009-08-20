@@ -44,7 +44,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  * 
  * @wbp.factory
  */
-public final class UIControlsFactory {
+public class UIControlsFactory {
 
 	public static final String KEY_LNF_STYLE = "lnfStyle"; //$NON-NLS-1$
 	public static final String KEY_TYPE = "type"; //$NON-NLS-1$
@@ -52,7 +52,7 @@ public final class UIControlsFactory {
 	public static final String TYPE_DECIMAL = "decimal"; //$NON-NLS-1$
 	public static final String TYPE_DATE = "date"; //$NON-NLS-1$
 
-	private static final Color SHARED_BG_COLOR;
+	protected static final Color SHARED_BG_COLOR;
 
 	static {
 		SHARED_BG_COLOR = LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND);
