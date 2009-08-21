@@ -18,6 +18,7 @@ import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
@@ -75,11 +76,20 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	public void paint(GC gc, Object value) {
 
 		super.paint(gc, value);
-
 		Assert.isNotNull(gc);
 		Assert.isNotNull(value);
 		Assert.isTrue(value instanceof Control);
 		control = (Control) value;
+
+		if (getBounds().y - ACTIVE_Y_OFFSET < 0) {
+			Rectangle bounds = new Rectangle(getBounds().x, ACTIVE_Y_OFFSET, getBounds().width, getBounds().height);
+			setBounds(bounds);
+			//						int yDelta = control.getBounds().height - (getBounds().y + getBounds().height);
+			//						if (yDelta < 0) {
+			//							
+			//						}
+			//						System.out.println(yDelta);
+		}
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		int leftInset = 0;
@@ -189,7 +199,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		// Icon
 		x = getBounds().x + getBounds().width / 2 - getImageTextWidth(gc) / 2;
 		if (getImage() != null) {
-			y = getBounds().y + BORDER_TOP_WIDTH + TEXT_TOP_INSET;
+			y = getBounds().y + BORDER_TOP_WIDTH + getTextTopInset();
 			FontMetrics fontMetrics = gc.getFontMetrics();
 			y += fontMetrics.getHeight() / 2;
 			y -= getImage().getBounds().height / 2;
@@ -202,7 +212,12 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND,
 				LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND);
 		gc.setForeground(textColor);
-		y = getBounds().y + BORDER_TOP_WIDTH + TEXT_TOP_INSET;
+		y = getBounds().y + BORDER_TOP_WIDTH + getTextTopInset();
+
+		int fontHeight = gc.getFontMetrics().getHeight();
+		if (control.getBounds().height - (y + fontHeight) < 0) {
+			y = control.getBounds().height - fontHeight;
+		}
 		gc.drawText(getLabel(), x, y, SWT.DRAW_TRANSPARENT | SWT.DRAW_MNEMONIC);
 
 		// Selection
@@ -233,6 +248,25 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		flasherSupport.startFlasher();
 
+	}
+
+	int getTextTopInset() {
+		return getHorizontalInset(TEXT_TOP_INSET);
+	}
+
+	int getTextBottomInset() {
+		return getHorizontalInset(TEXT_BOTTOM_INSET);
+	}
+
+	int getHorizontalInset(final int defaultValue) {
+		if (control != null && control.getBounds() != null) {
+			double yDelta = control.getBounds().height - (getBounds().y + getBounds().height);
+			if (yDelta < 0) {
+				yDelta *= -1;
+				return Math.max(0, (int) (defaultValue - (yDelta / 2)));
+			}
+		}
+		return defaultValue;
 	}
 
 	private Color getSelectionStartColor() {
@@ -281,7 +315,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		width = Math.max(width, minWidth);
 
 		int height = fontMetrics.getHeight();
-		height = height + BORDER_TOP_WIDTH + BORDER_BOTTOM_WIDTH + TEXT_TOP_INSET + TEXT_BOTTOM_INSET;
+		height = height + BORDER_TOP_WIDTH + BORDER_BOTTOM_WIDTH + getTextTopInset() + getTextBottomInset();
 		if (isActive()) {
 			height += ACTIVE_BOTTOM_INSET;
 		}
