@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
@@ -62,6 +63,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	private boolean pressed;
 	private boolean hover;
 	private ModuleTitleBar title;
+	private BlockManager blockManager;
 
 	//performance tweaking
 	//private boolean cachedActivityState = true;
@@ -388,7 +390,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 
 	// helping methods
 	//////////////////
-	
+
 	/**
 	 * Adds listeners to the sub-module tree.
 	 */
@@ -440,11 +442,21 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		new ModuleKeyboardNavigationListener(getTree());
 	}
 
+	private void blockView(boolean block) {
+		if (blockManager == null) {
+			blockManager = new BlockManager();
+		}
+		if (block) {
+			blockManager.block();
+		} else {
+			blockManager.unblock();
+		}
+	}
+
 	/**
 	 * Builds the composite and the tree of the module view.
 	 */
 	private void buildView() {
-
 		title = new ModuleTitleBar(getParent(), SWT.NONE);
 		binding.addUIControl(title, WINDOW_RIDGET);
 		layoutTitle();
@@ -455,7 +467,6 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 
 		createBodyContent(body);
 		LNF_UPDATER.updateUIControls(body);
-
 	}
 
 	/**
@@ -467,7 +478,6 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * @return true: text was clipped; false: text was not clipped
 	 */
 	private boolean clipSubModuleText(GC gc, TreeItem item) {
-
 		boolean clipped = false;
 		Rectangle treeBounds = getTree().getBounds();
 		Rectangle itemBounds = item.getBounds();
@@ -491,7 +501,6 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * @return true: some text was clipped; false: no text was clipped
 	 */
 	private boolean clipSubModuleTexts(GC gc, TreeItem item) {
-
 		boolean clipped = clipSubModuleText(gc, item);
 
 		TreeItem[] items = item.getItems();
@@ -502,11 +511,9 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		}
 
 		return clipped;
-
 	}
 
 	private String getItemText(TreeItem item) {
-
 		INavigationNode<?> subModule = (INavigationNode<?>) item.getData();
 		if (subModule != null) {
 			return subModule.getLabel();
@@ -521,14 +528,12 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * @return renderer
 	 */
 	private ModuleGroupRenderer getModuleGroupRenderer() {
-
 		ModuleGroupRenderer renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.MODULE_GROUP_RENDERER);
 		if (renderer == null) {
 			renderer = new ModuleGroupRenderer();
 		}
 		return renderer;
-
 	}
 
 	/**
@@ -537,14 +542,12 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * @return renderer
 	 */
 	private SubModuleTreeItemMarkerRenderer getTreeItemRenderer() {
-
 		SubModuleTreeItemMarkerRenderer renderer = (SubModuleTreeItemMarkerRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.SUB_MODULE_TREE_ITEM_MARKER_RENDERER);
 		if (renderer == null) {
 			renderer = new SubModuleTreeItemMarkerRenderer();
 		}
 		return renderer;
-
 	}
 
 	/**
@@ -565,7 +568,6 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	}
 
 	private void layoutTitle() {
-
 		Control[] children = getParent().getChildren();
 		FormData formData = new FormData();
 		int index = -1;
@@ -587,7 +589,6 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		formData.right = new FormAttachment(100, 0);
 		formData.height = title.getSize().y;
 		title.setLayoutData(formData);
-
 	}
 
 	/**
@@ -597,12 +598,10 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * @param gc
 	 */
 	private void onTreePaint(GC gc) {
-
 		TreeItem[] items = getTree().getItems();
 		for (TreeItem item : items) {
 			clipSubModuleTexts(gc, item);
 		}
-
 	}
 
 	/**
@@ -623,10 +622,10 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 			renderer.paint(event.gc, event.item);
 		}
 	}
-	
+
 	// helping classes
 	//////////////////
-	
+
 	/**
 	 * After adding of removing a sub-module from this module, the module view
 	 * must be resized.
@@ -636,6 +635,11 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		public void activated(IModuleNode source) {
 			super.activated(source);
 			updateModuleView();
+		}
+
+		@Override
+		public void block(IModuleNode source, boolean block) {
+			blockView(block);
 		}
 
 		@Override
@@ -656,8 +660,8 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 			title.setMarkers(source.getMarkers());
 			title.redraw();
 		}
-
 	}
+
 	/**
 	 * After adding of removing a sub-module from another sub-module, the module
 	 * view must be resized.
@@ -698,7 +702,35 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 				updateExpanded((ISubModuleNode) nodeParent);
 			}
 		}
+	}
 
+	/**
+	 * Blocks and unblocks widgets in this view. Before blocking it saves the
+	 * current widget state and restores it when unblocking.
+	 */
+	private final class BlockManager {
+		private Cursor titleOldCursor;
+		private Cursor bodyOldCursor;
+
+		public void block() {
+			titleOldCursor = title.getCursor();
+			title.setCursor(getWaitCursor());
+			title.setCloseable(false);
+			bodyOldCursor = body.getCursor();
+			body.setCursor(getWaitCursor());
+			subModuleTree.setEnabled(false);
+		}
+
+		public void unblock() {
+			title.setCursor(titleOldCursor);
+			title.setCloseable(getNavigationNode().isClosable());
+			body.setCursor(bodyOldCursor);
+			subModuleTree.setEnabled(true);
+		}
+
+		private Cursor getWaitCursor() {
+			return parent.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
+		}
 	}
 
 }
