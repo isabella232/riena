@@ -60,7 +60,6 @@ public class UIControlsFactory {
 	}
 
 	protected UIControlsFactory() {
-		// prevent instantiation
 	}
 
 	/**
