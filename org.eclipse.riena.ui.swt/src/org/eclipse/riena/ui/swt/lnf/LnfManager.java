@@ -62,7 +62,6 @@ public final class LnfManager {
 				setLnf(defaultLnfClass);
 			}
 		}
-		System.out.println(lnf);
 		lnf.initialize();
 
 		return lnf;
