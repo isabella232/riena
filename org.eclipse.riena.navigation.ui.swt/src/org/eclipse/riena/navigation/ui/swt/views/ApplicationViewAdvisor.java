@@ -90,10 +90,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * System property defining the minimum height of the application window.
 	 */
 	private static final String PROPERTY_RIENA_APPLICATION_HEIGHT = "riena.application.height"; //$NON-NLS-1$
-	/**
-	 * The default height of the status line.
-	 */
-	public static final int STATUSLINE_HEIGHT = 22;
+
 	/**
 	 * The default and the minimum size of the application.
 	 */
@@ -251,7 +248,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private void createStatusLine(Composite shell, Composite grabCorner) {
 		Statusline statusLine = new Statusline(shell, SWT.None, StatuslineSpacer.class);
 		FormData fd = new FormData();
-		fd.height = STATUSLINE_HEIGHT;
+		fd.height = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
 		Rectangle navigationBounds = TitlelessStackPresentation.calcNavigationBounds(shell);
 		fd.left = new FormAttachment(0, navigationBounds.x);
 		if (grabCorner != null) {

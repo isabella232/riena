@@ -37,7 +37,6 @@ import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
-import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisor;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -314,7 +313,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 			int y = PADDING_TOP;
 			int width = size.x;
 			int height = parent.getBounds().height - PADDING_BOTTOM - PADDING_TOP
-					- ApplicationViewAdvisor.STATUSLINE_HEIGHT;
+					- LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
 
 			return new Rectangle(x, y, width, height);
 		} finally {
