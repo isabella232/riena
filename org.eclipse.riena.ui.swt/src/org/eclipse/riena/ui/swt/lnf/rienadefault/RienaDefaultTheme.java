@@ -157,6 +157,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.GRAB_CORNER_BACKGROUND, getPrimaryBackground());
 		table.put(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND, new ColorLnfResource(255, 255, 175));
 
+		table.put(LnfKeyConstants.OUTPUT_MARKER_BACKGROUND, new ColorLnfResource(231, 233, 245));
+
 		// Standard SWT controls
 		table.put("Button.background", getPrimaryBackground()); //$NON-NLS-1$
 		table.put("Button.foreground", getPrimaryForeground()); // Windows: no effect //$NON-NLS-1$

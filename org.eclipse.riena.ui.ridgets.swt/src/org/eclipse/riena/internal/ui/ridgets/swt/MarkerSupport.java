@@ -221,7 +221,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 				Color color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY_OUTPUT);
 				addOutput(control, color);
 			} else {
-				Color color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_OUTPUT);
+				Color color = LnfManager.getLnf().getColor(LnfKeyConstants.OUTPUT_MARKER_BACKGROUND);
 				addOutput(control, color);
 			}
 		} else {
