@@ -210,6 +210,9 @@ public final class LnfKeyConstants {
 	public static final String SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY = "SubModuleItemToolTip.popupDelay"; //$NON-NLS-1$
 
 	public static final String NAVIGATION_WIDTH = "navigation.width"; //$NON-NLS-1$
+
+	public static final String TOOLBAR_WORK_AREA_VERTICAL_GAP = "toolbar.workarea.vertical.gap"; //$NON-NLS-1$
+
 	public static final String MODULE_ITEM_TOOLTIP_POPUP_DELAY = "ModuleItemToolTip.popupDelay"; //$NON-NLS-1$
 
 	public static final String NAVIGATION_SUB_MODULE_GAP = "NavigationSubModule.gap"; //$NON-NLS-1$

@@ -620,7 +620,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			CoolBar coolbar = (CoolBar) control;
 			CoolbarUtils.initCoolBar(coolbar);
 		}
-
 		return result;
 	}
 
@@ -663,7 +662,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		composite.setLayout(new FillLayout());
 		FormData formData = new FormData();
-		formData.top = new FormAttachment(previous, 0, 0);
+		formData.top = new FormAttachment(previous, LnfManager.getLnf().getIntegerSetting(
+				LnfKeyConstants.TOOLBAR_WORK_AREA_VERTICAL_GAP), 0);
 		formData.bottom = new FormAttachment(100, -padding);
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
