@@ -84,11 +84,6 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		if (getBounds().y - ACTIVE_Y_OFFSET < 0) {
 			Rectangle bounds = new Rectangle(getBounds().x, ACTIVE_Y_OFFSET, getBounds().width, getBounds().height);
 			setBounds(bounds);
-			//						int yDelta = control.getBounds().height - (getBounds().y + getBounds().height);
-			//						if (yDelta < 0) {
-			//							
-			//						}
-			//						System.out.println(yDelta);
 		}
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
