@@ -349,6 +349,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.TITLELESS_SHELL_SHOW_MIN, true);
 		table.put(LnfKeyConstants.TITLELESS_SHELL_RESIZEABLE, true);
 
+		table.put(LnfKeyConstants.NAVIGATION_WIDTH, 165);
+
 		table.put(LnfKeyConstants.DIALOG_HIDE_OS_BORDER, hideOsBorder());
 
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN, 22);

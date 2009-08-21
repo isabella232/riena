@@ -30,7 +30,6 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 
 	private static final int MODULE_MODULE_GAP = 2;
 	private static final int MODULE_GROUP_PADDING = 1;
-	private static final int MODULE_WIDTH = 165;
 
 	private boolean active;
 	private List<ModuleView> items;
@@ -160,7 +159,8 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 * @return width
 	 */
 	public int getItemWidth() {
-		return MODULE_WIDTH;
+		return LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.NAVIGATION_WIDTH) - 2
+				* getLnfBorderRenderer().getBorderWidth();
 	}
 
 	public boolean isActive() {

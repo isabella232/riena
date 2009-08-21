@@ -209,6 +209,7 @@ public final class LnfKeyConstants {
 
 	public static final String SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY = "SubModuleItemToolTip.popupDelay"; //$NON-NLS-1$
 
+	public static final String NAVIGATION_WIDTH = "navigation.width"; //$NON-NLS-1$
 	public static final String MODULE_ITEM_TOOLTIP_POPUP_DELAY = "ModuleItemToolTip.popupDelay"; //$NON-NLS-1$
 
 	public static final String NAVIGATION_SUB_MODULE_GAP = "NavigationSubModule.gap"; //$NON-NLS-1$
@@ -242,6 +243,8 @@ public final class LnfKeyConstants {
 	public static final String SUB_MODULE_VIEW_HOVER_BORDER_RENDERER = "SubModuleView.hoverBorderRenderer"; //$NON-NLS-1$
 	public static final String SUB_MODULE_VIEW_TITLEBAR_RENDERER = "SubModuleView.titlebarRenderer"; //$NON-NLS-1$
 	public static final String SUB_MODULE_VIEW_BORDER_RENDERER = "SubModuleView.borderRenderer"; //$NON-NLS-1$
+
+	public static final String SUB_MODULE_VIEW_SEPARATOR_LINE_RENDERER = "SubModuleView.separatorLineRenderer"; //$NON-NLS-1$
 
 	private LnfKeyConstants() {
 		super();
