@@ -10,13 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Tree;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
+import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -66,7 +72,6 @@ public class ModuleViewTest extends RienaTestCase {
 	 * Test for bug 269221
 	 */
 	public void testSetActivatedSubModuleExpanded() throws Exception {
-
 		subNode.activate();
 
 		assertTrue(node.isActivated());
@@ -84,6 +89,27 @@ public class ModuleViewTest extends RienaTestCase {
 		assertTrue(subSubSubNode.isActivated());
 		assertTrue(subNode.isExpanded());
 		assertTrue(subSubNode.isExpanded());
+	}
+
+	public void testBlocking() {
+		EmbeddedTitleBar title = ReflectionUtils.invokeHidden(view, "getTitle");
+		Composite body = ReflectionUtils.invokeHidden(view, "getBody");
+		Tree tree = ReflectionUtils.invokeHidden(view, "getTree");
+		Cursor waitCursor = title.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
+
+		node.setBlocked(true);
+
+		assertSame(waitCursor, title.getCursor());
+		assertSame(waitCursor, body.getCursor());
+		assertFalse(title.isCloseable());
+		assertFalse(tree.getEnabled());
+
+		node.setBlocked(false);
+
+		assertNotSame(waitCursor, title.getCursor());
+		assertTrue(title.isCloseable());
+		assertNotSame(waitCursor, body.getCursor());
+		assertTrue(tree.getEnabled());
 	}
 
 }

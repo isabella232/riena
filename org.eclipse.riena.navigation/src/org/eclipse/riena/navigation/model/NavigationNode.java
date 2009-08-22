@@ -966,10 +966,8 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.INavigationNode#setBlocked(boolean)
 	 */
 	public void setBlocked(boolean blocked) {
-
 		this.blocked = blocked;
 		notifyBlockedChanged();
-
 	}
 
 	/**
@@ -1051,12 +1049,11 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	@SuppressWarnings("unchecked")
 	private void notifyBlockedChanged() {
 		for (L next : getListeners()) {
-			next.block((S) this, isBlocked() && isActivated());
+			next.block((S) this, isBlocked() /* && isActivated() */);
 		}
 		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
-			next.block(this, isBlocked() && isActivated());
+			next.block(this, isBlocked() /* && isActivated() */);
 		}
-
 	}
 
 	/**
