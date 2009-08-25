@@ -587,7 +587,7 @@
       <assembly
             autostartsequence="100"
             id="org.eclipse.riena.example.deselectablenodes.assembly"
-            name="Selectable SUbmodule Assembly"
+            name="Selectable Submodule Assembly"
             parentTypeId="playground">
          <modulegroup
                name="Selectable Submodule"
