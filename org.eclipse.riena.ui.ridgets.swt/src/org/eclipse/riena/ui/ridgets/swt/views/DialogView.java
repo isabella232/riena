@@ -123,7 +123,7 @@ public abstract class DialogView extends RienaDialog {
 	}
 
 	/**
-	 * Closes this dialog. But before closing the controller is unbinded.
+	 * Closes this dialog. But before closing the controller is unbound.
 	 * 
 	 * @see org.eclipse.jface.dialogs.Dialog#close()
 	 */
