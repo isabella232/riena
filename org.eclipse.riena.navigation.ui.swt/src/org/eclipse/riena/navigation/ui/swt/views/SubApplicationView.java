@@ -37,6 +37,8 @@ import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
+import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
@@ -253,7 +255,6 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 					createRidget(controller, manager.getMenu());
 				}
 			}
-
 		}
 
 		// items of cool bar
@@ -261,7 +262,6 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		for (ToolItem toolItem : toolItems) {
 			createRidget(controller, toolItem);
 		}
-
 	}
 
 	/**
@@ -270,7 +270,6 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	 * @return list of tool items
 	 */
 	private List<ToolItem> getAllToolItems() {
-
 		List<ToolItem> items = new ArrayList<ToolItem>();
 
 		List<CoolBar> coolBars = getCoolBars(getShell());
@@ -282,7 +281,6 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		}
 
 		return items;
-
 	}
 
 	/**
@@ -293,7 +291,6 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	 * @return list of cool bars
 	 */
 	private List<CoolBar> getCoolBars(Composite composite) {
-
 		List<CoolBar> coolBars = new ArrayList<CoolBar>();
 		if (composite == null) {
 			return coolBars;
@@ -478,6 +475,45 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 	private class SubApplicationListener extends SubApplicationNodeListener {
 		@Override
+		public void block(ISubApplicationNode source, boolean block) {
+			super.block(source, block);
+			for (IModuleGroupNode group : source.getChildren()) {
+				for (IModuleNode module : group.getChildren()) {
+					module.setBlocked(block);
+				}
+			}
+			// TODO [ev] refactor or remove...
+			for (Object o : uiControls) {
+				String key = "oldEnabled"; //$NON-NLS-1$
+				if (o instanceof ToolItem) {
+					ToolBar parent = ((ToolItem) o).getParent();
+					if (block && parent.getData(key) == null) {
+						parent.setData(key, Boolean.valueOf(parent.getEnabled()));
+						parent.setEnabled(false);
+					} else {
+						Boolean enabled = (Boolean) parent.getData(key);
+						if (enabled != null) {
+							parent.setEnabled(enabled.booleanValue());
+							parent.setData(key, null);
+						}
+					}
+				} else if (o instanceof MenuItem) {
+					Menu parent = ((MenuItem) o).getParent();
+					if (block && parent.getData(key) == null) {
+						parent.setData(key, Boolean.valueOf(parent.getEnabled()));
+						parent.setEnabled(false);
+					} else {
+						Boolean enabled = (Boolean) parent.getData(key);
+						if (enabled != null) {
+							parent.setEnabled(enabled.booleanValue());
+							parent.setData(key, null);
+						}
+					}
+				}
+			}
+		}
+
+		@Override
 		public void disposed(ISubApplicationNode source) {
 			unbind();
 		}
@@ -518,17 +554,12 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		private void checkBaseStructure() {
 			if (!navigationUp) {
 				createNavigation();
-				createStatusLine();
 				navigationUp = true;
 			}
 		}
 
 		private void createNavigation() {
 			showView(NavigationViewPart.ID, createNextId());
-		}
-
-		private void createStatusLine() {
-			//			showView(StatusLineViewPart.ID, createNextId());
 		}
 
 		/**
