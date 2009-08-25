@@ -483,34 +483,34 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 				}
 			}
 			// TODO [ev] refactor or remove...
-			for (Object o : uiControls) {
-				String key = "oldEnabled"; //$NON-NLS-1$
-				if (o instanceof ToolItem) {
-					ToolBar parent = ((ToolItem) o).getParent();
-					if (block && parent.getData(key) == null) {
-						parent.setData(key, Boolean.valueOf(parent.getEnabled()));
-						parent.setEnabled(false);
-					} else {
-						Boolean enabled = (Boolean) parent.getData(key);
-						if (enabled != null) {
-							parent.setEnabled(enabled.booleanValue());
-							parent.setData(key, null);
-						}
-					}
-				} else if (o instanceof MenuItem) {
-					Menu parent = ((MenuItem) o).getParent();
-					if (block && parent.getData(key) == null) {
-						parent.setData(key, Boolean.valueOf(parent.getEnabled()));
-						parent.setEnabled(false);
-					} else {
-						Boolean enabled = (Boolean) parent.getData(key);
-						if (enabled != null) {
-							parent.setEnabled(enabled.booleanValue());
-							parent.setData(key, null);
-						}
-					}
-				}
-			}
+			//			for (Object o : uiControls) {
+			//				String key = "oldEnabled"; //$NON-NLS-1$
+			//				if (o instanceof ToolItem) {
+			//					ToolBar parent = ((ToolItem) o).getParent();
+			//					if (block && parent.getData(key) == null) {
+			//						parent.setData(key, Boolean.valueOf(parent.getEnabled()));
+			//						parent.setEnabled(false);
+			//					} else {
+			//						Boolean enabled = (Boolean) parent.getData(key);
+			//						if (enabled != null) {
+			//							parent.setEnabled(enabled.booleanValue());
+			//							parent.setData(key, null);
+			//						}
+			//					}
+			//				} else if (o instanceof MenuItem) {
+			//					Menu parent = ((MenuItem) o).getParent();
+			//					if (block && parent.getData(key) == null) {
+			//						parent.setData(key, Boolean.valueOf(parent.getEnabled()));
+			//						parent.setEnabled(false);
+			//					} else {
+			//						Boolean enabled = (Boolean) parent.getData(key);
+			//						if (enabled != null) {
+			//							parent.setEnabled(enabled.booleanValue());
+			//							parent.setData(key, null);
+			//						}
+			//					}
+			//				}
+			//			}
 		}
 
 		@Override
