@@ -254,8 +254,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	protected void blockView(boolean block) {
-		parentComposite.setCursor(block ? getWaitCursor() : getArrowCursor());
-		contentComposite.setEnabled(!block);
+		if (!parentComposite.isDisposed()) {
+			parentComposite.setCursor(block ? getWaitCursor() : getArrowCursor());
+			contentComposite.setEnabled(!block);
+		}
 	}
 
 	/**
