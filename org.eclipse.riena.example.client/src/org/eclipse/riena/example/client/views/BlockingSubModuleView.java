@@ -12,10 +12,12 @@ package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 
 import org.eclipse.riena.example.client.controllers.BlockingSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
@@ -54,6 +56,10 @@ public class BlockingSubModuleView extends SubModuleView<BlockingSubModuleContro
 
 		Button button3 = UIControlsFactory.createButton(group, "", BlockingSubModuleController.RIDGET_BLOCK_SUB_APP); //$NON-NLS-1$
 		fillFactory.applyTo(button3);
+
+		Label label = UIControlsFactory.createLabel(group, "", SWT.CENTER, //$NON-NLS-1$
+				BlockingSubModuleController.RIDGET_STATUS);
+		fillFactory.applyTo(label);
 	}
 
 }

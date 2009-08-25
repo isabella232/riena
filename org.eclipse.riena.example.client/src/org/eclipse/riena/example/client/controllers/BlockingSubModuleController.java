@@ -21,6 +21,7 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.ILabelRidget;
 
 /**
  * Example for blocking different parts of the user interface.
@@ -32,6 +33,9 @@ public class BlockingSubModuleController extends SubModuleController {
 	public static final String RIDGET_BLOCK_MODULE = "blockModule"; //$NON-NLS-1$
 	public static final String RIDGET_BLOCK_SUB_MODULE = "blockSubModule"; //$NON-NLS-1$
 	public static final String RIDGET_BLOCK_SUB_APP = "blockSubApplication"; //$NON-NLS-1$
+	public static final String RIDGET_STATUS = "status"; //$NON-NLS-1$
+
+	private ILabelRidget status;
 
 	public BlockingSubModuleController() {
 		super();
@@ -68,13 +72,15 @@ public class BlockingSubModuleController extends SubModuleController {
 				blockNode(getSubApplicationNode());
 			}
 		});
+
+		status = (ILabelRidget) getRidget(RIDGET_STATUS);
 	}
 
 	// helping methods
 	//////////////////
 
 	private void blockNode(INavigationNode<?> node) {
-		new BlockerUIProcess(node).start();
+		new BlockerUIProcess(node, status).start();
 	}
 
 	private INavigationNode<?> getModuleNode() {
@@ -93,22 +99,24 @@ public class BlockingSubModuleController extends SubModuleController {
 	 */
 	private static class BlockerUIProcess extends UIProcess {
 
-		private INavigationNode<?> toBlock;
+		private final INavigationNode<?> toBlock;
+		private final ILabelRidget labelRidget;
 
-		public BlockerUIProcess(INavigationNode<?> toBlock) {
+		public BlockerUIProcess(INavigationNode<?> toBlock, ILabelRidget labelRidget) {
 			super("block", false); //$NON-NLS-1$
 			this.toBlock = toBlock;
+			this.labelRidget = labelRidget;
 		}
 
 		@Override
 		public void initialUpdateUI(int totalWork) {
-			System.out.println(String.format("Blocking '%s' for 10s", toBlock.getLabel())); //$NON-NLS-1$
+			labelRidget.setText(String.format("Blocking '%s' for 10s", toBlock.getLabel())); //$NON-NLS-1$
 			toBlock.setBlocked(true);
 		}
 
 		@Override
 		public void finalUpdateUI() {
-			System.out.println(String.format("Unblocking '%s'", toBlock.getLabel())); //$NON-NLS-1$
+			labelRidget.setText(String.format("Unblocked '%s'", toBlock.getLabel())); //$NON-NLS-1$
 			toBlock.setBlocked(false);
 		}
 
