@@ -344,13 +344,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		if (value != null && renderingMethod != null) {
 			valueObject = ReflectionUtils.invoke(value, renderingMethod, (Object[]) null);
 		}
-
-		String returnValue = String.valueOf(valueObject);
-
-		if (null == returnValue) {
-			throw new NullPointerException("Value in model is null");
+		if (valueObject == null || valueObject.toString() == null) {
+			throw new NullPointerException("The item value for a model element is null"); //$NON-NLS-1$
 		}
-		return returnValue;
+		return valueObject.toString();
 	}
 
 	private Object getValueFromItem(String item) {

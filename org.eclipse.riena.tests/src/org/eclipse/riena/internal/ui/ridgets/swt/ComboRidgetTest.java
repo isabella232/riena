@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.swt.SWT;
@@ -68,6 +69,46 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	@Override
 	protected ComboRidget getRidget() {
 		return (ComboRidget) super.getRidget();
+	}
+
+	public void testBindingWithNullProperty() throws Exception {
+		ComboRidget ridget = getRidget();
+		ridget.setUIControl(new Combo(getShell(), SWT.READ_ONLY));
+
+		ProductHolder model = new ProductHolder();
+		List<Product> products = new ArrayList<Product>();
+		products.add(new Product("one"));
+		products.add(new Product("two"));
+		products.add(new Product(null));
+		products.add(new Product("four"));
+		products.add(new Product("five"));
+		model.setProducts(products);
+
+		ridget.bindToModel(model, "products", Product.class, null, model, "selectedProducts");
+		ridget.updateFromModel();
+
+		// there are only two elements expected, because the third element has a null property 
+		assertEquals(2, ridget.getUIControl().getItemCount());
+	}
+
+	public void testBindingWithNullElement() throws Exception {
+		ComboRidget ridget = getRidget();
+		ridget.setUIControl(new Combo(getShell(), SWT.READ_ONLY));
+
+		ProductHolder model = new ProductHolder();
+		List<Product> products = new ArrayList<Product>();
+		products.add(new Product("one"));
+		products.add(new Product("two"));
+		products.add(null);
+		products.add(new Product("four"));
+		products.add(new Product("five"));
+		model.setProducts(products);
+
+		ridget.bindToModel(model, "products", Product.class, null, model, "selectedProducts");
+		ridget.updateFromModel();
+
+		// there are only two elements expected, because the third element is null 
+		assertEquals(2, ridget.getUIControl().getItemCount());
 	}
 
 	public void testRidgetMapping() {
@@ -761,6 +802,45 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 
 		public void propertyChange(PropertyChangeEvent evt) {
 			count++;
+		}
+	}
+
+	private static final class ProductHolder {
+
+		private List<Product> products;
+		private Product selectedProducts;
+
+		public void setProducts(List<Product> policenProdukte) {
+			this.products = policenProdukte;
+		}
+
+		@SuppressWarnings("unused")
+		public List<Product> getProducts() {
+			return products;
+		}
+
+		@SuppressWarnings("unused")
+		public void setSelectedProducts(Product selectedPolicenProdukt) {
+			this.selectedProducts = selectedPolicenProdukt;
+		}
+
+		@SuppressWarnings("unused")
+		public Product getSelectedProducts() {
+			return selectedProducts;
+		}
+	}
+
+	private static final class Product {
+
+		private String name;
+
+		public Product(String name) {
+			this.name = name;
+		}
+
+		@Override
+		public String toString() {
+			return name;
 		}
 	}
 }
