@@ -477,9 +477,11 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		@Override
 		public void block(ISubApplicationNode source, boolean block) {
 			super.block(source, block);
+			boolean enabled = !block;
 			for (IModuleGroupNode group : source.getChildren()) {
+				// TODO [ev] remember previous enablement state...
 				for (IModuleNode module : group.getChildren()) {
-					module.setBlocked(block);
+					module.setEnabled(enabled);
 				}
 			}
 		}
