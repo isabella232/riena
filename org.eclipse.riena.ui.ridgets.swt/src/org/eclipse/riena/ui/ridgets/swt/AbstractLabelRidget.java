@@ -15,6 +15,7 @@ import java.net.URL;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.internal.ui.ridgets.swt.BasicMarkerSupport;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
@@ -60,8 +61,9 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	 * the UI control.
 	 */
 	private void initText() {
-		if ((text == null) && (!textAlreadyInitialized)) {
-			if ((getUIControl()) != null && !(getUIControl().isDisposed())) {
+		if (text == null && !textAlreadyInitialized) {
+			Control control = getUIControl();
+			if (control != null && !control.isDisposed()) {
 				text = getUIControlText();
 				if (text == null) {
 					text = EMPTY_STRING;
@@ -158,7 +160,6 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	protected abstract void setUIControlImage(Image image);
 
 	private boolean hasChanged(URL oldValue, URL newValue) {
-
 		if (oldValue == null && newValue == null) {
 			return false;
 		}
