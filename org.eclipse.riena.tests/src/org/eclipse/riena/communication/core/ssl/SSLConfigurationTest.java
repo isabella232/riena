@@ -18,9 +18,9 @@ import org.osgi.framework.Bundle;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.communication.core.ssl.ISSLProperties;
 import org.eclipse.riena.internal.communication.core.ssl.SSLConfiguration;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.tests.nanohttp.TestServer;
 
 /**

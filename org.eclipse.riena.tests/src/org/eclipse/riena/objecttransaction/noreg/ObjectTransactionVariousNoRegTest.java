@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.objecttransaction.noreg;
 
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
 import org.eclipse.riena.objecttransaction.ObjectTransactionFactory;
 import org.eclipse.riena.objecttransaction.noreg.value.Kunde;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * TODO Fehlender Klassen-Kommentar

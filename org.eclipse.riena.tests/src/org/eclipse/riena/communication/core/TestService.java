@@ -8,25 +8,15 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.core;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.eclipse.riena.internal.core.test.collect.NonGatherableTestCase;
-import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarkerTest;
+package org.eclipse.riena.communication.core;
 
 /**
- * 
+ *
  */
-@NonGatherableTestCase("This is not a ´TestCase´!")
-public class AllTests extends TestCase {
+public class TestService implements ITestService {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(UIProcessFinishedMarkerTest.class);
-		return suite;
+	public String[] getNames(String regEx) {
+		return new String[] { "Jeff" };
 	}
 
 }

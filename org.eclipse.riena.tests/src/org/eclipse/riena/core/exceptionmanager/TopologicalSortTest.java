@@ -18,7 +18,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.riena.internal.core.exceptionmanager.TopologicalNode;
 import org.eclipse.riena.internal.core.exceptionmanager.TopologicalSort;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Tests the Topological sorting

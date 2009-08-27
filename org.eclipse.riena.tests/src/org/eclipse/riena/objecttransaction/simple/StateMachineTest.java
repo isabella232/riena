@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.objecttransaction.simple;
 
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.objecttransaction.state.State;
 import org.eclipse.riena.objecttransaction.state.StateMachine;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * TestCase that tests (a little) of the StateMachine

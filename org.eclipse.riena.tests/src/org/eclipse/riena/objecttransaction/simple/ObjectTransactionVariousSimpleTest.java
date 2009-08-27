@@ -12,6 +12,8 @@ package org.eclipse.riena.objecttransaction.simple;
 
 import org.eclipse.core.runtime.AssertionFailedException;
 
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
 import org.eclipse.riena.objecttransaction.IObjectTransactionExtract;
 import org.eclipse.riena.objecttransaction.InvalidTransactionFailure;
@@ -21,8 +23,6 @@ import org.eclipse.riena.objecttransaction.simple.value.Addresse;
 import org.eclipse.riena.objecttransaction.simple.value.Kunde;
 import org.eclipse.riena.objecttransaction.simple.value.Vertrag;
 import org.eclipse.riena.objecttransaction.state.State;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * TODO Fehlender Klassen-Kommentar

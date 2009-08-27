@@ -22,10 +22,10 @@ import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.ExceptionFailure;
 import org.eclipse.riena.core.exception.Failure;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.IntegrationTestCase;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.exception.IExceptionService;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.IntegrationTestCase;
 
 /**
  * This class is an test client for the exception service.

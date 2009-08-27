@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.objecttransaction.interf;
 
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.objecttransaction.impl.ObjectTransactionImpl;
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
 import org.eclipse.riena.objecttransaction.IObjectTransactionExtract;
@@ -20,8 +22,6 @@ import org.eclipse.riena.objecttransaction.interf.value.IAddresse;
 import org.eclipse.riena.objecttransaction.interf.value.Kunde;
 import org.eclipse.riena.objecttransaction.interf.value.Vertrag;
 import org.eclipse.riena.objecttransaction.state.State;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * TODO Fehlender Klassen-Kommentar

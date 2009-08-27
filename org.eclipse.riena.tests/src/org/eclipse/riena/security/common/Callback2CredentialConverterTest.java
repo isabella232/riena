@@ -20,6 +20,7 @@ import javax.security.auth.callback.TextInputCallback;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.security.common.authentication.Callback2CredentialConverter;
 import org.eclipse.riena.security.common.authentication.credentials.AbstractCredential;
 import org.eclipse.riena.security.common.authentication.credentials.ChoiceCredential;
@@ -27,7 +28,6 @@ import org.eclipse.riena.security.common.authentication.credentials.CustomCreden
 import org.eclipse.riena.security.common.authentication.credentials.NameCredential;
 import org.eclipse.riena.security.common.authentication.credentials.PasswordCredential;
 import org.eclipse.riena.security.common.authentication.credentials.TextInputCredential;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * 

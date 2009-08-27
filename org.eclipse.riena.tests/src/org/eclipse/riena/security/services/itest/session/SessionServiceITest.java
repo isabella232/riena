@@ -16,12 +16,12 @@ import org.osgi.framework.ServiceReference;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.Register;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.IntegrationTestCase;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.IntegrationTestCase;
 
 /**
  * Tests the SessionService with single user. There is also a disabled multiuser

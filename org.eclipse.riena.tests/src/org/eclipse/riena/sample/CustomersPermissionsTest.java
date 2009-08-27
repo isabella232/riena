@@ -12,8 +12,8 @@ package org.eclipse.riena.sample;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.sample.app.common.model.CustomersPermission;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * @author christian
