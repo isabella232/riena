@@ -19,14 +19,14 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 import org.eclipse.riena.core.service.Service;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
 import org.eclipse.riena.internal.security.authorizationservice.AuthorizationService;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.ManualTestCase;
 
 @ManualTestCase
 public class AuthorizationTest extends RienaTestCase {

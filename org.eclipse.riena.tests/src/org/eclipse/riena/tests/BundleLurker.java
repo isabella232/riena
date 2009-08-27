@@ -13,15 +13,19 @@ package org.eclipse.riena.tests;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.riena.internal.tests.Activator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
 
+import org.eclipse.riena.internal.tests.Activator;
+
 /**
  * The {@code BundleLurker} waits until the bundle specified by the symbolic
  * name is active.
+ * 
+ * @Deprecated This class is no longer be used! Can be removed in the future.
  */
+@Deprecated
 public class BundleLurker {
 
 	private final String bundleName;

@@ -24,8 +24,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 
 import org.eclipse.riena.beans.common.TypedBean;
-import org.eclipse.riena.tests.TestUtils;
-import org.eclipse.riena.tests.UITestHelper;
+import org.eclipse.riena.internal.ui.swt.test.TestUtils;
+import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;

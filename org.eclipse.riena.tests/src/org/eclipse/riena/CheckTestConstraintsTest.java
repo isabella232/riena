@@ -8,12 +8,14 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.tests.collect;
+package org.eclipse.riena;
 
 import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.collect.TestCollector;
 import org.eclipse.riena.internal.tests.Activator;
 
 /**

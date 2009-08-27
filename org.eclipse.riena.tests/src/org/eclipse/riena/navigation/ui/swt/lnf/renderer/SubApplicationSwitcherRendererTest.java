@@ -16,10 +16,10 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationItem;
-import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;

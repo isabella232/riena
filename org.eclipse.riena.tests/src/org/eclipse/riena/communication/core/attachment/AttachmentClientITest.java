@@ -24,10 +24,10 @@ import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.ManualTestCase;
 
 /**
  * Integration test for testing attachment together with the AttachmentService.

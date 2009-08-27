@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.tests.collect;
+package org.eclipse.riena.internal.core.test.collect;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -17,11 +17,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks a {@code TestCase} as an integration test.
+ * Marks a {@code TestCase} as an non-UI test.
+ * 
+ * @see UITestCase
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Inherited
-public @interface IntegrationTestCase {
+public @interface NonUITestCase {
 
 }

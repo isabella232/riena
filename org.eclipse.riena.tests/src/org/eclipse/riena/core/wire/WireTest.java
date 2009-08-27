@@ -16,9 +16,9 @@ import java.util.Map;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test the {@code Wire} stuff.

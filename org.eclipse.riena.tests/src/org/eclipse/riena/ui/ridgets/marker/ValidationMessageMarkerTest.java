@@ -14,8 +14,8 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
 
 /**

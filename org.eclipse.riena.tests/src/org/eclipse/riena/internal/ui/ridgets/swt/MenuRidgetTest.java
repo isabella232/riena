@@ -12,8 +12,8 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.UITestCase;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;

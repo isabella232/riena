@@ -17,7 +17,7 @@ import junit.framework.TestCase;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.conversion.NumberToStringConverter;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Tests of the class <code>RidgetUpdateValueStrategy</code>.

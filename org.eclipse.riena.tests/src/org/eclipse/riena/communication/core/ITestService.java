@@ -8,22 +8,13 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.tests.collect;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package org.eclipse.riena.communication.core;
 
 /**
- * Marks a {@code TestCase} as an non-UI test.
- * 
- * @see UITestCase
+ *
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Inherited
-public @interface NonUITestCase {
+public interface ITestService {
+
+	String[] getNames(String regEx);
 
 }

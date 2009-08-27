@@ -19,9 +19,9 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.communication.core.registry.RemoteServiceRegistry;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  *

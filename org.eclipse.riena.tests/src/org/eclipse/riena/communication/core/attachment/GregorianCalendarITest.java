@@ -18,9 +18,9 @@ import java.util.GregorianCalendar;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.Register;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
 import org.eclipse.riena.sample.app.common.calendar.ITestGregorianCalendar;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.ManualTestCase;
 
 /**
  * Test the hessian bug (we use our own deserializer now) when transferring

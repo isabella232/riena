@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;

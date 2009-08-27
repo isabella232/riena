@@ -11,12 +11,12 @@
 package org.eclipse.riena.navigation.ui.swt.presentation;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Tests for the SwtViewProvider.

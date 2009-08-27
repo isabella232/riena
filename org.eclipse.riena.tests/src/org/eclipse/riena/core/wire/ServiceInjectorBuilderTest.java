@@ -16,9 +16,9 @@ import org.eclipse.riena.core.injector.service.FilterInjector;
 import org.eclipse.riena.core.injector.service.RankingInjector;
 import org.eclipse.riena.core.injector.service.ServiceInjector;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.core.wire.ServiceInjectorBuilder;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test the {@code ServiceInjectorBuilder}.

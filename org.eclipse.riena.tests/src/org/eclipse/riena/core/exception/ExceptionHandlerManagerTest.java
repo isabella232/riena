@@ -14,8 +14,8 @@ import junit.framework.Assert;
 
 import org.eclipse.riena.internal.core.exceptionmanager.IExceptionHandlerDefinition;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * 

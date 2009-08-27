@@ -16,8 +16,8 @@ import java.io.InputStream;
 
 import org.easymock.EasyMock;
 
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Test the ByteArrayDataSource class.

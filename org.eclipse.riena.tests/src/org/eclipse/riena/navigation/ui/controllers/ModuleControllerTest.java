@@ -16,12 +16,12 @@ import junit.framework.TestCase;
 
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.tests.collect.UITestCase;
 
 /**
  * Tests of the class <code>ModuleController</code>.

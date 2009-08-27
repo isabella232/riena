@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.ridgets.databinding;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonGatherableTestCase;
 
 /**
  * All tests of the package org.eclipse.riena.ui.ridgets.databinding.

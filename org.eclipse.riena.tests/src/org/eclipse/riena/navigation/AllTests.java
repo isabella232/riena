@@ -13,9 +13,9 @@ package org.eclipse.riena.navigation;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
+import org.eclipse.riena.internal.core.test.collect.NonGatherableTestCase;
+import org.eclipse.riena.internal.core.test.collect.TestCollector;
 import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.riena.tests.collect.NonGatherableTestCase;
-import org.eclipse.riena.tests.collect.TestCollector;
 
 /**
  * Tests all test cases within this package.

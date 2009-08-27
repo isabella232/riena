@@ -11,8 +11,9 @@
 package org.eclipse.riena.core.logging;
 
 import org.eclipse.riena.internal.core.logging.LogLevelMapper;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+
 import org.osgi.service.log.LogService;
 
 /**

@@ -13,8 +13,8 @@ package org.eclipse.riena.ui.ridgets.validation;
 import java.text.DecimalFormat;
 import java.util.Locale;
 
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.ValidInteger;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 

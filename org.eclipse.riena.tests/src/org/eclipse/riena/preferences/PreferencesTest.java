@@ -14,7 +14,9 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 

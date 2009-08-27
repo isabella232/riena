@@ -11,12 +11,14 @@
 package org.eclipse.riena.communication.core;
 
 import org.easymock.EasyMock;
-import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
-import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
+
+import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.internal.tests.Activator;
 
 /**
  *
@@ -46,8 +48,8 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		EasyMock.expect(ref.getBundle()).andReturn(Activator.getDefault().getBundle());
 		EasyMock.replay(ref);
 
-		Object service = "Service";
-		RemoteServiceDescription rsd = new RemoteServiceDescription(ref, service, String.class);
+		TestService service = new TestService();
+		RemoteServiceDescription rsd = new RemoteServiceDescription(ref, service, ITestService.class);
 
 		assertNull(rsd.getProperty(""));
 		assertNotNull(rsd.getBundleName());
@@ -55,10 +57,10 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertNull(rsd.getPath());
 		assertNull(rsd.getProtocol());
 		assertTrue(service == rsd.getService());
-		assertEquals(String.class.getName(), rsd.getServiceInterfaceClassName());
+		assertEquals(ITestService.class.getName(), rsd.getServiceInterfaceClassName());
 		assertNull(rsd.getURL());
 		assertNull(rsd.getVersion());
-		assertEquals(String.class, rsd.getServiceInterfaceClass());
+		assertEquals(ITestService.class, rsd.getServiceInterfaceClass());
 		assertNotNull(rsd.getServiceRef());
 		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
 	}
@@ -171,7 +173,7 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 				new String[] { Constants.OBJECTCLASS, RSDPublisherProperties.PROP_REMOTE_PATH,
 						RSDPublisherProperties.PROP_REMOTE_PROTOCOL, RSDPublisherProperties.PROP_CONFIG_ID,
 						"the Answer to Life, the Universe, and Everything" });
-		EasyMock.expect(ref.getProperty(Constants.OBJECTCLASS)).andReturn(String.class);
+		EasyMock.expect(ref.getProperty(Constants.OBJECTCLASS)).andReturn(ITestService.class);
 		EasyMock.expect(ref.getProperty("the Answer to Life, the Universe, and Everything")).andReturn("42");
 		EasyMock.expect(ref.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL)).andReturn("https");
 		EasyMock.expect(ref.getProperty(RSDPublisherProperties.PROP_REMOTE_PATH)).andReturn("/server/here");
@@ -179,8 +181,8 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		EasyMock.expect(ref.getBundle()).andReturn(Activator.getDefault().getBundle());
 		EasyMock.replay(ref);
 
-		Object service = "Service";
-		RemoteServiceDescription rsd = new RemoteServiceDescription(ref, service, String.class);
+		ITestService service = new TestService();
+		RemoteServiceDescription rsd = new RemoteServiceDescription(ref, service, ITestService.class);
 
 		assertEquals("42", rsd.getProperty("the Answer to Life, the Universe, and Everything"));
 		assertNotNull(rsd.getBundleName());
@@ -188,11 +190,32 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertEquals("/server/here", rsd.getPath());
 		assertEquals("https", rsd.getProtocol());
 		assertTrue(service == rsd.getService());
-		assertEquals(String.class.getName(), rsd.getServiceInterfaceClassName());
+		assertEquals(ITestService.class.getName(), rsd.getServiceInterfaceClassName());
 		assertNull(rsd.getURL());
 		assertNull(rsd.getVersion());
-		assertEquals(String.class, rsd.getServiceInterfaceClass());
+		assertEquals(ITestService.class, rsd.getServiceInterfaceClass());
 		assertNotNull(rsd.getServiceRef());
 		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
+	}
+
+	public void testServiceInterfaceConstraintOverloadingNotAllowed() {
+		RemoteServiceDescription rsd = new RemoteServiceDescription();
+		try {
+			rsd.setServiceInterfaceClass(String.class);
+			fail();
+		} catch (RemoteFailure f) {
+			ok("String has methods with the same name, but different signatures. This is not allowed.");
+		}
+	}
+
+	public void testServiceInterfaceConstraintServiceMatchesServiceInterface() {
+		RemoteServiceDescription rsd = new RemoteServiceDescription();
+		rsd.setServiceInterfaceClass(ITestService.class);
+		try {
+			rsd.setService("This should fail since a String is not a ITestService");
+			fail();
+		} catch (RemoteFailure f) {
+			ok("Service and Service interface are not compatible.");
+		}
 	}
 }

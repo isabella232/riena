@@ -19,13 +19,13 @@ import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.core.service.Service;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.IntegrationTestCase;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.security.common.BasicAuthenticationCallHook;
 import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.IntegrationTestCase;
 
 /**
  * 

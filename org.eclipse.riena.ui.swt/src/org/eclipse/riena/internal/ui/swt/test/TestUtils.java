@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.tests;
+package org.eclipse.riena.internal.ui.swt.test;
 
 import java.text.DecimalFormatSymbols;
 import java.util.Collection;

@@ -8,23 +8,25 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.tests;
+package org.eclipse.riena.internal.core.test.collect;
 
-import org.eclipse.riena.ui.ridgets.IActionListener;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * {@link IActionListener} test fixture, that counts how many times the
- * {@link #callback()} method has been invoked.
+ * Marks a {@code TestCase} as an test that should not be gathered by the
+ * {@code TestCollector}.
  */
-public final class FTActionListener implements IActionListener {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface NonGatherableTestCase {
 
-	private int count;
-
-	public int getCount() {
-		return count;
-	}
-
-	public void callback() {
-		count++;
-	}
+	/**
+	 * Attach a reason why this test case shall not be executed.
+	 * 
+	 * @return
+	 */
+	String value();
 }

@@ -12,8 +12,8 @@ package org.eclipse.riena.navigation;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.model.ApplicationNode;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Tests of the class <code>SwtControlRidgetMapper</code>

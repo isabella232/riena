@@ -24,6 +24,8 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.service.Service;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.IntegrationTestCase;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authentication.AuthenticationFailure;
@@ -33,8 +35,6 @@ import org.eclipse.riena.security.common.authentication.credentials.AbstractCred
 import org.eclipse.riena.security.common.authentication.credentials.NameCredential;
 import org.eclipse.riena.security.common.authentication.credentials.PasswordCredential;
 import org.eclipse.riena.security.server.session.ISessionService;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.IntegrationTestCase;
 
 /**
  * Test client for authentication service.

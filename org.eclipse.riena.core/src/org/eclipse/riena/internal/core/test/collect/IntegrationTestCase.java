@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.tests.collect;
+package org.eclipse.riena.internal.core.test.collect;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -17,14 +17,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks a {@code TestCase} as an UI test. A UI test is a test that opens a
- * shell to create a testing environment that allows to test aspects of UI
- * widgets that could not be tested otherwise. Examples are focus handling or
- * functionality that depends on the actual visibility.
+ * Marks a {@code TestCase} as an integration test.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Inherited
-public @interface UITestCase {
+public @interface IntegrationTestCase {
 
 }

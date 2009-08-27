@@ -13,6 +13,8 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
@@ -20,8 +22,6 @@ import org.eclipse.riena.navigation.ui.controllers.ModuleController;
 import org.eclipse.riena.navigation.ui.controllers.ModuleGroupController;
 import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleDesc;
 import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupDesc;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.UITestCase;
 
 /**
  * Testcase for NavigationViewFactory

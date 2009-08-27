@@ -19,10 +19,10 @@ import org.osgi.framework.BundleContext;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.attachment.Attachment;
 import org.eclipse.riena.communication.core.factory.Register;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.ManualTestCase;
 
 /**
  * This Testclass sends large byte streams to the Attachment Service and other

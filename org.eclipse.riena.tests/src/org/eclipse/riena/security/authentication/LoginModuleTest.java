@@ -17,11 +17,11 @@ import javax.security.auth.login.LoginException;
 import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
 
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.authentication.callbackhandler.TestLocalCallbackHandler;
 import org.eclipse.riena.security.authentication.module.TestLocalLoginModule;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 @NonUITestCase
 public class LoginModuleTest extends RienaTestCase {

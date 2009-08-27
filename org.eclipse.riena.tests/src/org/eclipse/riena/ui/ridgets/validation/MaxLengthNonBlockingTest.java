@@ -12,7 +12,7 @@ package org.eclipse.riena.ui.ridgets.validation;
 
 import org.eclipse.core.runtime.IStatus;
 
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MaxLengthNonBlocking;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;

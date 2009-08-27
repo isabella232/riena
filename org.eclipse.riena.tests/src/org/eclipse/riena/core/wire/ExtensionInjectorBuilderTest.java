@@ -15,9 +15,9 @@ import java.lang.reflect.Method;
 import org.eclipse.riena.core.injector.extension.ExtensionInjector;
 import org.eclipse.riena.core.injector.extension.IData;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.core.wire.ExtensionInjectorBuilder;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test the {@code ExtensionInjectorBuilder}.

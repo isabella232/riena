@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.tests;
+package org.eclipse.riena.internal.ui.swt.test;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;

@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 

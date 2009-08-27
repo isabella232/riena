@@ -16,7 +16,7 @@ import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 import com.ibm.icu.util.BuddhistCalendar;
 

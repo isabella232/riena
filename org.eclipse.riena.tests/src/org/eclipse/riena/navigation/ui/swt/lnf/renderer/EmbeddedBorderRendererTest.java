@@ -12,7 +12,8 @@ package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+
 import org.eclipse.swt.graphics.Rectangle;
 
 /**

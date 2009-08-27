@@ -19,11 +19,11 @@ import org.eclipse.equinox.security.auth.LoginContextFactory;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.Register;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.IntegrationTestCase;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.authentication.callbackhandler.TestLocalCallbackHandler;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.IntegrationTestCase;
 
 /**
  * @author campo

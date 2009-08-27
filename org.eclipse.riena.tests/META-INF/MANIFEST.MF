@@ -34,8 +34,7 @@ Require-Bundle: org.eclipse.core.databinding,
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
 Export-Package: org.eclipse.riena.internal.ui.ridgets.swt,
- org.eclipse.riena.tests,
- org.eclipse.riena.tests.collect
+ org.eclipse.riena.tests
 Import-Package: com.ibm.icu.util,
  org.easymock,
  org.eclipse.equinox.security.auth;version="1.0.0",

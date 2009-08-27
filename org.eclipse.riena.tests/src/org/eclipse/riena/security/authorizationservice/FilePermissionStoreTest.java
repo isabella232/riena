@@ -21,9 +21,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.xml.sax.SAXException;
 
 @NonUITestCase

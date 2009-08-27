@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.menus.CommandContributionItem;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**

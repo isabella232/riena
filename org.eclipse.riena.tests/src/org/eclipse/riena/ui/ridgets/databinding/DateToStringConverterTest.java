@@ -14,7 +14,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Tests for the classes {@link DateToStringConverter} and

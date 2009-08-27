@@ -15,8 +15,9 @@ import java.io.File;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.Platform;
+
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test the {@code RienaLocations} class.

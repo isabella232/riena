@@ -8,34 +8,23 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.tests;
+package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
-import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
+import org.eclipse.riena.ui.ridgets.IActionListener;
 
 /**
- * SelectionListener for test purposes
+ * {@link IActionListener} test fixture, that counts how many times the
+ * {@link #callback()} method has been invoked.
  */
-public class TestSelectionListener implements ISelectionListener {
+public final class FTActionListener implements IActionListener {
 
 	private int count;
-	private SelectionEvent selectionEvent;
-
-	public void setSelectionEvent(SelectionEvent e) {
-		this.selectionEvent = e;
-	}
-
-	public SelectionEvent getSelectionEvent() {
-		return selectionEvent;
-	}
 
 	public int getCount() {
 		return count;
 	}
 
-	public void ridgetSelected(SelectionEvent e) {
-		setSelectionEvent(e);
+	public void callback() {
 		count++;
 	}
-
 }

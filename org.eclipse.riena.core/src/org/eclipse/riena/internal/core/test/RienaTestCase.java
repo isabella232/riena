@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.tests;
+package org.eclipse.riena.internal.core.test;
 
 import java.io.File;
 import java.io.InputStream;
@@ -45,11 +45,12 @@ import org.eclipse.riena.core.util.Nop;
  * @author campo
  * 
  */
+// this is for org.eclipse.core.internal.registry.ExtensionRegistry
 @SuppressWarnings("restriction")
 public abstract class RienaTestCase extends TestCase {
 
 	// Keep track of services and and corresponding service references.
-	private Map<Object, ServiceReference> services = new HashMap<Object, ServiceReference>();
+	private final Map<Object, ServiceReference> services = new HashMap<Object, ServiceReference>();
 	// Do not access this field directly! Use the getter getContext() because this does a lazy initialization.
 	private BundleContext context;
 	private boolean print;
@@ -130,7 +131,7 @@ public abstract class RienaTestCase extends TestCase {
 				Bundle bundle = FrameworkUtil.getBundle(getClass());
 				context = bundle.getBundleContext();
 			} catch (Throwable t) {
-				Nop.reason("We don´t care. Maybe it is not running as a plugin test.");
+				Nop.reason("We don´t care. Maybe it is not running as a plugin test."); //$NON-NLS-1$
 			}
 		}
 		return context;
@@ -150,7 +151,7 @@ public abstract class RienaTestCase extends TestCase {
 		// intended behavior.
 		URL url = getClass().getResource(resource);
 		// nested File constructors for OS independence...
-		return new File(new File(new File("").getAbsolutePath(), "src"), url.getFile());
+		return new File(new File(new File("").getAbsolutePath(), "src"), url.getFile()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -356,10 +357,7 @@ public abstract class RienaTestCase extends TestCase {
 				} else {
 					if (bundle.getState() != Bundle.UNINSTALLED) {
 						Nop
-								.reason("testcase tried to stop this bundle which did not run, but we can ignore this ==> bundle is stopped already");
-						//						throw new RuntimeException(
-						//								"can't stop required bundle because it is not ACTIVE and not UNINSTALLED : " //$NON-NLS-1$
-						//										+ bundle.getSymbolicName());
+								.reason("testcase tried to stop this bundle which did not run, but we can ignore this ==> bundle is stopped already"); //$NON-NLS-1$
 					}
 				}
 			}
@@ -410,10 +408,10 @@ public abstract class RienaTestCase extends TestCase {
 			try {
 				added.await(1, TimeUnit.SECONDS);
 				if (added.getCount() == 1) {
-					System.err.println("Expected extension/point ´added´ has not be called.");
+					System.err.println("Expected extension/point ´added´ has not be called."); //$NON-NLS-1$
 				}
 			} catch (InterruptedException e) {
-				TestCase.fail("CountDownLatch failed with. " + e);
+				TestCase.fail("CountDownLatch failed with. " + e); //$NON-NLS-1$
 			}
 		}
 
@@ -421,10 +419,10 @@ public abstract class RienaTestCase extends TestCase {
 			try {
 				extensionRemoved.await(1, TimeUnit.SECONDS);
 				if (extensionRemoved.getCount() == 1) {
-					System.err.println("Expected extension ´removed´ has not be called.");
+					System.err.println("Expected extension ´removed´ has not be called."); //$NON-NLS-1$
 				}
 			} catch (InterruptedException e) {
-				TestCase.fail("CountDownLatch failed with. " + e);
+				TestCase.fail("CountDownLatch failed with. " + e); //$NON-NLS-1$
 			}
 		}
 
@@ -432,10 +430,10 @@ public abstract class RienaTestCase extends TestCase {
 			try {
 				extensionPointRemoved.await(1, TimeUnit.SECONDS);
 				if (extensionPointRemoved.getCount() == 1) {
-					System.err.println("Expected extension point ´removed´ has not be called.");
+					System.err.println("Expected extension point ´removed´ has not be called."); //$NON-NLS-1$
 				}
 			} catch (InterruptedException e) {
-				TestCase.fail("CountDownLatch failed with. " + e);
+				TestCase.fail("CountDownLatch failed with. " + e); //$NON-NLS-1$
 			}
 		}
 

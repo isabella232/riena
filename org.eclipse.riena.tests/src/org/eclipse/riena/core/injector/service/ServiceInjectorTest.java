@@ -14,8 +14,9 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceRegistration;
 

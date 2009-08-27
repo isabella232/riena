@@ -12,10 +12,10 @@ package org.eclipse.riena.navigation;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Tests of the class {@link NavigationNodeUtility}.
