@@ -25,6 +25,7 @@ import org.eclipse.equinox.security.auth.LoginContextFactory;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.Register;
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.model.Customer;
@@ -70,11 +71,10 @@ public class AuthorizationServiceITest extends RienaTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		// TODO Auto-generated method stub
-		super.tearDown();
 		authenticationServiceRegistration.unregister();
 		authorizationServiceRegistration.unregister();
 		customerServiceRegistration.unregister();
+		super.tearDown();
 	}
 
 	public void testLoginWithUserWithRights() throws Exception {
@@ -86,16 +86,12 @@ public class AuthorizationServiceITest extends RienaTestCase {
 
 		secureContext.login();
 
-		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
-		IAuthenticationService as = (IAuthenticationService) getContext().getService(ref);
+		IAuthenticationService as = Service.get(IAuthenticationService.class);
 		System.out.println("subject:" + secureContext.getSubject());
 		System.out.println("login in sucessful");
-		//		ISessionHolderService shs = (ISessionHolderService) getContext().getService(
-		//				getContext().getServiceReference(ISessionHolderService.class.getName()));
 
 		// call the customerService
-		ICustomerSearch cs = (ICustomerSearch) getContext().getService(
-				getContext().getServiceReference(ICustomerSearch.class.getName()));
+		ICustomerSearch cs = Service.get(ICustomerSearch.class);
 		Customer cust = new Customer();
 		cust.setLastName("Solo");
 		cust.setFirstName("Han");
