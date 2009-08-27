@@ -150,7 +150,6 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 
 		// Border
-
 		Color borderColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR,
 				LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR,
 				LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
