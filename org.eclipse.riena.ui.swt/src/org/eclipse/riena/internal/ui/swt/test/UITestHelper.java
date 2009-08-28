@@ -42,7 +42,7 @@ public final class UITestHelper {
 	public static void readAndDispatch(Widget control) {
 		Display display = control.getDisplay();
 		while (display.readAndDispatch()) {
-			Nop.reason("keep going");
+			Nop.reason("keep going"); //$NON-NLS-1$
 		}
 	}
 
@@ -89,7 +89,7 @@ public final class UITestHelper {
 				display.readAndDispatch();
 			} catch (SWTException exc) {
 				// swallow this kind of exception
-				if (!exc.toString().contains("Workbench has not been created yet.")) {
+				if (!exc.toString().contains("Workbench has not been created yet.")) { //$NON-NLS-1$
 					throw exc;
 				}
 			}
@@ -179,7 +179,7 @@ public final class UITestHelper {
 			try {
 				Thread.sleep(millis);
 			} catch (InterruptedException iex) {
-				Nop.reason("ignore");
+				Nop.reason("ignore"); //$NON-NLS-1$
 			}
 		}
 

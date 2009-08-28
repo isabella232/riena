@@ -72,10 +72,10 @@ public final class TestUtils {
 	public static void assertMessageCount(IMarkable ridget, Class markerType, int count) {
 		Collection<IMessageMarker> collection = ridget.getMarkersOfType(markerType);
 		if (count != collection.size()) {
-			System.out.println(String.format("assertion failed on message count -- expected %d, got %d:", count,
+			System.out.println(String.format("assertion failed on message count -- expected %d, got %d:", count, //$NON-NLS-1$
 					collection.size()));
 			for (IMessageMarker messageMarker : collection) {
-				System.out.println("\t" + messageMarker.getMessage());
+				System.out.println("\t" + messageMarker.getMessage()); //$NON-NLS-1$
 			}
 		}
 		Assert.assertEquals(count, collection.size());
@@ -101,7 +101,7 @@ public final class TestUtils {
 			IMessageMarker marker = iter.next();
 			wasFound = message.equals(marker.getMessage());
 		}
-		Assert.assertEquals(String.format("Message '%s'", message), true, wasFound);
+		Assert.assertEquals(String.format("Message '%s'", message), true, wasFound); //$NON-NLS-1$
 	}
 
 	/**
@@ -184,7 +184,7 @@ public final class TestUtils {
 	 * Returns true if the Arab locale ("ar_AE") is available.
 	 */
 	public static boolean isArabLocaleAvailable() {
-		Locale arabLocale = new Locale("ar", "AE");
+		Locale arabLocale = new Locale("ar", "AE"); //$NON-NLS-1$  //$NON-NLS-2$
 		for (Locale availableLocale : Locale.getAvailableLocales()) {
 			if (availableLocale.equals(arabLocale)) {
 				return true;
@@ -223,7 +223,7 @@ public final class TestUtils {
 	@SuppressWarnings("unchecked")
 	public static void printMarkers(IMarkable markable) {
 		Collection<IMarker> markers = (Collection<IMarker>) markable.getMarkers();
-		System.out.println(String.format("Have %d markers::", markers.size()));
+		System.out.println(String.format("Have %d markers::", markers.size())); //$NON-NLS-1$
 		for (IMarker m : markers) {
 			System.out.println(m.toString());
 		}
@@ -240,7 +240,7 @@ public final class TestUtils {
 	private static void checkSelection(Text control, String input) {
 		int start = input.indexOf('^');
 		int end = input.lastIndexOf('^');
-		String expected = "";
+		String expected = ""; //$NON-NLS-1$
 		if (start < end) {
 			expected = input.substring(start + 1, end);
 		}

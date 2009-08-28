@@ -29,7 +29,7 @@ import org.eclipse.riena.core.util.Iter;
  */
 public final class TestCollector {
 
-	private static final String PLUS = " + ";
+	private static final String PLUS = " + "; //$NON-NLS-1$
 
 	private TestCollector() {
 		// utility
@@ -72,20 +72,20 @@ public final class TestCollector {
 	 */
 	public static TestSuite createTestSuiteWith(final Bundle bundle, final Package withinPackage, boolean subPackages,
 			final Class<? extends Annotation>... annotationClasses) {
-		StringBuilder bob = new StringBuilder("Tests within bundle '").append(bundle.getSymbolicName()).append(
-				"' and package '");
-		bob.append(withinPackage == null ? "all" : withinPackage.getName()).append("'").append(" recursive '").append(
-				subPackages).append("'");
-		bob.append(" and restricted to '");
+		StringBuilder bob = new StringBuilder("Tests within bundle '").append(bundle.getSymbolicName()).append( //$NON-NLS-1$
+				"' and package '"); //$NON-NLS-1$
+		bob.append(withinPackage == null ? "all" : withinPackage.getName()).append("'").append(" recursive '").append( //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				subPackages).append("'"); //$NON-NLS-1$
+		bob.append(" and restricted to '"); //$NON-NLS-1$
 		for (Class<? extends Annotation> annotationClass : annotationClasses) {
 			bob.append(annotationClass.getSimpleName()).append(PLUS);
 		}
 		if (annotationClasses.length > 0) {
 			bob.setLength(bob.length() - PLUS.length());
 		} else {
-			bob.append("none");
+			bob.append("none"); //$NON-NLS-1$
 		}
-		bob.append("'.");
+		bob.append("'."); //$NON-NLS-1$
 		TestSuite suite = new TestSuite(bob.toString());
 		for (Class<? extends TestCase> clazz : collectWith(bundle, withinPackage, subPackages, annotationClasses)) {
 			suite.addTestSuite(clazz);
@@ -161,7 +161,7 @@ public final class TestCollector {
 		List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
 
 		for (Class<? extends TestCase> testClass : collect(bundle, withinPackage, true)) {
-			if (!testClass.getName().endsWith("Test")) {
+			if (!testClass.getName().endsWith("Test")) { //$NON-NLS-1$
 				testClasses.add(testClass);
 			}
 		}
@@ -185,20 +185,20 @@ public final class TestCollector {
 	public static List<Class<? extends TestCase>> collect(final Bundle bundle, final Package withinPackage,
 			boolean subPackages) {
 		List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
-		Enumeration<URL> allClasses = bundle.findEntries("", "*.class", true);
+		Enumeration<URL> allClasses = bundle.findEntries("", "*.class", true); //$NON-NLS-1$ //$NON-NLS-2$
 		for (URL entryURL : Iter.able(allClasses)) {
 			String url = entryURL.toExternalForm();
-			if (url.contains("$")) {
+			if (url.contains("$")) { //$NON-NLS-1$
 				// Skip inner classes
 				continue;
 			}
 			Class<?> clazz = getClass(bundle, entryURL);
 			if (clazz == null) {
-				trace("Could not get class name from ", url);
+				trace("Could not get class name from ", url); //$NON-NLS-1$
 				continue;
 			}
 			if (!TestCase.class.isAssignableFrom(clazz)) {
-				trace("Not a TestCase: ", clazz.getName());
+				trace("Not a TestCase: ", clazz.getName()); //$NON-NLS-1$
 				continue;
 			}
 			String className = clazz.getName();
@@ -208,7 +208,7 @@ public final class TestCollector {
 						continue;
 					}
 				} else {
-					if (!className.equals(withinPackage.getName() + "." + clazz.getSimpleName())) {
+					if (!className.equals(withinPackage.getName() + "." + clazz.getSimpleName())) { //$NON-NLS-1$
 						continue;
 					}
 				}
@@ -225,7 +225,7 @@ public final class TestCollector {
 	}
 
 	private static Class<?> getClass(Bundle bundle, URL entryURL) {
-		String entry = entryURL.toExternalForm().replace(".class", "").replace('/', '.');
+		String entry = entryURL.toExternalForm().replace(".class", "").replace('/', '.'); //$NON-NLS-1$ //$NON-NLS-2$
 		// Brute force detecting of how many chars we have to skip to find a class within the url
 		String name = entry;
 		int dot = 0;
