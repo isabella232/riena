@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+/**
+ * @since 1.2
+ */
 public class StartupNodeInfo implements Comparable<StartupNodeInfo> {
 
 	private final Level level;

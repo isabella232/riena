@@ -17,6 +17,8 @@ import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 
 /**
  * Keys of the look and feel of riena.
+ * 
+ * 
  */
 public final class LnfKeyConstants {
 
@@ -48,7 +50,13 @@ public final class LnfKeyConstants {
 	public static final String DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_2 = "DialogTitleBar.backgroundBottomColor2"; //$NON-NLS-1$
 	public static final String DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_3 = "DialogTitleBar.backgroundBottomColor3"; //$NON-NLS-1$
 
+	/**
+	 * @since 1.2
+	 */
 	public static final String SUB_APPLICATION_SWITCHER_ACTIVE_FOREGROUND = "SubApplicationSwitcher.foreground"; //$NON-NLS-1$
+	/**
+	 * @since 1.2
+	 */
 	public static final String SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND = "SubApplicationSwitcher.passiveForeground"; //$NON-NLS-1$
 	@Deprecated
 	public static final String SUB_APPLICATION_SWITCHER_FOREGROUND = SUB_APPLICATION_SWITCHER_ACTIVE_FOREGROUND;
@@ -97,8 +105,14 @@ public final class LnfKeyConstants {
 	public static final String STATUSLINE_UI_PROCESS_LIST_BACKGROUND = "statusline.uiProcessListBackground"; //$NON-NLS-1$
 
 	public static final String GRAB_CORNER_BACKGROUND = "grabCorner.background"; //$NON-NLS-1$
+	/**
+	 * @since 1.2
+	 */
 	public static final String MANDATORY_MARKER_BACKGROUND = "mandatoryMarker.background"; //$NON-NLS-1$
 
+	/**
+	 * @since 1.2
+	 */
 	public static final String OUTPUT_MARKER_BACKGROUND = "outputMarker.background"; //$NON-NLS-1$
 
 	/**
@@ -164,8 +178,17 @@ public final class LnfKeyConstants {
 	public static final String SUB_MODULE_TREE_FOLDER_OPEN_ICON = "subModuleTreeFolderOpen.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_FOLDER_CLOSED_ICON = "subModuleTreeFolderClosed.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_DOCUMENT_LEAF_ICON = "subModuleTreeDocumentLeaf.icon"; //$NON-NLS-1$
+	/**
+	 * @since 1.2
+	 */
 	public static final String SUB_MODULE_TREE_ERROR_MARKER_ICON = "subModuleTreeErrorMarker.icon"; //$NON-NLS-1$
+	/**
+	 * @since 1.2
+	 */
 	public static final String SUB_MODULE_TREE_MANDATORY_MARKER_ICON = MandatoryMarker.MARKER_KEY;
+	/**
+	 * @since 1.2
+	 */
 	public static final String SUB_MODULE_TREE_PROCESSED_FINISHED_MARKER_ICON = UIProcessFinishedMarker.MARKER_KEY;
 
 	public static final String EMBEDDED_TITLEBAR_CLOSE_ICON = "EmbeddedTitlebar.closeIcon"; //$NON-NLS-1$
@@ -189,7 +212,13 @@ public final class LnfKeyConstants {
 	public static final String SHELL_HIDE_OS_BORDER = "Shell.hideOsBorder"; //$NON-NLS-1$
 
 	public static final String TITLELESS_SHELL_PADDING = "TitlelessShell.padding"; //$NON-NLS-1$
+	/**
+	 * @since 1.2
+	 */
 	public static final String TITLELESS_SHELL_NAVIGATION_HORIZONTAL_GAP = "TitlelessShellNavigationHorizontal.gap"; //$NON-NLS-1$
+	/**
+	 * @since 1.2
+	 */
 	public static final String TITLELESS_SHELL_SUB_MODULE_HORIZONTAL_GAP = "TitlelessShellSubModuleHorizontal.gap"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION = "TitlelessShell.horizontalLogoPosition"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_VERTICAL_LOGO_POSITION = "TitlelessShell.verticalLogoPosition"; //$NON-NLS-1$
@@ -207,26 +236,59 @@ public final class LnfKeyConstants {
 	public static final String SUB_APPLICATION_SWITCHER_HEIGHT = "SubApplicationSwitcher.height"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION = "SubApplicationSwitcher.horizontalTabPosition"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON = "SubApplicationSwitcher.tabShowIcon"; //$NON-NLS-1$
+	/**
+	 * @since 1.2
+	 */
 	public static final String SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH = "SubApplicationSwitcher.tabMinWidth"; //$NON-NLS-1$
 
 	public static final String SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY = "SubModuleItemToolTip.popupDelay"; //$NON-NLS-1$
 
+	/**
+	 * @since 1.2
+	 */
 	public static final String NAVIGATION_WIDTH = "navigation.width"; //$NON-NLS-1$
 
+	/**
+	 * @since 1.2
+	 */
 	public static final String TOOLBAR_WORK_AREA_VERTICAL_GAP = "toolbar.workarea.vertical.gap"; //$NON-NLS-1$
 
+	/**
+	 * @since 1.2
+	 */
 	public static final String STATUSLINE_HEIGHT = "statusline.height"; //$NON-NLS-1$
 
 	public static final String MODULE_ITEM_TOOLTIP_POPUP_DELAY = "ModuleItemToolTip.popupDelay"; //$NON-NLS-1$
 
+	/**
+	 * @since 1.2
+	 */
 	public static final String NAVIGATION_SUB_MODULE_GAP = "NavigationSubModule.gap"; //$NON-NLS-1$
+	/**
+	 * @since 1.2
+	 */
 	public static final String MENUBAR_TOP_MARGIN = "Menubar.topMargin"; //$NON-NLS-1$
+	/**
+	 * @since 1.2
+	 */
 	public static final String TOOLBAR_TOP_MARGIN = "Toolbar.topMargin"; //$NON-NLS-1$
 
+	/**
+	 * @since 1.2
+	 */
 	public static final String ERROR_MARKER_HORIZONTAL_POSITION = "errorMarker.horizontalPosition"; //$NON-NLS-1$
+	/**
+	 * @since 1.2
+	 */
 	public static final String ERROR_MARKER_VERTICAL_POSITION = "errorMarker.verticalPosition"; //$NON-NLS-1$
+	/**
+	 * @since 1.2
+	 */
 	public static final String ERROR_MARKER_MARGIN = "errorMarker.margin"; //$NON-NLS-1$
 
+	/**
+	 * @since 1.2
+	 */
 	public static final String FONTDESCRIPTOR_DEFAULT_HEIGHT = "FontDescriptor.defaultHeight"; //$NON-NLS-1$
 
 	/**
@@ -251,6 +313,9 @@ public final class LnfKeyConstants {
 	public static final String SUB_MODULE_VIEW_TITLEBAR_RENDERER = "SubModuleView.titlebarRenderer"; //$NON-NLS-1$
 	public static final String SUB_MODULE_VIEW_BORDER_RENDERER = "SubModuleView.borderRenderer"; //$NON-NLS-1$
 
+	/**
+	 * @since 1.2
+	 */
 	public static final String SUB_MODULE_VIEW_SEPARATOR_LINE_RENDERER = "SubModuleView.separatorLineRenderer"; //$NON-NLS-1$
 
 	private LnfKeyConstants() {

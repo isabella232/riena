@@ -114,6 +114,9 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	 * 
 	 * @see org.eclipse.riena.navigation.ISubModuleNode#isSelectable()
 	 */
+	/**
+	 * @since 1.2
+	 */
 	public boolean isSelectable() {
 		return selectable;
 	}
@@ -122,6 +125,9 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	 * (non-Javadoc)
 	 * 
 	 * @see org.eclipse.riena.navigation.ISubModuleNode#setSelectable(boolean)
+	 */
+	/**
+	 * @since 1.2
 	 */
 	public void setSelectable(boolean folderNode) {
 		this.selectable = folderNode;

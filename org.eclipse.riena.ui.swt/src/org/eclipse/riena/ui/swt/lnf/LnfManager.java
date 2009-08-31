@@ -28,6 +28,9 @@ public final class LnfManager {
 
 	private static RienaDefaultLnf lnf;
 
+	/**
+	 * @since 1.2
+	 */
 	public static void setDefaultLnf(RienaDefaultLnf parmDefaultLnfClazz) {
 		defaultLnfClass = parmDefaultLnfClazz;
 	}

@@ -52,6 +52,7 @@ public class NavigationArgument {
 	 * @param parameter
 	 * @param ridgetId
 	 *            requestFocus on a ridget
+	 * @since 1.2
 	 */
 	public NavigationArgument(Object parameter, String ridgetId) {
 		this(parameter);
@@ -73,6 +74,7 @@ public class NavigationArgument {
 	 * @param parameter
 	 * @param argumentListener
 	 * @param parentNodeId
+	 * @since 1.2
 	 */
 	public NavigationArgument(Object parameter, NavigationNodeId parentNodeId, String ridgetId) {
 		super();
@@ -93,6 +95,10 @@ public class NavigationArgument {
 		this.updateListener = updateListener;
 	}
 
+	/**
+	 * @return
+	 * @since 1.2
+	 */
 	public String getRidgetId() {
 		return ridgetId;
 	}

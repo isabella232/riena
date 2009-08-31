@@ -15,6 +15,8 @@ import org.eclipse.riena.internal.objecttransaction.impl.ObjectTransactionManage
 /**
  * ObjectTransactionManager
  * 
+ * @since 1.2
+ * 
  */
 public final class ObjectTransactionManager {
 

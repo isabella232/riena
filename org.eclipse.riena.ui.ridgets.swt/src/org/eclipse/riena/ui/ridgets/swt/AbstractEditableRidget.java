@@ -49,6 +49,8 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * Returns the given status object, without the ERROR_BLOCK_WITH_FLASH
 	 * status code which is downgraded to ERROR_ALLOW_WITH_MESSAGE. Other status
 	 * codes are not modified.
+	 * 
+	 * @since 1.2
 	 */
 	protected static final IStatus suppressBlock(IStatus... statuses) {
 		IStatus status = ValidationRuleStatus.join(statuses);
@@ -216,6 +218,8 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * Subclasses invoking the checkXXX methods of
 	 * {@link AbstractEditableRidget} may use instances of this class to update
 	 * the valdiation state of the ridget.
+	 * 
+	 * @since 1.2
 	 */
 	protected final class ValidationCallback implements IValidationCallback {
 

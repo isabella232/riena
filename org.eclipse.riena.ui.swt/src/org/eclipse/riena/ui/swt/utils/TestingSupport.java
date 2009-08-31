@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.swt.utils;
 
 /**
  * Utility class for UI testing
+ * 
+ * @since 1.2
  */
 public final class TestingSupport {
 

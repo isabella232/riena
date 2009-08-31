@@ -278,6 +278,9 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		return moduleGroupNodesToViews.get(source);
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public ModuleView getModuleViewForNode(IModuleNode source) {
 		return moduleNodesToViews.get(source);
 	}

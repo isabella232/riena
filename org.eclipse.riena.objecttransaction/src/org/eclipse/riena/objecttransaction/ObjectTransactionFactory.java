@@ -15,6 +15,8 @@ import org.eclipse.riena.internal.objecttransaction.impl.ObjectTransactionFactor
 /**
  * Accessor that gives access to the ObjectTransactionFactory
  * 
+ * @since 1.2
+ * 
  */
 public final class ObjectTransactionFactory {
 

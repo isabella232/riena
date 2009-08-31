@@ -18,6 +18,8 @@ import org.eclipse.riena.navigation.INavigationNodeProvider;
 
 /**
  * Convenience access to the configured {@code INavigationNodeProvider}.
+ * 
+ * @since 1.2
  */
 public final class NavigationNodeProvider {
 
@@ -35,6 +37,9 @@ public final class NavigationNodeProvider {
 		//	utility
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public static INavigationNodeProvider getInstance() {
 		return NAVIGATION_NODE_PROVIDER.getProvider();
 	}
@@ -54,6 +59,7 @@ public final class NavigationNodeProvider {
 	 *            Array containing all currently available navigation node
 	 *            provider implementations. This may change over time as plugins
 	 *            are activated or deactivated
+	 * @since 1.2
 	 */
 	@InjectExtension(id = INavigationNodeProviderExtension.EXTENSION_POINT_ID)
 	public void update(INavigationNodeProviderExtension[] availableExtensions) {
@@ -78,6 +84,9 @@ public final class NavigationNodeProvider {
 		}
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	@ExtensionInterface
 	public interface INavigationNodeProviderExtension {
 

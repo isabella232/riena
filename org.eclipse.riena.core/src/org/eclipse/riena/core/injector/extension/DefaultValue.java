@@ -26,6 +26,8 @@ import java.lang.annotation.Target;
  * 
  * <b>Note: </b>This should only be used for value types not for specifying
  * classes or sub elements.
+ * 
+ * @since 1.2
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

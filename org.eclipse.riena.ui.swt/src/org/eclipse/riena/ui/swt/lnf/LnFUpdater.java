@@ -54,6 +54,9 @@ public class LnFUpdater {
 	private final static Map<Class<? extends Control>, Map<String, Object>> DEFAULT_PROPERTY_VALUES = new Hashtable<Class<? extends Control>, Map<String, Object>>();
 	private final static List<Class<? extends Control>> CONTROLS_AFTER_BIND = new ArrayList<Class<? extends Control>>();
 
+	/**
+	 * @since 1.2
+	 */
 	public static void addControlsAfterBind(Class<? extends Control> controlClass) {
 
 		if (!CONTROLS_AFTER_BIND.contains(controlClass)) {

@@ -204,6 +204,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * control over the workarea layout.
 	 * 
 	 * @param parent
+	 * @since 1.2
 	 */
 	protected void createWorkarea(Composite parent) {
 		basicCreatePartControl(parent);
@@ -215,6 +216,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * {@link #basicCreatePartControl(Composite)}
 	 * 
 	 * @param parent
+	 * @since 1.2
 	 */
 	protected void afterBasicCreatePartControl(Composite parent) {
 

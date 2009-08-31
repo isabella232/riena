@@ -47,6 +47,8 @@ import org.eclipse.riena.navigation.StartupNodeInfo.Level;
 /**
  * This class provides service methods to get information provided by
  * WorkAreaDefinitions.
+ * 
+ * @since 1.2
  */
 public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IAssemblerProvider {
 

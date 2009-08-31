@@ -159,6 +159,9 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		bindToModel(listHolder, listPropertyName, rowClass, columns, null);
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public void bindToModel(Object listHolder, String listPropertyName) {
 		bindToModel(listHolder, listPropertyName, Object.class, new String[] {}, null);
 	}

@@ -394,10 +394,16 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		this.label = label;
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public boolean isActive() {
 		return active;
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public void setActive(boolean active) {
 		this.active = active;
 	}

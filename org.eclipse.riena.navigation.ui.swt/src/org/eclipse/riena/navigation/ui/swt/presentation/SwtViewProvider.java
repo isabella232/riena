@@ -35,6 +35,7 @@ public class SwtViewProvider {
 	 * Gets the singleton SwtViewProvider.
 	 * 
 	 * @return
+	 * @since 1.2
 	 */
 	public static SwtViewProvider getInstance() {
 		return SWT_VIEW_PROVIDER;

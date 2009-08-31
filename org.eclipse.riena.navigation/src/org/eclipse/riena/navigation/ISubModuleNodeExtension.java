@@ -79,6 +79,7 @@ public interface ISubModuleNodeExtension extends INodeExtension {
 	 * true.
 	 * 
 	 * @return true if selectable, otherwise false
+	 * @since 1.2
 	 */
 	@DefaultValue("true")
 	boolean isSelectable();

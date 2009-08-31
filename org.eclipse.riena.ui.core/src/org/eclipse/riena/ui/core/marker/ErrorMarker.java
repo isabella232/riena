@@ -32,6 +32,7 @@ public class ErrorMarker extends AbstractMarker implements IIconizableMarker {
 	 * @param unique
 	 *            true to create a 'unique' marker; false otherwise. See
 	 *            {@link AbstractMarker} more information.
+	 * @since 1.2
 	 */
 	protected ErrorMarker(boolean unique) {
 		super(unique);

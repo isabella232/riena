@@ -34,6 +34,7 @@ public interface INavigationNodeProvider {
 	 * Return a sorted list of startup nodes.
 	 * 
 	 * @return
+	 * @since 1.2
 	 */
 	List<StartupNodeInfo> getSortedStartupNodeInfos();
 

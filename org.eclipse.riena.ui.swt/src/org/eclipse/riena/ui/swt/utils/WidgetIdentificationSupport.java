@@ -21,6 +21,8 @@ import org.eclipse.riena.internal.ui.swt.Activator;
 
 /**
  * Helper class for setting 'rienaid' on widgets.
+ * 
+ * @since 1.2
  */
 public final class WidgetIdentificationSupport {
 

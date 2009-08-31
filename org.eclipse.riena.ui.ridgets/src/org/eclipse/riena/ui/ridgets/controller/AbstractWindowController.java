@@ -20,6 +20,7 @@ import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
 /**
  * Controller for a view that is or has a window.
+ * 
  */
 public abstract class AbstractWindowController implements IController, IContext {
 
@@ -92,6 +93,9 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 * org.eclipse.riena.internal.ui.core.context.IContext#setContext(java.lang
 	 * .String, java.lang.Object)
 	 */
+	/**
+	 * @since 1.2
+	 */
 	public void setContext(String key, Object value) {
 		context.put(key, value);
 	}
@@ -102,6 +106,9 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 * @see
 	 * org.eclipse.riena.internal.ui.core.context.IContext#getContext(java.lang
 	 * .String)
+	 */
+	/**
+	 * @since 1.2
 	 */
 	public Object getContext(String key) {
 		return context.get(key);

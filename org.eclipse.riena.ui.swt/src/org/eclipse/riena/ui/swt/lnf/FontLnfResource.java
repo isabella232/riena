@@ -63,6 +63,7 @@ public class FontLnfResource extends AbstractLnfResource {
 	 * Returns the font data of this font resource.
 	 * 
 	 * @return font data
+	 * @since 1.2
 	 */
 	public FontData getFontData() {
 		return fontData;

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component id="org.eclipse.riena.security.common" version="2">
+<resource path="META-INF/MANIFEST.MF">
+<filter id="923795461">
+<message_arguments>
+<message_argument value="1.2.0.qualifier"/>
+<message_argument value="1.1.0.0"/>
+</message_arguments>
+</filter>
+</resource>
+<resource path="src/org/eclipse/riena/security/common/BasicAuthenticationCallHook.java" type="org.eclipse.riena.security.common.BasicAuthenticationCallHook">
+<filter id="338792546">
+<message_arguments>
+<message_argument value="org.eclipse.riena.security.common.BasicAuthenticationCallHook"/>
+<message_argument value="unbind(ISubjectHolderService)"/>
+</message_arguments>
+</filter>
+<filter id="338792546">
+<message_arguments>
+<message_argument value="org.eclipse.riena.security.common.BasicAuthenticationCallHook"/>
+<message_argument value="bind(ISubjectHolderService)"/>
+</message_arguments>
+</filter>
+</resource>
+<resource path="src/org/eclipse/riena/security/common/authentication/RemoteLoginProxy.java" type="org.eclipse.riena.security.common.authentication.RemoteLoginProxy">
+<filter id="338792546">
+<message_arguments>
+<message_argument value="org.eclipse.riena.security.common.authentication.RemoteLoginProxy"/>
+<message_argument value="bind(ISubjectHolderService)"/>
+</message_arguments>
+</filter>
+<filter id="338792546">
+<message_arguments>
+<message_argument value="org.eclipse.riena.security.common.authentication.RemoteLoginProxy"/>
+<message_argument value="unbind(ISubjectHolderService)"/>
+</message_arguments>
+</filter>
+</resource>
+<resource path="src/org/eclipse/riena/security/common/authentication/SimplePrincipal.java" type="org.eclipse.riena.security.common.authentication.SimplePrincipal">
+<filter id="338722907">
+<message_arguments>
+<message_argument value="org.eclipse.riena.security.common.authentication.SimplePrincipal"/>
+<message_argument value="SimplePrincipal()"/>
+</message_arguments>
+</filter>
+<filter id="338792546">
+<message_arguments>
+<message_argument value="org.eclipse.riena.security.common.authentication.SimplePrincipal"/>
+<message_argument value="setName(String)"/>
+</message_arguments>
+</filter>
+</resource>
+</component>

@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation;
 
-
 /**
  * Non-blocking 'maximum length' validation rule.
  * <p>
  * This rule will flag strings that exceed a certain length as 'not valid' but
  * will not block user input.
+ * 
+ * @since 1.2
  */
 public class MaxLengthNonBlocking extends MaxLength {
 

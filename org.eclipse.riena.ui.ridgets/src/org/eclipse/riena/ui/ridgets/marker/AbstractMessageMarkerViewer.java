@@ -42,6 +42,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 	 * @param separator
 	 *            a String for separating the message markers; never null
 	 * @return string with all messages
+	 * @since 1.2
 	 */
 	public static String constructMessage(Collection<IMessageMarker> messageMarker, String separator) {
 		Assert.isNotNull(separator);
@@ -113,6 +114,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 	 * message.
 	 * 
 	 * @return separator
+	 * @since 1.2
 	 */
 	protected abstract String getMessageSeparator();
 

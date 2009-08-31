@@ -42,6 +42,9 @@ public class MaxLength implements IValidator, IExecutableExtension {
 		this(length, true);
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	protected MaxLength(int length, boolean isBlocking) {
 		this.maxLength = length;
 		this.isBlocking = isBlocking;

@@ -23,7 +23,7 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * 'roots visible' setting changed ({@value} ).
 	 * 
 	 * @see #getRootsVisible();
-	 * @since 1.2.0
+	 * @since 1.2
 	 */
 	String PROPERTY_ROOTS_VISIBLE = "rootsVisible"; //$NON-NLS-1$
 

@@ -24,6 +24,7 @@ public interface ISubModuleNode extends INavigationNode<ISubModuleNode>,
 	 * is not selectable, then the first child will be selected in navigation.
 	 * 
 	 * @return true if selectable, otherwise false
+	 * @since 1.2
 	 */
 	boolean isSelectable();
 
@@ -31,6 +32,7 @@ public interface ISubModuleNode extends INavigationNode<ISubModuleNode>,
 	 * Sets the selectable-state of this Node.
 	 * 
 	 * @param selectable
+	 * @since 1.2
 	 */
 	void setSelectable(boolean selectable);
 }

@@ -81,6 +81,9 @@ public abstract class AbstractApplication implements IApplication {
 		return applicationModel;
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	protected void createStartupNodes(IApplicationNode applicationNode) {
 		INavigationNodeProvider navigationNodeProvider = NavigationNodeProvider.getInstance();
 		List<StartupNodeInfo> startups = navigationNodeProvider.getSortedStartupNodeInfos();

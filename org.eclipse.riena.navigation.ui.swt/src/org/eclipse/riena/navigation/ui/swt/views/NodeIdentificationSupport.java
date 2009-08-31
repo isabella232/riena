@@ -19,6 +19,8 @@ import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
 /**
  * Helper class for setting 'rienaid' on widgets, that are related to riena
  * nodes.
+ * 
+ * @since 1.2
  */
 public final class NodeIdentificationSupport {
 

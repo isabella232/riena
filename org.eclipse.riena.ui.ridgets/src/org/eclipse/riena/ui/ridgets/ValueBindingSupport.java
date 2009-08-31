@@ -372,6 +372,7 @@ public class ValueBindingSupport {
 	 * @param status
 	 *            an IStatus instance with the aggregate status; never null
 	 * @see IValidationCallback
+	 * @since 1.2
 	 */
 	public void updateValidationStatus(IStatus status) {
 		updateValidationStatus(NO_ERRORS_RULE, status);
@@ -387,6 +388,7 @@ public class ValueBindingSupport {
 	 * @param status
 	 *            an IStatus instance; never null
 	 * @see IValidationCallback
+	 * @since 1.2
 	 */
 	public void updateValidationStatus(IValidator validationRule, IStatus status) {
 		// trace("updating rule " + validationRule + " with " + status);

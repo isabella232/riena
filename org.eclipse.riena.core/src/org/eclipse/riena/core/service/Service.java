@@ -31,6 +31,8 @@ import org.eclipse.riena.internal.core.Activator;
  * <p>
  * <b>Note:</b> This class can be used where it is not (easily) possible to use
  * the service injector.
+ * 
+ * @since 1.2
  */
 public final class Service {
 

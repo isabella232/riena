@@ -270,6 +270,9 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * @see org.eclipse.riena.navigation.IContext#setContext(java.lang.String,
 	 * java.lang.Object)
 	 */
+	/**
+	 * @since 1.2
+	 */
 	public void setContext(String key, Object value) {
 		Assert.isNotNull(getNavigationNode(), "NavigationNode may not be null"); //$NON-NLS-1$
 		getNavigationNode().setContext(key, value);
@@ -279,6 +282,9 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * (non-Javadoc)
 	 * 
 	 * @see org.eclipse.riena.navigation.IContext#getContext(java.lang.String)
+	 */
+	/**
+	 * @since 1.2
 	 */
 	public Object getContext(String key) {
 		Assert.isNotNull(getNavigationNode(), "NavigationNode may not be null"); //$NON-NLS-1$

@@ -34,10 +34,16 @@ public class BasicAuthenticationCallHook implements ICallHook {
 		Inject.service(ISubjectHolder.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public void bind(ISubjectHolder subjectHolderService) {
 		this.subjectHolder = subjectHolderService;
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public void unbind(ISubjectHolder subjectHolderService) {
 		this.subjectHolder = null;
 	}

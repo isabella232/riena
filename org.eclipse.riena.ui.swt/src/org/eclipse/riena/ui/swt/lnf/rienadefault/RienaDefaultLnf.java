@@ -257,6 +257,7 @@ public class RienaDefaultLnf {
 	 * @return the font to which this map maps the specified key with differing
 	 *         height and style, or <code>null</code> if the map contains no
 	 *         mapping for this lnfKeyConstants key.
+	 * @since 1.2
 	 */
 	public Font getFont(String key, int height, int style) {
 		FontDescriptor fontDescriptor = new FontDescriptor(key, height, style, this);
@@ -331,6 +332,7 @@ public class RienaDefaultLnf {
 	 *            - value to return, if no value is set
 	 * @return the setting to which this setting maps the specified key, or the
 	 *         default value if the map contains no mapping for this key.
+	 * @since 1.2
 	 */
 	public Integer getIntegerSetting(String key, Integer defaultValue) {
 		Integer value = getIntegerSetting(key);
@@ -359,6 +361,7 @@ public class RienaDefaultLnf {
 	 *            - key whose associated setting is to be returned.
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>false</code> if the map contains no mapping for this key.
+	 * @since 1.2
 	 */
 	public Boolean getBooleanSetting(String key, boolean defalutValue) {
 		Object value = getSetting(key);

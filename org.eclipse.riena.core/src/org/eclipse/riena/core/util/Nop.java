@@ -13,6 +13,8 @@ package org.eclipse.riena.core.util;
 /**
  * Provide a simple solution for documenting empty code blocks, e.g. empty
  * try-catch clauses.
+ * 
+ * @since 1.2
  */
 public final class Nop {
 

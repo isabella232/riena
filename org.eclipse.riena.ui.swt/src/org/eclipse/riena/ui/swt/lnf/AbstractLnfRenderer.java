@@ -93,6 +93,7 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 	 * 
 	 * @param gc
 	 *            - graphics context
+	 * @since 1.2
 	 */
 	protected void initGC(GC gc) {
 

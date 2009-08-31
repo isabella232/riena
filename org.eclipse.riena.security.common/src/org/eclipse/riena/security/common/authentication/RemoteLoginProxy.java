@@ -52,10 +52,16 @@ public class RemoteLoginProxy {
 		}
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public void bind(ISubjectHolder subjectHolderService) {
 		this.subjectHolder = subjectHolderService;
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public void unbind(ISubjectHolder subjectHolderService) {
 		if (this.subjectHolder == subjectHolderService) {
 			this.subjectHolder = null;
