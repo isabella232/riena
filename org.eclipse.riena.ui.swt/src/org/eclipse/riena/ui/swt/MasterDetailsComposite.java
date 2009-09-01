@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
@@ -122,6 +123,59 @@ public class MasterDetailsComposite extends Composite implements IComplexCompone
 	}
 
 	/**
+	 * Add a control to the list of 'bound' controls. These controls will be
+	 * bound to ridgets by the framework.
+	 * 
+	 * @param uiControl
+	 *            the UI control to bind; never null
+	 * @param bindingId
+	 *            a non-empty non-null bindind id for the control. Must be
+	 *            unique within this composite
+	 * @see #getUIControls()
+	 */
+	public final void addUIControl(Object uiControl, String bindingId) {
+		Assert.isNotNull(uiControl);
+		Assert.isNotNull(bindingId);
+		controls.add(uiControl);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(uiControl, bindingId);
+	}
+
+	/**
+	 * Asks the user to confirm discarding a dirty "details" area.
+	 * <p>
+	 * This implementation will show a blocking dialog. Subclasses may overwrite
+	 * this method without calling super, to change the standard behavior.
+	 * Examples: (a) opening a customized dialog, (b) returning true without
+	 * asking the user.
+	 * 
+	 * @return true to discard changes, false to keep changes
+	 * @since 1.2
+	 */
+	public boolean confirmDiscardChanges() {
+		String title = Messages.MasterDetailsComposite_dialogMessage_confirmDiscard;
+		String message = Messages.MasterDetailsComposite_dialogTitle_confirmDiscard;
+		boolean result = MessageDialog.openQuestion(getShell(), title, message);
+		return result;
+	}
+
+	/**
+	 * Informs the user that apply failed for the given {@code reason}.
+	 * <p>
+	 * This implementation will show a blocking dialog. Subclasses may overwrite
+	 * this method without calling super, to change the standard behavior.
+	 * 
+	 * @param reason
+	 *            A string describing why apply failed; never null
+	 * 
+	 * @since 1.2
+	 */
+	public void warnApplyFailed(String reason) {
+		Assert.isNotNull(reason);
+		String title = Messages.MasterDetailsComposite_dialogTitle_applyFailed;
+		MessageDialog.openWarning(getShell(), title, reason);
+	}
+
+	/**
 	 * Return the 'Apply' button.
 	 * 
 	 * @return a Button instance; never null.
@@ -168,24 +222,6 @@ public class MasterDetailsComposite extends Composite implements IComplexCompone
 
 	public final List<Object> getUIControls() {
 		return Collections.unmodifiableList(controls);
-	}
-
-	/**
-	 * Add a control to the list of 'bound' controls. These controls will be
-	 * bound to ridgets by the framework.
-	 * 
-	 * @param uiControl
-	 *            the UI control to bind; never null
-	 * @param bindingId
-	 *            a non-empty non-null bindind id for the control. Must be
-	 *            unique within this composite
-	 * @see #getUIControls()
-	 */
-	public final void addUIControl(Object uiControl, String bindingId) {
-		Assert.isNotNull(uiControl);
-		Assert.isNotNull(bindingId);
-		controls.add(uiControl);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(uiControl, bindingId);
 	}
 
 	/**

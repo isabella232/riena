@@ -17,9 +17,14 @@ import org.eclipse.osgi.util.NLS;
  */
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.riena.ui.swt.messages"; //$NON-NLS-1$
+
 	public static String MasterDetailsComposite_buttonApply;
 	public static String MasterDetailsComposite_buttonNew;
 	public static String MasterDetailsComposite_buttonRemove;
+	public static String MasterDetailsComposite_dialogMessage_confirmDiscard;
+	public static String MasterDetailsComposite_dialogTitle_confirmDiscard;
+	public static String MasterDetailsComposite_dialogTitle_applyFailed;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

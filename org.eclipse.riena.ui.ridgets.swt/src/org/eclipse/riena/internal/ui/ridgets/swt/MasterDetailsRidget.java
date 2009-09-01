@@ -25,12 +25,10 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
@@ -108,6 +106,23 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	public void setUIControl(Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, MasterDetailsComposite.class);
 		super.setUIControl(uiControl);
+		if (uiControl != null) {
+			// TODO [ev] experimental code:
+			//			final Table table = ((MasterDetailsComposite) uiControl).getTable();
+			//			table.addSelectionListener(new SelectionAdapter() {
+			//				private int oldIndex = -1;
+			//
+			//				public void widgetSelected(SelectionEvent e) {
+			//					if (oldIndex > 4) {
+			//						System.out.println("oldIndex= " + oldIndex + " new: " + oldIndex);
+			//						table.setSelection(oldIndex);
+			//					} else {
+			//						System.out.println("oldIndex= " + oldIndex + " new: " + table.getSelectionIndex());
+			//						oldIndex = table.getSelectionIndex();
+			//					}
+			//				}
+			//			});
+		}
 	}
 
 	public void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass,
@@ -243,33 +258,22 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		boolean result = true;
 		boolean isChanged = delegate.isChanged(editable, delegate.getWorkingCopy());
 		if (isChanged) {
-			result = confirmOverwriteDetails();
+			result = getUIControl().confirmDiscardChanges();
 		}
 		return result;
 	}
 
 	private boolean canApply() {
-		String result = delegate.isValid(this);
-		if (result != null) {
-			Shell shell = getUIControl().getShell();
-			String title = Messages.MasterDetailsRidget_dialogTitle_applyFailed;
-			String message = title + " " + result; //$NON-NLS-1$
-			MessageDialog.openWarning(shell, title, message);
+		String reason = delegate.isValid(this);
+		if (reason != null) {
+			getUIControl().warnApplyFailed(reason);
 		}
-		return result == null;
+		return reason == null;
 	}
 
 	private void clearSelection() {
 		updateDetails(delegate.createWorkingCopy());
 		editable = null;
-	}
-
-	private boolean confirmOverwriteDetails() {
-		Shell shell = getUIControl().getShell();
-		String title = "Confirm";
-		String message = "Details are modified. Ok to clear?";
-		boolean result = MessageDialog.openQuestion(shell, title, message);
-		return result;
 	}
 
 	private ITableRidget getTableRidget() {
