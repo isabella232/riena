@@ -118,14 +118,11 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	public String getID() {
-
 		if (getUIControl() != null) {
 			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 			return locator.locateBindingProperty(getUIControl());
 		}
-
 		return null;
-
 	}
 
 	public void requestFocus() {
@@ -145,7 +142,6 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	public final void setVisible(boolean visible) {
-
 		if (hiddenMarker == null) {
 			hiddenMarker = new HiddenMarker();
 		}
@@ -155,7 +151,6 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		} else {
 			addMarker(hiddenMarker);
 		}
-
 	}
 
 	public final void setToolTipText(String toolTipText) {
@@ -181,13 +176,10 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	/////////////////////////////////////////////////////////
 
 	/**
-	 * <p>
 	 * Performs checks on the control about to be bound by this ridget.
-	 * </p>
 	 * <p>
 	 * Implementors must make sure the given <tt>uiControl</tt> has the expected
 	 * type.
-	 * </p>
 	 * 
 	 * @param uiControl
 	 *            a {@link Widget} instance or null
@@ -197,25 +189,19 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	abstract protected void checkUIControl(Object uiControl);
 
 	/**
-	 * <p>
 	 * Bind the current <tt>uiControl</tt> to the ridget.
-	 * </p>
 	 * <p>
 	 * Implementors must call {@link #getUIControl()} to obtain the current
 	 * control. If the control is non-null they must do whatever necessary to
 	 * bind it to the ridget.
-	 * </p>
 	 */
 	abstract protected void bindUIControl();
 
 	/**
-	 * <p>
 	 * Unbind the current <tt>uiControl</tt> from the ridget.
-	 * </p>
 	 * <p>
 	 * Implementors ensure they dispose the control-to-ridget binding and
 	 * dispose any data structures that are not necessary in an unbound state.
-	 * </p>
 	 */
 	abstract protected void unbindUIControl();
 
