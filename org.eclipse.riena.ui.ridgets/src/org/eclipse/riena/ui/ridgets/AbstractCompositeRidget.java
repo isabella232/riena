@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.core.databinding.BindingException;
+
 import org.eclipse.riena.ui.common.IComplexComponent;
 
 /**
@@ -88,12 +90,56 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 			throw new UIBindingFailure("uiControl of a AbstractCompositeRidget must be a IComplexComponent but was a " //$NON-NLS-1$
 					+ uiControl.getClass().getSimpleName());
 		}
+		checkUIControl(uiControl);
+		unbindUIControl();
 		// save state
 		this.savedVisibleState = getUIControl() != null ? isUIControlVisible() : savedVisibleState;
 		this.uiControl = (IComplexComponent) uiControl;
 		updateVisible();
 		updateEnabled();
 		updateToolTipText();
+		bindUIControl();
+	}
+
+	/**
+	 * Performs checks on the control about to be bound by this ridget.
+	 * <p>
+	 * Implementors must make sure the given <tt>uiControl</tt> has the expected
+	 * type.
+	 * 
+	 * @param uiControl
+	 *            a {@link Widget} instance or null
+	 * @throws BindingException
+	 *             if the <tt>uiControl</tt> fails the check
+	 * @since 1.2
+	 */
+	protected void checkUIControl(Object uiControl) {
+		// implementors should overwrite
+	}
+
+	/**
+	 * Bind the current <tt>uiControl</tt> to the ridget.
+	 * <p>
+	 * Implementors must call {@link #getUIControl()} to obtain the current
+	 * control. If the control is non-null they must do whatever necessary to
+	 * bind it to the ridget.
+	 * 
+	 * @since 1.2
+	 */
+	protected void bindUIControl() {
+		// implementors should overwrite
+	}
+
+	/**
+	 * Unbind the current <tt>uiControl</tt> from the ridget.
+	 * <p>
+	 * Implementors ensure they dispose the control-to-ridget binding and
+	 * dispose any data structures that are not necessary in an unbound state.
+	 * 
+	 * @since 1.2
+	 */
+	protected void unbindUIControl() {
+		// implementors should overwrite
 	}
 
 	public void addRidget(String id, IRidget ridget) {

@@ -28,6 +28,9 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -50,6 +53,7 @@ import org.eclipse.riena.ui.swt.MasterDetailsComposite;
  */
 public class MasterDetailsRidget extends AbstractCompositeRidget implements IMasterDetailsRidget {
 
+	private final SelectionListener checkDirtyDetails;
 	private IObservableList rowObservables;
 
 	private IMasterDetailsDelegate delegate;
@@ -66,6 +70,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	private List<IMarkableRidget> detailRidgets;
 
 	public MasterDetailsRidget() {
+		checkDirtyDetails = new CheckDirtyDetails();
 		addPropertyChangeListener(null, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (delegate == null
@@ -76,7 +81,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(evt.getPropertyName())) {
 					return;
 				}
-				boolean isChanged = delegate.isChanged(editable, delegate.getWorkingCopy());
+				boolean isChanged = areDetailsChanged();
 				// System.out.println(isChanged + " : " + evt.getPropertyName() + " " + evt.getNewValue());
 				getApplyButtonRidget().setEnabled(isChanged);
 			}
@@ -103,25 +108,25 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	@Override
-	public void setUIControl(Object uiControl) {
+	protected void checkUIControl(Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, MasterDetailsComposite.class);
-		super.setUIControl(uiControl);
-		if (uiControl != null) {
-			// TODO [ev] experimental code:
-			//			final Table table = ((MasterDetailsComposite) uiControl).getTable();
-			//			table.addSelectionListener(new SelectionAdapter() {
-			//				private int oldIndex = -1;
-			//
-			//				public void widgetSelected(SelectionEvent e) {
-			//					if (oldIndex > 4) {
-			//						System.out.println("oldIndex= " + oldIndex + " new: " + oldIndex);
-			//						table.setSelection(oldIndex);
-			//					} else {
-			//						System.out.println("oldIndex= " + oldIndex + " new: " + table.getSelectionIndex());
-			//						oldIndex = table.getSelectionIndex();
-			//					}
-			//				}
-			//			});
+	}
+
+	@Override
+	protected void bindUIControl() {
+		MasterDetailsComposite control = getUIControl();
+		if (control != null) {
+			Table table = control.getTable();
+			table.addSelectionListener(checkDirtyDetails);
+		}
+	}
+
+	@Override
+	protected void unbindUIControl() {
+		MasterDetailsComposite control = getUIControl();
+		if (control != null) {
+			Table table = control.getTable();
+			table.removeSelectionListener(checkDirtyDetails);
 		}
 	}
 
@@ -242,6 +247,10 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	// helping methods
 	//////////////////
 
+	private boolean areDetailsChanged() {
+		return editable != null && delegate.isChanged(editable, delegate.getWorkingCopy());
+	}
+
 	private void assertIsBoundToModel() {
 		if (rowObservables == null) {
 			throw new BindingException("ridget not bound to model"); //$NON-NLS-1$
@@ -256,7 +265,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	private boolean canAdd() {
 		boolean result = true;
-		boolean isChanged = delegate.isChanged(editable, delegate.getWorkingCopy());
+		boolean isChanged = areDetailsChanged();
 		if (isChanged) {
 			result = getUIControl().confirmDiscardChanges();
 		}
@@ -385,6 +394,34 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	// helping classes
 	//////////////////
 
+	/**
+	 * If the details area is dirty, it will ask for confirmation when changing
+	 * selection.
+	 * <p>
+	 * Implementation note: because of we are notified after the selection
+	 * change the listener will revert to the previous selection, if
+	 * confirmation is denied. This will <b>not</b> result in clearing the
+	 * details area.
+	 */
+	private final class CheckDirtyDetails extends SelectionAdapter {
+		int oldIndex = -1; // single selection 
+
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			Table table = (Table) e.widget;
+			if (oldIndex > -1 && areDetailsChanged()) {
+				if (!getUIControl().confirmDiscardChanges()) {
+					table.setSelection(oldIndex);
+				}
+			}
+			oldIndex = table.getSelectionIndex();
+		}
+	}
+
+	/**
+	 * Ensures the table widget has the correct number of columns and layout
+	 * settings.
+	 */
 	private static final class TablePreparer implements ITableRidgetDelegate {
 		public void prepareTable(Table control, int expectedCols) {
 			int actualCols = control.getColumnCount() == 0 ? 1 : control.getColumnCount();
