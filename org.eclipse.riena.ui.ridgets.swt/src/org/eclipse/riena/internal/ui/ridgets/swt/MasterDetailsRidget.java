@@ -30,7 +30,6 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -53,7 +52,7 @@ import org.eclipse.riena.ui.swt.MasterDetailsComposite;
  */
 public class MasterDetailsRidget extends AbstractCompositeRidget implements IMasterDetailsRidget {
 
-	private final SelectionListener checkDirtyDetails;
+	private final DirtyDetailsChecker dirtyDetailsChecker;
 	private IObservableList rowObservables;
 
 	private IMasterDetailsDelegate delegate;
@@ -70,7 +69,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	private List<IMarkableRidget> detailRidgets;
 
 	public MasterDetailsRidget() {
-		checkDirtyDetails = new CheckDirtyDetails();
+		dirtyDetailsChecker = new DirtyDetailsChecker();
 		addPropertyChangeListener(null, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (delegate == null
@@ -117,7 +116,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		MasterDetailsComposite control = getUIControl();
 		if (control != null) {
 			Table table = control.getTable();
-			table.addSelectionListener(checkDirtyDetails);
+			table.addSelectionListener(dirtyDetailsChecker);
 		}
 	}
 
@@ -126,7 +125,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		MasterDetailsComposite control = getUIControl();
 		if (control != null) {
 			Table table = control.getTable();
-			table.removeSelectionListener(checkDirtyDetails);
+			table.removeSelectionListener(dirtyDetailsChecker);
 		}
 	}
 
@@ -332,6 +331,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	 * Non API; public for testing only.
 	 */
 	public void handleAdd() {
+		dirtyDetailsChecker.clearSavedSelection();
 		getTableRidget().clearSelection();
 		editable = delegate.createWorkingCopy();
 		setEnabled(false, true);
@@ -403,18 +403,23 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	 * confirmation is denied. This will <b>not</b> result in clearing the
 	 * details area.
 	 */
-	private final class CheckDirtyDetails extends SelectionAdapter {
+	private final class DirtyDetailsChecker extends SelectionAdapter {
 		int oldIndex = -1; // single selection 
 
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			Table table = (Table) e.widget;
-			if (oldIndex > -1 && areDetailsChanged()) {
+			if (areDetailsChanged()) {
 				if (!getUIControl().confirmDiscardChanges()) {
 					table.setSelection(oldIndex);
+					return;
 				}
 			}
 			oldIndex = table.getSelectionIndex();
+		}
+
+		void clearSavedSelection() {
+			oldIndex = -1;
 		}
 	}
 
