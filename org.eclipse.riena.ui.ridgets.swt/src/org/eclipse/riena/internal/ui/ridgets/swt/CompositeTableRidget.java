@@ -192,12 +192,12 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
 			Class<? extends Object> rowRidgetClass) {
 		IObservableList rowBeansObservables;
-		if (AbstractSWTWidgetRidget.isBean(rowBeanClass)) {
+		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			rowBeansObservables = BeansObservables.observeList(listHolder, listPropertyName);
 		} else {
 			rowBeansObservables = PojoObservables.observeList(listHolder, listPropertyName);
 		}
-		bindToModel(rowBeansObservables, rowBeanClass, rowRidgetClass);
+		bindToModel(rowBeansObservables, rowClass, rowRidgetClass);
 	}
 
 	@Override

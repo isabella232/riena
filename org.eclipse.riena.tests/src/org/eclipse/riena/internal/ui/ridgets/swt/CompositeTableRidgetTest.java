@@ -21,17 +21,20 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.nebula.widgets.compositetable.ResizableGridRowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
@@ -93,6 +96,31 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	public void testRidgetMapping() {
 		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(CompositeTableRidget.class, mapper.getRidgetClass(getWidget()));
+	}
+
+	public void testBindToModelWithListHolder() {
+		Shell shell = new Shell(SWT.SYSTEM_MODAL | SWT.ON_TOP);
+		try {
+			shell.setLayout(new RowLayout(SWT.VERTICAL));
+			CompositeTable widget = (CompositeTable) createWidget(shell);
+
+			ICompositeTableRidget ridget = (ICompositeTableRidget) createRidget();
+			ridget.setUIControl(widget);
+
+			MyModel model = new MyModel();
+			ridget.bindToModel(model, "persons", Person.class, RowRidget.class);
+			ridget.updateFromModel();
+
+			shell.setSize(130, 100);
+			shell.setLocation(0, 0);
+			shell.open();
+			UITestHelper.readAndDispatch(getWidget());
+
+			assertNotNull(widget.getRowControls());
+			assertEquals(model.getPersons().size(), widget.getRowControls().length);
+		} finally {
+			shell.dispose();
+		}
 	}
 
 	@Override
@@ -702,6 +730,14 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 			Person p1 = (Person) o1;
 			Person p2 = (Person) o2;
 			return p1.getLastname().compareTo(p2.getLastname());
+		}
+	}
+
+	private static class MyModel {
+		private List<Person> persons = PersonFactory.createPersonList();
+
+		public List<Person> getPersons() {
+			return persons;
 		}
 	}
 
