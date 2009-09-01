@@ -50,6 +50,9 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static final String KEY_LNF_STYLE = "lnfStyle"; //$NON-NLS-1$
+	/**
+	 * @since 1.2
+	 */
 	public static final String LNF_STYLE_SECTION_LABEL = "sectionLabel"; //$NON-NLS-1$
 	public static final String KEY_TYPE = "type"; //$NON-NLS-1$
 	public static final String TYPE_NUMERIC = "numeric"; //$NON-NLS-1$

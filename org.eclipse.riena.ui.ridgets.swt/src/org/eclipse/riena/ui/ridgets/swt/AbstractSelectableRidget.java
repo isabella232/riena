@@ -66,7 +66,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @since 1.2
+	 * @since 2.0
 	 */
 	public void addSelectionListener(ISelectionListener selectionListener) {
 		Assert.isNotNull(selectionListener, "selectionListener is null"); //$NON-NLS-1$
@@ -148,7 +148,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @since 1.2
+	 * @since 2.0
 	 */
 	public void removeSelectionListener(ISelectionListener selectionListener) {
 		if (selectionListeners != null) {

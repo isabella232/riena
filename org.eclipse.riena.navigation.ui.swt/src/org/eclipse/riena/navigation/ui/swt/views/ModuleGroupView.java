@@ -88,6 +88,9 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 		return null;
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	@Override
 	public boolean setFocus() {
 		// accept focus is this group is the active group

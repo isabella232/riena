@@ -80,7 +80,7 @@ public abstract class DialogView extends RienaDialog {
 
 	/**
 	 * @return
-	 * @since 1.2
+	 * @since 2.0
 	 */
 	public AbstractWindowController getController() {
 		return controlledViewDelegate.getController();
@@ -116,7 +116,7 @@ public abstract class DialogView extends RienaDialog {
 	}
 
 	/**
-	 * @since 1.2
+	 * @since 2.0
 	 */
 	protected Shell getParentShell() {
 		return parentShell;

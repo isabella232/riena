@@ -188,6 +188,9 @@ public class MasterDetailsComposite extends Composite implements IComplexCompone
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(uiControl, bindingId);
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	@Override
 	public void setBackground(Color color) {
 		master.setBackground(color);

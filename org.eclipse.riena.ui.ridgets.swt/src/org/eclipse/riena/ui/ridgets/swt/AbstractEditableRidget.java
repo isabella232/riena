@@ -50,7 +50,7 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * status code which is downgraded to ERROR_ALLOW_WITH_MESSAGE. Other status
 	 * codes are not modified.
 	 * 
-	 * @since 1.2
+	 * @since 2.0
 	 */
 	protected static final IStatus suppressBlock(IStatus... statuses) {
 		IStatus status = ValidationRuleStatus.join(statuses);
@@ -132,7 +132,7 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * @return an IStatus with the most severe validation result; IStatus.isOK()
 	 *         indicates valdiation success or failure.
 	 * @see ValidationCallback
-	 * @since 1.2
+	 * @since 2.0
 	 */
 	protected final IStatus checkAllRules(Object value, IValidationCallback callback) {
 		ValueBindingSupport vbs = getValueBindingSupport();
@@ -150,7 +150,7 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * @return an IStatus with the most severe validation result; IStatus.isOK()
 	 *         indicates validation success or failure.
 	 * @see ValidationCallback
-	 * @since 1.2
+	 * @since 2.0
 	 */
 	protected final IStatus checkOnEditRules(Object value, IValidationCallback callback) {
 		ValueBindingSupport vbs = getValueBindingSupport();
@@ -168,7 +168,7 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * @return an IStatus with the most severe validation result; IStatus.isOK()
 	 *         indicates valdiation success or failure.
 	 * @see ValidationCallback
-	 * @since 1.2
+	 * @since 2.0
 	 */
 	protected final IStatus checkOnUpdateRules(Object value, IValidationCallback callback) {
 		ValueBindingSupport vbs = getValueBindingSupport();
@@ -219,7 +219,7 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * {@link AbstractEditableRidget} may use instances of this class to update
 	 * the valdiation state of the ridget.
 	 * 
-	 * @since 1.2
+	 * @since 2.0
 	 */
 	protected final class ValidationCallback implements IValidationCallback {
 

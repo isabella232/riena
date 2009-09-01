@@ -19,6 +19,8 @@ import org.eclipse.core.runtime.AssertionFailedException;
 /**
  * Utility class for getting and setting properties according to the
  * PropertyDescriptor
+ * 
+ * @since 1.2
  */
 public final class BeanPropertyUtils {
 
