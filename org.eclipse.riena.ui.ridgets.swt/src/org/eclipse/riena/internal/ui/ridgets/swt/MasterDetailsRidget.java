@@ -133,7 +133,9 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 		getNewButtonRidget().addListener(new IActionListener() {
 			public void callback() {
-				handleAdd();
+				if (canAdd()) {
+					handleAdd();
+				}
 			}
 		});
 		getRemoveButtonRidget().addListener(new IActionListener() {
@@ -237,6 +239,15 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		dbc.bindValue(BeansObservables.observeValue(ridget, IRidget.PROPERTY_ENABLED), value, null, null);
 	}
 
+	private boolean canAdd() {
+		boolean result = true;
+		boolean isChanged = delegate.isChanged(editable, delegate.getWorkingCopy());
+		if (isChanged) {
+			result = confirmOverwriteDetails();
+		}
+		return result;
+	}
+
 	private boolean canApply() {
 		String result = delegate.isValid(this);
 		if (result != null) {
@@ -251,6 +262,14 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	private void clearSelection() {
 		updateDetails(delegate.createWorkingCopy());
 		editable = null;
+	}
+
+	private boolean confirmOverwriteDetails() {
+		Shell shell = getUIControl().getShell();
+		String title = "Confirm";
+		String message = "Details are modified. Ok to clear?";
+		boolean result = MessageDialog.openQuestion(shell, title, message);
+		return result;
 	}
 
 	private ITableRidget getTableRidget() {
