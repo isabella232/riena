@@ -12,6 +12,8 @@ package org.eclipse.riena.navigation.ui.swt.lnf;
 
 import junit.framework.TestCase;
 
+import org.osgi.framework.FrameworkUtil;
+
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -25,51 +27,58 @@ public class LnfManagerTest extends TestCase {
 
 	/**
 	 * Test of the method <code>getLnfClassName()</code>.
-	 * 
-	 * @throws Exception
-	 *             - handled by JUnit
 	 */
-	public void testGetLnfClassName() throws Exception {
+	public void testGetLnfClassNameAndGetLnfUnderDifferentConfigurations() {
 
-		String className = LnfManager.getLnfClassName();
-		assertEquals(RienaDefaultLnf.class.getName(), className);
+		// check for riena default L&F
+		assertEquals(RienaDefaultLnf.class.getName(), LnfManager.getLnfClassName());
+		assertEquals(RienaDefaultLnf.class, LnfManager.getLnf().getClass());
 
-		LnfManager.setLnf(Object.class.getName());
-		className = LnfManager.getLnfClassName();
-		assertEquals(Object.class.getName(), className);
+		// check for some other default L&F
+		RienaDefaultLnf otherDefaultLnf = new OtherDefaultTestLnf();
+		LnfManager.setDefaultLnf(otherDefaultLnf);
+		assertEquals(otherDefaultLnf.getClass().getName(), LnfManager.getLnfClassName());
+		assertEquals(otherDefaultLnf.getClass(), LnfManager.getLnf().getClass());
 
+		// check for non-default L&F set
+		LnfManager.setLnf(FrameworkUtil.getBundle(LnfManagerTest.class).getSymbolicName() + ":"
+				+ TestLnf1.class.getName());
+		assertEquals(TestLnf1.class.getName(), LnfManager.getLnfClassName());
+		assertEquals(TestLnf1.class, LnfManager.getLnf().getClass());
+
+		// check for clearing non-default L&F
 		LnfManager.setLnf((String) null);
-		className = LnfManager.getLnfClassName();
-		assertEquals(RienaDefaultLnf.class.getName(), className);
+		assertEquals(otherDefaultLnf.getClass().getName(), LnfManager.getLnfClassName());
+		assertEquals(otherDefaultLnf.getClass(), LnfManager.getLnf().getClass());
 
-	}
+		// check for system property L&F setting
+		System.setProperty("riena.lnf", FrameworkUtil.getBundle(LnfManagerTest.class).getSymbolicName() + ":"
+				+ TestLnf1.class.getName());
+		assertEquals(TestLnf1.class.getName(), LnfManager.getLnfClassName());
+		assertEquals(TestLnf1.class, LnfManager.getLnf().getClass());
 
-	/**
-	 * Test of the method <code>getLnf()</code>.
-	 * 
-	 * @throws Exception
-	 *             - handled by JUnit
-	 */
-	public void testGetLnf() throws Exception {
-
-		RienaDefaultLnf lnf = LnfManager.getLnf();
-		assertNotNull(lnf);
-		assertEquals(lnf.getClass().getName(), LnfManager.getLnfClassName());
-
+		// check for override of system property
+		LnfManager.setLnf(new TestLnf2());
+		assertEquals(TestLnf1.class.getName(), LnfManager.getLnfClassName());
+		assertEquals(TestLnf1.class, LnfManager.getLnf().getClass());
 	}
 
 	/**
 	 * Test of the method <code>dispose()</code>.
-	 * 
-	 * @throws Exception
 	 */
-	public void testDispose() throws Exception {
-
+	public void testDispose() {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		assertNotNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
 		LnfManager.dispose();
 		assertNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
-
 	}
 
+	public static class TestLnf1 extends RienaDefaultLnf {
+	};
+
+	public static class TestLnf2 extends RienaDefaultLnf {
+	};
+
+	public static class OtherDefaultTestLnf extends RienaDefaultLnf {
+	};
 }
