@@ -24,7 +24,6 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Tests of the class <code>RienaDefaultLnf</code>.
@@ -44,7 +43,8 @@ public class RienaDefaultLnfTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		lnf = LnfManager.getLnf();
+		lnf = new RienaDefaultLnf();
+		lnf.initialize();
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		lnf.setTheme(null);
-		LnfManager.dispose();
+		lnf.uninitialize();
 		lnf = null;
 	}
 
@@ -175,7 +175,7 @@ public class RienaDefaultLnfTest extends TestCase {
 		assertNotNull(color);
 
 		lnf.setTheme(new DummyTheme());
-		lnf = LnfManager.getLnf();
+		lnf.initialize();
 		assertTrue(color.isDisposed());
 
 	}
@@ -192,7 +192,7 @@ public class RienaDefaultLnfTest extends TestCase {
 		assertEquals(300, value.intValue());
 
 		lnf.setTheme(new DummyTheme());
-		lnf = LnfManager.getLnf();
+		lnf.initialize();
 		value = lnf.getIntegerSetting(INTEGER_KEY, 300);
 		assertEquals(INTEGER_VALUE.intValue(), value.intValue());
 
@@ -212,7 +212,7 @@ public class RienaDefaultLnfTest extends TestCase {
 		assertFalse(value);
 
 		lnf.setTheme(new DummyTheme());
-		lnf = LnfManager.getLnf();
+		lnf.initialize();
 		value = lnf.getBooleanSetting(BOOLEAN_KEY, false);
 		assertEquals(BOOLEAN_VALUE, value);
 
