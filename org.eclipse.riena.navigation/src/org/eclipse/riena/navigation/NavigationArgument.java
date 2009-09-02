@@ -11,13 +11,10 @@
 package org.eclipse.riena.navigation;
 
 /**
- * Contains additional information for a navigation passed on to the target node
- * and/or used during its creation.
+ * Contains additional navigation information that is passed on to the opened
+ * node during its creation.
  * 
  * @see INavigationNode#navigate(INavigationNodeId, NavigationArgument)
- */
-/**
- *
  */
 public class NavigationArgument {
 
@@ -42,6 +39,7 @@ public class NavigationArgument {
 
 	/**
 	 * @param parameter
+	 *            parameter object that is passed to the opened node.
 	 */
 	public NavigationArgument(Object parameter) {
 		super();
@@ -50,8 +48,10 @@ public class NavigationArgument {
 
 	/**
 	 * @param parameter
+	 *            parameter object that is passed to the opened node.
 	 * @param ridgetId
-	 *            requestFocus on a ridget
+	 *            ID of the ridget that will get the initial focus in the view
+	 *            associated with the opened node
 	 * @since 1.2
 	 */
 	public NavigationArgument(Object parameter, String ridgetId) {
@@ -61,8 +61,11 @@ public class NavigationArgument {
 
 	/**
 	 * @param parameter
-	 * @param argumentListener
+	 *            parameter object that is passed to the opened node.
 	 * @param parentNodeId
+	 *            overrides the parentTypeId specified for the containing
+	 *            assembly extension. The type of the specified parent node has
+	 *            to be identical to the type of the original node.
 	 */
 	public NavigationArgument(Object parameter, NavigationNodeId parentNodeId) {
 		super();
@@ -72,8 +75,14 @@ public class NavigationArgument {
 
 	/**
 	 * @param parameter
-	 * @param argumentListener
+	 *            parameter object that is passed to the opened node.
 	 * @param parentNodeId
+	 *            overrides the parentTypeId specified for the containing
+	 *            assembly extension. The type of the specified parent node has
+	 *            to be identical to the type of the original node.
+	 * @param ridgetId
+	 *            ID of the ridget that will get the initial focus in the view
+	 *            associated with the opened node
 	 * @since 1.2
 	 */
 	public NavigationArgument(Object parameter, NavigationNodeId parentNodeId, String ridgetId) {
@@ -85,8 +94,16 @@ public class NavigationArgument {
 
 	/**
 	 * @param parameter
+	 *            parameter object that is passed to the opened node.
 	 * @param updateListener
+	 *            the specified updateListener is informed about update changes
+	 *            using this NavigationArgument. The opened node can use
+	 *            fireValueChanged() to inform the caller about changes in the
+	 *            opened node on which the caller can react.
 	 * @param parentNodeId
+	 *            overrides the parentTypeId specified for the containing
+	 *            assembly extension. The type of the specified parent node has
+	 *            to be identical to the type of the original node.
 	 */
 	public NavigationArgument(Object parameter, IUpdateListener updateListener, NavigationNodeId parentNodeId) {
 		super();
@@ -96,7 +113,8 @@ public class NavigationArgument {
 	}
 
 	/**
-	 * @return
+	 * @return ID of the ridget that will get the initial focus in the view
+	 *         associated with the opened node
 	 * @since 1.2
 	 */
 	public String getRidgetId() {
@@ -104,25 +122,31 @@ public class NavigationArgument {
 	}
 
 	/**
-	 * @return the externalParameter
+	 * @return the parameter object that is passed to the opened node using this
+	 *         NavigationArgument.
 	 */
 	public Object getParameter() {
 		return parameter;
 	}
 
 	/**
-	 * @return the parentNodeId
+	 * @return the parentNodeId.
 	 */
 	public NavigationNodeId getParentNodeId() {
 		return parentNodeId;
 	}
 
+	/**
+	 * @return the update listener that will be informed about changes in the
+	 *         opened node when fireValueChanged is called.
+	 */
 	public IUpdateListener getUpdateListener() {
 		return updateListener;
 	}
 
 	/**
-	 * Value was changed, notify list
+	 * Notify the update listener of this NavigationArgument about changes in
+	 * the opened node.
 	 */
 	public void fireValueChanged(Object parameter) {
 		if (updateListener == null) {
@@ -130,4 +154,5 @@ public class NavigationArgument {
 		}
 		updateListener.handleUpdate(parameter);
 	}
+
 }
