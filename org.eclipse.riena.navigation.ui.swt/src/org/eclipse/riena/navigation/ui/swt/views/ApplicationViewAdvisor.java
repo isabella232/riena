@@ -411,12 +411,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * <li>the sub application switcher</li>
 	 * </ul>
 	 * 
-	 * @param parent
-	 *            the parent composite (non null)
+	 * @param parentShell
+	 *            - the parent shell (non null)
 	 * @return the title composite (never null)
 	 */
-	private Composite createTitleComposite(final Composite parent) {
-		Composite result = new Composite(parent, SWT.NONE);
+	private Composite createTitleComposite(final Shell parentShell) {
+		Composite result = new Composite(parentShell, SWT.NONE);
 
 		// force result's background into logo and switcher
 		result.setBackgroundMode(SWT.INHERIT_FORCE);
@@ -429,7 +429,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		int borderWidth = borderRenderer.getBorderWidth();
 		FormData data = new FormData();
-		data.top = new FormAttachment(parent, borderWidth);
+		data.top = new FormAttachment(parentShell, borderWidth);
 		data.left = new FormAttachment(0, borderWidth);
 		data.right = new FormAttachment(100, -borderWidth);
 		result.setLayoutData(data);
