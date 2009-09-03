@@ -16,11 +16,13 @@ import java.util.List;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -30,6 +32,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.BrowserRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ComboRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.CompositeTableRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.DateTextRidget;
@@ -37,6 +40,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.DateTimeRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.DecimalTextRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.EmbeddedTitleBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.LinkRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ListRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MasterDetailsRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
@@ -106,6 +110,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(Text.class, TextRidget.class);
 		addMapping(Label.class, LabelRidget.class);
 		addMapping(Table.class, TableRidget.class);
+		addMapping(Browser.class, BrowserRidget.class);
 		addMapping(Button.class, ToggleButtonRidget.class, SWT.CHECK);
 		addMapping(Button.class, ToggleButtonRidget.class, SWT.TOGGLE);
 		addMapping(Button.class, ToggleButtonRidget.class, SWT.RADIO);
@@ -115,23 +120,19 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(Combo.class, ComboRidget.class);
 		addMapping(DateTime.class, DateTimeRidget.class);
 		addMapping(org.eclipse.swt.widgets.List.class, ListRidget.class);
+		addMapping(Link.class, LinkRidget.class);
 		addMapping(Tree.class, TreeRidget.class, new TreeWithoutColumnsCondition());
 		addMapping(Tree.class, TreeTableRidget.class, new TreeWithColumnsCondition());
 		addMapping(Shell.class, ShellRidget.class);
 		addMapping(MessageBox.class, MessageBoxRidget.class);
 		addMapping(Statusline.class, StatuslineRidget.class);
 		addMapping(StatuslineNumber.class, StatuslineNumberRidget.class);
-		//		addMapping(StatuslineUIProcess.class, StatuslineUIProcessRidget.class);
 		addMapping(EmbeddedTitleBar.class, EmbeddedTitleBarRidget.class);
 		addMapping(ModuleTitleBar.class, ModuleTitleBarRidget.class);
 		addMapping(CompositeTable.class, CompositeTableRidget.class);
 		addMapping(MasterDetailsComposite.class, MasterDetailsRidget.class);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#addMapping(java.lang.Class,
-	 *      java.lang.Class)
-	 */
 	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
 		Mapping mapping = new Mapping(controlClazz, ridgetClazz);
 		mappings.add(mapping);
@@ -184,9 +185,6 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		mappings.add(mapping);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#getRidgetClass(java.lang.Class)
-	 */
 	public Class<? extends IRidget> getRidgetClass(Class<? extends Object> controlClazz) {
 		for (Mapping mapping : mappings) {
 			if (mapping.isMatching(controlClazz)) {
@@ -196,9 +194,6 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		throw new BindingException("No Ridget class defined for widget class " + controlClazz.getSimpleName()); //$NON-NLS-1$
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#getRidgetClass(java.lang.Object)
-	 */
 	public Class<? extends IRidget> getRidgetClass(Object control) {
 		// first look for matching mappings with style or condition
 		// TODO: to optimize avoid double iteration over mappings

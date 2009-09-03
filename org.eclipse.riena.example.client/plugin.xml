@@ -78,6 +78,11 @@
             name="org.eclipse.riena.example.client.views.DateTimeSubModuleView">
       </view>
       <view allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.LinkSubModuleView"
+            id="org.eclipse.riena.example.client.views.LinkSubModuleView"
+            name="org.eclipse.riena.example.client.views.LinkSubModuleView">
+      </view>
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.ListSubModuleView"
             id="org.eclipse.riena.example.client.views.ListSubModuleView"
             name="org.eclipse.riena.example.client.views.ListSubModuleView">

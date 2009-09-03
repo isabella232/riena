@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
@@ -116,8 +117,27 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static Link createLink(Composite parent) {
+		return createLink(parent, SWT.NONE);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @since 1.2
+	 */
+	public static Link createLink(Composite parent, int style) {
 		Link result = new Link(parent, SWT.NONE);
 		result.setBackground(SHARED_BG_COLOR);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @wbp.factory.parameter.source bindingId "myLinkId"
+	 * @since 1.2
+	 */
+	public static Link createLink(Composite parent, int style, String bindingId) {
+		Link result = createLink(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
 		return result;
 	}
 
@@ -205,6 +225,20 @@ public class UIControlsFactory {
 		Text text = createTextMulti(parent, hScroll, vScroll);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(text, bindingId);
 		return text;
+	}
+
+	public static Browser createBrowser(Composite parent, int style) {
+		return new Browser(parent, style);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @wbp.factory.parameter.source bindingId "myBrowserId"
+	 */
+	public static Browser createBrowser(Composite parent, int style, String bindingId) {
+		Browser result = createBrowser(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
 	}
 
 	public static Button createButton(Composite parent) {

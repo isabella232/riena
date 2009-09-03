@@ -24,6 +24,7 @@ import org.eclipse.riena.example.client.controllers.DateTimeSubModuleController;
 import org.eclipse.riena.example.client.controllers.DetachedSubModuleController;
 import org.eclipse.riena.example.client.controllers.DialogSubModuleController;
 import org.eclipse.riena.example.client.controllers.FocusableSubModuleController;
+import org.eclipse.riena.example.client.controllers.LinkSubModuleController;
 import org.eclipse.riena.example.client.controllers.ListSubModuleController;
 import org.eclipse.riena.example.client.controllers.MarkerSubModuleController;
 import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleController;
@@ -48,6 +49,7 @@ import org.eclipse.riena.example.client.views.DateTimeSubModuleView;
 import org.eclipse.riena.example.client.views.DetachedSubModuleView;
 import org.eclipse.riena.example.client.views.DialogSubModuleView;
 import org.eclipse.riena.example.client.views.FocusableSubModuleView;
+import org.eclipse.riena.example.client.views.LinkSubModuleView;
 import org.eclipse.riena.example.client.views.ListSubModuleView;
 import org.eclipse.riena.example.client.views.ListUsingTableSubModuleView;
 import org.eclipse.riena.example.client.views.MarkerSubModuleView;
@@ -155,6 +157,11 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(focusableSubModule, FocusableSubModuleController.class, FocusableSubModuleView.ID,
 				false);
 		playgroundModule.addChild(focusableSubModule);
+
+		ISubModuleNode linkSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.link"), "Link and Browser"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(linkSubModule, LinkSubModuleController.class, LinkSubModuleView.ID, false);
+		playgroundModule.addChild(linkSubModule);
 
 		ISubModuleNode listSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.list"), "List"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(listSubModule, ListSubModuleController.class, ListSubModuleView.ID, false);
