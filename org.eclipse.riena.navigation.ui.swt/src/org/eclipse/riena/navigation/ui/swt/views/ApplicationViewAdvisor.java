@@ -19,7 +19,6 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -58,22 +57,20 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
+import org.eclipse.riena.navigation.ui.swt.component.TitleComposite;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
-import org.eclipse.riena.ui.swt.AbstractTitleBarMouseListener;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineSpacer;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.TestingSupport;
@@ -104,9 +101,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	private ApplicationController controller;
 	private AbstractViewBindingDelegate binding;
-
-	private Composite switcherComposite;
-	private TitlelessShellMouseListener mouseListener;
+	private TitleComposite titleComposite;
 
 	public ApplicationViewAdvisor(IWorkbenchWindowConfigurer configurer, ApplicationController pController) {
 		super(configurer);
@@ -188,13 +183,13 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	@Override
 	public void postWindowOpen() {
-		if (switcherComposite != null) {
-			// Redraw the switcher so that the active tab is displayed correct
-			switcherComposite.setRedraw(false);
-			switcherComposite.setRedraw(true);
-		}
 		super.postWindowOpen();
 		doInitialBinding();
+		if (titleComposite != null) {
+			// Redraw so that the active tab is displayed correct
+			titleComposite.setRedraw(false);
+			titleComposite.setRedraw(true);
+		}
 	}
 
 	private void doInitialBinding() {
@@ -219,10 +214,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	public void dispose() {
 
 		super.dispose();
-
-		if (mouseListener != null) {
-			mouseListener.dispose();
-			mouseListener = null;
+		if (titleComposite != null) {
+			titleComposite.dispose();
+			titleComposite = null;
 		}
 
 	}
@@ -235,7 +229,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		shell.setLayout(new FormLayout());
 		Composite grabCorner = createGrabCorner(shell);
 		createStatusLine(shell, grabCorner);
-		Composite titleComposite = createTitleComposite(shell);
+		titleComposite = createTitleComposite(shell);
 		Composite menuBarComposite = createMenuBarComposite(shell, titleComposite);
 		Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
 		createMainComposite(shell, coolBarComposite);
@@ -348,8 +342,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		public void activated(ISubApplicationNode source) {
 			if (source != null) {
 				showPerspective(source);
-				switcherComposite.setRedraw(false);
-				switcherComposite.setRedraw(true);
+				if (titleComposite != null) {
+					// Redraw so that the active tab is displayed correct
+					titleComposite.setRedraw(false);
+					titleComposite.setRedraw(true);
+				}
 			}
 			super.activated(source);
 		}
@@ -379,31 +376,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
-	 * Returns the margin between the top of the shell and the widget with the
-	 * sub-application switchers.
-	 * 
-	 * @return margin
-	 */
-	private int getSwitchterTopMargin() {
-
-		int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
-		return margin;
-
-	}
-
-	/**
-	 * Returns the of the sub-application switcher.
-	 * 
-	 * @return height
-	 */
-	private int getSwitchterHeight() {
-
-		int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
-		return margin;
-
-	}
-
-	/**
 	 * Create the composite that contains the:
 	 * <ul>
 	 * <li>shell title and title buttons</li>
@@ -415,80 +387,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 *            - the parent shell (non null)
 	 * @return the title composite (never null)
 	 */
-	private Composite createTitleComposite(final Shell parentShell) {
-		Composite result = new Composite(parentShell, SWT.NONE);
-
-		// force result's background into logo and switcher
-		result.setBackgroundMode(SWT.INHERIT_FORCE);
-		// sets the background of the composite
-		Image image = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
-		result.setBackgroundImage(image);
-
-		result.setLayout(new FormLayout());
-		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
-		int borderWidth = borderRenderer.getBorderWidth();
-		FormData data = new FormData();
-		data.top = new FormAttachment(parentShell, borderWidth);
-		data.left = new FormAttachment(0, borderWidth);
-		data.right = new FormAttachment(100, -borderWidth);
-		result.setLayoutData(data);
-
-		createLogoComposite(result);
-		switcherComposite = createSwitcherComposite(result);
-
-		result.addPaintListener(new TitlelessPaintListener());
-
-		mouseListener = new TitlelessShellMouseListener();
-		result.addMouseListener(mouseListener);
-		result.addMouseMoveListener(mouseListener);
-		result.addMouseTrackListener(mouseListener);
-
-		return result;
-	}
-
-	/**
-	 * Creates and positions the composite of the logo.
-	 * 
-	 * @param parent
-	 *            - parent composite
-	 */
-	private void createLogoComposite(Composite parent) {
-
-		Assert.isTrue(parent.getLayout() instanceof FormLayout);
-
-		Composite logoComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
-		FormData logoData = new FormData();
-		int topInset = 0;
-		int leftRightInset = 0;
-		logoData.top = new FormAttachment(0, topInset);
-		int height = getSwitchterTopMargin() + getSwitchterHeight() - 1;
-		logoData.bottom = new FormAttachment(0, height + 2);
-		Image logoImage = getLogoImage();
-		if (logoImage == null) {
-			return;
-		}
-		Rectangle imageBounds = logoImage.getBounds();
-		if (imageBounds == null) {
-			return;
-		}
-		logoData.width = imageBounds.width + ShellLogoRenderer.getHorizontalLogoMargin() * 2;
-		Integer hPos = getHorizontalLogoPosition();
-		switch (hPos) {
-		case SWT.CENTER:
-			logoData.left = new FormAttachment(50, -logoData.width / 2);
-			break;
-		case SWT.RIGHT:
-			logoData.right = new FormAttachment(100, -leftRightInset);
-			break;
-		default:
-			logoData.left = new FormAttachment(0, leftRightInset);
-			break;
-		}
-		logoComposite.setLayoutData(logoData);
-
-		logoComposite.addPaintListener(new LogoPaintListener());
-
+	private TitleComposite createTitleComposite(final Shell parentShell) {
+		ApplicationNode node = (ApplicationNode) controller.getNavigationNode();
+		return new TitleComposite(parentShell, node);
 	}
 
 	/**
@@ -503,35 +404,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 
 		return null;
-
-	}
-
-	/**
-	 * Creates and positions the composite for the sub-application switcher.
-	 * 
-	 * @param parent
-	 *            - parent of composite
-	 * @return composite
-	 */
-	private Composite createSwitcherComposite(Composite parent) {
-
-		Assert.isTrue(parent.getLayout() instanceof FormLayout);
-
-		int padding = getShellPadding();
-
-		Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
-		composite.setLayout(new FillLayout());
-		FormData formData = new FormData();
-		formData.top = new FormAttachment(0, getSwitchterTopMargin() + padding);
-		formData.left = new FormAttachment(0, 0);
-		formData.right = new FormAttachment(100, -0);
-		formData.height = getSwitchterHeight();
-		composite.setLayoutData(formData);
-		ApplicationNode node = (ApplicationNode) controller.getNavigationNode();
-		SubApplicationSwitcherViewPart switcherViewPart = new SubApplicationSwitcherViewPart(node);
-		switcherViewPart.createPartControl(composite);
-
-		return composite;
 
 	}
 
@@ -684,37 +556,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
-	 * Returns the image of the logo.
-	 * 
-	 * @return logo image or the default missing image, if the logo image of the
-	 *         L&F wasn't found.
-	 */
-	private Image getLogoImage() {
-		Image logoImage = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);
-		if (logoImage == null) {
-			String message = "The image of the logo wasn't found! A dummy image is used."; //$NON-NLS-1$
-			LOGGER.log(LogService.LOG_WARNING, message);
-			logoImage = ImageStore.getInstance().getMissingImage();
-		}
-		return logoImage;
-	}
-
-	/**
-	 * Returns the horizontal position of the logo inside the shell.
-	 * 
-	 * @return horizontal position (SWT.LEFT, SWT.CENTER, SWT.RIGHT)
-	 */
-	private int getHorizontalLogoPosition() {
-
-		Integer hPos = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION);
-		if (hPos == null) {
-			hPos = SWT.LEFT;
-		}
-		return hPos;
-
-	}
-
-	/**
 	 * Returns the renderer of the shell.
 	 * 
 	 * @return renderer
@@ -723,54 +564,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		ShellRenderer shellRenderer = (ShellRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.TITLELESS_SHELL_RENDERER);
 		return shellRenderer;
-	}
-
-	/**
-	 * This listener paints (top part of) the shell.
-	 */
-	private class TitlelessPaintListener implements PaintListener {
-
-		/**
-		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
-		 */
-		public void paintControl(PaintEvent e) {
-			onPaint(e);
-		}
-
-		/**
-		 * Paints the title, buttons and background of the (titleless) shell.
-		 * 
-		 * @param e
-		 *            - event
-		 */
-		private void onPaint(PaintEvent e) {
-
-			if (e.getSource() instanceof Control) {
-
-				Control shell = (Control) e.getSource();
-
-				ShellRenderer shellRenderer = getShellRenderer();
-				Rectangle shellBounds = shell.getBounds();
-				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellRenderer.getHeight());
-				shellRenderer.setBounds(bounds);
-				RienaDefaultLnf lnf = LnfManager.getLnf();
-				shellRenderer.setCloseable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE));
-				shellRenderer.setMaximizable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_MAX));
-				shellRenderer.setMinimizable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_MIN));
-				shellRenderer.paint(e.gc, shell);
-
-				// idea: set background image here !?!
-				//				if (shellBounds.width > 1000) {
-				//					Image image = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);
-				//					shell.setBackgroundImage(image);
-				//				} else {
-				//					Image image = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
-				//					shell.setBackgroundImage(image);
-				//				}
-
-			}
-
-		}
 	}
 
 	/**
@@ -807,49 +600,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 			}
 
-		}
-
-	}
-
-	/**
-	 * This listener paints the logo.
-	 */
-	private static class LogoPaintListener implements PaintListener {
-
-		/**
-		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
-		 */
-		public void paintControl(PaintEvent e) {
-			onPaint(e);
-		}
-
-		/**
-		 * Paints the image of the logo.
-		 * 
-		 * @param e
-		 *            - an event containing information about the paint
-		 */
-		private void onPaint(PaintEvent e) {
-
-			Composite logoComposite = (Composite) e.getSource();
-			Rectangle compositeBounds = logoComposite.getBounds();
-			ShellLogoRenderer renderer = (ShellLogoRenderer) LnfManager.getLnf().getRenderer(
-					LnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER);
-			renderer.setBounds(compositeBounds);
-			renderer.paint(e.gc, null);
-
-		}
-
-	}
-
-	/**
-	 * After any mouse operation a method of this listener is called.
-	 */
-	private class TitlelessShellMouseListener extends AbstractTitleBarMouseListener {
-
-		@Override
-		protected AbstractTitleBarRenderer getTitleBarRenderer() {
-			return getShellRenderer();
 		}
 
 	}

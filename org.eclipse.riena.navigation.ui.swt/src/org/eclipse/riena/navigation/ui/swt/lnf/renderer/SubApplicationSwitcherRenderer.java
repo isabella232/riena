@@ -44,6 +44,10 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 
 		super.paint(gc, value);
 
+		if (getBounds() == null) {
+			return;
+		}
+
 		Assert.isNotNull(gc);
 		Assert.isNotNull(value);
 		Assert.isTrue(value instanceof Control);
