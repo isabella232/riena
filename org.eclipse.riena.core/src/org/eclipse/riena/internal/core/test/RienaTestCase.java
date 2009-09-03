@@ -37,6 +37,7 @@ import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
 
 import org.eclipse.riena.core.util.Nop;
+import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 
 /**
  * Base class for test cases.<br>
@@ -211,6 +212,7 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	protected void addPluginXml(Class<?> forLoad, String pluginResource) {
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
+		@IgnoreFindBugs(value = "OBL_UNSATISFIED_OBLIGATION", justification = "stream will be closed by getResourceAsStream()")
 		InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
 		IContributor contributor = ContributorFactoryOSGi.createContributor(getContext().getBundle());
 		RegistryEventListener listener = new RegistryEventListener();
