@@ -18,6 +18,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -28,6 +29,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 /**
  * Tests of the class {@link LogoComposite}.
  */
+@UITestCase
 public class LogoCompositeTest extends TestCase {
 
 	private final static String ICON_ECLIPSE = "eclipse.gif";
