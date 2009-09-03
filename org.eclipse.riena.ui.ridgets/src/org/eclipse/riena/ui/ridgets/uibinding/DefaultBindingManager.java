@@ -10,15 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.uibinding;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IComplexRidget;
+import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 
@@ -58,11 +64,24 @@ public class DefaultBindingManager implements IBindingManager {
 	 */
 	public void injectRidgets(IRidgetContainer ridgetContainer, List<Object> uiControls) {
 
+		CorrespondingLabelMapper ridgetMapper = new CorrespondingLabelMapper(ridgetContainer);
+		if (Activator.getDefault() != null) {
+			Wire.instance(ridgetMapper).andStart(Activator.getDefault().getContext());
+		}
+
+		Map<String, IRidget> controls = new HashMap<String, IRidget>();
+
 		for (Object control : uiControls) {
 			String bindingProperty = propertyStrategy.locateBindingProperty(control);
 			if (bindingProperty != null) {
 				IRidget ridget = createRidget(control);
 				injectRidget(ridgetContainer, bindingProperty, ridget);
+
+				//because the ridgets are not bound yet, we have to save the bindingProperty separately
+				if (!(ridget instanceof ILabelRidget)) {
+					controls.put(bindingProperty, ridget);
+				}
+
 				if (control instanceof IComplexComponent) {
 					IComplexRidget complexRidget = (IComplexRidget) ridget;
 					IComplexComponent complexComponent = (IComplexComponent) control;
@@ -70,10 +89,18 @@ public class DefaultBindingManager implements IBindingManager {
 				}
 			}
 		}
+
+		// iterate over all controls that are not ILabelRidgets and try to connect them with their corresponding Label
+		for (Iterator<Entry<String, IRidget>> it = controls.entrySet().iterator(); it.hasNext();) {
+			Entry<String, IRidget> entry = it.next();
+			ridgetMapper.connectCorrespondingLabel(entry.getValue(), entry.getKey());
+		}
+
 		if (Activator.getDefault() != null) {
 			// TODO This unveils a weakness of the wiring stuff because the dependency (to the wiring) is just moved the ridget containers to here :-(
 			Wire.instance(ridgetContainer).andStart(Activator.getDefault().getContext());
 		}
+
 		ridgetContainer.configureRidgets();
 	}
 

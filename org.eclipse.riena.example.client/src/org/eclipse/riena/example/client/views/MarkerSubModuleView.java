@@ -107,22 +107,22 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 
 		GridDataFactory hFillFactory = GridDataFactory.fillDefaults().grab(true, false);
 
-		UIControlsFactory.createLabel(group, "Name:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Name:", "labeltextName"); //$NON-NLS-1$ //$NON-NLS-2$
 		Text textName = UIControlsFactory.createText(group);
 		hFillFactory.applyTo(textName);
 		addUIControl(textName, "textName"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Price:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Price:", "labeltextPrice"); //$NON-NLS-1$ //$NON-NLS-2$
 		Text textPrice = UIControlsFactory.createTextDecimal(group);
 		hFillFactory.applyTo(textPrice);
 		addUIControl(textPrice, "textPrice"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Amount:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Amount:", "labeltextAmount"); //$NON-NLS-1$ //$NON-NLS-2$
 		Text textAmount = UIControlsFactory.createTextNumeric(group);
 		hFillFactory.applyTo(textAmount);
 		addUIControl(textAmount, "textAmount"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Production Date:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Production Date:", "labeltextDate"); //$NON-NLS-1$ //$NON-NLS-2$
 		Composite cmpDate = createComposite(group, 3, true);
 		Text textDate = UIControlsFactory.createTextDate(cmpDate);
 		hFillFactory.applyTo(textDate);
@@ -131,22 +131,22 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		hFillFactory.applyTo(dtDate);
 		addUIControl(dtDate, "dtDate"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Age:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Age:", "labelcomboAge"); //$NON-NLS-1$ //$NON-NLS-2$
 		final Combo comboAge = UIControlsFactory.createCombo(group);
 		hFillFactory.applyTo(comboAge);
 		addUIControl(comboAge, "comboAge"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Type:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Type:", "labelchoiceType"); //$NON-NLS-1$ //$NON-NLS-2$
 		ChoiceComposite choiceType = new ChoiceComposite(group, SWT.BORDER, false);
 		choiceType.setOrientation(SWT.HORIZONTAL);
 		addUIControl(choiceType, "choiceType"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Flavor:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Flavor:", "labelchoiceFlavor"); //$NON-NLS-1$ //$NON-NLS-2$
 		ChoiceComposite choiceFlavor = new ChoiceComposite(group, SWT.BORDER, true);
 		choiceFlavor.setOrientation(SWT.HORIZONTAL);
 		addUIControl(choiceFlavor, "choiceFlavor"); //$NON-NLS-1$
 
-		Label lblReviewed = UIControlsFactory.createLabel(group, "Reviewed by:"); //$NON-NLS-1$
+		Label lblReviewed = UIControlsFactory.createLabel(group, "Reviewed by:", "labellistPersons"); //$NON-NLS-1$ //$NON-NLS-2$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblReviewed);
 		Composite cmpReviewed = createComposite(group, 3, true);
 
@@ -192,7 +192,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 
 		UIControlsFactory.createLabel(cmpReviewed2, ""); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Buttons:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Buttons:", "labelbuttonToggle"); //$NON-NLS-1$ //$NON-NLS-2$
 		Composite cmpButtons = createComposite(group, 5, false);
 		Button buttonToggle = UIControlsFactory.createButtonToggle(cmpButtons);
 		addUIControl(buttonToggle, "buttonToggle"); //$NON-NLS-1$

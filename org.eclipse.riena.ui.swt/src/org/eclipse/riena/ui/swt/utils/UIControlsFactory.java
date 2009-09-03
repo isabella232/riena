@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -102,6 +103,14 @@ public class UIControlsFactory {
 		Label label = createLabel(parent, text, style);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(label, bindingId);
 		return label;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source text "myLabelText"
+	 * @wbp.factory.parameter.source bindingId "myLabelId"
+	 */
+	public static Label createLabel(Composite parent, String text, String bindingId) {
+		return createLabel(parent, text, SWT.None, bindingId);
 	}
 
 	/**
@@ -489,6 +498,12 @@ public class UIControlsFactory {
 		Assert.isLegal(numItems > 0, "numItems must be greater than 0"); //$NON-NLS-1$
 		int items = list.getItemHeight() * numItems;
 		return items;
+	}
+
+	public static Text createTextDatePicker(Composite parent) {
+		DatePickerComposite result = new DatePickerComposite(parent, SWT.SINGLE | SWT.RIGHT);
+		result.getText().setData(KEY_TYPE, TYPE_DATE);
+		return result.getText();
 	}
 
 }
