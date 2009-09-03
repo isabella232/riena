@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.ui.swt.ChoiceComposite;
-import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -500,10 +499,11 @@ public class UIControlsFactory {
 		return items;
 	}
 
-	public static Text createTextDatePicker(Composite parent) {
-		DatePickerComposite result = new DatePickerComposite(parent, SWT.SINGLE | SWT.RIGHT);
-		result.getText().setData(KEY_TYPE, TYPE_DATE);
-		return result.getText();
-	}
+	// TODO [ev] uncomment when DatePickerComposite is available
+	//	public static Text createTextDatePicker(Composite parent) {
+	//		DatePickerComposite result = new DatePickerComposite(parent, SWT.SINGLE | SWT.RIGHT);
+	//		result.getText().setData(KEY_TYPE, TYPE_DATE);
+	//		return result.getText();
+	//	}
 
 }
