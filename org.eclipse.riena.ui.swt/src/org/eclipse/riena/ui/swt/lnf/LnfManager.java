@@ -26,11 +26,10 @@ import org.eclipse.riena.ui.swt.utils.BundleUtil;
  * The {@code LnfManager} has the term of a default look-and-feel. The default
  * L&F is initially set by Riena to {@code RienaDefaultLnf}. But the default L&F
  * may also be overridden by frameworks based on Riena. That allows them to
- * define their own L&F.<br>
+ * define their own default L&F.<br>
  * However, applications can again override the default L&F. This can be done by
  * either setting the system property "riena.lnf" or by specifying their L&F
- * with the methods {@code LnfManager.setLnf()}. Setting the L&F with the system
- * property overrules all other methods.<br>
+ * with the methods {@code LnfManager.setLnf()}.<br>
  * When specifying the L&F class via a string (either system property or one of
  * the above mentioned methods) the string should conform to:
  * 
@@ -48,7 +47,8 @@ public final class LnfManager {
 	 */
 	public static final String RIENA_LNF_SYSTEM_PROPERTY = "riena.lnf"; //$NON-NLS-1$
 
-	private static RienaDefaultLnf defaultLnf = new RienaDefaultLnf();;
+	private static RienaDefaultLnf defaultLnf = new RienaDefaultLnf();
+	private static String currentLnfClassName;
 	private static RienaDefaultLnf currentLnf;
 
 	private LnfManager() {
@@ -64,8 +64,8 @@ public final class LnfManager {
 	 */
 	public static void setDefaultLnf(RienaDefaultLnf defaultLnf) {
 		Assert.isNotNull(defaultLnf, "defaultLnf must not be null."); //$NON-NLS-1$
-		dispose();
 		LnfManager.defaultLnf = defaultLnf;
+		setLnf((RienaDefaultLnf) null);
 	}
 
 	/**
@@ -78,8 +78,8 @@ public final class LnfManager {
 	 *            look and feel
 	 */
 	public static void setLnf(String currentLnfClassName) {
-		dispose();
-		setLnf(createLnf(currentLnfClassName));
+		LnfManager.currentLnf = null;
+		LnfManager.currentLnfClassName = currentLnfClassName;
 	}
 
 	/**
@@ -90,8 +90,8 @@ public final class LnfManager {
 	 *            new look and feel to install.
 	 */
 	public static void setLnf(RienaDefaultLnf currentLnf) {
-		dispose();
 		LnfManager.currentLnf = currentLnf;
+		LnfManager.currentLnfClassName = currentLnf == null ? null : currentLnf.getClass().getName();
 	}
 
 	/**
@@ -101,10 +101,10 @@ public final class LnfManager {
 	 * @return current look and feel
 	 */
 	public static RienaDefaultLnf getLnf() {
-		final String rienaLnf = System.getProperty(RIENA_LNF_SYSTEM_PROPERTY);
-		if (currentLnf == null || rienaLnf != null) {
-			RienaDefaultLnf lnf = createLnf(rienaLnf);
-			currentLnf = lnf == null ? defaultLnf : lnf;
+		if (currentLnf == null) {
+			String className = currentLnfClassName == null ? System.getProperty(RIENA_LNF_SYSTEM_PROPERTY)
+					: currentLnfClassName;
+			setLnf(className != null ? createLnf(className) : defaultLnf);
 		}
 		currentLnf.initialize();
 		return currentLnf;
