@@ -22,14 +22,17 @@ import org.eclipse.riena.ui.swt.utils.BundleUtil;
 
 /**
  * The {@code LnfManager} manages the current look and feel of the riena
- * (navigation) widgets.<br>
- * The {@code LnfManager} has the term of a default look-and-feel. The default
- * L&F is initially set by Riena to {@code RienaDefaultLnf}. But the default L&F
- * may also be overridden by frameworks based on Riena. That allows them to
- * define their own default L&F.<br>
+ * (navigation) widgets.
+ * <p>
+ * The {@code LnfManager} has the term of a default look-and-feel (L&F). The
+ * default L&F is initially set by Riena to {@code RienaDefaultLnf}. But the
+ * default L&F may also be overridden by frameworks based on Riena. That allows
+ * them to define their own default L&F.
+ * <p>
  * However, applications can again override the default L&F. This can be done by
  * either setting the system property "riena.lnf" or by specifying their L&F
- * with the methods {@code LnfManager.setLnf()}.<br>
+ * with the methods {@code LnfManager.setLnf()}.
+ * <p>
  * When specifying the L&F class via a string (either system property or one of
  * the above mentioned methods) the string should conform to:
  * 
@@ -56,7 +59,7 @@ public final class LnfManager {
 	}
 
 	/**
-	 * Set a new default L&F.
+	 * Set a new default look and feel. See class header JavaDoc for details.
 	 * 
 	 * @param defaultLnf
 	 *            new default L&F
@@ -83,6 +86,9 @@ public final class LnfManager {
 
 	/**
 	 * Sets the new look and feel.
+	 * <p>
+	 * If this is set, it will override the default look and feel. See class
+	 * header JavaDoc for details.
 	 * 
 	 * @param currentLnf
 	 *            new look and feel to install.
