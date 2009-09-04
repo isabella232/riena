@@ -26,26 +26,6 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 @NonUITestCase
 public class FontDescriptorTest extends TestCase {
 
-	private RienaDefaultLnf lnf;
-
-	/**
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		lnf = LnfManager.getLnf();
-	}
-
-	/**
-	 * @see junit.framework.TestCase#tearDown()
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		lnf.setTheme(null);
-		LnfManager.dispose();
-		lnf = null;
-	}
-
 	/**
 	 * Test of the method <code>getFont(String, int, int)</code>.
 	 * 
@@ -53,8 +33,7 @@ public class FontDescriptorTest extends TestCase {
 	 *             - handled by JUnit
 	 */
 	public void testGetFontWithProps() throws Exception {
-
-		lnf.initialize();
+		RienaDefaultLnf lnf = LnfManager.getLnf();
 
 		/*
 		 * FontDescriptor without key

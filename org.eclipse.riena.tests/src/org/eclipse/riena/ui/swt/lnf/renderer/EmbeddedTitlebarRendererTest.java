@@ -12,13 +12,13 @@ package org.eclipse.riena.ui.swt.lnf.renderer;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.internal.core.test.collect.UITestCase;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Tests of the class {@link EmbeddedTitlebarRenderer}.
@@ -28,28 +28,27 @@ public class EmbeddedTitlebarRendererTest extends TestCase {
 
 	/**
 	 * Tests of the method <code>computeSize(GC, int, int) </code>
-	 * 
-	 * @throws Exception
-	 *             - handled by JUnit
 	 */
-	public void testComputeSize() throws Exception {
-
+	public void testComputeSize() {
 		EmbeddedTitlebarRenderer renderer = new EmbeddedTitlebarRenderer();
 		Shell shell = new Shell();
 		GC gc = new GC(shell);
-		int wHint = 12;
-		int hHint = 24;
-		Point size = renderer.computeSize(gc, wHint, hHint);
-		assertEquals(wHint, size.x);
-		Font font = LnfManager.getLnf().getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT);
-		gc.setFont(font);
-		int expectedHeight = gc.getFontMetrics().getHeight() + 8;
-		assertEquals(expectedHeight, size.y);
 
-		font.dispose();
-		gc.dispose();
-		shell.dispose();
+		try {
+			int wHint = 12;
+			int hHint = 24;
+			Point size = renderer.computeSize(gc, wHint, hHint);
 
+			assertEquals(wHint, size.x);
+
+			gc.setFont(LnfManager.getLnf().getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
+			int expectedHeight = gc.getFontMetrics().getHeight() + 8;
+
+			assertEquals(expectedHeight, size.y);
+		} finally {
+			gc.dispose();
+			shell.dispose();
+		}
 	}
 
 }
