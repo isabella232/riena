@@ -28,7 +28,8 @@ import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Shows how to use {@link IBrowserRidget} (text field bound to browser).
+ * Showing an {@link IBrowserRidget} with it's URL property bound against a text
+ * ridget.
  */
 public final class SnippetBrowserRidget001 {
 
