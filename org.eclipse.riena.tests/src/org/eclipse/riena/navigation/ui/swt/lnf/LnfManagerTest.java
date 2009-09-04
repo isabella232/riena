@@ -50,6 +50,10 @@ public class LnfManagerTest extends TestCase {
 		LnfManager.setLnf((String) null);
 		assertEquals(otherDefaultLnf.getClass().getName(), LnfManager.getLnfClassName());
 		assertEquals(otherDefaultLnf.getClass(), LnfManager.getLnf().getClass());
+	}
+
+	public void testGetLnfClassNameAndGetLnfWithSystemProperty() {
+		LnfManager.setLnf((RienaDefaultLnf) null);
 
 		// check for system property L&F setting
 		System.setProperty("riena.lnf", FrameworkUtil.getBundle(LnfManagerTest.class).getSymbolicName() + ":"
@@ -57,10 +61,12 @@ public class LnfManagerTest extends TestCase {
 		assertEquals(TestLnf1.class.getName(), LnfManager.getLnfClassName());
 		assertEquals(TestLnf1.class, LnfManager.getLnf().getClass());
 
-		// check for override of system property
+		// check for non-override of system property
 		LnfManager.setLnf(new TestLnf2());
-		assertEquals(TestLnf1.class.getName(), LnfManager.getLnfClassName());
-		assertEquals(TestLnf1.class, LnfManager.getLnf().getClass());
+		assertEquals(TestLnf2.class.getName(), LnfManager.getLnfClassName());
+		assertEquals(TestLnf2.class, LnfManager.getLnf().getClass());
+
+		System.clearProperty("riena.lnf");
 	}
 
 	/**
