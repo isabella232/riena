@@ -70,8 +70,7 @@ public final class LnfManager {
 
 	/**
 	 * Set the new look and feel specified by the given class name (see class
-	 * header JavaDoc). New look and feel will be initialized and the old one
-	 * will be uninitialized.
+	 * header JavaDoc).
 	 * 
 	 * @param currentLnfClassName
 	 *            a string specifying the name of the class that implements the
@@ -83,8 +82,7 @@ public final class LnfManager {
 	}
 
 	/**
-	 * Sets the new look and feel. New look and feel will be initialized and the
-	 * old one will be uninitialized.
+	 * Sets the new look and feel.
 	 * 
 	 * @param currentLnf
 	 *            new look and feel to install.
