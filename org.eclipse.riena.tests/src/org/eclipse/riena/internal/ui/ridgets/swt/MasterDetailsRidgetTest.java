@@ -210,16 +210,17 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		bindToModel(true);
 
-		assertContent(table, 3);
 		assertEquals(3, input.size());
+		assertContent(table, 3);
 
-		MDBean toDelete = input.get(1);
+		MDBean toDelete = input.get(2);
 		ridget.setSelection(toDelete);
 		assertTrue(txtColumn1.isEnabled());
 		assertTrue(txtColumn2.isEnabled());
 		ridget.handleRemove();
 
 		assertEquals(2, input.size());
+		assertContent(table, 2);
 		assertFalse(input.contains(toDelete));
 		assertFalse(txtColumn1.isEnabled());
 		assertFalse(txtColumn2.isEnabled());
@@ -442,6 +443,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			assertEquals(label0, table.getItem(i).getText(0));
 			assertEquals(label1, table.getItem(i).getText(1));
 		}
+		assertEquals(items, table.getItemCount());
 	}
 
 	private void assertPropertyChangeEvent(int count, Object oldValue, Object newValue,

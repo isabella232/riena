@@ -337,6 +337,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		rowObservables.remove(selection);
 		getTableRidget().clearSelection();
 		clearSelection();
+		getTableRidget().updateFromModel();
 		setEnabled(false, false);
 	}
 
