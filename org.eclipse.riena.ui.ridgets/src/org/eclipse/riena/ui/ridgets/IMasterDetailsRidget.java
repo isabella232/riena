@@ -86,9 +86,9 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	Object getSelection();
 
 	/**
-	 * TODO [ev] javadoc
-	 * 
-	 * @return The directWriting setting.
+	 * Returns the directWriting setting. The default is false.
+	 * <p>
+	 * See {@link #setDirectWriting(boolean)} for details.
 	 * 
 	 * @since 1.2
 	 */
@@ -104,7 +104,12 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	void setDelegate(IMasterDetailsDelegate delegate);
 
 	/**
-	 * TODO [ev] javadoc
+	 * When direct writing is enabled, changes in the details area will be
+	 * immediatelly and automatically applied back to the model. When adding new
+	 * rows, these will be immediatelly added to the table. Since there is no
+	 * need to apply, the 'Apply' button will not be shown.
+	 * <p>
+	 * The default setting for direct writing is false.
 	 * 
 	 * @param directWriting
 	 *            The new direct writing setting.
