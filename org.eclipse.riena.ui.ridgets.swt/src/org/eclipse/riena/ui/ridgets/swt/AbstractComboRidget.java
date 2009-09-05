@@ -56,8 +56,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	private final Converter strToObjConverter;
 	/** Selection validator that allows or cancels a selection request. */
 	private final SelectionBindingValidator selectionValidator;
-	/** IValueChangeListener that allows or cancels a value change */
+	/** IValueChangeListener that allows or cancels a value change. */
 	private final IValueChangeListener valueChangeValidator;
+	/** IValueChangeListener that fires a selection event on change. */
+	private final IValueChangeListener valueChangeNotifier;
 
 	/** If this item is selected, treat it as if nothing is selected */
 	private Object emptySelection;
@@ -94,18 +96,11 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		super();
 		rowObservables = new WritableList();
 		selectionObservable = new WritableValue();
-		selectionObservable.addValueChangeListener(new IValueChangeListener() {
-			public void handleValueChange(ValueChangeEvent event) {
-				Object oldValue = event.diff.getOldValue();
-				Object newValue = event.diff.getNewValue();
-				firePropertyChange(IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
-				disableMandatoryMarkers(hasInput());
-			}
-		});
 		objToStrConverter = new ObjectToStringConverter();
 		strToObjConverter = new StringToObjectConverter();
 		selectionValidator = new SelectionBindingValidator();
 		valueChangeValidator = new ValueChangeValidator();
+		valueChangeNotifier = new ValueChangeNotifier();
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				applyEnabled();
@@ -133,7 +128,12 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			selectionBindingExternal = dbc.bindValue(selectionObservable, selectionValue, new UpdateValueStrategy(
 					UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(selectionValidator),
 					new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
-
+			// Ensure valueChangeNotifier is not added more that once. 
+			selectionObservable.removeValueChangeListener(valueChangeNotifier);
+			// We have to add the notifier after installing selectionBindingExternal,   
+			// to guarantee that the binding updates the selection value before 
+			// the valueChangeNotifier sends the selection changed event (bug 287740)
+			selectionObservable.addValueChangeListener(valueChangeNotifier);
 		}
 	}
 
@@ -278,8 +278,18 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
-	// helping methods
-	// ////////////////
+	// abstract methods
+	///////////////////
+
+	/**
+	 * Deselects all selected items in the controls list.
+	 */
+	protected abstract void clearUIControlListSelection();
+
+	/**
+	 * @return The items of the controls list. May be an empty array.
+	 */
+	protected abstract String[] getUIControlItems();
 
 	/**
 	 * @return Returns an observable observing the items attribute of the
@@ -294,9 +304,24 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	protected abstract ISWTObservableValue getUIControlSelectionObservable();
 
 	/**
-	 * Deselects all selected items in the controls list.
+	 * Selects the item in the controls list.
 	 */
-	protected abstract void clearUIControlListSelection();
+	protected abstract void selectInUIControl(int index);
+
+	/**
+	 * @return The index of the item in the controls list or -1 if no such item
+	 *         is found.
+	 */
+	protected abstract int indexOfInUIControl(String item);
+
+	/**
+	 * Removes all of the items from the controls list and clears the controls
+	 * text field.
+	 */
+	protected abstract void removeAllFromUIControl();
+
+	// helping methods
+	//////////////////
 
 	private void applyEnabled() {
 		if (isEnabled()) {
@@ -360,11 +385,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return item;
 	}
 
-	/**
-	 * @return The items of the controls list. May be an empty array.
-	 */
-	protected abstract String[] getUIControlItems();
-
 	private boolean hasInput() {
 		Object selection = selectionObservable.getValue();
 		return selection != null && selection != emptySelection;
@@ -385,25 +405,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
-	/**
-	 * Removes all of the items from the controls list and clears the controls
-	 * text field.
-	 */
-	protected abstract void removeAllFromUIControl();
-
-	/**
-	 * @return The index of the item in the controls list or -1 if no such item
-	 *         is found.
-	 */
-	protected abstract int indexOfInUIControl(String item);
-
-	/**
-	 * Selects the item in the controls list.
-	 */
-	protected abstract void selectInUIControl(int index);
-
 	// helping classes
-	// ////////////////
+	//////////////////
 
 	/**
 	 * Convert from model object to combo box items (strings).
@@ -478,7 +481,22 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 				changing = false;
 			}
 		}
+	}
 
+	/**
+	 * Upon a selection change:
+	 * <ul>
+	 * <li>fire a PROPERTY_SELECTION event and</li>
+	 * <li>update the mandatory marker state</li>
+	 * </ul>
+	 */
+	private final class ValueChangeNotifier implements IValueChangeListener {
+		public void handleValueChange(ValueChangeEvent event) {
+			Object oldValue = event.diff.getOldValue();
+			Object newValue = event.diff.getNewValue();
+			firePropertyChange(IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
+			disableMandatoryMarkers(hasInput());
+		}
 	}
 
 }

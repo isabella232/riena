@@ -708,6 +708,41 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(selection1, ridget.getSelection());
 	}
 
+	/**
+	 * Tests that selection has been updated before the listener is notified
+	 * (Bug 287440).
+	 */
+	public void testSelectionListenerHasLatestValues() {
+		final ComboRidget ridget = getRidget();
+		final Combo control = getWidget();
+		final StringManager stringManager = new StringManager("A", "B", "C", "D", "E");
+		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+		ridget.updateFromModel();
+		ridget.setUIControl(control);
+
+		assertEquals(-1, control.getSelectionIndex());
+		assertNull(ridget.getSelection());
+		assertNull(stringManager.getSelectedItem());
+
+		final FTPropertyChangeListener listener = new FTPropertyChangeListener();
+		listener.setRunnable(new Runnable() {
+			public void run() {
+				assertEquals(1, control.getSelectionIndex());
+				assertEquals("B", ridget.getSelection());
+				assertEquals("B", stringManager.getSelectedItem());
+			}
+		});
+		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, listener);
+
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "B");
+
+		assertEquals(1, listener.getCount()); // check that listener was called once
+		assertEquals(1, control.getSelectionIndex());
+		assertEquals("B", ridget.getSelection());
+		assertEquals("B", stringManager.getSelectedItem());
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -795,13 +830,21 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	private static final class FTPropertyChangeListener implements PropertyChangeListener {
 
 		private int count;
-
-		public int getCount() {
-			return count;
-		}
+		private Runnable runnable;
 
 		public void propertyChange(PropertyChangeEvent evt) {
 			count++;
+			if (runnable != null) {
+				runnable.run();
+			}
+		}
+
+		int getCount() {
+			return count;
+		}
+
+		void setRunnable(Runnable runnable) {
+			this.runnable = runnable;
 		}
 	}
 
