@@ -23,8 +23,6 @@ import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -176,11 +174,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		setEnabled(false, false);
 
 		final IObservableValue viewerSelection = getTableRidget().getSingleSelectionObservable();
-		viewerSelection.addValueChangeListener(new IValueChangeListener() {
-			public void handleValueChange(ValueChangeEvent event) {
-				handleSelectionChange(event.getObservableValue().getValue());
-			}
-		});
 
 		Assert.isLegal(dbc == null);
 		dbc = new DataBindingContext();
@@ -198,6 +191,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	public void setSelection(Object newSelection) {
 		getTableRidget().setSelection(newSelection);
+		handleSelectionChange(newSelection);
 		MasterDetailsComposite control = getUIControl();
 		if (control != null) {
 			control.getTable().showSelection();
@@ -405,6 +399,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 				}
 			}
 			oldIndex = table.getSelectionIndex();
+			handleSelectionChange(e.item.getData());
 		}
 
 		void clearSavedSelection() {
@@ -413,7 +408,8 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * IRidgetContainer exposing the 'detail' ridgets only (instead of all
+	 * ridgets).
 	 */
 	private final class DetailRidgetContainer implements IRidgetContainer {
 
