@@ -558,6 +558,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		private boolean txtColumn1Isenabled = true;
 
 		public void configureRidgets(IRidgetContainer container) {
+			checkContainer(container);
+
 			ITextRidget txtColumn1 = (ITextRidget) container.getRidget("txtColumn1");
 			txtColumn1.bindToModel(workingCopy, MDBean.PROPERTY_COLUMN_1);
 			txtColumn1.updateFromModel();
@@ -588,10 +590,13 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		}
 
 		public String isValid(IRidgetContainer container) {
+			checkContainer(container);
 			return null;
 		}
 
 		public void updateDetails(IRidgetContainer container) {
+			checkContainer(container);
+
 			ITextRidget txtColumn1 = (ITextRidget) container.getRidget("txtColumn1");
 			txtColumn1.setEnabled(isTxtColumn1IsEnabled());
 			for (IRidget ridget : container.getRidgets()) {
@@ -599,12 +604,18 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			}
 		}
 
+		public boolean isTxtColumn1IsEnabled() {
+			return txtColumn1Isenabled;
+		}
+
 		public void setTxtColumn1IsEnabled(boolean enabled) {
 			this.txtColumn1Isenabled = enabled;
 		}
 
-		public boolean isTxtColumn1IsEnabled() {
-			return txtColumn1Isenabled;
+		private void checkContainer(IRidgetContainer container) {
+			assertNotNull(container.getRidget("txtColumn1"));
+			assertNotNull(container.getRidget("txtColumn2"));
+			assertEquals(2, container.getRidgets().size());
 		}
 
 	}

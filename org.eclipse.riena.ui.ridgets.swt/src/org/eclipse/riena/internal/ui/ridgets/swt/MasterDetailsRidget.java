@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.databinding.BindingException;
@@ -42,6 +43,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
@@ -64,9 +66,9 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	private Object editable;
 
 	/*
-	 * Markable ridgets from the details area.
+	 * All ridgets from the details area.
 	 */
-	private List<IMarkableRidget> detailRidgets;
+	private IRidgetContainer detailRidgets;
 
 	public MasterDetailsRidget() {
 		dirtyDetailsChecker = new DirtyDetailsChecker();
@@ -91,7 +93,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		Assert.isLegal(this.delegate == null, "setDelegate can only be called once"); //$NON-NLS-1$
 		Assert.isLegal(delegate != null, "delegate cannot be null"); //$NON-NLS-1$
 		this.delegate = delegate;
-		delegate.configureRidgets(this);
+		delegate.configureRidgets(detailRidgets);
 	}
 
 	/**
@@ -170,7 +172,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 			}
 		});
 
-		detailRidgets = getDetailRidgets();
+		detailRidgets = new DetailRidgetContainer();
 		setEnabled(false, false);
 
 		final IObservableValue viewerSelection = getTableRidget().getSingleSelectionObservable();
@@ -272,7 +274,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	private boolean canApply() {
-		String reason = delegate.isValid(this);
+		String reason = delegate.isValid(detailRidgets);
 		if (reason != null) {
 			getUIControl().warnApplyFailed(reason);
 		}
@@ -300,23 +302,9 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_APPLY);
 	}
 
-	private List<IMarkableRidget> getDetailRidgets() {
-		List<IMarkableRidget> result = new ArrayList<IMarkableRidget>();
-		for (IRidget ridget : getRidgets()) {
-			if (ridget instanceof IMarkableRidget) {
-				result.add((IMarkableRidget) ridget);
-			}
-		}
-		result.remove(getNewButtonRidget());
-		result.remove(getRemoveButtonRidget());
-		result.remove(getApplyButtonRidget());
-		result.remove(getTableRidget());
-		return result;
-	}
-
 	private void setEnabled(boolean applyEnabled, boolean detailsEnabled) {
 		getApplyButtonRidget().setEnabled(applyEnabled);
-		for (IMarkableRidget ridget : detailRidgets) {
+		for (IRidget ridget : detailRidgets.getRidgets()) {
 			ridget.setEnabled(detailsEnabled);
 		}
 	}
@@ -324,7 +312,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	private void updateDetails(Object bean) {
 		Assert.isNotNull(bean);
 		delegate.copyBean(bean, delegate.getWorkingCopy());
-		delegate.updateDetails(this);
+		delegate.updateDetails(detailRidgets);
 	}
 
 	/**
@@ -421,6 +409,44 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		void clearSavedSelection() {
 			oldIndex = -1;
 		}
+	}
+
+	/**
+	 * TODO [ev] docs
+	 */
+	private final class DetailRidgetContainer implements IRidgetContainer {
+
+		private final List<IRidget> detailRidgets;
+
+		public DetailRidgetContainer() {
+			detailRidgets = getDetailRidgets();
+		}
+
+		public void addRidget(String id, IRidget ridget) {
+			throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
+		}
+
+		public void configureRidgets() {
+			throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
+		}
+
+		public IRidget getRidget(String id) {
+			return MasterDetailsRidget.this.getRidget(id);
+		}
+
+		public Collection<? extends IRidget> getRidgets() {
+			return detailRidgets;
+		}
+
+		private List<IRidget> getDetailRidgets() {
+			List<IRidget> result = new ArrayList<IRidget>(MasterDetailsRidget.this.getRidgets());
+			result.remove(getNewButtonRidget());
+			result.remove(getRemoveButtonRidget());
+			result.remove(getApplyButtonRidget());
+			result.remove(getTableRidget());
+			return result;
+		}
+
 	}
 
 	/**
