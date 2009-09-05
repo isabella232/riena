@@ -58,7 +58,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	protected void setUp() throws Exception {
 		super.setUp();
 		input = createInput(3);
-		MasterDetailsRidget ridget = getRidget();
+		IMasterDetailsRidget ridget = getRidget();
 		List<Object> uiControls = getWidget().getUIControls();
 		BINDING_MAN.injectRidgets(ridget, uiControls);
 		BINDING_MAN.bind(ridget, uiControls);
@@ -431,6 +431,68 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		// after apply the row should not be selected
 		assertEquals(null, ridget.getSelection());
+	}
+
+	public void testDirectWritingHidesApply() {
+		IMasterDetailsRidget ridget = getRidget();
+		MDWidget control = getWidget();
+
+		assertFalse(ridget.isDirectWriting());
+		assertTrue(control.getButtonApply().isVisible());
+
+		ridget.setDirectWriting(true);
+
+		assertTrue(ridget.isDirectWriting());
+		assertFalse(control.getButtonApply().isVisible());
+
+		ridget.setDirectWriting(false);
+
+		assertFalse(ridget.isDirectWriting());
+		assertTrue(control.getButtonApply().isVisible());
+	}
+
+	public void testDirectWritingUpdatesTableWithoutApply() {
+		IMasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
+		bindToModel(true);
+
+		ridget.setDirectWriting(true);
+		MDBean row0 = input.get(0);
+		ridget.setSelection(row0);
+
+		assertEquals("TestR0C1", row0.column1);
+		assertEquals("TestR0C2", row0.column2);
+		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertEquals("TestR0C2", widget.txtColumn2.getText());
+
+		widget.txtColumn1.setFocus();
+		UITestHelper.sendString(widget.getDisplay(), "A\r");
+		widget.txtColumn2.setFocus();
+		UITestHelper.sendString(widget.getDisplay(), "B\r");
+
+		assertEquals("A", row0.column1);
+		assertEquals("B", row0.column2);
+	}
+
+	public void testDirectWritingAddsToTableWithoutApply() {
+		MasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
+		Table table = widget.getTable();
+		bindToModel(true);
+		ridget.setDirectWriting(true);
+
+		assertEquals(3, input.size());
+		assertEquals(3, table.getItemCount());
+
+		ridget.handleAdd();
+
+		assertEquals(4, input.size());
+		assertEquals(4, table.getItemCount());
+
+		MDBean row4 = (MDBean) ridget.getSelection();
+
+		assertEquals("", row4.column1);
+		assertEquals("", row4.column2);
 	}
 
 	// helping methods

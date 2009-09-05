@@ -31,15 +31,6 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 
 	/**
-	 * Provide this ridget with an {@link IMasterDetailsDelegate} instance,
-	 * which will manage the content of details area.
-	 * 
-	 * @param delegate
-	 *            an {@link IMasterDetailsDelegate}; never null
-	 */
-	void setDelegate(IMasterDetailsDelegate delegate);
-
-	/**
 	 * Binds the table to the model data.
 	 * 
 	 * @param rowObservables
@@ -93,6 +84,34 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 *         selected)
 	 */
 	Object getSelection();
+
+	/**
+	 * TODO [ev] javadoc
+	 * 
+	 * @return The directWriting setting.
+	 * 
+	 * @since 1.2
+	 */
+	boolean isDirectWriting();
+
+	/**
+	 * Provide this ridget with an {@link IMasterDetailsDelegate} instance,
+	 * which will manage the content of details area.
+	 * 
+	 * @param delegate
+	 *            an {@link IMasterDetailsDelegate}; never null
+	 */
+	void setDelegate(IMasterDetailsDelegate delegate);
+
+	/**
+	 * TODO [ev] javadoc
+	 * 
+	 * @param directWriting
+	 *            The new direct writing setting.
+	 * 
+	 * @since 1.2
+	 */
+	void setDirectWriting(boolean directWriting);
 
 	/**
 	 * Set the new selection. This behaves exactly like an interactive selection

@@ -57,6 +57,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	private IMasterDetailsDelegate delegate;
 	private DataBindingContext dbc;
+	private boolean isDirectWriting;
 
 	/*
 	 * The object we are currently editing; null if not editing
@@ -183,10 +184,42 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 				return Boolean.valueOf(viewerSelection.getValue() != null);
 			}
 		});
+
+		for (IRidget ridget : detailRidgets.getRidgets()) {
+			ridget.addPropertyChangeListener(new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					if (isDirectWriting == false || delegate == null
+							|| editable == null
+							// ignore these events:
+							|| IMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName())
+							|| IRidget.PROPERTY_ENABLED.equals(evt.getPropertyName())
+							|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(evt.getPropertyName())) {
+						return;
+					}
+					// this is only reached when direct writing is on and one of 'interesting' events happens
+					delegate.copyBean(delegate.getWorkingCopy(), editable);
+					getTableRidget().updateFromModel();
+					// we are already editing, so we want to invoke getTR().setSelection(editable) instead
+					// of setSelection(editable). This will just select the editable in the table.
+					getTableRidget().setSelection(editable);
+				}
+			});
+		}
 	}
 
 	public Object getSelection() {
 		return getTableRidget().getSingleSelectionObservable().getValue();
+	}
+
+	public boolean isDirectWriting() {
+		return isDirectWriting;
+	}
+
+	public void setDirectWriting(boolean directWriting) {
+		if (directWriting != isDirectWriting) {
+			isDirectWriting = directWriting;
+			getApplyButtonRidget().setVisible(!directWriting);
+		}
 	}
 
 	public void setSelection(Object newSelection) {
@@ -313,12 +346,24 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	 * Non API; public for testing only.
 	 */
 	public void handleAdd() {
-		dirtyDetailsChecker.clearSavedSelection();
-		getTableRidget().clearSelection();
-		editable = delegate.createWorkingCopy();
-		setEnabled(false, true);
-		updateDetails(editable);
-		getUIControl().getDetails().setFocus();
+		if (!isDirectWriting) {
+			// create the editable and update the details
+			dirtyDetailsChecker.clearSavedSelection();
+			getTableRidget().clearSelection();
+			editable = delegate.createWorkingCopy();
+			setEnabled(false, true);
+			updateDetails(editable);
+			getUIControl().getDetails().setFocus();
+		} else {
+			// create the editable, add it to the table, update the details
+			editable = delegate.createWorkingCopy();
+			rowObservables.add(editable);
+			getTableRidget().updateFromModel();
+			setSelection(editable);
+			setEnabled(false, true);
+			updateDetails(editable);
+			getUIControl().getDetails().setFocus();
+		}
 	}
 
 	/**
