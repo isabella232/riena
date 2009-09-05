@@ -458,32 +458,38 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		}
 	}
 
+	/**
+	 * Generates the labels (i.e. strings) shown in the list.
+	 */
 	private final class ListLabelProvider extends ObservableMapLabelProvider {
 
-		private boolean useToString;
+		private final boolean useToString;
 
 		public ListLabelProvider(IObservableMap[] attributeMap) {
-			super((IObservableMap[]) (null == attributeMap ? new IObservableMap[] {} : attributeMap));
-			useToString = null == attributeMap;
+			super(null == attributeMap ? new IObservableMap[] {} : attributeMap);
+			useToString = attributeMap == null;
 		}
 
 		@Override
 		public String getColumnText(Object element, int columnIndex) {
+			String result;
 			if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT && !isEnabled()) {
-				return ""; //$NON-NLS-1$
+				result = ""; //$NON-NLS-1$
 			} else {
-				if (useToString) {
-					if (null != element) {
-						String out = element.toString();
-						// TODO [ev] simplify -- it is impossible for element to be null here
-						if (null != element) {
-							return out;
-						}
-					}
-					throw new NullPointerException("Element in ListLabelProvider is null");
-				}
-				return super.getColumnText(element, columnIndex);
+				result = useToString ? toString(element) : super.getColumnText(element, columnIndex);
 			}
+			return result;
+		}
+
+		private String toString(Object element) {
+			if (element == null) {
+				throw new NullPointerException("Row-element in ListRidget is null"); //$NON-NLS-1$
+			}
+			String result = element.toString();
+			if (result == null) {
+				throw new NullPointerException("Row-element.toString() returned null"); //$NON-NLS-1$
+			}
+			return result;
 		}
 	}
 
