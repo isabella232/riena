@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.core.databinding.observable.value.WritableValue;
+
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -41,32 +42,6 @@ public class SWTModuleController extends ModuleController {
 	}
 
 	/**
-	 * Adds listeners for sub-module and module nodes.
-	 */
-	private void addListeners() {
-		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
-		navigationTreeObserver.addListener(new SubModuleListener());
-		navigationTreeObserver.addListenerTo(getNavigationNode());
-	}
-
-	/**
-	 * Updates the tree if a sub-module node is added or remove form parent
-	 * sub-module node.
-	 */
-	private class SubModuleListener extends SubModuleNodeListener {
-
-		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
-		 */
-		@Override
-		public void activated(ISubModuleNode source) {
-			super.activated(source);
-			selectActiveNode();
-		}
-
-	}
-
-	/**
 	 * @param tree
 	 *            the tree to set
 	 */
@@ -81,14 +56,23 @@ public class SWTModuleController extends ModuleController {
 		return tree;
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.ModuleController#afterBind()
-	 */
 	@Override
 	public void afterBind() {
 		super.afterBind();
 		updateNavigationNodeMarkers();
 		bindTree();
+	}
+
+	// helping methods
+	//////////////////
+
+	/**
+	 * Adds listeners for sub-module and module nodes.
+	 */
+	private void addListeners() {
+		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
+		navigationTreeObserver.addListener(new SubModuleListener());
+		navigationTreeObserver.addListenerTo(getNavigationNode());
 	}
 
 	/**
@@ -105,46 +89,6 @@ public class SWTModuleController extends ModuleController {
 	}
 
 	/**
-	 * Selects the active sub-module in the tree.
-	 * 
-	 * @param node
-	 */
-	private void setSelectedNode(INavigationNode<?> node) {
-
-		if (node.isActivated() && (node != getNavigationNode())) {
-			tree.setSelection(node);
-		}
-
-		for (INavigationNode<?> child : node.getChildren()) {
-			setSelectedNode(child);
-		}
-
-	}
-
-	/**
-	 * Selects the active sub-module of this module in the tree.
-	 */
-	private void selectActiveNode() {
-		setSelectedNode(getNavigationNode());
-	}
-
-	/**
-	 * Activates the selected sub-module node.
-	 */
-	private static class DelegatingValue extends WritableValue {
-
-		/**
-		 * @see org.eclipse.core.databinding.observable.value.WritableValue#doSetValue(java.lang.Object)
-		 */
-		@Override
-		public void doSetValue(Object value) {
-			ISubModuleNode node = (ISubModuleNode) value;
-			node.activate();
-		}
-
-	}
-
-	/**
 	 * Creates the list of the root nodes of the tree.<br>
 	 * This method returns only one root, the module node. So dynamically
 	 * sub-module can be added directly below the module node and they are
@@ -158,17 +102,52 @@ public class SWTModuleController extends ModuleController {
 		return new IModuleNode[] { moduleNode };
 	}
 
-	// private INavigationNode<?>[] createTreeRootNodes() {
-	// IModuleNode moduleNode = getNavigationNode();
-	// List<ISubModuleNode> children = moduleNode.getChildren();
-	// ISubModuleNode[] rootNodes = new ISubModuleNode[children.size()];
-	// int i = 0;
-	// for (ISubModuleNode subModuleNode : children) {
-	// rootNodes[i] = subModuleNode;
-	// i++;
-	// }
-	//
-	// return rootNodes;
-	// }
+	/**
+	 * Selects the active sub-module in the tree.
+	 * 
+	 * @param node
+	 */
+	private void setSelectedNode(INavigationNode<?> node) {
+		if (node.isActivated() && (node != getNavigationNode())) {
+			tree.setSelection(node);
+		}
+		for (INavigationNode<?> child : node.getChildren()) {
+			setSelectedNode(child);
+		}
+	}
+
+	/**
+	 * Selects the active sub-module of this module in the tree.
+	 */
+	private void selectActiveNode() {
+		setSelectedNode(getNavigationNode());
+	}
+
+	// helping classes
+	//////////////////
+
+	/**
+	 * Activates the selected sub-module node.
+	 */
+	private static class DelegatingValue extends WritableValue {
+		@Override
+		public void doSetValue(Object value) {
+			// TODO [ev] handle submodule activation / isSelectable here
+			ISubModuleNode node = (ISubModuleNode) value;
+			node.activate();
+		}
+	}
+
+	/**
+	 * Updates the tree if a sub-module node is added or remove form parent
+	 * sub-module node.
+	 */
+	private class SubModuleListener extends SubModuleNodeListener {
+		@Override
+		public void activated(ISubModuleNode source) {
+			super.activated(source);
+			selectActiveNode();
+		}
+	}
 
 }
