@@ -20,8 +20,6 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
 
-import org.eclipse.core.runtime.AssertionFailedException;
-
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -734,8 +732,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 					return subModuleNode.getChild(0);
 				}
 
-				throw new AssertionFailedException(
-						"submodule node that is selectable=false must have at least one child"); //$NON-NLS-1$
+				throw new RuntimeException("submodule node that is selectable=false must have at least one child"); //$NON-NLS-1$
 			}
 
 			return null;
