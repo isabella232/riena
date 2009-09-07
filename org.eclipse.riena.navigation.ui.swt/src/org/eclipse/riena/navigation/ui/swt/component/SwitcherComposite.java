@@ -42,7 +42,7 @@ public class SwitcherComposite extends Composite {
 	 *            - node of the application
 	 */
 	public SwitcherComposite(Composite parent, ApplicationNode node) {
-		super(parent, SWT.NONE);
+		super(parent, SWT.DOUBLE_BUFFERED);
 		this.node = node;
 		init(parent);
 	}
@@ -60,15 +60,14 @@ public class SwitcherComposite extends Composite {
 
 		int padding = getShellPadding();
 
-		Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
-		composite.setLayout(new FillLayout());
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(0, getSwitchterTopMargin() + padding);
 		formData.left = new FormAttachment(0, 0);
 		formData.right = new FormAttachment(100, -0);
 		formData.height = getSwitchterHeight();
-		composite.setLayoutData(formData);
-		Widget switcher = new SubApplicationSwitcherWidget(composite, SWT.NONE, node);
+		setLayoutData(formData);
+		setLayout(new FillLayout());
+		Widget switcher = new SubApplicationSwitcherWidget(this, SWT.NONE, node);
 		WidgetIdentificationSupport.setDefaultIdentification(switcher);
 
 	}
