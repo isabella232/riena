@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import java.util.List;
+
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -89,7 +93,8 @@ public class SWTModuleController extends ModuleController {
 	}
 
 	/**
-	 * Creates the list of the root nodes of the tree.<br>
+	 * Creates the list of the root nodes of the tree.
+	 * <p>
 	 * This method returns only one root, the module node. So dynamically
 	 * sub-module can be added directly below the module node and they are
 	 * displayed in the tree (without generating and binding a new model with
@@ -100,6 +105,77 @@ public class SWTModuleController extends ModuleController {
 	private IModuleNode[] createTreeRootNodes() {
 		IModuleNode moduleNode = getNavigationNode();
 		return new IModuleNode[] { moduleNode };
+	}
+
+	// TODO [ev] test these:
+
+	/**
+	 * Non-API. Public for testing only.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public static ISubModuleNode getSelectableChild(ISubModuleNode node) {
+		ISubModuleNode result = null;
+		for (ISubModuleNode child : node.getChildren()) {
+			if (child.isSelectable()) {
+				result = child;
+				break;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Non-API. Public for testing only.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public static ISubModuleNode findNodeToActivate(ISubModuleNode oldNode, ISubModuleNode newNode) {
+		ISubModuleNode result = newNode;
+		if (!result.isSelectable()) {
+			ISubModuleNode firstChild = getSelectableChild(result);
+			if (firstChild == oldNode) { // move up
+				result = findPreviousNode(result);
+			} else {
+				result = firstChild;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Non-API. Public for testing only.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public static ISubModuleNode findPreviousNode(ISubModuleNode node) {
+		ISubModuleNode result = null;
+		INavigationNode<?> parent = node.getParent();
+		if (parent != null) {
+			List<?> children = parent.getChildren();
+			for (Object child : children) {
+				if (child == node) {
+					break;
+				}
+				result = (ISubModuleNode) child;
+			}
+		}
+		return result;
+	}
+
+	private Display getDisplay() {
+		return ((Widget) getTree().getUIControl()).getDisplay();
+	}
+
+	private void runAsync(Runnable op) {
+		getDisplay().asyncExec(op);
+	}
+
+	/**
+	 * Selects the active sub-module of this module in the tree.
+	 */
+	private void selectActiveNode() {
+		setSelectedNode(getNavigationNode());
 	}
 
 	/**
@@ -116,25 +192,23 @@ public class SWTModuleController extends ModuleController {
 		}
 	}
 
-	/**
-	 * Selects the active sub-module of this module in the tree.
-	 */
-	private void selectActiveNode() {
-		setSelectedNode(getNavigationNode());
-	}
-
 	// helping classes
 	//////////////////
 
 	/**
 	 * Activates the selected sub-module node.
 	 */
-	private static class DelegatingValue extends WritableValue {
+	private final class DelegatingValue extends WritableValue {
 		@Override
 		public void doSetValue(Object value) {
-			// TODO [ev] handle submodule activation / isSelectable here
-			ISubModuleNode node = (ISubModuleNode) value;
-			node.activate();
+			ISubModuleNode oldNode = (ISubModuleNode) getValue();
+			ISubModuleNode newNode = (ISubModuleNode) value;
+			super.doSetValue(value);
+
+			ISubModuleNode toActivate = findNodeToActivate(oldNode, newNode);
+			if (!toActivate.isActivated()) {
+				toActivate.activate();
+			}
 		}
 	}
 
@@ -144,9 +218,16 @@ public class SWTModuleController extends ModuleController {
 	 */
 	private class SubModuleListener extends SubModuleNodeListener {
 		@Override
-		public void activated(ISubModuleNode source) {
-			super.activated(source);
-			selectActiveNode();
+		public void afterActivated(final ISubModuleNode source) {
+			super.afterActivated(source);
+			if (source.isSelectable()) {
+				// TODO [ev] explain why
+				runAsync(new Runnable() {
+					public void run() {
+						selectActiveNode();
+					}
+				});
+			}
 		}
 	}
 

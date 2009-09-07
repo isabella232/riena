@@ -395,23 +395,6 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * Adds listeners to the sub-module tree.
 	 */
 	private void addListeners() {
-		getTree().addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
-				// treeDirty = true;
-				TreeItem[] selection = getTree().getSelection();
-				if ((selection.length > 0) && (selection[0].getData() instanceof ISubModuleNode)) {
-					ISubModuleNode activeSubModule = (ISubModuleNode) selection[0].getData();
-					if (activeSubModule.getParent().isActivated()) {
-						activeSubModule.activate();
-					}
-				}
-				resize();
-				// after activation (i.e. view creation), return focus to the navigation tree 
-				getTree().setFocus();
-			}
-
-		});
-
 		getTree().addListener(SWT.Paint, new Listener() {
 			public void handleEvent(Event event) {
 				onTreePaint(event.gc);
