@@ -27,32 +27,6 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
  */
 public class SwtExampleApplication extends SwtApplication {
 
-	/**
-	 * Creates a new instance of <code>SwtExampleApplication</code> and set the
-	 * look and feel, if a class for the look and feel is given.
-	 */
-	@SuppressWarnings("unchecked")
-	public SwtExampleApplication() {
-
-		super();
-
-		//		String lnfClassName = System.getProperty("riena.lnf", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		//		if (!StringUtils.isEmpty(lnfClassName)) {
-		//			try {
-		//				Class lnfClass = SwtExampleApplication.class.getClassLoader().loadClass(lnfClassName);
-		//				RienaDefaultLnf lnf;
-		//				lnf = (RienaDefaultLnf) lnfClass.newInstance();
-		//				LnfManager.setLnf(lnf);
-		//			} catch (Exception e) {
-		//				e.printStackTrace();
-		//			}
-		//		}
-
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.application.SwtApplication#createApplicationController(org.eclipse.riena.navigation.IApplicationNode)
-	 */
 	@Override
 	protected ApplicationController createApplicationController(IApplicationNode node) {
 		ApplicationController controller = super.createApplicationController(node);
@@ -65,7 +39,6 @@ public class SwtExampleApplication extends SwtApplication {
 
 		ISubApplicationNode subApplication = null;
 
-		//		SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
 		String bundleVersion = (String) Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
 
 		final IApplicationNode applicationNode = new ApplicationNode(

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.client.helloworld.applications;
 
+import org.osgi.framework.Bundle;
+
 import org.eclipse.riena.internal.sample.app.client.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
@@ -26,7 +28,6 @@ import org.eclipse.riena.sample.app.client.helloworld.views.CustomerSearchSubMod
 import org.eclipse.riena.sample.app.client.helloworld.views.HelloServerSubModuleView;
 import org.eclipse.riena.sample.app.client.helloworld.views.HelloWorldSubModuleView;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
-import org.osgi.framework.Bundle;
 
 /**
  * Very simple application with only one sub application, one module group, one
@@ -40,8 +41,6 @@ public class HelloWorldApplication extends SwtApplication {
 
 	/**
 	 * Creates the model of the application "Hello world".
-	 * 
-	 * @see org.eclipse.riena.navigation.ui.application.AbstractApplication#createModel()
 	 */
 	@Override
 	protected IApplicationNode createModel() {
@@ -93,13 +92,6 @@ public class HelloWorldApplication extends SwtApplication {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.ui.swt.application.SwtApplication#getBundle
-	 * ()
-	 */
 	@Override
 	protected Bundle getBundle() {
 		return Activator.getDefault().getBundle();
