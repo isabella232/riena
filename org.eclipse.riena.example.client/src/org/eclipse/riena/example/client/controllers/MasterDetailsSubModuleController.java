@@ -147,6 +147,15 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 			actionRemove.setText(""); //$NON-NLS-1$
 			actionRemove.setIcon("remove_h.png"); //$NON-NLS-1$
 		}
+
+		IMasterDetailsRidget master3 = (IMasterDetailsRidget) getRidget("master3"); //$NON-NLS-1$
+		if (master3 != null) {
+			master3.setDelegate(new PersonDelegate());
+			master3.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
+			master3.updateFromModel();
+
+			master3.setDirectWriting(true); // enable auto apply
+		}
 	}
 
 }

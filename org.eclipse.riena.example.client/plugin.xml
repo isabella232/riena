@@ -123,6 +123,11 @@
             name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView2">
       </view>
       <view allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView3"
+            id="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView3"
+            name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView3">
+      </view>
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView"
             id="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView"
             name="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView">
@@ -286,13 +291,6 @@
             class="org.eclipse.riena.example.client.views.SalaryView"
             id="org.eclipse.riena.example.client.views.SalaryView"
             name="org.eclipse.riena.example.client.views.SalaryView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ContractsView"
-            id="org.eclipse.riena.example.client.views.ContractsView"
-            name="org.eclipse.riena.example.client.views.ContractsView"
             restorable="true">
       </view>
       <view

@@ -55,6 +55,7 @@ import org.eclipse.riena.example.client.views.ListUsingTableSubModuleView;
 import org.eclipse.riena.example.client.views.MarkerSubModuleView;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView2;
+import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView3;
 import org.eclipse.riena.example.client.views.MessageBoxSubModuleView;
 import org.eclipse.riena.example.client.views.MessageMarkerSubModuleView;
 import org.eclipse.riena.example.client.views.NoControllerSubModuleView;
@@ -189,6 +190,12 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(mdSubModule2, MasterDetailsSubModuleController.class,
 				MasterDetailsSubModuleView2.ID, false);
 		playgroundModule.addChild(mdSubModule2);
+
+		ISubModuleNode mdSubModule3 = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.masterdetails3"), "Master/Details III"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(mdSubModule3, MasterDetailsSubModuleController.class,
+				MasterDetailsSubModuleView3.ID, false);
+		playgroundModule.addChild(mdSubModule3);
 
 		ISubModuleNode messageBoxSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.messageBox"), "Message Box"); //$NON-NLS-1$ //$NON-NLS-2$
