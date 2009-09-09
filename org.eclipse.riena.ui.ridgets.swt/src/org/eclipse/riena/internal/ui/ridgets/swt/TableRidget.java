@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.databinding.viewers.IViewerObservableList;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.viewers.OwnerDrawLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -521,6 +522,22 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		viewer.setLabelProvider(new TableRidgetLabelProvider(attrMap, formatters));
 		viewer.setContentProvider(viewerCP);
 		viewer.setInput(viewerObservables);
+	}
+
+	// TODO [ev] highly experimental -- will be removed soon
+	public void setWrapping(boolean withWrapping) {
+		viewer.setLabelProvider(new OwnerDrawLabelProvider() {
+			@Override
+			protected void measure(Event event, Object element) {
+				System.out.println(event.width);
+				event.height = 200;
+			}
+
+			@Override
+			protected void paint(Event event, Object element) {
+				// event.gc.drawText("abcdef." + event.index, event.x, event.y, true);
+			}
+		});
 	}
 
 	private void disposeMultipleSelectionBinding() {
