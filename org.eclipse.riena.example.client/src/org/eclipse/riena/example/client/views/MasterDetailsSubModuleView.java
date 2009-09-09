@@ -34,10 +34,11 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * @see MasterDetailsSubModuleController
  */
 public class MasterDetailsSubModuleView extends SubModuleView<MasterDetailsSubModuleController> {
-	public MasterDetailsSubModuleView() {
-	}
 
 	public static final String ID = MasterDetailsSubModuleView.class.getName();
+
+	public MasterDetailsSubModuleView() {
+	}
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {

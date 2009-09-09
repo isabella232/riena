@@ -42,6 +42,9 @@ public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubM
 
 	public static final String ID = MasterDetailsSubModuleView2.class.getName();
 
+	public MasterDetailsSubModuleView2() {
+	}
+
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 		colorLightBlue = new Color(parent.getDisplay(), 222, 232, 247);
