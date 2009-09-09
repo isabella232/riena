@@ -39,6 +39,8 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
+import org.eclipse.ui.application.ActionBarAdvisor;
+import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.internal.WorkbenchWindow;
@@ -46,6 +48,7 @@ import org.eclipse.ui.internal.WorkbenchWindow;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.navigation.ui.swt.CoolbarUtils;
+import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorFactory;
 import org.eclipse.riena.internal.navigation.ui.swt.RestoreFocusOnEscListener;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -99,14 +102,22 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		NONE, HOVER, HOVER_SELECTED;
 	}
 
-	private ApplicationController controller;
-	private AbstractViewBindingDelegate binding;
+	private final ApplicationController controller;
+	private final AbstractViewBindingDelegate binding;
+	private final IAdvisorFactory advisorFactory;
+
 	private TitleComposite titleComposite;
 
-	public ApplicationViewAdvisor(IWorkbenchWindowConfigurer configurer, ApplicationController pController) {
+	/**
+	 * @noreference This constructor is not intended to be referenced by
+	 *              clients.
+	 */
+	public ApplicationViewAdvisor(IWorkbenchWindowConfigurer configurer, ApplicationController pController,
+			IAdvisorFactory factory) {
 		super(configurer);
 		controller = pController;
 		binding = createBinding();
+		advisorFactory = factory;
 		initializeListener();
 	}
 
@@ -114,20 +125,73 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		binding.addUIControl(control, propertyName);
 	}
 
+	@Override
+	public final ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
+		return advisorFactory.createActionBarAdvisor(configurer);
+	}
+
+	@Override
+	public void createWindowContents(final Shell shell) {
+		initShell(shell);
+
+		// create and layouts the composite of switcher, menu, tool bar etc.
+		shell.setLayout(new FormLayout());
+		Composite grabCorner = createGrabCorner(shell);
+		createStatusLine(shell, grabCorner);
+		titleComposite = createTitleComposite(shell);
+		Composite menuBarComposite = createMenuBarComposite(shell, titleComposite);
+		Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
+		createMainComposite(shell, coolBarComposite);
+
+		RestoreFocusOnEscListener focusListener = new RestoreFocusOnEscListener(shell);
+		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(menuBarComposite));
+		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(coolBarComposite));
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		if (titleComposite != null) {
+			titleComposite.dispose();
+			titleComposite = null;
+		}
+
+	}
+
+	@Override
+	public void preWindowOpen() {
+		configureWindow();
+	}
+
+	@Override
+	public void postWindowOpen() {
+		super.postWindowOpen();
+		doInitialBinding();
+		if (titleComposite != null) {
+			// Redraw so that the active tab is displayed correct
+			titleComposite.setRedraw(false);
+			titleComposite.setRedraw(true);
+		}
+	}
+
+	/**
+	 * Creates a delegate for the binding of view and controller.
+	 * 
+	 * @return delegate for binding
+	 */
+	protected AbstractViewBindingDelegate createBinding() {
+		return new InjectSwtViewBindingDelegate();
+	}
+
+	// helping methods
+	//////////////////
+
 	private void initializeListener() {
 		ISubApplicationNodeListener subApplicationListener = new MySubApplicationNodeListener();
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(subApplicationListener);
 		navigationTreeObserver.addListener(new MyApplicationNodeListener());
 		navigationTreeObserver.addListenerTo(controller.getNavigationNode());
-	}
-
-	/**
-	 * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#preWindowOpen()
-	 */
-	@Override
-	public void preWindowOpen() {
-		configureWindow();
 	}
 
 	/**
@@ -178,65 +242,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	}
 
-	/**
-	 * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#postWindowOpen()
-	 */
-	@Override
-	public void postWindowOpen() {
-		super.postWindowOpen();
-		doInitialBinding();
-		if (titleComposite != null) {
-			// Redraw so that the active tab is displayed correct
-			titleComposite.setRedraw(false);
-			titleComposite.setRedraw(true);
-		}
-	}
-
 	private void doInitialBinding() {
 		binding.injectAndBind(controller);
 		controller.afterBind();
 		controller.getNavigationNode().activate();
-	}
-
-	/**
-	 * Creates a delegate for the binding of view and controller.
-	 * 
-	 * @return delegate for binding
-	 */
-	protected AbstractViewBindingDelegate createBinding() {
-		return new InjectSwtViewBindingDelegate();
-	}
-
-	/**
-	 * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#dispose()
-	 */
-	@Override
-	public void dispose() {
-
-		super.dispose();
-		if (titleComposite != null) {
-			titleComposite.dispose();
-			titleComposite = null;
-		}
-
-	}
-
-	@Override
-	public void createWindowContents(final Shell shell) {
-		initShell(shell);
-
-		// create and layouts the composite of switcher, menu, tool bar etc.
-		shell.setLayout(new FormLayout());
-		Composite grabCorner = createGrabCorner(shell);
-		createStatusLine(shell, grabCorner);
-		titleComposite = createTitleComposite(shell);
-		Composite menuBarComposite = createMenuBarComposite(shell, titleComposite);
-		Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
-		createMainComposite(shell, coolBarComposite);
-
-		RestoreFocusOnEscListener focusListener = new RestoreFocusOnEscListener(shell);
-		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(menuBarComposite));
-		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(coolBarComposite));
 	}
 
 	private void createStatusLine(Composite shell, Composite grabCorner) {
@@ -286,93 +295,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private MenuManager getMenuManager() {
 		return ((WorkbenchWindow) getWindowConfigurer().getWindow()).getMenuManager();
-	}
-
-	private static class MyApplicationNodeListener extends ApplicationNodeListener {
-
-		@Override
-		public void filterAdded(IApplicationNode source, IUIFilter filter) {
-			show();
-		}
-
-		@Override
-		public void filterRemoved(IApplicationNode source, IUIFilter filter) {
-			show();
-		}
-
-		private void show() {
-			try {
-				IViewPart vp = getNavigationViewPart();
-				if (vp == null) {
-					NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
-					navi.updateNavigationSize();
-				}
-			} catch (PartInitException e) {
-				throw new UIViewFailure(e.getMessage(), e);
-			}
-		}
-
-		private IWorkbenchPage getActivePage() {
-			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		}
-
-		/**
-		 * Returns the view part of the navigation.
-		 * 
-		 * @return view part of the navigation or
-		 */
-		private IViewPart getNavigationViewPart() {
-			IViewReference[] references = getActivePage().getViewReferences();
-			for (IViewReference viewReference : references) {
-				if (viewReference.getId().equals(NavigationViewPart.ID)) {
-					return viewReference.getView(true);
-				}
-			}
-			return null;
-		}
-
-	}
-
-	private class MySubApplicationNodeListener extends SubApplicationNodeListener {
-
-		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationTreeAdapter#activated(org.eclipse.riena.navigation.ISubApplicationNode)
-		 */
-		@Override
-		public void activated(ISubApplicationNode source) {
-			if (source != null) {
-				showPerspective(source);
-				if (titleComposite != null) {
-					// Redraw so that the active tab is displayed correct
-					titleComposite.setRedraw(false);
-					titleComposite.setRedraw(true);
-				}
-			}
-			super.activated(source);
-		}
-
-		private void showPerspective(ISubApplicationNode source) {
-			try {
-				PlatformUI.getWorkbench().showPerspective(SwtViewProvider.getInstance().getSwtViewId(source).getId(),
-						PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-			} catch (WorkbenchException e) {
-				throw new UIViewFailure(e.getMessage(), e);
-			}
-		}
-
-		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
-		 */
-		@Override
-		public void disposed(ISubApplicationNode source) {
-			SwtViewProvider viewProvider = SwtViewProvider.getInstance();
-			String id = viewProvider.getSwtViewId(source).getId();
-			IWorkbench workbench = PlatformUI.getWorkbench();
-			IPerspectiveRegistry registry = workbench.getPerspectiveRegistry();
-			IPerspectiveDescriptor perspDesc = registry.findPerspectiveWithId(id);
-			workbench.getActiveWorkbenchWindow().getActivePage().closePerspective(perspDesc, false, false);
-			viewProvider.unregisterSwtViewId(source);
-		}
 	}
 
 	/**
@@ -567,44 +489,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
-	 * This listener paints the shell (the border of the shell).
-	 */
-	private static class ShellPaintListener implements PaintListener {
-
-		/**
-		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
-		 */
-		public void paintControl(PaintEvent e) {
-			onPaint(e);
-		}
-
-		/**
-		 * Paints the border of the (titleless) shell.
-		 * 
-		 * @param e
-		 *            - event
-		 */
-		private void onPaint(PaintEvent e) {
-
-			if (e.getSource() instanceof Control) {
-
-				Control shell = (Control) e.getSource();
-
-				Rectangle shellBounds = shell.getBounds();
-				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellBounds.height);
-
-				ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(
-						LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
-				borderRenderer.setBounds(bounds);
-				borderRenderer.paint(e.gc, null);
-
-			}
-
-		}
-
-	}
-
-	/**
 	 * Returns the margin above the menu bar.
 	 * 
 	 * @return top margin
@@ -622,6 +506,120 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private int getToolBarTopMargin() {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		return lnf.getIntegerSetting(LnfKeyConstants.TOOLBAR_TOP_MARGIN, DEFAULT_COOLBAR_TOP_MARGIN);
+	}
+
+	// helping classes
+	//////////////////
+
+	private static class MyApplicationNodeListener extends ApplicationNodeListener {
+
+		@Override
+		public void filterAdded(IApplicationNode source, IUIFilter filter) {
+			show();
+		}
+
+		@Override
+		public void filterRemoved(IApplicationNode source, IUIFilter filter) {
+			show();
+		}
+
+		private void show() {
+			try {
+				IViewPart vp = getNavigationViewPart();
+				if (vp == null) {
+					NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
+					navi.updateNavigationSize();
+				}
+			} catch (PartInitException e) {
+				throw new UIViewFailure(e.getMessage(), e);
+			}
+		}
+
+		private IWorkbenchPage getActivePage() {
+			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		}
+
+		/**
+		 * Returns the view part of the navigation.
+		 * 
+		 * @return view part of the navigation or
+		 */
+		private IViewPart getNavigationViewPart() {
+			IViewReference[] references = getActivePage().getViewReferences();
+			for (IViewReference viewReference : references) {
+				if (viewReference.getId().equals(NavigationViewPart.ID)) {
+					return viewReference.getView(true);
+				}
+			}
+			return null;
+		}
+
+	}
+
+	private class MySubApplicationNodeListener extends SubApplicationNodeListener {
+
+		@Override
+		public void activated(ISubApplicationNode source) {
+			if (source != null) {
+				showPerspective(source);
+				if (titleComposite != null) {
+					// Redraw so that the active tab is displayed correct
+					titleComposite.setRedraw(false);
+					titleComposite.setRedraw(true);
+				}
+			}
+			super.activated(source);
+		}
+
+		private void showPerspective(ISubApplicationNode source) {
+			try {
+				PlatformUI.getWorkbench().showPerspective(SwtViewProvider.getInstance().getSwtViewId(source).getId(),
+						PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+			} catch (WorkbenchException e) {
+				throw new UIViewFailure(e.getMessage(), e);
+			}
+		}
+
+		@Override
+		public void disposed(ISubApplicationNode source) {
+			SwtViewProvider viewProvider = SwtViewProvider.getInstance();
+			String id = viewProvider.getSwtViewId(source).getId();
+			IWorkbench workbench = PlatformUI.getWorkbench();
+			IPerspectiveRegistry registry = workbench.getPerspectiveRegistry();
+			IPerspectiveDescriptor perspDesc = registry.findPerspectiveWithId(id);
+			workbench.getActiveWorkbenchWindow().getActivePage().closePerspective(perspDesc, false, false);
+			viewProvider.unregisterSwtViewId(source);
+		}
+	}
+
+	/**
+	 * This listener paints the shell (the border of the shell).
+	 */
+	private static class ShellPaintListener implements PaintListener {
+
+		public void paintControl(PaintEvent e) {
+			onPaint(e);
+		}
+
+		/**
+		 * Paints the border of the (titleless) shell.
+		 * 
+		 * @param e
+		 *            - event
+		 */
+		private void onPaint(PaintEvent e) {
+			if (e.getSource() instanceof Control) {
+				Control shell = (Control) e.getSource();
+
+				Rectangle shellBounds = shell.getBounds();
+				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellBounds.height);
+
+				ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(
+						LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+				borderRenderer.setBounds(bounds);
+				borderRenderer.paint(e.gc, null);
+			}
+		}
 	}
 
 }

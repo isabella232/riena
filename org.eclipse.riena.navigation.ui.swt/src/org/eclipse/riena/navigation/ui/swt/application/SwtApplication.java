@@ -24,6 +24,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.application.ActionBarAdvisor;
+import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.splash.AbstractSplashHandler;
 
@@ -31,6 +33,7 @@ import org.eclipse.riena.core.exception.ExceptionFailure;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
+import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorFactory;
 import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
@@ -51,15 +54,12 @@ public abstract class SwtApplication extends AbstractApplication {
 	protected ILoginSplashViewDefinition loginSplashViewDefinition;
 	private LoginNonActivityTimer loginNonActivityTimer;
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.application.AbstractApplication#createView(org.eclipse.equinox.app.IApplicationContext,
-	 *      org.eclipse.riena.navigation.IApplicationNode)
-	 */
 	@Override
 	public Object createView(IApplicationContext context, IApplicationNode pNode) {
 		Display display = PlatformUI.createDisplay();
 		try {
-			ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode));
+			ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode),
+					new AdvisorFactory());
 			initializeLoginNonActivityTimer(display, pNode, context);
 			int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
 			if (returnCode == PlatformUI.RETURN_RESTART) {
@@ -71,8 +71,15 @@ public abstract class SwtApplication extends AbstractApplication {
 		}
 	}
 
-	protected ApplicationController createApplicationController(IApplicationNode pModel) {
-		return new ApplicationController(pModel);
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Subclasses may override.
+	 * 
+	 * @since 1.2
+	 */
+	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
+		return new ActionBarAdvisor(configurer);
 	}
 
 	public void stop() {
@@ -90,120 +97,21 @@ public abstract class SwtApplication extends AbstractApplication {
 		});
 	}
 
+	/*
+	 * keep public, called via reflection
+	 */
+	public void update(ILoginSplashViewDefinition[] data) {
+
+		if (data.length > 0) {
+			loginSplashViewDefinition = data[0];
+		}
+	}
+
+	protected ApplicationController createApplicationController(IApplicationNode pModel) {
+		return new ApplicationController(pModel);
+	}
+
 	protected abstract Bundle getBundle();
-
-	private void initializeLoginNonActivityTimer(final Display display, IApplicationNode pNode,
-			final IApplicationContext context) {
-
-		pNode.addListener(new ApplicationNodeListener() {
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener
-			 * #afterActivated(org.eclipse.riena.navigation.INavigationNode)
-			 */
-			@Override
-			public void afterActivated(IApplicationNode source) {
-				if (isSplashLogin(context) && loginSplashViewDefinition.getNonActivityDuration() > 0) {
-					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginSplashViewDefinition
-							.getNonActivityDuration());
-					loginNonActivityTimer.schedule();
-				} else if (isDialogLogin(context) && loginDialogViewDefinition.getNonActivityDuration() > 0) {
-					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginDialogViewDefinition
-							.getNonActivityDuration());
-					loginNonActivityTimer.schedule();
-				}
-			}
-		});
-	}
-
-	private final class LoginNonActivityTimer implements Runnable {
-
-		private Display display;
-		private IApplicationContext context;
-		private EventListener eventListener;
-		private int nonActivityDuration;
-
-		private LoginNonActivityTimer(Display display, IApplicationContext context, int nonActivityDuration) {
-			super();
-
-			this.display = display;
-			this.context = context;
-			this.nonActivityDuration = nonActivityDuration;
-			initializeEventListener();
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Runnable#run()
-		 */
-		public void run() {
-
-			try {
-				if (eventListener.activity) {
-					schedule();
-					return;
-				}
-
-				prePerformLogin(context);
-				postPerformLogin(context, performLogin(context));
-			} catch (Exception e) {
-				throw new ExceptionFailure(e.getLocalizedMessage(), e);
-			}
-		}
-
-		private void initializeEventListener() {
-
-			eventListener = new EventListener();
-			display.addFilter(SWT.KeyDown, eventListener);
-			display.addFilter(SWT.KeyUp, eventListener);
-			display.addFilter(SWT.MouseDoubleClick, eventListener);
-			display.addFilter(SWT.MouseDown, eventListener);
-			//display.addFilter(SWT.MouseEnter, eventListener);
-			display.addFilter(SWT.MouseExit, eventListener);
-			//display.addFilter(SWT.MouseHover, eventListener);
-			display.addFilter(SWT.MouseMove, eventListener);
-			display.addFilter(SWT.MouseUp, eventListener);
-			display.addFilter(SWT.MouseWheel, eventListener);
-			display.addFilter(SWT.Traverse, eventListener);
-		}
-
-		private void schedule() {
-			initializeForSchedule();
-			display.timerExec(getTimerDelay(), this);
-		}
-
-		private void initializeForSchedule() {
-
-			if (eventListener.activityTime == -1) {// initialize on first schedule
-				eventListener.activityTime = System.currentTimeMillis();
-			}
-			eventListener.activity = false;
-		}
-
-		private int getTimerDelay() {
-			return nonActivityDuration - (int) (System.currentTimeMillis() - eventListener.activityTime);
-		}
-
-	}
-
-	private static final class EventListener implements Listener {
-
-		private boolean activity;
-		private long activityTime;
-
-		private EventListener() {
-			activity = false;
-			activityTime = -1;
-		}
-
-		public void handleEvent(Event event) {
-			activity = true;
-			activityTime = System.currentTimeMillis();
-		}
-
-	}
 
 	protected void prePerformLogin(IApplicationContext context) {
 		if (RcpUtilities.getWorkbenchShell() != null) {
@@ -262,18 +170,39 @@ public abstract class SwtApplication extends AbstractApplication {
 		return loginSplashHandler.getResult();
 	}
 
-	private void initilizeShellBackgroundImage(Shell shell, String imageName) {
-		Image bi = ImageStore.getInstance().getImage(imageName);
-		shell.setSize(bi.getBounds().width, bi.getBounds().height);
-		shell.setBackgroundImage(bi);
+	@Override
+	protected boolean isSplashLogin(IApplicationContext context) {
+		return loginSplashViewDefinition != null && getLoginSplashHandler() != null;
 	}
+
+	@Override
+	protected boolean isDialogLogin(IApplicationContext context) {
+		return super.isDialogLogin(context) && loginSplashViewDefinition == null;
+	}
+
+	@Override
+	protected void initializeLoginViewDefinition() {
+		super.initializeLoginViewDefinition();
+
+		initializeLoginSplashViewDefinition();
+	}
+
+	// helping methods
+	//////////////////
 
 	private String getBackgroundImagePath(IApplicationContext context) {
 		return "splash.bmp"; //$NON-NLS-1$
 	}
 
-	private AbstractLoginSplashHandler getLoginSplashHandler() {
+	private Display getDisplay() {
+		if (PlatformUI.isWorkbenchRunning()) {
+			return PlatformUI.getWorkbench().getDisplay();
+		} else {
+			return PlatformUI.createDisplay();
+		}
+	}
 
+	private AbstractLoginSplashHandler getLoginSplashHandler() {
 		if (!PlatformUI.isWorkbenchRunning()) {
 			return null;
 		}
@@ -290,43 +219,125 @@ public abstract class SwtApplication extends AbstractApplication {
 		}
 	}
 
-	@Override
-	protected boolean isSplashLogin(IApplicationContext context) {
-		return loginSplashViewDefinition != null && getLoginSplashHandler() != null;
+	private void initializeLoginNonActivityTimer(final Display display, IApplicationNode pNode,
+			final IApplicationContext context) {
+	
+		pNode.addListener(new ApplicationNodeListener() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener
+			 * #afterActivated(org.eclipse.riena.navigation.INavigationNode)
+			 */
+			@Override
+			public void afterActivated(IApplicationNode source) {
+				if (isSplashLogin(context) && loginSplashViewDefinition.getNonActivityDuration() > 0) {
+					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginSplashViewDefinition
+							.getNonActivityDuration());
+					loginNonActivityTimer.schedule();
+				} else if (isDialogLogin(context) && loginDialogViewDefinition.getNonActivityDuration() > 0) {
+					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginDialogViewDefinition
+							.getNonActivityDuration());
+					loginNonActivityTimer.schedule();
+				}
+			}
+		});
 	}
 
-	@Override
-	protected boolean isDialogLogin(IApplicationContext context) {
-		return super.isDialogLogin(context) && loginSplashViewDefinition == null;
-	}
-
-	@Override
-	protected void initializeLoginViewDefinition() {
-
-		super.initializeLoginViewDefinition();
-
-		initialzeLoginSplashViewDefinition();
-	}
-
-	public void update(ILoginSplashViewDefinition[] data) {
-
-		if (data.length > 0) {
-			loginSplashViewDefinition = data[0];
-		}
-	}
-
-	private void initialzeLoginSplashViewDefinition() {
-
+	private void initializeLoginSplashViewDefinition() {
 		Inject.extension(ILoginSplashViewDefinition.EP_TYPE).useType(ILoginSplashViewDefinition.class).into(this)
 				.andStart(Activator.getDefault().getContext());
 	}
 
-	private Display getDisplay() {
+	private void initilizeShellBackgroundImage(Shell shell, String imageName) {
+		Image bi = ImageStore.getInstance().getImage(imageName);
+		shell.setSize(bi.getBounds().width, bi.getBounds().height);
+		shell.setBackgroundImage(bi);
+	}
 
-		if (PlatformUI.isWorkbenchRunning()) {
-			return PlatformUI.getWorkbench().getDisplay();
-		} else {
-			return PlatformUI.createDisplay();
+	// helping classes
+	//////////////////
+
+	private final class AdvisorFactory implements IAdvisorFactory {
+		public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
+			return SwtApplication.this.createActionBarAdvisor(configurer);
+		}
+	}
+
+	private static final class EventListener implements Listener {
+		private boolean activity;
+		private long activityTime;
+
+		private EventListener() {
+			activity = false;
+			activityTime = -1;
+		}
+
+		public void handleEvent(Event event) {
+			activity = true;
+			activityTime = System.currentTimeMillis();
+		}
+
+	}
+
+	private final class LoginNonActivityTimer implements Runnable {
+		private Display display;
+		private IApplicationContext context;
+		private EventListener eventListener;
+		private int nonActivityDuration;
+
+		private LoginNonActivityTimer(Display display, IApplicationContext context, int nonActivityDuration) {
+			super();
+
+			this.display = display;
+			this.context = context;
+			this.nonActivityDuration = nonActivityDuration;
+			initializeEventListener();
+		}
+
+		public void run() {
+			try {
+				if (eventListener.activity) {
+					schedule();
+					return;
+				}
+
+				prePerformLogin(context);
+				postPerformLogin(context, performLogin(context));
+			} catch (Exception e) {
+				throw new ExceptionFailure(e.getLocalizedMessage(), e);
+			}
+		}
+
+		private void initializeEventListener() {
+			eventListener = new EventListener();
+			display.addFilter(SWT.KeyDown, eventListener);
+			display.addFilter(SWT.KeyUp, eventListener);
+			display.addFilter(SWT.MouseDoubleClick, eventListener);
+			display.addFilter(SWT.MouseDown, eventListener);
+			//display.addFilter(SWT.MouseEnter, eventListener);
+			display.addFilter(SWT.MouseExit, eventListener);
+			//display.addFilter(SWT.MouseHover, eventListener);
+			display.addFilter(SWT.MouseMove, eventListener);
+			display.addFilter(SWT.MouseUp, eventListener);
+			display.addFilter(SWT.MouseWheel, eventListener);
+			display.addFilter(SWT.Traverse, eventListener);
+		}
+
+		private void schedule() {
+			initializeForSchedule();
+			display.timerExec(getTimerDelay(), this);
+		}
+
+		private void initializeForSchedule() {
+			if (eventListener.activityTime == -1) {// initialize on first schedule
+				eventListener.activityTime = System.currentTimeMillis();
+			}
+			eventListener.activity = false;
+		}
+
+		private int getTimerDelay() {
+			return nonActivityDuration - (int) (System.currentTimeMillis() - eventListener.activityTime);
 		}
 	}
 

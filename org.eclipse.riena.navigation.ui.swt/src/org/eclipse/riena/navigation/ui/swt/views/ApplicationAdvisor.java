@@ -26,30 +26,30 @@ import org.eclipse.ui.statushandlers.StatusAdapter;
 
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.service.Service;
+import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorFactory;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentationFactory;
 
 public class ApplicationAdvisor extends WorkbenchAdvisor {
 
-	private ApplicationController controller;
-
-	public ApplicationAdvisor(ApplicationController controller) {
-		this.controller = controller;
-	}
+	private final ApplicationController controller;
+	private final IAdvisorFactory advisorFactory;
 
 	/**
-	 * @see org.eclipse.ui.application.WorkbenchAdvisor#createWorkbenchWindowAdvisor(org.eclipse.ui.application.IWorkbenchWindowConfigurer)
+	 * @noreference This constructor is not intended to be referenced by
+	 *              clients.
 	 */
+	public ApplicationAdvisor(ApplicationController controller, IAdvisorFactory factory) {
+		this.controller = controller;
+		this.advisorFactory = factory;
+	}
+
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
-		TitlelessStackPresentationFactory workbenchPresentationFactory = new TitlelessStackPresentationFactory();
-		configurer.setPresentationFactory(workbenchPresentationFactory);
-		return new ApplicationViewAdvisor(configurer, controller);
+		configurer.setPresentationFactory(new TitlelessStackPresentationFactory());
+		return new ApplicationViewAdvisor(configurer, controller, advisorFactory);
 	}
 
-	/**
-	 * @see org.eclipse.ui.application.WorkbenchAdvisor#getInitialWindowPerspectiveId()
-	 */
 	@Override
 	public String getInitialWindowPerspectiveId() {
 		return null;
@@ -58,7 +58,6 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 	@Override
 	public synchronized AbstractStatusHandler getWorkbenchErrorHandler() {
 		return new AbstractStatusHandler() {
-
 			@Override
 			public void handle(StatusAdapter statusAdapter, int style) {
 				Service.get(IExceptionHandlerManager.class).handleException(statusAdapter.getStatus().getException(),

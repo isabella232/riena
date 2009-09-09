@@ -17,10 +17,13 @@ import org.easymock.EasyMock;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.application.ActionBarAdvisor;
+import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorFactory;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -37,20 +40,15 @@ public class ApplicationViewAdvisorTest extends TestCase {
 	private ApplicationNode applicationNode;
 	private ApplicationController controller;
 
-	/**
-	 * @see junit.framework.TestCase#setUp()
-	 */
 	@Override
 	protected void setUp() throws Exception {
 		winConfig = EasyMock.createNiceMock(IWorkbenchWindowConfigurer.class);
 		applicationNode = new ApplicationNode();
 		controller = new ApplicationController(applicationNode);
-		advisor = new ApplicationViewAdvisor(winConfig, controller);
+		IAdvisorFactory factory = EasyMock.createMock(IAdvisorFactory.class);
+		advisor = new ApplicationViewAdvisor(winConfig, controller, factory);
 	}
 
-	/*
-	 * @see junit.framework.TestCase#tearDown()
-	 */
 	@Override
 	protected void tearDown() throws Exception {
 		applicationNode = null;
@@ -64,7 +62,6 @@ public class ApplicationViewAdvisorTest extends TestCase {
 	 * Tests the method <code>initShell</code>.
 	 */
 	public void testInitShell() {
-
 		Shell shell = new Shell();
 		assertNotSame(SWT.INHERIT_FORCE, shell.getBackgroundMode());
 		Point defMinSize = shell.getMinimumSize();
@@ -75,14 +72,12 @@ public class ApplicationViewAdvisorTest extends TestCase {
 		assertNotNull(shell.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
 
 		SwtUtilities.disposeWidget(shell);
-
 	}
 
 	/**
 	 * Tests the <i>private</i> method <code>initApplicationSize</code>.
 	 */
 	public void testInitApplicationSize() {
-
 		System.setProperty("riena.application.width", "9000");
 		System.setProperty("riena.application.height", "8000");
 		EasyMock.reset(winConfig);
@@ -98,7 +93,22 @@ public class ApplicationViewAdvisorTest extends TestCase {
 		EasyMock.replay(winConfig);
 		ReflectionUtils.invokeHidden(advisor, "initApplicationSize", winConfig);
 		EasyMock.verify(winConfig);
-
 	}
 
+	/**
+	 * Tests that an IAdvisorFactory is used to create the ActionBarAdvisor.
+	 */
+	public void testInvokesAdvisorFactory() {
+		IActionBarConfigurer actionConfig = EasyMock.createNiceMock(IActionBarConfigurer.class);
+		ActionBarAdvisor actionAdvisor = new ActionBarAdvisor(actionConfig);
+
+		IAdvisorFactory factory = EasyMock.createMock(IAdvisorFactory.class);
+		EasyMock.expect(factory.createActionBarAdvisor(actionConfig)).andReturn(actionAdvisor);
+		EasyMock.replay(factory);
+
+		advisor = new ApplicationViewAdvisor(winConfig, controller, factory);
+		advisor.createActionBarAdvisor(actionConfig);
+
+		EasyMock.verify(factory);
+	}
 }

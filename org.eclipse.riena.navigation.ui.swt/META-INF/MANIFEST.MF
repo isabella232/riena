@@ -21,9 +21,10 @@ Require-Bundle: org.eclipse.core.databinding,
  org.eclipse.riena.ui.swt,
  org.eclipse.riena.ui.workarea;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy 
-Export-Package: org.eclipse.riena.internal.navigation.ui.swt;x-internal:=true,
+Export-Package: org.eclipse.riena.internal.navigation.ui.swt;x-friends:="org.eclipse.riena.tests",
  org.eclipse.riena.internal.navigation.ui.swt.handlers;x-friends:="org.eclipse.riena.tests",
  org.eclipse.riena.internal.navigation.ui.swt.workarea;x-internal:=true,
+ org.eclipse.riena.internal.ui.ridgets.swt;x-internal:=true,
  org.eclipse.riena.navigation.ui.swt.application,
  org.eclipse.riena.navigation.ui.swt.binding,
  org.eclipse.riena.navigation.ui.swt.component;x-friends:="org.eclipse.riena.tests",
