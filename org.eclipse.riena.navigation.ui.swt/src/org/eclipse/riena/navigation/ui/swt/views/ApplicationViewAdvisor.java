@@ -46,6 +46,7 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.internal.WorkbenchWindow;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.navigation.ui.swt.CoolbarUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorFactory;
@@ -67,8 +68,11 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
+import org.eclipse.riena.navigation.ui.swt.statusline.IStatuslineContentFactoryExtension;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
+import org.eclipse.riena.ui.swt.DefaultStatuslineContentFactory;
+import org.eclipse.riena.ui.swt.IStatusLineContentFactory;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineSpacer;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
@@ -108,6 +112,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	private TitleComposite titleComposite;
 
+	// content factory for delegation of content creation from the statusline
+	private IStatusLineContentFactory statuslineContentFactory;
+
 	/**
 	 * @noreference This constructor is not intended to be referenced by
 	 *              clients.
@@ -116,13 +123,26 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			IAdvisorFactory factory) {
 		super(configurer);
 		controller = pController;
+		injectExtensions();
 		binding = createBinding();
 		advisorFactory = factory;
 		initializeListener();
 	}
 
+	private void injectExtensions() {
+		// content factory for statusline
+		Inject.extension(IStatuslineContentFactoryExtension.ID).useType(IStatuslineContentFactoryExtension.class).into(
+				this).update("bindStatuslineContentFactory").andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
+	}
+
 	public void addUIControl(Composite control, String propertyName) {
 		binding.addUIControl(control, propertyName);
+	}
+
+	public void bindStatuslineContentFactory(IStatuslineContentFactoryExtension[] statuslineContentFactoryExtensions) {
+		if (statuslineContentFactoryExtensions.length > 0) {
+			this.statuslineContentFactory = statuslineContentFactoryExtensions[0].createFactory();
+		}
 	}
 
 	@Override
@@ -249,7 +269,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	private void createStatusLine(Composite shell, Composite grabCorner) {
-		Statusline statusLine = new Statusline(shell, SWT.None, StatuslineSpacer.class);
+		Statusline statusLine = new Statusline(shell, SWT.None, StatuslineSpacer.class,
+				getStatuslineContentFactory() != null ? getStatuslineContentFactory()
+						: new DefaultStatuslineContentFactory());
 		FormData fd = new FormData();
 		fd.height = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
 		Rectangle navigationBounds = TitlelessStackPresentation.calcNavigationBounds(shell);
@@ -620,6 +642,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				borderRenderer.paint(e.gc, null);
 			}
 		}
+	}
+
+	public IStatusLineContentFactory getStatuslineContentFactory() {
+		return statuslineContentFactory;
 	}
 
 }

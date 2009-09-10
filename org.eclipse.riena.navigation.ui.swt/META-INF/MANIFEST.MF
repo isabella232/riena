@@ -33,6 +33,7 @@ Export-Package: org.eclipse.riena.internal.navigation.ui.swt;x-friends:="org.ecl
  org.eclipse.riena.navigation.ui.swt.presentation,
  org.eclipse.riena.navigation.ui.swt.presentation.stack,
  org.eclipse.riena.navigation.ui.swt.splashHandlers,
+ org.eclipse.riena.navigation.ui.swt.statusline,
  org.eclipse.riena.navigation.ui.swt.views,
  org.eclipse.riena.navigation.ui.swt.views.desc
 Bundle-ClassPath: .

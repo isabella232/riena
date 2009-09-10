@@ -71,18 +71,6 @@ public class StatuslineTest extends TestCase {
 	}
 
 	/**
-	 * Tests the method {@code createSpacer(Composite)}.
-	 */
-	public void testCreateSpacer() {
-
-		Control spacer = ReflectionUtils.invokeHidden(statusline, "createSpacer", shell);
-		assertNotNull(spacer);
-		assertTrue(spacer instanceof StatuslineSpacer);
-		assertSame(shell, spacer.getParent());
-
-	}
-
-	/**
 	 * Tests the method {@code createContents()}.<br>
 	 * <i>The method is already called by the constructor.</i>
 	 */

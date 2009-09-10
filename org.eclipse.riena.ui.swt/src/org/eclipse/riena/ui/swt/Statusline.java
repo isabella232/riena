@@ -14,14 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
-import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -32,14 +28,18 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
  */
 public class Statusline extends Composite implements IComplexComponent {
 
-	/**
-	 * 
-	 */
+	//widget ids
 	private final static String NUMBER_NAME = "numberRidget"; //$NON-NLS-1$
-	private static final String UIPROCES_NAME = "UIProcessRidget"; //$NON-NLS-1$
+	private final static String UIPROCES_NAME = "UIProcessRidget"; //$NON-NLS-1$
+
 	private List<Object> uiControls;
 	private StatuslineMessage message;
 	private Class<? extends Control> spacer;
+	private StatuslineNumber statuslineNumber;
+	private StatuslineUIProcess statuslineUIProcess;
+
+	// factory for the creation of the contents of the statusline
+	private IStatusLineContentFactory contentFactory;
 
 	/**
 	 * Creates a new instance of <code>Statusline</code>.
@@ -51,7 +51,37 @@ public class Statusline extends Composite implements IComplexComponent {
 	 *            - the style of widget to construct
 	 */
 	public Statusline(Composite parent, int style) {
-		super(parent, style | SWT.NO_SCROLL);
+		this(parent, style | SWT.NO_SCROLL, (Class<? extends Control>) null);
+	}
+
+	/**
+	 * Creates a new instance of <code>Statusline</code>.
+	 * 
+	 * @param parent
+	 *            - a widget which will be the parent of the new instance
+	 *            (cannot be null)
+	 * @param style
+	 *            - the style of widget to construct
+	 */
+	public Statusline(Composite parent, int style, IStatusLineContentFactory contentFactory) {
+		this(parent, style | SWT.NO_SCROLL, null, contentFactory);
+	}
+
+	/**
+	 * 
+	 * @param parent
+	 *            - a widget which will be the parent of the new instance
+	 *            (cannot be null)
+	 * @param style
+	 *            - the style of widget to construct
+	 * @param pSpacer
+	 *            - class to create spacer
+	 * @param contentFactory
+	 *            - factory for the creation of the contents of the
+	 *            <code>Statusline</code>
+	 */
+	public Statusline(Composite parent, int style, Class<? extends Control> pSpacer) {
+		this(parent, style | SWT.NO_SCROLL, pSpacer, new DefaultStatuslineContentFactory());
 	}
 
 	/**
@@ -64,10 +94,15 @@ public class Statusline extends Composite implements IComplexComponent {
 	 *            - the style of widget to construct
 	 * @param pSpacer
 	 *            - class to create spacer
+	 * @param contentFactory
+	 *            - factory for the creation of the contents of the
+	 *            <code>Statusline</code>
 	 */
-	public Statusline(Composite parent, int style, Class<? extends Control> pSpacer) {
+	public Statusline(Composite parent, int style, Class<? extends Control> pSpacer,
+			IStatusLineContentFactory contentFactory) {
 		super(parent, style | SWT.NO_SCROLL);
 		spacer = pSpacer;
+		this.contentFactory = contentFactory;
 		init();
 	}
 
@@ -84,115 +119,16 @@ public class Statusline extends Composite implements IComplexComponent {
 	 * Creates the contents of the status line.
 	 */
 	protected void createContents() {
+		statuslineNumber = new StatuslineNumber(this, SWT.NONE);
+		addUIControl(statuslineNumber, NUMBER_NAME);
 
-		setLayout(new FormLayout());
-
-		StatuslineTime time = new StatuslineTime(this, SWT.NONE);
-		FormData formData = new FormData();
-		formData.top = new FormAttachment(0, 0);
-		formData.bottom = new FormAttachment(100, 0);
-		formData.right = new FormAttachment(100, 0);
-		time.setLayoutData(formData);
-		Control lastControl = time;
-
-		Control spacerControl = createSpacer(this);
-		if (spacerControl != null) {
-			formData = new FormData();
-			formData.top = new FormAttachment(0, 0);
-			formData.bottom = new FormAttachment(100, 0);
-			formData.right = new FormAttachment(lastControl, 0);
-			spacerControl.setLayoutData(formData);
-			lastControl = spacerControl;
-		}
-
-		StatuslineDate date = new StatuslineDate(this, SWT.NONE);
-		formData = new FormData();
-		formData.top = new FormAttachment(0, 0);
-		formData.bottom = new FormAttachment(100, 0);
-		formData.right = new FormAttachment(lastControl, 0);
-		date.setLayoutData(formData);
-		lastControl = date;
-
-		spacerControl = createSpacer(this);
-		if (spacerControl != null) {
-			formData = new FormData();
-			formData.top = new FormAttachment(0, 0);
-			formData.bottom = new FormAttachment(100, 0);
-			formData.right = new FormAttachment(lastControl, 0);
-			spacerControl.setLayoutData(formData);
-			lastControl = spacerControl;
-		}
-
-		StatuslineNumber number = new StatuslineNumber(this, SWT.NONE);
-		addUIControl(number, NUMBER_NAME);
-		formData = new FormData();
-		formData.top = new FormAttachment(0, 0);
-		formData.bottom = new FormAttachment(100, 0);
-		formData.right = new FormAttachment(lastControl, 0);
-		number.setLayoutData(formData);
-		lastControl = number;
-
-		// add StatuslineUIProcess
-		spacerControl = createSpacer(this);
-		if (spacerControl != null) {
-			formData = new FormData();
-			formData.top = new FormAttachment(0, 0);
-			formData.bottom = new FormAttachment(100, 0);
-			formData.right = new FormAttachment(lastControl, 0);
-			spacerControl.setLayoutData(formData);
-			lastControl = spacerControl;
-		}
-
-		StatuslineUIProcess uiProcess = new StatuslineUIProcess(this, SWT.NONE);
-		addUIControl(uiProcess, UIPROCES_NAME);
-		formData = new FormData();
-		formData.top = new FormAttachment(0, 0);
-		formData.bottom = new FormAttachment(100, 0);
-		formData.right = new FormAttachment(lastControl, 0);
-		uiProcess.setLayoutData(formData);
-		lastControl = uiProcess;
-
-		// add StatuslineMessage
-		spacerControl = createSpacer(this);
-		if (spacerControl != null) {
-			formData = new FormData();
-			formData.top = new FormAttachment(0, 0);
-			formData.bottom = new FormAttachment(100, 0);
-			formData.right = new FormAttachment(lastControl, 0);
-			spacerControl.setLayoutData(formData);
-			lastControl = spacerControl;
-		}
+		statuslineUIProcess = new StatuslineUIProcess(this, SWT.NONE);
+		addUIControl(statuslineUIProcess, UIPROCES_NAME);
 
 		message = new StatuslineMessage(this, SWT.NONE);
-		formData = new FormData();
-		formData.top = new FormAttachment(0, 0);
-		formData.bottom = new FormAttachment(100, 0);
-		formData.left = new FormAttachment(0, 0);
-		formData.right = new FormAttachment(lastControl, 0);
-		message.setLayoutData(formData);
-		lastControl = message;
 
-	}
-
-	/**
-	 * Creates a spacer.
-	 * 
-	 * @param parent
-	 * @return spacer
-	 */
-	private Control createSpacer(Composite parent) {
-
-		Control result = null;
-		if (spacer != null) {
-			try {
-				result = ReflectionUtils.newInstance(spacer, parent, SWT.NONE);
-			} catch (Exception e) {
-				result = null;
-			}
-		}
-
-		return result;
-
+		// delegation to the content factory
+		getContentFactory().createContent(this);
 	}
 
 	/**
@@ -210,16 +146,32 @@ public class Statusline extends Composite implements IComplexComponent {
 	 * @param propertyName
 	 *            - name of the property...
 	 */
-	protected void addUIControl(Widget uiControl, String propertyName) {
+	public void addUIControl(Widget uiControl, String propertyName) {
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(uiControl, propertyName);
 		getUIControls().add(uiControl);
 	}
 
-	/**
-	 * @return Returns the message.
-	 */
+	///
+	///// Getters
+
+	public IStatusLineContentFactory getContentFactory() {
+		return contentFactory;
+	}
+
 	public final StatuslineMessage getMessageComposite() {
 		return message;
+	}
+
+	public StatuslineNumber getStatuslineNumber() {
+		return statuslineNumber;
+	}
+
+	public StatuslineUIProcess getStatuslineUIProcess() {
+		return statuslineUIProcess;
+	}
+
+	public Class<? extends Control> getSpacer() {
+		return spacer;
 	}
 
 }
