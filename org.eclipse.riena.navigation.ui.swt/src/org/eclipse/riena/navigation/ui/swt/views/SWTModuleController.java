@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import java.util.List;
-
-import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Widget;
 
@@ -88,7 +85,6 @@ public class SWTModuleController extends ModuleController {
 		tree.bindToModel(roots, NavigationNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
 				"label", PROPERTY_ENABLED, PROPERTY_VISIBLE, PROPERTY_IMAGE); //$NON-NLS-1$
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		tree.bindSingleSelectionToModel(new DelegatingValue());
 		selectActiveNode();
 	}
 
@@ -105,62 +101,6 @@ public class SWTModuleController extends ModuleController {
 	private IModuleNode[] createTreeRootNodes() {
 		IModuleNode moduleNode = getNavigationNode();
 		return new IModuleNode[] { moduleNode };
-	}
-
-	// TODO [ev] test these:
-
-	/**
-	 * Non-API. Public for testing only.
-	 * 
-	 * @noreference This method is not intended to be referenced by clients.
-	 */
-	public static ISubModuleNode getSelectableChild(ISubModuleNode node) {
-		ISubModuleNode result = null;
-		for (ISubModuleNode child : node.getChildren()) {
-			if (child.isSelectable()) {
-				result = child;
-				break;
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Non-API. Public for testing only.
-	 * 
-	 * @noreference This method is not intended to be referenced by clients.
-	 */
-	public static ISubModuleNode findNodeToActivate(ISubModuleNode oldNode, ISubModuleNode newNode) {
-		ISubModuleNode result = newNode;
-		if (!result.isSelectable()) {
-			ISubModuleNode firstChild = getSelectableChild(result);
-			if (firstChild == oldNode) { // move up
-				result = findPreviousNode(result);
-			} else {
-				result = firstChild;
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Non-API. Public for testing only.
-	 * 
-	 * @noreference This method is not intended to be referenced by clients.
-	 */
-	public static ISubModuleNode findPreviousNode(ISubModuleNode node) {
-		ISubModuleNode result = null;
-		INavigationNode<?> parent = node.getParent();
-		if (parent != null) {
-			List<?> children = parent.getChildren();
-			for (Object child : children) {
-				if (child == node) {
-					break;
-				}
-				result = (ISubModuleNode) child;
-			}
-		}
-		return result;
 	}
 
 	private Display getDisplay() {
@@ -196,38 +136,22 @@ public class SWTModuleController extends ModuleController {
 	//////////////////
 
 	/**
-	 * Activates the selected sub-module node.
-	 */
-	private final class DelegatingValue extends WritableValue {
-		@Override
-		public void doSetValue(Object value) {
-			ISubModuleNode oldNode = (ISubModuleNode) getValue();
-			ISubModuleNode newNode = (ISubModuleNode) value;
-			super.doSetValue(value);
-
-			ISubModuleNode toActivate = findNodeToActivate(oldNode, newNode);
-			if (!toActivate.isActivated()) {
-				toActivate.activate();
-			}
-		}
-	}
-
-	/**
 	 * Updates the tree if a sub-module node is added or remove form parent
 	 * sub-module node.
 	 */
 	private class SubModuleListener extends SubModuleNodeListener {
 		@Override
 		public void afterActivated(final ISubModuleNode source) {
-			super.afterActivated(source);
-			if (source.isSelectable()) {
-				// TODO [ev] explain why
-				runAsync(new Runnable() {
-					public void run() {
-						selectActiveNode();
-					}
-				});
-			}
+			// if activation was changed programmatically, we need to select
+			// the activated node (i.e. undo / redo navigation). Since other
+			// activation changes may already be on the event queue, we have
+			// to do this asynchronously (i.e. put this into the end of the 
+			// queue), to preserve the ordering
+			runAsync(new Runnable() {
+				public void run() {
+					selectActiveNode();
+				}
+			});
 		}
 	}
 

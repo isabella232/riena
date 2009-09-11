@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.swt.handlers;
 
+import java.util.List;
+
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.CoreException;
@@ -18,7 +20,9 @@ import org.eclipse.core.runtime.IExecutableExtension;
 
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
 
 /**
  * Switch focus to the previous or next group in the navigation tree. The
@@ -41,20 +45,41 @@ import org.eclipse.riena.navigation.INavigationNode;
  */
 public class SwitchModule extends AbstractNavigationHandler implements IExecutableExtension {
 
+	/**
+	 * True if navigating to the next module (forward), false if navigating to
+	 * the previous module (backward)
+	 */
 	private boolean toNext;
+	/**
+	 * True, to perform submodule activation in addition to module activation.
+	 * In that case the first submodule will be selected if navigating forward,
+	 * and the last submodule will be selected if navigating backward.
+	 * <p>
+	 * If false, the active submodule within a module will be kept as is.
+	 */
+	private boolean activateSubmodule;
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		doSwitch(toNext);
 		return null;
 	}
 
+	public void setActivateSubmodule(boolean activate) {
+		activateSubmodule = activate;
+	}
+
 	public void doSwitch(boolean forward) {
 		// assumes there is only one application node
 		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
-		INavigationNode<?>[] subModules = collectModules(application);
-		INavigationNode<?> nextNode = forward ? findNextNode(subModules) : findPreviousNode(subModules, true);
-		if (nextNode != null) {
-			nextNode.activate();
+		INavigationNode<?>[] modules = collectModules(application);
+		INavigationNode<?> nextModule = forward ? findNextNode(modules) : findPreviousNode(modules, true);
+		if (nextModule != null) {
+			INavigationNode<?> nextSubModule = findNextSubModule(forward, nextModule);
+			if (nextSubModule != null) {
+				nextSubModule.activate();
+			} else {
+				nextModule.activate();
+			}
 		}
 	}
 
@@ -65,6 +90,30 @@ public class SwitchModule extends AbstractNavigationHandler implements IExecutab
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
 			throws CoreException {
 		toNext = "next".equalsIgnoreCase(String.valueOf(data)); //$NON-NLS-1$
+	}
+
+	// helping methods
+	//////////////////
+
+	private INavigationNode<?> findNextSubModule(boolean forward, INavigationNode<?> nextModule) {
+		INavigationNode<?> nextSubModule;
+		if (activateSubmodule) {
+			nextSubModule = getSubModule(nextModule, forward);
+		} else {
+			nextSubModule = findActive((List<INavigationNode<?>>) nextModule.getChildren());
+		}
+		return nextSubModule;
+	}
+
+	private INavigationNode<?> getSubModule(INavigationNode<?> module, boolean forward) {
+		INavigationNode<?> result = null;
+		List<ISubModuleNode> subModules = ((IModuleNode) module).getChildren();
+		int subModuleCount = subModules.size();
+		if (subModuleCount > 1) {
+			int index = forward ? 0 : subModuleCount - 1;
+			result = subModules.get(index);
+		}
+		return result;
 	}
 
 }

@@ -422,7 +422,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 			}
 		});
 
-		new ModuleKeyboardNavigationListener(getTree());
+		new ModuleNavigationListener(getTree());
 	}
 
 	private void blockView(boolean block) {
@@ -650,6 +650,25 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * view must be resized.
 	 */
 	private class SubModuleListener extends SubModuleNodeListener {
+		@Override
+		public void beforeActivated(ISubModuleNode source) {
+			/*
+			 * SWT feature: when tree.setFocus() is called below, it will fire a
+			 * selection event in ADDITION of setting the focus. This will
+			 * trigger activation of the selected node, which may be different
+			 * than the 'source' node.
+			 * 
+			 * Workaround: we make sure the tree has already a selection before
+			 * we go into the activated(...) method, to avoid this selection
+			 * event.
+			 */
+			Tree tree = getTree();
+			if (tree.getSelectionCount() == 0 && tree.getItemCount() > 0) {
+				TreeItem firstItem = tree.getItem(0);
+				tree.select(firstItem);
+			}
+		}
+
 		@Override
 		public void activated(ISubModuleNode source) {
 			updateExpanded(source); // fix for bug 269221
