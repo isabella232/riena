@@ -51,17 +51,7 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 	}
 
 	@Override
-	public void dispose() {
-	}
-
-	// public void basicCreatePartControl(Composite c) {
-	// return;
-	// }
-
-	@Override
 	public void basicCreatePartControl(Composite parent) {
-		// super.beforeCreatePartControl();
-
 		this.contentArea = parent;
 		contentArea.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		contentArea.setLayout(new FormLayout());
@@ -149,15 +139,11 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 
 		Button saveButton = new Button(contentArea, 0);
 		saveButton.setText("Save"); //$NON-NLS-1$
-		// saveButton.addSelectionListener(new StoreCustomerListener());
 		fd = new FormData();
 		fd.top = new FormAttachment(birthplaceText, LINE_GAP);
 		fd.left = new FormAttachment(birthplaceText, 0, SWT.LEFT);
 		fd.width = FIELD_WIDTH;
 		saveButton.setLayoutData(fd);
-
-		// super.addBoundUIControls(contentArea);
-		// super.afterCreatePartControl();
 	}
 
 	private Label createSectionLabel(Composite parent, String text) {
