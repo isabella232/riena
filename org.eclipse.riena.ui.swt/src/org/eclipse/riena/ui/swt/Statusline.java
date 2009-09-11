@@ -29,14 +29,12 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 public class Statusline extends Composite implements IComplexComponent {
 
 	//widget ids
-	private final static String NUMBER_NAME = "numberRidget"; //$NON-NLS-1$
-	private final static String UIPROCES_NAME = "UIProcessRidget"; //$NON-NLS-1$
+	public final static String SL_NUMBER_RIDGET_ID = "numberRidget"; //$NON-NLS-1$
+	public final static String SL_UIPROCES_RIDGET_ID = "UIProcessRidget"; //$NON-NLS-1$
 
 	private List<Object> uiControls;
 	private StatuslineMessage message;
 	private Class<? extends Control> spacer;
-	private StatuslineNumber statuslineNumber;
-	private StatuslineUIProcess statuslineUIProcess;
 
 	// factory for the creation of the contents of the statusline
 	private IStatusLineContentFactory contentFactory;
@@ -119,12 +117,6 @@ public class Statusline extends Composite implements IComplexComponent {
 	 * Creates the contents of the status line.
 	 */
 	protected void createContents() {
-		statuslineNumber = new StatuslineNumber(this, SWT.NONE);
-		addUIControl(statuslineNumber, NUMBER_NAME);
-
-		statuslineUIProcess = new StatuslineUIProcess(this, SWT.NONE);
-		addUIControl(statuslineUIProcess, UIPROCES_NAME);
-
 		message = new StatuslineMessage(this, SWT.NONE);
 
 		// delegation to the content factory
@@ -136,6 +128,19 @@ public class Statusline extends Composite implements IComplexComponent {
 	 */
 	public List<Object> getUIControls() {
 		return uiControls;
+	}
+
+	private Object getUIControl(String id) {
+		if (id == null) {
+			return null;
+		}
+		for (Object uiControl : getUIControls()) {
+			if (id.equals(SWTBindingPropertyLocator.getInstance().locateBindingProperty(uiControl))) {
+				return uiControl;
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -163,11 +168,11 @@ public class Statusline extends Composite implements IComplexComponent {
 	}
 
 	public StatuslineNumber getStatuslineNumber() {
-		return statuslineNumber;
+		return (StatuslineNumber) getUIControl(SL_NUMBER_RIDGET_ID);
 	}
 
 	public StatuslineUIProcess getStatuslineUIProcess() {
-		return statuslineUIProcess;
+		return (StatuslineUIProcess) getUIControl(SL_UIPROCES_RIDGET_ID);
 	}
 
 	public Class<? extends Control> getSpacer() {

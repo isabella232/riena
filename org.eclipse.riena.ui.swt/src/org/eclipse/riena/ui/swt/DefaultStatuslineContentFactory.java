@@ -69,12 +69,15 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 			lastControl = spacerControl;
 		}
 
-		StatuslineNumber number = statusline.getStatuslineNumber();
-		formData = new FormData();
-		formData.top = new FormAttachment(0, 0);
-		formData.bottom = new FormAttachment(100, 0);
-		formData.right = new FormAttachment(lastControl, 0);
-		number.setLayoutData(formData);
+		StatuslineNumber number = createStatuslineNumber(statusline);
+		statusline.addUIControl(number, Statusline.SL_NUMBER_RIDGET_ID);
+		FormData formData1;
+		formData1 = new FormData();
+		formData1.top = new FormAttachment(0, 0);
+		formData1.bottom = new FormAttachment(100, 0);
+		formData1.right = new FormAttachment(lastControl, 0);
+		number.setLayoutData(formData1);
+
 		lastControl = number;
 
 		spacerControl = createSpacer(statusline);
@@ -87,7 +90,9 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 			lastControl = spacerControl;
 		}
 
-		StatuslineUIProcess uiProcess = statusline.getStatuslineUIProcess();
+		StatuslineUIProcess uiProcess = new StatuslineUIProcess(statusline, SWT.NONE);
+		statusline.addUIControl(uiProcess, Statusline.SL_UIPROCES_RIDGET_ID);
+
 		formData = new FormData();
 		formData.top = new FormAttachment(0, 0);
 		formData.bottom = new FormAttachment(100, 0);
@@ -115,13 +120,25 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 		lastControl = message;
 	}
 
+	protected StatuslineNumber createStatuslineNumber(Statusline statusline) {
+		return new StatuslineNumber(statusline, SWT.NONE);
+	}
+
+	protected Control layoutStatuslineNumber(Control lastControl, StatuslineNumber number) {
+		FormData formData;
+		formData = new FormData();
+		formData.top = new FormAttachment(0, 0);
+		formData.bottom = new FormAttachment(100, 0);
+		formData.right = new FormAttachment(lastControl, 0);
+		number.setLayoutData(formData);
+		lastControl = number;
+		return lastControl;
+	}
+
 	/**
 	 * Creates a spacer.
-	 * 
-	 * @param parent
-	 * @return spacer
 	 */
-	private Control createSpacer(Statusline statusline) {
+	protected Control createSpacer(Statusline statusline) {
 
 		Control result = null;
 		Class<? extends Control> spacer = statusline.getSpacer();

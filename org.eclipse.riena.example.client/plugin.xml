@@ -1009,5 +1009,12 @@
              path="icons">
        </path>
     </extension>
+    <extension
+          point="org.eclipse.riena.ui.swt.statusline">
+       <contentFactory
+             class="org.eclipse.riena.ui.swt.DefaultStatuslineContentFactory"
+             factory="org.eclipse.riena.example.client.statusline.ExampleStatuslineContentFactory">
+       </contentFactory>
+    </extension>
    
 </plugin>

@@ -15,11 +15,15 @@ import org.osgi.framework.Bundle;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
+import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
@@ -70,7 +74,23 @@ public class SwtExampleApplication extends SwtApplication {
 
 		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.logcollector")); //$NON-NLS-1$
 
+		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
+		navigationTreeObserver.addListener(new SubModuleListener());
+		navigationTreeObserver.addListenerTo(applicationNode);
 		return applicationNode;
+	}
+
+	class SubModuleListener extends SubModuleNodeListener {
+
+		@Override
+		public void activated(ISubModuleNode source) {
+			ApplicationNode appNode = source.getParentOfType(ApplicationNode.class);
+			ApplicationController controller = (ApplicationController) appNode.getNavigationNodeController();
+			IStatuslineRidget statusline = controller.getStatusline();
+			if (statusline != null) {
+				statusline.getStatuslineNumberRidget().setNumberString(source.getLabel());
+			}
+		}
 	}
 
 	@Override

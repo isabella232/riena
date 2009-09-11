@@ -20,6 +20,7 @@ import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerLocator;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver;
 import org.eclipse.riena.ui.core.uiprocess.ProgressVisualizer;
+import org.eclipse.riena.ui.ridgets.IStatuslineUIProcessRidget;
 
 public class VisualizerFactory implements IProgressVisualizerLocator {
 
@@ -28,8 +29,12 @@ public class VisualizerFactory implements IProgressVisualizerLocator {
 		IProgressVisualizer aVisualizer = new ProgressVisualizer();
 		if (context != null && INavigationNode.class.isAssignableFrom(context.getClass())) {
 			INavigationNode node = INavigationNode.class.cast(context);
-			aVisualizer.addObserver(((ApplicationController) node.getParentOfType(IApplicationNode.class)
-					.getNavigationNodeController()).getStatusline().getStatuslineUIProcessRidget());
+			IStatuslineUIProcessRidget statuslineUIProcessRidget = ((ApplicationController) node.getParentOfType(
+					IApplicationNode.class).getNavigationNodeController()).getStatusline()
+					.getStatuslineUIProcessRidget();
+			if (statuslineUIProcessRidget != null) {
+				aVisualizer.addObserver(statuslineUIProcessRidget);
+			}
 			ISubApplicationNode subApp = (ISubApplicationNode) node.getParentOfType(ISubApplicationNode.class);
 			if (subApp == null && context instanceof ISubApplicationNode) {
 				subApp = (ISubApplicationNode) context;

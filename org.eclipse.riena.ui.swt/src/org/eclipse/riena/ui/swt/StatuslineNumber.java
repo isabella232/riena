@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -44,10 +45,28 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	@Override
 	protected void createContents() {
 
-		numberLabel = new CLabel(this, SWT.LEFT);
+		numberLabel = new CLabel(this, SWT.LEFT) {
+
+			@Override
+			public Point computeSize(int wHint, int hHint, boolean changed) {
+				Point size = super.computeSize(wHint, hHint, changed);
+				if (getFixWidth() != SWT.NONE) {
+					size.x = getFixWidth();
+				}
+				return size;
+			}
+		};
 		numberLabel.setText("0000000"); //$NON-NLS-1$
 		numberLabel.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
+	}
 
+	/**
+	 * Override this method to have fixed width of the label
+	 * 
+	 * @return - the fixed with
+	 */
+	protected int getFixWidth() {
+		return SWT.NONE;
 	}
 
 	/**
