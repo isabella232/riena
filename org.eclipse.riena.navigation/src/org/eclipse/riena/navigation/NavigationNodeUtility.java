@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.core.util.StringMatcher;
 
 /**
@@ -136,7 +137,10 @@ public final class NavigationNodeUtility {
 		List<?> children = node.getChildren();
 		for (Object child : children) {
 			if (child instanceof INavigationNode<?>) {
-				return findNode(id, (INavigationNode<?>) child, closure);
+				INavigationNode<?> findNode = findNode(id, (INavigationNode<?>) child, closure);
+				if (findNode != null) {
+					return findNode;
+				}
 			}
 		}
 

@@ -66,6 +66,11 @@ public class NavigationNodeUtilityTest extends TestCase {
 		assertSame(sm2, NavigationNodeUtility.findNode("sm2", sm));
 		assertSame(sm22, NavigationNodeUtility.findNode("sm2", sm22));
 
+		ISubModuleNode sm222 = new SubModuleNode(new NavigationNodeId("sm22"));
+		sm2.addChild(sm222);
+		ISubModuleNode sm21 = new SubModuleNode(new NavigationNodeId("sm21"));
+		sm2.addChild(sm21);
+		assertSame(sm21, NavigationNodeUtility.findNode("sm21", sm));
 	}
 
 	/**
