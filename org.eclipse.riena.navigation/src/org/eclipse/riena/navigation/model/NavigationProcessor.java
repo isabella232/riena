@@ -497,11 +497,19 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		INavigationNode<?> parent = getActivationParent(toActivate);
 		if (parent != null) {
 			if (parent.isActivated()) {
-				nodesToActivate.add(toActivate);
+				addSelectableNode(nodesToActivate, toActivate);
 			} else {
 				addParentsToActivate(nodesToActivate, parent);
-				nodesToActivate.add(toActivate);
+				addSelectableNode(nodesToActivate, toActivate);
 			}
+		} else {
+			nodesToActivate.add(toActivate);
+		}
+	}
+
+	private void addSelectableNode(List<INavigationNode<?>> nodesToActivate, INavigationNode<?> toActivate) {
+		if (toActivate instanceof ISubModuleNode && !((ISubModuleNode) toActivate).isSelectable()) {
+			// do not add; not selectable
 		} else {
 			nodesToActivate.add(toActivate);
 		}

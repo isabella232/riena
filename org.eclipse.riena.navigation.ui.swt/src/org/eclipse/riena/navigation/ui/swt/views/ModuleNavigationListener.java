@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import java.util.List;
-
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -24,7 +22,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchModule;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.model.NavigationProcessor;
 
 /**
  * Navigation for the 'submodule' tree used in {@link ModuleView}. This includes
@@ -41,9 +39,9 @@ import org.eclipse.riena.navigation.ISubModuleNode;
  * </ul>
  * <p>
  * Some submodule nodes can be flagged as non-selecteble. If such a node is
- * selected by mouse, programmatically or arrow down movement, then the first
- * selectable child will be selected. If such a node is selected by arrow up
- * movement the previous selectable node (i.e. the node above) will be selected.
+ * activated, then the first selectable child will be selected. This is done by
+ * {@link NavigationProcessor}. Moving over such a node is not problem anymore,
+ * since the activation is only triggered after a delay - not instantly.
  */
 class ModuleNavigationListener extends SelectionAdapter implements KeyListener {
 
@@ -159,27 +157,6 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener {
 			nodeSwitcher = new NodeSwitcher(item.getDisplay(), (INavigationNode<?>) item.getData());
 			nodeSwitcher.start();
 		}
-	}
-
-	/**
-	 * Non-API. Public for testing only.
-	 * 
-	 * @noreference This method is not intended to be referenced by clients.
-	 */
-	// TODO [ev] 286255 + tests
-	private static ISubModuleNode findPreviousNode(ISubModuleNode node) {
-		ISubModuleNode result = null;
-		INavigationNode<?> parent = node.getParent();
-		if (parent != null) {
-			List<?> children = parent.getChildren();
-			for (Object child : children) {
-				if (child == node) {
-					break;
-				}
-				result = (ISubModuleNode) child;
-			}
-		}
-		return result;
 	}
 
 	// helping classes
