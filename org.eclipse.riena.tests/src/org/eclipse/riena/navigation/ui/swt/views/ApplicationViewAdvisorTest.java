@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import junit.framework.TestCase;
-
 import org.easymock.EasyMock;
 
 import org.eclipse.swt.SWT;
@@ -22,6 +20,8 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorFactory;
 import org.eclipse.riena.navigation.model.ApplicationNode;
@@ -33,7 +33,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * Tests of the class <code>ApplicationViewAdvisor</code>.
  */
 @UITestCase
-public class ApplicationViewAdvisorTest extends TestCase {
+public class ApplicationViewAdvisorTest extends RienaTestCase {
 
 	private ApplicationViewAdvisor advisor;
 	private IWorkbenchWindowConfigurer winConfig;
@@ -47,6 +47,7 @@ public class ApplicationViewAdvisorTest extends TestCase {
 		controller = new ApplicationController(applicationNode);
 		IAdvisorFactory factory = EasyMock.createMock(IAdvisorFactory.class);
 		advisor = new ApplicationViewAdvisor(winConfig, controller, factory);
+		Wire.instance(advisor).andStart(getContext());
 	}
 
 	@Override
