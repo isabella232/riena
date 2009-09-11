@@ -14,6 +14,8 @@ import org.osgi.framework.BundleContext;
 
 import org.eclipse.core.runtime.Assert;
 
+import org.eclipse.riena.core.util.StringUtils;
+
 /**
  * ExtensionDescriptor and ExtensionInjector simplify locating configuration
  * (extensions) and injects them into a target object. To do so the
@@ -69,7 +71,8 @@ public class ExtensionDescriptor {
 	 * @param extensionPointId
 	 */
 	public ExtensionDescriptor(final String extensionPointId) {
-		Assert.isNotNull(extensionPointId, "The extension id must not be null."); //$NON-NLS-1$
+		Assert.isLegal(StringUtils.isGiven(extensionPointId),
+				"The extension id must not be given, i.e. not null and not empty."); //$NON-NLS-1$
 		this.extensionPointId = extensionPointId;
 	}
 
