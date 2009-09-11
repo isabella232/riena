@@ -26,6 +26,8 @@ import org.eclipse.ui.statushandlers.StatusAdapter;
 
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.service.Service;
+import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorFactory;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentationFactory;
@@ -47,7 +49,10 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		configurer.setPresentationFactory(new TitlelessStackPresentationFactory());
-		return new ApplicationViewAdvisor(configurer, controller, advisorFactory);
+		WorkbenchWindowAdvisor workbenchWindowAdvisor = new ApplicationViewAdvisor(configurer, controller,
+				advisorFactory);
+		Wire.instance(workbenchWindowAdvisor).andStart(Activator.getDefault().getContext());
+		return workbenchWindowAdvisor;
 	}
 
 	@Override

@@ -46,7 +46,7 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.internal.WorkbenchWindow;
 
 import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.navigation.ui.swt.CoolbarUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorFactory;
@@ -123,22 +123,16 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			IAdvisorFactory factory) {
 		super(configurer);
 		controller = pController;
-		injectExtensions();
 		binding = createBinding();
 		advisorFactory = factory;
 		initializeListener();
-	}
-
-	private void injectExtensions() {
-		// content factory for statusline
-		Inject.extension(IStatuslineContentFactoryExtension.ID).useType(IStatuslineContentFactoryExtension.class).into(
-				this).update("bindStatuslineContentFactory").andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
 	}
 
 	public void addUIControl(Composite control, String propertyName) {
 		binding.addUIControl(control, propertyName);
 	}
 
+	@InjectExtension()
 	public void bindStatuslineContentFactory(IStatuslineContentFactoryExtension[] statuslineContentFactoryExtensions) {
 		if (statuslineContentFactoryExtensions.length > 0) {
 			this.statuslineContentFactory = statuslineContentFactoryExtensions[0].createFactory();
