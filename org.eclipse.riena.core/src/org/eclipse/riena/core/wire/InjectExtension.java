@@ -24,8 +24,12 @@ public @interface InjectExtension {
 
 	/**
 	 * The extension point id.
+	 * <p>
+	 * <b>Note: </b>If not given, it is expected that the {@code
+	 * ExtensionInterface} contains a {@code String } field named {@code ID}
+	 * that contains the extension point id.
 	 */
-	String id();
+	String id() default "";
 
 	/**
 	 * The minimum expected numbers of extensions.
