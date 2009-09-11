@@ -60,7 +60,7 @@ public class SSLConfiguration {
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SSLConfiguration.class);
 
-	@InjectExtension(id = ISSLProperties.EXTENSION_POINT_ID, min = 0, max = 1)
+	@InjectExtension(min = 0, max = 1)
 	public void configure(ISSLProperties properties) {
 		if (configured && properties == null) {
 			restore();
