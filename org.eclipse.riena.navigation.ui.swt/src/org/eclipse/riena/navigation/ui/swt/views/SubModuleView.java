@@ -100,6 +100,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * @see #canRestoreFocus()
 	 */
 	private Map<Integer, Control> focusControlMap = new HashMap<Integer, Control>(1);
+	private NavigationTreeObserver navigationTreeObserver;
 
 	/**
 	 * Creates a new instance of {@code SubModuleView}.
@@ -155,7 +156,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * @return the controller
 	 */
 	public SubModuleController getController() {
-
 		if (getNavigationNode() != null
 				&& getNavigationNode().getNavigationNodeController() instanceof SubModuleController) {
 			return (SubModuleController) getNavigationNode().getNavigationNodeController();
@@ -224,6 +224,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	@Override
 	public void dispose() {
+		IApplicationNode appNode = getAppNode();
+		if (navigationTreeObserver != null && appNode != null) {
+			navigationTreeObserver.removeListenerFrom(appNode);
+		}
 		fallbackNodes.remove(this);
 		super.dispose();
 	}
@@ -451,6 +455,15 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		return contentComposite.getDisplay().getSystemCursor(SWT.CURSOR_ARROW);
 	}
 
+	private IApplicationNode getAppNode() {
+		INavigationNode<?> node = getNavigationNode();
+		while (node.getParent() != null) {
+			node = node.getParent();
+		}
+		IApplicationNode appNode = node.getTypecastedAdapter(IApplicationNode.class);
+		return appNode;
+	}
+
 	/**
 	 * Returns the id (hashcode) of the controller if available, or zero.
 	 */
@@ -522,14 +535,11 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	private void observeRoot() {
-		INavigationNode<?> node = getNavigationNode();
-		while (node.getParent() != null) {
-			node = node.getParent();
-		}
-		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
-		navigationTreeObserver.addListener(new SubModuleNodesListener());
-		IApplicationNode appNode = node.getTypecastedAdapter(IApplicationNode.class);
+		IApplicationNode appNode = getAppNode();
 		if (appNode != null) {
+			Assert.isLegal(navigationTreeObserver == null);
+			navigationTreeObserver = new NavigationTreeObserver();
+			navigationTreeObserver.addListener(new SubModuleNodesListener());
 			navigationTreeObserver.addListenerTo(appNode);
 		}
 	}
