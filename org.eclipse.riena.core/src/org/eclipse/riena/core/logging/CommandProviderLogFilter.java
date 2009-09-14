@@ -25,7 +25,7 @@ import org.eclipse.riena.internal.core.ignore.IgnoreCheckStyle;
 import org.eclipse.riena.internal.core.logging.LogLevelMapper;
 
 /**
- * A log filter where the log level threshold can be set thru its command
+ * A {@code LogFilter} where the log level threshold can be set thru its command
  * provider interface.
  */
 public class CommandProviderLogFilter implements LogFilter, CommandProvider, IExecutableExtension {
