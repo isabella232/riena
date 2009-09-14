@@ -44,7 +44,6 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 
 	@InjectExtension(id = "testA")
 	public void update1(IData data) {
-
 	}
 
 	public void testBuildForUpdate1Array() throws NoSuchMethodException {
@@ -66,7 +65,6 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 
 	@InjectExtension(id = "testA[]")
 	public void update1Array(IData[] data) {
-
 	}
 
 	public void testBuildForUpdate2() throws NoSuchMethodException {
@@ -88,7 +86,6 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 
 	@InjectExtension(id = "testB", doNotReplaceSymbols = true, heterogeneous = true, specific = true, min = 2, max = 5)
 	public void update2(IData[] data) {
-
 	}
 
 	public void testBuildForUpdate3() throws NoSuchMethodException {
@@ -110,7 +107,27 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 
 	@InjectExtension(id = "testC", heterogeneous = true, specific = true, min = 0, max = 1)
 	public void update3(IData data) {
+	}
 
+	public void testBuildForUpdateWithAnExtensionInterfaceWithID() throws NoSuchMethodException {
+		Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("updateWithID",
+				new Class[] { IDataWithID.class });
+		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		ExtensionInjector injector = builder.build();
+		assertNotNull(injector);
+		assertEquals("testWithID", id(injector));
+		assertEquals(IDataWithID.class, useType(injector));
+		assertEquals(0, getMin(injector));
+		assertEquals(1, getMax(injector));
+		assertFalse(getHomogenious(injector));
+		assertSame(this, getBean(injector));
+		assertEquals("updateWithID", getUpdate(injector));
+		assertFalse(getDoNotReplaceSymbols(injector));
+		assertTrue(getSpecific(injector));
+	}
+
+	@InjectExtension(heterogeneous = true, specific = true, min = 0, max = 1)
+	public void updateWithID(IDataWithID data) {
 	}
 
 	private String id(ExtensionInjector injector) {
