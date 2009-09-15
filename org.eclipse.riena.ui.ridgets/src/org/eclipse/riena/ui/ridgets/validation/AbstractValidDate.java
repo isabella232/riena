@@ -79,6 +79,12 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 				throw new ValidationFailure("ValidCharacters can only validate objects of type String."); //$NON-NLS-1$
 			}
 			final String string = (String) value;
+
+			// an empty String should not create an ErrorMarker
+			if (Utils.isEmptyDate(string)) {
+				return ValidationRuleStatus.ok();
+			}
+
 			if (string.length() > 0 && !isDateValid(string, pattern)) {
 				return ValidationRuleStatus.error(false, "Invalid date (must match the pattern " + pattern + ")."); //$NON-NLS-1$ //$NON-NLS-2$
 			}

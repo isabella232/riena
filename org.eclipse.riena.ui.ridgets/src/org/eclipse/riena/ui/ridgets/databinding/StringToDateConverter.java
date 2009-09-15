@@ -18,6 +18,8 @@ import java.util.TimeZone;
 
 import org.eclipse.core.databinding.conversion.Converter;
 
+import org.eclipse.riena.ui.ridgets.validation.Utils;
+
 /**
  * Converts a String that matches a given pattern to a Date.
  */
@@ -42,11 +44,9 @@ public class StringToDateConverter extends Converter {
 		}
 	}
 
-	/**
-	 * @see org.eclipse.core.databinding.conversion.IConverter#convert(java.lang.Object)
-	 */
 	public Object convert(Object fromObject) {
-		if (fromObject == null || "".equals(fromObject)) { //$NON-NLS-1$
+		if (fromObject == null || "".equals(fromObject) //$NON-NLS-1$
+				|| Utils.isEmptyDate(((String) fromObject))) {
 			return null;
 		}
 		try {

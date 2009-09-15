@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation;
 
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
+
 /**
- * 
+ * Helper class for validation related tasks.
  */
 public final class Utils {
 
@@ -50,8 +52,8 @@ public final class Utils {
 	 *            a string instance
 	 * @return <tt>false</tt> if the string contains any character for which
 	 *         {@link Character.isWhitespace(char)} is <tt>false</tt>;
-	 * @throws some_kind-of_runtime_exception
-	 *             if parameter is <tt>null</tt>
+	 * @throws some_kind
+	 *             -of_runtime_exception if parameter is <tt>null</tt>
 	 */
 	// this method will not create a new String instance just for length
 	// checking like "String#trim().length() > 0 " would.
@@ -62,6 +64,18 @@ public final class Utils {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Returns true if a String is an empty date formatstring like "  .  .  "
+	 * 
+	 * @param input
+	 *            a non-null String
+	 * @see IDateTextRidget
+	 * @since 1.2
+	 */
+	public static boolean isEmptyDate(String input) {
+		return input.matches("[\\s\\.\\:\\/\\-]+"); //$NON-NLS-1$
 	}
 
 }
