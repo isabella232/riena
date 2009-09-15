@@ -16,11 +16,13 @@ import org.eclipse.core.runtime.CoreException;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.monitor.common.Collectible;
 
 /**
  *
  */
+@NonUITestCase
 public class SimpleStoreTest extends RienaTestCase {
 
 	private static final String PAYLOAD = "What goes up, must come down!";
