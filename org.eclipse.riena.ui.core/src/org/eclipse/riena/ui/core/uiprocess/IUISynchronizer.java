@@ -11,14 +11,15 @@
 package org.eclipse.riena.ui.core.uiprocess;
 
 /**
- * Interface for serialization to the UI-Thread of the underlying Widget
- * Toolkit.
- * 
+ * Class implementing this interface are responsible for executing a {@code
+ * Runnable} on the UI-Thread of the underlying widget toolkit. The calling
+ * thread will be suspended until the {@code Runnable} completes.
  */
 public interface IUISynchronizer {
 
 	/**
-	 * serializes to the UI-Thread
+	 * The given {@code Runnable} will be executed on the UI-thread. The calling
+	 * thread will be suspended until the executing {@code Runnable} completes.
 	 * 
 	 * @param runnable
 	 */
