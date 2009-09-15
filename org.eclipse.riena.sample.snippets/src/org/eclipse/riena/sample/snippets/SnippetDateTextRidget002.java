@@ -10,16 +10,17 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.snippets;
 
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Date;
+
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.beans.common.StringBean;
+import org.eclipse.riena.beans.common.DateBean;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
@@ -29,9 +30,9 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Shows how to use a {@link IDateTextRidget} with a 'dd.MM.yyyy' pattern, bound
- * against a String value.
+ * against a Date value.
  */
-public final class SnippetDateTextRidget001 {
+public final class SnippetDateTextRidget002 {
 
 	public static void main(String[] args) {
 		Display display = Display.getDefault();
@@ -44,7 +45,7 @@ public final class SnippetDateTextRidget001 {
 			Text txtInput = UIControlsFactory.createTextDate(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtInput);
 
-			UIControlsFactory.createLabel(shell, "Output (String):"); //$NON-NLS-1$
+			UIControlsFactory.createLabel(shell, "Output (Date):"); //$NON-NLS-1$
 			Text txtOutput = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtOutput);
 
@@ -52,17 +53,21 @@ public final class SnippetDateTextRidget001 {
 			rInput.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 			rInput.setDirectWriting(true);
 
-			ITextRidget rOutput = (ITextRidget) SwtRidgetFactory.createRidget(txtOutput);
+			final ITextRidget rOutput = (ITextRidget) SwtRidgetFactory.createRidget(txtOutput);
 			rOutput.setOutputOnly(true);
 
-			DataBindingContext dbc = new DataBindingContext();
-			dbc.bindValue(BeansObservables.observeValue(rOutput, ITextRidget.PROPERTY_TEXT), BeansObservables
-					.observeValue(rInput, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
-					UpdateValueStrategy.POLICY_NEVER), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-			rInput.bindToModel(new StringBean("01.10.2008"), StringBean.PROP_VALUE); //$NON-NLS-1$
+			DateBean bean = new DateBean(new Date());
+			rInput.bindToModel(bean, DateBean.DATE_PROPERTY);
 			rInput.updateFromModel();
+			rOutput.bindToModel(bean, DateBean.DATE_PROPERTY);
+			rOutput.updateFromModel();
+			rInput.addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					rOutput.updateFromModel();
+				}
+			});
 
-			shell.setSize(270, 270);
+			shell.setSize(400, 200);
 			shell.open();
 			while (!shell.isDisposed()) {
 				if (!display.readAndDispatch()) {
