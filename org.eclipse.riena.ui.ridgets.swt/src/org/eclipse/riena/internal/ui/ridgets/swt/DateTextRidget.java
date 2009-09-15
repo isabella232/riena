@@ -43,8 +43,8 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 
 	/**
 	 * Controls the expansion that happens when a two-digit year is entered
-	 * where a four-digit year is expected. If the entered value is below * * *
-	 * * {@value} , it will be prefixed with '20'. Otherwise it will be prefixed
+	 * where a four-digit year is expected. If the entered value is below *
+	 * {@value} , it will be prefixed with '20'. Otherwise it will be prefixed
 	 * with '19'.
 	 */
 	private static final int Y2K_CUTOFF = 30;
