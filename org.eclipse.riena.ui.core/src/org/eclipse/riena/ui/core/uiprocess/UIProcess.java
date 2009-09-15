@@ -23,9 +23,7 @@ import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.equinox.log.Logger;
 
-import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.internal.ui.core.Activator;
@@ -45,8 +43,6 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	private UICallbackDispatcher callbackDispatcher;
 
 	private Job job;
-
-	private Logger logger = Log4r.getLogger(Activator.getDefault(), UIProcess.class);
 
 	/**
 	 * Creates a new UIProcess. This constructor assumes the plug-in defines
