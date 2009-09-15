@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.beans.common.DateBean;
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
@@ -269,6 +272,41 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("  .12.    ", control.getText());
 		assertEquals("abc", bean.getValue());
 	}
+
+	public void testBindToDate() {
+		IDateTextRidget ridget = getRidget();
+		Text control = getWidget();
+		DateBean bean = new DateBean(new Date(0L));
+
+		ridget.bindToModel(bean, DateBean.DATE_PROPERTY);
+		ridget.updateFromModel();
+
+		assertEquals("01.01.1970", control.getText());
+		assertEquals("01.01.1970", ridget.getText());
+		assertEquals(new Date(0L), bean.getValue());
+	}
+
+	// TODO [ev] revisit as part of 289535
+
+	//	public void testSetFormatAfterBind() {
+	//		IDateTextRidget ridget = getRidget();
+	//		Text control = getWidget();
+	//		TypedBean<Date> bean = new TypedBean<Date>(new Date(0L));
+	//
+	//		ridget.bindToModel(bean, TypedBean.PROP_VALUE);
+	//		ridget.updateFromModel();
+	//		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYY);
+	//
+	//		assertEquals("01.01.70", ridget.getText());
+	//		assertEquals("01.01.70", control.getText());
+	//		assertEquals(0, bean.getValue());
+	//
+	//		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+	//
+	//		assertEquals("01.01.1970", ridget.getText());
+	//		assertEquals("01.01.1970", control.getText());
+	//		assertEquals(0, bean.getValue());
+	//	}
 
 	public void testAutoFillYYYY() {
 		IDateTextRidget ridget = getRidget();
