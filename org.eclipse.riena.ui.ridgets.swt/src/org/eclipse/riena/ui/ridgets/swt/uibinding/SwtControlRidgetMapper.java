@@ -63,6 +63,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
@@ -107,6 +108,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(Text.class, NumericTextRidget.class, new TypedTextWidgetCondition(UIControlsFactory.TYPE_NUMERIC));
 		addMapping(Text.class, DecimalTextRidget.class, new TypedTextWidgetCondition(UIControlsFactory.TYPE_DECIMAL));
 		addMapping(Text.class, DateTextRidget.class, new TypedTextWidgetCondition(UIControlsFactory.TYPE_DATE));
+		addMapping(DatePickerComposite.class, DateTextRidget.class);
 		addMapping(Text.class, TextRidget.class);
 		addMapping(Label.class, LabelRidget.class);
 		addMapping(Table.class, TableRidget.class);

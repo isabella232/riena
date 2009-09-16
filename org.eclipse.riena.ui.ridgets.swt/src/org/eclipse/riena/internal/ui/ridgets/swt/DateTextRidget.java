@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.regex.Pattern;
 
+import org.eclipse.core.databinding.BindingException;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -30,6 +31,7 @@ import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
 import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
 import org.eclipse.riena.ui.ridgets.validation.ValidDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
+import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -66,6 +68,29 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		focusListener = new DateFocusListener();
 		// paintListener = new DatePaintListener();
 		setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+	}
+
+	@Override
+	public Control getUIControl() {
+		Control control = super.getUIControl();
+
+		if (control instanceof DatePickerComposite) {
+			return ((DatePickerComposite) control).getTextfield();
+		}
+		return control;
+	}
+
+	@Override
+	protected void checkUIControl(Object uiControl) {
+		if (null == uiControl) {
+			return;
+		}
+
+		if ((!isValidType(uiControl, Text.class) && !isValidType(uiControl, DatePickerComposite.class))) {
+			throw new BindingException(String.format("uiControl must be a '%s' or a '%s' but was a %s ", //$NON-NLS-1$
+					Text.class.getSimpleName(), DatePickerComposite.class.getSimpleName(), uiControl.getClass()
+							.getSimpleName()));
+		}
 	}
 
 	@Override
@@ -140,6 +165,10 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	// helping methods
 	//////////////////
 
+	private boolean isValidType(Object uiControl, Class<?> type) {
+		return ((uiControl != null) && !(type.isAssignableFrom(uiControl.getClass())));
+	}
+
 	private String checkAndFormatValue(String text) {
 		SegmentedString ss = new SegmentedString(pattern);
 		if (text != null) {
@@ -199,6 +228,14 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 			// System.out.println(e);
 			Text control = (Text) e.widget;
 			String oldText = control.getText();
+
+			// FIXME
+			if (e.text != null && e.text.length() > 1) {
+				forceTextToControl(control, e.text);
+				e.doit = false;
+				return;
+			}
+
 			int oldPos = control.getCaretPosition();
 			int newPos = -1;
 			SegmentedString ss = new SegmentedString(pattern, oldText);

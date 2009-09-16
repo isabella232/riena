@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.riena.example.client.controllers.TextDateSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
+import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -44,6 +45,10 @@ public class TextDateSubModuleView extends SubModuleView<TextDateSubModuleContro
 		UIControlsFactory.createLabel(parent, "dd.MM.yyyy:"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextDate(parent), "indd.MM.yyyy"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createText(parent), "outdd.MM.yyyy"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(parent, "dd.MM.yyyy DatePicker:"); //$NON-NLS-1$
+		UIControlsFactory.createDatePickerComposite(parent, "indd.MM.yyyyPicker"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createText(parent), "outdd.MM.yyyyPicker"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "dd.MM.yy:"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextDate(parent), "indd.MM.yy"); //$NON-NLS-1$
@@ -77,16 +82,20 @@ public class TextDateSubModuleView extends SubModuleView<TextDateSubModuleContro
 		GridDataFactory.fillDefaults().span(3, 1).applyTo(spacer);
 
 		UIControlsFactory.createLabel(parent, "dd.MM.yyyy:"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextDate(parent), "inJustEights"); //$NON-NLS-1$
+
+		UIControlsFactory.createTextDate(parent, "inJustEights"); //$NON-NLS-1$
+
 		addUIControl(UIControlsFactory.createCombo(parent), "comboFonts"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "dd.MM.yyyy:"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextDate(parent), "inJustSpaces"); //$NON-NLS-1$
+
+		UIControlsFactory.createTextDate(parent, "inJustSpaces"); //$NON-NLS-1$
+
 		addUIControl(UIControlsFactory.createCombo(parent), "comboSizes"); //$NON-NLS-1$
 
 		GridDataFactory gdf = GridDataFactory.fillDefaults();
 		for (Control child : parent.getChildren()) {
-			if (child instanceof Text || child instanceof Combo) {
+			if (child instanceof Text || child instanceof Combo || child instanceof DatePickerComposite) {
 				gdf.applyTo(child);
 			}
 		}

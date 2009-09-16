@@ -49,7 +49,8 @@ public class TextDateSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		String[] ids = { "dd.MM.yyyy", "dd.MM.yy", "dd.MM", "MM.yyyy", "yyyy", "HH:mm:ss", "HH:mm", "dd.MM.yyyy_HH:mm" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		String[] ids = {
+				"dd.MM.yyyy", "dd.MM.yy", "dd.MM", "MM.yyyy", "yyyy", "HH:mm:ss", "HH:mm", "dd.MM.yyyy_HH:mm", "dd.MM.yyyyPicker" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
 		DataBindingContext dbc = new DataBindingContext();
 		for (String id : ids) {
 			bind(dbc, id);
@@ -62,6 +63,13 @@ public class TextDateSubModuleController extends SubModuleController {
 		bindToModel("dd.MM", new StringBean("01.10")); //$NON-NLS-1$ //$NON-NLS-2$
 		bindToModel("MM.yyyy", new StringBean("10.2008")); //$NON-NLS-1$ //$NON-NLS-2$
 		bindToModel("yyyy", new StringBean("2008")); //$NON-NLS-1$ //$NON-NLS-2$
+
+		IDateTextRidget txtDatePicker = (IDateTextRidget) getRidget("indd.MM.yyyyPicker"); //$NON-NLS-1$
+		txtDatePicker.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+		txtDatePicker.setFocusable(true);
+		txtDatePicker.setMandatory(true);
+		txtDatePicker.bindToModel(new StringBean("01.10.2008"), TypedBean.PROP_VALUE); //$NON-NLS-1$
+		txtDatePicker.updateFromModel();
 
 		// time && date/time
 

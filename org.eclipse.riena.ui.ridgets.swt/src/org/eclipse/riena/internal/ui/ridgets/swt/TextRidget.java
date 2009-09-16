@@ -287,7 +287,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	private Text getTextWidget() {
-		return (Text) super.getUIControl();
+		return (Text) getUIControl();
 	}
 
 	private synchronized void updateTextValue() {

@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -169,10 +170,29 @@ public class UIControlsFactory {
 	}
 
 	/**
-	 * @wbp.factory.parameter.source bindingId "MyTextDateId"
+	 * @wbp.factory.parameter.source bindingId "myTextDateId"
 	 */
 	public static Text createTextDate(Composite parent, String bindingId) {
 		Text result = createTextDate(parent);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
+	}
+
+	/**
+	 * @since 1.2
+	 */
+	public static DatePickerComposite createDatePickerComposite(Composite parent) {
+		DatePickerComposite result = new DatePickerComposite(parent, SWT.SINGLE | SWT.RIGHT);
+		result.setData(KEY_TYPE, TYPE_DATE);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source bindingId "myDatePickerId"
+	 * @since 1.2
+	 */
+	public static DatePickerComposite createDatePickerComposite(Composite parent, String bindingId) {
+		DatePickerComposite result = createDatePickerComposite(parent);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
 		return result;
 	}
@@ -532,12 +552,5 @@ public class UIControlsFactory {
 		int items = list.getItemHeight() * numItems;
 		return items;
 	}
-
-	// TODO [ev] uncomment when DatePickerComposite is available
-	//	public static Text createTextDatePicker(Composite parent) {
-	//		DatePickerComposite result = new DatePickerComposite(parent, SWT.SINGLE | SWT.RIGHT);
-	//		result.getText().setData(KEY_TYPE, TYPE_DATE);
-	//		return result.getText();
-	//	}
 
 }
