@@ -30,6 +30,7 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
  * Connects a arbitrary {@link IRidget} with a {@link ILabelRidget} so the
  * enabled-State of the {@link ILabelRidget} reflects the enabled-State of the
  * {@link IRidget}. The default prefix for the Label is <code>"label"<code>.
+ * 
  * @since 1.2
  * 
  */
@@ -55,7 +56,7 @@ public class CorrespondingLabelMapper {
 		if (null != labelProperties) {
 			if (null != labelProperties.getLabelPrefix()) {
 				labelPrefix = labelProperties.getLabelPrefix();
-				logger.log(LogService.LOG_INFO, "Using extensionpoint labelPrefix: " + labelPrefix); //$NON-NLS-1$
+				// logger.log(LogService.LOG_INFO, "Using extensionpoint labelPrefix: " + labelPrefix); //$NON-NLS-1$
 			}
 		}
 	}
@@ -66,8 +67,8 @@ public class CorrespondingLabelMapper {
 
 		if (null != strategyProperties) {
 			if (StringUtils.isGiven(strategyProperties.getClassName())) {
-				logger.log(LogService.LOG_INFO,
-						"Using extensionpoint labelFinderStrategy: " + strategyProperties.getClassName()); //$NON-NLS-1$
+				// logger.log(LogService.LOG_INFO,
+				//		"Using extensionpoint labelFinderStrategy: " + strategyProperties.getClassName()); //$NON-NLS-1$
 				ILabelFinderStrategy customLabelFinderStrategy = strategyProperties.createFinderStrategy();
 				if (null != customLabelFinderStrategy) {
 					this.labelFinderStrategy = customLabelFinderStrategy;
@@ -111,8 +112,8 @@ public class CorrespondingLabelMapper {
 				return (ILabelRidget) labelRidget;
 			}
 
-			logger.log(LogService.LOG_WARNING, String.format(
-					"Corresponding Label with ridgetID: '%s' could not be found", labelID)); //$NON-NLS-1$
+			// logger.log(LogService.LOG_WARNING, String.format(
+			//		"Corresponding Label with ridgetID: '%s' could not be found", labelID)); //$NON-NLS-1$
 			return null;
 		}
 	}
