@@ -152,8 +152,6 @@ public class DatePickerComposite extends Composite {
 		 */
 		protected DatePicker(final Text text, final Button pickerButton) {
 			this.text = text;
-			// TODO [ev] if you create it, you must dispose it
-			// see SWT: Managing system resources - http://www.eclipse.org/articles/swt-design-2/swt-design-2.html
 			shell = new Shell(pickerButton.getDisplay(), SWT.NO_TRIM | SWT.ON_TOP);
 			shell.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 			GridLayoutFactory.fillDefaults().margins(1, 1).applyTo(shell);
@@ -166,6 +164,8 @@ public class DatePickerComposite extends Composite {
 				@Override
 				public void mouseUp(MouseEvent e) {
 					// ignore clicks on the header
+					// TODO [ev] what is the purpose (details in bugzilla)
+					//           also: it is not platform independent
 					if (e.y < 45) {
 						return;
 					}

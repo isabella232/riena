@@ -45,8 +45,8 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 
 	/**
 	 * Controls the expansion that happens when a two-digit year is entered
-	 * where a four-digit year is expected. If the entered value is below *
-	 * {@value} , it will be prefixed with '20'. Otherwise it will be prefixed
+	 * where a four-digit year is expected. If the entered value is below * * *
+	 * * {@value} , it will be prefixed with '20'. Otherwise it will be prefixed
 	 * with '19'.
 	 */
 	private static final int Y2K_CUTOFF = 30;
@@ -230,6 +230,9 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 			String oldText = control.getText();
 
 			// FIXME
+			// TODO [ev] this created problems, because it accepts any text, breaks 
+			// assumption that text <= length of pattern
+			// --> suggest removal, details in bugzilla
 			if (e.text != null && e.text.length() > 1) {
 				forceTextToControl(control, e.text);
 				e.doit = false;

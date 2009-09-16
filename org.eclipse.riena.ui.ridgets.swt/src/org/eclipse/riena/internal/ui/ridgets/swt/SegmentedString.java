@@ -80,13 +80,15 @@ public class SegmentedString {
 	 * @param format
 	 *            a valid format String. See class javadoc for details.
 	 * @param value
-	 *            an initial value
+	 *            an initial value; non-null
 	 * @throws RuntimeException
-	 *             if format is not valid
+	 *             if format is not valid, or value is too long
 	 */
 	public SegmentedString(String format, String value) {
 		pattern = createPattern(format);
 		fields = new char[pattern.length()];
+		String msg = String.format("Value '%s' is longer than '%s'", value, format); //$NON-NLS-1$
+		Assert.isTrue(value.length() <= pattern.length(), msg);
 		for (int i = 0; i < value.length(); i++) {
 			fields[i] = value.charAt(i);
 		}
