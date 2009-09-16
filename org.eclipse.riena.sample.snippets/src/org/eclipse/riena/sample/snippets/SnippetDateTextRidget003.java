@@ -54,7 +54,7 @@ public class SnippetDateTextRidget003 {
 		gdf.applyTo(textDatePicker);
 
 		IDateTextRidget datePickerRidget = (IDateTextRidget) SwtRidgetFactory.createRidget(textDatePicker);
-		datePickerRidget.setFormat(IDateTextRidget.FORMAT_MMYYYY);
+		datePickerRidget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		datePickerRidget.updateFromModel();
 		datePickerRidget.setMandatory(true);
 
