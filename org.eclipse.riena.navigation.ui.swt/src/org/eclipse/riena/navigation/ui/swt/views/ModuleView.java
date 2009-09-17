@@ -28,6 +28,7 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
@@ -718,6 +719,9 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 			titleOldCursor = title.getCursor();
 			title.setCursor(getWaitCursor());
 			title.setCloseable(false);
+			if (disableTitle()) {
+				title.setEnabled(false);
+			}
 			bodyOldCursor = body.getCursor();
 			body.setCursor(getWaitCursor());
 			subModuleTree.setEnabled(false);
@@ -726,8 +730,16 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		public void unblock() {
 			title.setCursor(titleOldCursor);
 			title.setCloseable(getNavigationNode().isClosable());
+			title.setEnabled(getNavigationNode().isEnabled());
 			body.setCursor(bodyOldCursor);
 			subModuleTree.setEnabled(true);
+		}
+
+		private boolean disableTitle() {
+			// when the subapp is disabled: disable the title
+			// when the subapp is enabled but the module disable: keep title as is
+			ISubApplicationNode subApp = getNavigationNode().getParentOfType(ISubApplicationNode.class);
+			return subApp != null && subApp.isBlocked();
 		}
 
 		private Cursor getWaitCursor() {
