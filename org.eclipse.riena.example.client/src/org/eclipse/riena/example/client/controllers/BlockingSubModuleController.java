@@ -33,6 +33,7 @@ public class BlockingSubModuleController extends SubModuleController {
 	public static final String RIDGET_BLOCK_MODULE = "blockModule"; //$NON-NLS-1$
 	public static final String RIDGET_BLOCK_SUB_MODULE = "blockSubModule"; //$NON-NLS-1$
 	public static final String RIDGET_BLOCK_SUB_APP = "blockSubApplication"; //$NON-NLS-1$
+	public static final String RIDGET_DISABLE_MODULE = "disableModule"; //$NON-NLS-1$
 	public static final String RIDGET_STATUS = "status"; //$NON-NLS-1$
 
 	private ILabelRidget status;
@@ -73,6 +74,15 @@ public class BlockingSubModuleController extends SubModuleController {
 			}
 		});
 
+		IActionRidget disableModule = (IActionRidget) getRidget(RIDGET_DISABLE_MODULE);
+		disableModule.setText("Disable current Module = Playground"); //$NON-NLS-1$
+		disableModule.addListener(new IActionListener() {
+			public void callback() {
+				INavigationNode<?> moduleNode = getModuleNode();
+				disableNode(moduleNode);
+			}
+		});
+
 		status = (ILabelRidget) getRidget(RIDGET_STATUS);
 	}
 
@@ -80,7 +90,15 @@ public class BlockingSubModuleController extends SubModuleController {
 	//////////////////
 
 	private void blockNode(INavigationNode<?> node) {
-		new BlockerUIProcess(node, status).start();
+		BlockerUIProcess process = new BlockerUIProcess(node, status);
+		process.setBlock(true);
+		process.start();
+	}
+
+	private void disableNode(INavigationNode<?> node) {
+		BlockerUIProcess process = new BlockerUIProcess(node, status);
+		process.setDisable(true);
+		process.start();
 	}
 
 	private INavigationNode<?> getModuleNode() {
@@ -99,25 +117,46 @@ public class BlockingSubModuleController extends SubModuleController {
 	 */
 	private static class BlockerUIProcess extends UIProcess {
 
-		private final INavigationNode<?> toBlock;
+		private final INavigationNode<?> node;
 		private final ILabelRidget labelRidget;
+		private boolean disable;
+		private boolean block;
 
-		public BlockerUIProcess(INavigationNode<?> toBlock, ILabelRidget labelRidget) {
+		public BlockerUIProcess(INavigationNode<?> node, ILabelRidget labelRidget) {
 			super("block", false); //$NON-NLS-1$
-			this.toBlock = toBlock;
+			this.node = node;
 			this.labelRidget = labelRidget;
+		}
+
+		public void setBlock(boolean doBlock) {
+			this.block = doBlock;
+		}
+
+		public void setDisable(boolean doDisable) {
+			this.disable = doDisable;
 		}
 
 		@Override
 		public void initialUpdateUI(int totalWork) {
-			labelRidget.setText(String.format("Blocking '%s' for 10s", toBlock.getLabel())); //$NON-NLS-1$
-			toBlock.setBlocked(true);
+			labelRidget.setText(String.format("Changing '%s' for 10s", node.getLabel())); //$NON-NLS-1$
+			if (block) {
+				node.setBlocked(true);
+			}
+			if (disable) {
+				node.setEnabled(false);
+			}
 		}
 
 		@Override
 		public void finalUpdateUI() {
-			labelRidget.setText(String.format("Unblocked '%s'", toBlock.getLabel())); //$NON-NLS-1$
-			toBlock.setBlocked(false);
+			labelRidget.setText(String.format("Restored '%s'", node.getLabel())); //$NON-NLS-1$
+			if (block) {
+				node.setBlocked(false);
+			}
+			if (disable) {
+				node.setEnabled(true);
+				node.activate();
+			}
 		}
 
 		@Override

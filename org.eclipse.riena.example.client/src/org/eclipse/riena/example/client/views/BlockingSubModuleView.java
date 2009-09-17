@@ -57,6 +57,9 @@ public class BlockingSubModuleView extends SubModuleView<BlockingSubModuleContro
 		Button button3 = UIControlsFactory.createButton(group, "", BlockingSubModuleController.RIDGET_BLOCK_SUB_APP); //$NON-NLS-1$
 		fillFactory.applyTo(button3);
 
+		Button button4 = UIControlsFactory.createButton(group, "", BlockingSubModuleController.RIDGET_DISABLE_MODULE); //$NON-NLS-1$
+		fillFactory.applyTo(button4);
+
 		Label label = UIControlsFactory.createLabel(group, "", SWT.CENTER, //$NON-NLS-1$
 				BlockingSubModuleController.RIDGET_STATUS);
 		fillFactory.applyTo(label);
