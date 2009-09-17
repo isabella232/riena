@@ -122,6 +122,9 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 				INavigationNode parentNode = findNode(provideNodeHook(sourceNode, parentTypeId, null), parentTypeId);
 				prepareNavigationAssembler(targetId, assembler, parentNode);
 				targetNode = assembler.buildNode(targetId, argument);
+				if (targetNode.getNodeId() == null && assembler.getAssembly().getId().equals(targetId.getTypeId())) {
+					targetNode.setNodeId(targetId);
+				}
 				parentNode.addChild(targetNode);
 			} else {
 				throw new ExtensionPointFailure("No assembler found for ID=" + targetId.getTypeId()); //$NON-NLS-1$
