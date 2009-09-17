@@ -13,14 +13,8 @@ package org.eclipse.riena.ui.ridgets.uibinding;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.osgi.service.log.LogService;
-
-import org.eclipse.equinox.log.Logger;
-
-import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.InjectExtension;
-import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
@@ -38,7 +32,8 @@ public class CorrespondingLabelMapper {
 	private String labelPrefix = "label"; //$NON-NLS-1$
 	private IRidgetContainer ridgetContainer;
 	private ILabelFinderStrategy labelFinderStrategy;
-	private Logger logger = Log4r.getLogger(Activator.getDefault(), CorrespondingLabelMapper.class);
+
+	// private Logger logger = Log4r.getLogger(Activator.getDefault(), CorrespondingLabelMapper.class);
 
 	public CorrespondingLabelMapper(IRidgetContainer ridgetContainer) {
 		super();
@@ -63,7 +58,7 @@ public class CorrespondingLabelMapper {
 
 	@InjectExtension(id = ILabelFinderStrategyExtension.EXTENSION_POINT_ID, min = 0, max = 1)
 	public void setLabelFinderStrategy(ILabelFinderStrategyExtension strategyProperties) {
-		logger.log(LogService.LOG_INFO, "Using extensionpoint labelFinderStrategy: " + strategyProperties); //$NON-NLS-1$
+		// logger.log(LogService.LOG_INFO, "Using extensionpoint labelFinderStrategy: " + strategyProperties); //$NON-NLS-1$
 
 		if (null != strategyProperties) {
 			if (StringUtils.isGiven(strategyProperties.getClassName())) {
