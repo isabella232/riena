@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.riena.example.client.controllers.BlockingSubModuleController;
+import org.eclipse.riena.example.client.controllers.CComboSubModuleController;
 import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboAndChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
@@ -41,6 +42,7 @@ import org.eclipse.riena.example.client.controllers.TreeSubModuleController;
 import org.eclipse.riena.example.client.controllers.TreeTableSubModuleController;
 import org.eclipse.riena.example.client.controllers.ValidationSubModuleController;
 import org.eclipse.riena.example.client.views.BlockingSubModuleView;
+import org.eclipse.riena.example.client.views.CComboSubModuleView;
 import org.eclipse.riena.example.client.views.ChoiceSubModuleView;
 import org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
@@ -123,6 +125,11 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 				new NavigationNodeId("org.eclipse.riena.example.combo"), "Combo"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(comboSubModule, ComboSubModuleController.class, ComboSubModuleView.ID, false);
 		playgroundModule.addChild(comboSubModule);
+
+		ISubModuleNode ccomboSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.ccombo"), "CCombo"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(ccomboSubModule, CComboSubModuleController.class, CComboSubModuleView.ID, false);
+		playgroundModule.addChild(ccomboSubModule);
 
 		ISubModuleNode comboAndChoiceSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.different"), "Combo and Choice"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -276,6 +283,7 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 					"org.eclipse.riena.example.buttons", //$NON-NLS-1$
 					"org.eclipse.riena.example.choice", //$NON-NLS-1$
 					"org.eclipse.riena.example.combo", //$NON-NLS-1$
+					"org.eclipse.riena.example.ccombo", //$NON-NLS-1$
 					"org.eclipse.riena.example.list", //$NON-NLS-1$
 					"org.eclipse.riena.example.text", //$NON-NLS-1$
 					"org.eclipse.riena.example.text.numeric", //$NON-NLS-1$

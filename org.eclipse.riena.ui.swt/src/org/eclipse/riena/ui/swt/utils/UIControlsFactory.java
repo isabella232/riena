@@ -15,6 +15,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
@@ -340,6 +341,23 @@ public class UIControlsFactory {
 		DateTime result = createCalendar(parent);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
 		return result;
+	}
+
+	/**
+	 * @since 1.2
+	 */
+	public static CCombo createCCombo(Composite parent) {
+		return new CCombo(parent, SWT.BORDER | SWT.READ_ONLY);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source bindingId "myComboId"
+	 * @since 1.2
+	 */
+	public static CCombo createCCombo(Composite parent, String bindingId) {
+		CCombo combo = createCCombo(parent);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
+		return combo;
 	}
 
 	public static Combo createCombo(Composite parent) {

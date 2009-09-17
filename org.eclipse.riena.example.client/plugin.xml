@@ -307,6 +307,13 @@
             name="org.eclipse.riena.example.client.views.ServiceContractsView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.CComboSubModuleView"
+            id="org.eclipse.riena.example.client.views.CComboSubModuleView"
+            name="org.eclipse.riena.example.client.views.CComboSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
