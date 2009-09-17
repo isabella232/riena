@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.logging;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogService;
 
@@ -68,7 +71,13 @@ public class CommandProviderLogFilter implements LogFilter, CommandProvider, IEx
 	 * @see org.eclipse.osgi.framework.console.CommandProvider#getHelp()
 	 */
 	public String getHelp() {
-		return "---Controlling Riena logging---\n\tlogLevel [ <level> ] - specify log level, e.g. debug, info, warn, error or none, or retrieve current level"; //$NON-NLS-1$
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter writer = new PrintWriter(stringWriter);
+		writer.println("---Controlling Riena logging---"); //$NON-NLS-1$
+		writer
+				.println("\tlogLevel [ <level> ] - specify log level, e.g. debug, info, warn, error or none, or retrieve current level"); //$NON-NLS-1$
+		writer.close();
+		return stringWriter.toString();
 	}
 
 	/*
