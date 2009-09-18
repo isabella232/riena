@@ -35,6 +35,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 
 	private static Image missingImage;
 	private boolean closeable;
+	private boolean titleAlreadyInitialized;
 	private String title;
 	private String icon;
 	private ListenerList<IWindowRidgetListener> windowRidgetListeners;
@@ -43,7 +44,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	public ShellRidget() {
 
 		super();
-
+		titleAlreadyInitialized = false;
 		title = ""; //$NON-NLS-1$
 		closeable = true;
 		windowRidgetListeners = new ListenerList<IWindowRidgetListener>(IWindowRidgetListener.class);
@@ -126,6 +127,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	}
 
 	public void setTitle(String title) {
+		titleAlreadyInitialized = true;
 		if (title != null && !this.title.equals(title)) {
 			this.title = title;
 			updateTitle();
@@ -134,7 +136,12 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 
 	private void updateTitle() {
 		if (getUIControl() != null) {
-			getUIControl().setText(title);
+			if (titleAlreadyInitialized) {
+				getUIControl().setText(title);
+			} else {
+				titleAlreadyInitialized = true;
+				title = getUIControl().getText();
+			}
 		}
 	}
 
