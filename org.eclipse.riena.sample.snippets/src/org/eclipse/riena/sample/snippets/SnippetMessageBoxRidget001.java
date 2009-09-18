@@ -12,15 +12,16 @@ package org.eclipse.riena.sample.snippets;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.swt.MessageBox;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Snippet using a {@link IMessageBoxRidget}.
@@ -50,11 +51,6 @@ public final class SnippetMessageBoxRidget001 {
 			IActionRidget actionRidget = (IActionRidget) SwtRidgetFactory.createRidget(button);
 			actionRidget.setText("Show message box"); //$NON-NLS-1$
 			actionRidget.addListener(new IActionListener() {
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
-				 */
 				public void callback() {
 					messageBoxRidget.show();
 				}
