@@ -27,9 +27,6 @@ public class DialogSubModuleController extends SubModuleController {
 		super(null);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
-	 */
 	@Override
 	public void configureRidgets() {
 
