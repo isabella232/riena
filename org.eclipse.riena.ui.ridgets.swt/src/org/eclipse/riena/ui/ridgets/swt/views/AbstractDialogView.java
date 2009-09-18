@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.ridgets.swt.views;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
@@ -28,7 +29,33 @@ import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
- * TODO [ev] javadoc
+ * Base class for Riena Dialogs. This class enchances JFace dialogs by adding:
+ * (a) theming capabilities based on the current Look-and-Feel, (b) providing
+ * View / Controller seperation, (c) binding the View's widgets to the
+ * Controller's ridgets.
+ * <p>
+ * Implementors have to subclass this class and provide these methods:
+ * <ol>
+ * <li>createController() - returns the Controller for this dialog</li>
+ * <li>buildView() - creates the UI for this dialog. This incldues creating the
+ * appropriate buttons, such as Ok and Cancel.</li>
+ * </ol>
+ * This subclass can then be used as any other JFace dialog: create a new
+ * instance and invoke dialog.open() to show the dialog. Open() blocks as long
+ * as the dialog is open. It returns an integer code. By default this is
+ * {@link Window#OK} ({@value Window#OK}). You can change the return code via
+ * {@link AbstractWindowController}{@link #setReturnCode(int)}.
+ * <p>
+ * <b>How to migrate from DialogView</b>
+ * <p>
+ * If you have been using DialogView and want to use this class instead you
+ * should:
+ * <ol>
+ * <li>createContentView() does not need to call super anymore</li>
+ * <li>onClose() becomes close() - remember to invoke super.close() when
+ * overriding</li>
+ * <li>build() is deprecated - invoke open() in client code instead</li>
+ * </ol>
  */
 public abstract class AbstractDialogView extends Dialog {
 
@@ -47,10 +74,22 @@ public abstract class AbstractDialogView extends Dialog {
 		} else {
 			result = Display.getCurrent().getActiveShell();
 		}
-		Assert.isNotNull(result);
+		Assert.isNotNull(result, "Could not obtain a shell instance"); //$NON-NLS-1$
 		return result;
 	}
 
+	/**
+	 * Create a new instance of this class.
+	 * 
+	 * @param parentShell
+	 *            the parent Shell. It is recommended to supply one. If you use
+	 *            {@code null}, this class will try to guess the most
+	 *            appropriate parent shell.
+	 * @throws RuntimeException
+	 *             if no shell instance could be obtained - this can only happen
+	 *             when parentShell the value {@code null} and the class failed
+	 *             to obtain an appropriate shell.
+	 */
 	protected AbstractDialogView(Shell parentShell) {
 		super(parentShell != null ? parentShell : getShellByGuessing());
 		title = ""; //$NON-NLS-1$
@@ -86,14 +125,24 @@ public abstract class AbstractDialogView extends Dialog {
 		return super.close();
 	}
 
+	/**
+	 * Returns the controller instance for this dialog.
+	 * 
+	 * @return an AbstractWindowController; never null
+	 */
 	public final AbstractWindowController getController() {
 		return controlledView.getController();
 	}
 
 	/**
-	 * TODO [ev] javadoc
+	 * Sets the title of this dialog (convenience method).
+	 * <p>
+	 * Implementation note: if you set the title both from the view (here) and
+	 * the controller (via windowRidget.setTitle(...)), the value used in the
+	 * controller will prevail.
 	 * 
 	 * @param title
+	 *            the title; never null.
 	 */
 	public final void setTitle(String title) {
 		Assert.isNotNull(title);
@@ -101,17 +150,27 @@ public abstract class AbstractDialogView extends Dialog {
 	}
 
 	/**
-	 * @deprecated use open
+	 * @deprecated use {@link #open()}
 	 */
-	public void build() {
+	public final void build() {
 		open();
 	}
 
 	// protected methods
 	////////////////////
 
-	protected final void addUIControl(Object uiControl, String ridgetId) {
-		controlledView.addUIControl(uiControl, ridgetId);
+	/**
+	 * Add a control to the list of 'bound' controls. These controls will be
+	 * bound to ridgets by the framework.
+	 * 
+	 * @param uiControl
+	 *            the UI control to bind; never null
+	 * @param bindingId
+	 *            a non-empty non-null bindind id for the control. Must be
+	 *            unique within this composite
+	 */
+	protected final void addUIControl(Object uiControl, String bindingId) {
+		controlledView.addUIControl(uiControl, bindingId);
 	}
 
 	@Override
@@ -127,7 +186,7 @@ public abstract class AbstractDialogView extends Dialog {
 	}
 
 	@Override
-	protected Control createDialogArea(Composite parent) {
+	protected final Control createDialogArea(Composite parent) {
 		Control result = buildView(parent);
 		addUIControl(getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
 		LNF_UPDATER.updateUIControls(parent);
@@ -135,12 +194,17 @@ public abstract class AbstractDialogView extends Dialog {
 	}
 
 	/**
-	 * TODO [ev] javadoc
+	 * Creates the UI for this dialog. This includes creating the appropriate
+	 * buttons, such as Ok and Cancel.
+	 * 
+	 * @wbp.parser.entryPoint
 	 */
 	protected abstract Control buildView(Composite parent);
 
 	/**
-	 * TODO [ev] javadoc
+	 * Create the controller for this dialog.
+	 * 
+	 * @return a subclass of AbstractWindowController; never null
 	 */
 	protected abstract AbstractWindowController createController();
 
