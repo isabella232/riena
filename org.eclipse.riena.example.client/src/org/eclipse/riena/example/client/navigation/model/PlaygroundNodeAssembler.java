@@ -146,7 +146,7 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		playgroundModule.addChild(tablexSubModule);
 
 		ISubModuleNode contextMenuSubModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.contextMenu"), "ContextMenu"); //$NON-NLS-1$ //$NON-NLS-2$
+				"org.eclipse.riena.example.contextMenu"), "Context Menu"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(contextMenuSubModule, ContextMenuSubModuleController.class,
 				ContextMenuSubModuleView.ID, false);
 		playgroundModule.addChild(contextMenuSubModule);

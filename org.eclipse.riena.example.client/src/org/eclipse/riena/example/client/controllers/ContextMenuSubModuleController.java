@@ -41,16 +41,42 @@ public class ContextMenuSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		ITextRidget textField = (ITextRidget) getRidget("textField"); //$NON-NLS-1$
+		final ITextRidget textField = (ITextRidget) getRidget("textField"); //$NON-NLS-1$
 		textField.updateFromModel();
 
-		final IMenuItemRidget textSelectAll = (IMenuItemRidget) getRidget("textSelectAll"); //$NON-NLS-1$
+		final IMenuItemRidget textClear = (IMenuItemRidget) getRidget("textClear"); //$NON-NLS-1$
+		textClear.addListener(new IActionListener() {
+			public void callback() {
+				textField.setText(""); //$NON-NLS-1$
+			}
+		});
+
+		final IMenuItemRidget itemFoo = (IMenuItemRidget) getRidget("itemFoo"); //$NON-NLS-1$
+		itemFoo.addListener(new IActionListener() {
+			public void callback() {
+				textField.setText("foo"); //$NON-NLS-1$
+			}
+		});
+
+		final IMenuItemRidget itemBar = (IMenuItemRidget) getRidget("itemBar"); //$NON-NLS-1$
+		itemBar.addListener(new IActionListener() {
+			public void callback() {
+				textField.setText("bar"); //$NON-NLS-1$
+			}
+		});
+
+		final IMenuItemRidget itemBaz = (IMenuItemRidget) getRidget("itemBaz"); //$NON-NLS-1$
+		itemBaz.addListener(new IActionListener() {
+			public void callback() {
+				textField.setText("baz"); //$NON-NLS-1$
+			}
+		});
 
 		final IToggleButtonRidget markerButton = (IToggleButtonRidget) getRidget("markerButton"); //$NON-NLS-1$
 		markerButton.addListener(new IActionListener() {
 			public void callback() {
 				boolean state = markerButton.isSelected();
-				textSelectAll.setVisible(!state);
+				textClear.setVisible(!state);
 			}
 		});
 

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -18,6 +19,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
@@ -43,23 +45,34 @@ public class ContextMenuSubModuleView extends SubModuleView<ContextMenuSubModule
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		GridLayoutFactory.swtDefaults().margins(5, 5).equalWidth(true).applyTo(parent);
+		parent.setLayout(new GridLayout(1, false));
 
-		Group groupSystem = UIControlsFactory.createGroup(parent, "Text with System-Contextmenu:"); //$NON-NLS-1$
-		groupSystem.setLayout(new GridLayout(2, true));
-		UIControlsFactory.createLabel(groupSystem, "Text:"); //$NON-NLS-1$
+		GridLayoutFactory groupGLF = GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2);
+		GridDataFactory groupGDF = GridDataFactory.fillDefaults().grab(true, false);
+		GridDataFactory labelGDF = GridDataFactory.swtDefaults().hint(100, SWT.DEFAULT);
+
+		Group groupSystem = UIControlsFactory.createGroup(parent, "Text with System-Context Menu:"); //$NON-NLS-1$
+		groupGLF.applyTo(groupSystem);
+		groupGDF.applyTo(groupSystem);
+
+		Label label1 = UIControlsFactory.createLabel(groupSystem, "Text:"); //$NON-NLS-1$
+		labelGDF.applyTo(label1);
 		UIControlsFactory.createText(groupSystem, SWT.None, "textFieldSystem"); //$NON-NLS-1$
 
-		Group groupText = UIControlsFactory.createGroup(parent, "Text with Contextmenu:"); //$NON-NLS-1$
-		groupText.setLayout(new GridLayout(2, true));
+		Group groupText = UIControlsFactory.createGroup(parent, "Text with Context Menu:"); //$NON-NLS-1$
+		groupGLF.applyTo(groupText);
+		groupGDF.applyTo(groupText);
+
 		UIControlsFactory.createLabel(groupText, "Text:"); //$NON-NLS-1$
 		Text textField = UIControlsFactory.createText(groupText, SWT.None, "textField"); //$NON-NLS-1$
 		textField.setMenu(createMenuWithFactory(textField));
-		UIControlsFactory.createLabel(groupText, "Hide MenuItem:"); //$NON-NLS-1$
+		Label label2 = UIControlsFactory.createLabel(groupText, "Hide 'Clear':"); //$NON-NLS-1$
+		labelGDF.applyTo(label2);
 		UIControlsFactory.createButtonCheck(groupText, "markerButton"); //$NON-NLS-1$
 
-		Group groupTable = UIControlsFactory.createGroup(parent, "Table with Contextmenu:"); //$NON-NLS-1$
-		groupTable.setLayout(new GridLayout(1, true));
+		Group groupTable = UIControlsFactory.createGroup(parent, "Table with Context Menu:"); //$NON-NLS-1$
+		groupGLF.numColumns(1).applyTo(groupTable);
+		groupGDF.applyTo(groupTable);
 
 		Table table = UIControlsFactory.createTable(groupTable, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
 		table.setMenu(createContextMenuForTable(table));
@@ -78,13 +91,13 @@ public class ContextMenuSubModuleView extends SubModuleView<ContextMenuSubModule
 
 	private Menu createMenuWithFactory(Control parent) {
 		Menu menu = UIControlsFactory.createMenu(parent);
-		UIControlsFactory.createMenuItem(menu, "Select All", "textSelectAll"); //$NON-NLS-1$ //$NON-NLS-2$
-		MenuItem itemEdit = UIControlsFactory.createMenuItem(menu, "Edit", SWT.CASCADE); //$NON-NLS-1$
+		UIControlsFactory.createMenuItem(menu, "Clear", "textClear"); //$NON-NLS-1$ //$NON-NLS-2$
+		MenuItem itemEdit = UIControlsFactory.createMenuItem(menu, "Set Text", SWT.CASCADE); //$NON-NLS-1$
 
 		Menu menuEdit = UIControlsFactory.createMenu(itemEdit);
-		UIControlsFactory.createMenuItem(menuEdit, "Cut"); //$NON-NLS-1$ 
-		UIControlsFactory.createMenuItem(menuEdit, "Copy"); //$NON-NLS-1$
-		UIControlsFactory.createMenuItem(menuEdit, "Paste"); //$NON-NLS-1$
+		UIControlsFactory.createMenuItem(menuEdit, "foo", "itemFoo"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		UIControlsFactory.createMenuItem(menuEdit, "bar", "itemBar"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createMenuItem(menuEdit, "baz", "itemBaz"); //$NON-NLS-1$ //$NON-NLS-2$
 		itemEdit.setMenu(menuEdit);
 		return menu;
 	}
