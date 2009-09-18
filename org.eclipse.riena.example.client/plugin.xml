@@ -314,6 +314,13 @@
             name="org.eclipse.riena.example.client.views.CComboSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.ContextMenuSubModuleView"
+            id="org.eclipse.riena.example.client.views.ContextMenuSubModuleView"
+            name="org.eclipse.riena.example.client.views.ContextMenuSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

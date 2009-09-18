@@ -33,6 +33,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.part.ViewPart;
 
 import org.eclipse.riena.core.Log4r;
@@ -383,21 +385,39 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	private void addUIControls(Composite composite) {
 		Control[] controls = composite.getChildren();
+		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		for (Control uiControl : controls) {
-
-			String bindingProperty = SWTBindingPropertyLocator.getInstance().locateBindingProperty(uiControl);
+			String bindingProperty = locator.locateBindingProperty(uiControl);
 			if (!StringUtils.isEmpty(bindingProperty)) {
 				if (isChildOfComplexComponent(uiControl)) {
 					continue;
 				}
 				addUIControl(uiControl);
 			}
+
 			if (uiControl instanceof Composite) {
 				addUIControls((Composite) uiControl);
 			}
 
+			// if the control has a contextmenu, check if a MenuItem has a bindingId and add it to the list of controls
+			if (uiControl.getMenu() != null) {
+				addMenuControl(uiControl.getMenu());
+			}
 		}
+	}
 
+	private void addMenuControl(Menu menu) {
+		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		for (int i = 0; i < menu.getItemCount(); i++) {
+			MenuItem item = menu.getItem(i);
+			String bindingId = locator.locateBindingProperty(item);
+			if (StringUtils.isGiven(bindingId)) {
+				addUIControl(item, bindingId);
+			}
+			if (item.getMenu() != null) {
+				addMenuControl(item.getMenu());
+			}
+		}
 	}
 
 	/**

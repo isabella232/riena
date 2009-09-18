@@ -24,12 +24,15 @@ import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
@@ -76,6 +79,55 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	protected UIControlsFactory() {
+	}
+
+	/**
+	 * @wbp.factory.parameter.source text "myMenuItemText"
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+     * @since 1.2
+	 */
+	public static MenuItem createMenuItem(Menu parent, String text, int style) {
+		MenuItem item = new MenuItem(parent, style);
+		item.setText(text);
+		return item;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source text "myMenuItemText"
+     * @since 1.2
+	 */
+	public static MenuItem createMenuItem(Menu parent, String text) {
+		MenuItem item = new MenuItem(parent, SWT.None);
+		item.setText(text);
+		return item;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source text "myMenuItemText"
+	 * @wbp.factory.parameter.source bindingId "myMenuItemId"
+     * @since 1.2
+	 */
+	public static MenuItem createMenuItem(Menu parent, String text, String bindingId) {
+		MenuItem item = new MenuItem(parent, SWT.None);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, bindingId);
+		item.setText(text);
+		return item;
+	}
+
+	/**
+	 * @since 1.2
+	 */
+	public static Menu createMenu(Control parent) {
+		Menu item = new Menu(parent);
+		return item;
+	}
+
+	/**
+	 * @since 1.2
+	 */
+	public static Menu createMenu(MenuItem parent) {
+		Menu item = new Menu(parent);
+		return item;
 	}
 
 	/**
