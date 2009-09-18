@@ -510,8 +510,11 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 		@Override
 		public void disposed(ISubModuleNode source) {
-			SwtViewId id = getViewId(source);
-			hideView(id);
+			// not selectable SubModules dont't have an associated view and therefore no view has to be hidden
+			if (source.isSelectable()) {
+				SwtViewId id = getViewId(source);
+				hideView(id);
+			}
 		}
 
 		protected String createNextId() {
