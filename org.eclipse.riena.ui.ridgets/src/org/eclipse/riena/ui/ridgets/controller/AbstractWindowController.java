@@ -29,10 +29,25 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 */
 	public static final String RIDGET_ID_WINDOW = "windowRidget"; //$NON-NLS-1$
 
+	/**
+	 * TODO [ev] docs -- provisional, where is the best location for this?
+	 * 
+	 * @since 1.2
+	 */
+	public static final int OK = 0;
+
+	/**
+	 * TODO [ev] docs -- provisional, where is the best location for this
+	 * 
+	 * @since 1.2
+	 */
+	public static final int CANCEL = 1;
+
+	private final Map<String, IRidget> ridgets;
+	private final Map<String, Object> context;
 	private IWindowRidget windowRidget;
-	private Map<String, IRidget> ridgets;
 	private boolean blocked;
-	private Map<String, Object> context;
+	private int returnCode;
 
 	public AbstractWindowController() {
 		super();
@@ -40,25 +55,24 @@ public abstract class AbstractWindowController implements IController, IContext 
 		context = new HashMap<String, Object>();
 	}
 
-	/**
-	 * @return The window ridget.
-	 */
-	public IWindowRidget getWindowRidget() {
-		return windowRidget;
-	}
-
-	/**
-	 * Sets the window ridget.
-	 * 
-	 * @param windowRidget
-	 *            The window ridget.
-	 */
-	public void setWindowRidget(IWindowRidget windowRidget) {
-		this.windowRidget = windowRidget;
-	}
-
 	public void addRidget(String id, IRidget ridget) {
 		ridgets.put(id, ridget);
+	}
+
+	public void afterBind() {
+		returnCode = OK;
+		getWindowRidget().updateFromModel();
+	}
+
+	public void configureRidgets() {
+		setWindowRidget((IWindowRidget) getRidget(RIDGET_ID_WINDOW));
+	}
+
+	/**
+	 * @since 1.2
+	 */
+	public Object getContext(String key) {
+		return context.get(key);
 	}
 
 	public IRidget getRidget(String id) {
@@ -69,30 +83,30 @@ public abstract class AbstractWindowController implements IController, IContext 
 		return ridgets.values();
 	}
 
-	public void setBlocked(boolean blocked) {
-		this.blocked = blocked;
-		// TODO: ausimplementieren
+	/**
+	 * @return The window ridget.
+	 */
+	public IWindowRidget getWindowRidget() {
+		return windowRidget;
+	}
+
+	/**
+	 * @since 1.2
+	 */
+	// TODO [ev] javadoc
+	public int getReturnCode() {
+		return returnCode;
 	}
 
 	public boolean isBlocked() {
 		return this.blocked;
 	}
 
-	public void configureRidgets() {
-		setWindowRidget((IWindowRidget) getRidget(RIDGET_ID_WINDOW));
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+		// TODO: implement
 	}
 
-	public void afterBind() {
-		getWindowRidget().updateFromModel();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.internal.ui.core.context.IContext#setContext(java.lang
-	 * .String, java.lang.Object)
-	 */
 	/**
 	 * @since 1.2
 	 */
@@ -100,17 +114,21 @@ public abstract class AbstractWindowController implements IController, IContext 
 		context.put(key, value);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.internal.ui.core.context.IContext#getContext(java.lang
-	 * .String)
-	 */
 	/**
 	 * @since 1.2
 	 */
-	public Object getContext(String key) {
-		return context.get(key);
+	// TODO [ev] javadoc
+	public void setReturnCode(int returnCode) {
+		this.returnCode = returnCode;
+	}
+
+	/**
+	 * Sets the window ridget.
+	 * 
+	 * @param windowRidget
+	 *            The window ridget.
+	 */
+	public void setWindowRidget(IWindowRidget windowRidget) {
+		this.windowRidget = windowRidget;
 	}
 }
