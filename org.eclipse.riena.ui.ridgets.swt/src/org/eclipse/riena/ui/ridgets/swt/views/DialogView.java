@@ -25,7 +25,9 @@ import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
- * base class for SWT dialogs.
+ * Base class for SWT dialogs.
+ * 
+ * @deprecated use {@link AbstractDialogView}
  */
 public abstract class DialogView extends RienaDialog {
 

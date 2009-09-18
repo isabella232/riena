@@ -34,7 +34,7 @@ import org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer;
 import org.eclipse.riena.ui.swt.lnf.renderer.DialogTitleBarRenderer;
 
 /**
- *
+ * @deprecated use {@link RienaDialogRenderer}
  */
 public class RienaDialogDelegate {
 

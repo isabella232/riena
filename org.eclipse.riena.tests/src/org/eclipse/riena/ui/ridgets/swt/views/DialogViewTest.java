@@ -29,7 +29,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Testcase for {@link DialogView}.
+ * Testcase for {@link AbstractDialogView}.
  */
 @UITestCase
 public class DialogViewTest extends RienaTestCase {
@@ -93,10 +93,10 @@ public class DialogViewTest extends RienaTestCase {
 				dialogView.close();
 			}
 		});
-		dialogView.build();
+		dialogView.open();
 	}
 
-	private class DialogViewStub extends DialogView {
+	private class DialogViewStub extends AbstractDialogView {
 
 		private Text txtFirstName;
 		private Text txtLastName;
@@ -105,7 +105,7 @@ public class DialogViewTest extends RienaTestCase {
 		 * @param parent
 		 */
 		public DialogViewStub(Composite parent) {
-			super(parent);
+			super(parent.getShell());
 		}
 
 		@Override

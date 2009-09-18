@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * A dialog with an own renderer for the border and the title bar.
+ * 
+ * @deprecated use AbstractDialogView
  */
 public class RienaDialog extends Dialog implements IRienaDialog {
 

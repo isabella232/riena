@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.common.IComplexComponent;
@@ -39,22 +40,23 @@ public abstract class AbstractDialogView extends Dialog {
 	private String title;
 	private boolean isClosing;
 
+	private static Shell getShellByGuessing() {
+		Shell result;
+		if (PlatformUI.isWorkbenchRunning()) {
+			result = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		} else {
+			result = Display.getCurrent().getActiveShell();
+		}
+		Assert.isNotNull(result);
+		return result;
+	}
+
 	protected AbstractDialogView(Shell parentShell) {
-		super(parentShell != null ? parentShell : Display.getDefault().getActiveShell());
-		Assert.isNotNull(parentShell);
+		super(parentShell != null ? parentShell : getShellByGuessing());
 		title = ""; //$NON-NLS-1$
 		dlgRenderer = new RienaDialogRenderer(this);
 		controlledView = new ControlledView();
 		controlledView.setController(createController());
-	}
-
-	@Override
-	public final boolean close() {
-		isClosing = true;
-		AbstractWindowController controller = getController();
-		setReturnCode(controller.getReturnCode());
-		controlledView.unbind(controller);
-		return super.close();
 	}
 
 	@Override
@@ -73,6 +75,15 @@ public abstract class AbstractDialogView extends Dialog {
 				}
 			}
 		});
+	}
+
+	@Override
+	public boolean close() {
+		isClosing = true;
+		AbstractWindowController controller = getController();
+		setReturnCode(controller.getReturnCode());
+		controlledView.unbind(controller);
+		return super.close();
 	}
 
 	public final AbstractWindowController getController() {

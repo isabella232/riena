@@ -21,9 +21,9 @@ import org.eclipse.swt.widgets.Shell;
  * A dialog for showing messages and with an own renderer for the border and the
  * title bar.
  */
-public class RienaMessageDialog extends MessageDialog implements IRienaDialog {
+public class RienaMessageDialog extends MessageDialog {
 
-	private RienaDialogDelegate dlgDelegate;
+	private final RienaDialogRenderer dlgRenderer;
 
 	/**
 	 * Creates a Riena message dialog.
@@ -61,8 +61,7 @@ public class RienaMessageDialog extends MessageDialog implements IRienaDialog {
 			int dialogImageType, String[] dialogButtonLabels, int defaultIndex) {
 		super(parentShell, dialogTitle, dialogTitleImage, dialogMessage, dialogImageType, dialogButtonLabels,
 				defaultIndex);
-		dlgDelegate = new RienaDialogDelegate(this);
-		dlgDelegate.evaluateStyle();
+		dlgRenderer = new RienaDialogRenderer(this);
 	}
 
 	/**
@@ -81,10 +80,10 @@ public class RienaMessageDialog extends MessageDialog implements IRienaDialog {
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		parent.setLayout(gridLayout);
-		dlgDelegate.createContents(parent);
+		dlgRenderer.createContents(parent);
 
 		// create the dialog area and button bar
-		Composite centerComposite = dlgDelegate.getCenterComposite();
+		Composite centerComposite = dlgRenderer.getCenterComposite();
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		gridLayout.horizontalSpacing = LayoutConstants.getSpacing().x * 2;
@@ -102,52 +101,9 @@ public class RienaMessageDialog extends MessageDialog implements IRienaDialog {
 
 	@Override
 	public void create() {
-		dlgDelegate.initDialog();
+		// compute the 'styled' shell style, before creating the shell
+		setShellStyle(dlgRenderer.computeShellStyle());
 		super.create();
-	}
-
-	@Override
-	public boolean close() {
-		dlgDelegate.removeDialogTitleBarMouseListener();
-		return super.close();
-	}
-
-	@Override
-	public int getShellStyle() {
-		return super.getShellStyle();
-	}
-
-	@Override
-	public void setShellStyle(int newShellStyle) {
-		super.setShellStyle(newShellStyle);
-	}
-
-	public void setHideOsBorder(boolean hideOsBorder) {
-		dlgDelegate.setHideOsBorder(hideOsBorder);
-	}
-
-	public boolean isHideOsBorder() {
-		return dlgDelegate.isHideOsBorder();
-	}
-
-	public boolean isCloseable() {
-		return dlgDelegate.isCloseable();
-	}
-
-	public boolean isMaximizeable() {
-		return dlgDelegate.isMaximizeable();
-	}
-
-	public boolean isMinimizeable() {
-		return dlgDelegate.isMinimizeable();
-	}
-
-	public boolean isResizeable() {
-		return dlgDelegate.isResizeable();
-	}
-
-	public boolean isApplicationModal() {
-		return dlgDelegate.isApplicationModal();
 	}
 
 }

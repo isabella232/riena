@@ -16,6 +16,8 @@ package org.eclipse.riena.ui.swt;
  * super classes of RienaDialog/RienaMessageDialog but they are protected in the
  * super class and so they are not visible for;@link RienaDialogDelegate}. This
  * interface forces the implementation to make this methods .
+ * 
+ * @deprecated - do not use
  */
 public interface IRienaDialog {
 
