@@ -15,12 +15,6 @@
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationSwitcherViewPart"
-            id="org.eclipse.riena.navigation.ui.swt.views.subApplicationSwitcherView"
-            name="SubApplicationSwitcherView">
-      </view>
-      <view
-            allowMultiple="true"
             class="org.eclipse.riena.navigation.ui.swt.views.StatusLineViewPart"
             id="org.eclipse.riena.navigation.ui.swt.views.statusLineView"
             name="StatusLineView">
