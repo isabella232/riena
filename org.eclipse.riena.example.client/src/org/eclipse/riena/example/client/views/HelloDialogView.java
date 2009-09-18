@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.riena.example.client.controllers.DialogSubModuleController;
 import org.eclipse.riena.example.client.controllers.HelloDialogController;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
-import org.eclipse.riena.ui.ridgets.swt.views.DialogView;
+import org.eclipse.riena.ui.ridgets.swt.views.AbstractDialogView;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -35,7 +35,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * 
  * @see DialogSubModuleController
  */
-public class HelloDialogView extends DialogView {
+public class HelloDialogView extends AbstractDialogView {
 
 	public HelloDialogView() {
 		super(null);
@@ -48,9 +48,6 @@ public class HelloDialogView extends DialogView {
 
 	@Override
 	protected Control buildView(Composite parent) {
-
-		super.buildView(parent);
-
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 

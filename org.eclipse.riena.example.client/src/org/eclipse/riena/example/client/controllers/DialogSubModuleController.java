@@ -14,6 +14,7 @@ import org.eclipse.riena.example.client.views.HelloDialogView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 
 /**
  * Controller for the {@link DialogSubModuleController} example.
@@ -44,7 +45,12 @@ public class DialogSubModuleController extends SubModuleController {
 				}
 				// the dialog controller is now available
 				dialog.getController().setContext("key", "value"); //$NON-NLS-1$//$NON-NLS-2$
-				dialog.build();
+				int result = dialog.open();
+				if (result == AbstractWindowController.OK) {
+					System.out.println("OK pressed"); //$NON-NLS-1$
+				} else {
+					System.out.println("Cancel pressed"); //$NON-NLS-1$
+				}
 			}
 		});
 	}

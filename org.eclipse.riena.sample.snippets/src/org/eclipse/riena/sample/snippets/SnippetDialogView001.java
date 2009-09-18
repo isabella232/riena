@@ -12,6 +12,7 @@ package org.eclipse.riena.sample.snippets;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -26,6 +27,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
+import org.eclipse.riena.ui.ridgets.swt.views.AbstractDialogView;
 import org.eclipse.riena.ui.ridgets.swt.views.DialogView;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -51,7 +53,12 @@ public final class SnippetDialogView001 {
 			actionRidget.setText("Open dialog"); //$NON-NLS-1$
 			actionRidget.addListener(new IActionListener() {
 				public void callback() {
-					new HelloDialogView(shell).open();
+					HelloDialogView dialog = new HelloDialogView(shell);
+					if (Window.OK == dialog.open()) {
+						System.out.println("OK pressed"); //$NON-NLS-1$
+					} else {
+						System.out.println("CANCEL pressed"); //$NON-NLS-1$
+					}
 				}
 			});
 
@@ -94,6 +101,7 @@ public final class SnippetDialogView001 {
 			IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
 			cancelAction.addListener(new IActionListener() {
 				public void callback() {
+					setReturnCode(CANCEL);
 					getWindowRidget().dispose();
 				}
 			});
@@ -103,7 +111,7 @@ public final class SnippetDialogView001 {
 	/**
 	 * The view for the hello dialog of the dialog example.
 	 */
-	private static class HelloDialogView extends DialogView {
+	private static class HelloDialogView extends AbstractDialogView {
 
 		public HelloDialogView(Shell shell) {
 			super(shell);
@@ -116,8 +124,6 @@ public final class SnippetDialogView001 {
 
 		@Override
 		protected Control buildView(Composite parent) {
-			super.buildView(parent);
-
 			Composite composite = new Composite(parent, SWT.NONE);
 			composite.setLayout(new GridLayout(2, false));
 

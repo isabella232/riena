@@ -39,16 +39,9 @@ public class HelloDialogController extends AbstractWindowController {
 	public static final String RIDGET_ID_OK = "okButton"; //$NON-NLS-1$
 	public static final String RIDGET_ID_CANCEL = "cancelButton"; //$NON-NLS-1$
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.ui.ridgets.controller.AbstractWindowController#
-	 * configureRidgets()
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void configureRidgets() {
-
 		super.configureRidgets();
 
 		getWindowRidget().setTitle("James' Car Configurator"); //$NON-NLS-1$
@@ -112,23 +105,15 @@ public class HelloDialogController extends AbstractWindowController {
 
 		IActionRidget okAction = (IActionRidget) getRidget(RIDGET_ID_OK);
 		okAction.addListener(new IActionListener() {
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
-			 */
 			public void callback() {
+				setReturnCode(OK);
 				getWindowRidget().dispose();
 			}
 		});
 		IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
 		cancelAction.addListener(new IActionListener() {
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
-			 */
 			public void callback() {
+				setReturnCode(CANCEL);
 				getWindowRidget().dispose();
 			}
 		});
