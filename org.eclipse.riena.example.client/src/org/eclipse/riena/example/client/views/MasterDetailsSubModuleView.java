@@ -65,14 +65,12 @@ public class MasterDetailsSubModuleView extends SubModuleView<MasterDetailsSubMo
 		details.setLayout(new GridLayout(2, false));
 
 		UIControlsFactory.createLabel(details, "First Name:"); //$NON-NLS-1$
-		Text txtFirst = UIControlsFactory.createText(details);
+		Text txtFirst = UIControlsFactory.createText(details, SWT.BORDER, "first"); //$NON-NLS-1$
 		txtFirst.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		mdComposite.addUIControl(txtFirst, "first"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(details, "Last Name:"); //$NON-NLS-1$
-		Text txtLast = UIControlsFactory.createText(details);
+		Text txtLast = UIControlsFactory.createText(details, SWT.BORDER, "last"); //$NON-NLS-1$
 		txtLast.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		mdComposite.addUIControl(txtLast, "last"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(details, "Gender:"); //$NON-NLS-1$
 		ChoiceComposite ccGender = new ChoiceComposite(details, SWT.NONE, false);

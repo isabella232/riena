@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -221,6 +222,7 @@ public class MasterDetailsComposite extends Composite implements IComplexCompone
 	}
 
 	public final List<Object> getUIControls() {
+		addDetailControlsWithBindingProperty(details);
 		return Collections.unmodifiableList(controls);
 	}
 
@@ -407,6 +409,24 @@ public class MasterDetailsComposite extends Composite implements IComplexCompone
 		GridDataFactory.fillDefaults().grab(true, false).hint(wHint, hHint).applyTo(result);
 		addUIControl(table, BIND_ID_TABLE);
 		return result;
+	}
+
+	/**
+	 * Adds the Controls of the DetailsComposite with a valid BindingProperty to
+	 * the List of Controls.
+	 */
+	private void addDetailControlsWithBindingProperty(Composite composite) {
+		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		for (Control control : composite.getChildren()) {
+			if (control instanceof Composite) {
+				addDetailControlsWithBindingProperty((Composite) control);
+			} else {
+				String bindingProperty = locator.locateBindingProperty(control);
+				if (!controls.contains(control) && StringUtils.isGiven(bindingProperty)) {
+					addUIControl(control, bindingProperty);
+				}
+			}
+		}
 	}
 
 	private Control getUIControl(String id) {
