@@ -11,8 +11,8 @@
 package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -34,7 +34,8 @@ public class CComboSubModuleView extends SubModuleView<ComboSubModuleController>
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		parent.setLayout(new GridLayout(1, false));
+		GridLayoutFactory.swtDefaults().margins(20, 20).applyTo(parent);
+
 		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
 		UIControlsFactory.createLabel(parent, "&Persons:"); //$NON-NLS-1$
