@@ -53,6 +53,8 @@ public class LoginDialogView extends DialogView implements ILoginDialogView {
 	 */
 	@Override
 	protected AbstractWindowController createController() {
+		// TODO [ev] this causes an NPE because result is not yet initialized
+		//      what happens is that this is called from super before constructor is completed
 		return new LoginDialogController(result);
 	}
 
