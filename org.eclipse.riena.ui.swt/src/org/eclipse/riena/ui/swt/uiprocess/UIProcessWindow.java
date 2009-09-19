@@ -14,9 +14,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.jface.window.ApplicationWindow;
-import org.eclipse.riena.ui.core.uiprocess.UIProcess;
-import org.eclipse.riena.ui.swt.IRienaDialog;
-import org.eclipse.riena.ui.swt.RienaDialogDelegate;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -30,33 +27,37 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.ui.core.uiprocess.UIProcess;
+import org.eclipse.riena.ui.swt.RienaWindowRenderer;
+
 /**
  * The window visualizing the progress of an {@link UIProcess}. Have a look at
  * {@link ApplicationWindow} to get more detailed information about window
  * handling.
  */
-public class UIProcessWindow extends ApplicationWindow implements IUIProcessWindow, IRienaDialog {
+public class UIProcessWindow extends ApplicationWindow implements IUIProcessWindow {
 
 	private static final int CANCEL_BUTTON_WIDTH = 70;
 	private static final int PROGRESS_BAR_WIDTH = 210;
 
-	private Set<IProcessWindowListener> windowListeners;
+	private final UIProcessControl progressControl;
+	private final Set<IProcessWindowListener> windowListeners;
+	private final RienaWindowRenderer windowRenderer;
+
 	private ProgressBar progressBar;
 	private Label description;
 	private Label percent;
-	private UIProcessControl progressControl;
-	private RienaDialogDelegate dlgDelegate;
 
 	public UIProcessWindow(Shell parentShell, UIProcessControl progressControl) {
 		super(parentShell);
 		this.progressControl = progressControl;
 		windowListeners = new HashSet<IProcessWindowListener>();
-		dlgDelegate = new RienaDialogDelegate(this);
+		windowRenderer = new RienaWindowRenderer(this);
 	}
 
 	@Override
 	public void create() {
-		dlgDelegate.initDialog();
+		setShellStyle(windowRenderer.computeShellStyle());
 		super.create();
 	}
 
@@ -80,8 +81,8 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 	@Override
 	protected Control createContents(Composite parent) {
 
-		Control contentsComposite = dlgDelegate.createContents(parent);
-		Composite centerComposite = dlgDelegate.getCenterComposite();
+		Control contentsComposite = windowRenderer.createContents(parent);
+		Composite centerComposite = windowRenderer.getCenterComposite();
 
 		createWindowLayout(centerComposite);
 
@@ -160,7 +161,6 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 	@Override
 	public boolean close() {
 		fireWindowAboutToClose();
-		dlgDelegate.removeDialogTitleBarMouseListener();
 		return super.close();
 	}
 
@@ -201,34 +201,6 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 	@Override
 	protected void createTrimWidgets(Shell shell) {
 		// do nothing
-	}
-
-	public void setHideOsBorder(boolean hideOsBorder) {
-		dlgDelegate.setHideOsBorder(hideOsBorder);
-	}
-
-	public boolean isHideOsBorder() {
-		return dlgDelegate.isHideOsBorder();
-	}
-
-	public boolean isCloseable() {
-		return true;
-	}
-
-	public boolean isMaximizeable() {
-		return false;
-	}
-
-	public boolean isMinimizeable() {
-		return false;
-	}
-
-	public boolean isResizeable() {
-		return false;
-	}
-
-	public boolean isApplicationModal() {
-		return true;
 	}
 
 }

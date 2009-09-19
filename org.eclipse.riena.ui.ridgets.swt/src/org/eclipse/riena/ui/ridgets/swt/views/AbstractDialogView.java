@@ -24,7 +24,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
-import org.eclipse.riena.ui.swt.RienaDialogRenderer;
+import org.eclipse.riena.ui.swt.RienaWindowRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
@@ -61,7 +61,7 @@ public abstract class AbstractDialogView extends Dialog {
 
 	private static final LnFUpdater LNF_UPDATER = new LnFUpdater();
 
-	private final RienaDialogRenderer dlgRenderer;
+	private final RienaWindowRenderer dlgRenderer;
 	private final ControlledView controlledView;
 
 	private String title;
@@ -93,7 +93,7 @@ public abstract class AbstractDialogView extends Dialog {
 	protected AbstractDialogView(Shell parentShell) {
 		super(parentShell != null ? parentShell : getShellByGuessing());
 		title = ""; //$NON-NLS-1$
-		dlgRenderer = new RienaDialogRenderer(this);
+		dlgRenderer = new RienaWindowRenderer(this);
 		controlledView = new ControlledView();
 		controlledView.setController(createController());
 	}

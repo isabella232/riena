@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class RienaMessageDialog extends MessageDialog {
 
-	private final RienaDialogRenderer dlgRenderer;
+	private final RienaWindowRenderer dlgRenderer;
 
 	/**
 	 * Creates a Riena message dialog.
@@ -61,7 +61,7 @@ public class RienaMessageDialog extends MessageDialog {
 			int dialogImageType, String[] dialogButtonLabels, int defaultIndex) {
 		super(parentShell, dialogTitle, dialogTitleImage, dialogMessage, dialogImageType, dialogButtonLabels,
 				defaultIndex);
-		dlgRenderer = new RienaDialogRenderer(this);
+		dlgRenderer = new RienaWindowRenderer(this);
 	}
 
 	/**

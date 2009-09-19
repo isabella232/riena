@@ -12,7 +12,7 @@ package org.eclipse.riena.ui.swt;
 
 import java.beans.Beans;
 
-import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -37,14 +37,14 @@ import org.eclipse.riena.ui.swt.lnf.renderer.DialogTitleBarRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
- * Provides theming & styling for jface Dialogs.
+ * Provides theming & styling for jface {@link Window}s.
  */
-public class RienaDialogRenderer {
+public class RienaWindowRenderer {
 
-	private final Dialog dialog;
+	private final Window dialog;
 	private Composite centerComposite;
 
-	public RienaDialogRenderer(Dialog dialog) {
+	public RienaWindowRenderer(Window dialog) {
 		this.dialog = dialog;
 
 		// if we are in designtime, supply default renderer
