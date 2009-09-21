@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.swt.lnf;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Resource;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrapper for resource color.
@@ -70,7 +70,7 @@ public class ColorLnfResource extends AbstractLnfResource {
 		if (rgb == null) {
 			return null;
 		}
-		return new Color(PlatformUI.getWorkbench().getDisplay(), rgb);
+		return new Color(Display.getCurrent(), rgb);
 	}
 
 }
