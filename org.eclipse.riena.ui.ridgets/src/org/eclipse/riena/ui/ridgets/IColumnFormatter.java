@@ -55,7 +55,7 @@ public interface IColumnFormatter {
 	 *         foreground color. Implementors may return a type specific to
 	 *         their ui-toolkit.
 	 */
-	public Object getForeground(Object element);
+	Object getForeground(Object element);
 
 	/**
 	 * Returns the background color for a column's row.
@@ -66,7 +66,7 @@ public interface IColumnFormatter {
 	 *         background color. Implementors may return a type specific to
 	 *         their ui-toolkit.
 	 */
-	public Object getBackground(Object element);
+	Object getBackground(Object element);
 
 	/**
 	 * Returns the font for a column's row.
@@ -76,6 +76,6 @@ public interface IColumnFormatter {
 	 * @return the font color for this element or null to use the default font.
 	 *         Implementors may return a type specific to their ui-toolkit.
 	 */
-	public Object getFont(Object element);
+	Object getFont(Object element);
 
 }
