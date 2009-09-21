@@ -14,6 +14,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Wrapper for resource color.
@@ -70,7 +71,12 @@ public class ColorLnfResource extends AbstractLnfResource {
 		if (rgb == null) {
 			return null;
 		}
-		return new Color(Display.getCurrent(), rgb);
+		if (PlatformUI.isWorkbenchRunning()) {
+			return new Color(PlatformUI.getWorkbench().getDisplay(), rgb);
+		} else {
+			return new Color(Display.getCurrent(), rgb);
+		}
+
 	}
 
 }
