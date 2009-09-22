@@ -44,6 +44,7 @@ public class RienaDefaultLnf {
 	private Map<String, ILnfRenderer> rendererTable = new Hashtable<String, ILnfRenderer>();
 	private ILnfTheme theme;
 	private boolean initialized;
+	private boolean defaultColorsInitialized = false;
 
 	public Map<String, ILnfResource> getResourceTable() {
 		return resourceTable;
@@ -124,7 +125,7 @@ public class RienaDefaultLnf {
 	 * Initializes the table with the resources.
 	 */
 	protected void initResourceDefaults() {
-		initColorDefaults();
+		//		initColorDefaults();
 		initFontDefaults();
 		initImageDefaults();
 		initSettingsDefaults();
@@ -141,6 +142,7 @@ public class RienaDefaultLnf {
 		if (getTheme() != null) {
 			getTheme().addCustomColors(getResourceTable());
 		}
+		defaultColorsInitialized = true;
 	}
 
 	/**
@@ -209,6 +211,9 @@ public class RienaDefaultLnf {
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
 	public Color getColor(String key) {
+		if (!defaultColorsInitialized) {
+			initColorDefaults();
+		}
 		Resource value = getResource(key);
 		if (value instanceof Color) {
 			return (Color) value;
