@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.injector.extension;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -21,15 +22,33 @@ import java.lang.annotation.Target;
  * 
  * <pre>
  * 
- * @ExtensionInterface()
+ * &#064;ExtensionInterface()
  * public interface ISubElement {
- * @MapName("validation-policy")
- * 		String getValidationPolicy(); }
+ * 	&#064;MapName(&quot;validation-policy&quot;)
+ * 	String getValidationPolicy();
+ * }
+ * </pre>
  * 
- *                                            </pre>
+ * or with a provided extension point id
+ * 
+ * <pre>
+ * &#064;ExtensionInterface(&quot;org.eclipse.core.someId&quot;)
+ * public interface ISubElement {
+ * 	&#064;MapName(&quot;validation-policy&quot;)
+ * 	String getValidationPolicy();
+ * }
+ * </pre>
  */
+@Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ExtensionInterface {
 
+	/**
+	 * The id of the extension point this {@code ExtensionInterface} is used
+	 * for.
+	 * 
+	 * @return the extension point id
+	 */
+	String id() default "";
 }
