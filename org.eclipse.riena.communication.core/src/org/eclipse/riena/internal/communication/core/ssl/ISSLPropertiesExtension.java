@@ -13,18 +13,12 @@ package org.eclipse.riena.internal.communication.core.ssl;
 import org.osgi.framework.Bundle;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
-import org.eclipse.riena.internal.communication.core.Activator;
 
 /**
  * SSl properties for the ssl configuration
  */
-@ExtensionInterface
-public interface ISSLProperties {
-
-	/**
-	 * The extension point id.
-	 */
-	String ID = Activator.PLUGIN_ID + ".ssl"; //$NON-NLS-1$
+@ExtensionInterface(id = "ssl")
+public interface ISSLPropertiesExtension {
 
 	/**
 	 * @return the protocol
