@@ -61,7 +61,7 @@ public class SSLConfiguration {
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SSLConfiguration.class);
 
 	@InjectExtension(min = 0, max = 1)
-	public void configure(ISSLProperties properties) {
+	public void configure(ISSLPropertiesExtension properties) {
 		if (configured && properties == null) {
 			restore();
 			return;
@@ -192,21 +192,25 @@ public class SSLConfiguration {
 			return cacertFile.canRead() ? cacertFile.toURL() : null;
 		}
 
+		// maybe it is a entry?
+		URL keystoreUrl = contributingBundle.getEntry(keystore);
+		if (keystoreUrl != null) {
+			return keystoreUrl;
+		}
+
+		// maybe it is a resource?
+		keystoreUrl = contributingBundle.getResource(keystore);
+		if (keystoreUrl != null) {
+			return keystoreUrl;
+		}
+
 		// keystore location a file?
 		File keystoreFile = new File(keystore);
 		if (keystoreFile.canRead()) {
 			return keystoreFile.toURL();
 		}
 
-		LOGGER.log(LogService.LOG_DEBUG, "Keystore " + keystore + " is not a file."); //$NON-NLS-1$ //$NON-NLS-2$
-		// maybe it is a resource?
-		URL keystoreUrl = contributingBundle.getResource(keystore);
-		if (keystoreUrl != null) {
-			return keystoreUrl;
-		}
-
-		LOGGER.log(LogService.LOG_DEBUG, "Keystore " + keystore + " is not a resource."); //$NON-NLS-1$ //$NON-NLS-2$
-		// and finally a url?
+		// and finally try as a url?
 		return new URL(keystore);
 	}
 
