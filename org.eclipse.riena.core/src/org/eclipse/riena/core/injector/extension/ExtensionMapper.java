@@ -88,9 +88,8 @@ public final class ExtensionMapper {
 	 * 
 	 * @param <T>
 	 * @param symbolReplace
-	 *            on true symbol replacement occurs (via <code>
-	 *            StringVariableManager</code>
-	 *            )
+	 *            on true symbol replacement occurs (via {@code
+	 *            StringVariableManager})
 	 * @param extensionDesc
 	 * @param componentType
 	 * @return
