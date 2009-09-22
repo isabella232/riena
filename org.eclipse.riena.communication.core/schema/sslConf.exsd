@@ -2,15 +2,20 @@
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.eclipse.riena.communication.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appinfo>
+      <appInfo>
          <meta.schema plugin="org.eclipse.riena.communication.core" id="org.eclipse.riena.communication.core.ssl" name="ssl"/>
-      </appinfo>
+      </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         An single ssl configuration is required for the https transport of the Riena communication.
       </documentation>
    </annotation>
 
    <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
       <complexType>
          <sequence minOccurs="0" maxOccurs="1">
             <element ref="sslconfig"/>
@@ -34,9 +39,9 @@
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
@@ -47,21 +52,27 @@
          <attribute name="protocol" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  the transport layer security protocol, e.g. TLSv1
                </documentation>
             </annotation>
          </attribute>
          <attribute name="keystore" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The location of the keystore. 
+If the value is #jre-cacerts# than the keystore of the JVM will be used.
+Otherwise, several attempts are made to interpret the the location as:
+- an entry via Bundle.getEntry()
+- a resource via Bundle.getResource()
+- a file
+- a URL
                </documentation>
             </annotation>
          </attribute>
          <attribute name="password" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The password of the keystore
                </documentation>
             </annotation>
          </attribute>
@@ -69,36 +80,41 @@
    </element>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="since"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter the first release in which this extension point appears.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="examples"/>
-      </appinfo>
+      </appInfo>
       <documentation>
-         [Enter extension point usage example here.]
+         &lt;extension
+         id=&quot;org.eclipse.riena.communication.core.ssl.config&quot;
+         name=&quot;test&quot;
+         point=&quot;org.eclipse.riena.communication.core.ssl&quot;&gt;
+         &lt;sslconfig protocol=&quot;TLSv1&quot; keystore=&quot;#jre-cacerts#&quot; password=&quot;changeit&quot;/&gt; 
+   &lt;/extension&gt;
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="apiinfo"/>
-      </appinfo>
+      </appInfo>
       <documentation>
-         [Enter API information here.]
+         since Riena 1.1.0
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="implementation"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter information about supplied implementation of this extension point.]
       </documentation>
