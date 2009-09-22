@@ -97,6 +97,9 @@ import org.eclipse.riena.internal.core.Activator;
  *         initialValue=&quot;c:/projects/&quot;/&gt;
  * &lt;/extension&gt;
  * </pre>
+ * 
+ * @deprecated Use instead the functional but extended {@code
+ *             org.eclipse.riena.core.logging.log4j.Log4jLogListener}
  */
 public class Log4jLogListener implements LogListener, IExecutableExtension {
 
