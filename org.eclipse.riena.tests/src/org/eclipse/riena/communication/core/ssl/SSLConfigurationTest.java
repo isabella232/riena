@@ -16,7 +16,7 @@ import java.io.IOException;
 import org.osgi.framework.Bundle;
 
 import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.internal.communication.core.ssl.ISSLProperties;
+import org.eclipse.riena.internal.communication.core.ssl.ISSLPropertiesExtension;
 import org.eclipse.riena.internal.communication.core.ssl.SSLConfiguration;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
@@ -49,7 +49,7 @@ public class SSLConfigurationTest extends RienaTestCase {
 
 	public void testLocateKeystoreJreCacerts() {
 		printTestName();
-		ISSLProperties properties = new SSLProperties("TLSv1", "#jre-cacerts#", "changeit");
+		ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "#jre-cacerts#", "changeit");
 		SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
@@ -60,7 +60,7 @@ public class SSLConfigurationTest extends RienaTestCase {
 		String jreDir = System.getProperty("java.home"); //$NON-NLS-1$
 		File cacertFile = new File(new File(new File(new File(jreDir), "lib"), "security"), "cacerts");
 
-		ISSLProperties properties = new SSLProperties("TLSv1", cacertFile.toString(), "changeit");
+		ISSLPropertiesExtension properties = new SSLProperties("TLSv1", cacertFile.toString(), "changeit");
 		SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
@@ -68,8 +68,16 @@ public class SSLConfigurationTest extends RienaTestCase {
 
 	public void testLocateKeystoreResource() {
 		printTestName();
-		ISSLProperties properties = new SSLProperties("TLSv1", "/org/eclipse/riena/communication/core/ssl/cacerts",
-				"changeit");
+		ISSLPropertiesExtension properties = new SSLProperties("TLSv1",
+				"/org/eclipse/riena/communication/core/ssl/cacerts", "changeit");
+		SSLConfiguration config = new SSLConfiguration();
+		config.configure(properties);
+		assertTrue(config.isConfigured());
+	}
+
+	public void testLocateKeystoreEntry() {
+		printTestName();
+		ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "/keystore/cacerts", "changeit");
 		SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
@@ -81,14 +89,14 @@ public class SSLConfigurationTest extends RienaTestCase {
 		File cacertDir = new File(new File(new File(jreDir), "lib"), "security");
 		TestServer nano = new TestServer(8888, cacertDir);
 
-		ISSLProperties properties = new SSLProperties("TLSv1", "http://localhost:8888/cacerts", "changeit");
+		ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "http://localhost:8888/cacerts", "changeit");
 		SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
 		nano.stop();
 	}
 
-	private static class SSLProperties implements ISSLProperties {
+	private static class SSLProperties implements ISSLPropertiesExtension {
 
 		private String protocol;
 		private String keystore;
