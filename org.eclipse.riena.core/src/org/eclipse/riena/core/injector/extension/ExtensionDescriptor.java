@@ -18,12 +18,13 @@ import org.eclipse.riena.core.util.StringUtils;
 
 /**
  * ExtensionDescriptor and ExtensionInjector simplify locating configuration
- * (extensions) and injects them into a target object. To do so the
- * ExtensionInjector tracks the extension registry for changes of appearing and
- * disappearing extensions and injects them into the target. A target object
- * defines a named and typed bind (update) method. The ExtensionInjector calls
- * the update method when the specified extension/point was registered or
- * modified.<br>
+ * (extensions) and injects them into a target object.
+ * <p>
+ * To do so the ExtensionInjector tracks the extension registry for changes of
+ * appearing and disappearing extensions and injects them into the target. A
+ * target object defines a named and typed bind (update) method. The
+ * ExtensionInjector calls the update method when the specified extension/point
+ * was registered or modified.<br>
  * The type of the update method can be either of type array of <i>interface
  * type</i> or just <i>interface type</i>. The <i>interface type</i> is just a
  * simple java interface with <i>getters</i> where their name corresponds to
@@ -44,8 +45,19 @@ import org.eclipse.riena.core.util.StringUtils;
  * Inject.extension("id2").useType(interface).into(target).update("configure").
  * andStart(context)</li>
  * <li>Inject.extension("id3").expectExactly(1).into(target).andStart(context)</li>
+ * <li>Inject.extension().into(target).andStart(context)</li>
  * <li>..</li>
  * </ol>
+ * If the id is omitted. The extension injector will try to retrieve the
+ * extension point id by
+ * <ul>
+ * <li>inspecting the {@code ExtensionInterface} annotation for the id</li>
+ * <li>inspecting the extension interface for a String field named {@code ID}</li>
+ * </ul>
+ * <p>
+ * If the id is simple, i.e. does not contain a dot <b>.</b> than it will prefix
+ * the simple id with the bundles symbolic name of the bundle which loaded the
+ * extension interface.
  * <p>
  * This fluent interface makes a few assumptions (defaults) that makes writing
  * extension injectors short and expressive , e.g. item one the list, means try
@@ -57,7 +69,7 @@ import org.eclipse.riena.core.util.StringUtils;
  */
 public class ExtensionDescriptor {
 
-	private final String extensionPointId;
+	private String extensionPointId;
 	private boolean homogeneous = true;
 	private Class<?> interfaceType;
 	private int minOccurences = 0;
@@ -66,13 +78,22 @@ public class ExtensionDescriptor {
 	public static final int UNBOUNDED = Integer.MAX_VALUE;
 
 	/**
+	 * Create an extension descriptor. Attempts are made to retrieve the
+	 * required extension point id from annotations, e.g. {@code
+	 * ExtensionInterface} or {@code InjectExtension}
+	 */
+	public ExtensionDescriptor() {
+		this.extensionPointId = ""; //$NON-NLS-1$
+	}
+
+	/**
 	 * Create an extension descriptor for the given extension point id.
 	 * 
 	 * @param extensionPointId
 	 */
 	public ExtensionDescriptor(final String extensionPointId) {
 		Assert.isLegal(StringUtils.isGiven(extensionPointId),
-				"The extension id must not be given, i.e. not null and not empty."); //$NON-NLS-1$
+				"The extension id must be given, i.e. not null and not empty."); //$NON-NLS-1$
 		this.extensionPointId = extensionPointId;
 	}
 
@@ -144,6 +165,13 @@ public class ExtensionDescriptor {
 	 */
 	public ExtensionDescriptor expectingExactly(final int exactly) {
 		return expectingMinMax(exactly, exactly);
+	}
+
+	/**
+	 * @return the extension point id
+	 */
+	void setExtensionPointId(String extensionPointId) {
+		this.extensionPointId = extensionPointId;
 	}
 
 	/**
