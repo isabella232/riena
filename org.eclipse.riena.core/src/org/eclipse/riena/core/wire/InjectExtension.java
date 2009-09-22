@@ -26,8 +26,9 @@ public @interface InjectExtension {
 	 * The extension point id.
 	 * <p>
 	 * <b>Note: </b>If not given, it is expected that the {@code
-	 * ExtensionInterface} contains a {@code String } field named {@code ID}
-	 * that contains the extension point id.
+	 * ExtensionInterface} has either set the {@code id()} parameter or that the
+	 * extension interface has a {@code String} field named {@code ID} that
+	 * contains the extension point id.
 	 */
 	String id() default "";
 
