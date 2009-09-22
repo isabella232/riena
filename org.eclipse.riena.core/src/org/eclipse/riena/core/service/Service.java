@@ -70,12 +70,11 @@ public final class Service {
 
 	/**
 	 * This version uses this bundles {@code BundleContext}. <br>
-	 * Otherwise it behaves as {@link get(BundleContext context, Class<S>
+	 * Otherwise it behaves as {@link get(BundleContext context, Class&lt;S&gt;
 	 * clazz)}
 	 * 
 	 * @param <S>
 	 * @param clazz
-	 * @param filter
 	 * @return The requested service or {@code null} if not present
 	 */
 	public static <S> S get(final Class<S> clazz) {
@@ -115,8 +114,8 @@ public final class Service {
 
 	/**
 	 * This version uses this bundles {@code BundleContext}. <br>
-	 * Otherwise it behaves as {@link get(BundleContext context, Class<S> clazz,
-	 * String filter)}
+	 * Otherwise it behaves as {@link get(BundleContext context, Class&lt;S&gt;
+	 * clazz, String filter)}
 	 * 
 	 * @param <S>
 	 * @param clazz
