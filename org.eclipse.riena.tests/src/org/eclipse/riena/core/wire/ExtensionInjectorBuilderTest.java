@@ -115,7 +115,13 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
 		ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
-		assertEquals("testWithID", id(injector));
+		String expectedId = getContext().getBundle().getSymbolicName() + ".testWithID";
+		try {
+			injector.andStart(getContext());
+		} catch (IllegalArgumentException e) {
+			assertEquals("Extension point " + expectedId + " does not exist", e.getMessage());
+		}
+		assertEquals(expectedId, id(injector));
 		assertEquals(IDataWithID.class, useType(injector));
 		assertEquals(0, getMin(injector));
 		assertEquals(1, getMax(injector));
@@ -128,6 +134,33 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 
 	@InjectExtension(heterogeneous = true, specific = true, min = 0, max = 1)
 	public void updateWithID(IDataWithID data) {
+	}
+
+	public void testBuildForUpdateWithAnExtensionInterfaceWithIDinAnnotation() throws NoSuchMethodException {
+		Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("updateWithIDinAnnotation",
+				new Class[] { IDataWithIDinAnnotation.class });
+		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		ExtensionInjector injector = builder.build();
+		assertNotNull(injector);
+		String expectedId = getContext().getBundle().getSymbolicName() + ".testWithIDinAnnotation";
+		try {
+			injector.andStart(getContext());
+		} catch (IllegalArgumentException e) {
+			assertEquals("Extension point " + expectedId + " does not exist", e.getMessage());
+		}
+		assertEquals(expectedId, id(injector));
+		assertEquals(IDataWithIDinAnnotation.class, useType(injector));
+		assertEquals(0, getMin(injector));
+		assertEquals(1, getMax(injector));
+		assertFalse(getHomogenious(injector));
+		assertSame(this, getBean(injector));
+		assertEquals("updateWithIDinAnnotation", getUpdate(injector));
+		assertFalse(getDoNotReplaceSymbols(injector));
+		assertTrue(getSpecific(injector));
+	}
+
+	@InjectExtension(heterogeneous = true, specific = true, min = 0, max = 1)
+	public void updateWithIDinAnnotation(IDataWithIDinAnnotation data) {
 	}
 
 	private String id(ExtensionInjector injector) {
