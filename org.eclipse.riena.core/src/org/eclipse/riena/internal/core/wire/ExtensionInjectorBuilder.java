@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core.wire;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.eclipse.core.runtime.Assert;
@@ -18,7 +17,6 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.injector.extension.ExtensionDescriptor;
 import org.eclipse.riena.core.injector.extension.ExtensionInjector;
-import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.InjectExtension;
 
@@ -56,7 +54,8 @@ public class ExtensionInjectorBuilder {
 	public ExtensionInjector build() {
 		Class<?>[] types = method.getParameterTypes();
 		Assert.isLegal(types.length == 1, "only one parameter allowed on ´update´ method"); //$NON-NLS-1$
-		ExtensionDescriptor descriptor = Inject.extension(getExtensionPointId(annotation.id(), types[0]));
+		ExtensionDescriptor descriptor = StringUtils.isGiven(annotation.id()) ? Inject.extension(annotation.id())
+				: Inject.extension();
 		descriptor = descriptor.expectingMinMax(annotation.min(), annotation.max());
 		if (types[0].isArray()) {
 			descriptor = descriptor.expectingMinMax(annotation.min(), annotation.max()).useType(
@@ -78,22 +77,5 @@ public class ExtensionInjectorBuilder {
 			injector = injector.specific();
 		}
 		return injector.update(method.getName());
-	}
-
-	private String getExtensionPointId(String id, Class<?> parameterType) {
-		if (StringUtils.isGiven(id)) {
-			return id;
-		}
-		Class<?> extensionInterfaceType = parameterType.isArray() ? parameterType.getComponentType() : parameterType;
-		try {
-			Field idField = extensionInterfaceType.getField(ID);
-			Object value = idField.get(null);
-			if (value instanceof String) {
-				return (String) value;
-			}
-		} catch (Exception e) {
-			Nop.reason("Fall throuh! Will be handled by the ExtensionDescriptors input validation."); //$NON-NLS-1$
-		}
-		return null;
 	}
 }
