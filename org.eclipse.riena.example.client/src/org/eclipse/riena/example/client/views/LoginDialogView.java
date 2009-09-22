@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
-import org.eclipse.equinox.app.IApplication;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
@@ -22,11 +21,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.beans.common.IntegerBean;
 import org.eclipse.riena.example.client.controllers.LoginDialogController;
 import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
-import org.eclipse.riena.ui.ridgets.swt.views.DialogView;
+import org.eclipse.riena.ui.ridgets.swt.views.AbstractDialogView;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -34,40 +32,29 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * The view for the login dialog of the example.
  */
-public class LoginDialogView extends DialogView implements ILoginDialogView {
-
-	private IntegerBean result;
+public class LoginDialogView extends AbstractDialogView implements ILoginDialogView {
 
 	public LoginDialogView() {
-
 		super(null);
-
-		this.result = new IntegerBean(IApplication.EXIT_OK);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.ui.swt.views.DialogView#createController()
-	 */
+	@Override
+	public boolean close() {
+		((LoginDialogController) getController()).onClose();
+		return super.close();
+	}
+
+	public int getResult() {
+		return getReturnCode();
+	}
+
 	@Override
 	protected AbstractWindowController createController() {
-		// TODO [ev] this causes an NPE because result is not yet initialized
-		//      what happens is that this is called from super before constructor is completed
-		return new LoginDialogController(result);
+		return new LoginDialogController();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.navigation.ui.swt.views.DialogView#buildView()
-	 */
 	@Override
 	protected Control buildView(Composite parent) {
-
-		super.buildView(parent);
-
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		GridLayoutFactory.fillDefaults().numColumns(1).margins(10, 20).applyTo(parent);
 
@@ -126,27 +113,4 @@ public class LoginDialogView extends DialogView implements ILoginDialogView {
 		return content;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.internal.navigation.ui.login.ILoginDialogView#getResult
-	 * ()
-	 */
-	public int getResult() {
-		return result.getValue();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.navigation.ui.swt.views.DialogView#onClose()
-	 */
-	@Override
-	protected void onClose() {
-
-		super.onClose();
-
-		((LoginDialogController) getController()).onClose();
-	}
 }

@@ -17,7 +17,7 @@ import javax.security.auth.login.LoginException;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
-import org.eclipse.riena.beans.common.IntegerBean;
+
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.internal.example.client.Activator;
@@ -41,24 +41,17 @@ public class LoginDialogController extends AbstractWindowController {
 	public static final int EXIT_ABORT = -1;
 
 	private static final String JAAS_CONFIG_FILE = "config/sample_jaas.config"; //$NON-NLS-1$
-	private IntegerBean result;
 
-	public LoginDialogController(IntegerBean result) {
+	@Override
+	public void afterBind() {
+		super.afterBind();
 
-		super();
-
-		this.result = result;
+		getWindowRidget().setDefaultButton(getRidget(RIDGET_ID_OK).getUIControl());
+		getRidget(RIDGET_ID_USER).requestFocus();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.ui.ridgets.controller.AbstractWindowController#
-	 * configureRidgets()
-	 */
 	@Override
 	public void configureRidgets() {
-
 		super.configureRidgets();
 
 		getWindowRidget().setTitle("Riena login"); //$NON-NLS-1$
@@ -71,11 +64,6 @@ public class LoginDialogController extends AbstractWindowController {
 
 		IActionRidget okAction = (IActionRidget) getRidget(RIDGET_ID_OK);
 		okAction.addListener(new IActionListener() {
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
-			 */
 			public void callback() {
 				Boolean checkLogin = checkLogin();
 				if (checkLogin) {
@@ -87,45 +75,20 @@ public class LoginDialogController extends AbstractWindowController {
 		});
 		IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
 		cancelAction.addListener(new IActionListener() {
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
-			 */
 			public void callback() {
 				dispose(EXIT_ABORT);
 			}
 		});
 	}
 
-	private void dispose(int result) {
-		getWindowRidget().dispose();
-		this.result.setValue(result);
-	}
-
 	public void onClose() {
-
-		result.setValue(EXIT_ABORT);
+		setReturnCode(EXIT_ABORT);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.controller.AbstractWindowController#afterBind
-	 * ()
-	 */
-	@Override
-	public void afterBind() {
-
-		super.afterBind();
-
-		getWindowRidget().setDefaultButton(getRidget(RIDGET_ID_OK).getUIControl());
-		getRidget(RIDGET_ID_USER).requestFocus();
-	}
+	// helping methods
+	//////////////////
 
 	private boolean checkLogin() {
-
 		// do not use server authentication in case user = "" and password=""
 		String userId = ((ITextRidget) getRidget(RIDGET_ID_USER)).getText();
 		String password = ((ITextRidget) getRidget(RIDGET_ID_PASSWORD)).getText();
@@ -147,6 +110,11 @@ public class LoginDialogController extends AbstractWindowController {
 			showMessage(e);
 			return false;
 		}
+	}
+
+	private void dispose(int result) {
+		getWindowRidget().dispose();
+		setReturnCode(result);
 	}
 
 	private void showMessage(LoginException e) {

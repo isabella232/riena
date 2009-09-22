@@ -36,12 +36,11 @@ public class LoginSplashView extends AbstractLoginSplashView {
 
 	@Override
 	protected AbstractWindowController createController() {
-		return new LoginDialogController(result);
+		return new LoginDialogController();
 	}
 
 	@Override
 	protected Control buildView(Composite parent) {
-
 		addUIControl(parent.getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
 		GridLayoutFactory.fillDefaults().numColumns(2).margins(5, 10).applyTo(parent);
 
