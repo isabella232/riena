@@ -16,10 +16,10 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
- * This extension interface defines all startup actions should be performed
- * after {@code org.eclipse.riena.core} has been started.
+ * This extension interface defines a startup action that should be performed
+ * after the bundle {@code org.eclipse.riena.core} has been started.
  */
-@ExtensionInterface
+@ExtensionInterface(id = "startups")
 public interface IRienaStartupExtension {
 
 	Bundle getContributingBundle();

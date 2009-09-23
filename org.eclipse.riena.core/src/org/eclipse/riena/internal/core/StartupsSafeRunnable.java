@@ -139,7 +139,7 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 	}
 
 	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´startups´ is too expensive")
-	@InjectExtension(id = "org.eclipse.riena.core.startups")
+	@InjectExtension
 	public void update(IRienaStartupExtension[] startups) {
 		this.startups = startups;
 	}
