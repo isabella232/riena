@@ -14,12 +14,8 @@ package org.eclipse.riena.ui.ridgets;
  * Provides formatting options for a single column. Can be used with
  * column-based ridgets (ITableRidget, ITreeTableRidget).
  * <p>
- * The class follows the adapter pattern and provides a default implementation
- * for all methods. Implementors should only override the formatting methods
- * that apply to their use case.
- * <p>
- * Toolkit's may provide default implementation of this interface. See
- * ColumnFormatter for an SWT-specific implementation.
+ * Toolkits may provide (and ridgets may require) a specific implementation of
+ * this interface. See ColumnFormatter for an SWT-specific implementation.
  * 
  * @see ITableRidget#setColumnFormatter(int, ColumnFormatter)
  * @see ITreeTableRidget#setColumnFormatter(int, ColumnFormatter)
