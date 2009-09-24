@@ -42,11 +42,6 @@ import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor
  * bundles. Riena supports Eclipse-BuddyPolicy concept. For further information
  * about Riena class loading and instanciation please read /readme.txt.
  * 
- * 
- * @author Alexander Ziegler
- * @author Christian Campo
- * 
- * 
  * @see IRemoteServiceProtocol
  * @see RemoteServiceDescription
  * @see org.eclipse.riena.communication.core.factory.IRemoteServiceFactory

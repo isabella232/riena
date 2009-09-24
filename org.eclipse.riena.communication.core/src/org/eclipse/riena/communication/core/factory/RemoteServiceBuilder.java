@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.factory;
 
-import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
-import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
-import org.eclipse.riena.internal.communication.core.Activator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
+
+import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
+import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+import org.eclipse.riena.internal.communication.core.Activator;
 
 /**
  * The RemoteServiceBuilder creates, registers and unregisters OSGi Services by
@@ -51,10 +52,6 @@ import org.osgi.service.component.ComponentContext;
  * &nbsp;&nbsp;&nbsp;&nbsp;&lt;property name=&quot;riena.remote.protocol&quot;
  * value=&quot;hessian&quot;/&gt;<br>
  * &lt;/component&gt;<br>
- * <p>
- * 
- * @author Christian Campo
- * 
  */
 public class RemoteServiceBuilder {
 

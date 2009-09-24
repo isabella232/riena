@@ -17,13 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.communication.core.IRemoteServiceReference;
-import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
-import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
-import org.eclipse.riena.communication.core.factory.ProxyAlreadyRegisteredFailure;
-import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.internal.communication.core.Activator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
@@ -31,10 +24,17 @@ import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
+import org.eclipse.equinox.log.Logger;
+
+import org.eclipse.riena.communication.core.IRemoteServiceReference;
+import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
+import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
+import org.eclipse.riena.communication.core.factory.ProxyAlreadyRegisteredFailure;
+import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.internal.communication.core.Activator;
+
 /**
- * @author Alexander Ziegler
- * @author Christian Campo
- * 
+ * TODO Documentation
  */
 public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	private Map<String, IRemoteServiceRegistration> registeredServices;

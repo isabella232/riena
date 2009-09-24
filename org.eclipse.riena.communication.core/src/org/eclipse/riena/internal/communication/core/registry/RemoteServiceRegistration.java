@@ -15,12 +15,10 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 
 /**
- * This is a Implementation of the IRemoteServiceRegistration. It refers registered
- * RemoteServiceReference. By invoke {@link #unregister()} the RemoteServiceReference becomes
- * unregistered from the {@link RemoteServiceRegistry}.
- * 
- * @author Alexander Ziegler
- * 
+ * This is a Implementation of the IRemoteServiceRegistration. It refers
+ * registered RemoteServiceReference. By invoke {@link #unregister()} the
+ * RemoteServiceReference becomes unregistered from the
+ * {@link RemoteServiceRegistry}.
  */
 public class RemoteServiceRegistration implements IRemoteServiceRegistration {
 	private IRemoteServiceReference reference;
@@ -32,22 +30,29 @@ public class RemoteServiceRegistration implements IRemoteServiceRegistration {
 	 * @param reference
 	 * @param registry
 	 */
-	public RemoteServiceRegistration(IRemoteServiceReference reference,
-			IRemoteServiceRegistry registry) {
+	public RemoteServiceRegistration(IRemoteServiceReference reference, IRemoteServiceRegistry registry) {
 		super();
 		this.reference = reference;
 		this.registry = registry;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceRegistration#getReference()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.communication.core.IRemoteServiceRegistration#getReference
+	 * ()
 	 */
 	public IRemoteServiceReference getReference() {
 		return reference;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceRegistration#unregister()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.communication.core.IRemoteServiceRegistration#unregister
+	 * ()
 	 */
 	public void unregister() {
 		if (registry != null) {
@@ -56,8 +61,12 @@ public class RemoteServiceRegistration implements IRemoteServiceRegistration {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceRegistration#setReference(org.eclipse.riena.communication.core.IRemoteServiceReference)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.communication.core.IRemoteServiceRegistration#setReference
+	 * (org.eclipse.riena.communication.core.IRemoteServiceReference)
 	 */
 	public void setReference(IRemoteServiceReference reference) {
 		this.reference = reference;

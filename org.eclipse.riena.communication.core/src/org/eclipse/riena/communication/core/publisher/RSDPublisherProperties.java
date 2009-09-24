@@ -12,9 +12,6 @@ package org.eclipse.riena.communication.core.publisher;
 
 /**
  * Defines some properties required by "remote" OSGi service registration
- * 
- * @author Alexander Ziegler
- * 
  */
 public final class RSDPublisherProperties {
 

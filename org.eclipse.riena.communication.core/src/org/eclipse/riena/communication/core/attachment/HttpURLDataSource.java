@@ -20,8 +20,6 @@ import java.net.URL;
  * HttpURLDataSource that is used if URLs are read into an attachment since the
  * implementation from JAF is broken in the sense that it re-issues HTTP-calls
  * for getContent() and getInputStream()
- * 
- * @author Christian Campo
  */
 public class HttpURLDataSource implements IDataSource {
 

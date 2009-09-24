@@ -19,9 +19,6 @@ import org.eclipse.riena.communication.core.RemoteServiceDescription;
  * An implementation should be registered as OSGi Service and maybe published as
  * "remote" OSGi service itself.
  * 
- * @author Alexander Ziegler
- * @author Christian Campo
- * 
  * @see RemoteServiceDescription
  * 
  */

@@ -12,9 +12,10 @@ package org.eclipse.riena.communication.core;
 
 import java.util.List;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
-import org.osgi.framework.BundleContext;
 
 /**
  * The IRemoteServiceRegistry adds the ability to register, unregister and
@@ -43,8 +44,6 @@ import org.osgi.framework.BundleContext;
  * <p>
  * OSGi Service could be published as service end point from a server container
  * by the {@link IServicePublishEventDispatcher}
- * 
- * @author Alexander Ziegler
  * 
  * @see IRemoteServiceReference
  * @see IRemoteServiceFactory

@@ -12,9 +12,6 @@ package org.eclipse.riena.communication.core.util;
 
 /**
  * CommunicationUtil class
- * 
- * @author Alexander Ziegler
- * 
  */
 public final class CommunicationUtil {
 

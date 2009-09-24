@@ -13,8 +13,6 @@ package org.eclipse.riena.communication.core.attachment;
 /**
  * Helper class for Attachment to keep the content of the attachment when
  * transferring it via Hessian
- * 
- * @author Christian Campo
  */
 public class AttachmentSerialized {
 

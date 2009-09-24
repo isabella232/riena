@@ -17,8 +17,6 @@ import java.io.OutputStream;
 /**
  * internal class used for serializing attachments. this class is only used for
  * hessian webservice types.
- * 
- * @author Christian Campo
  */
 public class ByteArrayDataSource implements IDataSource {
 

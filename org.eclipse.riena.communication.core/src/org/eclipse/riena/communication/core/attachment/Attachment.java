@@ -25,8 +25,6 @@ import org.eclipse.riena.core.util.Nop;
  * object is then passed as parameter in your webservice call, the contained
  * data is passed as SOAP attachment. This is helpful for large and binary data
  * transport
- * 
- * @author Christian Campo
  */
 public class Attachment {
 

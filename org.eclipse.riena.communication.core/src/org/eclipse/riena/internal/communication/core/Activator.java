@@ -12,6 +12,9 @@ package org.eclipse.riena.internal.communication.core;
 
 import java.util.Hashtable;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorRegistry;
 import org.eclipse.riena.communication.core.progressmonitor.ProgressMonitorRegistryImpl;
@@ -21,13 +24,9 @@ import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.communication.core.proxyselector.ProxySelectorConfiguration;
 import org.eclipse.riena.internal.communication.core.registry.RemoteServiceRegistry;
 import org.eclipse.riena.internal.communication.core.ssl.SSLConfiguration;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 
 /**
- * @author Alexander Ziegler
- * @author Christian Campo
- * 
+ * TODO Documentation
  */
 public class Activator extends RienaActivator {
 

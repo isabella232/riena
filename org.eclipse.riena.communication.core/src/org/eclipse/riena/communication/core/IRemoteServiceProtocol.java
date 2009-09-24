@@ -14,11 +14,8 @@ import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 
 /**
- * This interface is used for all components that support a specific remote service type i.e. end point transport
- * protocol.
- * 
- * @author Alexander Ziegler
- * @author Christian Campo
+ * This interface is used for all components that support a specific remote
+ * service type i.e. end point transport protocol.
  * 
  * @see IServicePublisher
  * @see IRemoteServiceFactory
@@ -26,15 +23,15 @@ import org.eclipse.riena.communication.core.publisher.IServicePublisher;
  */
 public interface IRemoteServiceProtocol {
 
-    /**
-     * Defines the OSGi Service property for protocol type. An OSGi Service should set this property and the protocol
-     * name
-     */
-    String PROP_PROTOCOL = "riena.protocol"; //$NON-NLS-1$
+	/**
+	 * Defines the OSGi Service property for protocol type. An OSGi Service
+	 * should set this property and the protocol name
+	 */
+	String PROP_PROTOCOL = "riena.protocol"; //$NON-NLS-1$
 
-    /**
-     * 
-     * @return the protocol name for this IRemoteServiceFactory is responsible.
-     */
-    String getProtocol();
+	/**
+	 * 
+	 * @return the protocol name for this IRemoteServiceFactory is responsible.
+	 */
+	String getProtocol();
 }

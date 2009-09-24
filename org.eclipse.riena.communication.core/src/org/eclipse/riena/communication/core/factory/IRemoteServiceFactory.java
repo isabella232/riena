@@ -45,9 +45,6 @@ import org.eclipse.riena.communication.core.publisher.IServicePublisher;
  * bundles. Riena supports Eclipse-BuddyPolicy concept. For further information
  * about Riena class loading and instanciation please read /readme.txt.
  * 
- * 
- * @author Alexander Ziegler
- * 
  * @see IRemoteServiceProtocol
  * @see IRemoteServiceReference
  * @see RemoteServiceFactory

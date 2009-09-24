@@ -11,39 +11,37 @@
 package org.eclipse.riena.communication.core;
 
 /**
- * A IRemoteServiceRegistration holds all information about a {@link IRemoteServiceReference} which is registered in the
- * {@link IRemoteServiceRegistry} OSGi Service. A IRemoteServiceRegistration allows to unregister a
- * IRemoteServiceReference from the {@link IRemoteServiceRegistry} OSGi Service by invoke {@link #unregister()}
- * 
- * @author Alexander Ziegler
+ * A IRemoteServiceRegistration holds all information about a
+ * {@link IRemoteServiceReference} which is registered in the
+ * {@link IRemoteServiceRegistry} OSGi Service. A IRemoteServiceRegistration
+ * allows to unregister a IRemoteServiceReference from the
+ * {@link IRemoteServiceRegistry} OSGi Service by invoke {@link #unregister()}
  * 
  * @see IRemoteServiceRegistry#registerService(IRemoteServiceReference)
  * @see IRemoteServiceReference
- * 
- * 
- * 
  */
 public interface IRemoteServiceRegistration {
 
-    /**
-     * 
-     * @return the remote service reference
-     */
-    IRemoteServiceReference getReference();
+	/**
+	 * 
+	 * @return the remote service reference
+	 */
+	IRemoteServiceReference getReference();
 
-    /**
-     * Sets the given remote service reference
-     * 
-     * @param reference
-     */
-    void setReference(IRemoteServiceReference reference);
+	/**
+	 * Sets the given remote service reference
+	 * 
+	 * @param reference
+	 */
+	void setReference(IRemoteServiceReference reference);
 
-    /**
-     * Unregisters the RemoteServiceReference from the RemoteServiceRegistry. The RemoteServiceReferences is not more
-     * available into the OSGi ServiceRegistry
-     * 
-     * @see IRemoteServiceRegistry#registerService(IRemoteServiceReference)
-     */
-    void unregister();
+	/**
+	 * Unregisters the RemoteServiceReference from the RemoteServiceRegistry.
+	 * The RemoteServiceReferences is not more available into the OSGi
+	 * ServiceRegistry
+	 * 
+	 * @see IRemoteServiceRegistry#registerService(IRemoteServiceReference)
+	 */
+	void unregister();
 
 }
