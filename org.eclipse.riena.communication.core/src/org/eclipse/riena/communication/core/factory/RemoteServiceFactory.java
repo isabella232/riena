@@ -28,13 +28,15 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaStatus;
-import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
+import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.core.wire.InjectService;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
 
 /**
- * The IRemoteServiceFactory creates {@link IRemoteServiceReference} for given
+ * The IRemoteServiceFactory creates a {@link IRemoteServiceReference} for given
  * service end point description. The IRemoteServiceReference holds a
  * serviceInstance reference instance to the service end point. The
  * RemoteService Factory can register an IRemoteServiceReference into the
@@ -42,11 +44,10 @@ import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
  * call {@link #createProxy(..)}. To create and register a "remote" OSGi Service
  * in one step call {@link #createAndRegisterProxy(..)}
  * <p>
- * This RemoteServiceFactory do not create IRemoteServiceReference itself. This
- * RemoteServiceFactory delegates the behavior to a protocol
- * {@link IRemoteServiceFactory} OSGi Service. This RemoteServiceFactory finds a
- * corresponding IRemoteServiceFactory by the filter
- * "riena.remote.protocol=[aProtocol]" (e.g. aProtcol replaced with 'hessian').
+ * The RemoteServiceFactory does not create a IRemoteServiceReference itself.
+ * This is delegated to protocol specific implementations of {@code
+ * IRemoteServiceFactory}. These implementations are defined with the extension
+ * point "remoteservicefactory".
  * <p>
  * This RemoteServiceFactory does nothing if no protocol specific
  * IRemoteServiceFactory is available.
@@ -56,13 +57,10 @@ import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
  * object instantiation or delegates this behavior to other Riena communication
  * bundles. Riena supports Eclipse-BuddyPolicy concept. For further information
  * about Riena class loading and instantiation please read /readme.txt.
- * 
- * @author Alexander Ziegler
- * @author Christian Campo
- * 
  */
 public class RemoteServiceFactory {
 
+	private static boolean wired;
 	private static IRemoteServiceRegistry registry;
 	private static HashMap<String, IRemoteServiceFactory> remoteServiceFactoryImplementations = null;
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RemoteServiceFactory.class);
@@ -76,16 +74,15 @@ public class RemoteServiceFactory {
 	 * 
 	 */
 	public RemoteServiceFactory() {
-		if (registry == null) {
-			Inject.service(IRemoteServiceRegistry.class).useRanking().into(this).andStart(
-					Activator.getDefault().getContext());
-		}
-		if (remoteServiceFactoryImplementations == null) {
-			Inject.extension(IRemoteServiceFactoryProperties.EXTENSION_POINT_ID).into(this).andStart(
-					Activator.getDefault().getContext());
+		synchronized (RemoteServiceFactory.class) {
+			if (!wired) {
+				wired = true;
+				Wire.instance(this).andStart(Activator.getDefault().getContext());
+			}
 		}
 	}
 
+	@InjectService(useRanking = true)
 	public void bind(IRemoteServiceRegistry registryParm) {
 		registry = registryParm;
 	}
@@ -96,11 +93,11 @@ public class RemoteServiceFactory {
 		}
 	}
 
-	public void update(IRemoteServiceFactoryProperties[] factories) {
+	@InjectExtension
+	public void update(IRemoteServiceFactoryExtension[] factories) {
 		remoteServiceFactoryImplementations = new HashMap<String, IRemoteServiceFactory>();
-		for (IRemoteServiceFactoryProperties factory : factories) {
-			IRemoteServiceFactory remoteServiceFactory = factory.createRemoteServiceFactory();
-			remoteServiceFactoryImplementations.put(factory.getProtocol(), remoteServiceFactory);
+		for (IRemoteServiceFactoryExtension factory : factories) {
+			remoteServiceFactoryImplementations.put(factory.getProtocol(), factory.createRemoteServiceFactory());
 		}
 	}
 
