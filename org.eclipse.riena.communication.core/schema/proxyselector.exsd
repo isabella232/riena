@@ -6,7 +6,8 @@
          <meta.schema plugin="org.eclipse.riena.communication.core" id="org.eclipse.riena.communication.core.proxyselector" name="proxyselector"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         Riena&apos;s hessian communication uses the Java HTTP/SURLConnection which uses Javas ProxySelector API to retrieve the internet proxies to use for the communication.
+This extension point allows to define specialized proxy selectors that should be used.
       </documentation>
    </annotation>
 
@@ -48,6 +49,11 @@
    </element>
 
    <element name="proxyselector">
+      <annotation>
+         <documentation>
+            Defines a proxy selector
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="name" type="string">
             <annotation>
@@ -66,7 +72,7 @@
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  the proxy selector implementaino class
+                  the proxy selector implementation class
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn="java.net.ProxySelector:"/>
@@ -81,7 +87,7 @@
          <meta.section type="since"/>
       </appInfo>
       <documentation>
-         [Enter the first release in which this extension point appears.]
+         1.1.0.0
       </documentation>
    </annotation>
 
@@ -90,7 +96,15 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         [Enter extension point usage example here.]
+            &lt;extension
+         point=&quot;org.eclipse.riena.communication.core.proxyselector&quot;&gt;
+      &lt;proxyselector
+            order=&quot;100&quot;
+            name=&quot;Core.Net ProxySelector&quot;
+            class=&quot;org.eclipse.riena.communication.core.proxyselector.CoreNetProxySelector&quot;&gt;
+      &lt;/proxyselector&gt;
+   &lt;/extension&gt;
+
       </documentation>
    </annotation>
 
