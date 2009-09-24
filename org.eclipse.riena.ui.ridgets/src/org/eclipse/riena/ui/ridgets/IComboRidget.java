@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 
@@ -179,5 +180,35 @@ public interface IComboRidget extends IMarkableRidget {
 	 *            The new addable state.
 	 */
 	void setAddable(boolean addable);
+
+	/**
+	 * Sets the converter used when updating from the model to the UI-control.
+	 * <p>
+	 * Notes: Conversion between model-to-UI and UI-to-model must be
+	 * symmetrical; eexample: FooToString and StirngToFoo. Changing the
+	 * converters after the ridget is already bound to a model, requires calling
+	 * {@link #updateFromModel()} to apply the new converters.
+	 * 
+	 * @param converter
+	 *            The new converter, or {@code null} to revert to the default
+	 *            converter.
+	 * @since 1.2
+	 */
+	void setModelToUIControlConverter(IConverter converter);
+
+	/**
+	 * Sets the converter used when updating from the UI-control to the model.
+	 * <p>
+	 * Notes: Conversion between model-to-UI and UI-to-model must be
+	 * symmetrical; eexample: FooToString and StirngToFoo. Changing the
+	 * converters after the ridget is already bound to a model, requires calling
+	 * {@link #updateFromModel()} to apply the new converters.
+	 * 
+	 * @param converter
+	 *            The new converter, or {@code null} to revert to the default
+	 *            converter.
+	 * @since 1.2
+	 */
+	void setUIControlToModelConverter(IConverter converter);
 
 }

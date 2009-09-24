@@ -21,6 +21,7 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.conversion.Converter;
+import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -47,13 +48,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	private final IObservableList rowObservables;
 	/** The selected option (ridget). */
 	private final IObservableValue selectionObservable;
-	/**
-	 * Converts from objects (rowObsservables) to strings (Combo) using the
-	 * renderingMethod.
-	 */
-	private final Converter objToStrConverter;
-	/** Convers from strings (Combo) to objects (rowObservables). */
-	private final Converter strToObjConverter;
 	/** Selection validator that allows or cancels a selection request. */
 	private final SelectionBindingValidator selectionValidator;
 	/** IValueChangeListener that allows or cancels a value change. */
@@ -70,6 +64,13 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	private IObservableValue selectionValue;
 	/** A string used for converting from Object to String */
 	private String renderingMethod;
+	/**
+	 * Converts from objects (rowObsservables) to strings (Combo) using the
+	 * renderingMethod.
+	 */
+	private IConverter objToStrConverter;
+	/** Convers from strings (Combo) to objects (rowObservables). */
+	private IConverter strToObjConverter;
 
 	/**
 	 * Binding between the list of choices in the combo and the rowObservables.
@@ -432,6 +433,15 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		public Object convert(Object fromObject) {
 			return getValueFromItem((String) fromObject);
 		}
+	}
+
+	public void setModelToUIControlConverter(IConverter converter) {
+		objToStrConverter = (converter != null) ? converter : new ObjectToStringConverter();
+
+	}
+
+	public void setUIControlToModelConverter(IConverter converter) {
+		strToObjConverter = (converter != null) ? converter : new StringToObjectConverter();
 	}
 
 	/**
