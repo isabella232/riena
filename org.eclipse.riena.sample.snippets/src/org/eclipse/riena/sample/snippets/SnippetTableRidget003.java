@@ -19,7 +19,6 @@ import java.util.List;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -28,12 +27,13 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.DateColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 
 /**
- * Demonstrates using a custom {@link LabelProvider} to provide date-formatting,
- * background- and foreground colors for a column.
+ * Demonstrates using a custom {@link ColumnFormatter} to provide
+ * date-formatting, background- and foreground colors for a column.
  */
 public class SnippetTableRidget003 {
 
