@@ -10,18 +10,22 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core;
 
-import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_REMOTE_PATH;
-import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_REMOTE_PROTOCOL;
+import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.*;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
+import org.osgi.framework.Constants;
+import org.osgi.framework.ServiceReference;
 
 import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
-import org.osgi.framework.Constants;
-import org.osgi.framework.ServiceReference;
 
 /**
  * The RemoteServiceDescription describes an remote service end point. Usually
@@ -35,10 +39,6 @@ import org.osgi.framework.ServiceReference;
  * Usually a RemoteServiceDescription becomes instantiated within an server
  * container and is used by an IServicePublisher within an server and by an
  * {@link IRemoteServiceFactory} within a client container
- * 
- * 
- * @author Alexander Ziegler
- * @author Christian Campo
  * 
  * @see IServicePublishEventDispatcher
  * @see IServicePublisher
@@ -87,7 +87,7 @@ public class RemoteServiceDescription {
 	 * @param serviceRef
 	 * @param service
 	 */
-	public RemoteServiceDescription(ServiceReference serviceRef, Object service, Class<?> serverInterface) {
+	public RemoteServiceDescription(ServiceReference serviceRef, Object service, Class<?> serviceInterface) {
 		this();
 		this.serviceRef = serviceRef;
 		this.service = service;
@@ -97,7 +97,7 @@ public class RemoteServiceDescription {
 				// String obejctClassName =
 				// CommunicationUtil.accessProperty(serviceRef
 				// .getProperty(PROP_SERVICE_CLASSNAME),null);
-				serviceInterfaceClass = serverInterface;
+				serviceInterfaceClass = serviceInterface;
 				serviceInterfaceClassName = serviceInterfaceClass.getName();
 			} else if (key.equals(PROP_REMOTE_PROTOCOL)) {
 				protocol = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PROTOCOL), null);
@@ -108,6 +108,8 @@ public class RemoteServiceDescription {
 			}
 		}
 		bundleName = serviceRef.getBundle().getSymbolicName();
+		// TODO enable this later
+		//		assertServiceConstraints();
 	}
 
 	/**
@@ -245,6 +247,8 @@ public class RemoteServiceDescription {
 	 */
 	public void setService(Object service) {
 		this.service = service;
+		// TODO enable this later
+		//		assertServiceConstraints();
 	}
 
 	/**
@@ -254,6 +258,8 @@ public class RemoteServiceDescription {
 	 */
 	public void setServiceInterfaceClass(Class<?> interfaceClass) {
 		this.serviceInterfaceClass = interfaceClass;
+		// TODO enable this later
+		//		assertServiceConstraints();
 	}
 
 	/**
@@ -320,5 +326,30 @@ public class RemoteServiceDescription {
 	 */
 	public Object getProperty(String name) {
 		return properties.get(name);
+	}
+
+	// TODO remove @Suppresswarnings when this becomes activated
+	@SuppressWarnings("unused")
+	private void assertServiceConstraints() {
+		// Do not allow multiple occurrences of the same service method names, i.e. no overloading
+		if (serviceInterfaceClass != null) {
+			Method[] methods = serviceInterfaceClass.getMethods();
+			Set<String> names = new HashSet<String>();
+			for (Method method : methods) {
+				if (!Modifier.isVolatile(method.getModifiers()) && !names.add(method.getName())) {
+					throw new RemoteFailure("Can not use interface " + serviceInterfaceClass.getName() //$NON-NLS-1$
+							+ " as service interface because at least one method (" + method.getName() //$NON-NLS-1$
+							+ ") is overloaded, i.e. methods exists with the same name but different signatures."); //$NON-NLS-1$
+				}
+			}
+		}
+		// Check whether service instance is compatible to service class
+		if (service != null && serviceInterfaceClass != null) {
+			if (!serviceInterfaceClass.isAssignableFrom(service.getClass())) {
+				throw new RemoteFailure("Service class " + service.getClass().getName() //$NON-NLS-1$
+						+ " and service interface class " + serviceInterfaceClass.getName() //$NON-NLS-1$
+						+ " do not match, i.e. service can not be assigend to service interface."); //$NON-NLS-1$
+			}
+		}
 	}
 }
