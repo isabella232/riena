@@ -3,7 +3,7 @@
 <plugin>
    <extension-point id="ssl" name="SSL configuration" schema="schema/sslConf.exsd"/>
    <extension-point id="remoteservicefactory" name="Remote Service Factory" schema="schema/remoteservicefactory.exsd"/>
-   <extension-point id="org.eclipse.riena.communication.core.proxyselector" name="ProxySelector configuration" schema="schema/proxyselector.exsd"/>
+   <extension-point id="proxyselector" name="ProxySelector configuration" schema="schema/proxyselector.exsd"/>
    <!-- Exemplary proxy selector 
    <extension
          point="org.eclipse.riena.communication.core.proxyselector">
