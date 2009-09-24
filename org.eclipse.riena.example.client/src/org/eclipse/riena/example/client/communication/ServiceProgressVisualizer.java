@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+
 import org.eclipse.riena.communication.core.progressmonitor.AbstractRemoteProgressMonitor;
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitor;
 import org.eclipse.riena.communication.core.progressmonitor.RemoteProgressMonitorEvent;
@@ -25,7 +26,7 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.application.VisualizerFactory;
 import org.eclipse.riena.ui.core.uiprocess.ProcessInfo;
 import org.eclipse.riena.ui.core.uiprocess.UICallbackDispatcher;
-import org.eclipse.riena.ui.core.uiprocess.UIProcess;
+import org.eclipse.riena.ui.core.uiprocess.UISynchronizer;
 import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
 
 /**
@@ -96,8 +97,7 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 
 	public ServiceProgressVisualizer(String taskname) {
 		// ui stuff goes here
-		UICallbackDispatcher callBackDispatcher = new UICallbackDispatcher(UIProcess
-				.getSynchronizerFromExtensionPoint());
+		UICallbackDispatcher callBackDispatcher = new UICallbackDispatcher(UISynchronizer.createSynchronizer());
 		ISubApplicationNode subApplicationNode = locateActiveSubApplicationNode();
 		// init delegation
 		callBackDispatcher.addUIMonitor(new VisualizerFactory().getProgressVisualizer(subApplicationNode));

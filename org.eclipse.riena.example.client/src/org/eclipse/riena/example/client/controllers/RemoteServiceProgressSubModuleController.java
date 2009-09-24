@@ -20,7 +20,7 @@ import org.eclipse.riena.example.client.communication.RemoteCallProcess;
 import org.eclipse.riena.example.client.communication.ServiceProgressVisualizer;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.ui.core.uiprocess.UIProcess;
+import org.eclipse.riena.ui.core.uiprocess.UISynchronizer;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
@@ -106,7 +106,7 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 		}
 
 		private void blockSubModule(final boolean block) {
-			UIProcess.getSynchronizerFromExtensionPoint().synchronize(new Runnable() {
+			UISynchronizer.createSynchronizer().synchronize(new Runnable() {
 
 				public void run() {
 					setBlocked(block);
