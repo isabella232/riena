@@ -13,12 +13,8 @@ package org.eclipse.riena.ui.core.uiprocess;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
@@ -32,33 +28,15 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 	public final static QualifiedName PROPERTY_CONTEXT = new QualifiedName("uiProcess", "context"); //$NON-NLS-1$//$NON-NLS-2$
 
-	/** The name of the extension point to this class. */
-	protected static final String EXTENSION_POINT_ID = "org.riena.ui.core.uiprocess"; //$NON-NLS-1$
-	/**
-	 * The name of the element within the extension point to define which
-	 * UISynchronizer implementation should be used, if none is given. The
-	 * element has to contain an attribute 'class'.
-	 */
-	protected static final String EXTENSION_POINT_UI_SYNCHRONIZER_ELEMENT = "uisynchronizer"; //$NON-NLS-1$
-	private UICallbackDispatcher callbackDispatcher;
-
-	private Job job;
+	private final UICallbackDispatcher callbackDispatcher;
+	private final Job job;
 
 	/**
-	 * Creates a new UIProcess. This constructor assumes the plug-in defines
-	 * exactly one extension point to this class like this:
-	 * 
-	 * <pre>
-	 * &lt;code&gt;
-	 * &lt;extension point=&quot;org.riena.ui.core.uiprocess&quot;&gt;
-	 *  &lt;uisynchronizer class=&quot;org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer&quot;/&gt;
-	 * &lt;/extension&gt;
-	 * </pre>
-	 * 
-	 * </code></dd> In case multiple extension points exist, which define an
-	 * implementation class for the UIprocesses UIsynchronizer, there is no
-	 * guarantee which one will be used. <br>
-	 * <br>
+	 * Creates a new UIProcess.
+	 * <p>
+	 * For executing processes the {@code UIProcess) uses the {@code
+	 * UISynchronizer} to create {@code IUISynchronizer} instances which perform
+	 * the actual execution of the process.
 	 * 
 	 * @param name
 	 *            the name of the job
@@ -67,6 +45,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 *             if no configuration point is found or if an object of the
 	 *             class given in the extension point can not be instantiated.
 	 * 
+	 * @see UISynchronizer
 	 */
 	public UIProcess(final String name) {
 		this(name, false);
@@ -77,32 +56,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	}
 
 	public UIProcess(final String name, boolean user, Object context) {
-		this(name, getSynchronizerFromExtensionPoint(), user, context);
-	}
-
-	public static IUISynchronizer getSynchronizerFromExtensionPoint() {
-		final IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
-		final IConfigurationElement[] configurations = extensionRegistry
-				.getConfigurationElementsFor(EXTENSION_POINT_ID);
-		if (configurations.length == 0) {
-			throw new IllegalStateException("No configuration element for extension point '" + EXTENSION_POINT_ID //$NON-NLS-1$
-					+ '\'');
-		}
-		// if one extension point exists, which contains a "uisynchronizer"
-		for (final IConfigurationElement configuration : configurations) {
-			if (EXTENSION_POINT_UI_SYNCHRONIZER_ELEMENT.equals(configuration.getName())) {
-				try {
-					return (IUISynchronizer) configuration.createExecutableExtension("class"); //$NON-NLS-1$
-				} catch (final CoreException e) {
-					throw new IllegalStateException("Could not create object from attribute 'class' in element '" //$NON-NLS-1$
-							+ EXTENSION_POINT_UI_SYNCHRONIZER_ELEMENT + "' in extension point '" + EXTENSION_POINT_ID //$NON-NLS-1$
-							+ '\'', e);
-				}
-			}
-
-		}
-		throw new IllegalStateException("No element '" + EXTENSION_POINT_UI_SYNCHRONIZER_ELEMENT //$NON-NLS-1$
-				+ "' in extension point '" + EXTENSION_POINT_ID + '\''); //$NON-NLS-1$
+		this(name, UISynchronizer.createSynchronizer(), user, context);
 	}
 
 	public UIProcess(String name, IUISynchronizer syncher, boolean user, Object context) {
@@ -111,14 +65,23 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 	private UIProcess(String name, UICallbackDispatcher dispatcher, boolean user, Object context) {
 		this.callbackDispatcher = dispatcher;
-		createJob(name, user, context);
+		this.job = createJob(name, user, context);
 		configure();
 	}
 
 	public UIProcess(final Job job) {
-		this.callbackDispatcher = new UICallbackDispatcher(getSynchronizerFromExtensionPoint());
+		this.callbackDispatcher = new UICallbackDispatcher(UISynchronizer.createSynchronizer());
 		this.job = job;
 		configure();
+	}
+
+	/**
+	 * @return
+	 * @deprecated This should use {@code UISynchronizer.createSynchronizer()}
+	 */
+	@Deprecated
+	public static IUISynchronizer getSynchronizerFromExtensionPoint() {
+		return UISynchronizer.createSynchronizer();
 	}
 
 	private void configure() {
@@ -137,10 +100,11 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		}
 	}
 
-	private void createJob(String name, boolean user, Object context) {
-		this.job = new InternalJob(name);
-		job.setUser(user);
-		job.setProperty(PROPERTY_CONTEXT, context);
+	private Job createJob(String name, boolean user, Object context) {
+		Job newJob = new InternalJob(name);
+		newJob.setUser(user);
+		newJob.setProperty(PROPERTY_CONTEXT, context);
+		return newJob;
 	}
 
 	private final class CancelListener implements PropertyChangeListener {
