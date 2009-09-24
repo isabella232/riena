@@ -33,7 +33,7 @@ public class ProxySelectorConfiguration {
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ProxySelectorConfiguration.class);
 
-	@InjectExtension(id = IProxySelectorExtension.EXTENSION_POINT_ID)
+	@InjectExtension()
 	public void configure(IProxySelectorExtension[] proxySelectorExtensions) {
 		if (proxySelectorExtensions == null || proxySelectorExtensions.length == 0) {
 			ProxySelector.setDefault(previousProxySlector);

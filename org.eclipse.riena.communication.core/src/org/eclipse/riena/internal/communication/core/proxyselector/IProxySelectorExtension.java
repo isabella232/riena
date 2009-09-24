@@ -14,20 +14,33 @@ import java.net.ProxySelector;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
-import org.eclipse.riena.internal.communication.core.Activator;
 
 /**
  * Extension interface for defining {@code ProxySelector}s.
  */
-@ExtensionInterface
+@ExtensionInterface(id = "proxyselector")
 public interface IProxySelectorExtension {
 
-	String EXTENSION_POINT_ID = Activator.PLUGIN_ID + ".proxyselector"; //$NON-NLS-1$
-
+	/**
+	 * A descriptive name for the proxy selector.
+	 * 
+	 * @return the name
+	 */
 	String getName();
 
+	/**
+	 * Proxy selectors will be ordered, i.e. the proxy selector with the lowest
+	 * order will be used first.
+	 * 
+	 * @return the order
+	 */
 	int getOrder();
 
+	/**
+	 * Create an instance of the proxy selector
+	 * 
+	 * @return the proxy selector
+	 */
 	@MapName("class")
 	ProxySelector createProxySelector();
 }
