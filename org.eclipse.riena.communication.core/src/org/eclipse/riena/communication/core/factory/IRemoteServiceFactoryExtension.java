@@ -11,15 +11,12 @@
 package org.eclipse.riena.communication.core.factory;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
-import org.eclipse.riena.internal.communication.core.Activator;
 
 /**
- * Interface for reading the available Remote Service Factories
+ * {@code ExtensionInterface} for reading the available Remote Service Factories
  */
-@ExtensionInterface
-public interface IRemoteServiceFactoryProperties {
-
-	String EXTENSION_POINT_ID = Activator.PLUGIN_ID + ".remoteservicefactory"; //$NON-NLS-1$
+@ExtensionInterface(id = "remoteservicefactory")
+public interface IRemoteServiceFactoryExtension {
 
 	/**
 	 * @return the protocol property
