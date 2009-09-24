@@ -11,16 +11,10 @@
 package org.eclipse.riena.sample.snippets;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.layout.GridLayout;
@@ -30,6 +24,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.ui.ridgets.IComboRidget;
+import org.eclipse.riena.ui.ridgets.databinding.ConverterFactory;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -39,7 +34,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class SnippetComboRidget002 {
 
 	private enum Answer {
-		YES, NO, UNKNOWN
+		YES, NO, MAYBE
 	}
 
 	public static void main(String[] args) {
@@ -58,10 +53,13 @@ public class SnippetComboRidget002 {
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(label);
 
 			IComboRidget comboRidget = (IComboRidget) SwtRidgetFactory.createRidget(combo);
-			WritableList values = new WritableList(Arrays.asList(Answer.YES, Answer.NO, Answer.UNKNOWN), Answer.class);
+			WritableList values = new WritableList(Arrays.asList(Answer.YES, Answer.NO, Answer.MAYBE), Answer.class);
 			WritableValue selection = new WritableValue(Answer.YES, Answer.class);
-			comboRidget.setModelToUIControlConverter(new AnswerToStringConverter());
-			comboRidget.setUIControlToModelConverter(new StringToAnswerConverter());
+
+			ConverterFactory<?, ?> factory = new ConverterFactory<Answer, String>(Answer.class, String.class).add(
+					Answer.YES, "Yes").add(Answer.NO, "No").add(Answer.MAYBE, "Maybe").add(null, ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			comboRidget.setModelToUIControlConverter(factory.createFromToConverter());
+			comboRidget.setUIControlToModelConverter(factory.createToFromConverter());
 			comboRidget.bindToModel(values, Answer.class, null, selection);
 			comboRidget.updateFromModel();
 
@@ -77,52 +75,6 @@ public class SnippetComboRidget002 {
 			}
 		} finally {
 			display.dispose();
-		}
-	}
-
-	// helping classes
-	//////////////////
-
-	private static abstract class AbstractAnswerConverter extends Converter {
-
-		private final Map<Answer, String> E2S;
-
-		AbstractAnswerConverter(Object from, Object to) {
-			super(from, to);
-			E2S = new HashMap<Answer, String>();
-			E2S.put(Answer.YES, "Yes"); //$NON-NLS-1$
-			E2S.put(Answer.NO, "No"); //$NON-NLS-1$
-			E2S.put(Answer.UNKNOWN, "Unknown"); //$NON-NLS-1$
-			E2S.put(null, ""); //$NON-NLS-1$
-		}
-
-		public Object convert(Object fromObject) {
-			Object result = null;
-			if (getFromType() == Answer.class) {
-				result = E2S.get(fromObject);
-			} else {
-				Iterator<Entry<Answer, String>> iter = E2S.entrySet().iterator();
-				while (result == null && iter.hasNext()) {
-					Entry<Answer, String> entry = iter.next();
-					if (entry.getValue().equals(fromObject)) {
-						result = entry.getKey();
-					}
-				}
-			}
-			Assert.isNotNull(result, "Conversion failed for: " + fromObject); //$NON-NLS-1$
-			return result;
-		}
-	}
-
-	private static class AnswerToStringConverter extends AbstractAnswerConverter {
-		AnswerToStringConverter() {
-			super(Answer.class, String.class);
-		}
-	}
-
-	private static class StringToAnswerConverter extends AbstractAnswerConverter {
-		StringToAnswerConverter() {
-			super(String.class, Answer.class);
 		}
 	}
 
