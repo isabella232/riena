@@ -777,10 +777,6 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		ridget.bindToModel(options, Person.class, null, selection);
 		ridget.updateFromModel();
 
-		for (String i : control.getItems()) {
-			System.out.println(".. " + i);
-		}
-
 		assertEquals("AE", control.getItem(0));
 		assertEquals("LD", control.getItem(1));
 		assertEquals("MC", control.getItem(2));

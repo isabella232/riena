@@ -437,7 +437,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 
 	public void setModelToUIControlConverter(IConverter converter) {
 		objToStrConverter = (converter != null) ? converter : new ObjectToStringConverter();
-
 	}
 
 	public void setUIControlToModelConverter(IConverter converter) {
