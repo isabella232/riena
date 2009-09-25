@@ -13,11 +13,15 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.core.databinding.conversion.Converter;
+import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -743,6 +747,51 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("B", stringManager.getSelectedItem());
 	}
 
+	/**
+	 * Tests converting a model value into a UI value (String) and back (Bug
+	 * 290463).
+	 */
+	public void testValueConversion() {
+		ComboRidget ridget = getRidget();
+		Combo control = getWidget();
+
+		final Person[] persons = new Person[] { new Person("Einstein", "Albert"), new Person("Da Vinci", "Leonardo"),
+				new Person("Curie", "Marie") };
+		ridget.setModelToUIControlConverter(new Converter(Person.class, String.class) {
+			public Object convert(Object fromObject) {
+				return getInitials((Person) fromObject);
+			}
+		});
+		ridget.setUIControlToModelConverter(new Converter(String.class, Person.class) {
+			public Object convert(Object fromObject) {
+				for (Person person : persons) {
+					if (fromObject.equals(getInitials(person))) {
+						return person;
+					}
+				}
+				return null;
+			}
+		});
+		WritableList options = new WritableList(Arrays.asList(persons), Person.class);
+		WritableValue selection = new WritableValue(persons[0], Person.class);
+		ridget.bindToModel(options, Person.class, null, selection);
+		ridget.updateFromModel();
+
+		for (String i : control.getItems()) {
+			System.out.println(".. " + i);
+		}
+
+		assertEquals("AE", control.getItem(0));
+		assertEquals("LD", control.getItem(1));
+		assertEquals("MC", control.getItem(2));
+
+		assertEquals(persons[0], ridget.getSelection());
+
+		control.select(2); // select "MC"
+
+		assertEquals(persons[2], ridget.getSelection()); // result: Marie Curie
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -813,6 +862,17 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		newList.add(person);
 
 		return newList;
+	}
+
+	private static String getInitials(Person person) {
+		if (person == null) {
+			return null;
+		}
+		String first = person.getFirstname();
+		String last = person.getLastname();
+		String f = first.length() > 0 ? String.valueOf(first.charAt(0)) : "?";
+		String l = last.length() > 0 ? String.valueOf(last.charAt(0)) : "?";
+		return f + l;
 	}
 
 	// helping classes
