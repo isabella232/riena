@@ -72,10 +72,11 @@ public abstract class SwtApplication extends AbstractApplication {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Creates an action bar advisor for a window.
 	 * <p>
 	 * Subclasses may override.
 	 * 
+	 * @return an AdvisorBarAdvisor; never null
 	 * @since 1.2
 	 */
 	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
@@ -221,7 +222,6 @@ public abstract class SwtApplication extends AbstractApplication {
 
 	private void initializeLoginNonActivityTimer(final Display display, IApplicationNode pNode,
 			final IApplicationContext context) {
-	
 		pNode.addListener(new ApplicationNodeListener() {
 			/*
 			 * (non-Javadoc)
