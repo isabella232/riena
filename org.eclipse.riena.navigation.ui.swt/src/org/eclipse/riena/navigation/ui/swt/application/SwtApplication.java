@@ -33,7 +33,7 @@ import org.eclipse.riena.core.exception.ExceptionFailure;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
-import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorFactory;
+import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper;
 import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
@@ -58,8 +58,7 @@ public abstract class SwtApplication extends AbstractApplication {
 	public Object createView(IApplicationContext context, IApplicationNode pNode) {
 		Display display = PlatformUI.createDisplay();
 		try {
-			ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode),
-					new AdvisorFactory());
+			ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode), new AdvisorHelper());
 			initializeLoginNonActivityTimer(display, pNode, context);
 			int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
 			if (returnCode == PlatformUI.RETURN_RESTART) {
@@ -286,7 +285,7 @@ public abstract class SwtApplication extends AbstractApplication {
 	// helping classes
 	//////////////////
 
-	private final class AdvisorFactory implements IAdvisorFactory {
+	private final class AdvisorHelper implements IAdvisorHelper {
 		public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
 			return SwtApplication.this.createActionBarAdvisor(configurer);
 		}

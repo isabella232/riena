@@ -16,9 +16,9 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
 
 /**
- * Factory for creating RCP-specific advisors
+ * Tweak the various advisors during application startup.
  */
-public interface IAdvisorFactory {
+public interface IAdvisorHelper {
 
 	/**
 	 * Creates an action bar advisor for a window.

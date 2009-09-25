@@ -23,7 +23,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
-import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorFactory;
+import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -45,7 +45,7 @@ public class ApplicationViewAdvisorTest extends RienaTestCase {
 		winConfig = EasyMock.createNiceMock(IWorkbenchWindowConfigurer.class);
 		applicationNode = new ApplicationNode();
 		controller = new ApplicationController(applicationNode);
-		IAdvisorFactory factory = EasyMock.createMock(IAdvisorFactory.class);
+		IAdvisorHelper factory = EasyMock.createMock(IAdvisorHelper.class);
 		advisor = new ApplicationViewAdvisor(winConfig, controller, factory);
 		Wire.instance(advisor).andStart(getContext());
 	}
@@ -103,7 +103,7 @@ public class ApplicationViewAdvisorTest extends RienaTestCase {
 		IActionBarConfigurer actionConfig = EasyMock.createNiceMock(IActionBarConfigurer.class);
 		ActionBarAdvisor actionAdvisor = new ActionBarAdvisor(actionConfig);
 
-		IAdvisorFactory factory = EasyMock.createMock(IAdvisorFactory.class);
+		IAdvisorHelper factory = EasyMock.createMock(IAdvisorHelper.class);
 		EasyMock.expect(factory.createActionBarAdvisor(actionConfig)).andReturn(actionAdvisor);
 		EasyMock.replay(factory);
 

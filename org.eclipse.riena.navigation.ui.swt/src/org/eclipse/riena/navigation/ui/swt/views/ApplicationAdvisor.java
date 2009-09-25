@@ -29,29 +29,29 @@ import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
-import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorFactory;
+import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentationFactory;
 
 public class ApplicationAdvisor extends WorkbenchAdvisor {
 
 	private final ApplicationController controller;
-	private final IAdvisorFactory advisorFactory;
+	private final IAdvisorHelper advisorHelper;
 
 	/**
 	 * @noreference This constructor is not intended to be referenced by
 	 *              clients.
 	 */
-	public ApplicationAdvisor(ApplicationController controller, IAdvisorFactory factory) {
+	public ApplicationAdvisor(ApplicationController controller, IAdvisorHelper factory) {
 		this.controller = controller;
-		this.advisorFactory = factory;
+		this.advisorHelper = factory;
 	}
 
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		configurer.setPresentationFactory(new TitlelessStackPresentationFactory());
 		WorkbenchWindowAdvisor workbenchWindowAdvisor = new ApplicationViewAdvisor(configurer, controller,
-				advisorFactory);
+				advisorHelper);
 		Wire.instance(workbenchWindowAdvisor).andStart(Activator.getDefault().getContext());
 		return workbenchWindowAdvisor;
 	}
@@ -82,7 +82,7 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 
 	private void installDefaultBinding() {
 		IBindingService bindingService = (IBindingService) PlatformUI.getWorkbench().getService(IBindingService.class);
-		String scheme = advisorFactory.getKeyScheme();
+		String scheme = advisorHelper.getKeyScheme();
 		Scheme rienaScheme = bindingService.getScheme(scheme);
 		try {
 			// saving will activate (!) the scheme:

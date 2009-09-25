@@ -49,7 +49,7 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.navigation.ui.swt.CoolbarUtils;
-import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorFactory;
+import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper;
 import org.eclipse.riena.internal.navigation.ui.swt.RestoreFocusOnEscListener;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -108,7 +108,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	private final ApplicationController controller;
 	private final AbstractViewBindingDelegate binding;
-	private final IAdvisorFactory advisorFactory;
+	private final IAdvisorHelper advisorHelper;
 
 	private TitleComposite titleComposite;
 
@@ -120,11 +120,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 *              clients.
 	 */
 	public ApplicationViewAdvisor(IWorkbenchWindowConfigurer configurer, ApplicationController pController,
-			IAdvisorFactory factory) {
+			IAdvisorHelper helper) {
 		super(configurer);
 		controller = pController;
 		binding = createBinding();
-		advisorFactory = factory;
+		advisorHelper = helper;
 		initializeListener();
 	}
 
@@ -141,7 +141,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	@Override
 	public final ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
-		return advisorFactory.createActionBarAdvisor(configurer);
+		return advisorHelper.createActionBarAdvisor(configurer);
 	}
 
 	@Override
