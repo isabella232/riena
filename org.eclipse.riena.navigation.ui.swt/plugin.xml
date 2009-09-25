@@ -100,7 +100,8 @@
       <command
             id="org.eclipse.riena.navigation.ui.switchToWindowMenu"
             name="Switch to the Window Menu"
-            categoryId="org.eclipse.riena.navigation.ui.swt">
+            categoryId="org.eclipse.riena.navigation.ui.swt"
+            defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchToWindowMenu">
       </command>
       <command
             id="org.eclipse.riena.navigation.ui.previousSubApplication"
@@ -127,6 +128,12 @@
             defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.CloseModuleGroup">
       </command>
       <command
+            id="org.eclipse.riena.navigation.ui.exit"
+            name="Exit Application"
+            categoryId="org.eclipse.riena.navigation.ui.swt"
+            defaultHandler="org.eclipse.riena.internal.navigation.ui.swt.handlers.ExitApplication">
+      </command>
+      <command
             id="org.eclipse.riena.navigation.ui.nextModule"
             name="Next group"
             categoryId="org.eclipse.riena.navigation.ui.swt"
@@ -141,116 +148,71 @@
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
+      <scheme
+            id="org.eclipse.riena.ui.defaultBindings"
+            name="Default Riena Key Bindings">
+      </scheme>
       <key
             commandId="org.eclipse.riena.navigation.ui.switchToNavigation"
             contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            schemeId="org.eclipse.riena.ui.defaultBindings"
             sequence="F6">
       </key>
       <key
             commandId="org.eclipse.riena.navigation.ui.switchToWorkarea"
             contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            schemeId="org.eclipse.riena.ui.defaultBindings"
             sequence="F7">
       </key>
       <key
             commandId="org.eclipse.riena.navigation.ui.switchToWindowMenu"
             contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="F10">
+            schemeId="org.eclipse.riena.ui.defaultBindings"
+            sequence="F10"
+            platform="win32">
       </key>
       <key
             commandId="org.eclipse.riena.navigation.ui.previousSubApplication"
             contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            schemeId="org.eclipse.riena.ui.defaultBindings"
             sequence="M1+PAGE_UP">
       </key>
       <key
             commandId="org.eclipse.riena.navigation.ui.nextSubApplication"
             contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            schemeId="org.eclipse.riena.ui.defaultBindings"
             sequence="M1+PAGE_DOWN">
       </key>
       <key
             commandId="org.eclipse.riena.navigation.ui.nextModule"
             contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            schemeId="org.eclipse.riena.ui.defaultBindings"
             sequence="M1+ARROW_DOWN">
       </key>
       <key
             commandId="org.eclipse.riena.navigation.ui.previousModule"
             contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            schemeId="org.eclipse.riena.ui.defaultBindings"
             sequence="M1+ARROW_UP">
       </key>
       <key
-            commandId="org.eclipse.ui.file.exit"
+            commandId="org.eclipse.riena.navigation.ui.exit"
             contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+F4">
+            schemeId="org.eclipse.riena.ui.defaultBindings"
+            sequence="M3+F4"
+            platform="win32">
       </key>
-   </extension>
-   <extension
-         point="org.eclipse.ui.handlers">
-         <!-- org.eclipse.ui.file.close is by default bound to M1+W -->
-         <handler
-               class="org.eclipse.riena.internal.navigation.ui.swt.handlers.CloseModule"
-               commandId="org.eclipse.ui.file.close">
-            <activeWhen>
-               <with
-                     variable="activeWorkbenchWindow">
-                  <instanceof
-                        value="org.eclipse.ui.IWorkbenchWindow">
-                  </instanceof>
-               </with>
-            </activeWhen>
-         </handler>
-         <!-- org.eclipse.ui.file.closeAll is by default bound to M1+M2+W -->
-         <handler
-               class="org.eclipse.riena.internal.navigation.ui.swt.handlers.CloseModuleGroup"
-               commandId="org.eclipse.ui.file.closeAll">
-            <activeWhen>
-               <with
-                     variable="activeWorkbenchWindow">
-                  <instanceof
-                        value="org.eclipse.ui.IWorkbenchWindow">
-                  </instanceof>
-               </with>
-            </activeWhen>
-         </handler>
-         <!-- Use Alt+F4 to Quit; Windows only --> 
-         <handler
-               class="org.eclipse.riena.internal.navigation.ui.swt.handlers.ExitApplication"
-               commandId="org.eclipse.ui.file.exit">
-            <activeWhen>
-               <and>
-	               <with
-	                     variable="activeWorkbenchWindow">
-	                  <instanceof
-	                        value="org.eclipse.ui.IWorkbenchWindow">
-	                  </instanceof>
-	               </with>
-                   <systemTest property="osgi.os" value="win32">
-	               </systemTest>
-	           </and>
-            </activeWhen>
-         </handler>
-         <!-- Focus on toolbar on F10; Windows only -->
-         <handler
-               class="org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchToWindowMenu"
-               commandId="org.eclipse.riena.navigation.ui.switchToWindowMenu">
-            <activeWhen>
-               <and>
-	               <with
-	                     variable="activeWorkbenchWindow">
-	                  <instanceof
-	                        value="org.eclipse.ui.IWorkbenchWindow">
-	                  </instanceof>
-	               </with>
-                   <systemTest property="osgi.os" value="win32">
-	               </systemTest>
-	           </and>
-            </activeWhen>
-         </handler>
+      <key
+      		commandId="org.eclipse.riena.navigation.ui.closeModule"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.riena.ui.defaultBindings"
+            sequence="M1+W">
+      </key>
+      <key
+      		commandId="org.eclipse.riena.navigation.ui.closeModuleGroup"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.riena.ui.defaultBindings"
+            sequence="M1+M2+W">
+      </key>
    </extension>
 </plugin>

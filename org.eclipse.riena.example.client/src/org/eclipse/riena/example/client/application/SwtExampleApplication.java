@@ -40,7 +40,6 @@ public class SwtExampleApplication extends SwtApplication {
 
 	@Override
 	protected IApplicationNode createModel() {
-
 		ISubApplicationNode subApplication = null;
 
 		String bundleVersion = (String) Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
@@ -80,8 +79,23 @@ public class SwtExampleApplication extends SwtApplication {
 		return applicationNode;
 	}
 
-	class SubModuleListener extends SubModuleNodeListener {
+	@Override
+	protected Bundle getBundle() {
+		return Activator.getDefault().getBundle();
+	}
 
+	@Override
+	protected String getKeyScheme() {
+		return "org.eclipse.riena.example.client.scheme"; //$NON-NLS-1$
+	}
+
+	// helping classes
+	//////////////////
+
+	/**
+	 * Update the status line, when a navigation node is activated
+	 */
+	private static final class SubModuleListener extends SubModuleNodeListener {
 		@Override
 		public void activated(ISubModuleNode source) {
 			ApplicationNode appNode = source.getParentOfType(ApplicationNode.class);
@@ -91,10 +105,5 @@ public class SwtExampleApplication extends SwtApplication {
 				statusline.getStatuslineNumberRidget().setNumberString(source.getLabel());
 			}
 		}
-	}
-
-	@Override
-	protected Bundle getBundle() {
-		return Activator.getDefault().getBundle();
 	}
 }

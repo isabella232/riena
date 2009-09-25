@@ -13,6 +13,8 @@ package org.eclipse.riena.internal.navigation.ui.swt;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
+import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
+
 /**
  * Factory for creating RCP-specific advisors
  */
@@ -30,4 +32,12 @@ public interface IAdvisorFactory {
 	 * @return an {@link ActionBarAdvisor} or subclass; never null
 	 */
 	ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer);
+
+	/**
+	 * Returns the default key binding scheme for this application.
+	 * 
+	 * @see {@code org.eclipse.ui.bindings} extension point docs
+	 * @see SwtApplication#getKeyScheme()
+	 */
+	String getKeyScheme();
 }

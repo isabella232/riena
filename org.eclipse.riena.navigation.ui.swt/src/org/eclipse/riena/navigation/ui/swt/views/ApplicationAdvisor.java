@@ -10,20 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.ActiveShellExpression;
-import org.eclipse.ui.IWorkbench;
+import java.io.IOException;
+
+import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
+import org.eclipse.jface.bindings.Scheme;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
-import org.eclipse.ui.handlers.IHandlerService;
+import org.eclipse.ui.keys.IBindingService;
 import org.eclipse.ui.statushandlers.AbstractStatusHandler;
 import org.eclipse.ui.statushandlers.StatusAdapter;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.core.wire.Wire;
@@ -73,33 +74,23 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 
 	@Override
 	public void postStartup() {
-		overwriteStandardHandlers();
+		installDefaultBinding();
 	}
 
 	// helping methods
 	//////////////////
 
-	/**
-	 * Rebinds certain commands that are by bound to handlers in org.eclipse.ui
-	 * to a NOOP-Handler.
-	 * 
-	 * @see http://bugs.eclipse.org/269855
-	 */
-	private void overwriteStandardHandlers() {
-		IWorkbench workbench = getWorkbenchConfigurer().getWorkbench();
-		Shell shell = workbench.getActiveWorkbenchWindow().getShell();
-		IHandlerService service = (IHandlerService) workbench.getService(IHandlerService.class);
-		IHandler handler = new AbstractHandler() {
-			public Object execute(ExecutionEvent event) throws ExecutionException {
-				// Do nothing by design
-				return null;
-			}
-		};
-		String[] commandIds = { "org.eclipse.ui.newWizard", "org.eclipse.ui.window.previousView", //$NON-NLS-1$ //$NON-NLS-2$
-				"org.eclipse.ui.window.nextView", "org.eclipse.ui.window.nextPerspective", //$NON-NLS-1$ //$NON-NLS-2$
-				"org.eclipse.ui.window.previousPerspective", }; //$NON-NLS-1$
-		for (String id : commandIds) {
-			service.activateHandler(id, handler, new ActiveShellExpression(shell));
+	private void installDefaultBinding() {
+		IBindingService bindingService = (IBindingService) PlatformUI.getWorkbench().getService(IBindingService.class);
+		String scheme = advisorFactory.getKeyScheme();
+		Scheme rienaScheme = bindingService.getScheme(scheme);
+		try {
+			// saving will activate (!) the scheme:
+			bindingService.savePreferences(rienaScheme, bindingService.getBindings());
+		} catch (IOException ioe) {
+			Logger logger = Log4r.getLogger(Activator.getDefault(), this.getClass());
+			logger.log(LogService.LOG_ERROR, "Could not activate scheme: " + scheme, ioe); //$NON-NLS-1$
 		}
 	}
+
 }

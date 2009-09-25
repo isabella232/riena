@@ -83,6 +83,41 @@ public abstract class SwtApplication extends AbstractApplication {
 		return new ActionBarAdvisor(configurer);
 	}
 
+	/**
+	 * Return the default keyboard scheme for this applications.
+	 * <p>
+	 * Subclasses defining their own scheme using the '...' extension point,
+	 * should override this method and return the appropriate id.
+	 * <p>
+	 * When defining your own scheme, you can specify '...' as the parent
+	 * scheme, to inherit the default Riena keybindings. If you wish to start
+	 * with a blank scheme, leave the parent attribute empty.
+	 * <p>
+	 * Example:
+	 * 
+	 * <pre>
+	 * &lt;extension
+	 *          point=&quot;org.eclipse.ui.bindings&quot;&gt;
+	 *       &lt;scheme
+	 *             id=&quot;org.eclipse.riena.example.client.scheme&quot;
+	 *             name=&quot;Riena Client Key Bindings&quot;
+	 *             parentId=&quot;org.eclipse.riena.ui.defaultBindings&quot;&gt;
+	 *       &lt;/scheme&gt;
+	 *       &lt;key
+	 *             commandId=&quot;org.eclipse.riena.example.client.exitCommand&quot;
+	 *             contextId=&quot;org.eclipse.ui.contexts.window&quot;
+	 *             schemeId=&quot;org.eclipse.riena.example.client.scheme&quot;
+	 *             sequence=&quot;F10&quot;&gt;
+	 *       &lt;/key&gt;
+	 * &lt;/extension&gt;
+	 * </pre>
+	 * 
+	 * @return the identifer of a valid scheme as String; never null.
+	 */
+	protected String getKeyScheme() {
+		return "org.eclipse.riena.ui.defaultBindings"; //$NON-NLS-1$
+	}
+
 	public void stop() {
 		final IWorkbench workbench = PlatformUI.getWorkbench();
 		if (workbench == null) {
@@ -102,7 +137,6 @@ public abstract class SwtApplication extends AbstractApplication {
 	 * keep public, called via reflection
 	 */
 	public void update(ILoginSplashViewDefinition[] data) {
-
 		if (data.length > 0) {
 			loginSplashViewDefinition = data[0];
 		}
@@ -223,12 +257,6 @@ public abstract class SwtApplication extends AbstractApplication {
 	private void initializeLoginNonActivityTimer(final Display display, IApplicationNode pNode,
 			final IApplicationContext context) {
 		pNode.addListener(new ApplicationNodeListener() {
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener
-			 * #afterActivated(org.eclipse.riena.navigation.INavigationNode)
-			 */
 			@Override
 			public void afterActivated(IApplicationNode source) {
 				if (isSplashLogin(context) && loginSplashViewDefinition.getNonActivityDuration() > 0) {
@@ -262,6 +290,10 @@ public abstract class SwtApplication extends AbstractApplication {
 		public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
 			return SwtApplication.this.createActionBarAdvisor(configurer);
 		}
+
+		public String getKeyScheme() {
+			return SwtApplication.this.getKeyScheme();
+		}
 	}
 
 	private static final class EventListener implements Listener {
@@ -277,7 +309,6 @@ public abstract class SwtApplication extends AbstractApplication {
 			activity = true;
 			activityTime = System.currentTimeMillis();
 		}
-
 	}
 
 	private final class LoginNonActivityTimer implements Runnable {
