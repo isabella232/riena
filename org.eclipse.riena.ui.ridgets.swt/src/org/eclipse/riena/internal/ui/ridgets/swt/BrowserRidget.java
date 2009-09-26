@@ -15,7 +15,6 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.browser.LocationAdapter;
 import org.eclipse.swt.browser.LocationEvent;
 import org.eclipse.swt.browser.LocationListener;
 
@@ -35,7 +34,7 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractValueRidget;
  */
 public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget {
 
-	private final LocationListener locationListener;
+	private final BrowserUrlListener locationListener;
 	private String url;
 
 	public BrowserRidget() {
@@ -108,7 +107,12 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		if (control != null) {
 			String theUrl = getUrl() != null ? getUrl() : ""; //$NON-NLS-1$
 			if (!control.getUrl().equals(theUrl)) {
-				control.setUrl(theUrl);
+				locationListener.setBlock(false);
+				try {
+					control.setUrl(theUrl);
+				} finally {
+					locationListener.setBlock(true);
+				}
 			}
 		}
 	}
@@ -120,11 +124,23 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	 * Listens to location changes in the Browser widget and update's the
 	 * Ridget's URL if necessary.
 	 */
-	private final class BrowserUrlListener extends LocationAdapter {
+	private final class BrowserUrlListener implements LocationListener {
+
+		private boolean canBlock = true;
+
+		public void setBlock(boolean canBlock) {
+			this.canBlock = canBlock;
+		}
+
+		public void changing(LocationEvent event) {
+			if (isOutputOnly() && canBlock) {
+				// this will prevent the browser from following the link
+				event.doit = false;
+			}
+		}
 
 		public void changed(LocationEvent event) {
 			if (event.top) {
-				// TODO [ev] maybe we want the ability to turn this on/off - discuss after committing
 				setUrl(event.location);
 			}
 		}

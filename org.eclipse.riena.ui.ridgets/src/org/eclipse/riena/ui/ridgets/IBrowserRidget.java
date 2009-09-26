@@ -46,4 +46,24 @@ public interface IBrowserRidget extends IValueRidget {
 	 *         specific, such as 'about:blank'.
 	 */
 	String getUrl();
+
+	/**
+	 * Returns true, if an OutputMarker was added.
+	 * <p>
+	 * If an OutputMarker is added, the browser widget will not allow leaving
+	 * the page (i.e. it is not possible to folow a link).
+	 */
+	boolean isOutputOnly();
+
+	/**
+	 * Adds and removes the default OutputMarker.
+	 * <p>
+	 * If an OutputMarker is added, the browser widget will not allow leaving
+	 * the page (i.e. it is not possible to folow a link).
+	 * 
+	 * @param outputOnly
+	 *            <code>true</code> if the ridget should be 'output only'
+	 *            (=cannot be edited), <code>false</code> otherwise.
+	 */
+	void setOutputOnly(boolean outputOnly);
 }
