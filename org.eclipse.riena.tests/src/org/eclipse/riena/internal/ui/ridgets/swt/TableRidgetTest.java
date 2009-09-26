@@ -805,7 +805,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(ridget, selectionEvent.getSource());
 		assertTrue(selectionEvent.getOldSelection().isEmpty());
 		assertEquals(ridget.getSelection(), selectionEvent.getNewSelection());
-		System.out.println("SelectionEvent: " + selectionListener.getSelectionEvent());
+		// System.out.println("SelectionEvent: " + selectionListener.getSelectionEvent());
 
 		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
 
@@ -816,10 +816,9 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(ridget, selectionEvent.getSource());
 		assertEquals(selectionEvent.getNewSelection(), selectionEvent2.getOldSelection());
 		assertEquals(ridget.getSelection(), selectionEvent2.getNewSelection());
-		System.out.println("SelectionEvent: " + selectionListener.getSelectionEvent());
+		// System.out.println("SelectionEvent: " + selectionListener.getSelectionEvent());
 
 		ridget.removeSelectionListener(selectionListener);
-
 	}
 
 	// helping methods
