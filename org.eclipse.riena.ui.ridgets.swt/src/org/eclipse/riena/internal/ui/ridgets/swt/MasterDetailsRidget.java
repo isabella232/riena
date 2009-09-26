@@ -233,6 +233,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	@Override
 	public void updateFromModel() {
+		checkDelegate();
 		super.updateFromModel();
 		ITableRidget tableRidget = getTableRidget();
 		if (tableRidget != null) {
@@ -306,6 +307,12 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 			getUIControl().warnApplyFailed(reason);
 		}
 		return reason == null;
+	}
+
+	private void checkDelegate() {
+		if (delegate == null) {
+			throw new IllegalStateException("no delegate: call setDelegate(...)"); //$NON-NLS-1$
+		}
 	}
 
 	private void clearSelection() {
