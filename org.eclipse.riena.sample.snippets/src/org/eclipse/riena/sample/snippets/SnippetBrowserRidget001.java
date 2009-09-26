@@ -45,7 +45,7 @@ public final class SnippetBrowserRidget001 {
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(text);
 
 			Browser browser = new Browser(shell, SWT.BORDER);
-			GridDataFactory.fillDefaults().grab(true, false).grab(true, true).applyTo(browser);
+			GridDataFactory.fillDefaults().grab(true, true).applyTo(browser);
 
 			IBrowserRidget browserRidget = (IBrowserRidget) SwtRidgetFactory.createRidget(browser);
 
