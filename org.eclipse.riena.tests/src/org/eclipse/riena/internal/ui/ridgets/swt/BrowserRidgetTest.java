@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
@@ -134,4 +137,23 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		verifyPropertyChangeEvents();
 	}
 
+	public void testSetUrlOnOutputOnly() {
+		IBrowserRidget ridget = getRidget();
+
+		assertNull(ridget.getUrl());
+
+		// allow ridget.setUrl() on output only
+		ridget.setOutputOnly(true);
+		ridget.setUrl("http://www.redview.org");
+		ridget.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				System.out.println(evt.getPropertyName() + " " + evt.getNewValue());
+			}
+		});
+
+		assertEquals("http://www.redview.org", ridget.getUrl());
+
+		// disallow widget.setUrl() on output only - can't test this because
+		// widget.getUrl() is not reliable because of timing + network access
+	}
 }
