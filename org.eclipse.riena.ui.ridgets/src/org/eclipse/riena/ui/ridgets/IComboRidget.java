@@ -14,6 +14,8 @@ import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 
+import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
+
 /**
  * @author Frank Schepp
  */
@@ -23,6 +25,20 @@ public interface IComboRidget extends IMarkableRidget {
 	 * The name of the bound read-write <em>selection</em> property.
 	 */
 	String PROPERTY_SELECTION = "selection"; //$NON-NLS-1$
+
+	/**
+	 * Adds the listener to the collection of listeners who will be notified
+	 * when the bound control is selected.
+	 * <p>
+	 * Adding the same listener several times has no effect.
+	 * 
+	 * @param listener
+	 *            a non-null {@link ISelectionListener} instance
+	 * @throws RuntimeException
+	 *             if listener is null
+	 * @since 1.2
+	 */
+	void addSelectionListener(ISelectionListener listener);
 
 	/**
 	 * @param optionValues
@@ -59,6 +75,17 @@ public interface IComboRidget extends IMarkableRidget {
 			String renderingMethod, Object selectionHolder, String selectionPropertyName);
 
 	/**
+	 * Returns the option that represents 'no selection'.
+	 * <p>
+	 * When this option is selected the ridget behaves just as if nothing was
+	 * selected. This option could be represented by an empty value or something
+	 * like "[Please select...]".
+	 * 
+	 * @return The option that represents 'no selection'.
+	 */
+	Object getEmptySelectionItem();
+
+	/**
 	 * Return the observable list holding the options.
 	 * 
 	 * @return the observable list of options.
@@ -75,21 +102,6 @@ public interface IComboRidget extends IMarkableRidget {
 	Object getSelection();
 
 	/**
-	 * Set the current selection to newSelection.
-	 * 
-	 * @param newSelection
-	 */
-	void setSelection(Object newSelection);
-
-	/**
-	 * Set the current selection to index.
-	 * 
-	 * @param index
-	 *            the 0-based index; -1 to unselect
-	 */
-	void setSelection(int index);
-
-	/**
 	 * Return the index of the current selection. Will return -1 if either
 	 * nothing or the "empty selection option" is selected.
 	 * 
@@ -98,15 +110,53 @@ public interface IComboRidget extends IMarkableRidget {
 	int getSelectionIndex();
 
 	/**
-	 * Returns the option that represents 'no selection'.
-	 * <p>
-	 * When this option is selected the ridget behaves just as if nothing was
-	 * selected. This option could be represented by an empty value or something
-	 * like "[Please select...]".
+	 * Indicates whether an edited text will be added to the list of options.
+	 * The list of options is the value of the combobox provided by the value
+	 * provider. The addable state will not be significant if the adapter is
+	 * readonly.
 	 * 
-	 * @return The option that represents 'no selection'.
+	 * @return true if edited values will be added to the list of options, false
+	 *         otherwise.
 	 */
-	Object getEmptySelectionItem();
+	boolean isAddable();
+
+	/**
+	 * Return true if the receiver's drop down list is mutable, ie. options snot
+	 * yet contained in the list will automatically be added if entered into the
+	 * text field.
+	 * 
+	 * @return true if the receiver is mutable, otherwise false
+	 */
+	boolean isListMutable();
+
+	/**
+	 * Indicates whether the text in the textfield can be edited by the user.
+	 * 
+	 * @return true if the combobox is readonly, false if it can be edited.
+	 */
+	boolean isReadonly();
+
+	/**
+	 * Removes the listener from the collection of listeners who will be
+	 * notified when the bound control is selected.
+	 * 
+	 * @param listener
+	 *            a non-null {@link ISelectionListener} instance
+	 * @throws RuntimeException
+	 *             if listener is null
+	 * @since 1.2
+	 */
+	void removeSelectionListener(ISelectionListener listener);
+
+	/**
+	 * Sets the addable state of the combobox. If addable, edited values will be
+	 * added to the list of options. The addable state will not be significant
+	 * if the adapter is readonly.
+	 * 
+	 * @param addable
+	 *            The new addable state.
+	 */
+	void setAddable(boolean addable);
 
 	/**
 	 * Sets the option that represents 'no selection'.
@@ -119,15 +169,6 @@ public interface IComboRidget extends IMarkableRidget {
 	 *            The option that represents 'no selection'.
 	 */
 	void setEmptySelectionItem(Object emptySelection);
-
-	/**
-	 * Return true if the receiver's drop down list is mutable, ie. options snot
-	 * yet contained in the list will automatically be added if entered into the
-	 * text field.
-	 * 
-	 * @return true if the receiver is mutable, otherwise false
-	 */
-	boolean isListMutable();
 
 	/**
 	 * Set the mutability of the <code>IComboRidget</code> drop down list. If
@@ -145,43 +186,6 @@ public interface IComboRidget extends IMarkableRidget {
 	void setListMutable(boolean mutable);
 
 	/**
-	 * Indicates whether the text in the textfield can be edited by the user.
-	 * 
-	 * @return true if the combobox is readonly, false if it can be edited.
-	 */
-	boolean isReadonly();
-
-	/**
-	 * Sets the readonly state of the combobox. If it is readonly, the text in
-	 * the textfield can not be edited.
-	 * 
-	 * @param readonly
-	 *            The new readonly state.
-	 */
-	void setReadonly(boolean readonly);
-
-	/**
-	 * Indicates whether an edited text will be added to the list of options.
-	 * The list of options is the value of the combobox provided by the value
-	 * provider. The addable state will not be significant if the adapter is
-	 * readonly.
-	 * 
-	 * @return true if edited values will be added to the list of options, false
-	 *         otherwise.
-	 */
-	boolean isAddable();
-
-	/**
-	 * Sets the addable state of the combobox. If addable, edited values will be
-	 * added to the list of options. The addable state will not be significant
-	 * if the adapter is readonly.
-	 * 
-	 * @param addable
-	 *            The new addable state.
-	 */
-	void setAddable(boolean addable);
-
-	/**
 	 * Sets the converter used when updating from the model to the UI-control.
 	 * <p>
 	 * Notes: Conversion between model-to-UI and UI-to-model must be
@@ -195,6 +199,30 @@ public interface IComboRidget extends IMarkableRidget {
 	 * @since 1.2
 	 */
 	void setModelToUIControlConverter(IConverter converter);
+
+	/**
+	 * Sets the readonly state of the combobox. If it is readonly, the text in
+	 * the textfield can not be edited.
+	 * 
+	 * @param readonly
+	 *            The new readonly state.
+	 */
+	void setReadonly(boolean readonly);
+
+	/**
+	 * Set the current selection to index.
+	 * 
+	 * @param index
+	 *            the 0-based index; -1 to unselect
+	 */
+	void setSelection(int index);
+
+	/**
+	 * Set the current selection to newSelection.
+	 * 
+	 * @param newSelection
+	 */
+	void setSelection(Object newSelection);
 
 	/**
 	 * Sets the converter used when updating from the UI-control to the model.

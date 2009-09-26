@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.BindingException;
@@ -29,15 +31,19 @@ import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
+import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 
 /**
  * Superclass of ComboRidget that does not depend on the Combo SWT control. May
@@ -54,6 +60,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	private final IValueChangeListener valueChangeValidator;
 	/** IValueChangeListener that fires a selection event on change. */
 	private final IValueChangeListener valueChangeNotifier;
+	/** A list of selection listeners. */
+	private ListenerList<ISelectionListener> selectionListeners;
 
 	/** If this item is selected, treat it as if nothing is selected */
 	private Object emptySelection;
@@ -151,21 +159,31 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		selectionBindingExternal = null;
 	}
 
-	@Override
-	public void updateFromModel() {
-		assertIsBoundToModel();
-		super.updateFromModel();
-		// disable the selection binding, because updating the combo items
-		// causes the selection to change temporarily
-		selectionValidator.enableBinding(false);
-		listBindingExternal.updateModelToTarget();
-		if (listBindingInternal != null) {
-			listBindingInternal.updateModelToTarget();
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Implementation note: the {@link ISelectionListener} will receive a list
+	 * with the selected values. Since the combo only supports a single
+	 * selection, the value will be the one element in the list. If there is no
+	 * selection or the 'empty' selection entry is selected, the list will be
+	 * empty.
+	 */
+	public void addSelectionListener(ISelectionListener selectionListener) {
+		Assert.isNotNull(selectionListener, "selectionListener is null"); //$NON-NLS-1$
+		if (selectionListeners == null) {
+			selectionListeners = new ListenerList<ISelectionListener>(ISelectionListener.class);
+			addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					notifySelectionListeners((String) evt.getOldValue(), (String) evt.getNewValue());
+				}
+			});
 		}
-		selectionValidator.enableBinding(true);
-		selectionBindingExternal.updateModelToTarget();
-		if (selectionBindingInternal != null) {
-			selectionBindingInternal.updateModelToTarget();
+		selectionListeners.add(selectionListener);
+	}
+
+	public void removeSelectionListener(ISelectionListener selectionListener) {
+		if (selectionListeners != null) {
+			selectionListeners.remove(selectionListener);
 		}
 	}
 
@@ -282,6 +300,24 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	// abstract methods
 	///////////////////
 
+	@Override
+	public void updateFromModel() {
+		assertIsBoundToModel();
+		super.updateFromModel();
+		// disable the selection binding, because updating the combo items
+		// causes the selection to change temporarily
+		selectionValidator.enableBinding(false);
+		listBindingExternal.updateModelToTarget();
+		if (listBindingInternal != null) {
+			listBindingInternal.updateModelToTarget();
+		}
+		selectionValidator.enableBinding(true);
+		selectionBindingExternal.updateModelToTarget();
+		if (selectionBindingInternal != null) {
+			selectionBindingInternal.updateModelToTarget();
+		}
+	}
+
 	/**
 	 * Deselects all selected items in the controls list.
 	 */
@@ -389,6 +425,23 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	private boolean hasInput() {
 		Object selection = selectionObservable.getValue();
 		return selection != null && selection != emptySelection;
+	}
+
+	private void notifySelectionListeners(String oldValue, String newValue) {
+		if (selectionListeners != null) {
+			List<String> oldSelectionList = new ArrayList<String>();
+			if (oldValue != null) {
+				oldSelectionList.add(oldValue);
+			}
+			List<String> newSelectionList = new ArrayList<String>();
+			if (newValue != null) {
+				newSelectionList.add(newValue);
+			}
+			SelectionEvent event = new SelectionEvent(this, oldSelectionList, newSelectionList);
+			for (ISelectionListener listener : selectionListeners.getListeners()) {
+				listener.ridgetSelected(event);
+			}
+		}
 	}
 
 	/**

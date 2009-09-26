@@ -33,6 +33,7 @@ import org.eclipse.riena.beans.common.StringManager;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
@@ -786,6 +787,57 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		control.select(2); // select "MC"
 
 		assertEquals(persons[2], ridget.getSelection()); // result: Marie Curie
+	}
+
+	public void testAddSelectionListener() throws InterruptedException {
+		IComboRidget ridget = getRidget();
+		Combo control = getWidget();
+		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
+		ridget.updateFromModel();
+
+		try {
+			ridget.addSelectionListener(null);
+			fail();
+		} catch (RuntimeException npe) {
+			ok();
+		}
+
+		TestSelectionListener selectionListener = new TestSelectionListener();
+
+		ridget.addSelectionListener(selectionListener);
+		assertEquals(null, ridget.getSelection());
+		assertEquals(-1, control.getSelectionIndex());
+
+		control.setFocus();
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
+		UITestHelper.readAndDispatch(control);
+
+		assertNotNull(ridget.getSelection());
+		assertEquals(0, control.getSelectionIndex());
+		assertEquals(1, selectionListener.getCount());
+		SelectionEvent selectionEvent = selectionListener.getSelectionEvent();
+		assertEquals(ridget, selectionEvent.getSource());
+		assertTrue(selectionEvent.getOldSelection().isEmpty());
+		assertEquals(ridget.getSelection(), selectionEvent.getNewSelection().get(0));
+
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
+		UITestHelper.readAndDispatch(control);
+
+		assertNotNull(ridget.getSelection());
+		assertEquals(1, control.getSelectionIndex());
+		assertEquals(2, selectionListener.getCount());
+		SelectionEvent selectionEvent2 = selectionListener.getSelectionEvent();
+		assertEquals(ridget, selectionEvent.getSource());
+		assertEquals(selectionEvent.getNewSelection(), selectionEvent2.getOldSelection());
+		assertEquals(ridget.getSelection(), selectionEvent2.getNewSelection().get(0));
+
+		ridget.removeSelectionListener(selectionListener);
+
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
+		UITestHelper.readAndDispatch(control);
+
+		assertEquals(2, selectionListener.getCount()); // no inc -> lsnr removed
 	}
 
 	// helping methods
