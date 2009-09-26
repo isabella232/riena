@@ -437,6 +437,20 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("r2", control.getItem(1).getText());
 	}
 
+	public void testBug290365() {
+		ITreeRidget ridget = getRidget();
+
+		TreeNodeWithIcon root1 = new TreeNodeWithIcon(null, "r1");
+		new TreeNodeWithIcon(root1, "r1.a");
+		new TreeNodeWithIcon(root1, "r1.b");
+		ridget.bindToModel(new Object[] { root1 }, TreeNodeWithIcon.class, ITreeNode.PROPERTY_CHILDREN,
+				ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE, null, null, "icon");
+
+		ridget.updateFromModel(); // bug: throws exception
+
+		ok();
+	}
+
 	/**
 	 * As per bug 277283.
 	 */
@@ -510,4 +524,21 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		}
 	}
 
+	// helping classes
+	//////////////////
+
+	/**
+	 * Tree node with an icon
+	 */
+	private static final class TreeNodeWithIcon extends TreeNode {
+
+		public TreeNodeWithIcon(ITreeNode pParent, Object pValue) {
+			super(pParent, pValue);
+		}
+
+		@SuppressWarnings("unused")
+		public String getIcon() {
+			return "eclipse.gif";
+		}
+	}
 }

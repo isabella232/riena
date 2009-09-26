@@ -16,10 +16,11 @@ import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableFontProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 
 /**
  * Label provider that shows checked / unchecked icons, if the attribute in a
@@ -30,6 +31,7 @@ import org.eclipse.swt.graphics.Image;
 public class TableRidgetLabelProvider extends ObservableMapLabelProvider implements ITableColorProvider,
 		ITableFontProvider {
 
+	private final int numColumns;
 	private final IObservableMap[] attributeMap;
 	private IColumnFormatter[] formatters;
 
@@ -56,6 +58,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		super(attributeMap);
 		Assert.isLegal(numColumns == formatters.length, String.format("expected %d formatters, got %d", numColumns, //$NON-NLS-1$
 				formatters.length));
+		this.numColumns = numColumns;
 		this.attributeMap = new IObservableMap[attributeMap.length];
 		System.arraycopy(attributeMap, 0, this.attributeMap, 0, this.attributeMap.length);
 		this.formatters = new IColumnFormatter[formatters.length];
@@ -162,7 +165,8 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	}
 
 	void setFormatters(IColumnFormatter[] formatters) {
-		Assert.isLegal(this.attributeMap.length == formatters.length);
+		Assert.isLegal(numColumns == formatters.length, String.format("expected %d formatters, got %d", numColumns, //$NON-NLS-1$
+				formatters.length));
 		this.formatters = new IColumnFormatter[formatters.length];
 		System.arraycopy(formatters, 0, this.formatters, 0, this.formatters.length);
 	}
