@@ -20,8 +20,9 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.ui.swt.Activator;
 
 /**
@@ -33,7 +34,6 @@ import org.eclipse.riena.internal.ui.swt.Activator;
 public final class ImageStore {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ImageStore.class);
-	private static final String IMAGE_PATH_EXTENSION_ID = "org.eclipse.riena.ui.swt.imagepath"; //$NON-NLS-1$
 
 	private static ImageStore store;
 	private static Image missingImage;
@@ -52,7 +52,7 @@ public final class ImageStore {
 		if (store == null) {
 			store = new ImageStore();
 			if (Activator.getDefault() != null) {
-				Inject.extension(IMAGE_PATH_EXTENSION_ID).into(store).andStart(Activator.getDefault().getContext());
+				Wire.instance(store).andStart(Activator.getDefault().getContext());
 			}
 		}
 		return store;
@@ -228,6 +228,7 @@ public final class ImageStore {
 		return missingImage;
 	}
 
+	@InjectExtension
 	public void update(IImagePathExtension[] iconPathes) {
 		this.iconPathes = iconPathes;
 	}
