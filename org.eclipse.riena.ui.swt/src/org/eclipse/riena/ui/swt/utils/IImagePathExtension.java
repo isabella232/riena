@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
-import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.osgi.framework.Bundle;
 
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+
 /**
- * Extension interface for for the path of images.
+ * Extension interface for the path of images.
  */
-@ExtensionInterface
+@ExtensionInterface(id = "imagepath")
 public interface IImagePathExtension {
 
 	/**
