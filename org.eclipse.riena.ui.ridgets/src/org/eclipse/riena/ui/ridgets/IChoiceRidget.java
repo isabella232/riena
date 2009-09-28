@@ -12,15 +12,13 @@ package org.eclipse.riena.ui.ridgets;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
 
-import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
-
 /**
  * A ridget that allows for the selection of one or more options.
  * 
  * @see ISingleChoiceRidget
  * @see IMultipleChoiceRidget
  */
-public interface IChoiceRidget extends IMarkableRidget {
+public interface IChoiceRidget extends IMarkableRidget, ISelectionObservable {
 
 	/**
 	 * Property name of the selection property.
@@ -38,30 +36,4 @@ public interface IChoiceRidget extends IMarkableRidget {
 	 * @return the observable list of options.
 	 */
 	IObservableList getObservableList();
-
-	/**
-	 * Adds the listener to the collection of listeners who will be notified
-	 * when the bound control is selected.
-	 * <p>
-	 * Adding the same listener several times has no effect.
-	 * 
-	 * @param listener
-	 *            a non-null {@link ISelectionListener} instance
-	 * @throws RuntimeException
-	 *             if listener is null
-	 * @since 1.2
-	 */
-	void addSelectionListener(ISelectionListener listener);
-
-	/**
-	 * Removes the listener from the collection of listeners who will be
-	 * notified when the bound control is selected.
-	 * 
-	 * @param listener
-	 *            a non-null {@link ISelectionListener} instance
-	 * @throws RuntimeException
-	 *             if listener is null
-	 * @since 1.2
-	 */
-	void removeSelectionListener(ISelectionListener listener);
 }

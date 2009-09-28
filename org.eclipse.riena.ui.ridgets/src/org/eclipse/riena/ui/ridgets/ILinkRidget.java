@@ -14,8 +14,6 @@ package org.eclipse.riena.ui.ridgets;
 
 import org.eclipse.core.databinding.conversion.IConverter;
 
-import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
-
 /**
  * The link ridget displays text (String) that can be clicked. This text is
  * defined by two properties:
@@ -29,7 +27,7 @@ import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
  * 
  * @since 1.2
  */
-public interface ILinkRidget extends IValueRidget {
+public interface ILinkRidget extends IValueRidget, ISelectionObservable {
 
 	/**
 	 * Property name of the text property ({@value} ).
@@ -70,30 +68,4 @@ public interface ILinkRidget extends IValueRidget {
 	 *            a String; may be null; not necessarily a valid url.
 	 */
 	void setText(String text, String link);
-
-	/**
-	 * Adds the listener to the collection of listeners who will be notified
-	 * when the bound control is selected.
-	 * <p>
-	 * Adding the same listener several times has no effect.
-	 * 
-	 * @param listener
-	 *            a non-null {@link ISelectionListener} instance
-	 * @throws RuntimeException
-	 *             if listener is null
-	 * @since 1.2
-	 */
-	void addSelectionListener(ISelectionListener listener);
-
-	/**
-	 * Removes the listener from the collection of listeners who will be
-	 * notified when the bound control is selected.
-	 * 
-	 * @param listener
-	 *            a non-null {@link ISelectionListener} instance
-	 * @throws RuntimeException
-	 *             if listener is null
-	 * @since 1.2
-	 */
-	void removeSelectionListener(ISelectionListener listener);
 }

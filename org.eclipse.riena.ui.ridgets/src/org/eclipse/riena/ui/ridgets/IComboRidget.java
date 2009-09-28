@@ -14,31 +14,16 @@ import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 
-import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
-
 /**
- * @author Frank Schepp
+ * Ridget for a Combo (typically a read-only text widget with drop-down to
+ * select from a list of choices).
  */
-public interface IComboRidget extends IMarkableRidget {
+public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 
 	/**
 	 * The name of the bound read-write <em>selection</em> property.
 	 */
 	String PROPERTY_SELECTION = "selection"; //$NON-NLS-1$
-
-	/**
-	 * Adds the listener to the collection of listeners who will be notified
-	 * when the bound control is selected.
-	 * <p>
-	 * Adding the same listener several times has no effect.
-	 * 
-	 * @param listener
-	 *            a non-null {@link ISelectionListener} instance
-	 * @throws RuntimeException
-	 *             if listener is null
-	 * @since 1.2
-	 */
-	void addSelectionListener(ISelectionListener listener);
 
 	/**
 	 * @param optionValues
@@ -137,18 +122,6 @@ public interface IComboRidget extends IMarkableRidget {
 	boolean isReadonly();
 
 	/**
-	 * Removes the listener from the collection of listeners who will be
-	 * notified when the bound control is selected.
-	 * 
-	 * @param listener
-	 *            a non-null {@link ISelectionListener} instance
-	 * @throws RuntimeException
-	 *             if listener is null
-	 * @since 1.2
-	 */
-	void removeSelectionListener(ISelectionListener listener);
-
-	/**
 	 * Sets the addable state of the combobox. If addable, edited values will be
 	 * added to the list of options. The addable state will not be significant
 	 * if the adapter is readonly.
@@ -238,5 +211,4 @@ public interface IComboRidget extends IMarkableRidget {
 	 * @since 1.2
 	 */
 	void setUIControlToModelConverter(IConverter converter);
-
 }
