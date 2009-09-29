@@ -16,8 +16,8 @@ import org.eclipse.riena.core.injector.extension.MapName;
 /**
  * Descriptor of a renderer.
  */
-@ExtensionInterface
-public interface ILnfRendererDesc {
+@ExtensionInterface(id = "lnfrenderer")
+public interface ILnfRendererExtension {
 
 	/**
 	 * Returns the key in the table of the renderers of the look and feel.
