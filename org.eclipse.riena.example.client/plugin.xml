@@ -984,13 +984,21 @@
          </submodule>
       </assembly>
     </extension>
-    
+<!--
     <extension
           point="org.eclipse.riena.navigation.ui.loginDialogViewDefinition">
-       <!--loginDialogViewDefinition
+       <loginDialogViewDefinition
              nonActivityDuration="3000"
              viewClass="org.eclipse.riena.example.client.views.LoginDialogView">
-       </loginDialogViewDefinition-->
+       </loginDialogViewDefinition>
+    </extension>
+-->
+     <extension
+          point="org.eclipse.riena.navigation.ui.swt.loginSplashViewDefinition">
+       <loginSplashViewDefinition
+             nonActivityDuration="0"
+             viewClass="org.eclipse.riena.example.client.views.LoginSplashView">
+       </loginSplashViewDefinition>
     </extension>
     <extension
           id="LocalCallback"
@@ -1024,13 +1032,6 @@
              productId="org.eclipse.riena.example.client.example_product"
              splashId="org.eclipse.riena.example.client.splashHandlers.interactive">
        </splashHandlerProductBinding>
-    </extension>
-    <extension
-          point="org.eclipse.riena.navigation.ui.swt.loginSplashViewDefinition">
-       <loginSplashViewDefinition
-             nonActivityDuration="0"
-             viewClass="org.eclipse.riena.example.client.views.LoginSplashView">
-       </loginSplashViewDefinition>
     </extension>
     <extension
           point="org.eclipse.riena.ui.swt.imagepath">
