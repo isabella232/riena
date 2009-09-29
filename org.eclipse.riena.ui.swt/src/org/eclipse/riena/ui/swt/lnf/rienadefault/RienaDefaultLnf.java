@@ -21,13 +21,14 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Resource;
 
-import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
 import org.eclipse.riena.ui.swt.lnf.FontDescriptor;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.ILnfRendererDesc;
+import org.eclipse.riena.ui.swt.lnf.ILnfRendererExtension;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -37,11 +38,10 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  */
 public class RienaDefaultLnf {
 
-	private static final String LNF_RENDERER_EXTENSION_ID = "org.eclipse.riena.ui.swt.lnfrenderer"; //$NON-NLS-1$
 	private static final String DEFAULT_THEME_CLASSNAME = RienaDefaultTheme.class.getName();
-	private Map<String, ILnfResource> resourceTable = new Hashtable<String, ILnfResource>();
-	private Map<String, Object> settingTable = new Hashtable<String, Object>();
-	private Map<String, ILnfRenderer> rendererTable = new Hashtable<String, ILnfRenderer>();
+	private final Map<String, ILnfResource> resourceTable = new Hashtable<String, ILnfResource>();
+	private final Map<String, Object> settingTable = new Hashtable<String, Object>();
+	private final Map<String, ILnfRenderer> rendererTable = new Hashtable<String, ILnfRenderer>();
 	private ILnfTheme theme;
 	private boolean initialized;
 	private boolean defaultColorsInitialized = false;
@@ -88,34 +88,32 @@ public class RienaDefaultLnf {
 	 * Injects the renderers of the extension into the table of renderers.
 	 */
 	protected void initWidgetRendererDefaults() {
-
 		if (Activator.getDefault() != null) {
-			Inject.extension(LNF_RENDERER_EXTENSION_ID).into(this).andStart(Activator.getDefault().getContext());
+			Wire.instance(this).andStart(Activator.getDefault().getContext());
 		}
-
 	}
 
 	/**
 	 * Puts the given renderers into the table of renderer.
 	 * 
-	 * @param rendererDescriptors
+	 * @param rendererExtensions
 	 *            - descriptors of renderer
 	 */
-	public void update(ILnfRendererDesc[] rendererDescriptors) {
-		if (rendererDescriptors == null) {
+	@InjectExtension
+	public void update(ILnfRendererExtension[] rendererExtensions) {
+		if (rendererExtensions == null) {
 			return;
 		}
 
-		for (ILnfRendererDesc rendererDescriptor : rendererDescriptors) {
-			String id = rendererDescriptor.getLnfId();
+		for (ILnfRendererExtension rendererExtension : rendererExtensions) {
+			String id = rendererExtension.getLnfId();
 			if (StringUtils.isEmpty(id) || id.equals(getLnfId())) {
 				if (StringUtils.isEmpty(id)) {
-					if (getRendererTable().get(rendererDescriptor.getLnfKey()) != null) {
+					if (getRendererTable().get(rendererExtension.getLnfKey()) != null) {
 						continue;
 					}
 				}
-				ILnfRenderer renderer = rendererDescriptor.createRenderer();
-				getRendererTable().put(rendererDescriptor.getLnfKey(), renderer);
+				getRendererTable().put(rendererExtension.getLnfKey(), rendererExtension.createRenderer());
 			}
 		}
 
