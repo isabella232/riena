@@ -68,11 +68,12 @@ public abstract class AbstractDialogView extends Dialog {
 	private boolean isClosing;
 
 	private static Shell getShellByGuessing() {
-		Shell result;
+		Shell result = null;
 		if (PlatformUI.isWorkbenchRunning()) {
 			result = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		} else {
+		} else if (Display.getCurrent() != null) {
 			result = Display.getCurrent().getActiveShell();
+
 		}
 		Assert.isNotNull(result, "Could not obtain a shell instance"); //$NON-NLS-1$
 		return result;
