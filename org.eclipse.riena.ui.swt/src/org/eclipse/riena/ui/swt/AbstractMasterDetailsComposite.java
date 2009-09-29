@@ -28,6 +28,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.common.IComplexComponent;
@@ -402,8 +403,14 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	private Composite createTableComposite(Composite parent) {
 		Composite result = UIControlsFactory.createComposite(parent);
 		TableColumnLayout layout = new TableColumnLayout();
-		result.setLayout(layout);
 		table = createTable(result, layout);
+		// TODO [ev] comment - this is done for comp.
+		if (table instanceof Table && result.getLayout() == null) {
+			result.setLayout(layout);
+			int wHint = 200;
+			int hHint = (((Table) table).getItemHeight() * 8) + ((Table) table).getHeaderHeight();
+			GridDataFactory.fillDefaults().grab(true, false).hint(wHint, hHint).applyTo(result);
+		}
 		addUIControl(table, BIND_ID_TABLE);
 		return result;
 	}

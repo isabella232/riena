@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -55,9 +54,6 @@ public class MasterDetailsComposite extends AbstractMasterDetailsComposite imple
 		Table table = new Table(compTable, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		int wHint = 200;
-		int hHint = (table.getItemHeight() * 8) + table.getHeaderHeight();
-		GridDataFactory.fillDefaults().grab(true, false).hint(wHint, hHint).applyTo(compTable);
 		return table;
 	}
 
