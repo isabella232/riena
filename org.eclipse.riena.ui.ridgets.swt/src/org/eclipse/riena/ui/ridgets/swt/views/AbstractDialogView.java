@@ -73,9 +73,8 @@ public abstract class AbstractDialogView extends Dialog {
 			result = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		} else if (Display.getCurrent() != null) {
 			result = Display.getCurrent().getActiveShell();
-
 		}
-		Assert.isNotNull(result, "Could not obtain a shell instance"); //$NON-NLS-1$
+		// may return null, but that is ok; Dialog does not req. a parent shell
 		return result;
 	}
 

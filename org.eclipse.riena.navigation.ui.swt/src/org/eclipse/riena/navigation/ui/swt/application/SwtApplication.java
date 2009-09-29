@@ -168,16 +168,10 @@ public abstract class SwtApplication extends AbstractApplication {
 
 	@Override
 	protected Object doPerformLogin(IApplicationContext context) {
-
-		final ILoginDialogView loginDialogView = loginDialogViewDefinition.createViewClass();
 		Realm realm = SWTObservables.getRealm(getDisplay());
+		final ILoginDialogView loginDialogView = loginDialogViewDefinition.createViewClass();
 		do {
 			Realm.runWithDefault(realm, new Runnable() {
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see java.lang.Runnable#run()
-				 */
 				public void run() {
 					loginDialogView.build();
 				}
