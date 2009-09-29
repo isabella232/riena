@@ -35,22 +35,6 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 
 	private final DirtyDetailsChecker dirtyDetailsChecker;
 
-	//	private IObservableList rowObservables;
-	//
-	//	private IMasterDetailsDelegate delegate;
-	//	private DataBindingContext dbc;
-	//	private boolean isDirectWriting;
-
-	/*
-	 * The object we are currently editing; null if not editing
-	 */
-	//	private Object editable;
-
-	/*
-	 * All ridgets from the details area.
-	 */
-	//	private IRidgetContainer detailRidgets;
-
 	public MasterDetailsRidget() {
 		super();
 		dirtyDetailsChecker = new DirtyDetailsChecker();

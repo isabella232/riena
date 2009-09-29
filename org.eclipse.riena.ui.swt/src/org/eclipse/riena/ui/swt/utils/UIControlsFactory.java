@@ -84,7 +84,7 @@ public class UIControlsFactory {
 	/**
 	 * @wbp.factory.parameter.source text "myMenuItemText"
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
-     * @since 1.2
+	 * @since 1.2
 	 */
 	public static MenuItem createMenuItem(Menu parent, String text, int style) {
 		MenuItem item = new MenuItem(parent, style);
@@ -94,7 +94,7 @@ public class UIControlsFactory {
 
 	/**
 	 * @wbp.factory.parameter.source text "myMenuItemText"
-     * @since 1.2
+	 * @since 1.2
 	 */
 	public static MenuItem createMenuItem(Menu parent, String text) {
 		MenuItem item = new MenuItem(parent, SWT.None);
@@ -105,7 +105,7 @@ public class UIControlsFactory {
 	/**
 	 * @wbp.factory.parameter.source text "myMenuItemText"
 	 * @wbp.factory.parameter.source bindingId "myMenuItemId"
-     * @since 1.2
+	 * @since 1.2
 	 */
 	public static MenuItem createMenuItem(Menu parent, String text, String bindingId) {
 		MenuItem item = new MenuItem(parent, SWT.None);
@@ -280,15 +280,29 @@ public class UIControlsFactory {
 		return result;
 	}
 
+	/**
+	 * @since 1.2
+	 */
+	public static Text createTextMultiWrap(Composite parent, boolean hScroll, boolean vScroll) {
+		return createTextMulti(parent, SWT.WRAP, hScroll, vScroll);
+	}
+
 	public static Text createTextMulti(Composite parent, boolean hScroll, boolean vScroll) {
-		int style = SWT.MULTI | SWT.BORDER;
+		return createTextMulti(parent, SWT.NONE, hScroll, vScroll);
+	}
+
+	/**
+	 * @since 1.2
+	 */
+	public static Text createTextMulti(Composite parent, int style, boolean hScroll, boolean vScroll) {
+		int txStyle = style | SWT.MULTI | SWT.BORDER;
 		if (hScroll) {
-			style |= SWT.H_SCROLL;
+			txStyle |= SWT.H_SCROLL;
 		}
 		if (vScroll) {
-			style |= SWT.V_SCROLL;
+			txStyle |= SWT.V_SCROLL;
 		}
-		return new Text(parent, style);
+		return new Text(parent, txStyle);
 	}
 
 	/**

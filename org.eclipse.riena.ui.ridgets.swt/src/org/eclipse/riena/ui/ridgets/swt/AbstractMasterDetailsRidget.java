@@ -100,18 +100,24 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	public void configureRidgets() {
 		configureTableRidget();
 
-		getNewButtonRidget().addListener(new IActionListener() {
-			public void callback() {
-				if (canAdd()) {
-					handleAdd();
+		if (hasNewButton()) {
+			getNewButtonRidget().addListener(new IActionListener() {
+				public void callback() {
+					if (canAdd()) {
+						handleAdd();
+					}
 				}
-			}
-		});
-		getRemoveButtonRidget().addListener(new IActionListener() {
-			public void callback() {
-				handleRemove();
-			}
-		});
+			});
+		}
+
+		if (hasRemoveButton()) {
+			getRemoveButtonRidget().addListener(new IActionListener() {
+				public void callback() {
+					handleRemove();
+				}
+			});
+		}
+
 		getApplyButtonRidget().addListener(new IActionListener() {
 			public void callback() {
 				if (canApply()) {
@@ -126,13 +132,15 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		final IObservableValue viewerSelection = getSelectionObservable();
 
 		Assert.isLegal(dbc == null);
-		dbc = new DataBindingContext();
-		bindEnablementToValue(dbc, getRemoveButtonRidget(), new ComputedValue(Boolean.TYPE) {
-			@Override
-			protected Object calculate() {
-				return Boolean.valueOf(viewerSelection.getValue() != null);
-			}
-		});
+		if (hasRemoveButton()) {
+			dbc = new DataBindingContext();
+			bindEnablementToValue(dbc, getRemoveButtonRidget(), new ComputedValue(Boolean.TYPE) {
+				@Override
+				protected Object calculate() {
+					return Boolean.valueOf(viewerSelection.getValue() != null);
+				}
+			});
+		}
 
 		for (IRidget ridget : detailRidgets.getRidgets()) {
 			ridget.addPropertyChangeListener(new PropertyChangeListener() {
@@ -333,6 +341,14 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	private IActionRidget getApplyButtonRidget() {
 		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_APPLY);
+	}
+
+	private boolean hasNewButton() {
+		return getNewButtonRidget() != null;
+	}
+
+	private boolean hasRemoveButton() {
+		return getRemoveButtonRidget() != null;
 	}
 
 	private void setEnabled(boolean applyEnabled, boolean detailsEnabled) {
