@@ -105,10 +105,6 @@ public final class ExtensionMapper {
 			throw new IllegalArgumentException("Extension point " + extensionDesc.getExtensionPointId() //$NON-NLS-1$
 					+ " does not exist"); //$NON-NLS-1$
 		}
-		final IExtension[] extensions = extensionPoint.getExtensions();
-		if (extensions.length == 0) {
-			return (T[]) Array.newInstance(componentType, 0);
-		}
 
 		final List<Object> list = new ArrayList<Object>();
 		if (nonSpecific) {
@@ -120,7 +116,7 @@ public final class ExtensionMapper {
 				list.add(InterfaceBeanFactory.newInstance(symbolReplace, componentType, new Wrapper(extensionPoint)));
 			}
 		} else {
-			for (IExtension extension : extensions) {
+			for (IExtension extension : extensionPoint.getExtensions()) {
 				list.add(InterfaceBeanFactory.newInstance(symbolReplace, componentType, new Wrapper(extension)));
 			}
 		}
