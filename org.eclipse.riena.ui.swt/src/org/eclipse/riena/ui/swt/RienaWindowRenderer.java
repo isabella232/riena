@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.ILnfRendererDesc;
+import org.eclipse.riena.ui.swt.lnf.ILnfRendererExtension;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
@@ -47,12 +47,12 @@ public class RienaWindowRenderer {
 	public RienaWindowRenderer(Window dialog) {
 		this.dialog = dialog;
 
-		// if we are in designtime, supply default renderer
+		// if we are in design time, supply default renderer
 		if (Beans.isDesignTime() || Activator.getDefault() == null) {
-			ILnfRendererDesc[] descs = new ILnfRendererDesc[] {
-					new LnfRenderer(new DialogBorderRenderer(), LnfKeyConstants.DIALOG_BORDER_RENDERER),
-					new LnfRenderer(new DialogTitleBarRenderer(), LnfKeyConstants.DIALOG_RENDERER) };
-			LnfManager.getLnf().update(descs);
+			ILnfRendererExtension[] extensions = new ILnfRendererExtension[] {
+					new LnfRendererExtension(new DialogBorderRenderer(), LnfKeyConstants.DIALOG_BORDER_RENDERER),
+					new LnfRendererExtension(new DialogTitleBarRenderer(), LnfKeyConstants.DIALOG_RENDERER) };
+			LnfManager.getLnf().update(extensions);
 		}
 	}
 
@@ -229,32 +229,4 @@ public class RienaWindowRenderer {
 
 	}
 
-	private static final class LnfRenderer implements ILnfRendererDesc {
-		private String lnfId;
-		private ILnfRenderer renderer;
-		private String lnfKey;
-
-		/**
-		 * @param lnfId
-		 * @param renderer
-		 */
-		public LnfRenderer(ILnfRenderer renderer, String lnfKey) {
-			super();
-			this.lnfId = ""; //$NON-NLS-1$
-			this.renderer = renderer;
-			this.lnfKey = lnfKey;
-		}
-
-		public ILnfRenderer createRenderer() {
-			return renderer;
-		}
-
-		public String getLnfId() {
-			return lnfId;
-		}
-
-		public String getLnfKey() {
-			return lnfKey;
-		}
-	}
 }
