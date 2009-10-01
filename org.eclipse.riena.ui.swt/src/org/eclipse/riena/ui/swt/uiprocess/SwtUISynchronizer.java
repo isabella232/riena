@@ -11,7 +11,6 @@
 package org.eclipse.riena.ui.swt.uiprocess;
 
 import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * serializes a runnable to the SWT-Thread
@@ -19,7 +18,7 @@ import org.eclipse.swt.widgets.Display;
 public class SwtUISynchronizer implements IUISynchronizer {
 
 	public void synchronize(Runnable r) {
-		Display.getDefault().syncExec(r);
+		// Display.getDefault().syncExec(r); TODO [ev] temporary hack to 'fix' race condition 
 	}
 
 }
