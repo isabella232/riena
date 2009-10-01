@@ -20,17 +20,17 @@ import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
  */
 public class ProcessDetail {
 
-	static volatile int keyDec = 0;
+	private static volatile int keyDec = 0;
 
-	static int nextKey() {
+	private static int nextKey() {
 		return keyDec++;
 	}
 
 	// the maximum value a pending process can reach
-	private final int PENDING_MAXWORK = 100;
-	private final int PENDING_STEP = 10;
+	private static final int PENDING_MAXWORK = 100;
+	private static final int PENDING_STEP = 10;
 
-	IProgressVisualizer visualizer;
+	private final IProgressVisualizer visualizer;
 
 	// state
 	private ProcessState state = ProcessState.PENDING;
@@ -42,7 +42,7 @@ public class ProcessDetail {
 	private int progress;
 
 	// startup time in millis [TS = time stamp]
-	private long startupTS;
+	private final long startupTS;
 
 	private final int key = nextKey();
 
