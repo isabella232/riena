@@ -370,10 +370,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	public void handleAdd() {
 		if (!isDirectWriting) {
 			// create the editable and update the details
-			clearTableSelection();
 			editable = delegate.createWorkingCopy();
 			setEnabled(false, true);
 			updateDetails(editable);
+			clearTableSelection();
 			getUIControl().getDetails().setFocus();
 		} else {
 			// create the editable, add it to the table, update the details
@@ -395,8 +395,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		Object selection = getSelection();
 		Assert.isNotNull(selection);
 		rowObservables.remove(selection);
-		clearTableSelection();
 		clearSelection();
+		clearTableSelection();
 		getTableRidget().updateFromModel();
 		setEnabled(false, false);
 	}
