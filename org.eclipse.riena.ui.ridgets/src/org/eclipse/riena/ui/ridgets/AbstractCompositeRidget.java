@@ -14,7 +14,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.databinding.BindingException;
@@ -33,7 +32,6 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 
 	private boolean enabled = true;
 	private String toolTip = null;
-	private boolean blocked;
 
 	/**
 	 * Constructor
@@ -205,21 +203,6 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		toolTip = toolTipText;
 		updateToolTipText();
 		firePropertyChange(IRidget.PROPERTY_TOOLTIP, oldValue, toolTip);
-	}
-
-	public boolean isBlocked() {
-		return blocked;
-	}
-
-	public void setBlocked(boolean blocked) {
-
-		Collection<? extends IRidget> r = getRidgets();
-		for (Iterator<? extends IRidget> iterator = r.iterator(); iterator.hasNext();) {
-			IRidget object = iterator.next();
-			object.setBlocked(blocked);
-
-		}
-
 	}
 
 	public void configureRidgets() {

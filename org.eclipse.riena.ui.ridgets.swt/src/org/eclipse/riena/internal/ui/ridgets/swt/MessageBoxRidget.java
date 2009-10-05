@@ -32,7 +32,6 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	private MessageBox messageBox;
 	private String title;
 	private String text;
-	private boolean blocked;
 	private boolean visible;
 	private boolean enabled = true;
 	private boolean focusable;
@@ -179,10 +178,6 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		return messageBox.hasFocus();
 	}
 
-	public boolean isBlocked() {
-		return blocked;
-	}
-
 	public boolean isFocusable() {
 		return focusable;
 	}
@@ -199,12 +194,6 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		if (isFocusable()) {
 			messageBox.requestFocus();
 		}
-	}
-
-	public void setBlocked(boolean blocked) {
-
-		this.blocked = blocked;
-		setFocusable(!blocked);
 	}
 
 	public void setFocusable(boolean focusable) {

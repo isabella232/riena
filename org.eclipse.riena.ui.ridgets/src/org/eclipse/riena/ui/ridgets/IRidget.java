@@ -25,6 +25,9 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
  */
 public interface IRidget {
 
+	/**
+	 * @deprecated never implemented - do not use
+	 */
 	String PROPERTY_BLOCKED = "blocked"; //$NON-NLS-1$
 
 	/**
@@ -235,17 +238,18 @@ public interface IRidget {
 	void setToolTipText(String toolTipText);
 
 	/**
-	 * Blocks or unblocks the user input for the ridget.
+	 * This was never implemented.
 	 * 
-	 * @param blocked
-	 *            true if input is blocked for the ridget, else false.
+	 * @deprecated - this was never implemented - do not call
 	 */
 	void setBlocked(boolean blocked);
 
 	/**
-	 * Returns, if user input for the ridget is blocked.
+	 * This was never implemented.
 	 * 
-	 * @return true if input is blocked for the ridget, else false.
+	 * @return false always
+	 * 
+	 * @deprecated - this was never implemented - do not call
 	 */
 	boolean isBlocked();
 

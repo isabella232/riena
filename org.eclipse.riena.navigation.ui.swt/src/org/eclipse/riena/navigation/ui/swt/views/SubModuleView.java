@@ -48,7 +48,6 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.ControllerUtils;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.ui.common.IComplexComponent;
@@ -582,7 +581,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		@Override
 		public void block(ISubModuleNode source, boolean block) {
 			if (source.equals(getNavigationNode())) {
-				ControllerUtils.blockRidgets(getController().getRidgets(), block);
 				blockView(block);
 			}
 		}

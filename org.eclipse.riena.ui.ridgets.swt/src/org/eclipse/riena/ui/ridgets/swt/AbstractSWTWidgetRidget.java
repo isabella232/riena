@@ -45,7 +45,6 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 
 	private Widget uiControl;
 	private String toolTip = null;
-	private boolean blocked;
 	private ErrorMessageMarker errorMarker;
 	private DisabledMarker disabledMarker;
 	private MandatoryMarker mandatoryMarker;
@@ -162,14 +161,6 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 
 	public final String getToolTipText() {
 		return toolTip;
-	}
-
-	public final boolean isBlocked() {
-		return blocked;
-	}
-
-	public final void setBlocked(boolean blocked) {
-		this.blocked = blocked;
 	}
 
 	// abstract methods - subclasses must implement

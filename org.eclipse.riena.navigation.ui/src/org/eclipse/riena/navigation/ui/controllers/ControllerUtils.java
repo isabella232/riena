@@ -11,10 +11,8 @@
 package org.eclipse.riena.navigation.ui.controllers;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 
 /**
  * Utility methods used by controller implementations.
@@ -26,23 +24,11 @@ public final class ControllerUtils {
 	}
 
 	/**
-	 * Sets the blocked state of all given ridgets. A blocked ridget does not
-	 * accept any user input an is not be focusable.
+	 * This was never implemented.
 	 * 
-	 * @param ridgets
-	 *            the Ridgets to be blocked
-	 * @param blocked
-	 *            the blocked state
+	 * @deprecated never implemented - do not call
 	 */
 	public static void blockRidgets(Collection<? extends IRidget> ridgets, boolean blocked) {
-		Iterator<? extends IRidget> iterator = ridgets.iterator();
-		while (iterator.hasNext()) {
-			IRidget object = iterator.next();
-			object.setBlocked(blocked);
-			if (object instanceof IRidgetContainer) {
-				blockRidgets(((IRidgetContainer) object).getRidgets(), blocked);
-			}
-		}
 	}
 
 }

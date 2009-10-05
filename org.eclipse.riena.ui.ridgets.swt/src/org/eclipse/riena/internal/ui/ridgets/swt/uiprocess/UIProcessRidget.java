@@ -571,14 +571,6 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		}
 	}
 
-	// No Blocking
-	public void setBlocked(boolean blocked) {
-	}
-
-	public boolean isBlocked() {
-		return false;
-	}
-
 	public void setToolTipText(String toolTipText) {
 		if (getWindowShell() != null && !getWindowShell().isDisposed()) {
 			getWindowShell().setToolTipText(toolTipText);

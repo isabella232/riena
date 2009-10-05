@@ -325,14 +325,6 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		return null;
 	}
 
-	public boolean isBlocked() {
-		return false;
-	}
-
-	public void setBlocked(boolean blocked) {
-		// Never blocked so far. Should there be blocking available in future?
-	}
-
 	/**
 	 * {@link UIProcess} specific code
 	 */

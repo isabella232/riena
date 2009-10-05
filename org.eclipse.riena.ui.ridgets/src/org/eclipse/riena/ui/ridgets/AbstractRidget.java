@@ -78,6 +78,23 @@ public abstract class AbstractRidget implements IRidget {
 		// Do nothing by default
 	}
 
+	/**
+	 * This was never implemented.
+	 * 
+	 * @return false always
+	 * 
+	 * @deprecated - this was never implemented - do not call
+	 */
+	public final boolean isBlocked() {
+		return false;
+	}
+
+	/**
+	 * @deprecated - this was never implemented - do not call
+	 */
+	public final void setBlocked(boolean blocked) {
+	}
+
 	// protected methods
 	////////////////////
 
