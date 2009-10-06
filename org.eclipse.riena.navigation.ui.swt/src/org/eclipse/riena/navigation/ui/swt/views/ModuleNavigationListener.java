@@ -256,7 +256,7 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener {
 		/**
 		 * Wait this long (ms) before activating a node.
 		 */
-		private static final int TIMEOUT_MS = 700;
+		private static final int TIMEOUT_MS = 300;
 
 		private final INavigationNode<?> node;
 		private final Display display;
