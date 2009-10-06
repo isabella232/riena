@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -23,6 +28,7 @@ import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchModule;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 
 /**
  * Navigation for the 'submodule' tree used in {@link ModuleView}. This includes
@@ -51,6 +57,7 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener {
 	private static final int KC_ARROW_UP = 16777217;
 
 	private volatile boolean keyPressed;
+	private int keyCode;
 
 	private NodeSwitcher nodeSwitcher;
 	private boolean isFirst;
@@ -65,13 +72,35 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener {
 		// System.out.println("widgetSelected() " + getSelection(event));
 		cancelSwitch();
 		if (!keyPressed) {
+			// selected by mouse click
 			startSwitch(getSelection(event));
+		} else {
+			// key is down and we must check if the tree node is selectable
+			Tree tree = (Tree) event.widget;
+			TreeItem[] sel = tree.getSelection();
+			if (sel.length > 0) {
+				TreeItem item = sel[0];
+				if (!isSelectable(item)) {
+					// if item is not selectable find the next selectable item in the same direction
+					if (keyCode == SWT.ARROW_UP || keyCode == SWT.ARROW_LEFT) {
+						item = findPrevious(item);
+					} else if (keyCode == SWT.ARROW_DOWN || keyCode == SWT.ARROW_RIGHT) {
+						item = findNext(item);
+					}
+					if (item != null) {
+						item.getParent().select(item);
+					}
+					// if item == null then the code in keyRelease will expand the
+					// unselectable item and select the first child
+				}
+			}
 		}
 	}
 
 	public void keyPressed(KeyEvent event) {
 		cancelSwitch();
 		keyPressed = true;
+		keyCode = event.keyCode;
 		TreeItem from = getSelection(event);
 		isFirst = isFirst(from);
 		isLast = isLast(from);
@@ -124,6 +153,38 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener {
 		return result;
 	}
 
+	/**
+	 * Find the first selectable TreeItem below {@code item} in the tree. Will
+	 * consider all available (=expanded) tree items.
+	 * 
+	 * @return a TreeItem, may be null
+	 */
+	private TreeItem findNext(TreeItem item) {
+		List<TreeItem> siblings = sequentialize(item.getParent().getItems());
+		int index = siblings.indexOf(item);
+		TreeItem result = index != -1 && index < siblings.size() - 1 ? siblings.get(index + 1) : null;
+		if (result != null && !isSelectable(result)) {
+			result = findNext(result);
+		}
+		return result;
+	}
+
+	/**
+	 * Find the first selectable TreeItem above {@code item} in the tree. Will
+	 * consider all available (=expanded) tree items.
+	 * 
+	 * @return a TreeItem, may be null
+	 */
+	private TreeItem findPrevious(TreeItem item) {
+		List<TreeItem> siblings = sequentialize(item.getParent().getItems());
+		int index = siblings.indexOf(item);
+		TreeItem result = index > 0 ? siblings.get(index - 1) : null;
+		if (result != null && !isSelectable(result)) {
+			result = findPrevious(result);
+		}
+		return result;
+	}
+
 	private TreeItem getSelection(TypedEvent event) {
 		Tree tree = (Tree) event.widget;
 		TreeItem result = null;
@@ -151,6 +212,31 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener {
 		return item == findLast(item.getParent());
 	}
 
+	private boolean isSelectable(TreeItem item) {
+		boolean result = true;
+		INavigationNode<?> node = (INavigationNode<?>) item.getData();
+		if (node instanceof SubModuleNode) {
+			result = ((SubModuleNode) node).isSelectable();
+		}
+		return result;
+	}
+
+	/**
+	 * Do a DFS traversal and return all reachable nodes.
+	 */
+	private List<TreeItem> sequentialize(TreeItem[] siblings) {
+		List<TreeItem> stack = new ArrayList<TreeItem>(Arrays.asList(siblings));
+		List<TreeItem> result = new ArrayList<TreeItem>();
+		while (!stack.isEmpty()) {
+			TreeItem item = stack.remove(0);
+			result.add(item);
+			if (item.getExpanded()) {
+				stack.addAll(0, Arrays.asList(item.getItems()));
+			}
+		}
+		return result;
+	}
+
 	private void startSwitch(TreeItem item) {
 		cancelSwitch();
 		if (item != null) {
@@ -165,7 +251,7 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener {
 	/**
 	 * Activates a navigation node after a timeout. Can be cancelled.
 	 */
-	private static class NodeSwitcher extends Thread {
+	private final static class NodeSwitcher extends Thread {
 
 		/**
 		 * Wait this long (ms) before activating a node.
