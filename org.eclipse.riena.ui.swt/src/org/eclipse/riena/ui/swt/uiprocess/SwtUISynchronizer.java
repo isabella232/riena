@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.uiprocess;
 
+import org.eclipse.swt.widgets.Display;
+
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
 
 /**
@@ -17,8 +20,19 @@ import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
  */
 public class SwtUISynchronizer implements IUISynchronizer {
 
-	public void synchronize(Runnable r) {
-		// Display.getDefault().syncExec(r); TODO [ev] temporary hack to 'fix' race condition 
-	}
+	private Display display;
 
+	public void synchronize(Runnable r) {
+		synchronized (this) {
+			if (display == null) {
+				// TODO [sli] Another hack - How can I find out whether the Display has been set by the correct thread?
+				display = ReflectionUtils.getHidden(Display.class, "Default"); //$NON-NLS-1$
+			}
+		}
+		if (display == null) {
+			r.run();
+		} else {
+			Display.getDefault().syncExec(r);
+		}
+	}
 }
