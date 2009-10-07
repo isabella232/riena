@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.riena.build.feature.core.sdk"
       label="Riena Core SDK (TP ONLY)"
-      version="1.2.0.qualifier">
+      version="1.2.0.M2-qualifier">
 
    <description>
       This feature contains the corresponding components for Riena
