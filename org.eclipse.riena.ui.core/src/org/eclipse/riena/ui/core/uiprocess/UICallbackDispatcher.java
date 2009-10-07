@@ -19,9 +19,7 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.core.runtime.jobs.ProgressProvider;
-import org.eclipse.equinox.log.Logger;
 
-import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.internal.ui.core.Activator;
@@ -35,17 +33,15 @@ import org.eclipse.riena.internal.ui.core.Activator;
  */
 public class UICallbackDispatcher extends ProgressProvider implements IUIMonitorContainer {
 
-	private IUISynchronizer syncher;
+	private final IUISynchronizer syncher;
 
-	private List<IUIMonitor> uiMonitors;
+	private final List<IUIMonitor> uiMonitors;
 
-	private ProcessInfo pInfo;
+	private final ProcessInfo pInfo;
 
 	private boolean visualize;
 
 	private ThreadSwitcher threadSwitcher;
-
-	private Logger logger = Log4r.getLogger(Activator.getDefault(), UIProcess.class);
 
 	public UICallbackDispatcher(IUISynchronizer syncher) {
 		this.uiMonitors = new ArrayList<IUIMonitor>();
