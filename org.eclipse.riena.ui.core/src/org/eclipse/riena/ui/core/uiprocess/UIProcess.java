@@ -178,19 +178,19 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * called whenever a unit of work is completed
 	 */
 	public void updateProgress(int progress) {
-	};
+	}
 
 	/**
 	 * called on the user interface thread before aynch work is done
 	 */
 	public void initialUpdateUI(int totalWork) {
-	};
+	}
 
 	/**
 	 * called on the user interface thread after aynch work is done
 	 */
 	public void finalUpdateUI() {
-	};
+	}
 
 	/**
 	 * override this method for implementation of logic on a worker thread
