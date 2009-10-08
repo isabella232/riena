@@ -25,7 +25,10 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Slider;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
@@ -51,8 +54,11 @@ import org.eclipse.riena.internal.ui.ridgets.swt.MessageBoxRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ModuleTitleBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MultipleChoiceRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.NumericTextRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.ScaleRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.SingleChoiceRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.SliderRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.SpinnerRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.StatuslineNumberRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.StatuslineRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TableRidget;
@@ -136,6 +142,9 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(ModuleTitleBar.class, ModuleTitleBarRidget.class);
 		addMapping(CompositeTable.class, CompositeTableRidget.class);
 		addMapping(MasterDetailsComposite.class, MasterDetailsRidget.class);
+		addMapping(Scale.class, ScaleRidget.class);
+		addMapping(Spinner.class, SpinnerRidget.class);
+		addMapping(Slider.class, SliderRidget.class);
 	}
 
 	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
