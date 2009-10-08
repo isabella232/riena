@@ -10,9 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.uiprocess;
 
-import org.eclipse.swt.widgets.Display;
+import org.osgi.service.log.LogService;
 
-import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.equinox.log.Logger;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
+
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
 
 /**
@@ -20,26 +25,47 @@ import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
  */
 public class SwtUISynchronizer implements IUISynchronizer {
 
-	public void synchronize(Runnable r) {
+	public void synchronize(Runnable runnable) {
+		if (!hasDisplay()) {
+			waitForDisplay(15000);
+		}
+		Display display = null;
 		if (hasDisplay()) {
-			Display.getDefault().syncExec(r);
-		} else {
-			r.run();
-		}
-	}
-
-	private static Display display;
-
-	private boolean hasDisplay() {
-		if (display != null) {
-			return true;
-		}
-		synchronized (SwtUISynchronizer.class) {
-			if (display == null) {
-				// TODO [sli] Another hack - How can I find out whether the Display has been set by the correct thread?
-				display = ReflectionUtils.getHidden(Display.class, "Default"); //$NON-NLS-1$
+			display = PlatformUI.getWorkbench().getDisplay();
+			if (!display.isDisposed()) {
+				display.syncExec(runnable);
 			}
 		}
-		return display != null;
+		if (display == null || display.isDisposed()) {
+			getLogger().log(LogService.LOG_ERROR, "Could not obtain display for runnable"); //$NON-NLS-1$
+		}
 	}
+
+	private Logger getLogger() {
+		return Log4r.getLogger(org.eclipse.riena.internal.ui.swt.Activator.getDefault(), SwtUISynchronizer.class);
+	}
+
+	private boolean hasDisplay() {
+		return PlatformUI.isWorkbenchRunning() && PlatformUI.getWorkbench().getDisplay() != null;
+	}
+
+	/**
+	 * Wait for display in 500ms increments, up to timeoutMs
+	 * 
+	 * @param timeoutMs
+	 *            time out in ms (positive)
+	 */
+	private void waitForDisplay(int timeoutMs) {
+		Assert.isTrue(timeoutMs >= 0);
+		int time = 0;
+		do {
+			try {
+				Thread.sleep(500);
+				time += 500;
+			} catch (InterruptedException e) {
+				return;
+			}
+		} while (time < timeoutMs && !hasDisplay());
+	}
+
 }
