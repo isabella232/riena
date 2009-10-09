@@ -10,18 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena;
 
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 import org.eclipse.riena.internal.core.test.collect.NonGatherableTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.core.test.collect.TestCollector;
-import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.tests.Activator;
 
 /**
@@ -51,19 +47,22 @@ public class AllFastTests extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	public static Test suite() {
-		TestSuite collected = TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), null,
-				UITestCase.class, NonUITestCase.class);
-		Enumeration tests = collected.tests();
-		TestSuite result = new TestSuite();
-		while (tests.hasMoreElements()) {
-			Test test = (Test) tests.nextElement();
-			if (!LONG_TESTS.contains(getTestName(test))) {
-				result.addTest(test);
-			} else {
-				System.err.println("...skipping long test: " + test.toString());
-			}
-		}
-		return result;
+		//		TestSuite collected = TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), null,
+		//				UITestCase.class, NonUITestCase.class);
+		//		Enumeration tests = collected.tests();
+		//		TestSuite result = new TestSuite();
+		//		while (tests.hasMoreElements()) {
+		//			Test test = (Test) tests.nextElement();
+		//			if (!LONG_TESTS.contains(getTestName(test))) {
+		//				result.addTest(test);
+		//			} else {
+		//				System.err.println("...skipping long test: " + test.toString());
+		//			}
+		//		}
+		// return result;
+
+		// TODO [ev] tmp remove
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllTests.class.getPackage());
 	}
 
 	// helping methods
