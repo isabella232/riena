@@ -119,7 +119,7 @@ public class LnFUpdater {
 		Control[] controls = parent.getChildren();
 		for (Control uiControl : controls) {
 
-			if (checkUpDateAfterBind(uiControl)) {
+			if (checkUpdateAfterBind(uiControl)) {
 				updateUIControl(uiControl);
 			}
 
@@ -139,7 +139,7 @@ public class LnFUpdater {
 	 * @return {@code true} if the control must be updated; otherwise {@code
 	 *         false}
 	 */
-	private boolean checkUpDateAfterBind(Control uiControl) {
+	private boolean checkUpdateAfterBind(Control uiControl) {
 
 		if (uiControl == null) {
 			return false;
@@ -150,7 +150,7 @@ public class LnFUpdater {
 		}
 
 		if (uiControl.getParent() != null) {
-			return checkUpDateAfterBind(uiControl.getParent());
+			return checkUpdateAfterBind(uiControl.getParent());
 		}
 
 		return false;
@@ -180,9 +180,6 @@ public class LnFUpdater {
 		}
 		PropertyDescriptor[] properties = getProperties(control);
 		for (PropertyDescriptor property : properties) {
-			if (hasNoDefaultValue(control, property)) {
-				continue;
-			}
 			Object newValue = getLnfValue(control, property);
 			if (newValue == null) {
 				continue;
@@ -193,6 +190,9 @@ public class LnFUpdater {
 			}
 			int modifiers = setter.getModifiers();
 			if (!Modifier.isPublic(modifiers)) {
+				continue;
+			}
+			if (hasNoDefaultValue(control, property)) {
 				continue;
 			}
 			try {
@@ -218,16 +218,16 @@ public class LnFUpdater {
 	 */
 	private boolean checkLnfKeys(Control control) {
 
-		boolean exists = false;
+		RienaDefaultLnf lnf = LnfManager.getLnf();
 
 		Class<? extends Control> controlClass = control.getClass();
 		String className = getSimpleClassName(controlClass);
 		if (!StringUtils.isEmpty(className)) {
 			className += "."; //$NON-NLS-1$
-			Set<String> keys = LnfManager.getLnf().getResourceTable().keySet();
+			Set<String> keys = lnf.getResourceTable().keySet();
 			for (String key : keys) {
 				if (key.startsWith(className)) {
-					exists = true;
+					return true;
 				}
 			}
 		}
@@ -235,15 +235,15 @@ public class LnFUpdater {
 		String style = (String) control.getData(UIControlsFactory.KEY_LNF_STYLE);
 		if (!StringUtils.isEmpty(style)) {
 			style += "."; //$NON-NLS-1$
-			Set<String> keys = LnfManager.getLnf().getResourceTable().keySet();
+			Set<String> keys = lnf.getResourceTable().keySet();
 			for (String key : keys) {
 				if (key.startsWith(style)) {
-					exists = true;
+					return true;
 				}
 			}
 		}
 
-		return exists;
+		return false;
 
 	}
 
@@ -252,7 +252,7 @@ public class LnFUpdater {
 	 * For anonymous classes the name of the super class is returned.
 	 * 
 	 * @param controlClass
-	 *            - clas of the UI control
+	 *            - class of the UI control
 	 * @return simple name of the class
 	 */
 	@SuppressWarnings("unchecked")

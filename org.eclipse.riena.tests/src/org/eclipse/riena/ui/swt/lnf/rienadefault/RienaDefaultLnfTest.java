@@ -68,10 +68,12 @@ public class RienaDefaultLnfTest extends TestCase {
 		lnf.uninitialize();
 
 		assertNull(lnf.getRenderer(LnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
-		assertNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
+		assertNull(lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
+		assertNotNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
 
 		lnf.initialize();
 
+		assertNotNull(lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
 		assertNotNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
 
 	}
@@ -86,11 +88,16 @@ public class RienaDefaultLnfTest extends TestCase {
 
 		Color color = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND);
 		assertNotNull(color);
+		Font font = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT);
+		assertNotNull(font);
 
 		lnf.uninitialize();
 
+		assertTrue(font.isDisposed());
+		assertNull(lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
 		assertTrue(color.isDisposed());
-		assertNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
+		assertNotNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
+		assertNotSame(color, lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
 
 	}
 

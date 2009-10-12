@@ -164,20 +164,20 @@ public class LnFUpdaterTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the <i>private</i> method {@code checkUpDateAfterBind}.
+	 * Tests the <i>private</i> method {@code checkUpdateAfterBind}.
 	 */
-	public void testCheckUpDateAfterBind() {
+	public void testCheckUpdateAfterBind() {
 
 		Composite comp1 = new Composite(shell, SWT.NONE);
 		Label label1 = new Label(comp1, SWT.NONE);
-		boolean retValue = ReflectionUtils.invokeHidden(lnFUpdater, "checkUpDateAfterBind", label1);
+		boolean retValue = ReflectionUtils.invokeHidden(lnFUpdater, "checkUpdateAfterBind", label1);
 		assertFalse(retValue);
 
 		ChoiceComposite choiceComp1 = new ChoiceComposite(comp1, SWT.NONE, false);
-		retValue = ReflectionUtils.invokeHidden(lnFUpdater, "checkUpDateAfterBind", choiceComp1);
+		retValue = ReflectionUtils.invokeHidden(lnFUpdater, "checkUpdateAfterBind", choiceComp1);
 		assertTrue(retValue);
 		Label label2 = new Label(choiceComp1, SWT.NONE);
-		retValue = ReflectionUtils.invokeHidden(lnFUpdater, "checkUpDateAfterBind", label2);
+		retValue = ReflectionUtils.invokeHidden(lnFUpdater, "checkUpdateAfterBind", label2);
 		assertTrue(retValue);
 
 	}

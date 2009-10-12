@@ -81,6 +81,7 @@ public class RienaDefaultLnf {
 		getRendererTable().clear();
 		getSettingTable().clear();
 		setInitialized(false);
+		defaultColorsInitialized = false;
 	}
 
 	/**
@@ -123,7 +124,7 @@ public class RienaDefaultLnf {
 	 * Initializes the table with the resources.
 	 */
 	protected void initResourceDefaults() {
-		//		initColorDefaults();
+		initColorDefaults();
 		initFontDefaults();
 		initImageDefaults();
 		initSettingsDefaults();
@@ -133,6 +134,10 @@ public class RienaDefaultLnf {
 	 * Puts the colors to resource table.
 	 */
 	protected void initColorDefaults() {
+
+		if (defaultColorsInitialized) {
+			return;
+		}
 
 		getResourceTable().put("black", new ColorLnfResource(0, 0, 0)); //$NON-NLS-1$
 		getResourceTable().put("white", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
@@ -209,9 +214,7 @@ public class RienaDefaultLnf {
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
 	public Color getColor(String key) {
-		if (!defaultColorsInitialized) {
-			initColorDefaults();
-		}
+		initColorDefaults();
 		Resource value = getResource(key);
 		if (value instanceof Color) {
 			return (Color) value;
@@ -432,6 +435,7 @@ public class RienaDefaultLnf {
 		if (theme != newTheme) {
 			theme = newTheme;
 			setInitialized(false);
+			defaultColorsInitialized = false;
 		}
 	}
 
