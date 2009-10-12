@@ -37,9 +37,12 @@ import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
- * TODO [ev] docs
- * 
- * A ridget for the {@link MasterDetailsComposite}.
+ * Common functionality that is shared between implementations of the
+ * {@link IMasterDetailsRidget}.
+ * <p>
+ * This class defines several widget-specific abstract methods, which must be
+ * implemted by clients. It is expected that clients will write widget-specific
+ * subclass of {@link AbstractMasterDetailsComposite}.
  * 
  * @since 1.2
  */

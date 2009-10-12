@@ -39,12 +39,10 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * TODO [ev] review docs
- * 
- * This composite contains a table (the "master") of n columns, as well as add,
- * remove and update buttons. It also contains an arbitratry composite (the
- * "details"), which are updated automatically when the selected row in the
- * table changes.
+ * This composite contains a table-like widget (the "master") of n columns, as
+ * well as new, remove and update buttons. It also contains an arbitratry
+ * composite (the "details"), which is updated automatically when the selected
+ * row in the table changes.
  * <p>
  * Subclasses must override the {@link #createDetails(Composite)} method, to
  * populate the details composite with additional widgets. Widgets in the
@@ -79,20 +77,6 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	private Control table;
 	private Composite details;
 	private Composite master;
-
-	/**
-	 * Create an instance of MasterDetailsComposite with the details area at the
-	 * bottom.
-	 * 
-	 * @param parent
-	 *            the parent Composite; not null
-	 * @param style
-	 *            the style bits; values are restricted to those supported by
-	 *            {@link Composite}
-	 */
-	public AbstractMasterDetailsComposite(Composite parent, int style) {
-		this(parent, style, SWT.BOTTOM);
-	}
 
 	/**
 	 * Create an instance of MasterDetailsComposite with the details area at the
@@ -331,7 +315,8 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	/**
-	 * TODO [ev] mention GridData + include sample code
+	 * TODO [ev] update -- does not always return a table + mention GridData +
+	 * include sample code
 	 * 
 	 * Creates the table used by this control. Subclasses may ovverride.
 	 * 
@@ -404,8 +389,9 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 		Composite result = UIControlsFactory.createComposite(parent);
 		TableColumnLayout layout = new TableColumnLayout();
 		table = createTable(result, layout);
-		// TODO [ev] comment - this is done for comp.
 		if (table instanceof Table && result.getLayout() == null) {
+			// this is specific to the MasterDetailsComposite, but is done here
+			// for backwards compatibility
 			result.setLayout(layout);
 			int wHint = 200;
 			int hHint = (((Table) table).getItemHeight() * 8) + ((Table) table).getHeaderHeight();

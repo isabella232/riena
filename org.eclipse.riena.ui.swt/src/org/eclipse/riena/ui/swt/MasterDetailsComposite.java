@@ -19,24 +19,37 @@ import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 
 /**
- * This composite contains a table (the "master") of n columns, as well as add,
- * remove and update buttons. It also contains an arbitratry composite (the
- * "details"), which are updated automatically when the selected row in the
+ * This composite contains a Table widget (the "master") of n columns, as well
+ * as new, remove and update buttons. It also contains an arbitratry composite
+ * (the "details"), which is updated automatically when the selected row in the
  * table changes.
  * <p>
- * Subclasses must override the {@link #createDetails(Composite)} method, to
- * populate the details composite with additional widgets. Widgets in the
- * details composite that should be bound to ridgets, must be registered by
- * invoking the {@link #addUIControl(Object, String)} method.
+ * See {@link AbstractMasterDetailsComposite} for details.
  * 
  * @see IMasterDetailsRidget
+ * 
+ * @since 1.2
  */
 public class MasterDetailsComposite extends AbstractMasterDetailsComposite implements IComplexComponent {
 
+	/**
+	 * Creates a master detail composite with the given style and SWT.BOTTOM
+	 * orientation. See parent class for details.
+	 * 
+	 * @see AbstractMasterDetailsComposite#AbstractMasterDetailsComposite(Composite,
+	 *      int, int)
+	 */
 	public MasterDetailsComposite(Composite parent, int style) {
 		this(parent, style, SWT.BOTTOM);
 	}
 
+	/**
+	 * Creates a master detail composite with the given style and SWT.BOTTOM
+	 * orientation. See parent class for details.
+	 * 
+	 * @see AbstractMasterDetailsComposite#AbstractMasterDetailsComposite(Composite,
+	 *      int, int)
+	 */
 	public MasterDetailsComposite(Composite parent, int style, int orientation) {
 		super(parent, style, orientation);
 	}
