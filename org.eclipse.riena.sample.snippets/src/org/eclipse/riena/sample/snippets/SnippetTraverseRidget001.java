@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.Spinner;
 
 import org.eclipse.riena.beans.common.IntegerBean;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
-import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.ISliderRidget;
 import org.eclipse.riena.ui.ridgets.ISpinnerRidget;
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
@@ -35,9 +34,10 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Shows how to use a {@link IDateTextRidget} with a 'dd.MM.yyyy' pattern.
+ * Example of the {@link ITraverseRidget} used with SWT's Slider, Scale and
+ * Spinner controls.
  */
-public final class SnippetTraverseRidgets001 {
+public final class SnippetTraverseRidget001 {
 
 	private static final int MINIMUM = 75;
 	private static final int MAXIMUM = 200;
@@ -46,7 +46,7 @@ public final class SnippetTraverseRidgets001 {
 		Display display = Display.getDefault();
 		try {
 			Shell shell = new Shell();
-			shell.setText(SnippetTraverseRidgets001.class.getSimpleName());
+			shell.setText(SnippetTraverseRidget001.class.getSimpleName());
 			shell.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
