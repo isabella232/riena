@@ -20,7 +20,6 @@ import org.eclipse.riena.security.common.session.Session;
  */
 public interface ISessionStore {
 
-	/** <code>SESSION_STORE_ID</code> */
 	String SESSION_STORE_ID = "spirit.securityimplementation.server.SessionStore"; //$NON-NLS-1$
 
 	/**
@@ -33,10 +32,9 @@ public interface ISessionStore {
 	Session[] read(Principal principal);
 
 	/**
-	 * reads the session entry object for a session id
+	 * reads the session entry object for a session
 	 * 
 	 * @param session
-	 *            session id
 	 * @return session entry
 	 */
 	SessionEntry read(Session session);
@@ -50,10 +48,9 @@ public interface ISessionStore {
 	void write(SessionEntry entry);
 
 	/**
-	 * deletes the session entries for a session id
+	 * deletes the session entries for a session
 	 * 
 	 * @param session
-	 *            session id
 	 */
 	void delete(Session session);
 
