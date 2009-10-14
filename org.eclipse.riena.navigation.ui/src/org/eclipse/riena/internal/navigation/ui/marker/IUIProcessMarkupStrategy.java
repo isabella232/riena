@@ -22,9 +22,9 @@ public interface IUIProcessMarkupStrategy {
 	/**
 	 * 
 	 * @param baseNode
-	 *            - the node where the {@link UIProcess} was started
+	 *            the node where the {@link UIProcess} was started
 	 * @param marker
-	 *            - the marker to add
+	 *            the marker to add
 	 */
 	void applyUIProcessMarker(INavigationNode<?> baseNode, IMarker marker);
 

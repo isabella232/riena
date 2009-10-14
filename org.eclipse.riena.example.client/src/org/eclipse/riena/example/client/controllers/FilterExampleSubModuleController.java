@@ -143,7 +143,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 	 * Updates the text of the given toggle button.
 	 * 
 	 * @param toggle
-	 *            - toggle button
+	 *            toggle button
 	 */
 	private void updateToggleText(IToggleButtonRidget toggle) {
 

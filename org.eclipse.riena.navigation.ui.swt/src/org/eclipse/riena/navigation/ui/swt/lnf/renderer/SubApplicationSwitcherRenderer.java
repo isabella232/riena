@@ -138,7 +138,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 	 * given item.
 	 * 
 	 * @param tabRenderer
-	 *            - renderer of an item
+	 *            renderer of an item
 	 * @param item
 	 */
 	private void initItemRenderer(SubApplicationTabRenderer tabRenderer, SubApplicationItem item) {

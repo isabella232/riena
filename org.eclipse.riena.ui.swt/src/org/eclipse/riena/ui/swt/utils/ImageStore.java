@@ -62,7 +62,7 @@ public final class ImageStore {
 	 * Returns the image for the given image name.
 	 * 
 	 * @param imageName
-	 *            - name (ID) of the image
+	 *            name (ID) of the image
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
 	public Image getImage(String imageName) {
@@ -74,9 +74,9 @@ public final class ImageStore {
 	 * extension.
 	 * 
 	 * @param imageName
-	 *            - name (ID) of the image
+	 *            name (ID) of the image
 	 * @param fileExtension
-	 *            - extension of the image file (@see ImageFileExtension)
+	 *            extension of the image file (@see ImageFileExtension)
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
 	public Image getImage(String imageName, ImageFileExtension fileExtension) {
@@ -87,9 +87,9 @@ public final class ImageStore {
 	 * Returns the image for the given image name and given state.
 	 * 
 	 * @param imageName
-	 *            - name (ID) of the image
+	 *            name (ID) of the image
 	 * @param state
-	 *            - state of the image (@see ImageState)
+	 *            state of the image (@see ImageState)
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
 	public Image getImage(String imageName, ImageState state) {
@@ -101,11 +101,11 @@ public final class ImageStore {
 	 * given file extension.
 	 * 
 	 * @param imageName
-	 *            - name (ID) of the image
+	 *            name (ID) of the image
 	 * @param state
-	 *            - state of the image (@see ImageState)
+	 *            state of the image (@see ImageState)
 	 * @param fileExtension
-	 *            - extension of the image file (@see ImageFileExtension)
+	 *            extension of the image file (@see ImageFileExtension)
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
 	public Image getImage(String imageName, ImageState state, ImageFileExtension fileExtension) {
@@ -117,11 +117,11 @@ public final class ImageStore {
 	 * Returns the full name of the image.
 	 * 
 	 * @param imageName
-	 *            - name (ID) of the image
+	 *            name (ID) of the image
 	 * @param state
-	 *            - state of the image (@see ImageState)
+	 *            state of the image (@see ImageState)
 	 * @param fileExtension
-	 *            - extension of the image file (@see ImageFileExtension)
+	 *            extension of the image file (@see ImageFileExtension)
 	 * @return full name of the image (file name).
 	 */
 	private String getFullName(String imageName, ImageState state, ImageFileExtension fileExtension) {
@@ -152,7 +152,7 @@ public final class ImageStore {
 	 * ImageStore}.
 	 * 
 	 * @param fullName
-	 *            - full name of the image (file name)
+	 *            full name of the image (file name)
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
 	private synchronized Image loadImage(String fullName) {
@@ -187,7 +187,7 @@ public final class ImageStore {
 	 * define via extension points.
 	 * 
 	 * @param fullName
-	 *            - full name of the image (file name)
+	 *            full name of the image (file name)
 	 * @return image descriptor or {@code null} if file does not exists.
 	 */
 	private ImageDescriptor getImageDescriptor(String fullName) {

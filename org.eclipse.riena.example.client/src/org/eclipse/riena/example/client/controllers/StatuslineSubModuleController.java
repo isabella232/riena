@@ -66,7 +66,7 @@ public class StatuslineSubModuleController extends SubModuleController {
 	 * Creates a new instance of {@code StatuslineSubModuleController}
 	 * 
 	 * @param navigationNode
-	 *            - node of the sub-module
+	 *            node of the sub-module
 	 */
 	public StatuslineSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);

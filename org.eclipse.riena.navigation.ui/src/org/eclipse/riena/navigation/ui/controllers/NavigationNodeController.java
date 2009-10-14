@@ -64,7 +64,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * Navigation node.
 	 * 
 	 * @param navigationNode
-	 *            - the node to work on
+	 *            the node to work on
 	 */
 	public NavigationNodeController(N navigationNode) {
 

@@ -76,7 +76,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * Set the Shell used by this renderer.
 	 * 
 	 * @param shell
-	 *            - the shell to set (non-null)
+	 *            the shell to set (non-null)
 	 */
 	public void setShell(Shell shell) {
 		Assert.isNotNull(shell);
@@ -116,7 +116,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * Paints the background of the title bar.
 	 * 
 	 * @param gc
-	 *            - graphics context
+	 *            graphics context
 	 */
 	abstract protected void paintBackground(GC gc);
 
@@ -126,7 +126,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * must be set before.</i>
 	 * 
 	 * @param gc
-	 *            - graphics context
+	 *            graphics context
 	 * @return the bounds of the text
 	 */
 	abstract protected Rectangle paintTitle(GC gc);
@@ -135,7 +135,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * Paints the image.
 	 * 
 	 * @param gc
-	 *            - graphics context
+	 *            graphics context
 	 * @return the bounds of the image
 	 */
 	abstract protected Rectangle paintImage(GC gc);
@@ -144,9 +144,9 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * Sets the bounds for a button and paints it.
 	 * 
 	 * @param gc
-	 *            - graphics context
+	 *            graphics context
 	 * @param btnIndex
-	 *            - index of the button
+	 *            index of the button
 	 */
 	protected void paintButton(GC gc, int btnIndex) {
 
@@ -264,7 +264,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * close button, and <code>false</code> otherwise.
 	 * 
 	 * @param pt
-	 *            - the point to test
+	 *            the point to test
 	 * @return <code>true</code> if the close button bounds contains the point
 	 *         and <code>false</code> otherwise
 	 */
@@ -277,7 +277,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * minimize button, and <code>false</code> otherwise.
 	 * 
 	 * @param pt
-	 *            - the point to test
+	 *            the point to test
 	 * @return <code>true</code> if the minimize button bounds contains the
 	 *         point and <code>false</code> otherwise
 	 */
@@ -290,7 +290,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * maximize/restore button, and <code>false</code> otherwise.
 	 * 
 	 * @param pt
-	 *            - the point to test
+	 *            the point to test
 	 * @return <code>true</code> if the maximize/restore button bounds contains
 	 *         the point and <code>false</code> otherwise
 	 */
@@ -303,9 +303,9 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * button, and <code>false</code> otherwise.
 	 * 
 	 * @param pt
-	 *            - the point to test
+	 *            the point to test
 	 * @param btnIndex
-	 *            - index of button
+	 *            index of button
 	 * @return <code>true</code> if the button bounds contains the point and
 	 *         <code>false</code> otherwise
 	 */
@@ -319,7 +319,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * The move area is the area of the shell less the bounds of the buttons.
 	 * 
 	 * @param pt
-	 *            - the point to test
+	 *            the point to test
 	 * @return <code>true</code> if the move area bounds contains the point and
 	 *         <code>false</code> otherwise
 	 */

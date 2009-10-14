@@ -208,7 +208,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * Returns if the module item is pressed or not.
 	 * 
 	 * @param pressed
-	 *            - true, if mouse over the module and pressed; otherwise false.
+	 *            true, if mouse over the module and pressed; otherwise false.
 	 */
 	public boolean isPressed() {
 		return pressed;
@@ -233,7 +233,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * item is redrawn.
 	 * 
 	 * @param hover
-	 *            - true, if mouse over the module; otherwise false.
+	 *            true, if mouse over the module; otherwise false.
 	 */
 	public void setHover(boolean hover) {
 		if (this.hover != hover) {
@@ -250,7 +250,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * redrawn.
 	 * 
 	 * @param pressed
-	 *            - true, if mouse over the module and pressed; otherwise false.
+	 *            true, if mouse over the module and pressed; otherwise false.
 	 */
 	public void setPressed(boolean pressed) {
 		if (this.pressed != pressed) {
@@ -324,7 +324,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * sub-modules).
 	 * 
 	 * @param parent
-	 *            - body of the module
+	 *            body of the module
 	 */
 	protected void createBodyContent(Composite parent) {
 
@@ -458,7 +458,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * 
 	 * @param gc
 	 * @param item
-	 *            - tree item
+	 *            tree item
 	 * @return true: text was clipped; false: text was not clipped
 	 */
 	private boolean clipSubModuleText(GC gc, TreeItem item) {
@@ -481,7 +481,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * 
 	 * @param gc
 	 * @param item
-	 *            - tree item
+	 *            tree item
 	 * @return true: some text was clipped; false: no text was clipped
 	 */
 	private boolean clipSubModuleTexts(GC gc, TreeItem item) {
@@ -539,7 +539,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * be updated.
 	 * 
 	 * @param event
-	 *            - the event which occurred
+	 *            the event which occurred
 	 * @param expand
 	 */
 	private void handleExpandCollapse(Event event, boolean expand) {
@@ -592,7 +592,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * Paints the markers of the given tree item.
 	 * 
 	 * @param event
-	 *            - the event which occurred
+	 *            the event which occurred
 	 */
 	private void paintTreeItem(Event event) {
 		SubModuleTreeItemMarkerRenderer renderer = getTreeItemRenderer();

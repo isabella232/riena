@@ -21,7 +21,7 @@ public interface IContextUpdateListener {
 	 * gets called before the state of the observed context changes
 	 * 
 	 * @param context
-	 *            - the observed context
+	 *            the observed context
 	 */
 	void beforeContextUpdate(Object context);
 
@@ -29,7 +29,7 @@ public interface IContextUpdateListener {
 	 * notification for context updates
 	 * 
 	 * @param context
-	 *            - the observed context
+	 *            the observed context
 	 * @return - true if this listener should be unregistered automatically at
 	 *         the observerd component
 	 */

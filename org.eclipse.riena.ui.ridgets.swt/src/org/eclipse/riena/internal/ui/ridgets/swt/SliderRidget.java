@@ -60,7 +60,7 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
  * <p>
  * <ul>
  * <li><b>maximum &lt; value - thumb:</b> The value will be decreased to maximum
- * - thumb.</li>
+ * thumb.</li>
  * <li><b>maximum - thumb - minimum &lt; increment:</b> See INCREMENT</li>
  * <li><b>maximum - thumb - minimum &lt; pageIncrement:</b> See PAGE INCREMENT</li>
  * </ul>
@@ -223,7 +223,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 * {@link ISliderRidget#setIncrement(int)}.
 	 * 
 	 * @param increment
-	 *            - the increment to set
+	 *            the increment to set
 	 * @return an adjusted increment
 	 */
 	protected int preSetIncrement(int increment) {
@@ -244,7 +244,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 * {@link ISliderRidget#setMaximum(int)}.
 	 * 
 	 * @param maximum
-	 *            - the maximum to set
+	 *            the maximum to set
 	 * @return an adjusted maximum
 	 */
 	protected int preSetMaximum(int maximum) {
@@ -270,7 +270,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 * {@link ISliderRidget#setMinimum(int)}.
 	 * 
 	 * @param minimum
-	 *            - the minimum to set
+	 *            the minimum to set
 	 * @return an adjusted minimum
 	 */
 	protected int preSetMinimum(int minimum) {
@@ -296,7 +296,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 * {@link ISliderRidget#setPageIncrement(int)}.
 	 * 
 	 * @param pageIncrement
-	 *            - the pageIncrement to set
+	 *            the pageIncrement to set
 	 * @return an adjusted pageIncrement
 	 */
 	protected int preSetPageIncrement(int pageIncrement) {
@@ -317,7 +317,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 * {@link ISliderRidget#setValue(int)}.
 	 * 
 	 * @param value
-	 *            - the value to set
+	 *            the value to set
 	 * @return an adjusted value
 	 */
 	protected int preSetValue(int value) {

@@ -30,10 +30,10 @@ public class StatuslineMessage extends AbstractStatuslineComposite {
 	 * Creates a new instance of <code>StatuslineMessage</code>.
 	 * 
 	 * @param parent
-	 *            - a widget which will be the parent of the new instance
+	 *            a widget which will be the parent of the new instance
 	 *            (cannot be null)
 	 * @param style
-	 *            - the style of widget to construct
+	 *            the style of widget to construct
 	 */
 	public StatuslineMessage(Composite parent, int style) {
 		super(parent, style | SWT.NO_FOCUS);
@@ -68,7 +68,7 @@ public class StatuslineMessage extends AbstractStatuslineComposite {
 	 * Sets the given image.
 	 * 
 	 * @param image
-	 *            - the image to set.
+	 *            the image to set.
 	 */
 	public void setImage(Image image) {
 		messageLabel.setImage(image);
@@ -78,7 +78,7 @@ public class StatuslineMessage extends AbstractStatuslineComposite {
 	 * Sets the given message.
 	 * 
 	 * @param msg
-	 *            - the message to set.
+	 *            the message to set.
 	 */
 	public void setMessage(String msg) {
 		messageLabel.setText(msg);

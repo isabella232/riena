@@ -31,7 +31,7 @@ public final class MenuItemCondition implements IMappingCondition {
 	 * Returns whether the given menu item is a cascade menu.
 	 * 
 	 * @param menuItem
-	 *            - menu item
+	 *            menu item
 	 * @return {@code true} if item is cascade menu; otherwise {@code false}
 	 */
 	private boolean isMenu(MenuItem menuItem) {

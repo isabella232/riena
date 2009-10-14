@@ -31,7 +31,7 @@ public final class CoolbarUtils {
 	 * adds necessary cool item with the height 1.
 	 * 
 	 * @param coolBar
-	 *            - cool bar
+	 *            cool bar
 	 * @return the first cool item of the given cool bar
 	 */
 	public static CoolItem initCoolBar(CoolBar coolBar) {

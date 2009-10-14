@@ -32,11 +32,11 @@ public class BankData implements Cloneable {
 	 * Creates bank data and sets the given values
 	 * 
 	 * @param accountNumber
-	 *            - the accountNumber to set
+	 *            the accountNumber to set
 	 * @param bank
-	 *            - the zip bank to set
+	 *            the zip bank to set
 	 * @param bankCode
-	 *            - the bankCode to set
+	 *            the bankCode to set
 	 */
 	public BankData(String accountNumber, String bank, String bankCode) {
 
@@ -85,7 +85,7 @@ public class BankData implements Cloneable {
 	 * Sets the given account number
 	 * 
 	 * @param accountNumber
-	 *            - the account number to set
+	 *            the account number to set
 	 */
 	public void setAccountNumber(String accountNumber) {
 
@@ -108,7 +108,7 @@ public class BankData implements Cloneable {
 	 * Sets the given name of the bank
 	 * 
 	 * @param bank
-	 *            - the name of bank to set
+	 *            the name of bank to set
 	 */
 	public void setBank(String bank) {
 
@@ -131,7 +131,7 @@ public class BankData implements Cloneable {
 	 * Sets the given bank code
 	 * 
 	 * @param bankCode
-	 *            - the bank codd to set.
+	 *            the bank codd to set.
 	 */
 	public void setBankCode(String bankCode) {
 

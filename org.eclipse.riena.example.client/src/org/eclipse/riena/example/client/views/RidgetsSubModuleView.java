@@ -50,7 +50,7 @@ public class RidgetsSubModuleView extends SubModuleView<RidgetsSubModuleControll
 	 * Creates a group with different buttons.
 	 * 
 	 * @param parent
-	 *            - the parent of the group
+	 *            the parent of the group
 	 */
 	private void createButtonGroup(Composite parent) {
 

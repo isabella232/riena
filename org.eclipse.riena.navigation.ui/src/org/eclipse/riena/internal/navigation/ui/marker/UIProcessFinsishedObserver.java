@@ -33,9 +33,9 @@ public class UIProcessFinsishedObserver extends ProgressVisualizerObserverAdapte
 
 	/**
 	 * @param baseNode
-	 *            - node where the {@link UIProcess} was started
+	 *            node where the {@link UIProcess} was started
 	 * @param markupStrategy
-	 *            - the strategy that handles the markup of the nodes showing
+	 *            the strategy that handles the markup of the nodes showing
 	 *            the path to baseNode
 	 */
 	public UIProcessFinsishedObserver(INavigationNode<?> baseNode, IUIProcessMarkupStrategy markupStrategy) {

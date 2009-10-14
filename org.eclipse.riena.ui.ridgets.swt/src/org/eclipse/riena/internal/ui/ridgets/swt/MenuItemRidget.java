@@ -26,7 +26,7 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 	 * Returns whether the given menu item is a cascade menu.
 	 * 
 	 * @param menuItem
-	 *            - menu item
+	 *            menu item
 	 * @return {@code true} if item is cascade menu; otherwise {@code false}
 	 */
 	protected boolean isMenu(MenuItem menuItem) {

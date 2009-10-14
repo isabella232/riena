@@ -22,9 +22,9 @@ public interface INavigationNodeController extends ITypecastingAdaptable {
 	 * Check if the node pNode can be activated within the navigation context
 	 * 
 	 * @param pNode
-	 *            - the node to check
+	 *            the node to check
 	 * @param context
-	 *            - current navigation context
+	 *            current navigation context
 	 * @return true - if the node pNode can be disposed
 	 */
 	boolean allowsActivate(INavigationNode<?> pNode, INavigationContext context);
@@ -33,9 +33,9 @@ public interface INavigationNodeController extends ITypecastingAdaptable {
 	 * Check if the node pNode can be deactivated within the navigation context
 	 * 
 	 * @param pNode
-	 *            - the node to check
+	 *            the node to check
 	 * @param context
-	 *            - current navigation context
+	 *            current navigation context
 	 * @return true - if the node pNode can be deactivated
 	 */
 	boolean allowsDeactivate(INavigationNode<?> pNode, INavigationContext context);
@@ -44,9 +44,9 @@ public interface INavigationNodeController extends ITypecastingAdaptable {
 	 * Check if the node pNode can be disposed within the navigation context
 	 * 
 	 * @param pNode
-	 *            - the node to check
+	 *            the node to check
 	 * @param context
-	 *            - current navigation context
+	 *            current navigation context
 	 * @return true - if the node pNode can be disposed
 	 */
 	boolean allowsDispose(INavigationNode<?> pNode, INavigationContext context);

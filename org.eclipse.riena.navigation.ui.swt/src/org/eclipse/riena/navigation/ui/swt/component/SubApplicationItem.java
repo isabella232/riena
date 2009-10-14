@@ -32,10 +32,10 @@ public class SubApplicationItem {
 	 * Constructs a new instance of this class.
 	 * 
 	 * @param parent
-	 *            - switcher for sub-applications which will be the parent of
+	 *            switcher for sub-applications which will be the parent of
 	 *            the new instance
 	 * @param subApplicationNode
-	 *            - node of the sub-application (model)
+	 *            node of the sub-application (model)
 	 */
 	public SubApplicationItem(Composite parent, ISubApplicationNode subApplicationNode) {
 		this.parent = parent;

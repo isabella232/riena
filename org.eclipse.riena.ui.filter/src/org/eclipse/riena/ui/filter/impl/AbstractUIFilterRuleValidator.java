@@ -32,9 +32,9 @@ public abstract class AbstractUIFilterRuleValidator implements IUIFilterRuleVali
 	 * Create a new filter rule with the given validator.
 	 * 
 	 * @param validator
-	 *            - validator to set
+	 *            validator to set
 	 * @param validationTime
-	 *            - time of validation
+	 *            time of validation
 	 */
 	public AbstractUIFilterRuleValidator(IValidator validator, ValidationTime validationTime) {
 		this.validator = validator;

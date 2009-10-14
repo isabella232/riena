@@ -67,7 +67,7 @@ public class MarkerSupportTest extends RienaTestCase {
 	 * Tests the <i>private</i> method {@code createErrorDecoration}.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testCreateErrorDecoration() throws Exception {
 		RienaDefaultLnf originalLnf = LnfManager.getLnf();

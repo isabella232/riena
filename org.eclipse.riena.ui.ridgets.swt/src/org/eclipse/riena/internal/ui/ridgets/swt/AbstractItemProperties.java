@@ -35,7 +35,7 @@ public abstract class AbstractItemProperties {
 	 * Reads the properties of the item of the given ridget and stores them.
 	 * 
 	 * @param ridget
-	 *            - ridget with item
+	 *            ridget with item
 	 */
 	public AbstractItemProperties(AbstractItemRidget ridget) {
 		Item item = ridget.getUIControl();

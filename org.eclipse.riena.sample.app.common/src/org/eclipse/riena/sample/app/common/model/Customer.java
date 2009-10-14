@@ -132,7 +132,7 @@ public class Customer {
 	 * Sets the birth of the customer
 	 * 
 	 * @param birth
-	 *            - the birth to set
+	 *            the birth to set
 	 */
 	public void setBirth(Birth birth) {
 		Birth old = getBirth();
@@ -156,7 +156,7 @@ public class Customer {
 	 * Sets the first name of the customer
 	 * 
 	 * @param firstName
-	 *            - the first name to set
+	 *            the first name to set
 	 */
 	public void setFirstName(String firstName) {
 		String old = this.getFirstName();
@@ -180,7 +180,7 @@ public class Customer {
 	 * Sets the form of the customer
 	 * 
 	 * @param form
-	 *            - the form to set.
+	 *            the form to set.
 	 */
 	public void setForm(String form) {
 		String old = getForm();
@@ -204,7 +204,7 @@ public class Customer {
 	 * Sets the last name of the customer
 	 * 
 	 * @param lastName
-	 *            - the last name to set
+	 *            the last name to set
 	 */
 	public void setLastName(String lastName) {
 		String old = getLastName();
@@ -228,7 +228,7 @@ public class Customer {
 	 * Set the title of the customer
 	 * 
 	 * @param title
-	 *            - the title to set
+	 *            the title to set
 	 */
 	public void setTitle(String title) {
 		String old = getTitle();
@@ -252,7 +252,7 @@ public class Customer {
 	 * Sets the given fax number
 	 * 
 	 * @param fax
-	 *            - the fax number to set
+	 *            the fax number to set
 	 */
 	public void setFax(String fax) {
 		String old = getFax();
@@ -276,7 +276,7 @@ public class Customer {
 	 * Sets the given business phone number
 	 * 
 	 * @param phoneBusiness
-	 *            - the phone number to set
+	 *            the phone number to set
 	 */
 	public void setPhoneBusiness(String phoneBusiness) {
 		String old = getPhoneBusiness();
@@ -300,7 +300,7 @@ public class Customer {
 	 * Sets the given mobile phone number
 	 * 
 	 * @param phoneMobile
-	 *            - the phone number to set
+	 *            the phone number to set
 	 */
 	public void setPhoneMobile(String phoneMobile) {
 		String old = getPhoneMobile();
@@ -324,7 +324,7 @@ public class Customer {
 	 * Sets the given private phone number
 	 * 
 	 * @param phonePrivate
-	 *            - the phone number to set
+	 *            the phone number to set
 	 */
 	public void setPhonePrivate(String phonePrivate) {
 		String old = getPhonePrivate();
@@ -348,7 +348,7 @@ public class Customer {
 	 * Sets the given eMail address
 	 * 
 	 * @param email
-	 *            - the eMail address to set
+	 *            the eMail address to set
 	 */
 	public void setEmail(String email) {
 		String old = getEmail();
@@ -427,7 +427,7 @@ public class Customer {
 	 * Sets the given list of bank data
 	 * 
 	 * @param bankData
-	 *            - the list of bank data to set
+	 *            the list of bank data to set
 	 */
 	public void setBankData(List<BankData> bankData) {
 		List<BankData> old = getBankData();

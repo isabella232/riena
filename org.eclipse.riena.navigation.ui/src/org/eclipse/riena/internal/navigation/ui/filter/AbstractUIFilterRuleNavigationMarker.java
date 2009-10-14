@@ -29,7 +29,7 @@ public abstract class AbstractUIFilterRuleNavigationMarker extends AbstractUIFil
 	 * Creates a new instance of {@code AbstractUIFilterRuleNavigationMarker}.
 	 * 
 	 * @param nodeIdPattern
-	 *            - pattern ({@link StringMatcher}) for navigation node IDs
+	 *            pattern ({@link StringMatcher}) for navigation node IDs
 	 * @param marker
 	 */
 	public AbstractUIFilterRuleNavigationMarker(String nodeIdPattern, IMarker marker) {

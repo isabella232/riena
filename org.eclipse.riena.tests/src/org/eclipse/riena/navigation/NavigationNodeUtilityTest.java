@@ -49,7 +49,7 @@ public class NavigationNodeUtilityTest extends TestCase {
 	 * Tests the method {@code findNode(String, INavigationNode<?>)}.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testFindNode() throws Exception {
 
@@ -77,7 +77,7 @@ public class NavigationNodeUtilityTest extends TestCase {
 	 * Tests the method {@code findNodeLongId(String, INavigationNode<?>)}.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testFindNodeLongId() throws Exception {
 

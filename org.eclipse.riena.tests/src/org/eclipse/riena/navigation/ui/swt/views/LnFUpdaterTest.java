@@ -227,7 +227,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 	 * Tests the <i>private</i> method {@code getDefaultPropertyValue}.
 	 * 
 	 * @throws IntrospectionException
-	 *             - handled by jUnit
+	 *             handled by jUnit
 	 */
 	public void testGetDefaultPropertyValue() throws IntrospectionException {
 
@@ -242,7 +242,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 	 * Tests the <i>private</i> method {@code getPropertyValue}.
 	 * 
 	 * @throws IntrospectionException
-	 *             - handled by jUnit
+	 *             handled by jUnit
 	 */
 	public void testGetPropertyValue() throws IntrospectionException {
 
@@ -258,7 +258,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 	 * Tests the <i>private</i> method {@code hasNoDefaultValue}.
 	 * 
 	 * @throws IntrospectionException
-	 *             - handled by jUnit
+	 *             handled by jUnit
 	 */
 	public void testHasNoDefaultValue() throws IntrospectionException {
 

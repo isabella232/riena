@@ -41,9 +41,9 @@ public interface IControlRidgetMapper<C> {
 	 * Adding the same mapping twice has no effect.
 	 * 
 	 * @param controlClazz
-	 *            - the class of the UI control
+	 *            the class of the UI control
 	 * @param ridgetClazz
-	 *            - the class of the ridget
+	 *            the class of the ridget
 	 */
 	void addMapping(Class<? extends C> controlClazz, Class<? extends IRidget> ridgetClazz);
 
@@ -59,11 +59,11 @@ public interface IControlRidgetMapper<C> {
 	 * Adding the same mapping twice has no effect (but is possible).
 	 * 
 	 * @param controlClazz
-	 *            - the class of the UI control (<code>Object</code>)
+	 *            the class of the UI control (<code>Object</code>)
 	 * @param ridgetClazz
-	 *            - the class of the ridget
+	 *            the class of the ridget
 	 * @param condition
-	 *            - the condition to evaluate (non-null)
+	 *            the condition to evaluate (non-null)
 	 * @see IMappingCondition
 	 * @since 1.2
 	 */

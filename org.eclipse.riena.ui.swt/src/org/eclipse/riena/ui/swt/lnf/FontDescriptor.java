@@ -32,7 +32,7 @@ public class FontDescriptor implements ILnfFontDescriptor {
 
 	/**
 	 * @param lnf
-	 *            - the {@link RienaDefaultLnf} which is used to access the
+	 *            the {@link RienaDefaultLnf} which is used to access the
 	 *            fontStore.
 	 */
 	public FontDescriptor(RienaDefaultLnf lnf) {
@@ -44,16 +44,16 @@ public class FontDescriptor implements ILnfFontDescriptor {
 
 	/**
 	 * @param key
-	 *            - the lnfKeyConstants key, whose font should be returned. See
+	 *            the lnfKeyConstants key, whose font should be returned. See
 	 *            also {@link #setKey(String)}.
 	 * @param height
-	 *            - the height to create the font. See also
+	 *            the height to create the font. See also
 	 *            {@link #setHeight(int)}.
 	 * @param style
-	 *            - the style to create the font. See also
+	 *            the style to create the font. See also
 	 *            {@link #setStyle(int)}.
 	 * @param lnf
-	 *            - the {@link RienaDefaultLnf} which is used to access the
+	 *            the {@link RienaDefaultLnf} which is used to access the
 	 *            fontStore.
 	 */
 	public FontDescriptor(String key, int height, int style, RienaDefaultLnf lnf) {

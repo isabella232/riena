@@ -32,7 +32,7 @@ public final class NavigationNodeUtility {
 	 * e.g.: /app1/subApp2/modGroup3/mod4/subMod4711
 	 * 
 	 * @param node
-	 *            - navigation node
+	 *            navigation node
 	 * @return long ID
 	 */
 	public static String getNodeLongId(INavigationNode<?> node) {
@@ -67,9 +67,9 @@ public final class NavigationNodeUtility {
 	 * node is returned.
 	 * 
 	 * @param id
-	 *            - ID
+	 *            ID
 	 * @param node
-	 *            - start mode
+	 *            start mode
 	 * @return found node or {@code null} if none was found
 	 */
 	public static INavigationNode<?> findNode(String id, INavigationNode<?> node) {
@@ -93,9 +93,9 @@ public final class NavigationNodeUtility {
 	 * node is returned.
 	 * 
 	 * @param id
-	 *            - ID
+	 *            ID
 	 * @param node
-	 *            - start mode
+	 *            start mode
 	 * @return found node or {@code null} if none was found
 	 * 
 	 * @see #getNodeLongId(INavigationNode)
@@ -117,11 +117,11 @@ public final class NavigationNodeUtility {
 	 * node is returned.
 	 * 
 	 * @param id
-	 *            - ID
+	 *            ID
 	 * @param node
-	 *            - start node
+	 *            start node
 	 * @param closure
-	 *            - returns the ID of a node
+	 *            returns the ID of a node
 	 * @return found node or {@code null} if none was found
 	 */
 	private static INavigationNode<?> findNode(String id, INavigationNode<?> node, IIdClosure closure) {

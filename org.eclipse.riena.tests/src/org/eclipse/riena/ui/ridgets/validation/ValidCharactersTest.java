@@ -76,7 +76,7 @@ public class ValidCharactersTest extends RienaTestCase {
 	 * Tests the method {@code setInitializationData}.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testSetInitializationData() throws Exception {
 

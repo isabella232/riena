@@ -48,7 +48,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * Note: Only widgets that are not already added are added to the list.
 	 * 
 	 * @param uiControl
-	 *            - control to bind
+	 *            control to bind
 	 */
 	public void addUIControl(Object uiControl) {
 		if (!uiControls.contains(uiControl)) {
@@ -60,9 +60,9 @@ public abstract class AbstractViewBindingDelegate {
 	 * Adds the given control to the list of the controls that will be binded.
 	 * 
 	 * @param uiControl
-	 *            - control to bind
+	 *            control to bind
 	 * @param bindingId
-	 *            - ID for binding
+	 *            ID for binding
 	 */
 	public void addUIControl(Object uiControl, String bindingId) {
 		addUIControl(uiControl);
@@ -72,7 +72,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * Injects and binds UI controls to their ridgets in the controller.
 	 * 
 	 * @param controller
-	 *            - The controller which gets the ridgets injected.
+	 *            The controller which gets the ridgets injected.
 	 */
 	public void injectAndBind(IController controller) {
 		injectRidgets(controller);
@@ -83,7 +83,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * Injects the mapped ridgets for the uiControls in the controller.
 	 * 
 	 * @param controller
-	 *            - The controller which gets the ridgets injected.
+	 *            The controller which gets the ridgets injected.
 	 */
 	public void injectRidgets(IController controller) {
 		bindingManager.injectRidgets(controller, uiControls);
@@ -93,7 +93,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * Binds UI controls to their ridgets in the controller.
 	 * 
 	 * @param controller
-	 *            - The controller which holds the ridgets.
+	 *            The controller which holds the ridgets.
 	 */
 	public void bind(IController controller) {
 		bindingManager.bind(controller, uiControls);
@@ -103,7 +103,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * Unbinds UI controls from their ridgets in the controller.
 	 * 
 	 * @param controller
-	 *            - The controller which holds the ridgets.
+	 *            The controller which holds the ridgets.
 	 */
 	public void unbind(IController controller) {
 		bindingManager.unbind(controller, uiControls);

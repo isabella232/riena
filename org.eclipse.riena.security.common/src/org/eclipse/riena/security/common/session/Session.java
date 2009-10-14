@@ -51,7 +51,7 @@ public final class Session implements Serializable {
 	 * Sets the ID of the session
 	 * 
 	 * @param sessionId
-	 *            - ID of the session
+	 *            ID of the session
 	 */
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;

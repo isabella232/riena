@@ -21,7 +21,7 @@ public class UIFilterRuleRidgetDisabledMarker extends AbstractUIFilterRuleRidget
 	 * Creates a new instance of {@code UIFilterRuleRidgetDisabledMarker}.
 	 * 
 	 * @param id
-	 *            - ID
+	 *            ID
 	 */
 	public UIFilterRuleRidgetDisabledMarker() {
 		super(null, new DisabledMarker(false));
@@ -31,9 +31,9 @@ public class UIFilterRuleRidgetDisabledMarker extends AbstractUIFilterRuleRidget
 	 * Creates a new instance of {@code UIFilterRuleRidgetDisabledMarker}.
 	 * 
 	 * @param ridgetIdPattern
-	 *            - ID
+	 *            ID
 	 * @param marker
-	 *            - marker
+	 *            marker
 	 */
 	public UIFilterRuleRidgetDisabledMarker(String ridgetIdPattern) {
 		super(ridgetIdPattern, new DisabledMarker(false));

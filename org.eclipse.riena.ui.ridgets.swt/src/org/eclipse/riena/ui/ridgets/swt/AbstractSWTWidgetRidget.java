@@ -275,9 +275,9 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * Compares the two given values.
 	 * 
 	 * @param oldValue
-	 *            - old value
+	 *            old value
 	 * @param newValue
-	 *            - new value
+	 *            new value
 	 * @return true, if value has changed; otherwise false
 	 */
 	protected boolean hasChanged(Object oldValue, Object newValue) {

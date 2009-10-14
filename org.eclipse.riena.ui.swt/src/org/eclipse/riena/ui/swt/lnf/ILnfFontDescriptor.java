@@ -30,7 +30,7 @@ public interface ILnfFontDescriptor {
 	 * create a new font.
 	 * 
 	 * @param key
-	 *            - key whose associated font is to be returned.
+	 *            key whose associated font is to be returned.
 	 */
 	void setKey(String key);
 
@@ -42,7 +42,7 @@ public interface ILnfFontDescriptor {
 	 * See also {@link FontData#setHeight(int)}.
 	 * 
 	 * @param height
-	 *            - the height to use for the font.
+	 *            the height to use for the font.
 	 */
 	void setHeight(int height);
 
@@ -52,7 +52,7 @@ public interface ILnfFontDescriptor {
 	 * See also {@link FontData#setStyle(int)}.
 	 * 
 	 * @param style
-	 *            - the style to use for the font.
+	 *            the style to use for the font.
 	 */
 	void setStyle(int style);
 

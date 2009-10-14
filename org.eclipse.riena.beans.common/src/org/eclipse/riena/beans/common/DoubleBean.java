@@ -53,7 +53,7 @@ public class DoubleBean extends AbstractBean {
 	 * Sets the value of this bean
 	 * 
 	 * @param value
-	 *            - value to set
+	 *            value to set
 	 */
 	public void setValue(Double value) {
 		// System.out.println( "Double bean setValue: " + value.toString() );

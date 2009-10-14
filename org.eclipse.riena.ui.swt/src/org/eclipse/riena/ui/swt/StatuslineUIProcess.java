@@ -70,7 +70,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 	/**
 	 * @param parent
-	 *            - the parent composite
+	 *            the parent composite
 	 * @param style
 	 */
 	public StatuslineUIProcess(Composite parent, int style) {
@@ -347,7 +347,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * updates the list of visualized {@link UIProcess}es
 	 * 
 	 * @param pidos
-	 *            - the progress info data objects
+	 *            the progress info data objects
 	 */
 	public void triggerListUpdate(List<ProgressInfoDataObject> pidos) {
 		triggerListUpdate(pidos, false);
@@ -357,9 +357,9 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * updates the list of visualized {@link UIProcess}es
 	 * 
 	 * @param pidos
-	 *            - the progress info data objects
+	 *            the progress info data objects
 	 * @param forceListUpdate
-	 *            - determines if a list update should be forced even when there
+	 *            determines if a list update should be forced even when there
 	 *            is no new data
 	 */
 	public void triggerListUpdate(List<ProgressInfoDataObject> pidos, boolean forceListUpdate) {
@@ -587,7 +587,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * {@link ProgressInfoDataObject}-keys which are no more needed
 	 * 
 	 * @param activeKeys
-	 *            - the {@link Set} of keys defining the amount of active
+	 *            the {@link Set} of keys defining the amount of active
 	 *            {@link ProgressInfoDataObject} instances
 	 */
 	private void clearZombies(Set<Integer> activeKeys) {

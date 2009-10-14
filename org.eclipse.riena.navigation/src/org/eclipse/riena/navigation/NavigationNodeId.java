@@ -115,7 +115,7 @@ public class NavigationNodeId {
 	 * Checks if the given ID contains illegal characters.
 	 * 
 	 * @param id
-	 *            - ID
+	 *            ID
 	 * @return <code>true</code> if the ID is OK; otherwise <code>false</code>
 	 */
 	private boolean checkId(String id) {

@@ -25,7 +25,7 @@ public interface ILnfRenderer {
 	 * Paints the widget.
 	 * 
 	 * @param gc
-	 *            - graphics context
+	 *            graphics context
 	 * @param value
 	 */
 	void paint(GC gc, Object value);
@@ -47,13 +47,13 @@ public interface ILnfRenderer {
 	 * arguments.
 	 * 
 	 * @param x
-	 *            - the new x coordinate the widget
+	 *            the new x coordinate the widget
 	 * @param y
-	 *            - the new y coordinate the widget
+	 *            the new y coordinate the widget
 	 * @param width
-	 *            - the new width the widget
+	 *            the new width the widget
 	 * @param height
-	 *            - the new height the widget
+	 *            the new height the widget
 	 */
 	void setBounds(int x, int y, int width, int height);
 
@@ -61,7 +61,7 @@ public interface ILnfRenderer {
 	 * Set the bounds of rectangular area of the widget.
 	 * 
 	 * @param bounds
-	 *            - the new bounds of the widget
+	 *            the new bounds of the widget
 	 */
 	void setBounds(Rectangle bounds);
 
@@ -76,7 +76,7 @@ public interface ILnfRenderer {
 	 * Sets markers.
 	 * 
 	 * @param markers
-	 *            - collection of markers
+	 *            collection of markers
 	 */
 	void setMarkers(Collection<? extends IMarker> markers);
 
@@ -84,7 +84,7 @@ public interface ILnfRenderer {
 	 * Returns all markers corresponding to a certain type.
 	 * 
 	 * @param type
-	 *            - the type of markers.
+	 *            the type of markers.
 	 * @return markers corresponding to a certain type.
 	 */
 	<T extends IMarker> Collection<T> getMarkersOfType(Class<T> type);

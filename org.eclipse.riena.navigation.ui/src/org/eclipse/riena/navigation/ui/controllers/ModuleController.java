@@ -145,7 +145,7 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	 * Returns a list of all visible children of the given node.
 	 * 
 	 * @param parent
-	 *            - parent node
+	 *            parent node
 	 * @return list of visible child nodes
 	 */
 	public List<INavigationNode<?>> getVisibleChildren(INavigationNode<?> parent) {

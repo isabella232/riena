@@ -43,10 +43,10 @@ public class MenuCoolBarComposite extends Composite {
 	 * and a style value describing its behavior and appearance.
 	 * 
 	 * @param parent
-	 *            - a composite which will be the parent of the new instance
+	 *            a composite which will be the parent of the new instance
 	 *            (cannot be null)
 	 * @param style
-	 *            - the style of widget to construct
+	 *            the style of widget to construct
 	 */
 	public MenuCoolBarComposite(Composite parent, int style) {
 		super(parent, style);
@@ -80,7 +80,7 @@ public class MenuCoolBarComposite extends Composite {
 	 * Calculates and sets the size of the given cool item.
 	 * 
 	 * @param item
-	 *            - item of cool bar
+	 *            item of cool bar
 	 */
 	private void calcSize(CoolItem item) {
 		Control control = item.getControl();

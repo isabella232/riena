@@ -28,9 +28,9 @@ public class UIProcessFinishedFlasher extends Thread {
 	 * Creates a new instance of {@link UIProcessFinishedMarker}.
 	 * 
 	 * @param processMarker
-	 *            - marker to control
+	 *            marker to control
 	 * @param updater
-	 *            - the updater shows or hides the marker during and after
+	 *            the updater shows or hides the marker during and after
 	 *            flashing.
 	 */
 	public UIProcessFinishedFlasher(UIProcessFinishedMarker processMarker, Runnable updater) {

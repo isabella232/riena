@@ -69,7 +69,7 @@ public class LnFUpdater {
 	 * Updates the properties of all children of the given composite.
 	 * 
 	 * @param parent
-	 *            - composite which children are updated.
+	 *            composite which children are updated.
 	 */
 	public void updateUIControls(Composite parent) {
 
@@ -95,7 +95,7 @@ public class LnFUpdater {
 	 * the layout of the given parent.
 	 * 
 	 * @param parent
-	 *            - composite which children are updated.
+	 *            composite which children are updated.
 	 */
 	public void updateUIControlsAfterBind(Composite parent) {
 
@@ -108,7 +108,7 @@ public class LnFUpdater {
 	 * Updates the properties of all children of the given composite.
 	 * 
 	 * @param parent
-	 *            - composite which children are updated.
+	 *            composite which children are updated.
 	 */
 	private void updateAfterBind(Composite parent) {
 
@@ -135,7 +135,7 @@ public class LnFUpdater {
 	 * Checks is the given UI control must be updated after bind.
 	 * 
 	 * @param uiControl
-	 *            - UI control
+	 *            UI control
 	 * @return {@code true} if the control must be updated; otherwise {@code
 	 *         false}
 	 */
@@ -171,7 +171,7 @@ public class LnFUpdater {
 	 * LnF.
 	 * 
 	 * @param control
-	 *            - UI control
+	 *            UI control
 	 */
 	private void updateUIControl(Control control) {
 
@@ -213,7 +213,7 @@ public class LnFUpdater {
 	 * Look&Feel.
 	 * 
 	 * @param controlClass
-	 *            - class of the UI control
+	 *            class of the UI control
 	 * @return {@code true} if latest one key exists; otherwise {@code false}
 	 */
 	private boolean checkLnfKeys(Control control) {
@@ -252,7 +252,7 @@ public class LnFUpdater {
 	 * For anonymous classes the name of the super class is returned.
 	 * 
 	 * @param controlClass
-	 *            - class of the UI control
+	 *            class of the UI control
 	 * @return simple name of the class
 	 */
 	@SuppressWarnings("unchecked")
@@ -276,9 +276,9 @@ public class LnFUpdater {
 	 * given property.
 	 * 
 	 * @param control
-	 *            - UI control
+	 *            UI control
 	 * @param property
-	 *            - property
+	 *            property
 	 * @return {@code true} if the current value of the property isn't equals
 	 *         the default value; otherwise {@code false}.
 	 */
@@ -303,9 +303,9 @@ public class LnFUpdater {
 	 * Returns the default value of the given property of the given UI control.
 	 * 
 	 * @param control
-	 *            - UI control
+	 *            UI control
 	 * @param property
-	 *            - property
+	 *            property
 	 * @return default value
 	 */
 	private Object getDefaultPropertyValue(Control control, PropertyDescriptor property) {
@@ -347,9 +347,9 @@ public class LnFUpdater {
 	 * Returns the value of the given property of the given UI control.
 	 * 
 	 * @param control
-	 *            - UI control
+	 *            UI control
 	 * @param property
-	 *            - property
+	 *            property
 	 * @return value of the property or {@code null} if the property cannot
 	 *         read.
 	 */
@@ -379,9 +379,9 @@ public class LnFUpdater {
 	 * Creates the error message for a given class and a given property.
 	 * 
 	 * @param control
-	 *            - the control
+	 *            the control
 	 * @param property
-	 *            - property
+	 *            property
 	 * @return error message
 	 */
 	private String getErrorMessage(Control control, PropertyDescriptor property) {
@@ -402,7 +402,7 @@ public class LnFUpdater {
 	 * necessary for new classes.
 	 * 
 	 * @param control
-	 *            - the control
+	 *            the control
 	 * @return properties
 	 */
 	private PropertyDescriptor[] getProperties(Control control) {
@@ -428,9 +428,9 @@ public class LnFUpdater {
 	 * value of the LnF.
 	 * 
 	 * @param control
-	 *            - the control
+	 *            the control
 	 * @param property
-	 *            - property
+	 *            property
 	 * @return value of Lnf
 	 */
 	private Object getLnfValue(Control control, PropertyDescriptor property) {
@@ -452,9 +452,9 @@ public class LnFUpdater {
 	 * value of the LnF style.
 	 * 
 	 * @param control
-	 *            - the control with style "attribute"
+	 *            the control with style "attribute"
 	 * @param property
-	 *            - property
+	 *            property
 	 * @return value of Lnf or {@code null} if not style exists
 	 */
 	private Object getLnfStyleValue(Control control, PropertyDescriptor property) {

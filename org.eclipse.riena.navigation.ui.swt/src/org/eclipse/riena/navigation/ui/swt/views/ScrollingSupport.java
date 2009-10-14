@@ -59,9 +59,9 @@ public class ScrollingSupport {
 	/**
 	 * 
 	 * @param parent
-	 *            - the composite parent
+	 *            the composite parent
 	 * @param flags
-	 *            - SWT style flags
+	 *            SWT style flags
 	 * @param navigationComponentProvider
 	 */
 	public ScrollingSupport(Composite parent, int flags, IModuleNavigationComponentProvider navigationComponentProvider) {
@@ -276,7 +276,7 @@ public class ScrollingSupport {
 	 * simulation of scrolling
 	 * 
 	 * @param yScrolledOffset
-	 *            - the new vertical offset of the scrolled composite
+	 *            the new vertical offset of the scrolled composite
 	 */
 	private void setBodyCompositeOffset(int yScrolledOffset) {
 		scrolledCompositeOffset = yScrolledOffset;

@@ -42,10 +42,10 @@ public class LogoComposite extends Composite {
 	 * Creates a new instance of {@code LogoComposite} and initializes it.
 	 * 
 	 * @param parent
-	 *            - a composite which will be the parent of the new instance
+	 *            a composite which will be the parent of the new instance
 	 *            (cannot be null)
 	 * @param style
-	 *            - the style of widget to construct
+	 *            the style of widget to construct
 	 */
 	public LogoComposite(Composite parent, int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
@@ -56,7 +56,7 @@ public class LogoComposite extends Composite {
 	 * Layouts the logo and adds a PaintListener for the logo.
 	 * 
 	 * @param parent
-	 *            - parent composite
+	 *            parent composite
 	 */
 	private void init(Composite parent) {
 
@@ -167,7 +167,7 @@ public class LogoComposite extends Composite {
 		 * Paints the image of the logo.
 		 * 
 		 * @param e
-		 *            - an event containing information about the paint
+		 *            an event containing information about the paint
 		 */
 		private void onPaint(PaintEvent e) {
 

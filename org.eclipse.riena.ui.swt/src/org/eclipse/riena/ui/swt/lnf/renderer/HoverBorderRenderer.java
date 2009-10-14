@@ -26,7 +26,7 @@ public class HoverBorderRenderer extends AbstractLnfRenderer {
 
 	/**
 	 * @param value
-	 *            - is ignored
+	 *            is ignored
 	 * 
 	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
 	 *      java.lang.Object)

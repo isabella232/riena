@@ -23,11 +23,11 @@ public class ColorLnfResource extends AbstractLnfResource {
 
 	/**
 	 * @param red
-	 *            - the amount of red in the color
+	 *            the amount of red in the color
 	 * @param green
-	 *            - the amount of green in the color
+	 *            the amount of green in the color
 	 * @param blue
-	 *            - the amount of blue in the color
+	 *            the amount of blue in the color
 	 */
 	public ColorLnfResource(int red, int green, int blue) {
 		this(new RGB(red, green, blue));
@@ -35,11 +35,11 @@ public class ColorLnfResource extends AbstractLnfResource {
 
 	/**
 	 * @param hue
-	 *            - the hue value for the HSB color (from 0 to 360)
+	 *            the hue value for the HSB color (from 0 to 360)
 	 * @param saturation
-	 *            - the saturation value for the HSB color (from 0 to 1)
+	 *            the saturation value for the HSB color (from 0 to 1)
 	 * @param brightness
-	 *            - the brightness value for the HSB color (from 0 to 1)
+	 *            the brightness value for the HSB color (from 0 to 1)
 	 */
 	public ColorLnfResource(float hue, float saturation, float brightness) {
 		this(new RGB(hue, saturation, brightness));
@@ -47,7 +47,7 @@ public class ColorLnfResource extends AbstractLnfResource {
 
 	/**
 	 * @param rgb
-	 *            - the RGB values of the desired color
+	 *            the RGB values of the desired color
 	 */
 	public ColorLnfResource(RGB rgb) {
 		super();

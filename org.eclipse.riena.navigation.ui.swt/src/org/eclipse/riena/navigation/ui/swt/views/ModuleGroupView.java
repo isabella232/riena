@@ -299,7 +299,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 	 * this module group.
 	 * 
 	 * @param moduleView
-	 *            - view to register
+	 *            view to register
 	 */
 	public void registerModuleView(ModuleView moduleView) {
 		moduleView.getNavigationNode().addListener(moduleListener);
@@ -314,7 +314,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 	 * the module views.
 	 * 
 	 * @param moduleNode
-	 *            - node whose according view should be unregistered
+	 *            node whose according view should be unregistered
 	 */
 	public void unregisterModuleView(IModuleNode moduleNode) {
 		for (ModuleView moduleView : getAllModuleViews()) {
@@ -329,7 +329,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 	 * Remove the given view from the list of the module views.
 	 * 
 	 * @param moduleView
-	 *            - view to remove
+	 *            view to remove
 	 */
 	public void unregisterModuleView(ModuleView moduleView) {
 		ModuleNode node = getNodeForView(moduleView);

@@ -27,7 +27,7 @@ public class RidgetMatcher {
 	 * Creates a new instance of {@code RidgetMatcher}.
 	 * 
 	 * @param idPattern
-	 *            - ID
+	 *            ID
 	 */
 	public RidgetMatcher(String idPattern) {
 		setId(idPattern);
@@ -38,7 +38,7 @@ public class RidgetMatcher {
 	 * or the combined ID of navigation nod and ridget.
 	 * 
 	 * @param args
-	 *            - object to check
+	 *            object to check
 	 * 
 	 * @return {@code true} if IDs match; otherwise {@code false}
 	 */

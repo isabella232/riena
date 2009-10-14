@@ -21,7 +21,7 @@ public class UIFilterRuleRidgetHiddenMarker extends AbstractUIFilterRuleRidgetMa
 	 * Creates a new instance of {@code UIFilterRuleRidgetHiddenMarker}.
 	 * 
 	 * @param id
-	 *            - ID
+	 *            ID
 	 */
 	public UIFilterRuleRidgetHiddenMarker() {
 		super(null, new HiddenMarker(false));
@@ -31,7 +31,7 @@ public class UIFilterRuleRidgetHiddenMarker extends AbstractUIFilterRuleRidgetMa
 	 * Creates a new instance of {@code UIFilterRuleRidgetHiddenMarker}.
 	 * 
 	 * @param ridgetIdPattern
-	 *            - ID
+	 *            ID
 	 */
 	public UIFilterRuleRidgetHiddenMarker(String ridgetIdPattern) {
 		super(ridgetIdPattern, new HiddenMarker(false));

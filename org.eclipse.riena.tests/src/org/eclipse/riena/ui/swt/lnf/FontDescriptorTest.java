@@ -30,7 +30,7 @@ public class FontDescriptorTest extends TestCase {
 	 * Test of the method <code>getFont(String, int, int)</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testGetFontWithProps() throws Exception {
 		RienaDefaultLnf lnf = LnfManager.getLnf();

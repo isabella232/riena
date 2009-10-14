@@ -195,7 +195,7 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	 * Returns the ridget of a menu action.
 	 * 
 	 * @param id
-	 *            - id of the menu item
+	 *            id of the menu item
 	 * @return action ridget; {@code null} if no action ridget was found
 	 */
 	public IActionRidget getMenuActionRidget(String id) {
@@ -209,7 +209,7 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	 * Returns the ridget of a tool bar action.
 	 * 
 	 * @param id
-	 *            - id of the tool bar button
+	 *            id of the tool bar button
 	 * @return action ridget; {@code null} if no action ridget was found
 	 */
 	public IActionRidget getToolbarActionRidget(String id) {
@@ -223,7 +223,7 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	 * Returns the action ridget with given id.
 	 * 
 	 * @param id
-	 *            - id of the ridget
+	 *            id of the ridget
 	 * @return action ridget; {@code null} if no action ridget was found
 	 */
 	private IActionRidget getActionRidget(String id) {

@@ -50,7 +50,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	 * Creates a new instance of {@code EmbeddedTitleBarRidget}.
 	 * 
 	 * @param window
-	 *            - UI Control
+	 *            UI Control
 	 */
 	public EmbeddedTitleBarRidget(EmbeddedTitleBar window) {
 		this();

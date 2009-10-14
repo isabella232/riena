@@ -36,10 +36,10 @@ public class SwitcherComposite extends Composite {
 	 * Creates a new instance of {@code SwitcherComposite} and initializes it.
 	 * 
 	 * @param parent
-	 *            - a composite which will be the parent of the new instance
+	 *            a composite which will be the parent of the new instance
 	 *            (cannot be null)
 	 * @param node
-	 *            - node of the application
+	 *            node of the application
 	 */
 	public SwitcherComposite(Composite parent, ApplicationNode node) {
 		super(parent, SWT.DOUBLE_BUFFERED);
@@ -51,7 +51,7 @@ public class SwitcherComposite extends Composite {
 	 * Creates and positions the composite for the sub-application switcher.
 	 * 
 	 * @param parent
-	 *            - parent of composite
+	 *            parent of composite
 	 * @return composite
 	 */
 	private void init(Composite parent) {

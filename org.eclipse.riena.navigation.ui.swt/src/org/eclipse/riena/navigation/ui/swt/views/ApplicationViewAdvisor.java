@@ -284,7 +284,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * Initializes the given shell.
 	 * 
 	 * @param shell
-	 *            - shell to initialize
+	 *            shell to initialize
 	 */
 	private void initShell(final Shell shell) {
 		shell.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
@@ -322,7 +322,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * </ul>
 	 * 
 	 * @param parentShell
-	 *            - the parent shell (non null)
+	 *            the parent shell (non null)
 	 * @return the title composite (never null)
 	 */
 	private TitleComposite createTitleComposite(final Shell parentShell) {
@@ -349,9 +349,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * Creates and positions the composite for the menu bar.
 	 * 
 	 * @param parent
-	 *            - parent of composite
+	 *            parent of composite
 	 * @param previous
-	 *            - previous composite in the layout
+	 *            previous composite in the layout
 	 * @return composite
 	 */
 	private Composite createMenuBarComposite(Composite parent, Composite previous) {
@@ -396,9 +396,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * Creates and positions the composite for the cool bar.
 	 * 
 	 * @param parent
-	 *            - parent of composite
+	 *            parent of composite
 	 * @param previous
-	 *            - previous composite in the layout
+	 *            previous composite in the layout
 	 * @return composite
 	 */
 	private Composite createCoolBarComposite(Composite parent, Composite previous) {
@@ -455,9 +455,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * Creates the main composite.
 	 * 
 	 * @param parent
-	 *            - parent of composite
+	 *            parent of composite
 	 * @param previous
-	 *            - previous composite in the layout
+	 *            previous composite in the layout
 	 * @return composite
 	 */
 	private Composite createMainComposite(Composite parent, Composite previous) {
@@ -621,7 +621,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * Paints the border of the (titleless) shell.
 		 * 
 		 * @param e
-		 *            - event
+		 *            event
 		 */
 		private void onPaint(PaintEvent e) {
 			if (e.getSource() instanceof Control) {

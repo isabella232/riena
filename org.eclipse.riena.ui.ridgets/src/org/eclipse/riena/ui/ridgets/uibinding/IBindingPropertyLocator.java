@@ -21,7 +21,7 @@ public interface IBindingPropertyLocator {
 	 * Returns the ID of the given UI control.
 	 * 
 	 * @param uiControl
-	 *            - UI control
+	 *            UI control
 	 * @return ID
 	 */
 	String locateBindingProperty(Object uiControl);

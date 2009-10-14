@@ -132,9 +132,9 @@ public class FilterActionSubModuleController extends SubModuleController {
 	 * 
 	 * @param model
 	 * @param typeValues
-	 *            - combo box
+	 *            combo box
 	 * @param add
-	 *            - add button
+	 *            add button
 	 */
 	private void rebindFilterTypeValues(FilterModel model, IComboRidget typeValues, IActionRidget add) {
 
@@ -181,7 +181,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 	 * of filter.
 	 * 
 	 * @param model
-	 *            - model with selections.
+	 *            model with selections.
 	 * @return filter attribute
 	 */
 	private IUIFilterRule createFilterAttribute(FilterModel model) {

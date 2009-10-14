@@ -204,7 +204,7 @@ public class NavigationSubModuleController extends SubModuleController {
 	 * Creates a new sub-module with the given label.
 	 * 
 	 * @param label
-	 *            - label of the sub-module
+	 *            label of the sub-module
 	 * @return sub-module
 	 */
 	private ISubModuleNode createSubModuleNode(String label) {

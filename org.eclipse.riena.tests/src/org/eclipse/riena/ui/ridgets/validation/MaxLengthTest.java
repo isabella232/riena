@@ -57,7 +57,7 @@ public class MaxLengthTest extends TestCase {
 	 * Tests the method {@code setInitializationData}.
 	 * 
 	 * @throws Exception
-	 *             - Handled by JUnit.
+	 *             Handled by JUnit.
 	 */
 	public void testSetInitializationData() throws Exception {
 		MaxLength rule = createRule();

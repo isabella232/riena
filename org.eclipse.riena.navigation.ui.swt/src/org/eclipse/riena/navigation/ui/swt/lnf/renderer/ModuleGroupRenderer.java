@@ -66,11 +66,11 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 * Computes the size of the module group.
 	 * 
 	 * @param gc
-	 *            - <code>GC</code> of the component <code>Control</code>
+	 *            <code>GC</code> of the component <code>Control</code>
 	 * @param wHint
-	 *            - the width hint
+	 *            the width hint
 	 * @param hHint
-	 *            - the height hint
+	 *            the height hint
 	 * @return a Point representing the size of the module group
 	 */
 	public Point computeSize(GC gc, int wHint, int hHint) {

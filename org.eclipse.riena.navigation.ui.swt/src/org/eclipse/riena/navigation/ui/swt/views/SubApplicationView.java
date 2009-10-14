@@ -156,7 +156,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	 * some ridgets.
 	 * 
 	 * @param subApplication
-	 *            - sub-application node
+	 *            sub-application node
 	 * @return controller of the sub-application view
 	 */
 	protected SubApplicationController createController(ISubApplicationNode subApplication) {
@@ -341,7 +341,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	 * Returns the identifier of the given menu item.
 	 * 
 	 * @param item
-	 *            - menu item
+	 *            menu item
 	 * @return identifier, or {@code null} if none
 	 */
 	private String getItemId(MenuItem item) {
@@ -352,7 +352,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	 * Returns the identifier of the given tool item.
 	 * 
 	 * @param item
-	 *            - tool item
+	 *            tool item
 	 * @return identifier, or {@code null} if none
 	 */
 	private String getItemId(ToolItem item) {
@@ -418,7 +418,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	 * Returns all tool bars of the given cool bar.
 	 * 
 	 * @param coolBar
-	 *            - cool bar
+	 *            cool bar
 	 * @return list of tool bars
 	 */
 	private List<ToolBar> getToolBars(CoolBar coolBar) {
@@ -447,7 +447,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	 * Adds a listener for all sub-module nodes of the sub-application.
 	 * 
 	 * @param controller
-	 *            - controller of the sub-application
+	 *            controller of the sub-application
 	 */
 	private void initializeListener(SubApplicationController controller) {
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
@@ -549,7 +549,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		 * Returns the view ID of the given sub-module node.
 		 * 
 		 * @param source
-		 *            - sub-module node
+		 *            sub-module node
 		 * @return view ID
 		 */
 		private SwtViewId getViewId(ISubModuleNode node) {
@@ -560,9 +560,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		 * Hides the view in the active page.
 		 * 
 		 * @param id
-		 *            - the id of the view extension to use
+		 *            the id of the view extension to use
 		 * @param secondaryId
-		 *            - the secondary id to use
+		 *            the secondary id to use
 		 */
 		private void hideView(String id, String secondary) {
 			IViewReference viewRef = getActivePage().findViewReference(id, secondary);
@@ -587,9 +587,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		 * Shows a view in the active page.
 		 * 
 		 * @param id
-		 *            - the id of the view extension to use
+		 *            the id of the view extension to use
 		 * @param secondaryId
-		 *            - the secondary id to use
+		 *            the secondary id to use
 		 */
 		private void showView(String id, String secondary) {
 			try {

@@ -26,7 +26,7 @@ public interface IModuleNode extends INavigationNode<ISubModuleNode>,
 
 	/**
 	 * @param pPresentSingleSubModule
-	 *            - true if a single sub module should be shown
+	 *            true if a single sub module should be shown
 	 */
 	void setPresentSingleSubModule(boolean pPresentSingleSubModule);
 

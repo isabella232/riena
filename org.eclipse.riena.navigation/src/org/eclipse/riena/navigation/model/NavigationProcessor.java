@@ -420,7 +420,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * node is disposed
 	 * 
 	 * @param toDispose
-	 *            - the node to dispose
+	 *            the node to dispose
 	 * @return return a list of nodes
 	 */
 	private List<INavigationNode<?>> getNodesToActivateOnDispose(INavigationNode<?> toDispose) {
@@ -459,7 +459,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * list.
 	 * 
 	 * @param nodes
-	 *            - list of node
+	 *            list of node
 	 * @return filtered list
 	 */
 	private List<INavigationNode<?>> getActivateableNodes(List<?> nodes) {
@@ -479,7 +479,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * Finds all the nodes to activate
 	 * 
 	 * @param toActivate
-	 *            - the node do activate
+	 *            the node do activate
 	 * @return a List of all nodes to activate
 	 */
 	private List<INavigationNode<?>> getNodesToActivateOnActivation(INavigationNode<?> toActivate) {
@@ -727,7 +727,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * The navigation processor decides which child to activate even initially
 	 * 
 	 * @param pNode
-	 *            - the node who's child is searched
+	 *            the node who's child is searched
 	 */
 	private INavigationNode<?> getChildToActivate(INavigationNode<?> pNode) {
 		// for sub module is always null
@@ -855,9 +855,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * the flag in all children before marking the one
 	 * 
 	 * @param parent
-	 *            - the parent to reset in
+	 *            the parent to reset in
 	 * @param child
-	 *            - the child to set as selected
+	 *            the child to set as selected
 	 */
 	private void setSelectedChild(INavigationNode<?> parent, INavigationNode<?> child) {
 		for (INavigationNode<?> next : parent.getChildren()) {

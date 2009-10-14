@@ -125,7 +125,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * Adds the given control to the list of the controls that will be binded.
 	 * 
 	 * @param uiControl
-	 *            - control to bind
+	 *            control to bind
 	 */
 	protected void addUIControl(Object uiControl) {
 		binding.addUIControl(uiControl);
@@ -135,9 +135,9 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * Adds the given control to the list of the controls that will be binded.
 	 * 
 	 * @param uiControl
-	 *            - control to bind
+	 *            control to bind
 	 * @param propertyName
-	 *            - name of the property...
+	 *            name of the property...
 	 */
 	protected void addUIControl(Object uiControl, String propertyName) {
 		binding.addUIControl(uiControl, propertyName);
@@ -147,7 +147,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * Find the navigation node corresponding to the passed id
 	 * 
 	 * @param pId
-	 *            - the id to the node
+	 *            the id to the node
 	 * @return the subModule node if found
 	 */
 	protected ISubModuleNode getSubModuleNode(String pId, String pSecondary) {
@@ -272,7 +272,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * Creates the content of the sub module view.
 	 * 
 	 * @param parent
-	 *            - composite for the content of the sub module view
+	 *            composite for the content of the sub module view
 	 */
 	protected abstract void basicCreatePartControl(Composite parent);
 

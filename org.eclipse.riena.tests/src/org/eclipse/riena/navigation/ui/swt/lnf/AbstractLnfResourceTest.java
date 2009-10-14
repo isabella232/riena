@@ -49,7 +49,7 @@ public class AbstractLnfResourceTest extends TestCase {
 	 * Tests the class <code>dispose()</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testDispose() throws Exception {
 
@@ -66,7 +66,7 @@ public class AbstractLnfResourceTest extends TestCase {
 	 * Tests the class <code>GetResource()</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testGetResource() throws Exception {
 

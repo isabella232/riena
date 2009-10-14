@@ -30,7 +30,7 @@ public class RienaDialog extends Dialog implements IRienaDialog {
 	 * Creates a new instance of {@code RienaDialog}.
 	 * 
 	 * @param shell
-	 *            - the parent shell
+	 *            the parent shell
 	 */
 	public RienaDialog(Shell shell) {
 		super(shell);

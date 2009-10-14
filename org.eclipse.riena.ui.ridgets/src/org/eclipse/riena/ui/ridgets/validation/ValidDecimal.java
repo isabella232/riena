@@ -262,7 +262,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 * Creates and sets the Local for this validator.
 	 * 
 	 * @param localArgs
-	 *            - language, country, variant
+	 *            language, country, variant
 	 */
 	protected void setLocal(String[] localArgs) {
 		if (localArgs.length > 0) {

@@ -37,10 +37,10 @@ public class StatuslineTime extends AbstractStatuslineComposite {
 	 * Creates a new instance of <code>StatuslineTime</code>.
 	 * 
 	 * @param parent
-	 *            - a widget which will be the parent of the new instance
+	 *            a widget which will be the parent of the new instance
 	 *            (cannot be null)
 	 * @param style
-	 *            - the style of widget to construct
+	 *            the style of widget to construct
 	 */
 	public StatuslineTime(Composite parent, int style) {
 

@@ -25,7 +25,7 @@ public interface ICancelListener {
 	 * {@link org.eclipse.riena.ui.core.uiprocess.UIProcess}.
 	 * 
 	 * @param windowClosing
-	 *            - flag indicating if the whole window has been closed
+	 *            flag indicating if the whole window has been closed
 	 * 
 	 */
 	void canceled(boolean windowClosing);

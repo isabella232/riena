@@ -78,11 +78,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * Computes the size (height) of the title bar.
 	 * 
 	 * @param gc
-	 *            - <code>GC</code> of the component <code>Control</code>
+	 *            <code>GC</code> of the component <code>Control</code>
 	 * @param wHint
-	 *            - the width hint
+	 *            the width hint
 	 * @param hHint
-	 *            - the height hint
+	 *            the height hint
 	 * @return a Point representing the size of the title bar
 	 */
 	public Point computeSize(GC gc, int wHint, int hHint) {
@@ -110,7 +110,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 	/**
 	 * @param value
-	 *            - title text
+	 *            title text
 	 * 
 	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
 	 *      java.lang.Object)
@@ -334,7 +334,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * close button, and <code>false</code> otherwise.
 	 * 
 	 * @param pt
-	 *            - the point to test
+	 *            the point to test
 	 * @return <code>true</code> if the button bounds contains the point and
 	 *         <code>false</code> otherwise
 	 */
@@ -434,7 +434,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @param gc
 	 * @param text
-	 *            - text to clip (if necessary)
+	 *            text to clip (if necessary)
 	 * @return text
 	 */
 	public String getClippedText(GC gc, String text) {

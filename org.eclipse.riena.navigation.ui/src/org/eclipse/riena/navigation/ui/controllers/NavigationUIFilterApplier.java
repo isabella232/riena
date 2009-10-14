@@ -45,7 +45,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * nodes) to the given node.
 	 * 
 	 * @param node
-	 *            - navigation node
+	 *            navigation node
 	 */
 	private void applyFilters(INavigationNode<?> node) {
 
@@ -76,7 +76,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * tool bar: same widget but different ridgets.
 	 * 
 	 * @param node
-	 *            - navigation node
+	 *            navigation node
 	 */
 	private void removeAllMenuItemRules(INavigationNode<?> node) {
 
@@ -106,9 +106,9 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * collection of filters.
 	 * 
 	 * @param node
-	 *            - navigation node
+	 *            navigation node
 	 * @param filters
-	 *            - collection of UI filters.
+	 *            collection of UI filters.
 	 */
 	private void collectFilters(INavigationNode<?> node, Collection<IUIFilter> filters) {
 
@@ -128,11 +128,11 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * its child nodes.
 	 * 
 	 * @param node
-	 *            - navigation node
+	 *            navigation node
 	 * @param filter
-	 *            - UI filter
+	 *            UI filter
 	 * @param closure
-	 *            - closure to execute
+	 *            closure to execute
 	 */
 	private void applyFilter(INavigationNode<?> node, IUIFilter filter, IUIFilterRuleClosure closure) {
 
@@ -155,11 +155,11 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * the ridgets.
 	 * 
 	 * @param node
-	 *            - navigation node
+	 *            navigation node
 	 * @param filterRule
-	 *            - filter rule
+	 *            filter rule
 	 * @param closure
-	 *            - closure to execute
+	 *            closure to execute
 	 */
 	private void applyFilterRule(INavigationNode<?> node, IUIFilterRule filterRule, IUIFilterRuleClosure closure) {
 
@@ -243,7 +243,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * tool bar.
 	 * 
 	 * @param node
-	 *            - navigation node to which the ridget belongs.
+	 *            navigation node to which the ridget belongs.
 	 * @param ridget
 	 * @return {@code true} if ridget is a menu item and the node is
 	 *         deactivated; otherwise {@code false}

@@ -33,7 +33,7 @@ public interface IRienaDialog {
 	 * created.
 	 * 
 	 * @param newShellStyle
-	 *            - the new shell style bits
+	 *            the new shell style bits
 	 */
 	void setShellStyle(int newShellStyle);
 

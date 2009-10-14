@@ -49,10 +49,10 @@ public class TitleComposite extends Composite {
 	 * Creates a new instance of {@code TitleComposite} and initializes it.
 	 * 
 	 * @param parentShell
-	 *            - a shell which will be the parent of the new instance (cannot
+	 *            a shell which will be the parent of the new instance (cannot
 	 *            be null)
 	 * @param node
-	 *            - node of the application
+	 *            node of the application
 	 */
 	public TitleComposite(Shell parentShell, ApplicationNode node) {
 
@@ -174,7 +174,7 @@ public class TitleComposite extends Composite {
 		 * Paints the title, buttons and background of the (titleless) shell.
 		 * 
 		 * @param e
-		 *            - event
+		 *            event
 		 */
 		private void onPaint(PaintEvent e) {
 

@@ -54,12 +54,12 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 * Creates a new widget.
 	 * 
 	 * @param parent
-	 *            - a composite control which will be the parent of the new
+	 *            a composite control which will be the parent of the new
 	 *            instance
 	 * @param style
-	 *            - the style of control to construct
+	 *            the style of control to construct
 	 * @param application
-	 *            - the node of the application
+	 *            the node of the application
 	 */
 	public SubApplicationSwitcherWidget(Composite parent, int style, IApplicationNode application) {
 
@@ -99,7 +99,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 * Activates the Sub-Application of the given item.
 	 * 
 	 * @param item
-	 *            - item to activate
+	 *            item to activate
 	 * @return {@code true} if the sub-application was activated; otherwise
 	 *         {@code false}
 	 */
@@ -168,7 +168,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 * Returns the sub-application at the given point.
 	 * 
 	 * @param point
-	 *            - point over sub-application item
+	 *            point over sub-application item
 	 * @return module item; or null, if not item was found
 	 */
 	private SubApplicationItem getItem(Point point) {
@@ -215,7 +215,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 * Returns whether the given item is enabled and also visible.
 	 * 
 	 * @param item
-	 *            - sub-application item
+	 *            sub-application item
 	 * @return {@code true} if item is enabled and visible; otherwise false.
 	 */
 	private boolean isTabEnabled(SubApplicationItem item) {
@@ -248,7 +248,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 * registers it.
 	 * 
 	 * @param applicationModel
-	 *            - model of the application
+	 *            model of the application
 	 */
 	private void registerItems(IApplicationNode applicationModel) {
 

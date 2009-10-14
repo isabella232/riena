@@ -51,10 +51,10 @@ public class EmbeddedTitleBar extends Canvas {
 	 * and a style value describing its behavior and appearance.
 	 * 
 	 * @param parent
-	 *            - a composite control which will be the parent of the new
+	 *            a composite control which will be the parent of the new
 	 *            instance (cannot be null)
 	 * @param style
-	 *            - the style of control to construct
+	 *            the style of control to construct
 	 */
 	public EmbeddedTitleBar(Composite parent, int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
@@ -80,7 +80,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 * Configures and calls the renderer that paints the title bar.
 	 * 
 	 * @param e
-	 *            - an event containing information about the paint
+	 *            an event containing information about the paint
 	 */
 	private void onPaint(PaintEvent e) {
 
@@ -300,9 +300,9 @@ public class EmbeddedTitleBar extends Canvas {
 	 * Compares the two given values.
 	 * 
 	 * @param oldValue
-	 *            - old value
+	 *            old value
 	 * @param newValue
-	 *            - new value
+	 *            new value
 	 * @return true, if value has changed; otherwise false
 	 */
 	private boolean hasChanged(Object oldValue, Object newValue) {

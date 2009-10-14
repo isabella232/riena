@@ -23,7 +23,7 @@ public interface IVisualContextManager {
 	 * context.
 	 * 
 	 * @param contexts
-	 *            - the amount of registered sub contexts
+	 *            the amount of registered sub contexts
 	 * @return - the active context
 	 */
 	List<Object> getActiveContexts(List<Object> contexts);
@@ -35,9 +35,9 @@ public interface IVisualContextManager {
 	 * times!
 	 * 
 	 * @param listener
-	 *            - the listener to be notified
+	 *            the listener to be notified
 	 * @param context
-	 *            - the context
+	 *            the context
 	 */
 	void addContextUpdateListener(IContextUpdateListener listener, Object context);
 

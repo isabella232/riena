@@ -319,7 +319,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * {@link AbstractTraverseRidget} section <i>INCREMENT</i>.
 	 * 
 	 * @param increment
-	 *            - the increment to set
+	 *            the increment to set
 	 * @return an adjusted increment
 	 */
 	protected int preSetIncrement(int increment) {
@@ -340,7 +340,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * {@link AbstractTraverseRidget} section <i>MAXIMUM</i>.
 	 * 
 	 * @param maximum
-	 *            - the maximum to set
+	 *            the maximum to set
 	 * @return an adjusted maximum
 	 */
 	protected int preSetMaximum(int maximum) {
@@ -366,7 +366,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * {@link AbstractTraverseRidget} section <i>MINIMUM</i>.
 	 * 
 	 * @param minimum
-	 *            - the minimum to set
+	 *            the minimum to set
 	 * @return an adjusted minimum
 	 */
 	protected int preSetMinimum(int minimum) {
@@ -392,7 +392,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * {@link AbstractTraverseRidget} section <i>PAGE INCREMENT</i>.
 	 * 
 	 * @param pageIncrement
-	 *            - the pageIncrement to set
+	 *            the pageIncrement to set
 	 * @return an adjusted pageIncrement
 	 */
 	protected int preSetPageIncrement(int pageIncrement) {
@@ -413,7 +413,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * {@link AbstractTraverseRidget} section <i>VALUE</i>.
 	 * 
 	 * @param value
-	 *            - the value to set
+	 *            the value to set
 	 * @return an adjusted value
 	 */
 	protected int preSetValue(int value) {

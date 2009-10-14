@@ -27,7 +27,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 * Creates a new instance of {@code ToolItemMarkerSupport}.
 	 * 
 	 * @param ridget
-	 *            - ridget of tool item
+	 *            ridget of tool item
 	 * @param propertyChangeSupport
 	 */
 	public ToolItemMarkerSupport(ToolItemRidget ridget, PropertyChangeSupport propertyChangeSupport) {
@@ -54,7 +54,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 * Enables or disables the given item.
 	 * 
 	 * @param item
-	 *            - tool item to update
+	 *            tool item to update
 	 */
 	private void updateDisabled(ToolItem item) {
 		if (item.isDisposed()) {
@@ -68,7 +68,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 * Shows or hides the given item.
 	 * 
 	 * @param item
-	 *            - tool item to update
+	 *            tool item to update
 	 */
 	private void updateVisible(ToolItem item) {
 
@@ -90,7 +90,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 * <i>Only top level items of the menu bar have a MenuManger.</i>
 	 * 
 	 * @param item
-	 *            - tool item
+	 *            tool item
 	 * @return the menu manager or <{@code null} if the item has no menu
 	 *         manager.
 	 */

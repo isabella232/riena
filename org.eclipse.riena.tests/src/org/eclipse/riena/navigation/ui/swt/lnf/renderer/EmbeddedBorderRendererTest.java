@@ -26,7 +26,7 @@ public class EmbeddedBorderRendererTest extends TestCase {
 	 * Test of the method <code>computeInnerBounds(Rectangle)</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testComputeInnerBounds() throws Exception {
 

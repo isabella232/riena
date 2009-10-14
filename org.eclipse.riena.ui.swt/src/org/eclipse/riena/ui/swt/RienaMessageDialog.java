@@ -29,15 +29,15 @@ public class RienaMessageDialog extends MessageDialog {
 	 * Creates a Riena message dialog.
 	 * 
 	 * @param parentShell
-	 *            - the parent shell
+	 *            the parent shell
 	 * @param dialogTitle
-	 *            - the dialog title, or <code>null</code> if none
+	 *            the dialog title, or <code>null</code> if none
 	 * @param dialogTitleImage
-	 *            - the dialog title image, or <code>null</code> if none
+	 *            the dialog title image, or <code>null</code> if none
 	 * @param dialogMessage
-	 *            - the dialog message
+	 *            the dialog message
 	 * @param dialogImageType
-	 *            - one of the following values:
+	 *            one of the following values:
 	 *            <ul>
 	 *            <li><code>MessageDialog.NONE</code> for a dialog with no image
 	 *            </li>
@@ -51,9 +51,9 @@ public class RienaMessageDialog extends MessageDialog {
 	 *            warning image</li>
 	 *            </ul>
 	 * @param dialogButtonLabels
-	 *            - an array of labels for the buttons in the button bar
+	 *            an array of labels for the buttons in the button bar
 	 * @param defaultIndex
-	 *            - the index in the button label array of the default button
+	 *            the index in the button label array of the default button
 	 * 
 	 * @see {@link MessageDialog#MessageDialog(Shell, String, Image, String, int, String[], int)}
 	 */

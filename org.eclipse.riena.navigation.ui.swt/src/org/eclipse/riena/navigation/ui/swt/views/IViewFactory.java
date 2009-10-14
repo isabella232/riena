@@ -26,7 +26,7 @@ public interface IViewFactory {
 	 * Creates a view for a module.
 	 * 
 	 * @param parent
-	 *            - a composite which will be the parent
+	 *            a composite which will be the parent
 	 * @return view of module
 	 */
 	ModuleView createModuleView(Composite parent);
@@ -43,7 +43,7 @@ public interface IViewFactory {
 	 * Creates a view for a module group.
 	 * 
 	 * @param parent
-	 *            - a composite which will be the parent
+	 *            a composite which will be the parent
 	 * @return view of module group
 	 */
 	ModuleGroupView createModuleGroupView(Composite parent);

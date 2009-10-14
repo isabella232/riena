@@ -25,9 +25,9 @@ public interface IBindingManager {
 	 * injects the mapped ridgets for the uiControls in the controller.
 	 * 
 	 * @param controller
-	 *            - The controller which gets the ridgets injected.
+	 *            The controller which gets the ridgets injected.
 	 * @param uiControls
-	 *            - The uiControls which will get mapped to ridgets.
+	 *            The uiControls which will get mapped to ridgets.
 	 */
 	void injectRidgets(IRidgetContainer controller, List<Object> uiControls);
 
@@ -35,9 +35,9 @@ public interface IBindingManager {
 	 * binds uiControls to their ridgets in the controller.
 	 * 
 	 * @param controller
-	 *            - The controller which holds the ridgets.
+	 *            The controller which holds the ridgets.
 	 * @param uiControls
-	 *            - The uiControls which will be bound to the ridgets.
+	 *            The uiControls which will be bound to the ridgets.
 	 */
 	void bind(IRidgetContainer controller, List<Object> uiControls);
 
@@ -45,9 +45,9 @@ public interface IBindingManager {
 	 * unbinds uiControls from their ridgets in the controller.
 	 * 
 	 * @param controller
-	 *            - The controller which holds the ridgets.
+	 *            The controller which holds the ridgets.
 	 * @param uiControls
-	 *            - The uiControls which will be unbound from the ridgets.
+	 *            The uiControls which will be unbound from the ridgets.
 	 */
 	void unbind(IRidgetContainer controller, List<Object> uiControls);
 
@@ -55,7 +55,7 @@ public interface IBindingManager {
 	 * Creates for the given UI-control the appropriate ridget.
 	 * 
 	 * @param control
-	 *            - UI-control
+	 *            UI-control
 	 * @return ridget
 	 * @throws ReflectionFailure
 	 */

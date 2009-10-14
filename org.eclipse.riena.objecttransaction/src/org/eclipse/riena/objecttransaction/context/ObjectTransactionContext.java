@@ -46,7 +46,7 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 	 * Creates a new ObjectTransactionContext on the passe object transaction
 	 * 
 	 * @param transaction
-	 *            - the Transaction to activate
+	 *            the Transaction to activate
 	 */
 	public ObjectTransactionContext(IObjectTransaction transaction) {
 		super();

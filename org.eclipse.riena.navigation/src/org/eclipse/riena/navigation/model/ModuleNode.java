@@ -127,7 +127,7 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 * given node.
 	 * 
 	 * @param node
-	 *            - start node
+	 *            start node
 	 * @return number of children
 	 */
 	private int calcDepth(INavigationNode<?> node) {

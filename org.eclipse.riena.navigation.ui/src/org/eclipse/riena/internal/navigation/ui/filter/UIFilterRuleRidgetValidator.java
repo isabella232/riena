@@ -37,11 +37,11 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator i
 	 * Creates a new instance of {@code UIFilterRuleRidgetValidator}.
 	 * 
 	 * @param ridgetIdPattern
-	 *            - pattern ({@link StringMatcher}) for ridget IDs
+	 *            pattern ({@link StringMatcher}) for ridget IDs
 	 * @param validator
-	 *            - validator
+	 *            validator
 	 * @param validationTime
-	 *            - time of validation
+	 *            time of validation
 	 */
 	public UIFilterRuleRidgetValidator(String ridgetIdPattern, IValidator validator, ValidationTime validationTime) {
 		super(validator, validationTime);

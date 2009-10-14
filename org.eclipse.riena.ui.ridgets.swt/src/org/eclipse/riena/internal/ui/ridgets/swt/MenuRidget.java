@@ -52,7 +52,7 @@ public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 	 * Adds the given ridget as child to this menu ridget.
 	 * 
 	 * @param child
-	 *            - ridget to added
+	 *            ridget to added
 	 */
 	public void addChild(MenuItemRidget child) {
 		children.add(child);
@@ -88,7 +88,7 @@ public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 	 * Removes the ridget of the given item form the list of children.
 	 * 
 	 * @param item
-	 *            - item of ridget
+	 *            item of ridget
 	 */
 	private void removeChild(MenuItem item) {
 		String id = SWTBindingPropertyLocator.getInstance().locateBindingProperty(item);

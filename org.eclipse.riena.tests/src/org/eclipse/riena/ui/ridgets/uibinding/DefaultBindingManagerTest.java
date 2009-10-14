@@ -69,7 +69,7 @@ public class DefaultBindingManagerTest extends TestCase {
 	 * Tests the method <code>injectRidgets</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testInjectRidgets() throws Exception {
 
@@ -99,7 +99,7 @@ public class DefaultBindingManagerTest extends TestCase {
 	 * Tests the method <code>bind</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testBind() throws Exception {
 
@@ -123,7 +123,7 @@ public class DefaultBindingManagerTest extends TestCase {
 	 * Tests the method <code>unbind</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testUnbind() throws Exception {
 

@@ -66,7 +66,7 @@ public class StringMatcher {
 	 * This constructor does not ignore case and uses the wild cards.
 	 * 
 	 * @param pattern
-	 *            - the pattern to match text against
+	 *            the pattern to match text against
 	 */
 	public StringMatcher(String pattern) {
 		this(pattern, true, false);

@@ -27,9 +27,9 @@ public class FlasherSupportForRenderer {
 	 * Creates a new instance of the support.
 	 * 
 	 * @param renderer
-	 *            - look&feel renderer
+	 *            look&feel renderer
 	 * @param updater
-	 *            - instance to updated the control of the renderer.
+	 *            instance to updated the control of the renderer.
 	 */
 	public FlasherSupportForRenderer(ILnfRenderer renderer, Runnable updater) {
 		this.renderer = renderer;
@@ -73,7 +73,7 @@ public class FlasherSupportForRenderer {
 	 * Creates and starts the flasher of a finished UI process.
 	 * 
 	 * @param processMarker
-	 *            - marker of finished UI process.
+	 *            marker of finished UI process.
 	 */
 	private synchronized void startFlasher(final UIProcessFinishedMarker processMarker) {
 

@@ -35,9 +35,9 @@ public class MenuManagerHelper {
 	 * 
 	 * @param parent
 	 * @param toolItem
-	 *            - tool item with menu
+	 *            tool item with menu
 	 * @param topMenuManager
-	 *            - menu manager
+	 *            menu manager
 	 * @return menu
 	 */
 	public Menu createMenu(Composite parent, final ToolItem toolItem, MenuManager topMenuManager) {

@@ -22,9 +22,9 @@ public interface IUIFilterRuleClosure {
 	 * Executes a method of {@link IUIFilterRule}.
 	 * 
 	 * @param attr
-	 *            - filter rule
+	 *            filter rule
 	 * @param obj
-	 *            - object that is given as a parameter to the method
+	 *            object that is given as a parameter to the method
 	 */
 	void execute(INavigationNode<?> node, IUIFilterRule attr, Object obj);
 

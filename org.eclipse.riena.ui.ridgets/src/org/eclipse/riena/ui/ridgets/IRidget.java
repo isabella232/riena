@@ -222,7 +222,7 @@ public interface IRidget {
 	 * Sets if the ridget can gain the focus or not.
 	 * 
 	 * @param focusable
-	 *            - true if the adapter can gain the focus; otherwise false
+	 *            true if the adapter can gain the focus; otherwise false
 	 */
 	void setFocusable(boolean focusable);
 

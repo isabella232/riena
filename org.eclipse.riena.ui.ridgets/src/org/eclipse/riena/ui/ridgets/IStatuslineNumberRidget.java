@@ -43,7 +43,7 @@ public interface IStatuslineNumberRidget extends IRidget {
 	 * set 0
 	 * 
 	 * @param numberStrg
-	 *            - the string to displayed in the status line; null removes the
+	 *            the string to displayed in the status line; null removes the
 	 *            number string from the status line
 	 * @see #setNumber(int)
 	 */

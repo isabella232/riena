@@ -30,7 +30,7 @@ public abstract class AbstractUIFilterRuleMenuItemMarker extends AbstractUIFilte
 	 * Creates a new instance of {@code UIFilterRuleMenuItemDisabledMarker}.
 	 * 
 	 * @param id
-	 *            - ID
+	 *            ID
 	 * @param marker
 	 */
 	public AbstractUIFilterRuleMenuItemMarker(String id, IMarker marker) {

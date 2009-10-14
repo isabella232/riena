@@ -48,10 +48,10 @@ public class DefaultBindingManager implements IBindingManager {
 	 * Creates the managers of all bindings of a view.
 	 * 
 	 * @param propertyStrategy
-	 *            - strategy to get the property for the binding from the
+	 *            strategy to get the property for the binding from the
 	 *            UI-control.
 	 * @param mapper
-	 *            - mapping for UI control-classes to ridget-classes
+	 *            mapping for UI control-classes to ridget-classes
 	 */
 	public DefaultBindingManager(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper<Object> mapper) {
 		this.propertyStrategy = propertyStrategy;
@@ -111,7 +111,7 @@ public class DefaultBindingManager implements IBindingManager {
 	 * @param ridgetContainer
 	 * @param bindingProperty
 	 * @param ridget
-	 *            - ridget to inject
+	 *            ridget to inject
 	 */
 	protected void injectRidget(IRidgetContainer ridgetContainer, String bindingProperty, IRidget ridget) {
 		ridgetContainer.addRidget(bindingProperty, ridget);
@@ -121,7 +121,7 @@ public class DefaultBindingManager implements IBindingManager {
 	 * Creates for the given UI-control the appropriate ridget.
 	 * 
 	 * @param control
-	 *            - UI-control
+	 *            UI-control
 	 * @return ridget
 	 * @throws ReflectionFailure
 	 */
@@ -135,9 +135,9 @@ public class DefaultBindingManager implements IBindingManager {
 	 * property value.
 	 * 
 	 * @param bindingProperty
-	 *            - value of the binding property
+	 *            value of the binding property
 	 * @param controller
-	 *            - ridget container
+	 *            ridget container
 	 * @return ridget
 	 */
 	protected IRidget getRidget(String bindingProperty, IRidgetContainer controller) {

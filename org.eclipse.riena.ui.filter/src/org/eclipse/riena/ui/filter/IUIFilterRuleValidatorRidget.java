@@ -22,7 +22,7 @@ public interface IUIFilterRuleValidatorRidget extends IUIFilterRuleValidator {
 	 * Sets the ID of the ridget.
 	 * 
 	 * @param id
-	 *            - ridget ID
+	 *            ridget ID
 	 */
 	void setId(String id);
 
@@ -37,7 +37,7 @@ public interface IUIFilterRuleValidatorRidget extends IUIFilterRuleValidator {
 	 * Sete the time of validation.
 	 * 
 	 * @param validationTime
-	 *            - time of validation
+	 *            time of validation
 	 */
 	void setValidationTime(ValidationTime validationTime);
 

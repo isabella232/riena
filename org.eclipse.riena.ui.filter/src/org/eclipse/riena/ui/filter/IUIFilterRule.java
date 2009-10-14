@@ -20,7 +20,7 @@ public interface IUIFilterRule {
 	 * Returns whether the given object matches the conditions of this rule.
 	 * 
 	 * @param object
-	 *            - object to check
+	 *            object to check
 	 * @return {@code true} if the given object matches; otherwise {@code false}
 	 */
 	boolean matches(Object... args);

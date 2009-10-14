@@ -31,7 +31,7 @@ public class MenuProperties extends MenuItemProperties {
 	 * given ridget are stored also the children of the menu ridget.
 	 * 
 	 * @param ridget
-	 *            - menu ridget
+	 *            menu ridget
 	 */
 	public MenuProperties(MenuRidget ridget) {
 

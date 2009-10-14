@@ -71,9 +71,9 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	 * Paints all the given markers (icons).
 	 * 
 	 * @param gc
-	 *            - graphics context
+	 *            graphics context
 	 * @param item
-	 *            - tree item
+	 *            tree item
 	 */
 	protected void paintMarkers(final GC gc, final Collection<IIconizableMarker> markers, final TreeItem item) {
 
@@ -105,11 +105,11 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	 * Calculates the x- and y-coordinates of the marker image.
 	 * 
 	 * @param itemImage
-	 *            - image of the item
+	 *            image of the item
 	 * @param markerImage
-	 *            - image of the marker
+	 *            image of the marker
 	 * @param position
-	 *            - position of the marker
+	 *            position of the marker
 	 * @return x- and y-coordinates
 	 */
 	private Point calcMarkerCoordinates(Image itemImage, Image markerImage,

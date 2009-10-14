@@ -17,7 +17,7 @@ public interface IProgressVisualizerLocator {
 
 	/**
 	 * @param context
-	 *            - the visualization context
+	 *            the visualization context
 	 * @return - the related {@link IProgressVisualizer}
 	 */
 	IProgressVisualizer getProgressVisualizer(Object context);

@@ -253,7 +253,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * of children.
 	 * 
 	 * @param childClass
-	 *            - class of child
+	 *            class of child
 	 */
 	protected boolean checkChildClass(Class<?> childClass) {
 
@@ -868,7 +868,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	/**
 	 * @param selected
-	 *            - the selected to set
+	 *            the selected to set
 	 */
 	public void setSelected(boolean selected) {
 		if (selected != this.selected) {

@@ -25,7 +25,7 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 * Creates a new instance of {@code MenuItemMarkerSupport}.
 	 * 
 	 * @param ridget
-	 *            - ridget of menu item
+	 *            ridget of menu item
 	 * @param propertyChangeSupport
 	 */
 	public MenuItemMarkerSupport(MenuItemRidget ridget, PropertyChangeSupport propertyChangeSupport) {
@@ -52,7 +52,7 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 * Enables or disables the given item.
 	 * 
 	 * @param item
-	 *            - menu item to update
+	 *            menu item to update
 	 */
 	private void updateDisabled(MenuItem item) {
 		if (item.isDisposed()) {
@@ -66,7 +66,7 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 * Shows or hides the given item.
 	 * 
 	 * @param item
-	 *            - menu item to update
+	 *            menu item to update
 	 */
 	private void updateVisible(MenuItem item) {
 

@@ -368,9 +368,9 @@ public class NavigationNodeTest extends RienaTestCase {
 	 * Tests the method {@code addNode}.
 	 * 
 	 * @throws IllegalAccessException
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 * @throws InstantiationException
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	@SuppressWarnings("unchecked")
 	public void testAddChild() throws InstantiationException, IllegalAccessException {

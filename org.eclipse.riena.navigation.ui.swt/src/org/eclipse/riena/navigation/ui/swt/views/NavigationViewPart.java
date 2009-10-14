@@ -330,7 +330,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	 * the sub-application of this navigation.
 	 * 
 	 * @param moduleView
-	 *            - view to register
+	 *            view to register
 	 */
 	private void registerModuleGroupView(ModuleGroupView moduleGroupView) {
 		moduleGroupViews.add(moduleGroupView);
@@ -341,7 +341,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	 * the module group views.
 	 * 
 	 * @param moduleGroupNode
-	 *            - node whose according view should be unregistered
+	 *            node whose according view should be unregistered
 	 */
 	public void unregisterModuleGroupView(IModuleGroupNode moduleGroupNode) {
 		for (ModuleGroupView moduleGroupView : moduleGroupViews) {
@@ -356,7 +356,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	 * Remove the given view from the list of the module group views.
 	 * 
 	 * @param moduleGroupView
-	 *            - view to remove
+	 *            view to remove
 	 */
 	private void unregisterModuleGroupView(ModuleGroupView moduleGroupView, IModuleGroupNode node) {
 		moduleGroupNodesToViews.remove(node);

@@ -32,7 +32,7 @@ public class MenuItemProperties extends AbstractItemProperties {
 	 * the given ridget are stored.
 	 * 
 	 * @param ridget
-	 *            - menu ridget
+	 *            menu ridget
 	 */
 	public MenuItemProperties(MenuItemRidget ridget) {
 
@@ -47,7 +47,7 @@ public class MenuItemProperties extends AbstractItemProperties {
 	 * Stores all the previous siblings of the given menu item.
 	 * 
 	 * @param item
-	 *            - item of tool bar
+	 *            item of tool bar
 	 */
 	private void storePreviousSiblings(MenuItem item) {
 		int index = parent.indexOf(item);
@@ -94,7 +94,7 @@ public class MenuItemProperties extends AbstractItemProperties {
 	 * Creates a new menu item base on the stored properties.
 	 * 
 	 * @param parent
-	 *            - parent menu
+	 *            parent menu
 	 * @return menu item
 	 */
 	protected MenuItem createItem(Menu parent) {

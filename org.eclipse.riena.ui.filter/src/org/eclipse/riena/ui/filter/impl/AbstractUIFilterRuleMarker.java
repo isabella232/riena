@@ -24,7 +24,7 @@ public abstract class AbstractUIFilterRuleMarker implements IUIFilterRuleMarker 
 	 * Create a new filter rule with the given marker.
 	 * 
 	 * @param marker
-	 *            - marker to set
+	 *            marker to set
 	 */
 	public AbstractUIFilterRuleMarker(IMarker marker) {
 		this.marker = marker;

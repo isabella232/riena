@@ -35,11 +35,11 @@ public final class SwtUtilities {
 	 * The clipped text always ends with three dots ("...").
 	 * 
 	 * @param gc
-	 *            - graphics context
+	 *            graphics context
 	 * @param text
-	 *            - text
+	 *            text
 	 * @param maxWidth
-	 *            - maximum of the text
+	 *            maximum of the text
 	 * @return truncated text
 	 */
 	public static String clipText(final GC gc, final String text, int maxWidth) {
@@ -72,9 +72,9 @@ public final class SwtUtilities {
 	 * the given graphics context.
 	 * 
 	 * @param gc
-	 *            - graphics context
+	 *            graphics context
 	 * @param text
-	 *            - text
+	 *            text
 	 * @return width of text
 	 */
 	public static int calcTextWidth(final GC gc, final String text) {
@@ -90,9 +90,9 @@ public final class SwtUtilities {
 	 * the given graphics context.
 	 * 
 	 * @param gc
-	 *            - graphics context
+	 *            graphics context
 	 * @param text
-	 *            - text
+	 *            text
 	 * @return width of text
 	 */
 	public static int calcTextWidth(final GC gc, final StringBuffer text) {
@@ -148,7 +148,7 @@ public final class SwtUtilities {
 	 * already disposed.
 	 * 
 	 * @param resource
-	 *            - resource to dispose
+	 *            resource to dispose
 	 */
 	public static void disposeResource(Resource resource) {
 		if (!isDisposed(resource)) {
@@ -162,7 +162,7 @@ public final class SwtUtilities {
 	 * isn't already disposed.
 	 * 
 	 * @param widget
-	 *            - widget to dispose
+	 *            widget to dispose
 	 */
 	public static void disposeWidget(Widget widget) {
 		if (!isDisposed(widget)) {
@@ -176,7 +176,7 @@ public final class SwtUtilities {
 	 * Returns {@code true}, if the given widget is disposed or {@code null}.
 	 * 
 	 * @param widget
-	 *            - widget to check
+	 *            widget to check
 	 * @return {@code true}, if the widget is disposed or {@code null};
 	 *         otherwise {@code false}.
 	 */
@@ -188,7 +188,7 @@ public final class SwtUtilities {
 	 * Returns {@code true}, if the given resource is disposed or {@code null}.
 	 * 
 	 * @param resource
-	 *            - resource to check
+	 *            resource to check
 	 * @return {@code true}, if the resource is disposed or {@code null};
 	 *         otherwise {@code false}.
 	 */

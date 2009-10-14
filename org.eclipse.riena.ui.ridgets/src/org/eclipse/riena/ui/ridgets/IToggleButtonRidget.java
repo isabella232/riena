@@ -28,7 +28,7 @@ public interface IToggleButtonRidget extends IValueRidget, IActionRidget, IMarka
 	 * Turns the selection of the check box on or off.
 	 * 
 	 * @param selected
-	 *            - true: selection on; false: selections off
+	 *            true: selection on; false: selections off
 	 */
 	void setSelected(boolean selected);
 }

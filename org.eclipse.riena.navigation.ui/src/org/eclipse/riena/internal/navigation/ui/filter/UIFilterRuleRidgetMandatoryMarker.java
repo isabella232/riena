@@ -24,7 +24,7 @@ public class UIFilterRuleRidgetMandatoryMarker extends AbstractUIFilterRuleRidge
 	 * Creates a new instance of {@code UIFilterRuleRidgetMandatoryMarker}.
 	 * 
 	 * @param id
-	 *            - ID
+	 *            ID
 	 */
 	public UIFilterRuleRidgetMandatoryMarker() {
 		super(null, null);
@@ -34,7 +34,7 @@ public class UIFilterRuleRidgetMandatoryMarker extends AbstractUIFilterRuleRidge
 	 * Creates a new instance of {@code UIFilterRuleRidgetMandatoryMarker}.
 	 * 
 	 * @param ridgetIdPattern
-	 *            - ID
+	 *            ID
 	 */
 	public UIFilterRuleRidgetMandatoryMarker(String ridgetIdPattern) {
 		super(ridgetIdPattern, null);

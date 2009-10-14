@@ -89,7 +89,7 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 	 * Returns the name of the variable for the given node.
 	 * 
 	 * @param node
-	 *            - navigation node
+	 *            navigation node
 	 * @return name of variable
 	 */
 	public String getPovidesSourceName(INavigationNode<?> node) {

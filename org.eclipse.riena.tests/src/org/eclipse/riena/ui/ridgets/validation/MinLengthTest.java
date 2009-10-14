@@ -60,7 +60,7 @@ public class MinLengthTest extends RienaTestCase {
 	 * Tests the method {@code setInitializationData}.
 	 * 
 	 * @throws Exception
-	 *             - Handled by JUnit.
+	 *             Handled by JUnit.
 	 */
 	public void testSetInitializationData() throws Exception {
 

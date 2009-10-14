@@ -39,7 +39,7 @@ public final class WidgetIdentificationSupport {
 	 * 'default'
 	 * 
 	 * @param aShell
-	 *            - shell
+	 *            shell
 	 */
 	public static void setIdentification(Shell aShell) {
 		aShell.setData(RIENA_ID, System.getProperty("riena.testing.widgetid.mainshell", "default")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -50,9 +50,9 @@ public final class WidgetIdentificationSupport {
 	 * a value. i.e. parts: ['a', 'b', 'c'], value: 'a.b.c'
 	 * 
 	 * @param aWidget
-	 *            - widget
+	 *            widget
 	 * @param aParts
-	 *            - sequence of id parts
+	 *            sequence of id parts
 	 */
 	public static void setIdentification(Widget aWidget, String... aParts) {
 		StringBuilder fullId = new StringBuilder();
@@ -75,7 +75,7 @@ public final class WidgetIdentificationSupport {
 	 * name is used as a value
 	 * 
 	 * @param aWidget
-	 *            - widget
+	 *            widget
 	 */
 	public static void setDefaultIdentification(Widget aWidget) {
 		setIdentification(aWidget, aWidget.getClass().getName());

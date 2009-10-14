@@ -36,7 +36,7 @@ public class RulesProvider {
 	 * Returns the rule to set a marker for a ridget.
 	 * 
 	 * @param type
-	 *            - type of marker (hidden, disabled, output or mandatory)
+	 *            type of marker (hidden, disabled, output or mandatory)
 	 * @return rule or {@code null} if no rule was found.
 	 */
 	public IUIFilterRuleMarkerRidget getRuleMarkerRidget(String type) {
@@ -74,7 +74,7 @@ public class RulesProvider {
 	 * Returns the rule to set a marker for a menu-/toolItem.
 	 * 
 	 * @param type
-	 *            - type of marker (hidden or disabled)
+	 *            type of marker (hidden or disabled)
 	 * @return rule or {@code null} if no rule was found.
 	 */
 	public IUIFilterRuleMarkerRidget getRuleMarkerMenuItem(String type) {
@@ -108,7 +108,7 @@ public class RulesProvider {
 	 * Returns the rule to set a marker for a navigation node.
 	 * 
 	 * @param type
-	 *            - type of marker (hidden or disabled)
+	 *            type of marker (hidden or disabled)
 	 * @return rule or {@code null} if no rule was found.
 	 */
 	public IUIFilterRuleMarkerNavigation getRuleMarkerNavigation(String type) {

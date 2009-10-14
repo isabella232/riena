@@ -163,11 +163,11 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 	 * Adding the same mapping twice has no effect (but is possible).
 	 * 
 	 * @param controlClazz
-	 *            - the class of the UI control (<code>Object</code>)
+	 *            the class of the UI control (<code>Object</code>)
 	 * @param ridgetClazz
-	 *            - the class of the ridget
+	 *            the class of the ridget
 	 * @param swtStyle
-	 *            - SWT style of the UI control (<code>Object</code>)
+	 *            SWT style of the UI control (<code>Object</code>)
 	 */
 	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz, int swtStyle) {
 		Mapping mapping = new Mapping(controlClazz, ridgetClazz, swtStyle);
@@ -186,11 +186,11 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 	 * Adding the same mapping twice has no effect (but is possible).
 	 * 
 	 * @param controlClazz
-	 *            - the class of the UI control (<code>Object</code>)
+	 *            the class of the UI control (<code>Object</code>)
 	 * @param ridgetClazz
-	 *            - the class of the ridget
+	 *            the class of the ridget
 	 * @param condition
-	 *            - the condition to evaluate (non-null)
+	 *            the condition to evaluate (non-null)
 	 * @see IMappingCondition
 	 */
 	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
@@ -242,9 +242,9 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		 * Create a new mapping of UI control and ridget.
 		 * 
 		 * @param controlClazz
-		 *            - the class of the UI control
+		 *            the class of the UI control
 		 * @param ridgetClazz
-		 *            - the class of the ridget
+		 *            the class of the ridget
 		 */
 		public Mapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
 			this(controlClazz, ridgetClazz, IGNORE_SWT_STYLE, null);
@@ -254,11 +254,11 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		 * Create a new mapping of UI control and ridget.
 		 * 
 		 * @param controlClazz
-		 *            - the class of the UI control
+		 *            the class of the UI control
 		 * @param ridgetClazz
-		 *            - the class of the ridget
+		 *            the class of the ridget
 		 * @param controlStyle
-		 *            - the SWT style of the UI control
+		 *            the SWT style of the UI control
 		 */
 		public Mapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz, int controlStyle) {
 			this(controlClazz, ridgetClazz, controlStyle, null);
@@ -268,11 +268,11 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		 * Create a new mapping of UI control and ridget.
 		 * 
 		 * @param controlClazz
-		 *            - the class of the UI control
+		 *            the class of the UI control
 		 * @param ridgetClazz
-		 *            - the class of the ridget
+		 *            the class of the ridget
 		 * @param condition
-		 *            - a non-null {@link IMappingCondition} instance
+		 *            a non-null {@link IMappingCondition} instance
 		 */
 		public Mapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
 				IMappingCondition condition) {
@@ -292,7 +292,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		 * Checks if this mapping is for given UI control.
 		 * 
 		 * @param control
-		 *            - the UI control-class
+		 *            the UI control-class
 		 * @return true, if the control matches; otherwise false
 		 */
 		public boolean isMatching(Class<? extends Object> controlClazz) {
@@ -307,7 +307,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		 * Checks if this mapping is for given UI control.
 		 * 
 		 * @param control
-		 *            - the UI control
+		 *            the UI control
 		 * @return true, if the control matches; otherwise false
 		 */
 		public boolean isMatching(Object control) {

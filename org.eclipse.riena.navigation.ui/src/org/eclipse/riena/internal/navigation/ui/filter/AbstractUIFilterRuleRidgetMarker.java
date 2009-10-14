@@ -32,7 +32,7 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 	 * Creates a new instance of {@code AbstractUIFilterRuleRidgetMarker}.
 	 * 
 	 * @param idPattern
-	 *            - pattern ({@link StringMatcher}) for ridget IDs
+	 *            pattern ({@link StringMatcher}) for ridget IDs
 	 * @param marker
 	 */
 	public AbstractUIFilterRuleRidgetMarker(String idPattern, IMarker marker) {

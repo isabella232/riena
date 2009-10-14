@@ -55,7 +55,7 @@ public interface ILabelRidget extends IValueRidget {
 	 * @see #setIcon(String)
 	 * 
 	 * @param location
-	 *            - the URL for the image.
+	 *            the URL for the image.
 	 */
 	void setIconLocation(URL location);
 
@@ -74,7 +74,7 @@ public interface ILabelRidget extends IValueRidget {
 	 * @see #setIconLocation(URL)
 	 * 
 	 * @param icon
-	 *            - icon name.
+	 *            icon name.
 	 */
 	void setIcon(String icon);
 }

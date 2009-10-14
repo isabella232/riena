@@ -43,10 +43,10 @@ public class Statusline extends Composite implements IComplexComponent {
 	 * Creates a new instance of <code>Statusline</code>.
 	 * 
 	 * @param parent
-	 *            - a widget which will be the parent of the new instance
+	 *            a widget which will be the parent of the new instance
 	 *            (cannot be null)
 	 * @param style
-	 *            - the style of widget to construct
+	 *            the style of widget to construct
 	 */
 	public Statusline(Composite parent, int style) {
 		this(parent, style | SWT.NO_SCROLL, (Class<? extends Control>) null);
@@ -56,10 +56,10 @@ public class Statusline extends Composite implements IComplexComponent {
 	 * Creates a new instance of <code>Statusline</code>.
 	 * 
 	 * @param parent
-	 *            - a widget which will be the parent of the new instance
+	 *            a widget which will be the parent of the new instance
 	 *            (cannot be null)
 	 * @param style
-	 *            - the style of widget to construct
+	 *            the style of widget to construct
 	 */
 	public Statusline(Composite parent, int style, IStatusLineContentFactory contentFactory) {
 		this(parent, style | SWT.NO_SCROLL, null, contentFactory);
@@ -68,14 +68,14 @@ public class Statusline extends Composite implements IComplexComponent {
 	/**
 	 * 
 	 * @param parent
-	 *            - a widget which will be the parent of the new instance
+	 *            a widget which will be the parent of the new instance
 	 *            (cannot be null)
 	 * @param style
-	 *            - the style of widget to construct
+	 *            the style of widget to construct
 	 * @param pSpacer
-	 *            - class to create spacer
+	 *            class to create spacer
 	 * @param contentFactory
-	 *            - factory for the creation of the contents of the
+	 *            factory for the creation of the contents of the
 	 *            <code>Statusline</code>
 	 */
 	public Statusline(Composite parent, int style, Class<? extends Control> pSpacer) {
@@ -86,14 +86,14 @@ public class Statusline extends Composite implements IComplexComponent {
 	 * Creates a new instance of <code>Statusline</code>.
 	 * 
 	 * @param parent
-	 *            - a widget which will be the parent of the new instance
+	 *            a widget which will be the parent of the new instance
 	 *            (cannot be null)
 	 * @param style
-	 *            - the style of widget to construct
+	 *            the style of widget to construct
 	 * @param pSpacer
-	 *            - class to create spacer
+	 *            class to create spacer
 	 * @param contentFactory
-	 *            - factory for the creation of the contents of the
+	 *            factory for the creation of the contents of the
 	 *            <code>Statusline</code>
 	 */
 	public Statusline(Composite parent, int style, Class<? extends Control> pSpacer,
@@ -147,9 +147,9 @@ public class Statusline extends Composite implements IComplexComponent {
 	 * Adds the given control to the list of the controls that will be binded.
 	 * 
 	 * @param uiControl
-	 *            - control to bind
+	 *            control to bind
 	 * @param propertyName
-	 *            - name of the property...
+	 *            name of the property...
 	 */
 	public void addUIControl(Widget uiControl, String propertyName) {
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(uiControl, propertyName);

@@ -28,7 +28,7 @@ public interface IStatusLineContentFactory {
 	 * additional Widgets.
 	 * 
 	 * @param statusline
-	 *            - the {@link Statusline}
+	 *            the {@link Statusline}
 	 */
 	void createContent(Statusline statusline);
 

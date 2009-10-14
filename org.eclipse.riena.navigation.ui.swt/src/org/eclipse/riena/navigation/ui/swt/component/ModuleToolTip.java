@@ -37,7 +37,7 @@ public class ModuleToolTip extends DefaultToolTip {
 	 * Creates new instance which add TooltipSupport to the control.
 	 * 
 	 * @param titleBar
-	 *            - title bar of a module
+	 *            title bar of a module
 	 */
 	public ModuleToolTip(ModuleTitleBar titleBar) {
 		super(titleBar);

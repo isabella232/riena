@@ -36,7 +36,7 @@ public class SubModuleToolTip extends DefaultToolTip {
 	 * Creates new instance which add TooltipSupport to the tree.
 	 * 
 	 * @param tree
-	 *            - the tree on whose action the tooltip is shown
+	 *            the tree on whose action the tooltip is shown
 	 */
 	public SubModuleToolTip(Tree tree) {
 		super(tree);
@@ -159,7 +159,7 @@ public class SubModuleToolTip extends DefaultToolTip {
 	 * exists.
 	 * 
 	 * @param event
-	 *            - event with the x- and y-position of the mouse pointer
+	 *            event with the x- and y-position of the mouse pointer
 	 * @return original (not clipped) item text
 	 */
 	protected String getItemLongText(Event event) {
@@ -180,7 +180,7 @@ public class SubModuleToolTip extends DefaultToolTip {
 	 * <code>event.x</code>) or null if no such item exists.
 	 * 
 	 * @param event
-	 *            - event with the x- and y-position of the mouse pointer
+	 *            event with the x- and y-position of the mouse pointer
 	 * @return item text
 	 */
 	protected String getItemText(Event event) {
@@ -199,7 +199,7 @@ public class SubModuleToolTip extends DefaultToolTip {
 	 * <code>event.x</code>) or null if no such item exists.
 	 * 
 	 * @param event
-	 *            - event with the x- and y-position of the mouse pointer
+	 *            event with the x- and y-position of the mouse pointer
 	 * @return the item at the given point, or null if the point is not in a
 	 *         selectable item
 	 */

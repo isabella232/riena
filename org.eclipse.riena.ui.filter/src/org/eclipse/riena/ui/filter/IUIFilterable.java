@@ -22,7 +22,7 @@ public interface IUIFilterable {
 	 * Adds a filter to the filterable object.
 	 * 
 	 * @param filter
-	 *            - the filter to add.
+	 *            the filter to add.
 	 */
 	void addFilter(IUIFilter filter);
 

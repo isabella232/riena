@@ -140,7 +140,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 * 
 	 * @param element
 	 * @param columnIndex
-	 *            - column index
+	 *            column index
 	 * @return value or {@code null} if column index is not correct
 	 */
 	public Object getColumnValue(Object element, int columnIndex) {

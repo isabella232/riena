@@ -98,7 +98,7 @@ public class RienaDefaultLnf {
 	 * Puts the given renderers into the table of renderer.
 	 * 
 	 * @param rendererExtensions
-	 *            - descriptors of renderer
+	 *            descriptors of renderer
 	 */
 	@InjectExtension
 	public void update(ILnfRendererExtension[] rendererExtensions) {
@@ -192,7 +192,7 @@ public class RienaDefaultLnf {
 	 * Returns the resource for the given key.
 	 * 
 	 * @param key
-	 *            - key whose associated resource is to be returned.
+	 *            key whose associated resource is to be returned.
 	 * @return the resource to which this map maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -209,7 +209,7 @@ public class RienaDefaultLnf {
 	 * Returns the color for the given key.
 	 * 
 	 * @param key
-	 *            - key whose associated color is to be returned.
+	 *            key whose associated color is to be returned.
 	 * @return the color to which this map maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -227,7 +227,7 @@ public class RienaDefaultLnf {
 	 * Returns the font for the given key.
 	 * 
 	 * @param key
-	 *            - key whose associated font is to be returned.
+	 *            key whose associated font is to be returned.
 	 * @return the font to which this map maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -245,13 +245,13 @@ public class RienaDefaultLnf {
 	 * style will be applied to the font. <br>
 	 * 
 	 * @param key
-	 *            - key whose associated font is to be returned.
+	 *            key whose associated font is to be returned.
 	 * @param height
-	 *            - the font height to use. If it is < 0, the
+	 *            the font height to use. If it is < 0, the
 	 *            <code>LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT</code>
 	 *            will be used. See also {@link FontData#setHeight(int)}.
 	 * @param style
-	 *            - the font style to use. See also
+	 *            the font style to use. See also
 	 *            {@link FontData#setStyle(int)}.
 	 * 
 	 * @return the font to which this map maps the specified key with differing
@@ -268,7 +268,7 @@ public class RienaDefaultLnf {
 	 * Returns the image for the given key.
 	 * 
 	 * @param key
-	 *            - key whose associated image is to be returned.
+	 *            key whose associated image is to be returned.
 	 * @return the image to which this map maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -285,7 +285,7 @@ public class RienaDefaultLnf {
 	 * Returns the renderer for the given key.
 	 * 
 	 * @param key
-	 *            - key whose associated renderer is to be returned.
+	 *            key whose associated renderer is to be returned.
 	 * @return the renderer to which this renderer maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -297,7 +297,7 @@ public class RienaDefaultLnf {
 	 * Returns the setting for the given key
 	 * 
 	 * @param key
-	 *            - key whose associated setting is to be returned.
+	 *            key whose associated setting is to be returned.
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -309,7 +309,7 @@ public class RienaDefaultLnf {
 	 * Returns the integer value of the setting for the given key
 	 * 
 	 * @param key
-	 *            - key whose associated setting is to be returned.
+	 *            key whose associated setting is to be returned.
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -327,9 +327,9 @@ public class RienaDefaultLnf {
 	 * is set, the given default value is returned.
 	 * 
 	 * @param key
-	 *            - key whose associated setting is to be returned.
+	 *            key whose associated setting is to be returned.
 	 * @param defaultValue
-	 *            - value to return, if no value is set
+	 *            value to return, if no value is set
 	 * @return the setting to which this setting maps the specified key, or the
 	 *         default value if the map contains no mapping for this key.
 	 * @since 1.2
@@ -346,7 +346,7 @@ public class RienaDefaultLnf {
 	 * Returns the boolean value of the setting for the given key
 	 * 
 	 * @param key
-	 *            - key whose associated setting is to be returned.
+	 *            key whose associated setting is to be returned.
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>false</code> if the map contains no mapping for this key.
 	 */
@@ -358,7 +358,7 @@ public class RienaDefaultLnf {
 	 * Returns the boolean value of the setting for the given key
 	 * 
 	 * @param key
-	 *            - key whose associated setting is to be returned.
+	 *            key whose associated setting is to be returned.
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>false</code> if the map contains no mapping for this key.
 	 * @since 1.2
@@ -376,7 +376,7 @@ public class RienaDefaultLnf {
 	 * Returns the String value of the setting for the given key
 	 * 
 	 * @param key
-	 *            - key whose associated setting is to be returned.
+	 *            key whose associated setting is to be returned.
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -393,7 +393,7 @@ public class RienaDefaultLnf {
 	 * Loads the theme specified by the given class name.
 	 * 
 	 * @param themeClassName
-	 *            - a string specifying the name of the class that implements
+	 *            a string specifying the name of the class that implements
 	 *            the theme
 	 * @return theme
 	 * @throws ClassNotFoundException
@@ -429,7 +429,7 @@ public class RienaDefaultLnf {
 	 * Sets the theme to be used by the Look and Feel.
 	 * 
 	 * @param newTheme
-	 *            - the theme to be used
+	 *            the theme to be used
 	 */
 	public void setTheme(ILnfTheme newTheme) {
 		if (theme != newTheme) {

@@ -43,7 +43,7 @@ public class UIFilterProvider implements IUIFilterProvider {
 	 * Returns the extension for the given ID.
 	 * 
 	 * @param filterId
-	 *            - filter ID
+	 *            filter ID
 	 * @return extension or {@code null} if no extension was found
 	 */
 	protected IUIFilterExtension getUIFilterDefinition(String filterId) {
@@ -129,7 +129,7 @@ public class UIFilterProvider implements IUIFilterProvider {
 	 * Creates a rule to add an validator to a ridget.
 	 * 
 	 * @param ruleExtension
-	 *            - extension that defines the rule
+	 *            extension that defines the rule
 	 * @return rule or {@code null} if no rule was created
 	 */
 	private IUIFilterRuleValidator createRuleValidatorRidget(IRuleValidatorRidget ruleExtension) {

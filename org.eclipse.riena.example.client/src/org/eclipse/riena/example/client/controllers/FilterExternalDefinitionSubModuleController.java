@@ -92,7 +92,7 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 * Returns all node with the given id.
 	 * 
 	 * @param id
-	 *            - node ID
+	 *            node ID
 	 * @return list of found nodes.
 	 */
 	private List<INavigationNode<?>> findNodes(String id) {
@@ -124,7 +124,7 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 * Returns all node with the given ids.
 	 * 
 	 * @param ids
-	 *            - node IDs
+	 *            node IDs
 	 * @return list of found nodes.
 	 */
 	private List<INavigationNode<?>> findNodes(Collection<String> ids) {

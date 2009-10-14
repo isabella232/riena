@@ -60,7 +60,7 @@ public class NavigationTreeObserver {
 	 * Add the passed listener
 	 * 
 	 * @param pListener
-	 *            - the listener to add
+	 *            the listener to add
 	 */
 	public void addListener(IApplicationNodeListener pListener) {
 		applicationNodeListeners.add(pListener);
@@ -70,7 +70,7 @@ public class NavigationTreeObserver {
 	 * Remove the passed listener
 	 * 
 	 * @param pListener
-	 *            - the listener to remove
+	 *            the listener to remove
 	 */
 	public void removeListener(IApplicationNodeListener pListener) {
 		applicationNodeListeners.remove(pListener);
@@ -80,7 +80,7 @@ public class NavigationTreeObserver {
 	 * Add the passed listener
 	 * 
 	 * @param pListener
-	 *            - the listener to add
+	 *            the listener to add
 	 */
 	public void addListener(ISubApplicationNodeListener pListener) {
 		subApplicationListeners.add(pListener);
@@ -90,7 +90,7 @@ public class NavigationTreeObserver {
 	 * Remove the passed listener
 	 * 
 	 * @param pListener
-	 *            - the listener to remove
+	 *            the listener to remove
 	 */
 	public void removeListener(ISubApplicationNodeListener pListener) {
 		subApplicationListeners.remove(pListener);
@@ -100,7 +100,7 @@ public class NavigationTreeObserver {
 	 * Add the passed listener
 	 * 
 	 * @param pListener
-	 *            - the listener to add
+	 *            the listener to add
 	 */
 	public void addListener(IModuleGroupNodeListener pListener) {
 		moduleGroupNodeListeners.add(pListener);
@@ -110,7 +110,7 @@ public class NavigationTreeObserver {
 	 * Remove the passed listener
 	 * 
 	 * @param pListener
-	 *            - the listener to remove
+	 *            the listener to remove
 	 */
 	public void removeListener(IModuleGroupNodeListener pListener) {
 		moduleGroupNodeListeners.remove(pListener);
@@ -120,7 +120,7 @@ public class NavigationTreeObserver {
 	 * Add the passed listener
 	 * 
 	 * @param pListener
-	 *            - the listener to add
+	 *            the listener to add
 	 */
 	public void addListener(IModuleNodeListener pListener) {
 		moduleNodeListeners.add(pListener);
@@ -130,7 +130,7 @@ public class NavigationTreeObserver {
 	 * Remove the passed listener
 	 * 
 	 * @param pListener
-	 *            - the listener to remove
+	 *            the listener to remove
 	 */
 	public void removeListener(IModuleNodeListener pListener) {
 		moduleNodeListeners.remove(pListener);
@@ -140,7 +140,7 @@ public class NavigationTreeObserver {
 	 * Add the passed listener
 	 * 
 	 * @param pListener
-	 *            - the listener to add
+	 *            the listener to add
 	 */
 	public void addListener(ISubModuleNodeListener pListener) {
 		subModuleNodeListeners.add(pListener);
@@ -150,7 +150,7 @@ public class NavigationTreeObserver {
 	 * Remove the passed listener
 	 * 
 	 * @param pListener
-	 *            - the listener to remove
+	 *            the listener to remove
 	 */
 	public void removeListener(ISubModuleNodeListener pListener) {
 		subModuleNodeListeners.remove(pListener);

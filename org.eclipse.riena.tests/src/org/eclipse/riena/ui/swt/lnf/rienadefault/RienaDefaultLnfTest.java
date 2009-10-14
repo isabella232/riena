@@ -61,7 +61,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	 * Test of the method <code>initialize()</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testInitialize() throws Exception {
 
@@ -82,7 +82,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	 * Test of the method <code>uninitialize()</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testUninitialize() throws Exception {
 
@@ -105,7 +105,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	 * Test of the method <code>getColor(String)</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testGetColor() throws Exception {
 
@@ -120,7 +120,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	 * Test of the method <code>getFont(String)</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testGetFont() throws Exception {
 
@@ -135,7 +135,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	 * Test of the method <code>getFont(String, int, int)</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testGetFontWithProps() throws Exception {
 
@@ -159,7 +159,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	 * Test of the method <code>getTheme()</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testGetTheme() throws Exception {
 
@@ -174,7 +174,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	 * Test of the method <code>setTheme()</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testSetTheme() throws Exception {
 
@@ -191,7 +191,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	 * Test of the method {@code getIntegerSetting(String, Integer)}.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testGetIntegerSetting() throws Exception {
 
@@ -209,7 +209,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	 * Test of the method {@code getBooleanSetting(String, boolean)}.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testGetBooleanSetting() throws Exception {
 

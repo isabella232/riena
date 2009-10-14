@@ -29,7 +29,7 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 
 	/**
 	 * @param value
-	 *            - is ignored
+	 *            is ignored
 	 * 
 	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
 	 *      java.lang.Object)
@@ -114,7 +114,7 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	 * Computes the size inside the given outer border.
 	 * 
 	 * @param outerBounds
-	 *            - bounds of the outer border
+	 *            bounds of the outer border
 	 * 
 	 * @return bounds of the inner border
 	 */
@@ -127,7 +127,7 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	 * Computes the size outside the given inner border.
 	 * 
 	 * @param innerBounds
-	 *            - bounds of the inner border
+	 *            bounds of the inner border
 	 * 
 	 * @return bounds of the outer border
 	 */
@@ -140,7 +140,7 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	 * Computes the outside height of the border.
 	 * 
 	 * @param innerHeight
-	 *            - the inner height of the border
+	 *            the inner height of the border
 	 * 
 	 * @return outer border height
 	 */
@@ -152,7 +152,7 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	 * Computes the outside width of the border.
 	 * 
 	 * @param innerWidth
-	 *            - the inner width of the border
+	 *            the inner width of the border
 	 * 
 	 * @return outer border width
 	 */

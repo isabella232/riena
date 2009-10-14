@@ -53,7 +53,7 @@ public class IntegerBean extends AbstractBean {
 	 * Sets the value of this bean
 	 * 
 	 * @param value
-	 *            - value to set
+	 *            value to set
 	 */
 	public void setValue(Integer value) {
 		Object old = this.value;

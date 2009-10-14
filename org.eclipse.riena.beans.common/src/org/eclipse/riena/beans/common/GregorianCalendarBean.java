@@ -42,7 +42,7 @@ public class GregorianCalendarBean extends AbstractBean {
 	 * Sets the value of this bean
 	 * 
 	 * @param value
-	 *            - value to set
+	 *            value to set
 	 */
 	public void setValue(GregorianCalendar value) {
 		// if (value != null) {

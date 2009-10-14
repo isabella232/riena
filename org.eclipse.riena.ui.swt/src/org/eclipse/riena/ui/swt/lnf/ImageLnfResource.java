@@ -23,7 +23,7 @@ public class ImageLnfResource extends AbstractLnfResource {
 
 	/**
 	 * @param image
-	 *            - image to wrap
+	 *            image to wrap
 	 */
 	public ImageLnfResource(String imagePath) {
 		super();

@@ -69,11 +69,11 @@ public final class ContextProxy implements InvocationHandler {
 	 * passed object
 	 * 
 	 * @param <T>
-	 *            - the expected interface typ equal also the type expected
+	 *            the expected interface typ equal also the type expected
 	 * @param pObject
-	 *            - the Object to create proxy on
+	 *            the Object to create proxy on
 	 * @param pContext
-	 *            - the context to work on with this proxy
+	 *            the context to work on with this proxy
 	 * @return the Proxy
 	 */
 	@SuppressWarnings( { "unchecked" })
@@ -92,9 +92,9 @@ public final class ContextProxy implements InvocationHandler {
 	 * passed object
 	 * 
 	 * @param <T>
-	 *            - the expected interface typ equals the type passe to
+	 *            the expected interface typ equals the type passe to
 	 * @param pContext
-	 *            - the context to work on with this proxy
+	 *            the context to work on with this proxy
 	 * @return the Proxy
 	 */
 	@SuppressWarnings( { "unchecked" })

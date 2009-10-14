@@ -30,10 +30,10 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	 * Creates a new instance of <code>StatuslineNumber</code>.
 	 * 
 	 * @param parent
-	 *            - a widget which will be the parent of the new instance
+	 *            a widget which will be the parent of the new instance
 	 *            (cannot be null)
 	 * @param style
-	 *            - the style of widget to construct
+	 *            the style of widget to construct
 	 */
 	public StatuslineNumber(Composite parent, int style) {
 		super(parent, style | SWT.NO_FOCUS);
@@ -87,7 +87,7 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	 * number is not displayed.
 	 * 
 	 * @param number
-	 *            - number to display in the status line.
+	 *            number to display in the status line.
 	 */
 	public void setNumber(int number) {
 
@@ -110,7 +110,7 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	 * Sets the given "number", that will be display in the status line.
 	 * 
 	 * @param number
-	 *            - the string to displayed in the status line; null removes the
+	 *            the string to displayed in the status line; null removes the
 	 *            number string from the status line
 	 */
 	public void setNumber(String number) {

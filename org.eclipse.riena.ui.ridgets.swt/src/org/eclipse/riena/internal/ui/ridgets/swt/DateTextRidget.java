@@ -146,7 +146,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	 * <p>
 	 * 
 	 * @throws RuntimeException
-	 *             - if {code text} does not (partially) match the specified
+	 *             if {code text} does not (partially) match the specified
 	 *             format pattern. A partial match is any string that has digits
 	 *             and separators in the expected places - as defined by the
 	 *             format pattern - regardless of limits for a certain group

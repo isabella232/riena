@@ -102,7 +102,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 		/**
 		 * @param procDetail
-		 *            - a {@link ProcessDetail} instance
+		 *            a {@link ProcessDetail} instance
 		 * @return true if we accept the detail
 		 */
 		boolean accept(ProcessDetail procDetail);
@@ -232,9 +232,9 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		 * updates the {@link ProcessDetail} holding the visualizer.
 		 * 
 		 * @param visualizer
-		 *            - the visualizer which is progressed
+		 *            the visualizer which is progressed
 		 * @param progress
-		 *            - the number of work units done by the {@link UIProcess}
+		 *            the number of work units done by the {@link UIProcess}
 		 */
 		public void saveProgress(IProgressVisualizer visualizer, int progress) {
 			// anybody there?

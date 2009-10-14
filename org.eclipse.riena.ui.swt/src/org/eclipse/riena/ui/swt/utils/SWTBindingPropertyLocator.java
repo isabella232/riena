@@ -65,7 +65,7 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	 * property (full property).
 	 * 
 	 * @param widget
-	 *            - UI control
+	 *            UI control
 	 * @return full binding property
 	 */
 	private String locateBindingProperty(Widget widget) {

@@ -52,7 +52,7 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 	 * Creates a group with come different UI controls.
 	 * 
 	 * @param parent
-	 *            - parent composite
+	 *            parent composite
 	 * @return group
 	 */
 	private Group createControlsGroup(Composite parent) {
@@ -91,7 +91,7 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 	 * Creates a group for adding markers.
 	 * 
 	 * @param parent
-	 *            - parent composite
+	 *            parent composite
 	 * @return group
 	 */
 	private Group createMarkersGroup(Composite parent) {
@@ -128,7 +128,7 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 	 * Creates a group for adding <i>local</i> UI filters.
 	 * 
 	 * @param parent
-	 *            - parent composite
+	 *            parent composite
 	 * @return group
 	 */
 	private Group createLocalFiltersGroup(Composite parent) {
@@ -173,7 +173,7 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 	 * Creates a group for adding <i>global</i> UI filters.
 	 * 
 	 * @param parent
-	 *            - parent composite
+	 *            parent composite
 	 * @return group
 	 */
 	private Group createGlobalFiltersGroup(Composite parent) {

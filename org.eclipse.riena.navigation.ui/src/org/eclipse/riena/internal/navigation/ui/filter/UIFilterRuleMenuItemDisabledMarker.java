@@ -28,7 +28,7 @@ public class UIFilterRuleMenuItemDisabledMarker extends AbstractUIFilterRuleMenu
 	 * Creates a new instance of {@code UIFilterRuleMenuItemDisabledMarker}.
 	 * 
 	 * @param idPattern
-	 *            - ID
+	 *            ID
 	 */
 	public UIFilterRuleMenuItemDisabledMarker(String idPattern) {
 		super(idPattern, new DisabledMarker(false));

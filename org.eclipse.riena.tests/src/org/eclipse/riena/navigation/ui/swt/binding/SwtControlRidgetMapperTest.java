@@ -67,7 +67,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	 * .
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testAddMapping() throws Exception {
 
@@ -85,7 +85,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	 * .
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testAddMappingSwtStyle() throws Exception {
 
@@ -149,7 +149,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	 * Tests the method <code>getRidgetClass(Class<? extends Widget>)</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testGetRidgetClass() throws Exception {
 
@@ -170,7 +170,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	 * Tests the method <code>getRidgetClass(Widget)</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testGetRidgetClassWidget() throws Exception {
 
@@ -195,7 +195,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	 * Tests the method <code>isMatching(Class<? extends Widget>)</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testIsMatching() throws Exception {
 
@@ -216,7 +216,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	 * Tests the method <code>isMatching(Widget>)</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testIsMatchingWidget() throws Exception {
 

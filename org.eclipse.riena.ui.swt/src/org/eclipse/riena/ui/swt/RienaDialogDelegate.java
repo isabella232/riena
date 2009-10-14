@@ -197,7 +197,7 @@ public class RienaDialogDelegate {
 		 * Paints the border of the (titleless) shell.
 		 * 
 		 * @param e
-		 *            - event
+		 *            event
 		 */
 		private void onPaint(final PaintEvent e) {
 
@@ -234,7 +234,7 @@ public class RienaDialogDelegate {
 		 * Paints the border of the (titleless) shell.
 		 * 
 		 * @param e
-		 *            - event
+		 *            event
 		 */
 		private void onPaint(final PaintEvent e) {
 

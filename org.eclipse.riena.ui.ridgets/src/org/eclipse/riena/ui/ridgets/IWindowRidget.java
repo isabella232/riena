@@ -51,7 +51,7 @@ public interface IWindowRidget extends IRidget {
 	 * Sets the default button.
 	 * 
 	 * @param defaultButton
-	 *            - default button
+	 *            default button
 	 */
 	void setDefaultButton(Object defaultButton);
 

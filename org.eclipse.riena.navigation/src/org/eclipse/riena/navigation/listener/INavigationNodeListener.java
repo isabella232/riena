@@ -41,9 +41,9 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 	 * This method is called if a marker was added to or removed from a node.
 	 * 
 	 * @param source
-	 *            - node
+	 *            node
 	 * @param marker
-	 *            - marker that was removed or added
+	 *            marker that was removed or added
 	 */
 	void markerChanged(S source, IMarker marker);
 
@@ -73,9 +73,9 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 	 * This method is called when a filter was added to the given node.
 	 * 
 	 * @param source
-	 *            - node
+	 *            node
 	 * @param filter
-	 *            - new added filter
+	 *            new added filter
 	 */
 	void filterAdded(S source, IUIFilter filter);
 
@@ -83,9 +83,9 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 	 * This method is called when a filter was removed from the given node.
 	 * 
 	 * @param source
-	 *            - node
+	 *            node
 	 * @param filter
-	 *            - removed filter
+	 *            removed filter
 	 */
 	void filterRemoved(S source, IUIFilter filter);
 

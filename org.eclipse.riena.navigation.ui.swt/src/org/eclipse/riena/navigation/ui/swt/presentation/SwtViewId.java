@@ -24,9 +24,9 @@ public class SwtViewId {
 	 * Creates a new instance of <code>SwtViewId</code> and sets the two IDs.
 	 * 
 	 * @param id
-	 *            - ID
+	 *            ID
 	 * @param secondary
-	 *            - secondary ID
+	 *            secondary ID
 	 */
 	public SwtViewId(String id, String secondary) {
 		setId(id);
@@ -37,7 +37,7 @@ public class SwtViewId {
 	 * Creates a new instance of <code>SwtViewId</code> and sets the two IDs.
 	 * 
 	 * @param compoundId
-	 *            - compund ID
+	 *            compund ID
 	 * @see #getCompoundId()
 	 * @pre compoundId != null
 	 */

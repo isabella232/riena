@@ -117,7 +117,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 	 * {@link #setDigits(int)}.
 	 * 
 	 * @param digits
-	 *            - the digits to set
+	 *            the digits to set
 	 * @return an adjusted digits
 	 */
 	protected int preSetDigits(int digits) {
@@ -136,7 +136,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 	 * {@link #setTextLimit(int)}.
 	 * 
 	 * @param textLimit
-	 *            - the textLimit to set
+	 *            the textLimit to set
 	 * @return an adjusted textLimit
 	 */
 	protected int preSetTextLimit(int textLimit) {

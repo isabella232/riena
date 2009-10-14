@@ -102,7 +102,7 @@ public abstract class AbstractRidget implements IRidget {
 	 * Notifies all listeners that the ridget has lost the focus.
 	 * 
 	 * @param event
-	 *            - the FocusEvent
+	 *            the FocusEvent
 	 */
 	protected final void fireFocusLost(FocusEvent event) {
 		for (IFocusListener focusListener : focusListeners.getListeners()) {
@@ -114,7 +114,7 @@ public abstract class AbstractRidget implements IRidget {
 	 * Notifies all listeners that the ridget has gained the focus.
 	 * 
 	 * @param event
-	 *            - the FocusEvent
+	 *            the FocusEvent
 	 */
 	protected final void fireFocusGained(FocusEvent event) {
 		for (IFocusListener focusListener : focusListeners.getListeners()) {

@@ -44,10 +44,10 @@ public class InjectBindingManager extends DefaultBindingManager {
 	 * Creates the managers of all bindings of a view.
 	 * 
 	 * @param propertyStrategy
-	 *            - strategy to get the property for the binding from the
+	 *            strategy to get the property for the binding from the
 	 *            UI-control.
 	 * @param mapper
-	 *            - mapping for UI control-classes to ridget-classes
+	 *            mapping for UI control-classes to ridget-classes
 	 */
 	public InjectBindingManager(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper<Object> mapper) {
 		super(propertyStrategy, mapper);
@@ -116,7 +116,7 @@ public class InjectBindingManager extends DefaultBindingManager {
 	 * is converted to uppercase.
 	 * 
 	 * @param bindingProperty
-	 *            - binding property
+	 *            binding property
 	 * @return property of method name
 	 */
 	private String createMethodeNameProperty(String bindingProperty) {

@@ -33,9 +33,9 @@ public class Birth {
 	 * Creates a birth and sets the given values
 	 * 
 	 * @param day
-	 *            - birthday to set
+	 *            birthday to set
 	 * @param place
-	 *            - birthplace to set
+	 *            birthplace to set
 	 */
 	public Birth(Date day, String place) {
 
@@ -61,7 +61,7 @@ public class Birth {
 	 * Sets the given birthday
 	 * 
 	 * @param day
-	 *            - the birth day to set.
+	 *            the birth day to set.
 	 */
 	public void setBirthDay(Date day) {
 
@@ -84,7 +84,7 @@ public class Birth {
 	 * Sets the given birth place
 	 * 
 	 * @param birthPlace
-	 *            - the birthplace to set.
+	 *            the birthplace to set.
 	 */
 	public void setBirthPlace(String birthPlace) {
 

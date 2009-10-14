@@ -39,7 +39,7 @@ public class UIProcessFinishedMarker extends AbstractMarker implements IIconizab
 	 * the maximum number of flashes with given value.
 	 * 
 	 * @param counterMaximum
-	 *            - maximum number of flashes
+	 *            maximum number of flashes
 	 */
 	public UIProcessFinishedMarker(int counterMaximum) {
 		super();
@@ -84,7 +84,7 @@ public class UIProcessFinishedMarker extends AbstractMarker implements IIconizab
 	 * Turns the marker on or off (shows or hides the marker).
 	 * 
 	 * @param on
-	 *            - true to turn on the marker; false to turn off the marker
+	 *            true to turn on the marker; false to turn off the marker
 	 */
 	public void setOn(boolean on) {
 		this.on = on;
@@ -115,7 +115,7 @@ public class UIProcessFinishedMarker extends AbstractMarker implements IIconizab
 	 * Sets the maximum number of flashes.
 	 * 
 	 * @param counterMaximum
-	 *            - maximum number of flashes
+	 *            maximum number of flashes
 	 */
 	public void setCounterMaximum(int counterMaximum) {
 		this.counterMaximum = counterMaximum;

@@ -21,7 +21,7 @@ public interface IEmbeddedTitleBarListener {
 	 * Called if mouse was clicked over an inactive title bar.
 	 * 
 	 * @param e
-	 *            - origin mouse event.
+	 *            origin mouse event.
 	 */
 	void windowActivated(MouseEvent e);
 
@@ -29,7 +29,7 @@ public interface IEmbeddedTitleBarListener {
 	 * Called if mouse was clicked over the close button of the title bar.
 	 * 
 	 * @param e
-	 *            - origin mouse event.
+	 *            origin mouse event.
 	 */
 	void windowClosed(MouseEvent e);
 

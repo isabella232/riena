@@ -77,9 +77,9 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 * Sets the state of a button (and resets the others).
 	 * 
 	 * @param newState
-	 *            - state to set
+	 *            state to set
 	 * @param btnIndex
-	 *            - button index
+	 *            button index
 	 */
 	private void changeBtnState(BtnState newState, int btnIndex) {
 		if (newState != BtnState.NONE) {
@@ -92,7 +92,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 * Updates the states of the buttons.
 	 * 
 	 * @param e
-	 *            - mouse event
+	 *            mouse event
 	 */
 	private void updateButtonStates(MouseEvent e) {
 
@@ -358,7 +358,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 * 
 	 * @param control
 	 * @param cursor
-	 *            - new cursor
+	 *            new cursor
 	 */
 	private void setCursor(Control control, Cursor cursor) {
 		if (!SwtUtilities.isDisposed(control)) {
@@ -374,7 +374,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 * 
 	 * @param control
 	 * @param lnfKey
-	 *            - look and feel key of the cursor image
+	 *            look and feel key of the cursor image
 	 * @return cursor
 	 */
 	private Cursor createCursor(Control control, String lnfKey) {

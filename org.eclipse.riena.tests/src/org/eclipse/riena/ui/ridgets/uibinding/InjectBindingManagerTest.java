@@ -71,7 +71,7 @@ public class InjectBindingManagerTest extends TestCase {
 	 * Tests the method <code>injectRidget</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testInjectRidget() throws Exception {
 
@@ -91,7 +91,7 @@ public class InjectBindingManagerTest extends TestCase {
 	 * Tests the method <code>getRidget</code>.
 	 * 
 	 * @throws Exception
-	 *             - handled by JUnit
+	 *             handled by JUnit
 	 */
 	public void testGetRidget() throws Exception {
 

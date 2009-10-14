@@ -83,7 +83,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 * Creates a decoration with an error marker for the given control.
 	 * 
 	 * @param control
-	 *            - the control to be decorated with an error marker
+	 *            the control to be decorated with an error marker
 	 * @return decoration of the given control
 	 */
 	private ControlDecoration createErrorDecoration(Control control) {

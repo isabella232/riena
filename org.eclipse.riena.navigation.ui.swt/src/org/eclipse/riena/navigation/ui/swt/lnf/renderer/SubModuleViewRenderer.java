@@ -57,7 +57,7 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	 * Computes the size of the space inside the outer bounds.
 	 * 
 	 * @param outerBounds
-	 *            - outer bounds
+	 *            outer bounds
 	 * @return inner bounds
 	 */
 	public Rectangle computeInnerBounds(Rectangle outerBounds) {
@@ -70,7 +70,7 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	 * Computes the size of the space outside the inner bounds.
 	 * 
 	 * @param innerBounds
-	 *            - inner bounds
+	 *            inner bounds
 	 * @return outer bounds
 	 */
 	public Rectangle computeOuterBounds(Rectangle innerBounds) {

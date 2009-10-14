@@ -51,7 +51,7 @@ public class ToolItemProperties extends AbstractItemProperties {
 	 * Stores all the previous siblings of the given tool item.
 	 * 
 	 * @param item
-	 *            - item of tool bar
+	 *            item of tool bar
 	 */
 	private void storePreviousSiblings(ToolItem item) {
 		int index = parent.indexOf(item);
