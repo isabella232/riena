@@ -19,31 +19,31 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ModuleController;
 import org.eclipse.riena.navigation.ui.controllers.ModuleGroupController;
-import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleDesc;
-import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupDesc;
+import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleDescriptionExtension;
+import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupDescriptionExtension;
 
 /**
  * Factory to create (sub-)views of the navigation view.
  */
 public class NavigationViewFactory implements IViewFactory {
 
-	private IModuleDesc moduleDesc;
-	private IModuleGroupDesc moduleGroupDesc;
+	private IModuleDescriptionExtension moduleDescriptionExtension;
+	private IModuleGroupDescriptionExtension moduleGroupDescriptionExtension;
 
-	public void update(IModuleDesc moduleView) {
-		this.moduleDesc = moduleView;
+	public void update(IModuleDescriptionExtension moduleView) {
+		this.moduleDescriptionExtension = moduleView;
 	}
 
-	public void update(IModuleGroupDesc moduleGroup) {
-		this.moduleGroupDesc = moduleGroup;
+	public void update(IModuleGroupDescriptionExtension moduleGroup) {
+		this.moduleGroupDescriptionExtension = moduleGroup;
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.views.IViewFactory#createModuleGroupView(org.eclipse.swt.widgets.Composite)
 	 */
 	public ModuleGroupView createModuleGroupView(Composite parent) {
-		if (moduleGroupDesc != null) {
-			Class<ModuleGroupView> moduleGroupClazz = moduleGroupDesc.getView();
+		if (moduleGroupDescriptionExtension != null) {
+			Class<ModuleGroupView> moduleGroupClazz = moduleGroupDescriptionExtension.getView();
 			if (moduleGroupClazz != null) {
 				try {
 					Constructor<ModuleGroupView> constructor = moduleGroupClazz.getConstructor(Composite.class,
@@ -62,8 +62,8 @@ public class NavigationViewFactory implements IViewFactory {
 	 * @see org.eclipse.riena.navigation.ui.swt.views.IViewFactory#createModuleGroupController(org.eclipse.riena.navigation.IModuleGroupNode)
 	 */
 	public ModuleGroupController createModuleGroupController(IModuleGroupNode moduleGroupNode) {
-		if (moduleGroupDesc != null) {
-			Class<ModuleGroupController> moduleGroupClazz = moduleGroupDesc.getController();
+		if (moduleGroupDescriptionExtension != null) {
+			Class<ModuleGroupController> moduleGroupClazz = moduleGroupDescriptionExtension.getController();
 			if (moduleGroupClazz != null) {
 				try {
 					Constructor<ModuleGroupController> constructor = moduleGroupClazz
@@ -82,8 +82,8 @@ public class NavigationViewFactory implements IViewFactory {
 	 * @see org.eclipse.riena.navigation.ui.swt.views.IViewFactory#createModuleView(org.eclipse.swt.widgets.Composite)
 	 */
 	public ModuleView createModuleView(Composite parent) {
-		if (moduleDesc != null) {
-			Class<ModuleView> moduleViewClazz = moduleDesc.getView();
+		if (moduleDescriptionExtension != null) {
+			Class<ModuleView> moduleViewClazz = moduleDescriptionExtension.getView();
 			try {
 				Constructor<ModuleView> constructor = moduleViewClazz.getConstructor(Composite.class);
 				return constructor.newInstance(parent);
@@ -99,8 +99,8 @@ public class NavigationViewFactory implements IViewFactory {
 	 * @see org.eclipse.riena.navigation.ui.swt.views.IViewFactory#createModuleController(org.eclipse.riena.navigation.IModuleNode)
 	 */
 	public ModuleController createModuleController(IModuleNode moduleNode) {
-		if (moduleDesc != null) {
-			Class<ModuleController> moduleViewClazz = moduleDesc.getController();
+		if (moduleDescriptionExtension != null) {
+			Class<ModuleController> moduleViewClazz = moduleDescriptionExtension.getController();
 			if (moduleViewClazz != null) {
 				try {
 					Constructor<ModuleController> constructor = moduleViewClazz.getConstructor(IModuleNode.class);

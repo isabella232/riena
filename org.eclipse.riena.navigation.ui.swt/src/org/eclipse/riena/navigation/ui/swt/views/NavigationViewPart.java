@@ -43,8 +43,8 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
-import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleDesc;
-import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupDesc;
+import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleDescriptionExtension;
+import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupDescriptionExtension;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -75,10 +75,10 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		if (viewFactory == null) {
 			viewFactory = new NavigationViewFactory();
 			Inject
-					.extension("org.eclipse.riena.navigation.ui.swt.moduleView").expectingMinMax(0, 1).useType(IModuleDesc.class).into( //$NON-NLS-1$
+					.extension("org.eclipse.riena.navigation.ui.swt.moduleView").expectingMinMax(0, 1).useType(IModuleDescriptionExtension.class).into( //$NON-NLS-1$
 							viewFactory).andStart(Activator.getDefault().getContext());
 			Inject
-					.extension("org.eclipse.riena.navigation.ui.swt.moduleGroupView").expectingMinMax(0, 1).useType(IModuleGroupDesc.class).into( //$NON-NLS-1$
+					.extension("org.eclipse.riena.navigation.ui.swt.moduleGroupView").expectingMinMax(0, 1).useType(IModuleGroupDescriptionExtension.class).into( //$NON-NLS-1$
 							viewFactory).andStart(Activator.getDefault().getContext());
 		}
 		return viewFactory;

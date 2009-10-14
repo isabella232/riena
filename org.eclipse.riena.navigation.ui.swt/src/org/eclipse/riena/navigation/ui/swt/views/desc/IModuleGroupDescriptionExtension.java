@@ -18,7 +18,7 @@ import org.eclipse.riena.navigation.ui.swt.views.ModuleGroupView;
  * interfaces for injecting org.eclipse.riena.navigation.ui.swt.moduleGroupView
  */
 @ExtensionInterface
-public interface IModuleGroupDesc {
+public interface IModuleGroupDescriptionExtension {
 
 	Class<ModuleGroupView> getView();
 
