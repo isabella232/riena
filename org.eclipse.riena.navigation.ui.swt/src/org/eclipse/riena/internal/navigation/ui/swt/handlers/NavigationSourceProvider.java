@@ -77,6 +77,14 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 		fireSourceChanged(ACTIVE_NODE_ID, getPovidesSourceName(node), getTypeNodeId(node));
 	}
 
+	/**
+	 * Returns the type ID of the given node. An empty string is returned if the
+	 * node has no ID.
+	 * 
+	 * @param node
+	 *            navigation node
+	 * @return type ID of the given node
+	 */
 	private String getTypeNodeId(INavigationNode<?> node) {
 		if (node != null && node.getNodeId() != null) {
 			return node.getNodeId().getTypeId();
@@ -112,6 +120,15 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 
 	}
 
+	/**
+	 * This method should be called if a node was activated so that the value of
+	 * the source can be updated.
+	 * <p>
+	 * Also the sources of all parent nodes are updated.
+	 * 
+	 * @param node
+	 *            node that was activated right now
+	 */
 	public static void activeNodeChanged(INavigationNode<?> node) {
 		if (sourceProvider != null) {
 			sourceProvider.fireSourceChange(node);

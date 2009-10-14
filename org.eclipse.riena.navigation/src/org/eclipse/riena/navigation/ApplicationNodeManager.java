@@ -94,6 +94,9 @@ public final class ApplicationNodeManager {
 
 	public static ISubApplicationNode locateActiveSubApplicationNode() {
 		ApplicationNode applicationNode = (ApplicationNode) ApplicationNodeManager.getApplicationNode();
+		if (applicationNode == null) {
+			return null;
+		}
 		for (ISubApplicationNode child : applicationNode.getChildren()) {
 			if (child.isActivated()) {
 				return child;
