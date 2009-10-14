@@ -37,7 +37,7 @@ public class RienaSerializerFactory extends AbstractSerializerFactory {
 
 	public RienaSerializerFactory() {
 		prepareHessianSerializerFactory();
-		Inject.extension(ISerializerFactoryDefinition.EXTENSION_ID).into(this).andStart(
+		Inject.extension(ISerializerFactoryExtension.EXTENSION_ID).into(this).andStart(
 				Activator.getDefault().getContext());
 	}
 
@@ -67,11 +67,11 @@ public class RienaSerializerFactory extends AbstractSerializerFactory {
 		return null;
 	}
 
-	public void update(ISerializerFactoryDefinition[] serializerFactoryDefinitions) {
+	public void update(ISerializerFactoryExtension[] serializerFactoryDefinitions) {
 		List<AbstractRienaSerializerFactory> rienaSerializerFactories = new ArrayList<AbstractRienaSerializerFactory>(
 				serializerFactoryDefinitions.length);
-		for (ISerializerFactoryDefinition serializerFactoryDefinition : serializerFactoryDefinitions) {
-			rienaSerializerFactories.add(serializerFactoryDefinition.createImplementation());
+		for (ISerializerFactoryExtension serializerFactoryExtension : serializerFactoryDefinitions) {
+			rienaSerializerFactories.add(serializerFactoryExtension.createImplementation());
 		}
 		// sort and than make active
 		Collections.sort(rienaSerializerFactories, new AbstractRienaSerializerFactory.SalienceComparator());
