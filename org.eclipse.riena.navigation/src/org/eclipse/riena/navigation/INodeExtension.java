@@ -10,14 +10,18 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.riena.core.injector.extension.MapName;
 import org.osgi.framework.Bundle;
+
+import org.eclipse.core.runtime.IConfigurationElement;
+
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
  * Common interface for all navigation node extensions that define how to create
  * a node or a subtree in the application model tree.
  */
+@ExtensionInterface
 public interface INodeExtension {
 
 	/**
