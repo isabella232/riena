@@ -19,6 +19,6 @@ import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerNavigation;
 @ExtensionInterface
 public interface IRuleMarkerNavigationMapper extends IRuleMapper {
 
-	public IUIFilterRuleMarkerNavigation getRuleClass();
+	IUIFilterRuleMarkerNavigation getRuleClass();
 
 }

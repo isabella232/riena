@@ -19,6 +19,6 @@ import org.eclipse.riena.ui.filter.IUIFilterRuleValidatorRidget;
 @ExtensionInterface
 public interface IRuleValidatorRidgetMapper extends IRuleMapper {
 
-	public IUIFilterRuleValidatorRidget getRuleClass();
+	IUIFilterRuleValidatorRidget getRuleClass();
 
 }
