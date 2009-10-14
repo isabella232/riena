@@ -15,32 +15,26 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * interface for encapsulating different types of attachments
+ * Interface for encapsulating different types of attachments.
  */
 public interface IDataSource {
 
 	/**
-	 * Returns a inputStream to the content of this datasource. The inputStream
-	 * is guranteed to be right at the beginning.
+	 * Returns the {@code InputStream} of this data source. The {@code
+	 * InputStream} is guaranteed to be right at the beginning.
 	 * 
-	 * @return
+	 * @return the {@code InputStream} of this data source
 	 * @throws IOException
 	 */
 	InputStream getInputStream() throws IOException;
 
-	/**
-	 * @return
-	 * @throws IOException
-	 */
 	OutputStream getOutputStream() throws IOException;
 
-	/**
-	 * @return
-	 */
 	String getName();
 
 	/**
-	 * checks wether a datasource is valid (has an inputstream that can be read)
+	 * Checks whether this data source is valid (has an {@code InputStream} that
+	 * can be read).
 	 */
 	void checkValid() throws IOException;
 
