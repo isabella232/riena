@@ -80,7 +80,7 @@ public class ScrollingSupport {
 	}
 
 	/**
-	 * @return - the scrolled composite which is placed relative to the
+	 * @return the scrolled composite which is placed relative to the
 	 *         navigation main composite
 	 */
 	public Composite getScrollComposite() {
@@ -235,7 +235,7 @@ public class ScrollingSupport {
 	/**
 	 * determines if scrolling is needed
 	 * 
-	 * @return - true if we need scrolling
+	 * @return true if we need scrolling
 	 */
 	private boolean mayScroll() {
 		int navigationComponentHeight = getNavigationComponentHeight();

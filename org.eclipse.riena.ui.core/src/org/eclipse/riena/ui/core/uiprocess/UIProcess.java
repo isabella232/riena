@@ -197,7 +197,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * 
 	 * @param monitor
 	 *            the jobs API monitor used to control the {@link UIProcess}
-	 * @return - true if the method has been run without errors
+	 * @return true if the method has been run without errors
 	 */
 	public boolean runJob(IProgressMonitor monitor) {
 		return true;

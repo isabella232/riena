@@ -60,7 +60,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	}
 
 	/**
-	 * @return - the {@link Window}
+	 * @return the {@link Window}
 	 */
 	public Window getWindow() {
 		return processWindow;

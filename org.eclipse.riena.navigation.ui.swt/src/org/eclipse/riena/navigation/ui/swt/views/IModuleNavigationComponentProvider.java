@@ -24,12 +24,12 @@ import org.eclipse.riena.navigation.model.ModuleGroupNode;
 public interface IModuleNavigationComponentProvider {
 
 	/**
-	 * @return - the main navigation component
+	 * @return the main navigation component
 	 */
 	Composite getNavigationComponent();
 
 	/**
-	 * @return - the composite holding the real content being scrolled inside
+	 * @return the composite holding the real content being scrolled inside
 	 *         the main navigation component
 	 */
 	Composite getScrolledComponent();
@@ -38,20 +38,20 @@ public interface IModuleNavigationComponentProvider {
 
 	/**
 	 * @param moduleGroupNode
-	 * @return - the {@link ModuleGroupView} for the parameter node
+	 * @return the {@link ModuleGroupView} for the parameter node
 	 */
 	ModuleGroupView getModuleGroupViewForNode(IModuleGroupNode moduleGroupNode);
 
 	/**
 	 * @param moduleGroupNode
-	 * @return - the {@link ModuleGroupView} for the parameter node
+	 * @return the {@link ModuleGroupView} for the parameter node
 	 * 
 	 * @since 1.2
 	 */
 	ModuleView getModuleViewForNode(IModuleNode moduleGroupNode);
 
 	/**
-	 * @return - the currently active {@link ModuleGroupNode}
+	 * @return the currently active {@link ModuleGroupNode}
 	 */
 	IModuleGroupNode getActiveModuleGroupNode();
 

@@ -463,7 +463,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * determines if the {@link ProgressInfoDataObject} has changed
 	 * 
 	 * @param pido
-	 * @return - true if the {@link ProgressInfoDataObject} has changed
+	 * @return true if the {@link ProgressInfoDataObject} has changed
 	 */
 	private boolean freshValue(ProgressInfoDataObject pido) {
 		ProgressInfoDataObject cached = valueCache.get(pido.getKey());
@@ -568,7 +568,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * {@link Label}
 	 * 
 	 * @param pido
-	 * @return - the {@link ControlHolder}
+	 * @return the {@link ControlHolder}
 	 */
 	private ControlHolder createControlHolder(ProgressInfoDataObject pido) {
 		ControlHolder holder;

@@ -30,7 +30,7 @@ public interface IContextUpdateListener {
 	 * 
 	 * @param context
 	 *            the observed context
-	 * @return - true if this listener should be unregistered automatically at
+	 * @return true if this listener should be unregistered automatically at
 	 *         the observerd component
 	 */
 	boolean contextUpdated(Object context);

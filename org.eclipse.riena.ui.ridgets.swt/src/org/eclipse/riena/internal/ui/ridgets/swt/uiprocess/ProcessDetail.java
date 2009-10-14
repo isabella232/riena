@@ -56,7 +56,7 @@ public class ProcessDetail {
 	}
 
 	/**
-	 * @return - the time the {@link IProgressVisualizer} was first "seen"
+	 * @return the time the {@link IProgressVisualizer} was first "seen"
 	 */
 	public long getStartupTS() {
 		return startupTS;
@@ -81,7 +81,7 @@ public class ProcessDetail {
 	}
 
 	/**
-	 * @return - depends on {@link #isPending()} if {@link #totalWork} or
+	 * @return depends on {@link #isPending()} if {@link #totalWork} or
 	 *         {@link #PENDING_MAXWORK} is returned
 	 */
 	public int getMaxValue() {
@@ -89,7 +89,7 @@ public class ProcessDetail {
 	}
 
 	/**
-	 * @return - depends on {@link #isPending()} if {@link #pendingProgress} or
+	 * @return depends on {@link #isPending()} if {@link #pendingProgress} or
 	 *         {@link #progress} is returned
 	 */
 	public int getValue() {
@@ -128,7 +128,7 @@ public class ProcessDetail {
 
 	/**
 	 * 
-	 * @return - a data object describing the {@link ProcessDetail}
+	 * @return a data object describing the {@link ProcessDetail}
 	 */
 	public ProgressInfoDataObject toPido() {
 		return new ProgressInfoDataObject(key, getMaxValue(), calculatePercentage(), getVisualizer().getProcessInfo()

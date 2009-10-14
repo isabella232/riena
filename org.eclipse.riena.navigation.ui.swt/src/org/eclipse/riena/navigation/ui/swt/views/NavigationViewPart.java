@@ -410,7 +410,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	/**
 	 * Returns the renderer of the module group.
 	 * 
-	 * @return - the renderer instance
+	 * @return the renderer instance
 	 */
 	private ModuleGroupRenderer getModuleGroupRenderer() {
 
@@ -426,7 +426,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	/**
 	 * Returns the renderer of the module group.
 	 * 
-	 * @return - the renderer instance
+	 * @return the renderer instance
 	 */
 	private EmbeddedBorderRenderer getLnfBorderRenderer() {
 

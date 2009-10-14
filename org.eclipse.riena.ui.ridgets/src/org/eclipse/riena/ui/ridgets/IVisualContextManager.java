@@ -24,7 +24,7 @@ public interface IVisualContextManager {
 	 * 
 	 * @param contexts
 	 *            the amount of registered sub contexts
-	 * @return - the active context
+	 * @return the active context
 	 */
 	List<Object> getActiveContexts(List<Object> contexts);
 

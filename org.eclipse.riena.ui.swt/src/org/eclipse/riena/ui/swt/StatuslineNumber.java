@@ -63,7 +63,7 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	/**
 	 * Override this method to have fixed width of the label
 	 * 
-	 * @return - the fixed with
+	 * @return the fixed with
 	 */
 	protected int getFixWidth() {
 		return SWT.NONE;

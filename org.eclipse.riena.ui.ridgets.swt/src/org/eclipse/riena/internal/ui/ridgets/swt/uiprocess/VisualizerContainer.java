@@ -37,7 +37,7 @@ class VisualizerContainer extends HashMap<IProgressVisualizer, Integer> {
 	 * {@link VisualizerContainer} is related to a visual context managed in
 	 * {@link UIProcessRidget}
 	 * 
-	 * @return - the active visualizer
+	 * @return the active visualizer
 	 */
 	public IProgressVisualizer getCurrentVisualizer() {
 		return getFreshestVisualizer();

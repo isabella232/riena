@@ -132,7 +132,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 		/**
 		 * 
-		 * @return - all detail information about running visualizers
+		 * @return all detail information about running visualizers
 		 */
 		List<ProcessDetail> getProcessDetails() {
 			return Collections.unmodifiableList(processDetails);
@@ -150,7 +150,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 		/**
 		 * 
-		 * @return - the {@link ProcessDetail} of the
+		 * @return the {@link ProcessDetail} of the
 		 *         {@link IProgressVisualizer} currently visualized in the
 		 *         {@link Statusline}
 		 */
@@ -167,7 +167,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		 *      {@link Statusline}?
 		 * 
 		 * @param visualizer
-		 * @return - true if it should be visualized in the {@link Statusline}
+		 * @return true if it should be visualized in the {@link Statusline}
 		 */
 		boolean isRelevantForStatusline(IProgressVisualizer visualizer) {
 			return visualizer != null && visualizer.equals(getStatuslineRelevant().getVisualizer());
@@ -176,7 +176,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		/**
 		 * convenience method
 		 * 
-		 * @return - the {@link IProgressVisualizer}s of all registerd
+		 * @return the {@link IProgressVisualizer}s of all registerd
 		 *         {@link ProcessDetail}s
 		 */
 		List<IProgressVisualizer> getAlVisualizers() {
@@ -207,7 +207,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 		/**
 		 * 
-		 * @return - a list containing all <strong>pending</strong>
+		 * @return a list containing all <strong>pending</strong>
 		 *         {@link ProcessDetail} instances.
 		 */
 		List<ProcessDetail> getPending() {

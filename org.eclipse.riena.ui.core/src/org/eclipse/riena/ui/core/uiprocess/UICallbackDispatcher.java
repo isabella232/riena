@@ -112,7 +112,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	 * Creates the wrapped {@link IProgressMonitor} which will by serialized to
 	 * the UI-Thread.
 	 * 
-	 * @return - The wrapping monitor with a delegate inside
+	 * @return The wrapping monitor with a delegate inside
 	 */
 	protected IProgressMonitor createWrappedMonitor() {
 		/**
