@@ -15,8 +15,6 @@ import java.util.Collection;
 /**
  * An interface to combine all markable objects. e.g. Adapter and Controller
  * This interfaces describes the minimal capabilities of markable objects
- * 
- * @author Sebastian Stanossek
  */
 
 public interface IMarkable {

@@ -24,8 +24,6 @@ package org.eclipse.riena.core.cache;
  * the cache even if garbage collection occurs. However these minSize entries
  * will still be checked against the timeout.</li>
  * </ul>
- * 
- * @author Christian Campo
  */
 public interface IGenericObjectCache<K, V> {
 
@@ -110,13 +108,14 @@ public interface IGenericObjectCache<K, V> {
 	 */
 	int getMinimumSize();
 
-	/**
-	 * Sets a global HashMap resource that is used for this GenericObjectCache.
-	 * A type is required for Caches with global HashMap
-	 * 
-	 * @param map
-	 */
+	//	/**
+	//	 * Sets a global HashMap resource that is used for this GenericObjectCache.
+	//	 * A type is required for Caches with global HashMap
+	//	 * 
+	//	 * @param map
+	//	 */
 	//	void setHashMap(HashMap<K, V> map);
+
 	/**
 	 * Descriptive name for this cache (shown in logs)
 	 * 
@@ -131,8 +130,5 @@ public interface IGenericObjectCache<K, V> {
 	 */
 	int getSize();
 
-	/**
-	 * @return
-	 */
 	String getStatistic();
 }
