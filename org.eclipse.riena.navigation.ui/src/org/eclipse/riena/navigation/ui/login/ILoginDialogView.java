@@ -18,7 +18,7 @@ public interface ILoginDialogView {
 	/**
 	 * Build and open the dialog.
 	 */
-	public void build();
+	void build();
 
 	/**
 	 * Returns the result of the login operation. The following conventions have
