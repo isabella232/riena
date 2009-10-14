@@ -40,8 +40,8 @@ public class LoggerMill {
 
 	private List<LogListener> logListeners = new ArrayList<LogListener>();
 	private List<ILogCatcher> logCatchers = new ArrayList<ILogCatcher>();;
-	private ILogListenerDefinition[] listenerDefs;
-	private ILogCatcherDefinition[] catcherDefs;
+	private ILogListenerExtension[] listenerDefs;
+	private ILogCatcherExtension[] catcherDefs;
 
 	private ExtendedLogService logService = null;
 
@@ -92,9 +92,9 @@ public class LoggerMill {
 		// no loggers have been defined than a default logging setup will be used.
 		final boolean useDefaultLogging = RienaStatus.isDevelopment();
 		if (listenerDefs.length == 0 && useDefaultLogging) {
-			listenerDefs = new ILogListenerDefinition[] { new SysoLogListenerDefinition() };
+			listenerDefs = new ILogListenerExtension[] { new SysoLogListenerDefinition() };
 		}
-		for (ILogListenerDefinition logListenerDef : listenerDefs) {
+		for (ILogListenerExtension logListenerDef : listenerDefs) {
 			LogListener listener = logListenerDef.createLogListener();
 			if (listener == null) {
 				// this can only happen, if the mandatory attribute is not defined, i.e. a schema violation
@@ -112,10 +112,10 @@ public class LoggerMill {
 			}
 		}
 		if (catcherDefs.length == 0 && useDefaultLogging) {
-			catcherDefs = new ILogCatcherDefinition[] { new PlatformLogCatcherDefinition(),
+			catcherDefs = new ILogCatcherExtension[] { new PlatformLogCatcherDefinition(),
 					new LogServiceLogCatcherDefinition() };
 		}
-		for (ILogCatcherDefinition catcherDef : catcherDefs) {
+		for (ILogCatcherExtension catcherDef : catcherDefs) {
 			ILogCatcher logCatcher = catcherDef.createLogCatcher();
 			logCatcher.attach();
 			logCatchers.add(logCatcher);
@@ -138,12 +138,12 @@ public class LoggerMill {
 	}
 
 	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´listenerDefs´ is too expensive")
-	public void update(final ILogListenerDefinition[] listenerDefs) {
+	public void update(final ILogListenerExtension[] listenerDefs) {
 		this.listenerDefs = listenerDefs;
 	}
 
 	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´catcherDefs´ is too expensive")
-	public void update(final ILogCatcherDefinition[] catcherDefs) {
+	public void update(final ILogCatcherExtension[] catcherDefs) {
 		this.catcherDefs = catcherDefs;
 	}
 
@@ -157,7 +157,7 @@ public class LoggerMill {
 	 * Definition of log listener that defines a {@code SysoLogListener} with a
 	 * {@code CommandProviderLogFilter}.
 	 */
-	private static final class SysoLogListenerDefinition implements ILogListenerDefinition {
+	private static final class SysoLogListenerDefinition implements ILogListenerExtension {
 		public boolean isSynchronous() {
 			return true;
 		}
@@ -178,7 +178,7 @@ public class LoggerMill {
 	/**
 	 * Definition of log catcher that defines a {@code PlatformLogCatcher}.
 	 */
-	private final static class PlatformLogCatcherDefinition implements ILogCatcherDefinition {
+	private final static class PlatformLogCatcherDefinition implements ILogCatcherExtension {
 
 		public ILogCatcher createLogCatcher() {
 			return new PlatformLogCatcher();
@@ -192,7 +192,7 @@ public class LoggerMill {
 	/**
 	 * Definition of log catcher that defines a {@code LogServiceLogCatcher}.
 	 */
-	private final static class LogServiceLogCatcherDefinition implements ILogCatcherDefinition {
+	private final static class LogServiceLogCatcherDefinition implements ILogCatcherExtension {
 
 		public ILogCatcher createLogCatcher() {
 			return new LogServiceLogCatcher();

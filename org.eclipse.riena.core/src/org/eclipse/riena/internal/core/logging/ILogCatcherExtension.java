@@ -8,31 +8,24 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core.exceptionmanager;
+package org.eclipse.riena.internal.core.logging;
 
-import org.eclipse.riena.core.exception.IExceptionHandler;
-import org.eclipse.riena.core.injector.extension.DefaultValue;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
+import org.eclipse.riena.core.logging.ILogCatcher;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
- * Definition for the ExceptionHandlers that are defined
+ *
  */
 @ExtensionInterface
-public interface IExceptionHandlerDefinition {
+public interface ILogCatcherExtension {
 
-	String EXTENSION_POINT = Activator.PLUGIN_ID + ".exception.handlers"; //$NON-NLS-1$
+	String EXTENSION_POINT = Activator.PLUGIN_ID + ".logging.catchers"; //$NON-NLS-1$
 
 	String getName();
 
 	@MapName("class")
-	IExceptionHandler createExceptionHandler();
-
-	@MapName("class")
-	String getExceptionHandler();
-
-	@DefaultValue("*")
-	String getBefore();
+	ILogCatcher createLogCatcher();
 
 }

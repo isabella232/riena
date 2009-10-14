@@ -31,11 +31,11 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 	private List<IExceptionHandler> handlers;
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleExceptionHandlerManager.class);
 
-	@InjectExtension(id = IExceptionHandlerDefinition.EXTENSION_POINT)
-	public void update(IExceptionHandlerDefinition[] exceptionHandlerDefinitions) {
+	@InjectExtension(id = IExceptionHandlerExtension.EXTENSION_POINT)
+	public void update(IExceptionHandlerExtension[] exceptionHandlerDefinitions) {
 		List<TopologicalNode<IExceptionHandler>> nodes = new ArrayList<TopologicalNode<IExceptionHandler>>(
 				exceptionHandlerDefinitions.length);
-		for (IExceptionHandlerDefinition handlerDefinition : exceptionHandlerDefinitions) {
+		for (IExceptionHandlerExtension handlerDefinition : exceptionHandlerDefinitions) {
 			IExceptionHandler exceptionHandler = handlerDefinition.createExceptionHandler();
 			if (exceptionHandler == null) {
 				LOGGER.log(LogService.LOG_ERROR, "could not instantiate exception handler " //$NON-NLS-1$

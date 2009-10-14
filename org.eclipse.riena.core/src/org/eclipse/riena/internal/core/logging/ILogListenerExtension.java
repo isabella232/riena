@@ -22,7 +22,7 @@ import org.eclipse.riena.internal.core.Activator;
  *
  */
 @ExtensionInterface
-public interface ILogListenerDefinition {
+public interface ILogListenerExtension {
 
 	String EXTENSION_POINT = Activator.PLUGIN_ID + ".logging.listeners"; //$NON-NLS-1$
 
