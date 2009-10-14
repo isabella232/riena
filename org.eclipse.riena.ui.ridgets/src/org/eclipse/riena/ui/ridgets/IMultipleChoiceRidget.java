@@ -16,8 +16,6 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 
 /**
  * A multiple choice ridget that allows the selection of multiple options.
- * 
- * @author Frank Schepp
  */
 public interface IMultipleChoiceRidget extends IChoiceRidget {
 

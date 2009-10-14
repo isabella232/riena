@@ -25,8 +25,6 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
  * MasterDetailComposite. The binding between UI and ridgets is done by
  * implementing an {@link IMasterDetailsDelegate} and introducing it to this
  * ridget via {@link #setDelegate(IMasterDetailsDelegate)}.
- * 
- * @author Erich Achilles
  */
 public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 
