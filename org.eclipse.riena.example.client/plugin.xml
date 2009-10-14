@@ -499,9 +499,9 @@
             commandId="org.eclipse.riena.example.client.certainViewCommand">
          <enabledWhen>
             <with
-                  variable="activePartId">
+                  variable="activeSubModuleNodeId">
                <equals
-                     value="org.eclipse.riena.example.client.views.ComboSubModuleView">
+                     value="org.eclipse.riena.example.combo">
                </equals>
             </with>
          </enabledWhen>
@@ -511,9 +511,9 @@
             commandId="org.eclipse.riena.example.client.certainPerspectiveCommand">
          <enabledWhen>
             <with
-                  variable="activeWorkbenchWindow.activePerspective">
+                  variable="activeSubApplicationNodeId">
                <equals
-                     value="subapplication.2">
+                     value="playground">
                </equals>
             </with>
          </enabledWhen>

@@ -13,6 +13,8 @@ package org.eclipse.riena.navigation;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.riena.navigation.model.ApplicationNode;
+
 /**
  * This class holds the ApplicationNode(s) of a Riena application in a static
  * way. If you need more than one ApplicationNode, you must specify a unique
@@ -73,7 +75,7 @@ public final class ApplicationNodeManager {
 
 	/**
 	 * Register the given ApplicationNode. If the ApplicationNode already
-	 * exists, an ApplicationModelFailure is thrwon
+	 * exists, an ApplicationModelFailure is thrown
 	 * 
 	 * @see org.eclipse.riena.navigation.IApplicationNode
 	 * @see org.eclipse.riena.navigation.ApplicationModelFailure
@@ -90,6 +92,72 @@ public final class ApplicationNodeManager {
 		}
 		nodeMap.put(nodeName, node);
 		return;
+	}
+
+	public static ISubApplicationNode locateActiveSubApplicationNode() {
+		ApplicationNode applicationNode = (ApplicationNode) ApplicationNodeManager.getApplicationNode();
+		for (ISubApplicationNode child : applicationNode.getChildren()) {
+			if (child.isActivated()) {
+				return child;
+			}
+		}
+		return null;
+	}
+
+	public static IModuleGroupNode locateActiveModuleGroupNode() {
+		ISubApplicationNode subApplicationNode = locateActiveSubApplicationNode();
+		if (subApplicationNode == null) {
+			return null;
+		}
+		for (IModuleGroupNode child : subApplicationNode.getChildren()) {
+			if (child.isActivated()) {
+				return child;
+			}
+		}
+		return null;
+	}
+
+	public static IModuleNode locateActiveModuleNode() {
+		IModuleGroupNode moduleGroupNode = locateActiveModuleGroupNode();
+		if (moduleGroupNode == null) {
+			return null;
+		}
+		for (IModuleNode child : moduleGroupNode.getChildren()) {
+			if (child.isActivated()) {
+				return child;
+			}
+		}
+		return null;
+	}
+
+	public static ISubModuleNode locateActiveSubModuleNode() {
+		IModuleNode moduleNode = locateActiveModuleNode();
+		if (moduleNode == null) {
+			return null;
+		}
+		for (ISubModuleNode child : moduleNode.getChildren()) {
+			ISubModuleNode subModuleNode = getActiveSubModule(child);
+			if (subModuleNode != null) {
+				return getActiveSubModule(child);
+			}
+		}
+		return null;
+	}
+
+	private static ISubModuleNode getActiveSubModule(ISubModuleNode node) {
+
+		if (node.isActivated()) {
+			return node;
+		}
+		for (ISubModuleNode child : node.getChildren()) {
+			ISubModuleNode subModuleNode = getActiveSubModule(child);
+			if (subModuleNode != null) {
+				return getActiveSubModule(child);
+			}
+		}
+
+		return null;
+
 	}
 
 }

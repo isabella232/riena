@@ -215,4 +215,26 @@
             sequence="M1+M2+W">
       </key>
    </extension>
+   <extension
+         point="org.eclipse.ui.services">
+      <sourceProvider
+            provider="org.eclipse.riena.internal.navigation.ui.swt.handlers.NavigationSourceProvider">
+         <variable
+               name="activeSubModuleNodeId"
+               priorityLevel="activeSite">
+         </variable>
+         <variable
+               name="activeSubApplicationNodeId"
+               priorityLevel="activeSite">
+         </variable>
+         <variable
+               name="activeModuleGroupNodeId"
+               priorityLevel="activeSite">
+         </variable>
+         <variable
+               name="activeModuleNodeId"
+               priorityLevel="activeSite">
+         </variable>
+      </sourceProvider>
+   </extension>
 </plugin>

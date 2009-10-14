@@ -41,6 +41,7 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.InvocationTargetFailure;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
+import org.eclipse.riena.internal.navigation.ui.swt.handlers.NavigationSourceProvider;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -349,6 +350,8 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 				title.setWindowActive(currentController.isActivated());
 			}
 		}
+
+		NavigationSourceProvider.activeNodeChanged(getNavigationNode());
 
 		LNF_UPDATER.updateUIControlsAfterBind(getParentComposite());
 
