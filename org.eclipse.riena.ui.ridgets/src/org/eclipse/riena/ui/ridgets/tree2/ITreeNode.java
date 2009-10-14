@@ -97,7 +97,7 @@ public interface ITreeNode {
 	void setChildren(List<ITreeNode> children);
 
 	/**
-	 * Set teh value object for this node
+	 * Set the value object for this node
 	 * 
 	 * @param newValue
 	 *            an Object instance (may be null)
@@ -132,4 +132,4 @@ public interface ITreeNode {
 	 *             if propertyChangeListener is null
 	 */
 	void removePropertyChangeListener(PropertyChangeListener listener);
-} // end interface
+}
