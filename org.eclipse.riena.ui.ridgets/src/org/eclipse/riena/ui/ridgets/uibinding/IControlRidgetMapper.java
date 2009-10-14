@@ -67,6 +67,6 @@ public interface IControlRidgetMapper<C> {
 	 * @see IMappingCondition
 	 * @since 1.2
 	 */
-	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
+	void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
 			IMappingCondition condition);
 }
