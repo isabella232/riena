@@ -33,7 +33,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.StartupNodeInfo;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.NavigationNodeProvider;
-import org.eclipse.riena.navigation.ui.login.ILoginDialogViewDefinition;
+import org.eclipse.riena.navigation.ui.login.ILoginDialogViewExtension;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
 
 /**
@@ -42,7 +42,7 @@ import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
 public abstract class AbstractApplication implements IApplication {
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), AbstractApplication.class);
-	protected ILoginDialogViewDefinition loginDialogViewDefinition;
+	protected ILoginDialogViewExtension loginDialogViewExtension;
 
 	public Object start(IApplicationContext context) throws Exception {
 
@@ -156,7 +156,7 @@ public abstract class AbstractApplication implements IApplication {
 	}
 
 	protected boolean isDialogLogin(IApplicationContext context) {
-		return loginDialogViewDefinition != null;
+		return loginDialogViewExtension != null;
 	}
 
 	protected boolean isSplashLogin(IApplicationContext context) {
@@ -182,15 +182,15 @@ public abstract class AbstractApplication implements IApplication {
 		}
 	}
 
-	public void update(ILoginDialogViewDefinition[] data) {
+	public void update(ILoginDialogViewExtension[] data) {
 
 		if (data.length > 0) {
-			loginDialogViewDefinition = data[0];
+			loginDialogViewExtension = data[0];
 		}
 	}
 
 	protected void initializeLoginViewDefinition() {
-		Inject.extension(ILoginDialogViewDefinition.EP_TYPE).useType(ILoginDialogViewDefinition.class).into(this)
+		Inject.extension(ILoginDialogViewExtension.EP_TYPE).useType(ILoginDialogViewExtension.class).into(this)
 				.andStart(Activator.getDefault().getContext());
 	}
 }

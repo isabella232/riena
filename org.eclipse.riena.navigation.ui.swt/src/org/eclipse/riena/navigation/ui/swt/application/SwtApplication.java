@@ -169,7 +169,8 @@ public abstract class SwtApplication extends AbstractApplication {
 	@Override
 	protected Object doPerformLogin(IApplicationContext context) {
 		Realm realm = SWTObservables.getRealm(getDisplay());
-		final ILoginDialogView loginDialogView = loginDialogViewDefinition.createViewClass();
+		// TODO Is really necessary that the loginDialogViewExtension is used here. Shouldn´t it be done it the super class??
+		final ILoginDialogView loginDialogView = loginDialogViewExtension.createViewClass();
 		do {
 			Realm.runWithDefault(realm, new Runnable() {
 				public void run() {
@@ -256,8 +257,9 @@ public abstract class SwtApplication extends AbstractApplication {
 					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginSplashViewDefinition
 							.getNonActivityDuration());
 					loginNonActivityTimer.schedule();
-				} else if (isDialogLogin(context) && loginDialogViewDefinition.getNonActivityDuration() > 0) {
-					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginDialogViewDefinition
+				} else if (isDialogLogin(context) && loginDialogViewExtension.getNonActivityDuration() > 0) {
+					// TODO See todo in method doPerformLogin(IApplicationContext context)
+					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginDialogViewExtension
 							.getNonActivityDuration());
 					loginNonActivityTimer.schedule();
 				}
