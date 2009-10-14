@@ -11,8 +11,7 @@
 package org.eclipse.riena.security.common.authentication.credentials;
 
 /**
- * @author campo
- * 
+ * TODO JavaDoc
  */
 public class PasswordCredential extends AbstractCredential {
 
