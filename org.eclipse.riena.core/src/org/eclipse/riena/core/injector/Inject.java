@@ -59,6 +59,7 @@ public final class Inject {
 	 * 
 	 * @param extensionPointId
 	 * @return
+	 * @since 1.2
 	 */
 	public static ExtensionDescriptor extension() {
 		return new ExtensionDescriptor();
