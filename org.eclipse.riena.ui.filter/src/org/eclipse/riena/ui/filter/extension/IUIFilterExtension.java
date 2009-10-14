@@ -31,7 +31,7 @@ public interface IUIFilterExtension {
 	 * Returns the nodeIds
 	 */
 	@MapName("nodeId")
-	IFilterNodeId[] getNodeIds();
+	IFilterNodeIdExtension[] getNodeIds();
 
 	@MapName("ruleMarkerRidget")
 	IRuleMarkerRidget[] getRuleMarkerRidgets();
