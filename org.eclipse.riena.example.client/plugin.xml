@@ -333,16 +333,16 @@
             name="In">
       </command>
       <command
-            id="org.eclipse.riena.example.client.certainViewCommand"
-            name="Certain View (Combo)">
+            id="org.eclipse.riena.example.client.activeSubModuleCommand"
+            name="Active Sub-Module (Combo)">
       </command>
       <command
             id="org.eclipse.riena.example.client.zoomOutCommand"
             name="Out">
       </command>
       <command
-            id="org.eclipse.riena.example.client.certainPerspectiveCommand"
-            name="Certain Perspective (Playground)">
+            id="org.eclipse.riena.example.client.activeSubApplicationCommand"
+            name="Active Sub-Application (Playground)">
       </command>
             <command
             id="org.eclipse.riena.example.client.histBackCommand"
@@ -409,17 +409,17 @@
                label="Context menu"
                mnemonic="x">
             <command
-                  commandId="org.eclipse.riena.example.client.certainViewCommand"
+                  commandId="org.eclipse.riena.example.client.activeSubModuleCommand"
                   icon="icons/ledred.png"
-                  id="org.eclipse.riena.example.client.certainViewMenuItem"
-                  mnemonic="V"
+                  id="org.eclipse.riena.example.client.activeSubModuleMenuItem"
+                  mnemonic="M"
                   style="push">
             </command>
             <command
-                  commandId="org.eclipse.riena.example.client.certainPerspectiveCommand"
+                  commandId="org.eclipse.riena.example.client.activeSubApplicationCommand"
                   icon="icons/ledlightgreen.png"
-                  id="org.eclipse.riena.example.client.certainPerspectiveMenuItem"
-                  mnemonic="P"
+                  id="org.eclipse.riena.example.client.activeSubApplicationMenuItem"
+                  mnemonic="A"
                   style="push">
             </command>
          </menu>
@@ -455,18 +455,18 @@
                   style="push">
             </command>
             <command
-                  commandId="org.eclipse.riena.example.client.certainViewCommand"
+                  commandId="org.eclipse.riena.example.client.activeSubModuleCommand"
                   icon="icons/ledred.png"
-                  id="org.eclipse.riena.example.client.certainViewToolBarItem"
-                  label="View"
-                  mnemonic="V"
+                  id="org.eclipse.riena.example.client.activeSubModuleToolBarItem"
+                  label="Sub-Module"
+                  mnemonic="M"
                   style="push">
             </command>
             <command
-                  commandId="org.eclipse.riena.example.client.certainPerspectiveCommand"
+                  commandId="org.eclipse.riena.example.client.activeSubApplicationCommand"
                   icon="icons/ledlightgreen.png"
-                  label="Perspective"
-                  mnemonic="P"
+                  label="Sub-Application"
+                  mnemonic="A"
                   style="push">
             </command>
             <command
@@ -495,8 +495,8 @@
             commandId="org.eclipse.riena.example.client.exitCommand">
       </handler>
       <handler
-            class="org.eclipse.riena.example.client.handler.CertainViewHandler"
-            commandId="org.eclipse.riena.example.client.certainViewCommand">
+            class="org.eclipse.riena.example.client.handler.ActionSubmoduleHandler"
+            commandId="org.eclipse.riena.example.client.activeSubModuleCommand">
          <enabledWhen>
             <with
                   variable="activeSubModuleNodeId">
@@ -507,8 +507,8 @@
          </enabledWhen>
       </handler>
       <handler
-            class="org.eclipse.riena.example.client.handler.CertainPerspectiveHandler"
-            commandId="org.eclipse.riena.example.client.certainPerspectiveCommand">
+            class="org.eclipse.riena.example.client.handler.ActiveSubApplicationHandler"
+            commandId="org.eclipse.riena.example.client.activeSubApplicationCommand">
          <enabledWhen>
             <with
                   variable="activeSubApplicationNodeId">

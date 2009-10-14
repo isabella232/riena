@@ -13,22 +13,16 @@ package org.eclipse.riena.example.client.handler;
 /**
  * 
  */
-public class CertainPerspectiveHandler extends DummyHandler {
+public class ActiveSubApplicationHandler extends DummyHandler {
 
-	/**
-	 * @see org.eclipse.riena.example.client.handler.DummyHandler#getTitle()
-	 */
 	@Override
 	protected String getTitle() {
-		return "Certain view"; //$NON-NLS-1$
+		return "Active Sub-Application"; //$NON-NLS-1$
 	}
 
-	/**
-	 * @see org.eclipse.riena.example.client.handler.DummyHandler#getMessage()
-	 */
 	@Override
 	protected String getMessage() {
-		return "This command is only enabled for a certain perspective (Playground)!\n"; //$NON-NLS-1$
+		return "This command is only enabled for one sub-application (Playground)!\n"; //$NON-NLS-1$
 	}
 
 }

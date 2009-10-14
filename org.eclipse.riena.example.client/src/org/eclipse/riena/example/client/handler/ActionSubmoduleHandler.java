@@ -22,22 +22,16 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 /**
  * 
  */
-public class CertainViewHandler extends DummyHandler {
+public class ActionSubmoduleHandler extends DummyHandler {
 
-	/**
-	 * @see org.eclipse.riena.example.client.handler.DummyHandler#getTitle()
-	 */
 	@Override
 	protected String getTitle() {
-		return "Certain view"; //$NON-NLS-1$
+		return "Actiove Sub-Module"; //$NON-NLS-1$
 	}
 
-	/**
-	 * @see org.eclipse.riena.example.client.handler.DummyHandler#getMessage()
-	 */
 	@Override
 	protected String getMessage() {
-		String msg = "This command is only enabled for a certain view!\n\n"; //$NON-NLS-1$
+		String msg = "This command is only enabled for one sub-module (Combo)!\n\n"; //$NON-NLS-1$
 		msg += "Information:\n"; //$NON-NLS-1$
 		msg += "\t active sub-application:\t" + getActiveSubApplication().getLabel() + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
 		msg += "\t active module-group:\t" + getActiveModuleGroup().getLabel() + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
