@@ -18,10 +18,6 @@ import java.net.URL;
  * Because a label is read-only, this ridget will not modify the bound model
  * value (ref. {@link #bindToModel(Object, String)}) when the ridget value is
  * modified.
- * 
- * @author Juergen Becker
- * @author Carsten Drossel
- * @author Frank Schepp
  */
 public interface ILabelRidget extends IValueRidget {
 
