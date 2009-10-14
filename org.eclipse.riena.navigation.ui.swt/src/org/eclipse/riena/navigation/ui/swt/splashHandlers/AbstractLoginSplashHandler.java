@@ -22,14 +22,14 @@ import org.eclipse.ui.splash.AbstractSplashHandler;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashView;
-import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewDefinition;
+import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewExtension;
 
 /**
  * Riena base class for splash implementations.
  */
 public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 
-	protected ILoginSplashViewDefinition loginSplashViewDefinition;
+	protected ILoginSplashViewExtension loginSplashViewExtension;
 	private Composite loginComposite;
 	private ILoginSplashView loginView;
 
@@ -55,7 +55,7 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 		// Store the shell
 		super.init(splash);
 
-		if (loginSplashViewDefinition != null) {
+		if (loginSplashViewExtension != null) {
 			// Configure the shell layout
 			configureUISplash();
 			// Create UI
@@ -108,7 +108,7 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 		loginComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		// Force composite to inherit the splash background
 		loginComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
-		loginView = loginSplashViewDefinition.createViewClass();
+		loginView = loginSplashViewExtension.createViewClass();
 		loginView.build(loginComposite);
 	}
 
@@ -137,16 +137,16 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 		loginView = null;
 	}
 
-	public void update(ILoginSplashViewDefinition[] data) {
+	public void update(ILoginSplashViewExtension[] data) {
 
 		if (data.length > 0) {
-			loginSplashViewDefinition = data[0];
+			loginSplashViewExtension = data[0];
 		}
 	}
 
 	private void initialzeLoginSplashViewDefinition() {
 
-		Inject.extension(ILoginSplashViewDefinition.EP_TYPE).useType(ILoginSplashViewDefinition.class).into(this)
+		Inject.extension(ILoginSplashViewExtension.EP_TYPE).useType(ILoginSplashViewExtension.class).into(this)
 				.andStart(Activator.getDefault().getContext());
 	}
 }

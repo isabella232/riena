@@ -40,7 +40,7 @@ import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
 import org.eclipse.riena.navigation.ui.application.AbstractApplication;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
-import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewDefinition;
+import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewExtension;
 import org.eclipse.riena.navigation.ui.swt.splashHandlers.AbstractLoginSplashHandler;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationAdvisor;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
@@ -51,7 +51,7 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
  */
 public abstract class SwtApplication extends AbstractApplication {
 
-	protected ILoginSplashViewDefinition loginSplashViewDefinition;
+	protected ILoginSplashViewExtension loginSplashViewExtension;
 	private LoginNonActivityTimer loginNonActivityTimer;
 
 	@Override
@@ -135,9 +135,9 @@ public abstract class SwtApplication extends AbstractApplication {
 	/*
 	 * keep public, called via reflection
 	 */
-	public void update(ILoginSplashViewDefinition[] data) {
+	public void update(ILoginSplashViewExtension[] data) {
 		if (data.length > 0) {
-			loginSplashViewDefinition = data[0];
+			loginSplashViewExtension = data[0];
 		}
 	}
 
@@ -201,12 +201,12 @@ public abstract class SwtApplication extends AbstractApplication {
 
 	@Override
 	protected boolean isSplashLogin(IApplicationContext context) {
-		return loginSplashViewDefinition != null && getLoginSplashHandler() != null;
+		return loginSplashViewExtension != null && getLoginSplashHandler() != null;
 	}
 
 	@Override
 	protected boolean isDialogLogin(IApplicationContext context) {
-		return super.isDialogLogin(context) && loginSplashViewDefinition == null;
+		return super.isDialogLogin(context) && loginSplashViewExtension == null;
 	}
 
 	@Override
@@ -253,8 +253,8 @@ public abstract class SwtApplication extends AbstractApplication {
 		pNode.addListener(new ApplicationNodeListener() {
 			@Override
 			public void afterActivated(IApplicationNode source) {
-				if (isSplashLogin(context) && loginSplashViewDefinition.getNonActivityDuration() > 0) {
-					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginSplashViewDefinition
+				if (isSplashLogin(context) && loginSplashViewExtension.getNonActivityDuration() > 0) {
+					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginSplashViewExtension
 							.getNonActivityDuration());
 					loginNonActivityTimer.schedule();
 				} else if (isDialogLogin(context) && loginDialogViewExtension.getNonActivityDuration() > 0) {
@@ -268,7 +268,7 @@ public abstract class SwtApplication extends AbstractApplication {
 	}
 
 	private void initializeLoginSplashViewDefinition() {
-		Inject.extension(ILoginSplashViewDefinition.EP_TYPE).useType(ILoginSplashViewDefinition.class).into(this)
+		Inject.extension(ILoginSplashViewExtension.EP_TYPE).useType(ILoginSplashViewExtension.class).into(this)
 				.andStart(Activator.getDefault().getContext());
 	}
 

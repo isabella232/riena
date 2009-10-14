@@ -16,7 +16,7 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
  * The definition for the login splash dialog view.
  */
 @ExtensionInterface
-public interface ILoginSplashViewDefinition {
+public interface ILoginSplashViewExtension {
 
 	String EP_TYPE = "org.eclipse.riena.navigation.ui.swt.loginSplashViewDefinition"; //$NON-NLS-1$
 
