@@ -15,9 +15,6 @@ package org.eclipse.riena.ui.ridgets;
  */
 public interface IToggleButtonRidget extends IValueRidget, IActionRidget, IMarkableRidget {
 
-	/**
-	 * <code>SELECTED_PROPERTY</code>
-	 */
 	String PROPERTY_SELECTED = "selected"; //$NON-NLS-1$
 
 	/**
@@ -30,8 +27,8 @@ public interface IToggleButtonRidget extends IValueRidget, IActionRidget, IMarka
 	/**
 	 * Turns the selection of the check box on or off.
 	 * 
-	 * @param selected -
-	 *            true: selection on; false: selections off
+	 * @param selected
+	 *            - true: selection on; false: selections off
 	 */
 	void setSelected(boolean selected);
 }
