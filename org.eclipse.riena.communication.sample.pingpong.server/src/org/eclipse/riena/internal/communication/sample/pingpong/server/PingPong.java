@@ -17,9 +17,6 @@ import org.eclipse.riena.communication.sample.pingpong.common.Pong;
 
 /**
  * Simple PingPong sample implementation
- * 
- * @author Alexander Ziegler
- * 
  */
 public class PingPong implements IPingPong {
 

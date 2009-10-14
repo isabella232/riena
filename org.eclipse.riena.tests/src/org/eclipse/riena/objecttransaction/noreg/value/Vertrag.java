@@ -16,8 +16,6 @@ import org.eclipse.riena.objecttransaction.ObjectTransactionManager;
 
 /**
  * TODO Fehlender Klassen-Kommentar
- * 
- * @author Christian Campo
  */
 public class Vertrag extends AbstractTransactedObject implements ITransactedObject {
 

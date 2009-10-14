@@ -18,8 +18,6 @@ import org.eclipse.riena.objecttransaction.ObjectTransactionManager;
 
 /**
  * Sample class for "UTAddresse"
- * 
- * @author Christian Campo
  */
 public class Addresse extends AbstractTransactedObject implements ITransactedObject {
 

@@ -17,8 +17,6 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Tests for the RequiredField rule.
- * 
- * @author Wanja Gayk
  */
 @NonUITestCase
 public class ValidEmailAddressTest extends RienaTestCase {

@@ -19,8 +19,6 @@ import org.eclipse.riena.objecttransaction.InvalidTransactionFailure;
 
 /**
  * Sample class for "Kunde"
- *
- * @author Christian Campo
  */
 public class Kunde extends AbstractTransactedObject {
 
@@ -34,24 +32,24 @@ public class Kunde extends AbstractTransactedObject {
 	@SuppressWarnings("unused")
 	private Kunde() {
 		super();
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
-			getCurrentObjectTransaction().register( this );
+		if (getCurrentObjectTransaction().isCleanModus()) {
+			getCurrentObjectTransaction().register(this);
 		} else {
-			throw new InvalidTransactionFailure( "cannot instantiate Kunde with private method if not in clean state" );
+			throw new InvalidTransactionFailure("cannot instantiate Kunde with private method if not in clean state");
 		}
 	}
 
 	/**
 	 * @param kundennr
 	 */
-	public Kunde( String kundennr ) {
-		super( new GenericOID( "kunde", "kundennrpk", kundennr ), "1" );
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
-			getCurrentObjectTransaction().register( this );
+	public Kunde(String kundennr) {
+		super(new GenericOID("kunde", "kundennrpk", kundennr), "1");
+		if (getCurrentObjectTransaction().isCleanModus()) {
+			getCurrentObjectTransaction().register(this);
 		} else {
-			getCurrentObjectTransaction().registerNew( this );
+			getCurrentObjectTransaction().registerNew(this);
 		}
-		setKundennr( kundennr );
+		setKundennr(kundennr);
 		vertraege = new HashSet<Vertrag>();
 	}
 
@@ -59,21 +57,22 @@ public class Kunde extends AbstractTransactedObject {
 	 * @return Returns the kundennr.
 	 */
 	public String getKundennr() {
-		return (String) getCurrentObjectTransaction().getReference( this, "kundennr", kundennr );
+		return (String) getCurrentObjectTransaction().getReference(this, "kundennr", kundennr);
 	}
 
 	/**
-	 * @param kundennr The kundennr to set.
+	 * @param kundennr
+	 *            The kundennr to set.
 	 */
-	public void setKundennr( String kundennr ) {
-		if ( ( (GenericOID) getObjectId() ).getProperties().get( "primkey" ) != null ) {
-			throw new UnsupportedOperationException( "cannot change kundennr (once it is set)" );
+	public void setKundennr(String kundennr) {
+		if (((GenericOID) getObjectId()).getProperties().get("primkey") != null) {
+			throw new UnsupportedOperationException("cannot change kundennr (once it is set)");
 		}
 		// changeEvent
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
+		if (getCurrentObjectTransaction().isCleanModus()) {
 			this.kundennr = kundennr;
 		} else {
-			getCurrentObjectTransaction().setReference( this, "kundennr", kundennr );
+			getCurrentObjectTransaction().setReference(this, "kundennr", kundennr);
 		}
 	}
 
@@ -81,18 +80,19 @@ public class Kunde extends AbstractTransactedObject {
 	 * @return Returns the nachname.
 	 */
 	public String getNachname() {
-		return (String) getCurrentObjectTransaction().getReference( this, "nachname", nachname );
+		return (String) getCurrentObjectTransaction().getReference(this, "nachname", nachname);
 	}
 
 	/**
-	 * @param nachname The nachname to set.
+	 * @param nachname
+	 *            The nachname to set.
 	 */
-	public void setNachname( String nachname ) {
+	public void setNachname(String nachname) {
 		// changeEvent
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
+		if (getCurrentObjectTransaction().isCleanModus()) {
 			this.nachname = nachname;
 		} else {
-			getCurrentObjectTransaction().setReference( this, "nachname", nachname );
+			getCurrentObjectTransaction().setReference(this, "nachname", nachname);
 		}
 	}
 
@@ -100,18 +100,19 @@ public class Kunde extends AbstractTransactedObject {
 	 * @return Returns the vorname.
 	 */
 	public String getVorname() {
-		return (String) getCurrentObjectTransaction().getReference( this, "vorname", vorname );
+		return (String) getCurrentObjectTransaction().getReference(this, "vorname", vorname);
 	}
 
 	/**
-	 * @param vorname The vorname to set.
+	 * @param vorname
+	 *            The vorname to set.
 	 */
-	public void setVorname( String vorname ) {
+	public void setVorname(String vorname) {
 		// changeEvent
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
+		if (getCurrentObjectTransaction().isCleanModus()) {
 			this.vorname = vorname;
 		} else {
-			getCurrentObjectTransaction().setReference( this, "vorname", vorname );
+			getCurrentObjectTransaction().setReference(this, "vorname", vorname);
 		}
 	}
 
@@ -119,54 +120,55 @@ public class Kunde extends AbstractTransactedObject {
 	 * @return Returns the addresse.
 	 */
 	public IAddresse getAddresse() {
-		return (IAddresse) getCurrentObjectTransaction().getReference( this, "addresse", (ITransactedObject) addresse );
+		return (IAddresse) getCurrentObjectTransaction().getReference(this, "addresse", (ITransactedObject) addresse);
 	}
 
 	/**
-	 * @param addresse The addresse to set.
+	 * @param addresse
+	 *            The addresse to set.
 	 */
-	public void setAddresse( IAddresse addresse ) {
+	public void setAddresse(IAddresse addresse) {
 		// changeEvent
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
+		if (getCurrentObjectTransaction().isCleanModus()) {
 			this.addresse = addresse;
 		} else {
-			getCurrentObjectTransaction().setReference( this, "addresse", (ITransactedObject) addresse );
+			getCurrentObjectTransaction().setReference(this, "addresse", (ITransactedObject) addresse);
 		}
 	}
 
 	/**
 	 * @param vertrag
 	 */
-	public void addVertrag( Vertrag vertrag ) {
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
-			vertraege.add( vertrag );
+	public void addVertrag(Vertrag vertrag) {
+		if (getCurrentObjectTransaction().isCleanModus()) {
+			vertraege.add(vertrag);
 		} else {
-			getCurrentObjectTransaction().addReference( this, "vertrag", vertrag );
+			getCurrentObjectTransaction().addReference(this, "vertrag", vertrag);
 		}
 	}
 
 	/**
 	 * @param vertragsNummer
 	 */
-	public void removeVertrag( String vertragsNummer ) {
-		Vertrag tempVertrag = getVertrag( vertragsNummer );
+	public void removeVertrag(String vertragsNummer) {
+		Vertrag tempVertrag = getVertrag(vertragsNummer);
 		// changeEvent
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
-			vertraege.remove( getVertrag( vertragsNummer ) );
+		if (getCurrentObjectTransaction().isCleanModus()) {
+			vertraege.remove(getVertrag(vertragsNummer));
 		} else {
-			getCurrentObjectTransaction().removeReference( this, "vertrag", tempVertrag );
+			getCurrentObjectTransaction().removeReference(this, "vertrag", tempVertrag);
 		}
 	}
 
 	/**
 	 * @param vertrag
 	 */
-	public void removeVertrag( Vertrag vertrag ) {
+	public void removeVertrag(Vertrag vertrag) {
 		// changeEvent
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
-			vertraege.remove( vertrag );
+		if (getCurrentObjectTransaction().isCleanModus()) {
+			vertraege.remove(vertrag);
 		} else {
-			getCurrentObjectTransaction().removeReference( this, "vertrag", vertrag );
+			getCurrentObjectTransaction().removeReference(this, "vertrag", vertrag);
 		}
 	}
 
@@ -174,10 +176,10 @@ public class Kunde extends AbstractTransactedObject {
 	 * @param vertragsNummer
 	 * @return
 	 */
-	public Vertrag getVertrag( String vertragsNummer ) {
+	public Vertrag getVertrag(String vertragsNummer) {
 		Vertrag[] tempVertraege = listVertrag();
-		for ( int i = 0; i < tempVertraege.length; i++ ) {
-			if ( tempVertraege[i].getVertragsNummer().equals( vertragsNummer ) ) {
+		for (int i = 0; i < tempVertraege.length; i++) {
+			if (tempVertraege[i].getVertragsNummer().equals(vertragsNummer)) {
 				return tempVertraege[i];
 			}
 		}
@@ -188,10 +190,10 @@ public class Kunde extends AbstractTransactedObject {
 	 * @return
 	 */
 	public Vertrag[] listVertrag() {
-		Set<Vertrag> vertraegeSet = getCurrentObjectTransaction().listReference( this, "vertrag", vertraege );
-		if ( vertraegeSet.size() == 0 ) {
+		Set<Vertrag> vertraegeSet = getCurrentObjectTransaction().listReference(this, "vertrag", vertraege);
+		if (vertraegeSet.size() == 0) {
 			return new Vertrag[0];
 		}
-		return vertraegeSet.toArray( new Vertrag[vertraegeSet.size()] );
+		return vertraegeSet.toArray(new Vertrag[vertraegeSet.size()]);
 	}
 }

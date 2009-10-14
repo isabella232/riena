@@ -17,8 +17,6 @@ import org.eclipse.riena.objecttransaction.InvalidTransactionFailure;
 
 /**
  * Sample class for "UTAddresse"
- * 
- * @author Christian Campo
  */
 public class Addresse extends AbstractTransactedObject implements IAddresse {
 

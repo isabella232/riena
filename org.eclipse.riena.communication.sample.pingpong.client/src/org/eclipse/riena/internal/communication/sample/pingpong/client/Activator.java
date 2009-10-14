@@ -10,25 +10,22 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.sample.pingpong.client;
 
-import org.eclipse.riena.communication.sample.pingpong.common.IPingPong;
-import org.eclipse.riena.communication.sample.pingpong.common.Ping;
-import org.eclipse.riena.communication.sample.pingpong.common.Pong;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 
+import org.eclipse.riena.communication.sample.pingpong.common.IPingPong;
+import org.eclipse.riena.communication.sample.pingpong.common.Ping;
+import org.eclipse.riena.communication.sample.pingpong.common.Pong;
+
 /**
  * The Ping Pong sample shows how to find a "remote" OSGi Services.
- * 
- * 
+ * <p>
  * This sample Activator finds an IPingPong "remote" OSGi Service by the
  * ServiceRegistry. Sends a Ping to the IPingPong service and writes the pong
  * result into the console.
- * 
- * @author Alexander Ziegler
- * 
  */
 public class Activator implements BundleActivator {
 

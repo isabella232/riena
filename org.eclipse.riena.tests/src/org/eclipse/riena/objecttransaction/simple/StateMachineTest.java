@@ -17,8 +17,6 @@ import org.eclipse.riena.objecttransaction.state.StateMachine;
 
 /**
  * TestCase that tests (a little) of the StateMachine
- * 
- * @author Christian Campo
  */
 @NonUITestCase
 public class StateMachineTest extends RienaTestCase {

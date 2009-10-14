@@ -43,8 +43,7 @@ import org.eclipse.riena.internal.communication.publisher.hessian.MessageContext
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContextHolder;
 
 /**
- * @author Christian Campo
- * 
+ * TODO: JavaDoc
  */
 @SuppressWarnings("serial")
 public class RienaHessianDispatcherServlet extends GenericServlet {

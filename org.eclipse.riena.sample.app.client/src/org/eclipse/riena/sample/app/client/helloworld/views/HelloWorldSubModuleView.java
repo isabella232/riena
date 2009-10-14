@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.client.helloworld.views;
 
-import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.sample.app.client.helloworld.controllers.HelloWorldSubModuleController;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -20,11 +17,13 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.sample.app.client.helloworld.controllers.HelloWorldSubModuleController;
+
 /**
  * Very simple sub module view, that displays only a label with the text "Hello
  * World!".
- * 
- * @author schenkel
  */
 public class HelloWorldSubModuleView extends SubModuleView<HelloWorldSubModuleController> {
 

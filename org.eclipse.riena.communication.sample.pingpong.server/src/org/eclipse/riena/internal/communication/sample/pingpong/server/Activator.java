@@ -12,21 +12,18 @@ package org.eclipse.riena.internal.communication.sample.pingpong.server;
 
 import java.util.Hashtable;
 
-import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
-import org.eclipse.riena.communication.sample.pingpong.common.IPingPong;
-
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
+
+import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+import org.eclipse.riena.communication.sample.pingpong.common.IPingPong;
 
 /**
  * The Ping Pong sample shows how to publish an OSGi Services.
  * 
  * This sample Activator registers the IPingPong OSGi Service. This service
  * becomes published by the Riena Communication Hessian Publisher
- * 
- * @author Alexander Ziegler
- * 
  */
 public class Activator implements BundleActivator {
 	private ServiceRegistration pingPongRegHessian;

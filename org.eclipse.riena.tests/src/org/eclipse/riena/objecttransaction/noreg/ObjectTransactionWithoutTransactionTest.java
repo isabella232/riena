@@ -21,8 +21,6 @@ import org.eclipse.riena.objecttransaction.noreg.value.Vertrag;
 /**
  * Tests that you can use transacted objects in clean modus without doing any
  * registration
- * 
- * @author Christian Campo
  */
 @NonUITestCase
 public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {

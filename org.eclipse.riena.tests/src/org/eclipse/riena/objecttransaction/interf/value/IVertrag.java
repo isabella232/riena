@@ -12,8 +12,6 @@ package org.eclipse.riena.objecttransaction.interf.value;
 
 /**
  * TODO Fehlender Klassen-Kommentar
- * 
- * @author Christian Campo
  */
 public interface IVertrag {
 	/**
@@ -22,9 +20,10 @@ public interface IVertrag {
 	String getVertragsNummer();
 
 	/**
-	 * @param vertragsNummer The vertragsNummer to set.
+	 * @param vertragsNummer
+	 *            The vertragsNummer to set.
 	 */
-	void setVertragsNummer( String vertragsNummer );
+	void setVertragsNummer(String vertragsNummer);
 
 	/**
 	 * @return Returns the vertragsBeschreibung.
@@ -32,9 +31,10 @@ public interface IVertrag {
 	String getVertragsBeschreibung();
 
 	/**
-	 * @param vertragsBeschreibung The vertragsBeschreibung to set.
+	 * @param vertragsBeschreibung
+	 *            The vertragsBeschreibung to set.
 	 */
-	void setVertragsBeschreibung( String vertragsBeschreibung );
+	void setVertragsBeschreibung(String vertragsBeschreibung);
 
 	/**
 	 * @return Returns the vertragsSumme.
@@ -42,7 +42,8 @@ public interface IVertrag {
 	Long getVertragsSumme();
 
 	/**
-	 * @param vertragsSumme The vertragsSumme to set.
+	 * @param vertragsSumme
+	 *            The vertragsSumme to set.
 	 */
-	void setVertragsSumme( Long vertragsSumme );
+	void setVertragsSumme(Long vertragsSumme);
 }

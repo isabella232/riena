@@ -17,13 +17,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContext;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.core.Log4r;
-import org.osgi.service.log.LogService;
 
 /**
  * This is a Hessian based implementation of {@link IServicePublisher}. it
@@ -33,10 +35,6 @@ import org.osgi.service.log.LogService;
  * HessianRemoteServicePublisher becomes registered as OSGi Service with name
  * {@link IServicePublisher#ID}. The OSGi Service set the property
  * "riena.protocol=hessian".
- * 
- * @author Alexander Ziegler
- * @author Christian Campo
- * 
  */
 public class HessianRemoteServicePublisher implements IServicePublisher {
 	private final static String PROTOCOL = "hessian"; //$NON-NLS-1$

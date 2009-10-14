@@ -12,8 +12,6 @@ package org.eclipse.riena.objecttransaction.interf.value;
 
 /**
  * TODO Fehlender Klassen-Kommentar
- * 
- * @author Christian Campo
  */
 public interface IAddresse {
 	/**
@@ -22,9 +20,10 @@ public interface IAddresse {
 	String getOrt();
 
 	/**
-	 * @param ort The ort to set.
+	 * @param ort
+	 *            The ort to set.
 	 */
-	void setOrt( String ort );
+	void setOrt(String ort);
 
 	/**
 	 * @return Returns the plz.
@@ -32,9 +31,10 @@ public interface IAddresse {
 	String getPlz();
 
 	/**
-	 * @param plz The plz to set.
+	 * @param plz
+	 *            The plz to set.
 	 */
-	void setPlz( String plz );
+	void setPlz(String plz);
 
 	/**
 	 * @return Returns the strasse.
@@ -42,7 +42,8 @@ public interface IAddresse {
 	String getStrasse();
 
 	/**
-	 * @param strasse The strasse to set.
+	 * @param strasse
+	 *            The strasse to set.
 	 */
-	void setStrasse( String strasse );
+	void setStrasse(String strasse);
 }

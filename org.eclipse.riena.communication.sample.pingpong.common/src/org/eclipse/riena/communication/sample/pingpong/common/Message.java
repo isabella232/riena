@@ -12,9 +12,6 @@ package org.eclipse.riena.communication.sample.pingpong.common;
 
 /**
  * Simple abstract Message class with text
- * 
- * @author Alexander Ziegler
- * 
  */
 public abstract class Message {
 	private String text;

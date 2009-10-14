@@ -18,8 +18,6 @@ import org.eclipse.riena.objecttransaction.noreg.value.Kunde;
 
 /**
  * TODO Fehlender Klassen-Kommentar
- * 
- * @author Christian Campo
  */
 @NonUITestCase
 public class ObjectTransactionVariousNoRegTest extends RienaTestCase {

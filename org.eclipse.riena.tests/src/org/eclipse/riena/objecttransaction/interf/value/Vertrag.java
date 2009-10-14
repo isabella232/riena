@@ -15,8 +15,6 @@ import org.eclipse.riena.objecttransaction.InvalidTransactionFailure;
 
 /**
  * TODO Fehlender Klassen-Kommentar
- * 
- * @author Christian Campo
  */
 public class Vertrag extends AbstractTransactedObject implements IVertrag {
 
@@ -27,75 +25,78 @@ public class Vertrag extends AbstractTransactedObject implements IVertrag {
 	@SuppressWarnings("unused")
 	private Vertrag() {
 		super();
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
-			getCurrentObjectTransaction().register( this );
+		if (getCurrentObjectTransaction().isCleanModus()) {
+			getCurrentObjectTransaction().register(this);
 		} else {
-			throw new InvalidTransactionFailure( "cannot instantiate Vertrag with private method if not in clean state" );
+			throw new InvalidTransactionFailure("cannot instantiate Vertrag with private method if not in clean state");
 		}
 	}
 
 	/**
 	 * @param vertragsnummer
 	 */
-	public Vertrag( String vertragsnummer ) {
-		super( new GenericOID( "vertrag", "vertragsnr", vertragsnummer ), "1" );
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
-			getCurrentObjectTransaction().register( this );
+	public Vertrag(String vertragsnummer) {
+		super(new GenericOID("vertrag", "vertragsnr", vertragsnummer), "1");
+		if (getCurrentObjectTransaction().isCleanModus()) {
+			getCurrentObjectTransaction().register(this);
 		} else {
-			getCurrentObjectTransaction().registerNew( this );
+			getCurrentObjectTransaction().registerNew(this);
 		}
-		setVertragsNummer( vertragsnummer );
+		setVertragsNummer(vertragsnummer);
 	}
 
 	/**
 	 * @return Returns the vertragsNummer.
 	 */
 	public String getVertragsNummer() {
-		return (String) getCurrentObjectTransaction().getReference( this, "vertragsNummer", vertragsNummer );
+		return (String) getCurrentObjectTransaction().getReference(this, "vertragsNummer", vertragsNummer);
 	}
 
 	/**
-	 * @param vertragsNummer The vertragsNummer to set.
+	 * @param vertragsNummer
+	 *            The vertragsNummer to set.
 	 */
-	public void setVertragsNummer( String vertragsNummer ) {
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
+	public void setVertragsNummer(String vertragsNummer) {
+		if (getCurrentObjectTransaction().isCleanModus()) {
 			this.vertragsNummer = vertragsNummer;
 		}
-		getCurrentObjectTransaction().setReference( this, "vertragsNummer", vertragsNummer );
+		getCurrentObjectTransaction().setReference(this, "vertragsNummer", vertragsNummer);
 	}
 
 	/**
 	 * @return Returns the vertragsBeschreibung.
 	 */
 	public String getVertragsBeschreibung() {
-		return (String) getCurrentObjectTransaction().getReference( this, "vertragsBeschreibung", vertragsBeschreibung );
+		return (String) getCurrentObjectTransaction().getReference(this, "vertragsBeschreibung", vertragsBeschreibung);
 	}
 
 	/**
-	 * @param vertragsBeschreibung The vertragsBeschreibung to set.
+	 * @param vertragsBeschreibung
+	 *            The vertragsBeschreibung to set.
 	 */
-	public void setVertragsBeschreibung( String vertragsBeschreibung ) {
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
+	public void setVertragsBeschreibung(String vertragsBeschreibung) {
+		if (getCurrentObjectTransaction().isCleanModus()) {
 			this.vertragsBeschreibung = vertragsBeschreibung;
 		}
-		getCurrentObjectTransaction().setReference( this, "vertragsBeschreibung", vertragsBeschreibung );
+		getCurrentObjectTransaction().setReference(this, "vertragsBeschreibung", vertragsBeschreibung);
 	}
 
 	/**
 	 * @return Returns the vertragsSumme.
 	 */
 	public Long getVertragsSumme() {
-		return (Long) getCurrentObjectTransaction().getReference( this, "vertragsSumme", vertragsSumme );
+		return (Long) getCurrentObjectTransaction().getReference(this, "vertragsSumme", vertragsSumme);
 	}
 
 	/**
-	 * @param vertragsSumme The vertragsSumme to set.
+	 * @param vertragsSumme
+	 *            The vertragsSumme to set.
 	 */
-	public void setVertragsSumme( Long vertragsSumme ) {
-		if ( getCurrentObjectTransaction().isCleanModus() ) {
+	public void setVertragsSumme(Long vertragsSumme) {
+		if (getCurrentObjectTransaction().isCleanModus()) {
 			this.vertragsSumme = vertragsSumme;
 		}
-		getCurrentObjectTransaction().setReference( this, "vertragsSumme", vertragsSumme );
+		getCurrentObjectTransaction().setReference(this, "vertragsSumme", vertragsSumme);
 
 	}
 }

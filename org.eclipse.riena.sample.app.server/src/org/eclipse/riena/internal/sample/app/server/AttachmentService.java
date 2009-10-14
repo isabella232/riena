@@ -35,8 +35,6 @@ import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
 /**
  * Example service to show the feature of sending attachments in Webservice
  * calls.
- * 
- * @author Christian Campo
  */
 public final class AttachmentService implements IAttachmentService {
 

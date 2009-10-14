@@ -19,8 +19,6 @@ import org.eclipse.riena.objecttransaction.ObjectTransactionManager;
 
 /**
  * Sample class for "Kunde"
- * 
- * @author Christian Campo
  */
 public class Kunde extends AbstractTransactedObject implements ITransactedObject {
 

@@ -13,11 +13,10 @@ package org.eclipse.riena.demo.client.lnf;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
- * @author christian
- *
+ * TODO JavaDoc
  */
 public class EclipseLnf extends RienaDefaultLnf {
-	
+
 	/**
 	 * ID of this Look and Feel
 	 */
@@ -38,6 +37,5 @@ public class EclipseLnf extends RienaDefaultLnf {
 	protected String getLnfId() {
 		return LNF_ID;
 	}
-
 
 }

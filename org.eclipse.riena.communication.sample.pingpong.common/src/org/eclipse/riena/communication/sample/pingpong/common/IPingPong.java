@@ -12,9 +12,6 @@ package org.eclipse.riena.communication.sample.pingpong.common;
 
 /**
  * Sample interface for simple PingPong service sample
- * 
- * @author Alexander Ziegler
- * 
  */
 public interface IPingPong {
 

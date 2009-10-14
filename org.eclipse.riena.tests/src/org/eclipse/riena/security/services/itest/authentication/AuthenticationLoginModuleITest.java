@@ -26,8 +26,7 @@ import org.eclipse.riena.security.authentication.callbackhandler.TestLocalCallba
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
 
 /**
- * @author campo
- * 
+ * TODO JavaDoc
  */
 @IntegrationTestCase
 public class AuthenticationLoginModuleITest extends RienaTestCase {

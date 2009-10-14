@@ -15,8 +15,6 @@ import java.io.InputStream;
 
 /**
  * nomen est omen
- * 
- * @author Christian Campo
  */
 public class SampleInputStream extends InputStream {
 

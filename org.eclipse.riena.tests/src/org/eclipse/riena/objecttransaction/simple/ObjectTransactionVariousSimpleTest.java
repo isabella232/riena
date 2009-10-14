@@ -26,8 +26,6 @@ import org.eclipse.riena.objecttransaction.state.State;
 
 /**
  * TODO Fehlender Klassen-Kommentar
- * 
- * @author Christian Campo
  */
 @NonUITestCase
 public class ObjectTransactionVariousSimpleTest extends RienaTestCase {

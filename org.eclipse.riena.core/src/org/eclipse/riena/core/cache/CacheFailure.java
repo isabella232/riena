@@ -14,8 +14,6 @@ import org.eclipse.riena.core.exception.Failure;
 
 /**
  * Failure for all GenericObjectCache related Failures
- * 
- * @author Christian Campo
  */
 public class CacheFailure extends Failure {
 

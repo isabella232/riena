@@ -17,8 +17,6 @@ import org.eclipse.riena.objecttransaction.IObjectId;
 
 /**
  * TODO Fehlender Klassen-Kommentar
- * 
- * @author Christian Campo
  */
 public class GenericOID implements IObjectId {
 	private String type;

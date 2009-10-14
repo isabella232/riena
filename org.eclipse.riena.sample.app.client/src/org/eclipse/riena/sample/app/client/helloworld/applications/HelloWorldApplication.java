@@ -32,8 +32,6 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 /**
  * Very simple application with only one sub application, one module group, one
  * module and one sub module.
- * 
- * @author schenkel
  */
 public class HelloWorldApplication extends SwtApplication {
 

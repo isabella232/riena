@@ -29,10 +29,6 @@ import org.eclipse.riena.communication.sample.pingpong.common.IPingPong;
  * IRemoteServiceRegistry OSGi Service. The IRemoteServiceRegistry itself
  * registers and manages the RemoteServiceReferences as remote OSGi service
  * within the ServiceRegistry.
- * 
- * @author Alexander Ziegler
- * @author Christian Campo
- * 
  */
 public class Activator implements BundleActivator {
 

@@ -12,9 +12,6 @@ package org.eclipse.riena.communication.sample.pingpong.common;
 
 /**
  * Simple Pong type.
- * 
- * @author Alexander Ziegler
- * 
  */
 public class Pong extends Message {
 }

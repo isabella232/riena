@@ -17,8 +17,6 @@ import org.easymock.IArgumentMatcher;
 
 /**
  * Argument matcher checking if two property change events are equal.
- * 
- * @author Carsten Drossel
  */
 public class PropertyChangeEventEquals implements IArgumentMatcher {
 

@@ -19,8 +19,6 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
  * This class holds the ApplicationNode(s) of a Riena application in a static
  * way. If you need more than one ApplicationNode, you must specify a unique
  * ApplicationNode names.
- * 
- * @author Stefan Flick
  */
 public final class ApplicationNodeManager {
 	private static Map<String, IApplicationNode> nodeMap = new HashMap<String, IApplicationNode>();

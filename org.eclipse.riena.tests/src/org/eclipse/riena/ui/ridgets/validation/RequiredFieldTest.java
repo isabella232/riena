@@ -13,12 +13,9 @@ package org.eclipse.riena.ui.ridgets.validation;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-import org.eclipse.riena.ui.ridgets.validation.RequiredField;
 
 /**
  * Tests for the RequiredField rule.
- * 
- * @author Wanja Gayk
  */
 @NonUITestCase
 public class RequiredFieldTest extends TestCase {

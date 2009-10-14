@@ -13,8 +13,6 @@ package org.eclipse.riena.core.util;
 /**
  * The <code>InvocationTargetFailure</code> signals errors with the usage of
  * reflection method calls that throw target exceptions.
- * 
- * @author Stefan Liebig
  */
 public class InvocationTargetFailure extends ReflectionFailure {
 

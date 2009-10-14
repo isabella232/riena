@@ -12,8 +12,6 @@ package org.eclipse.riena.internal.core.cache;
 
 /**
  * A simple cache entry that is store in GenericObjectCache
- * 
- * @author Christian Campo
  */
 public class SimpleCacheEntry<K, V> implements ICacheEntry<K, V> {
 	private V value;

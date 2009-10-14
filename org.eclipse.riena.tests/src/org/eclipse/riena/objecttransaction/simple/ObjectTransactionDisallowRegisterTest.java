@@ -18,8 +18,6 @@ import org.eclipse.riena.objecttransaction.simple.value.Addresse;
 
 /**
  * TODO Fehlender Klassen-Kommentar
- * 
- * @author Christian Campo
  */
 @NonUITestCase
 public class ObjectTransactionDisallowRegisterTest extends RienaTestCase {

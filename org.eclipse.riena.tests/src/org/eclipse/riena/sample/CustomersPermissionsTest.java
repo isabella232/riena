@@ -16,8 +16,7 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.sample.app.common.model.CustomersPermission;
 
 /**
- * @author christian
- * 
+ * TODO JavaDoc
  */
 @NonUITestCase
 public class CustomersPermissionsTest extends TestCase {

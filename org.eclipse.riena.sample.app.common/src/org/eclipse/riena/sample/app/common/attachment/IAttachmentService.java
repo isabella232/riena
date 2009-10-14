@@ -18,8 +18,6 @@ import org.eclipse.riena.communication.core.attachment.Attachment;
 /**
  * Interface for the AttachmentService. The AttachmentService demonstrates how
  * to use Attachments within WebService calls.
- * 
- * @author Christian Campo
  */
 public interface IAttachmentService {
 

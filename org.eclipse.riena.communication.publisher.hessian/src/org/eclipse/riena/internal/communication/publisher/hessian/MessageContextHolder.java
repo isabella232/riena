@@ -11,8 +11,7 @@
 package org.eclipse.riena.internal.communication.publisher.hessian;
 
 /**
- * @author [user:firstname] [user:lastname]
- * 
+ * TODO JavaDoc
  */
 public final class MessageContextHolder {
 

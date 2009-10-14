@@ -23,8 +23,6 @@ import org.eclipse.riena.core.util.PropertiesUtils;
 
 /**
  * Tests, if input is an valid integer, which may be signed or not.
- * 
- * @author Wanja Gayk
  */
 public class ValidInteger extends ValidDecimal {
 

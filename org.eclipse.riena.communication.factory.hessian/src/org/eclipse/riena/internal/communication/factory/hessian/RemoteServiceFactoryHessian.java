@@ -37,9 +37,6 @@ import org.eclipse.riena.core.wire.InjectService;
  * {@link IRemoteServiceFactory#ID}. The OSGi Service set the property
  * "riena.protocol=hessian".
  * 
- * @author Alexander Ziegler
- * @author Christian Campo
- * 
  */
 public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 	private IRemoteProgressMonitorRegistry remoteProgressMonitorRegistry;
