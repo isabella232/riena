@@ -57,5 +57,5 @@ public interface IListRidget extends ITableRidget {
 	 * @param listPropertyName
 	 *            Property for accessing the list of objects.
 	 */
-	public void bindToModel(Object listHolder, String listPropertyName);
+	void bindToModel(Object listHolder, String listPropertyName);
 }
