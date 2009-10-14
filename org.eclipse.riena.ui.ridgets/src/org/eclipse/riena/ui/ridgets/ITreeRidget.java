@@ -258,7 +258,7 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * @see #bindToModel(Object, Class, String, String)
 	 * @see IRidget#getUIControl()
 	 */
-	void expand(Object element);
+	void expand(Object node);
 
 	/**
 	 * Collapses a node if it is part of the data-model currently bound to the
@@ -275,7 +275,7 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * @see #bindToModel(Object, Class, String, String)
 	 * @see IRidget#getUIControl()
 	 */
-	void collapse(Object element);
+	void collapse(Object node);
 
 	/**
 	 * Adds the listener to the collection of listeners who will be notified
