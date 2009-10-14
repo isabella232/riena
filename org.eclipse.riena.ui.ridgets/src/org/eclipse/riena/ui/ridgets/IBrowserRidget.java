@@ -25,7 +25,7 @@ public interface IBrowserRidget extends IValueRidget {
 	 * @see #getUrl()
 	 * @see #setUrl(String)
 	 */
-	public static final String PROPERTY_URL = "url"; //$NON-NLS-1$
+	String PROPERTY_URL = "url"; //$NON-NLS-1$
 
 	/**
 	 * Sets the url.
