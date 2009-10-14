@@ -20,19 +20,10 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 @ExtensionInterface(id = "ssl")
 public interface ISSLPropertiesExtension {
 
-	/**
-	 * @return the protocol
-	 */
 	String getProtocol();
 
-	/**
-	 * @return the keystore
-	 */
 	String getKeystore();
 
-	/**
-	 * @return the password
-	 */
 	String getPassword();
 
 	/**
