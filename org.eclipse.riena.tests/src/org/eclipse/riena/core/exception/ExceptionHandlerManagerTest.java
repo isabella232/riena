@@ -12,7 +12,7 @@ package org.eclipse.riena.core.exception;
 
 import junit.framework.Assert;
 
-import org.eclipse.riena.internal.core.exceptionmanager.IExceptionHandlerDefinition;
+import org.eclipse.riena.internal.core.exceptionmanager.IExceptionHandlerExtension;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
@@ -39,7 +39,7 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 
 	public void testAddHandler() {
 		TestExceptionHandler testEH = new TestExceptionHandler("test.exception.handler1", null, null);
-		manager.update(new IExceptionHandlerDefinition[] { getTestDefinition(testEH) });
+		manager.update(new IExceptionHandlerExtension[] { getTestDefinition(testEH) });
 
 		Exception exception = new Exception("test");
 		manager.handleException(exception);
@@ -51,7 +51,7 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 		TestExceptionHandler testEH1 = new TestExceptionHandler("test.exception.handler1", null, null);
 		TestExceptionHandler testEH2 = new TestExceptionHandler("test.exception.handler2", "test.exception.handler1",
 				IExceptionHandlerManager.Action.OK);
-		manager.update(new IExceptionHandlerDefinition[] { getTestDefinition(testEH1), getTestDefinition(testEH2) });
+		manager.update(new IExceptionHandlerExtension[] { getTestDefinition(testEH1), getTestDefinition(testEH2) });
 
 		Exception exception = new Exception("test");
 		manager.handleException(exception);
@@ -60,8 +60,8 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 		Assert.assertNull("expected no exception", testEH1.getThrowable());
 	}
 
-	private IExceptionHandlerDefinition getTestDefinition(final TestExceptionHandler testEH) {
-		return new IExceptionHandlerDefinition() {
+	private IExceptionHandlerExtension getTestDefinition(final TestExceptionHandler testEH) {
+		return new IExceptionHandlerExtension() {
 
 			public IExceptionHandler createExceptionHandler() {
 				return testEH;
