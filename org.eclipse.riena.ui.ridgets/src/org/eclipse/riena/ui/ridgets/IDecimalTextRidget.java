@@ -26,10 +26,8 @@ package org.eclipse.riena.ui.ridgets;
  */
 public interface IDecimalTextRidget extends INumericTextRidget {
 
-	/** Property name of the singed property ("signed"). */
 	String PROPERTY_PRECISION = "precision"; //$NON-NLS-1$
 
-	/** Property name of the singed property ("signed"). */
 	String PROPERTY_MAXLENGTH = "maxLength"; //$NON-NLS-1$
 
 	/**
