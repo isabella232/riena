@@ -65,7 +65,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * INavigationContext.
 	 * 
 	 * @param pContext
-	 *            - the Context to activate within
+	 *            the Context to activate within
 	 */
 	void activate(INavigationContext pContext);
 
@@ -74,7 +74,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * INavigationContext.
 	 * 
 	 * @param pContext
-	 *            - the Context to activate within
+	 *            the Context to activate within
 	 */
 	void onBeforeActivate(INavigationContext pContext);
 
@@ -83,7 +83,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * INavigationContext.
 	 * 
 	 * @param pContext
-	 *            - the Context to activate within
+	 *            the Context to activate within
 	 */
 	void onAfterActivate(INavigationContext pContext);
 
@@ -92,7 +92,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * INavigationContext.
 	 * 
 	 * @param pContext
-	 *            - the Context to activate within
+	 *            the Context to activate within
 	 */
 	void dispose(INavigationContext pContext);
 
@@ -101,7 +101,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * INavigationContext.
 	 * 
 	 * @param pContext
-	 *            - the Context to activate within
+	 *            the Context to activate within
 	 */
 	void onBeforeDispose(INavigationContext pContext);
 
@@ -110,7 +110,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * INavigationContext.
 	 * 
 	 * @param pContext
-	 *            - the Context to activate within
+	 *            the Context to activate within
 	 */
 	void onAfterDispose(INavigationContext pContext);
 
@@ -119,7 +119,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * INavigationContext.
 	 * 
 	 * @param pContext
-	 *            - the Context to deactivate within
+	 *            the Context to deactivate within
 	 */
 	void deactivate(INavigationContext pContext);
 
@@ -128,7 +128,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * INavigationContext.
 	 * 
 	 * @param pContext
-	 *            - the Context to activate within
+	 *            the Context to activate within
 	 */
 	void onBeforeDeactivate(INavigationContext pContext);
 
@@ -137,7 +137,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * INavigationContext.
 	 * 
 	 * @param pContext
-	 *            - the Context to activate within
+	 *            the Context to activate within
 	 */
 	void onAfterDeactivate(INavigationContext pContext);
 
@@ -146,7 +146,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * within an INavigationContext.
 	 * 
 	 * @param pContext
-	 *            - the Context to check within
+	 *            the Context to check within
 	 */
 	boolean allowsActivate(INavigationContext pContext);
 
@@ -155,7 +155,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * within an INavigationContext.
 	 * 
 	 * @param pContext
-	 *            - the Context to check within
+	 *            the Context to check within
 	 */
 	boolean allowsDeactivate(INavigationContext pContext);
 
@@ -164,7 +164,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * an INavigationContext.
 	 * 
 	 * @param pContext
-	 *            - the Context to check within
+	 *            the Context to check within
 	 */
 	boolean allowsDispose(INavigationContext pContext);
 
@@ -173,12 +173,14 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Removes the passed node from the list child nodes
 	 * 
 	 * @param pChild
-	 *            - the child node to remove
+	 *            the child node to remove
 	 */
 	void removeChild(INavigationNode<?> pChild);
 
 	/**
-	 * @return - an ordered list of child nodes of this node
+	 * TODO
+	 * 
+	 * @return an ordered list of child nodes of this node
 	 */
 	List<C> getChildren();
 
@@ -186,13 +188,15 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Adds the passed child to the list of child nodes
 	 * 
 	 * @param pChild
-	 *            - the child node to add
+	 *            the child node to add
 	 */
 	void addChild(C pChild);
 
 	/**
+	 * TODO
+	 * 
 	 * @param pIndex
-	 *            - index of the child
+	 *            index of the child
 	 * @return the child at the specified index or null
 	 */
 	C getChild(int pIndex);
@@ -209,20 +213,24 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	INavigationNode<?> findNode(NavigationNodeId nodeId);
 
 	/**
+	 * TODO
+	 * 
 	 * @param pChild
-	 *            - the child to find
+	 *            the child to find
 	 * @return the index of the child starting at 0 or -1 if the passed child is
 	 *         not a child of the node addressed
 	 */
 	int getIndexOfChild(INavigationNode<?> pChild);
 
 	/**
+	 * TODO
+	 * 
 	 * @return the Presentation of this node
 	 */
 	INavigationNodeController getNavigationNodeController();
 
 	/**
-	 * Look for the next in the hierarchy available controller
+	 * Look for the next in the hierarchy available controller TODO
 	 */
 	INavigationNodeController getNextNavigationNodeController();
 
@@ -233,6 +241,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void setLabel(String pLabel);
 
 	/**
+	 * TODO
+	 * 
 	 * @return icon or null if no icon should be shown.
 	 */
 	String getIcon();
@@ -269,6 +279,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void removeSimpleListener(ISimpleNavigationNodeListener pListener);
 
 	/**
+	 * TODO
+	 * 
 	 * @return true, if this navigation node should be presented expanded
 	 */
 	boolean isExpanded();
@@ -288,18 +300,22 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	boolean isLeaf();
 
 	/**
+	 * TODO
+	 * 
 	 * @return the markable helper object contained in the navigation node
 	 */
 	IMarkable getMarkable();
 
 	/**
+	 * TODO
+	 * 
 	 * @param key
 	 * @return the next in hierarchy available context
 	 */
 	Object getContext(String key);
 
 	/**
-	 * sets the context
+	 * sets the context TODO
 	 */
 	void setContext(String key, Object pContext);
 
@@ -308,7 +324,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * automatically show and hide actions corresponding to the activated node
 	 * 
 	 * @param pAction
-	 *            - the action to add
+	 *            the action to add
 	 */
 	void addAction(IAction pAction);
 
@@ -316,11 +332,13 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Remove an action from the node
 	 * 
 	 * @param pAction
-	 *            - the action to remove
+	 *            the action to remove
 	 */
 	void removeAction(IAction pAction);
 
 	/**
+	 * TODO
+	 * 
 	 * @return the actions defined by this node
 	 */
 	Set<IAction> getActions();
@@ -398,7 +416,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Shows or hides this node depending on the value of parameter
 	 * 
 	 * @param visible
-	 *            - if {@code true}, shows this node; otherwise, hides this node
+	 *            if {@code true}, shows this node; otherwise, hides this node
 	 */
 	void setVisible(boolean visible);
 
@@ -413,7 +431,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Enables or disables this node depending on the value of parameter
 	 * 
 	 * @param enabled
-	 *            - if {@code true}, enables this node; otherwise, disables this
+	 *            if {@code true}, enables this node; otherwise, disables this
 	 *            node
 	 */
 	void setEnabled(boolean enabled);

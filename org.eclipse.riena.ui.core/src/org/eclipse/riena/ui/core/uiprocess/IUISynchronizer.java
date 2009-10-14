@@ -22,6 +22,7 @@ public interface IUISynchronizer {
 	 * thread will be suspended until the executing {@code Runnable} completes.
 	 * 
 	 * @param runnable
+	 *            the {@code Runnable} to be executed on the UI-thread
 	 */
 	void synchronize(Runnable runnable);
 }

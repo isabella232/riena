@@ -26,7 +26,7 @@ public interface ISender {
 	 * 
 	 * @param store
 	 *            the store for the sender
-	 * @param category
+	 * @param categories
 	 *            the categories this sender must handle
 	 */
 	void start(IStore store, Collection<Category> categories);
@@ -41,6 +41,8 @@ public interface ISender {
 	 * given category.
 	 * 
 	 * @param category
+	 *            the category of the {@code Collectible}s that should be
+	 *            transfered
 	 */
 	void triggerTransfer(String category);
 

@@ -30,8 +30,6 @@ public interface IStore {
 
 	/**
 	 * Close the store.
-	 * 
-	 * @param categories
 	 */
 	void close();
 

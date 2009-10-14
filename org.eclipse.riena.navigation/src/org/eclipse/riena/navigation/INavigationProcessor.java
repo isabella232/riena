@@ -13,9 +13,9 @@ package org.eclipse.riena.navigation;
 import org.eclipse.riena.core.marker.IMarker;
 
 /**
- * Manages the Navigation. Is called by a navigation node to navigate to it The
- * navigation processor works with the INavigationNode What does the navigation
- * processor? * the navigation processor decides how many nodes in his scope can
+ * Manages the Navigation. Is called by a navigation node to navigate to it the
+ * navigation processor works with the INavigationNode. What does the navigation
+ * processor? The navigation processor decides how many nodes in his scope can
  * be active at the same time -> the default navigation processor allows only
  * one node of each type
  */
