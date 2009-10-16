@@ -38,8 +38,6 @@ public final class UISynchronizer {
 	}
 
 	private IUISynchronizerExtension[] synchronizerExtension;
-	@Deprecated
-	private IUISynchronizerExtension[] deprecatedSynchronizerExtension;
 
 	private UISynchronizer() {
 		// utility
@@ -57,8 +55,6 @@ public final class UISynchronizer {
 	private IUISynchronizer create() {
 		if (synchronizerExtension != null && synchronizerExtension.length > 0) {
 			return synchronizerExtension[0].createUISynchronizer();
-		} else if (deprecatedSynchronizerExtension != null && deprecatedSynchronizerExtension.length > 0) {
-			return deprecatedSynchronizerExtension[0].createUISynchronizer();
 		}
 		throw new IllegalStateException(
 				"There is NO IUISynchronizer defined, but it must. Use extension point 'uiSynchronizer' to do this."); //$NON-NLS-1$
@@ -67,12 +63,6 @@ public final class UISynchronizer {
 	@InjectExtension()
 	public void update(IUISynchronizerExtension[] synchronizerExtension) {
 		this.synchronizerExtension = synchronizerExtension;
-	}
-
-	@InjectExtension(id = "org.riena.ui.core.uiprocess")
-	@Deprecated
-	public void deprecatedUpdate(IUISynchronizerExtension[] synchronizerExtension) {
-		this.deprecatedSynchronizerExtension = synchronizerExtension;
 	}
 
 }

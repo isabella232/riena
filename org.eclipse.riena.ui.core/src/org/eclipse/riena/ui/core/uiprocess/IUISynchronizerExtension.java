@@ -16,7 +16,8 @@ import org.eclipse.riena.core.injector.extension.MapName;
 /**
  * {@code ExtensionInterface} for the ui synchronizer.
  */
-@ExtensionInterface(id = "uiSynchronizer")
+// Note: the second id (org.riena.ui.core.uiprocess) is @deprecated!
+@ExtensionInterface(id = "uiSynchronizer,org.riena.ui.core.uiprocess")
 public interface IUISynchronizerExtension {
 
 	/**
