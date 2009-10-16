@@ -27,7 +27,7 @@ public class Address implements Cloneable {
 
 		super();
 
-	} // end constructor
+	}
 
 	/**
 	 * Creates an address and sets the given values
@@ -50,7 +50,7 @@ public class Address implements Cloneable {
 		this.city = city;
 		this.street = street;
 
-	} // end cosntructor
+	}
 
 	/**
 	 * Returns the city
@@ -61,7 +61,7 @@ public class Address implements Cloneable {
 
 		return city;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given city
@@ -73,7 +73,7 @@ public class Address implements Cloneable {
 
 		this.city = city;
 
-	} // end method
+	}
 
 	/**
 	 * Returns the street
@@ -84,7 +84,7 @@ public class Address implements Cloneable {
 
 		return street;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given street
@@ -96,7 +96,7 @@ public class Address implements Cloneable {
 
 		this.street = street;
 
-	} // end method
+	}
 
 	/**
 	 * Returns the zip code
@@ -107,7 +107,7 @@ public class Address implements Cloneable {
 
 		return zipCode;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given zip code
@@ -119,7 +119,7 @@ public class Address implements Cloneable {
 
 		this.zipCode = zipCode;
 
-	} // end method
+	}
 
 	/**
 	 * Returns the country
@@ -130,7 +130,7 @@ public class Address implements Cloneable {
 
 		return country;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given country
@@ -142,7 +142,7 @@ public class Address implements Cloneable {
 
 		this.country = country;
 
-	} // end method
+	}
 
 	/**
 	 * @see java.lang.Object#clone()
@@ -159,6 +159,6 @@ public class Address implements Cloneable {
 
 		return clone;
 
-	} // end method
+	}
 
-} // end class
+}

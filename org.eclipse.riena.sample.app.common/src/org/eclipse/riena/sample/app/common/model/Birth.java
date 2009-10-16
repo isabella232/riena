@@ -27,7 +27,7 @@ public class Birth {
 
 		super();
 
-	} // end constructor
+	}
 
 	/**
 	 * Creates a birth and sets the given values
@@ -44,7 +44,7 @@ public class Birth {
 		this.birthDay = day;
 		this.birthPlace = place;
 
-	} // end constructor
+	}
 
 	/**
 	 * Returns the birthday
@@ -55,7 +55,7 @@ public class Birth {
 
 		return birthDay;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given birthday
@@ -67,7 +67,7 @@ public class Birth {
 
 		this.birthDay = day;
 
-	} // end method
+	}
 
 	/**
 	 * Returns the birth place
@@ -78,7 +78,7 @@ public class Birth {
 
 		return birthPlace;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given birth place
@@ -90,6 +90,6 @@ public class Birth {
 
 		this.birthPlace = birthPlace;
 
-	} // end method
+	}
 
-} // end class
+}

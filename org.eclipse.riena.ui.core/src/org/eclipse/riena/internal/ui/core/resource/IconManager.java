@@ -156,4 +156,4 @@ public final class IconManager implements IIconManager {
 		}
 	}
 
-} // end method
+}

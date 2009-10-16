@@ -26,7 +26,7 @@ public class BankData implements Cloneable {
 
 		super();
 
-	} // end constructor
+	}
 
 	/**
 	 * Creates bank data and sets the given values
@@ -46,7 +46,7 @@ public class BankData implements Cloneable {
 		this.bank = bank;
 		this.bankCode = bankCode;
 
-	} // end cosntructor
+	}
 
 	@Override
 	public boolean equals(Object other) {
@@ -79,7 +79,7 @@ public class BankData implements Cloneable {
 
 		return accountNumber;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given account number
@@ -91,7 +91,7 @@ public class BankData implements Cloneable {
 
 		this.accountNumber = accountNumber;
 
-	} // end method
+	}
 
 	/**
 	 * Returns the name of the bank
@@ -102,7 +102,7 @@ public class BankData implements Cloneable {
 
 		return bank;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given name of the bank
@@ -114,7 +114,7 @@ public class BankData implements Cloneable {
 
 		this.bank = bank;
 
-	} // end method
+	}
 
 	/**
 	 * Returns the bank code
@@ -125,7 +125,7 @@ public class BankData implements Cloneable {
 
 		return bankCode;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given bank code
@@ -137,7 +137,7 @@ public class BankData implements Cloneable {
 
 		this.bankCode = bankCode;
 
-	} // end method
+	}
 
 	/**
 	 * @see java.lang.Object#toString()
@@ -150,7 +150,7 @@ public class BankData implements Cloneable {
 			strg += accountNumber;
 		} else {
 			strg += "?"; //$NON-NLS-1$
-		} // end if
+		}
 
 		strg += " - "; //$NON-NLS-1$
 
@@ -158,7 +158,7 @@ public class BankData implements Cloneable {
 			strg += bank;
 		} else {
 			strg += "?"; //$NON-NLS-1$
-		} // end if
+		}
 
 		strg += " - "; //$NON-NLS-1$
 
@@ -166,11 +166,11 @@ public class BankData implements Cloneable {
 			strg += bankCode;
 		} else {
 			strg += "?"; //$NON-NLS-1$
-		} // end if
+		}
 
 		return strg;
 
-	} // end method
+	}
 
 	/**
 	 * @see java.lang.Object#clone()
@@ -186,6 +186,6 @@ public class BankData implements Cloneable {
 
 		return clone;
 
-	} // end method
+	}
 
-} // end class
+}

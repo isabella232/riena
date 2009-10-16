@@ -307,7 +307,7 @@ public class Person extends AbstractBean {
 	 */
 	public String getBirthday() {
 		return birthday;
-	} // end method
+	}
 
 	/**
 	 * @param birthday
@@ -317,7 +317,7 @@ public class Person extends AbstractBean {
 		Object oldValue = this.birthday;
 		this.birthday = birthday;
 		firePropertyChanged(PROPERTY_BIRTHDAY, oldValue, birthday);
-	} // end method
+	}
 
 	public void setBirthplace(String birthplace) {
 		Object oldValue = this.birthplace;

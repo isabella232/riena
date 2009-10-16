@@ -102,7 +102,7 @@ public class Customer {
 
 		return address;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the address of the customer
@@ -115,7 +115,7 @@ public class Customer {
 		this.address = address;
 		firePropertyChanged(PROPERTY_ADDRESS, old, address);
 
-	} // end method
+	}
 
 	/**
 	 * Returns the birth of the customer
@@ -126,7 +126,7 @@ public class Customer {
 
 		return birth;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the birth of the customer
@@ -139,7 +139,7 @@ public class Customer {
 		this.birth = birth;
 		firePropertyChanged(PROPERTY_BIRTH, old, birth);
 
-	} // end method
+	}
 
 	/**
 	 * Returns the first name of the customer
@@ -150,7 +150,7 @@ public class Customer {
 
 		return firstName;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the first name of the customer
@@ -163,7 +163,7 @@ public class Customer {
 		this.firstName = firstName;
 		firePropertyChanged(PROPERTY_FIRST_NAME, old, firstName);
 
-	} // end method
+	}
 
 	/**
 	 * Returns the form of the customer
@@ -174,7 +174,7 @@ public class Customer {
 
 		return form;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the form of the customer
@@ -187,7 +187,7 @@ public class Customer {
 		this.form = form;
 		firePropertyChanged(PROPERTY_FORM, old, form);
 
-	} // end method
+	}
 
 	/**
 	 * Returns the last name of the customer
@@ -198,7 +198,7 @@ public class Customer {
 
 		return lastName;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the last name of the customer
@@ -211,7 +211,7 @@ public class Customer {
 		this.lastName = lastName;
 		firePropertyChanged(PROPERTY_LAST_NAME, old, lastName);
 
-	} // end method
+	}
 
 	/**
 	 * Returns the title of the customer
@@ -222,7 +222,7 @@ public class Customer {
 
 		return title;
 
-	} // end method
+	}
 
 	/**
 	 * Set the title of the customer
@@ -235,7 +235,7 @@ public class Customer {
 		this.title = title;
 		firePropertyChanged(PROPERTY_TITLE, old, title);
 
-	} // end method
+	}
 
 	/**
 	 * Returns the fax number of the customer
@@ -246,7 +246,7 @@ public class Customer {
 
 		return fax;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given fax number
@@ -259,7 +259,7 @@ public class Customer {
 		this.fax = fax;
 		firePropertyChanged(PROPERTY_FAX, old, fax);
 
-	} // end method
+	}
 
 	/**
 	 * Returns the business phone number of the customer
@@ -270,7 +270,7 @@ public class Customer {
 
 		return phoneBusiness;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given business phone number
@@ -283,7 +283,7 @@ public class Customer {
 		this.phoneBusiness = phoneBusiness;
 		firePropertyChanged(PROPERTY_PHONE_BUSINESS, old, phoneBusiness);
 
-	} // end method
+	}
 
 	/**
 	 * Returns the mobile phone number of the customer
@@ -294,7 +294,7 @@ public class Customer {
 
 		return phoneMobile;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given mobile phone number
@@ -307,7 +307,7 @@ public class Customer {
 		this.phoneMobile = phoneMobile;
 		firePropertyChanged(PROPERTY_PHONE_MOBILE, old, phoneMobile);
 
-	} // end method
+	}
 
 	/**
 	 * Returns the private phone number of the customer
@@ -318,7 +318,7 @@ public class Customer {
 
 		return phonePrivate;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given private phone number
@@ -331,7 +331,7 @@ public class Customer {
 		this.phonePrivate = phonePrivate;
 		firePropertyChanged(PROPERTY_PHONE_PRIVATE, old, phonePrivate);
 
-	} // end method
+	}
 
 	/**
 	 * Returns the eMail address of the customer
@@ -342,7 +342,7 @@ public class Customer {
 
 		return email;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given eMail address
@@ -355,7 +355,7 @@ public class Customer {
 		this.email = email;
 		firePropertyChanged(PROPERTY_EMAIL, old, email);
 
-	} // end method
+	}
 
 	/**
 	 * @return Returns the customerNumber.
@@ -364,7 +364,7 @@ public class Customer {
 
 		return customerNumber;
 
-	} // end method
+	}
 
 	/**
 	 * @param customerNumber
@@ -375,7 +375,7 @@ public class Customer {
 		Integer old = getCustomerNumber();
 		this.customerNumber = customerNumber;
 		firePropertyChanged(PROPERTY_CUSTOMER_NUMBER, old, customerNumber);
-	} // end method
+	}
 
 	/**
 	 * Compares two customers by customerNumber.
@@ -397,7 +397,7 @@ public class Customer {
 		}
 		return false;
 
-	} // end method
+	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
@@ -410,7 +410,7 @@ public class Customer {
 		}
 		return 0;
 
-	} // end method
+	}
 
 	/**
 	 * Returns a list with all bank data
@@ -421,7 +421,7 @@ public class Customer {
 
 		return bankData;
 
-	} // end method
+	}
 
 	/**
 	 * Sets the given list of bank data
@@ -434,7 +434,7 @@ public class Customer {
 		this.bankData = bankData;
 		firePropertyChanged(PROPERTY_BANK_DATA, old, bankData);
 
-	} // end method
+	}
 
 	@Override
 	public String toString() {
@@ -453,4 +453,4 @@ public class Customer {
 
 		return builder.toString();
 	}
-} // end class
+}
