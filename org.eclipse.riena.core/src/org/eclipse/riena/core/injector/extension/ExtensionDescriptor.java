@@ -15,6 +15,8 @@ import org.osgi.framework.BundleContext;
 import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.internal.core.injector.extension.ExtensionMapper;
+import org.eclipse.riena.internal.core.injector.extension.ExtensionPointId;
 
 /**
  * ExtensionDescriptor and ExtensionInjector simplify locating configuration
@@ -69,7 +71,7 @@ import org.eclipse.riena.core.util.StringUtils;
  */
 public class ExtensionDescriptor {
 
-	private String extensionPointId;
+	private ExtensionPointId extensionPointId;
 	private boolean homogeneous = true;
 	private Class<?> interfaceType;
 	private int minOccurences = 0;
@@ -83,7 +85,7 @@ public class ExtensionDescriptor {
 	 * ExtensionInterface} or {@code InjectExtension}
 	 */
 	public ExtensionDescriptor() {
-		this.extensionPointId = ""; //$NON-NLS-1$
+		this.extensionPointId = new ExtensionPointId();
 	}
 
 	/**
@@ -94,7 +96,7 @@ public class ExtensionDescriptor {
 	public ExtensionDescriptor(final String extensionPointId) {
 		Assert.isLegal(StringUtils.isGiven(extensionPointId),
 				"The extension id must be given, i.e. not null and not empty."); //$NON-NLS-1$
-		this.extensionPointId = extensionPointId;
+		this.extensionPointId = new ExtensionPointId(extensionPointId);
 	}
 
 	/**
@@ -170,49 +172,42 @@ public class ExtensionDescriptor {
 	/**
 	 * @return the extension point id
 	 */
-	void setExtensionPointId(String extensionPointId) {
-		this.extensionPointId = extensionPointId;
-	}
-
-	/**
-	 * @return the extension point id
-	 */
-	String getExtensionPointId() {
+	public ExtensionPointId getExtensionPointId() {
 		return extensionPointId;
 	}
 
 	/**
 	 * @return the interfaceType
 	 */
-	Class<?> getInterfaceType() {
+	public Class<?> getInterfaceType() {
 		return interfaceType;
 	}
 
 	/**
 	 * @return the minOccurences
 	 */
-	int getMinOccurences() {
+	public int getMinOccurences() {
 		return minOccurences;
 	}
 
 	/**
 	 * @return the maxOccurences
 	 */
-	int getMaxOccurences() {
+	public int getMaxOccurences() {
 		return maxOccurences;
 	}
 
 	/**
 	 * @return the form
 	 */
-	boolean isHomogeneous() {
+	public boolean isHomogeneous() {
 		return homogeneous;
 	}
 
 	/**
 	 * @return
 	 */
-	boolean requiresArrayUpdateMethod() {
+	public boolean requiresArrayUpdateMethod() {
 		return minOccurences > 1 || maxOccurences > 1;
 	}
 }

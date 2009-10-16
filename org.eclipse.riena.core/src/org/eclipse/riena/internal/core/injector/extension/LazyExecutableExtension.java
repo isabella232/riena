@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.injector.extension;
+package org.eclipse.riena.internal.core.injector.extension;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

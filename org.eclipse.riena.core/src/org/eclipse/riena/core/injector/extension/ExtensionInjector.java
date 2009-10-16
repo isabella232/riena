@@ -11,15 +11,12 @@
 package org.eclipse.riena.core.injector.extension;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
@@ -32,9 +29,8 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.IStoppable;
-import org.eclipse.riena.core.util.Nop;
-import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.core.Activator;
+import org.eclipse.riena.internal.core.injector.extension.ExtensionMapper;
 
 /**
  * This is the extension injector.<br>
@@ -96,7 +92,7 @@ public class ExtensionInjector implements IStoppable {
 				: isArray ? parameterType.getComponentType() : parameterType;
 
 		// Fix the extension point descriptor
-		extensionDesc.setExtensionPointId(retrieveFQExtensionPointId());
+		extensionDesc.getExtensionPointId().normalize(componentType);
 
 		populateInterfaceBeans(true);
 
@@ -104,51 +100,61 @@ public class ExtensionInjector implements IStoppable {
 		Assert.isLegal(extensionRegistry != null,
 				"For some reason the extension registry has not been created. Injecting extensions is not possible."); //$NON-NLS-1$
 		injectorListener = new InjectorListener();
-		extensionRegistry.addListener(injectorListener, extensionDesc.getExtensionPointId());
+		for (String id : extensionDesc.getExtensionPointId().compatibleIds()) {
+			extensionRegistry.addListener(injectorListener, id);
+		}
 		return this;
 	}
 
-	/**
-	 * The extension point id can also be specified with a simple id. This will
-	 * be resolved here.
-	 */
-	private String retrieveFQExtensionPointId() {
-		String id = retrieveExtensionPointId();
-		if (id.contains(".")) { //$NON-NLS-1$
-			// already a FQ id
-			return id;
-		}
-		Bundle bundle = FrameworkUtil.getBundle(componentType);
-		if (bundle == null) {
-			// That might fail later!?
-			return id;
-		}
-		return bundle.getSymbolicName() + "." + id; //$NON-NLS-1$
-	}
-
-	/**
-	 * Since the extension point can be given via different ways, will retrieve
-	 * it here.
-	 */
-	private String retrieveExtensionPointId() {
-		if (StringUtils.isGiven(extensionDesc.getExtensionPointId())) {
-			return extensionDesc.getExtensionPointId();
-		}
-		ExtensionInterface extensionInterfaceAnnotation = componentType.getAnnotation(ExtensionInterface.class);
-		if (extensionInterfaceAnnotation != null && StringUtils.isGiven(extensionInterfaceAnnotation.id())) {
-			return extensionInterfaceAnnotation.id();
-		}
-		try {
-			Field idField = componentType.getField(ID);
-			Object value = idField.get(null);
-			if (value instanceof String) {
-				return (String) value;
-			}
-		} catch (Exception e) {
-			Nop.reason("Fall throuh!"); //$NON-NLS-1$
-		}
-		throw new IllegalArgumentException("It was not possible to retrieve an extension point id!"); //$NON-NLS-1$
-	}
+	//	/**
+	//	 * The extension point id can also be specified with a simple id. This will
+	//	 * be resolved here.
+	//	 */
+	//	private String[] retrieveFQExtensionPointId() {
+	//		String[] ids = retrieveExtensionPointString().split(",");
+	//		String[] result = new String[ids.length];
+	//		int i = 0;
+	//		for (String id : ids) {
+	//			if (id.contains(".")) { //$NON-NLS-1$
+	//				// already a FQ id
+	//				result[i++] = id;
+	//				//				return id;
+	//			}
+	//			Bundle bundle = FrameworkUtil.getBundle(componentType);
+	//			if (bundle == null) {
+	//				// That might fail later!?
+	//				result[i++] = id;
+	//				//				return id;
+	//			}
+	//			result[i++] = bundle.getSymbolicName() + "." + id;
+	//			//			return bundle.getSymbolicName() + "." + id; //$NON-NLS-1$
+	//		}
+	//		return result;
+	//	}
+	//
+	//	/**
+	//	 * Since the extension point can be given via different ways, will retrieve
+	//	 * it here.
+	//	 */
+	//	private String retrieveExtensionPointString() {
+	//		if (StringUtils.isGiven(extensionDesc.getExtensionPointId())) {
+	//			return extensionDesc.getExtensionPointId();
+	//		}
+	//		ExtensionInterface extensionInterfaceAnnotation = componentType.getAnnotation(ExtensionInterface.class);
+	//		if (extensionInterfaceAnnotation != null && StringUtils.isGiven(extensionInterfaceAnnotation.id())) {
+	//			return extensionInterfaceAnnotation.id();
+	//		}
+	//		try {
+	//			Field idField = componentType.getField(ID);
+	//			Object value = idField.get(null);
+	//			if (value instanceof String) {
+	//				return (String) value;
+	//			}
+	//		} catch (Exception e) {
+	//			Nop.reason("Fall throuh!"); //$NON-NLS-1$
+	//		}
+	//		throw new IllegalArgumentException("It was not possible to retrieve an extension point id!"); //$NON-NLS-1$
+	//	}
 
 	/**
 	 * Define the update method name.<br>

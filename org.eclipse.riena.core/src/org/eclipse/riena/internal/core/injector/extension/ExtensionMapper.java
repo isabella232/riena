@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.injector.extension;
+package org.eclipse.riena.internal.core.injector.extension;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -23,6 +23,8 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
+
+import org.eclipse.riena.core.injector.extension.ExtensionDescriptor;
 
 /**
  * The <code>ExtensionMapper</code> maps interfaces to extensions. Extension
@@ -100,27 +102,35 @@ public final class ExtensionMapper {
 	public static <T> T[] map(final boolean symbolReplace, final ExtensionDescriptor extensionDesc,
 			final Class<T> componentType, boolean nonSpecific) {
 		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
-		final IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(extensionDesc.getExtensionPointId());
-		if (extensionPoint == null) {
+		final List<Object> list = new ArrayList<Object>();
+		boolean atLeastOneExtensionPointExists = false;
+		for (String extensionPointId : extensionDesc.getExtensionPointId().compatibleIds()) {
+			final IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(extensionPointId);
+			if (extensionPoint == null) {
+				continue;
+			} else {
+				atLeastOneExtensionPointExists = true;
+			}
+
+			if (nonSpecific) {
+				if (extensionDesc.isHomogeneous()) {
+					for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+						list.add(InterfaceBeanFactory.newInstance(symbolReplace, componentType, element));
+					}
+				} else {
+					list.add(InterfaceBeanFactory
+							.newInstance(symbolReplace, componentType, new Wrapper(extensionPoint)));
+				}
+			} else {
+				for (IExtension extension : extensionPoint.getExtensions()) {
+					list.add(InterfaceBeanFactory.newInstance(symbolReplace, componentType, new Wrapper(extension)));
+				}
+			}
+		}
+		if (!atLeastOneExtensionPointExists) {
 			throw new IllegalArgumentException("Extension point " + extensionDesc.getExtensionPointId() //$NON-NLS-1$
 					+ " does not exist"); //$NON-NLS-1$
 		}
-
-		final List<Object> list = new ArrayList<Object>();
-		if (nonSpecific) {
-			if (extensionDesc.isHomogeneous()) {
-				for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
-					list.add(InterfaceBeanFactory.newInstance(symbolReplace, componentType, element));
-				}
-			} else {
-				list.add(InterfaceBeanFactory.newInstance(symbolReplace, componentType, new Wrapper(extensionPoint)));
-			}
-		} else {
-			for (IExtension extension : extensionPoint.getExtensions()) {
-				list.add(InterfaceBeanFactory.newInstance(symbolReplace, componentType, new Wrapper(extension)));
-			}
-		}
-
 		return list.toArray((T[]) Array.newInstance(componentType, list.size()));
 	}
 

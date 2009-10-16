@@ -8,9 +8,9 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.injector.extension;
+package org.eclipse.riena.internal.core.injector.extension;
 
-import static org.eclipse.riena.core.injector.extension.InterfaceBeanHandler.MethodKind.*;
+import static org.eclipse.riena.internal.core.injector.extension.InterfaceBeanHandler.MethodKind.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
@@ -33,6 +33,14 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.injector.extension.CreateLazy;
+import org.eclipse.riena.core.injector.extension.DefaultValue;
+import org.eclipse.riena.core.injector.extension.DoNotReplaceSymbols;
+import org.eclipse.riena.core.injector.extension.DoNotWireExecutable;
+import org.eclipse.riena.core.injector.extension.ExtensionInjector;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.MapContent;
+import org.eclipse.riena.core.injector.extension.MapName;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.Activator;
