@@ -11,6 +11,7 @@
 package org.eclipse.riena.core.wire;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInjector;
 import org.eclipse.riena.core.injector.extension.IData;
@@ -31,7 +32,7 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
 		ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
-		assertEquals("testA", id(injector));
+		assertEquals("testA", rawId(injector));
 		assertEquals(IData.class, useType(injector));
 		assertEquals(0, getMin(injector));
 		assertEquals(1, getMax(injector));
@@ -52,7 +53,7 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
 		ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
-		assertEquals("testA[]", id(injector));
+		assertEquals("testA[]", rawId(injector));
 		assertEquals(IData.class, useType(injector));
 		assertEquals(0, getMin(injector));
 		assertEquals(Integer.MAX_VALUE, getMax(injector));
@@ -73,7 +74,7 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
 		ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
-		assertEquals("testB", id(injector));
+		assertEquals("testB", rawId(injector));
 		assertEquals(IData.class, useType(injector));
 		assertEquals(2, getMin(injector));
 		assertEquals(5, getMax(injector));
@@ -94,7 +95,7 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
 		ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
-		assertEquals("testC", id(injector));
+		assertEquals("testC", rawId(injector));
 		assertEquals(IData.class, useType(injector));
 		assertEquals(0, getMin(injector));
 		assertEquals(1, getMax(injector));
@@ -119,9 +120,9 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		try {
 			injector.andStart(getContext());
 		} catch (IllegalArgumentException e) {
-			assertEquals("Extension point " + expectedId + " does not exist", e.getMessage());
+			assertTrue(e.getMessage().contains(expectedId));
 		}
-		assertEquals(expectedId, id(injector));
+		assertEquals(expectedId, firstNormalizedId(injector));
 		assertEquals(IDataWithID.class, useType(injector));
 		assertEquals(0, getMin(injector));
 		assertEquals(1, getMax(injector));
@@ -146,9 +147,9 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		try {
 			injector.andStart(getContext());
 		} catch (IllegalArgumentException e) {
-			assertEquals("Extension point " + expectedId + " does not exist", e.getMessage());
+			assertTrue(e.getMessage().contains(expectedId));
 		}
-		assertEquals(expectedId, id(injector));
+		assertEquals(expectedId, firstNormalizedId(injector));
 		assertEquals(IDataWithIDinAnnotation.class, useType(injector));
 		assertEquals(0, getMin(injector));
 		assertEquals(1, getMax(injector));
@@ -163,9 +164,16 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 	public void updateWithIDinAnnotation(IDataWithIDinAnnotation data) {
 	}
 
-	private String id(ExtensionInjector injector) {
+	private String rawId(ExtensionInjector injector) {
 		Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
-		return ReflectionUtils.getHidden(extensionDescriptor, "extensionPointId");
+		Object extensionPointId = ReflectionUtils.getHidden(extensionDescriptor, "extensionPointId");
+		return ReflectionUtils.getHidden(extensionPointId, "rawId");
+	}
+
+	private String firstNormalizedId(ExtensionInjector injector) {
+		Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
+		Object extensionPointId = ReflectionUtils.getHidden(extensionDescriptor, "extensionPointId");
+		return ((List<String>) ReflectionUtils.getHidden(extensionPointId, "normalizedIds")).get(0);
 	}
 
 	private Object useType(ExtensionInjector injector) {
