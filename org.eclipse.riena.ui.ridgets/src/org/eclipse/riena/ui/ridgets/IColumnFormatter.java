@@ -16,6 +16,9 @@ package org.eclipse.riena.ui.ridgets;
  * <p>
  * Toolkits may provide (and ridgets may require) a specific implementation of
  * this interface. See ColumnFormatter for an SWT-specific implementation.
+ * <p>
+ * <i> Note: not every property will be used for every kind of table Ridget!
+ * </i>
  * 
  * @see ITableRidget#setColumnFormatter(int, ColumnFormatter)
  * @see ITreeTableRidget#setColumnFormatter(int, ColumnFormatter)
@@ -76,6 +79,9 @@ public interface IColumnFormatter {
 
 	/**
 	 * Returns the horizontal alignment for a column's row.
+	 * <p>
+	 * <i>Currently not used for {@link ITableRidget} and
+	 * {@link ITreeTableRidget}!</i>
 	 * 
 	 * @param element
 	 *            the row element
@@ -87,6 +93,9 @@ public interface IColumnFormatter {
 	/**
 	 * Returns whether the cell for a column's row has an additional padding or
 	 * not.
+	 * <p>
+	 * <i>Currently not used for {@link ITableRidget} and
+	 * {@link ITreeTableRidget}!</i>
 	 * 
 	 * @param element
 	 *            the row element
