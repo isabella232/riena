@@ -74,4 +74,24 @@ public interface IColumnFormatter {
 	 */
 	Object getFont(Object element);
 
+	/**
+	 * Returns the horizontal alignment for a column's row.
+	 * 
+	 * @param element
+	 *            the row element
+	 * @return horizontal alignment ({@code SWT.LEFT}, {@code SWT.CENTER},
+	 *         {@code SWT.RIGHT} or {@code SWT.DEFAULT})
+	 */
+	int getHorizontalAlignment(Object element);
+
+	/**
+	 * Returns whether the cell for a column's row has an additional padding or
+	 * not.
+	 * 
+	 * @param element
+	 *            the row element
+	 * @return {@code true} for additional left padding; otherwise {@code false}
+	 */
+	boolean getLeftPadding(Object element);
+
 }

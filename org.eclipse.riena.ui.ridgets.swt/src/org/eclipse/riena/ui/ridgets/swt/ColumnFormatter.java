@@ -10,12 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt;
 
-import org.eclipse.riena.ui.ridgets.IColumnFormatter;
-import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 
 /**
  * SWT-specific implementation of IColumnFormatter. This class provides
@@ -50,4 +52,13 @@ public class ColumnFormatter implements IColumnFormatter {
 	public Font getFont(Object element) {
 		return null;
 	}
+
+	public int getHorizontalAlignment(Object element) {
+		return SWT.DEFAULT;
+	}
+
+	public boolean getLeftPadding(Object element) {
+		return false;
+	}
+
 }
