@@ -311,11 +311,18 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		if (listBindingInternal != null) {
 			listBindingInternal.updateModelToTarget();
 		}
+		// workaround #292679
+		// boolean outputOnly = isOutputOnly();
+		// if (outputOnly) {
+		// 	setOutputOnly(false);
+		// }
 		selectionValidator.enableBinding(true);
 		selectionBindingExternal.updateModelToTarget();
 		if (selectionBindingInternal != null) {
 			selectionBindingInternal.updateModelToTarget();
 		}
+		// workaround #292679
+		// setOutputOnly(outputOnly);
 	}
 
 	/**

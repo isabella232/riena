@@ -12,6 +12,7 @@ package org.eclipse.riena.example.client.controllers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Iterator;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
@@ -20,16 +21,22 @@ import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 
 /**
  * Controller for the {@link ComboSubModuleView} example.
  */
 public class CComboSubModuleController extends SubModuleController {
 
+	/**
+	 * 
+	 */
+	private static final OutputMarker MARKER = new OutputMarker();
 	/** Manages a collection of persons. */
 	private final PersonManager manager;
 	/** Holds editable data for a person. */
@@ -99,5 +106,28 @@ public class CComboSubModuleController extends SubModuleController {
 				comboOne.updateFromModel();
 			}
 		});
+
+		final IToggleButtonRidget buttonSecondValue = (IToggleButtonRidget) getRidget("buttonSecondValue");
+		if (buttonSecondValue != null) {
+			buttonSecondValue.setText("Use always second person!"); //$NON-NLS-1$
+			buttonSecondValue.addListener(new IActionListener() {
+				public void callback() {
+					if (buttonSecondValue.isSelected()) {
+						if (manager.getPersons().size() > 1) {
+							Iterator<Person> iterator = manager.getPersons().iterator();
+							iterator.next();
+							Person second = iterator.next();
+							manager.setSelectedPerson(second);
+						}
+						comboOne.setOutputOnly(true);
+					} else {
+						comboOne.setOutputOnly(false);
+					}
+					System.out.println("Selected Person: " + manager.getSelectedPerson());
+					comboOne.updateFromModel();
+				}
+			});
+		}
+
 	}
 }
