@@ -78,7 +78,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		formatters = new IColumnFormatter[] { new TestColumnFormatter(), null };
 		noFormatters = new IColumnFormatter[COLUMN_PROPERTIES.length];
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements,
-				COLUMN_PROPERTIES, null, null, noFormatters);
+				COLUMN_PROPERTIES, null, null, null, noFormatters);
 
 		viewer.setContentProvider(new FTTreeContentProvider());
 		viewer.setLabelProvider(labelProvider);
@@ -141,6 +141,44 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		assertNotSame(nodeCollapsed, imgLeaf);
 	}
 
+	public void testGetImageFromProviderMethod() {
+		WordNodeWithIcon nodeWithIcon = new WordNodeWithIcon("nwi");
+		nodeWithIcon.setIcon("closed_16.gif");
+		nodeWithIcon.setOpenIcon("open_16.gif");
+		WordNodeWithIcon leafWithIcon = new WordNodeWithIcon(nodeWithIcon, "lwi");
+		leafWithIcon.setIcon("eclipse.gif");
+		IObservableSet elements = new WritableSet(Realm.getDefault(), Arrays.asList(new WordNode[] { nodeWithIcon,
+				leafWithIcon }), WordNodeWithIcon.class);
+		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNodeWithIcon.class, elements,
+				COLUMN_PROPERTIES, null, "icon", "openIcon", noFormatters);
+		viewer.setLabelProvider(labelProvider);
+		viewer.setInput(elements.toArray());
+
+		viewer.collapseAll();
+
+		Image siCollapsed = Activator.getSharedImage("closed_16.gif");
+		assertNotNull(siCollapsed);
+		Image nodeCollapsed = labelProvider.getImage(nodeWithIcon);
+		assertSame(siCollapsed, nodeCollapsed);
+
+		viewer.expandAll();
+
+		Image siExpanded = Activator.getSharedImage("open_16.gif");
+		assertNotNull(siExpanded);
+		Image nodeExpanded = labelProvider.getImage(nodeWithIcon);
+		assertSame(siExpanded, nodeExpanded);
+
+		Image siLeaf = Activator.getSharedImage("eclipse.gif");
+		assertNotNull(siLeaf);
+		Image imgLeaf = labelProvider.getImage(leafWithIcon);
+		assertSame(siLeaf, imgLeaf);
+
+		// sanity check
+		assertNotSame(nodeExpanded, nodeCollapsed);
+		assertNotSame(nodeExpanded, imgLeaf);
+		assertNotSame(nodeCollapsed, imgLeaf);
+	}
+
 	public void testGetColumnImage() {
 		viewer.collapseAll();
 
@@ -171,7 +209,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		WordNode wordNode = leaf;
 		// using upperCase as the enablement accessor; true => enabled; false => disabled
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements,
-				COLUMN_PROPERTIES, "upperCase", null, noFormatters);
+				COLUMN_PROPERTIES, "upperCase", null, null, noFormatters);
 
 		wordNode.setUpperCase(true);
 		Color colorEnabled = labelProvider.getForeground(wordNode);
@@ -203,7 +241,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		IObservableSet elements = new WritableSet(Realm.getDefault(), Arrays.asList(new WordNode[] { nodeWithIcon1,
 				nodeWithIcon2, nodeWithIcon3 }), WordNode.class);
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNodeWithIcon.class, elements,
-				COLUMN_PROPERTIES, null, "icon", noFormatters);
+				COLUMN_PROPERTIES, null, "icon", null, noFormatters);
 
 		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon1);
 		assertEquals(SharedImages.IMG_LEAF, key);
@@ -350,18 +388,32 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 
 	private class WordNodeWithIcon extends WordNode {
 		private String icon;
+		private String openIcon;
 
 		public WordNodeWithIcon(String word) {
 			super(word);
+		}
+
+		public WordNodeWithIcon(WordNodeWithIcon parent, String word) {
+			super(parent, word);
+		}
+
+		@SuppressWarnings("unused")
+		public String getIcon() {
+			return icon;
+		}
+
+		@SuppressWarnings("unused")
+		public String getOpenIcon() {
+			return openIcon;
 		}
 
 		public void setIcon(String icon) {
 			this.icon = icon;
 		}
 
-		@SuppressWarnings("unused")
-		public String getIcon() {
-			return icon;
+		public void setOpenIcon(String openIcon) {
+			this.openIcon = openIcon;
 		}
 	}
 

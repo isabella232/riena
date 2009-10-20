@@ -16,13 +16,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.riena.ui.common.ISortableByColumn;
-import org.eclipse.riena.ui.ridgets.IColumnFormatter;
-import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
-import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
-import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
-import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -32,6 +25,13 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
+
+import org.eclipse.riena.ui.common.ISortableByColumn;
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
+import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
+import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
+import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
+import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
 
 /**
  * Ridget for SWT @link {@link Tree} widgets, that shows a tree with multiple
@@ -103,11 +103,12 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String[] valueAccessors, String[] columnHeaders) {
-		String enablementAccessor = null;
-		String visibilityAccessor = null;
-		String imageAccessor = null;
+		String noEnablementAccessor = null;
+		String noVisibilityAccessor = null;
+		String noImageAccessor = null;
+		String noOpenImageAccessor = null;
 		super.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, columnHeaders,
-				enablementAccessor, visibilityAccessor, imageAccessor);
+				noEnablementAccessor, noVisibilityAccessor, noImageAccessor, noOpenImageAccessor);
 	}
 
 	// IGroupedTableRidget methods

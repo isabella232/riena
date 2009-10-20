@@ -129,6 +129,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private String enablementAccessor;
 	private String visibilityAccessor;
 	private String imageAccessor;
+	private String openNodeImageAccessor;
 	private boolean showRoots = true;
 
 	public TreeRidget() {
@@ -215,7 +216,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	protected void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String[] valueAccessors, String[] columnHeaders, String enablementAccessor,
-			String visibilityAccessor, String imageAccessor) {
+			String visibilityAccessor, String imageAccessor, String openNodeImageAccessor) {
 		Assert.isNotNull(treeRoots);
 		Assert.isLegal(treeRoots.length > 0, "treeRoots must have at least one entry"); //$NON-NLS-1$
 		Assert.isNotNull(treeElementClass);
@@ -247,6 +248,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		this.enablementAccessor = enablementAccessor;
 		this.visibilityAccessor = visibilityAccessor;
 		this.imageAccessor = imageAccessor;
+		this.openNodeImageAccessor = openNodeImageAccessor;
 
 		expansionStack.clear();
 		if (treeRoots.length == 1) {
@@ -306,8 +308,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		String noEnablementAccessor = null;
 		String noVisibilityAccessor = null;
 		String noImageAccessor = null;
+		String noOpenNodeImageAccessor = null;
 		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				noColumnHeaders, noEnablementAccessor, noVisibilityAccessor, noImageAccessor);
+				noColumnHeaders, noEnablementAccessor, noVisibilityAccessor, noImageAccessor, noOpenNodeImageAccessor);
 	}
 
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
@@ -316,8 +319,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		String[] myValueAccessors = new String[] { valueAccessor };
 		String[] noColumnHeaders = null;
 		String noImageAccessor = null;
+		String noOpenNodeImageAccessor = null;
 		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				noColumnHeaders, enablementAccessor, visibilityAccessor, noImageAccessor);
+				noColumnHeaders, enablementAccessor, visibilityAccessor, noImageAccessor, noOpenNodeImageAccessor);
 	}
 
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
@@ -326,8 +330,19 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		Assert.isNotNull(valueAccessor);
 		String[] myValueAccessors = new String[] { valueAccessor };
 		String[] noColumnHeaders = null;
+		String noOpenNodeImageAccessor = null;
 		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				noColumnHeaders, enablementAccessor, visibilityAccessor, imageAccessor);
+				noColumnHeaders, enablementAccessor, visibilityAccessor, imageAccessor, noOpenNodeImageAccessor);
+	}
+
+	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
+			String parentAccessor, String valueAccessor, String enablementAccessor, String visibilityAccessor,
+			String imageAccessor, String openNodeImageAccessor) {
+		Assert.isNotNull(valueAccessor);
+		String[] myValueAccessors = new String[] { valueAccessor };
+		String[] noColumnHeaders = null;
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
+				noColumnHeaders, enablementAccessor, visibilityAccessor, imageAccessor, openNodeImageAccessor);
 	}
 
 	public void collapse(Object element) {
@@ -514,7 +529,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		// labels
 		IColumnFormatter[] formatters = getColumnFormatters(valueAccessors.length);
 		ILabelProvider viewerLP = TreeRidgetLabelProvider.createLabelProvider(viewer, treeElementClass, viewerCP
-				.getKnownElements(), valueAccessors, enablementAccessor, imageAccessor, formatters);
+				.getKnownElements(), valueAccessors, enablementAccessor, imageAccessor, openNodeImageAccessor,
+				formatters);
 		viewer.setLabelProvider(viewerLP);
 		// input
 		if (showRoots) {

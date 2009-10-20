@@ -25,6 +25,7 @@ import org.eclipse.swt.events.TreeEvent;
 import org.eclipse.swt.events.TreeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
@@ -45,10 +46,12 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider implements IColorProvider {
 
 	private static final UpdateIconsTreeListener LISTENER = new UpdateIconsTreeListener();
+	private static final String KEY_LABELPROVIDER = "K_TRLP"; //$NON-NLS-1$
 
 	private final TreeViewer viewer;
 	private final IObservableMap enablementAttribute;
 	private final IObservableMap imageAttribute;
+	private final IObservableMap openImageAttribute;
 
 	/**
 	 * Creates a new instance.
@@ -75,14 +78,36 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	 *            enabled/disabled state of this child. Example: 'enabled'
 	 *            specifies "isEnabled()" or "getEnabled()". The parameter can
 	 *            be {@code null} to enable all children
+	 * @param imageAccessor
+	 *            a String specifying an accessor for obtaining a String value,
+	 *            which is the key (or filename) of an icon. (example "icon"
+	 *            specifies "getIcon()). This key will be used to obtain an icon
+	 *            for <b>leaves AND closed nodes</b> of the tree. The
+	 *            leafImageAccessor can be null; in that case the default icon
+	 *            is used for all leaves and nodes. Note: nodes will only get a
+	 *            custom icon if an openNodeImageAccessor is supplied as well
+	 *            (see below).
+	 * @param openNodeImageAccessor
+	 *            a String specifying an accessor for obtaining a String value
+	 *            which is the key (or filename) of an icon. (example "icon"
+	 *            specifies "getIcon()" ). This key will be used to obtain an
+	 *            icon for <b>open nodes</b> of the tree. The
+	 *            openNodeImageAccessor can be null; in that case the default
+	 *            icon is used for all nodes. Note: nodes will only get a custom
+	 *            icon if an imageAccessor is supplied as well (see above).
+	 * @param formatters
+	 *            an array of IColumnFormatters; one for each column. Individual
+	 *            array entries may be null, in that case no formatter will be
+	 *            used for that column.
 	 */
 	public static TreeRidgetLabelProvider createLabelProvider(TreeViewer viewer, Class<?> treeElementClass,
 			IObservableSet knownElements, String[] valueAccessors, String enablementAccessor, String imageAccessor,
-			IColumnFormatter[] formatters) {
+			String openNodeImageAccessor, IColumnFormatter[] formatters) {
 		IObservableMap[] map = createAttributeMap(treeElementClass, knownElements, valueAccessors, enablementAccessor,
-				imageAccessor);
+				imageAccessor, openNodeImageAccessor);
 		int numColumns = valueAccessors.length;
-		return new TreeRidgetLabelProvider(viewer, map, enablementAccessor, imageAccessor, formatters, numColumns);
+		return new TreeRidgetLabelProvider(viewer, map, enablementAccessor, imageAccessor, openNodeImageAccessor,
+				formatters, numColumns);
 	}
 
 	/**
@@ -91,9 +116,10 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	 * will update the appropriate element.
 	 */
 	private static IObservableMap[] createAttributeMap(Class<?> treeElementClass, IObservableSet knownElements,
-			String[] valueAccessors, String enablementAccessor, String imageAccessor) {
+			String[] valueAccessors, String enablementAccessor, String imageAccessor, String openNodeImageAccessor) {
 		IObservableMap[] result;
-		String[] attributes = computeAttributes(valueAccessors, enablementAccessor, imageAccessor);
+		String[] attributes = computeAttributes(valueAccessors, enablementAccessor, imageAccessor,
+				openNodeImageAccessor);
 		if (AbstractSWTWidgetRidget.isBean(treeElementClass)) {
 			result = BeansObservables.observeMaps(knownElements, treeElementClass, attributes);
 		} else {
@@ -102,12 +128,16 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		return result;
 	}
 
-	private static String[] computeAttributes(String[] valueAccessors, String enablementAccessor, String imageAccessor) {
+	private static String[] computeAttributes(String[] valueAccessors, String enablementAccessor, String imageAccessor,
+			String openNodeImageAccessor) {
 		int length = valueAccessors.length;
 		if (enablementAccessor != null) {
 			length++;
 		}
 		if (imageAccessor != null) {
+			length++;
+		}
+		if (openNodeImageAccessor != null) {
 			length++;
 		}
 		String[] attributes = new String[Math.max(length, valueAccessors.length)];
@@ -122,17 +152,24 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 				// add the image accessor to the list of observed attributes for the label provider
 				attributes[index++] = imageAccessor;
 			}
+			if (openNodeImageAccessor != null) {
+				// add the open node image accessor to the list of observed attributes for the label provider
+				attributes[index++] = openNodeImageAccessor;
+			}
 		}
 		return attributes;
 	}
 
 	private TreeRidgetLabelProvider(TreeViewer viewer, IObservableMap[] attributeMap, String enablementAccessor,
-			String imageAccessor, IColumnFormatter[] formatters, int numColumns) {
+			String imageAccessor, String openNodeImageAccessor, IColumnFormatter[] formatters, int numColumns) {
 		super(attributeMap, formatters, numColumns);
-		viewer.getTree().removeTreeListener(LISTENER);
-		viewer.getTree().addTreeListener(LISTENER);
+		Tree tree = viewer.getTree();
+		tree.removeTreeListener(LISTENER);
+		tree.addTreeListener(LISTENER);
+		tree.setData(KEY_LABELPROVIDER, this);
 		enablementAttribute = findAttribute(attributeMap, enablementAccessor);
 		imageAttribute = findAttribute(attributeMap, imageAccessor);
+		openImageAttribute = findAttribute(attributeMap, openNodeImageAccessor);
 		this.viewer = viewer;
 	}
 
@@ -215,38 +252,36 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	 * @return image key
 	 */
 	private String getImageKey(Object element) {
-
-		try {
-			if (viewer.isExpandable(element)) {
-
-				// folder
-				boolean isExpanded = viewer.getExpandedState(element);
-				if (isExpanded) {
-					return SharedImages.IMG_NODE_EXPANDED;
-				} else {
-					return SharedImages.IMG_NODE_COLLAPSED;
-				}
-
-			} else {
-
-				// leaf
-				if (imageAttribute != null) {
-					Object value = imageAttribute.get(element);
-					if (value != null) {
-						String key = (String) value;
-						if (Activator.getSharedImage(key) != null) {
-							return key;
-						}
-					}
-				}
-				return SharedImages.IMG_LEAF;
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return SharedImages.IMG_LEAF;
+		boolean isNode = viewer.isExpandable(element);
+		String result = null;
+		if (isNode) {
+			boolean isExpanded = viewer.getExpandedState(element);
+			result = getImageKeyForNode(element, isExpanded);
+		} else {
+			result = getImageKeyForLeaf(element, result);
 		}
+		return result;
+	}
 
+	private String getImageKeyForLeaf(Object element, String result) {
+		if (imageAttribute != null) {
+			result = (String) imageAttribute.get(element);
+		}
+		if (result == null || Activator.getSharedImage(result) == null) {
+			result = SharedImages.IMG_LEAF;
+		}
+		return result;
+	}
+
+	private String getImageKeyForNode(Object element, boolean isExpanded) {
+		String result = null;
+		if (imageAttribute != null && openImageAttribute != null) {
+			result = isExpanded ? (String) openImageAttribute.get(element) : (String) imageAttribute.get(element);
+		}
+		if (result == null || Activator.getSharedImage(result) == null) {
+			result = isExpanded ? SharedImages.IMG_NODE_EXPANDED : SharedImages.IMG_NODE_COLLAPSED;
+		}
+		return result;
 	}
 
 	// helping classes
@@ -269,7 +304,10 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		}
 
 		private void updateIcon(TreeItem item, boolean isExpanded) {
-			String key = isExpanded ? SharedImages.IMG_NODE_EXPANDED : SharedImages.IMG_NODE_COLLAPSED;
+			TreeRidgetLabelProvider labelProvider = (TreeRidgetLabelProvider) item.getParent().getData(
+					KEY_LABELPROVIDER);
+			Object element = item.getData();
+			String key = labelProvider.getImageKeyForNode(element, isExpanded);
 			Image image = Activator.getSharedImage(key);
 			item.setImage(image);
 		}

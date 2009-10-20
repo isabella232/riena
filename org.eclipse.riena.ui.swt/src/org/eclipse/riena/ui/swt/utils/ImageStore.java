@@ -156,7 +156,6 @@ public final class ImageStore {
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
 	private synchronized Image loadImage(String fullName) {
-
 		if (StringUtils.isEmpty(fullName)) {
 			return null;
 		}
@@ -167,18 +166,16 @@ public final class ImageStore {
 
 		ImageRegistry imageRegistry = Activator.getDefault().getImageRegistry();
 		Image image = imageRegistry.get(fullName);
-		if ((image == null) || (image.isDisposed())) {
+		if (image == null || image.isDisposed()) {
 			ImageDescriptor descriptor = getImageDescriptor(fullName);
 			if (descriptor == null) {
 				return null;
 			}
-			image = descriptor.createImage();
 			imageRegistry.remove(fullName);
 			imageRegistry.put(fullName, descriptor);
+			image = imageRegistry.get(fullName);
 		}
-
 		return image;
-
 	}
 
 	/**
