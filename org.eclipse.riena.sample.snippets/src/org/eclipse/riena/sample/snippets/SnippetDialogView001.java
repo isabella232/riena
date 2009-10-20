@@ -28,11 +28,10 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.ridgets.swt.views.AbstractDialogView;
-import org.eclipse.riena.ui.ridgets.swt.views.DialogView;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Snippet using a {@link DialogView}.
+ * Demonstrates the usage of an {@link AbstractDialogView}.
  */
 public final class SnippetDialogView001 {
 
