@@ -28,6 +28,7 @@ public final class WidgetIdentificationSupport {
 
 	public static final String RIENA_ID = "rienaid"; //$NON-NLS-1$
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), WidgetIdentificationSupport.class);
+	private static final boolean VERBOSE = "TRUE".equalsIgnoreCase(System.getProperty("riena.defaultlogging")); //$NON-NLS-1$//$NON-NLS-2$
 
 	private WidgetIdentificationSupport() {
 		// utility class
@@ -64,9 +65,10 @@ public final class WidgetIdentificationSupport {
 
 			fullId.append(part);
 		}
-
-		LOGGER.log(LogService.LOG_DEBUG, String
-				.format("registering widget %s, (class: %s)", fullId, aWidget.getClass())); //$NON-NLS-1$
+		if (VERBOSE) {
+			LOGGER.log(LogService.LOG_DEBUG, String.format(
+					"registering widget %s, (class: %s)", fullId, aWidget.getClass())); //$NON-NLS-1$
+		}
 		aWidget.setData(RIENA_ID, fullId.toString());
 	}
 
