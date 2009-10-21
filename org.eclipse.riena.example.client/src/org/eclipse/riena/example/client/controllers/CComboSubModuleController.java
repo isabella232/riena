@@ -21,7 +21,6 @@ import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
@@ -33,10 +32,6 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
  */
 public class CComboSubModuleController extends SubModuleController {
 
-	/**
-	 * 
-	 */
-	private static final OutputMarker MARKER = new OutputMarker();
 	/** Manages a collection of persons. */
 	private final PersonManager manager;
 	/** Holds editable data for a person. */
@@ -55,9 +50,6 @@ public class CComboSubModuleController extends SubModuleController {
 		value = new PersonModificationBean();
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
-	 */
 	@Override
 	public void afterBind() {
 		super.afterBind();
@@ -76,9 +68,6 @@ public class CComboSubModuleController extends SubModuleController {
 		textLast.updateFromModel();
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
-	 */
 	@Override
 	public void configureRidgets() {
 
@@ -107,9 +96,9 @@ public class CComboSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IToggleButtonRidget buttonSecondValue = (IToggleButtonRidget) getRidget("buttonSecondValue");
+		final IToggleButtonRidget buttonSecondValue = (IToggleButtonRidget) getRidget("buttonSecondValue"); //$NON-NLS-1$
 		if (buttonSecondValue != null) {
-			buttonSecondValue.setText("Use always second person!"); //$NON-NLS-1$
+			buttonSecondValue.setText("Always use second person!"); //$NON-NLS-1$
 			buttonSecondValue.addListener(new IActionListener() {
 				public void callback() {
 					if (buttonSecondValue.isSelected()) {
@@ -123,11 +112,10 @@ public class CComboSubModuleController extends SubModuleController {
 					} else {
 						comboOne.setOutputOnly(false);
 					}
-					System.out.println("Selected Person: " + manager.getSelectedPerson());
+					System.out.println("Selected Person: " + manager.getSelectedPerson()); //$NON-NLS-1$
 					comboOne.updateFromModel();
 				}
 			});
 		}
-
 	}
 }
