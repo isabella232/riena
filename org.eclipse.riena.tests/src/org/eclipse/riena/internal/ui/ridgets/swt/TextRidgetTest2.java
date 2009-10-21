@@ -30,6 +30,7 @@ import org.eclipse.riena.beans.common.DateBean;
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.beans.common.TestBean;
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.internal.ui.swt.test.TestUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
@@ -46,6 +47,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidCharacters;
+import org.eclipse.riena.ui.ridgets.validation.ValidDecimal;
 import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
@@ -535,6 +537,87 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		assertTrue(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
 		assertEquals("xyz", ridget.getText());
+	}
+
+	public void testValidationOnUpdateToModelWithValidChars() throws Exception {
+		Text control = getWidget();
+		ITextRidget ridget = getRidget();
+
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+
+		ridget.addValidationRule(new ValidCharacters("xy"), ValidationTime.ON_UPDATE_TO_MODEL);
+
+		bean.setProperty("xyxxy");
+		ridget.updateFromModel();
+
+		assertTrue(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
+		assertEquals("xyxxy", ridget.getText());
+
+		control.selectAll();
+		UITestHelper.sendKeyAction(control.getDisplay(), SWT.END);
+		UITestHelper.sendString(control.getDisplay(), "h\t");
+
+		assertFalse(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
+		assertEquals("xyxxyh", ridget.getText());
+
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "x\t");
+		assertTrue(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
+		assertEquals("x", ridget.getText());
+	}
+
+	public void testValidationOnUpdateToModelWithMaxLength() throws Exception {
+		Text control = getWidget();
+		ITextRidget ridget = getRidget();
+
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+
+		ridget.addValidationRule(new MaxLength(5), ValidationTime.ON_UPDATE_TO_MODEL);
+
+		bean.setProperty("12345");
+		ridget.updateFromModel();
+
+		assertTrue(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
+		assertEquals("12345", ridget.getText());
+
+		control.selectAll();
+		UITestHelper.sendKeyAction(control.getDisplay(), SWT.END);
+		UITestHelper.sendString(control.getDisplay(), "6\t");
+
+		assertFalse(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
+		assertEquals("123456", ridget.getText());
+
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "1\t");
+		assertTrue(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
+		assertEquals("1", ridget.getText());
+	}
+
+	public void testValidationOnUpdateToModelWithValidDecimal() throws Exception {
+		Text control = getWidget();
+		ITextRidget ridget = getRidget();
+
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+
+		ridget.addValidationRule(new ValidDecimal(), ValidationTime.ON_UPDATE_TO_MODEL);
+
+		bean.setProperty(localize("20,5"));
+		ridget.updateFromModel();
+
+		assertTrue(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
+		assertEquals(localize("20,5"), ridget.getText());
+
+		control.selectAll();
+		UITestHelper.sendString(control.getDisplay(), "s\t");
+
+		assertFalse(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
+		assertEquals("s", ridget.getText());
+
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), localize("3,1\t"));
+
+		assertTrue(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
+		assertEquals(localize("3,1"), ridget.getText());
 	}
 
 	public void testValidationOnKeyPressedWithBlocking() throws Exception {
@@ -1433,6 +1516,13 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.setMandatory(false);
 
 		assertMandatoryMarker(ridget, 0, false);
+	}
+
+	// helping methods
+	//////////////////
+
+	private String localize(String number) {
+		return TestUtils.getLocalizedNumber(number);
 	}
 
 	// helping classes

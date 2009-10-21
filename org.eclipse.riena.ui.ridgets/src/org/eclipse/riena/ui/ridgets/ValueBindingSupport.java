@@ -406,7 +406,7 @@ public class ValueBindingSupport {
 	//////////////////
 
 	private void addErrorMarker(IValidator validationRule, IStatus status) {
-		if (status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH || validationRule == NO_ERRORS_RULE) {
+		if (isBlocked(validationRule, status) || validationRule == NO_ERRORS_RULE) {
 			return;
 		}
 		if (rule2error == null) {
@@ -441,6 +441,11 @@ public class ValueBindingSupport {
 
 	private IStatus getStatus(IValidator validationRule) {
 		return rule2status != null ? rule2status.get(validationRule) : null;
+	}
+
+	private boolean isBlocked(IValidator validationRule, IStatus status) {
+		return status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH
+				&& onEditValidators.contains(validationRule);
 	}
 
 	private void storeStatus(IValidator validationRule, IStatus status) {

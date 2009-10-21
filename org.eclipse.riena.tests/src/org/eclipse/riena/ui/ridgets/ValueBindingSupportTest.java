@@ -33,6 +33,7 @@ import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
+import org.eclipse.riena.ui.ridgets.validation.ValidRange;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 
@@ -308,6 +309,27 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		valueBindingSupport.removeValidationMessage("too short");
 
 		assertEquals(0, markable.getMarkersOfType(ValidationMessageMarker.class).size());
+	}
+
+	/**
+	 * As per Bug 289458
+	 */
+	public void testShowErrorAfterValidationOnUpdateWithBlock() {
+		ValidRange rule = new ValidRange(18, 80);
+		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
+		IStatus errorStatus = rule.validate("81");
+		assertEquals(ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH, errorStatus.getCode());
+
+		assertEquals(0, markable.getMarkersOfType(ErrorMarker.class).size());
+
+		valueBindingSupport.updateValidationStatus(rule, errorStatus);
+
+		assertEquals(1, markable.getMarkersOfType(ErrorMarker.class).size());
+
+		IStatus okStatus = rule.validate("80");
+		valueBindingSupport.updateValidationStatus(rule, okStatus);
+
+		assertEquals(0, markable.getMarkersOfType(ErrorMarker.class).size());
 	}
 
 	// helping methods
