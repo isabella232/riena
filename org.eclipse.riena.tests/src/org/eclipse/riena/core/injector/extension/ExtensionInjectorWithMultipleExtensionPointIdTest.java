@@ -18,7 +18,7 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
  * Test the {@code ExtensionInjector} with respect to the wiring feature.
  */
 @NonUITestCase
-public class ExtensionInjectorWithMultipleExtensionPointId extends RienaTestCase {
+public class ExtensionInjectorWithMultipleExtensionPointIdTest extends RienaTestCase {
 
 	{
 		// If you want printing remove the comments below:
@@ -27,10 +27,10 @@ public class ExtensionInjectorWithMultipleExtensionPointId extends RienaTestCase
 
 	public void testWithEPsAandBAndContribsAandB() {
 		printTestName();
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "pluginA.xml");
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "pluginB.xml");
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "plugin_multiple_epA.xml");
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "plugin_multiple_epB.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginA.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginB.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epA.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epB.xml");
 		ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
 		ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target).andStart(
 				getContext());
@@ -49,9 +49,9 @@ public class ExtensionInjectorWithMultipleExtensionPointId extends RienaTestCase
 
 	public void testWithEPsAandBAndContribA() {
 		printTestName();
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "pluginA.xml");
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "pluginB.xml");
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "plugin_multiple_epA.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginA.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginB.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epA.xml");
 		ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
 		ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target).andStart(
 				getContext());
@@ -68,9 +68,9 @@ public class ExtensionInjectorWithMultipleExtensionPointId extends RienaTestCase
 
 	public void testWithEPsAandBAndContribB() {
 		printTestName();
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "pluginA.xml");
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "pluginB.xml");
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "plugin_multiple_epB.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginA.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginB.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epB.xml");
 		ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
 		ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target).andStart(
 				getContext());
@@ -87,9 +87,9 @@ public class ExtensionInjectorWithMultipleExtensionPointId extends RienaTestCase
 
 	public void testWithEPsBAndContribsAandB() {
 		printTestName();
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "pluginB.xml");
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "plugin_multiple_epA.xml");
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "plugin_multiple_epB.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginB.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epA.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epB.xml");
 		ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
 		ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target).andStart(
 				getContext());
@@ -106,9 +106,9 @@ public class ExtensionInjectorWithMultipleExtensionPointId extends RienaTestCase
 	// TODO Have to find out why this fails.
 	public void XXXtestWithEPsAAndContribsAandB() {
 		printTestName();
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "pluginA.xml");
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "plugin_multiple_epA.xml");
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointId.class, "plugin_multiple_epB.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginA.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epA.xml");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epB.xml");
 		ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
 		ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target).andStart(
 				getContext());
