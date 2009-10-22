@@ -58,26 +58,37 @@ public class RienaWindowRenderer {
 
 	/**
 	 * Updates the style of the dialog shell.
+	 * 
+	 * @returns new style of the dialog
 	 */
 	public int computeShellStyle() {
 		int result = getShellStyle();
 		if (isHideOsBorder()) {
 			if ((result & SWT.DIALOG_TRIM) == SWT.DIALOG_TRIM) {
-				result ^= SWT.DIALOG_TRIM;
+				result &= ~SWT.DIALOG_TRIM;
 			}
 			result |= SWT.NO_TRIM;
 		} else {
 			if ((result & SWT.NO_TRIM) == SWT.NO_TRIM) {
-				result ^= SWT.NO_TRIM;
+				result &= ~SWT.NO_TRIM;
 			}
-			result |= SWT.DIALOG_TRIM;
+			result &= ~SWT.DIALOG_TRIM;
 		}
 		if (isApplicationModal()) {
 			result |= SWT.APPLICATION_MODAL;
 		} else {
 			if ((result & SWT.APPLICATION_MODAL) == SWT.APPLICATION_MODAL) {
-				result ^= SWT.APPLICATION_MODAL;
+				result &= ~SWT.APPLICATION_MODAL;
 			}
+		}
+		if (isCloseable()) {
+			result |= SWT.CLOSE;
+		}
+		if (isMaximizeable()) {
+			result |= SWT.MAX;
+		}
+		if (isMinimizeable()) {
+			result |= SWT.MIN;
 		}
 		return result;
 	}
