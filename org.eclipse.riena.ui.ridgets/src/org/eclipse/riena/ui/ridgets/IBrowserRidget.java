@@ -39,7 +39,7 @@ public interface IBrowserRidget extends IValueRidget {
 	void setUrl(String newUrl);
 
 	/**
-	 * Return the url by this ridget.
+	 * Return the url of this ridget.
 	 * 
 	 * @return the url as a String. It is not guaranteed that the return value
 	 *         is a valid url. For example it may be null, empty or browser
