@@ -353,37 +353,129 @@ public final class LnfKeyConstants {
 	public static final String TITLELESS_SHELL_HAND_IMAGE = "TitlelessShell.handImage"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_GRAB_CORNER_IMAGE = "TitlelessShell.grabCornerImage"; //$NON-NLS-1$
 
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_CLOSE_ICON = "Dialog.closeIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_CLOSE_HOVER_ICON = "Dialog.closeHoverIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_CLOSE_HOVER_SELECTED_ICON = "Dialog.closeHoverSelectedIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_CLOSE_INACTIVE_ICON = "Dialog.closeInactiveIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_MAX_ICON = "Dialog.maxIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_MAX_HOVER_ICON = "Dialog.maxHoverIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_MAX_HOVER_SELECTED_ICON = "Dialog.maxHoverSelectedIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_MAX_INACTIVE_ICON = "Dialog.maxInactiveIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_MIN_ICON = "Dialog.minIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_MIN_HOVER_ICON = "Dialog.minHoverIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_MIN_HOVER_SELECTED_ICON = "Dialog.minHoverSelectedIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_MIN_INACTIVE_ICON = "Dialog.minInactiveIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_RESTORE_ICON = "Dialog.restoreIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_RESTORE_HOVER_ICON = "Dialog.restoreHoverIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_RESTORE_HOVER_SELECTED_ICON = "Dialog.restoreHoverSelectedIcon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Dialog">see</a>
+	 */
 	public static final String DIALOG_RESTORE_INACTIVE_ICON = "Dialog.restoreInactiveIcon"; //$NON-NLS-1$
 
+	@Deprecated
 	public static final String DEFAULT_NODE_ICON = "defaultNode.icon"; //$NON-NLS-1$
 
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
+	 * see</a>
+	 */
 	public static final String SUB_MODULE_TREE_FOLDER_OPEN_ICON = "subModuleTreeFolderOpen.icon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
+	 * see</a>
+	 */
 	public static final String SUB_MODULE_TREE_FOLDER_CLOSED_ICON = "subModuleTreeFolderClosed.icon"; //$NON-NLS-1$
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
+	 * see</a>
+	 */
 	public static final String SUB_MODULE_TREE_DOCUMENT_LEAF_ICON = "subModuleTreeDocumentLeaf.icon"; //$NON-NLS-1$
 	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
+	 * see</a>
+	 * 
 	 * @since 1.2
 	 */
 	public static final String SUB_MODULE_TREE_ERROR_MARKER_ICON = "subModuleTreeErrorMarker.icon"; //$NON-NLS-1$
 	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
+	 * see</a>
+	 * 
 	 * @since 1.2
 	 */
 	public static final String SUB_MODULE_TREE_MANDATORY_MARKER_ICON = MandatoryMarker.MARKER_KEY;
 	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
+	 * see</a>
+	 * 
 	 * @since 1.2
 	 */
 	public static final String SUB_MODULE_TREE_PROCESSED_FINISHED_MARKER_ICON = UIProcessFinishedMarker.MARKER_KEY;
@@ -425,6 +517,10 @@ public final class LnfKeyConstants {
 
 	/**
 	 * Setting keys
+	 */
+	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Shell"> see</a>
 	 */
 	public static final String SHELL_HIDE_OS_BORDER = "Shell.hideOsBorder"; //$NON-NLS-1$
 
@@ -477,6 +573,9 @@ public final class LnfKeyConstants {
 	public static final String SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY = "SubModuleItemToolTip.popupDelay"; //$NON-NLS-1$
 
 	/**
+	 * This constants is described in Eclipsepedia.<br>
+	 * <a href= "http://wiki.eclipse.org/Riena_Look_and_Feel#Navigation">see</a>
+	 * 
 	 * @since 1.2
 	 */
 	public static final String NAVIGATION_WIDTH = "navigation.width"; //$NON-NLS-1$
