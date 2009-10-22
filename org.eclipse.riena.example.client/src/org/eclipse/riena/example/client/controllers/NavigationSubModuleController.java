@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.riena.example.client.views.NavigationSubModuleView;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
@@ -34,6 +37,7 @@ public class NavigationSubModuleController extends SubModuleController {
 
 	private IActionRidget addSubModuleToModuleBtn;
 	private IActionRidget addSubModuleToSelfBtn;
+	private IActionRidget removeSubModuleBtn;
 	private IActionRidget addModuleBtn;
 	private IActionRidget addModuleGroupBtn;
 
@@ -74,8 +78,23 @@ public class NavigationSubModuleController extends SubModuleController {
 		getAddSubModuleToSelfBtn().addListener(new IActionListener() {
 			public void callback() {
 				ISubModuleNode navigationNode = getNavigationNode();
-				navigationNode.addChild(createSubModuleNode("Node " + String.valueOf(nodeCount++))); //$NON-NLS-1$
+				ISubModuleNode subModule = createSubModuleNode("Node " + String.valueOf(nodeCount++)); //$NON-NLS-1$
+				navigationNode.addChild(subModule);
+				subModule.activate();
 				showStatusLineMessage("Sub-Module was added!"); //$NON-NLS-1$
+			}
+		});
+
+		getRemoveSubModuleBtn().setText("Remove all children"); //$NON-NLS-1$
+		getRemoveSubModuleBtn().addListener(new IActionListener() {
+			public void callback() {
+				ISubModuleNode navigationNode = getNavigationNode();
+				List<ISubModuleNode> children = new ArrayList<ISubModuleNode>(navigationNode.getChildren());
+				for (ISubModuleNode child : children) {
+					navigationNode.removeChild(child);
+				}
+				if (children.size() > 0)
+					showStatusLineMessage("All children removed!"); //$NON-NLS-1$
 			}
 		});
 
@@ -132,11 +151,26 @@ public class NavigationSubModuleController extends SubModuleController {
 	}
 
 	/**
+	 * @return the removeSubModuleBtn
+	 */
+	public IActionRidget getRemoveSubModuleBtn() {
+		return removeSubModuleBtn;
+	}
+
+	/**
 	 * @param addSubModuleToSelfBtn
 	 *            the addSubModuleToSelfBtn to set
 	 */
 	public void setAddSubModuleToSelfBtn(IActionRidget addSubModuleToSelfBtn) {
 		this.addSubModuleToSelfBtn = addSubModuleToSelfBtn;
+	}
+
+	/**
+	 * @param removeSubModuleBtn
+	 *            the removeSubModuleBtn to set
+	 */
+	public void setRemoveSubModuleBtn(IActionRidget removeSubModuleBtn) {
+		this.removeSubModuleBtn = removeSubModuleBtn;
 	}
 
 	/**

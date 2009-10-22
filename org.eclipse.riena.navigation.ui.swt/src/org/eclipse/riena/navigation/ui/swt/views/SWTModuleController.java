@@ -19,6 +19,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.NavigationNode;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ModuleController;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
@@ -126,9 +127,18 @@ public class SWTModuleController extends ModuleController {
 	private void setSelectedNode(INavigationNode<?> node) {
 		if (node.isActivated() && (node != getNavigationNode())) {
 			tree.setSelection(node);
+			expandAllParents(node);
 		}
 		for (INavigationNode<?> child : node.getChildren()) {
 			setSelectedNode(child);
+		}
+	}
+
+	private void expandAllParents(INavigationNode<?> node) {
+		INavigationNode<?> parent = node.getParent();
+		while (parent instanceof SubModuleNode) {
+			tree.expand(parent);
+			parent = parent.getParent();
 		}
 	}
 
@@ -152,6 +162,21 @@ public class SWTModuleController extends ModuleController {
 					selectActiveNode();
 				}
 			});
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#childRemoved
+		 * (org.eclipse.riena.navigation.INavigationNode,
+		 * org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void childRemoved(ISubModuleNode source, ISubModuleNode childRemoved) {
+			super.childRemoved(source, childRemoved);
+			if (source.getChildren().size() == 0)
+				tree.collapse(source);
 		}
 	}
 
