@@ -69,9 +69,7 @@ public interface IWindowRidget extends IRidget {
 	void setDefaultButton(Object defaultButton);
 
 	/**
-	 * Answer the windows defaultButton or null.
-	 * 
-	 * @return
+	 * Returns the window's defaultButton or null.
 	 */
 	Object getDefaultButton();
 
