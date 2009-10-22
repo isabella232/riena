@@ -29,6 +29,11 @@ public interface ILnfResource {
 	 */
 	Resource getResource();
 
+	/**
+	 * Creates the resource.
+	 * 
+	 * @return resource
+	 */
 	Resource createResource();
 
 }

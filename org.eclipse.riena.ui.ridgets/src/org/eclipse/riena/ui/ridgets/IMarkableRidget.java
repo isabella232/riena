@@ -28,7 +28,9 @@ public interface IMarkableRidget extends IBasicMarkableRidget {
 	String PROPERTY_OUTPUT_ONLY = "output"; //$NON-NLS-1$
 
 	/**
-	 * @return Indicates whether any ErrorMarker was added.
+	 * Indicates whether any ErrorMarker was added.
+	 * 
+	 * @return <code>true</code> if error marked otherwise <code>false</code>.
 	 */
 	boolean isErrorMarked();
 
@@ -48,7 +50,9 @@ public interface IMarkableRidget extends IBasicMarkableRidget {
 	boolean isDisableMandatoryMarker();
 
 	/**
-	 * @return Indicates whether any MandatoryMarker was added.
+	 * Indicates whether any MandatoryMarker was added.
+	 * 
+	 * @return <code>true</code> if mandatory otherwise <code>false</code>.
 	 */
 	boolean isMandatory();
 
@@ -62,7 +66,9 @@ public interface IMarkableRidget extends IBasicMarkableRidget {
 	void setMandatory(boolean mandatory);
 
 	/**
-	 * @return Indicates whether any OutputMarker was added.
+	 * Indicates whether any OutputMarker was added.
+	 * 
+	 * @return <code>true</code> if is outputonly otherwise <code>false</code>..
 	 */
 	boolean isOutputOnly();
 

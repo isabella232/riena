@@ -10,10 +10,25 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.workarea.spi;
 
+import org.eclipse.riena.navigation.INavigationAssembler;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 
+/**
+ * The IWorkareaDefinitionRegistry registers all {@link IWorkareaDefinition}s.
+ * <p>
+ * 
+ * @see INavigationAssembler
+ */
 public interface IWorkareaDefinitionRegistry {
 
+	/**
+	 * Gets the {@link IWorkareaDefinition} registered with this typeId.
+	 * 
+	 * @param id
+	 *            the typeId
+	 * @return The registered workarea definition or null, if the associated
+	 *         workarea definition was not found.
+	 */
 	IWorkareaDefinition getDefinition(Object id);
 
 	/**

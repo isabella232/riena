@@ -37,7 +37,9 @@ public interface ISelectableIndexedRidget extends ISelectableRidget {
 	Object getOption(int index);
 
 	/**
-	 * @return The number of options among which to select.
+	 * Returns the number of options among which to select.
+	 * 
+	 * @return number of options
 	 */
 	int getOptionCount();
 

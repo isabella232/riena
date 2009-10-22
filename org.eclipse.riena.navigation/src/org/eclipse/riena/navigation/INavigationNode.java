@@ -21,6 +21,7 @@ import org.eclipse.riena.ui.filter.IUIFilterable;
 /**
  * Summary of all abilities common to all model objects Each object is
  * presentation able. Each object can be a Parent of one another.
+ * <p>
  * 
  * The children ability and parent ability is not included because it is
  * different for different model nodes
@@ -36,7 +37,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 */
 	public enum State {
 		CREATED, ACTIVATED, DEACTIVATED, DISPOSED
-	};
+	}
 
 	/**
 	 * Call this method to activate this node. The node forwards the activation
@@ -178,9 +179,9 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void removeChild(INavigationNode<?> pChild);
 
 	/**
-	 * TODO
+	 * Gets an ordered list of child nodes of this node.
 	 * 
-	 * @return an ordered list of child nodes of this node
+	 * @return the list of children
 	 */
 	List<C> getChildren();
 
@@ -193,11 +194,11 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void addChild(C pChild);
 
 	/**
-	 * TODO
+	 * Gets the child at the specified index.
 	 * 
 	 * @param pIndex
 	 *            index of the child
-	 * @return the child at the specified index or null
+	 * @return the child or null if not available.
 	 */
 	C getChild(int pIndex);
 
@@ -213,35 +214,51 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	INavigationNode<?> findNode(NavigationNodeId nodeId);
 
 	/**
-	 * TODO
+	 * Gets the index of the child starting at 0.
 	 * 
 	 * @param pChild
 	 *            the child to find
-	 * @return the index of the child starting at 0 or -1 if the passed child is
-	 *         not a child of the node addressed
+	 * @return the index or -1 if the passed child is not a child of the node
+	 *         addressed
 	 */
 	int getIndexOfChild(INavigationNode<?> pChild);
 
 	/**
-	 * TODO
+	 * Gets the INavigationNodeController.
 	 * 
-	 * @return the Presentation of this node
+	 * @return the navigationNodeController
 	 */
 	INavigationNodeController getNavigationNodeController();
 
 	/**
-	 * Look for the next in the hierarchy available controller TODO
+	 * Look for the next in the hierarchy available controller
 	 */
 	INavigationNodeController getNextNavigationNodeController();
 
+	/**
+	 * Sets the NavigationNodeController.
+	 * 
+	 * @param pNavigationNodeController
+	 */
 	void setNavigationNodeController(INavigationNodeController pNavigationNodeController);
 
+	/**
+	 * Gets the label of this node.
+	 * 
+	 * @return the label
+	 */
 	String getLabel();
 
+	/**
+	 * Sets the label of this node.
+	 * 
+	 * @param pLabel
+	 *            the label
+	 */
 	void setLabel(String pLabel);
 
 	/**
-	 * TODO
+	 * Gets the icon of this node.
 	 * 
 	 * @return icon or null if no icon should be shown.
 	 */
@@ -255,16 +272,38 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 */
 	void setIcon(String icon);
 
+	/**
+	 * Gets the parent of this node.
+	 * 
+	 * @return the parent or null if not set.
+	 */
 	INavigationNode<?> getParent();
 
+	/**
+	 * Sets the parent of this node.
+	 * 
+	 * @param pParent
+	 *            the parent node
+	 */
 	void setParent(INavigationNode<?> pParent);
 
+	/**
+	 * Gets the NavigationProcessor of this node.
+	 * 
+	 * @return the navigationProcessor
+	 */
 	INavigationProcessor getNavigationProcessor();
 
+	/**
+	 * Sets the NavigationProcessor of this node.
+	 * 
+	 * @param pProcessor
+	 *            the NavigationProcessor
+	 */
 	void setNavigationProcessor(INavigationProcessor pProcessor);
 
 	/**
-	 * adds listener that fire events that are type specific to the node type
+	 * Adds listener that fire events that are type specific to the node type.
 	 * 
 	 * @param pListener
 	 *            listener to add
@@ -272,21 +311,22 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void addSimpleListener(ISimpleNavigationNodeListener pListener);
 
 	/**
-	 * removes simple listener @see addSimpleListener that were previously added
+	 * Removes simple listener @see addSimpleListener that were previously
+	 * added.
 	 * 
 	 * @param pListener
 	 */
 	void removeSimpleListener(ISimpleNavigationNodeListener pListener);
 
 	/**
-	 * TODO
+	 * Returns true, if this navigation node should be presented expanded.
 	 * 
-	 * @return true, if this navigation node should be presented expanded
+	 * @return the expanded state
 	 */
 	boolean isExpanded();
 
 	/**
-	 * Define the expanded state
+	 * Sets the expanded state
 	 * 
 	 * @param pExpanded
 	 */
@@ -300,22 +340,25 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	boolean isLeaf();
 
 	/**
-	 * TODO
+	 * Returns the markable helper object contained in the navigation node.
 	 * 
-	 * @return the markable helper object contained in the navigation node
+	 * @return the markable helper
 	 */
 	IMarkable getMarkable();
 
 	/**
-	 * TODO
+	 * Returns the next in hierarchy available context.
 	 * 
 	 * @param key
-	 * @return the next in hierarchy available context
+	 * @return the context
 	 */
 	Object getContext(String key);
 
 	/**
-	 * sets the context TODO
+	 * Sets the context.
+	 * 
+	 * @param key
+	 * @param pContext
 	 */
 	void setContext(String key, Object pContext);
 
@@ -337,14 +380,16 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void removeAction(IAction pAction);
 
 	/**
-	 * TODO
+	 * Returns the actions defined by this node.
 	 * 
-	 * @return the actions defined by this node
+	 * @return the list of actions
 	 */
 	Set<IAction> getActions();
 
 	/**
-	 * @return all actions defined by this node and its parents
+	 * All actions defined by this node and its parents
+	 * 
+	 * @return the list of actions.
 	 */
 	Set<IAction> getAllActions();
 
@@ -540,7 +585,9 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	Class<C> getValidChildType();
 
 	/**
-	 * @return NavigationArgument attached to this node
+	 * Returns the NavigationArgument attached to this node.
+	 * 
+	 * @return the NavigationArgument
 	 */
 	NavigationArgument getNavigationArgument();
 

@@ -10,7 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+/**
+ * Action that will be invoked, when a User clicks a Button for example.
+ * 
+ * @see IActionRidget
+ */
 public interface IActionListener {
 
+	/**
+	 * The Callback-method that will be invoked.
+	 */
 	void callback();
 }

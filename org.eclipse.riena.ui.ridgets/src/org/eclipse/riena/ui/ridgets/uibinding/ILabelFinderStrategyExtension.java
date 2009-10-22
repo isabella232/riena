@@ -14,8 +14,10 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
+ * Extension interface for the {@link ILabelFinderStrategy}
+ * 
  * @since 1.2
- *
+ * 
  */
 @ExtensionInterface
 public interface ILabelFinderStrategyExtension {

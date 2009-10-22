@@ -10,13 +10,25 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.listener;
 
+import org.eclipse.riena.ui.ridgets.IWindowRidget;
+
 /**
- * Listener notifies, if something with the frame happens
+ * Listener notifies, if something with the frame happens.
+ * 
+ * @see IWindowRidget
  */
 public interface IWindowRidgetListener {
 
+	/**
+	 * This method is called if the underlying {@link IWindowRidget} gets
+	 * closed.
+	 */
 	void closed();
 
+	/**
+	 * This method is called if the underlying {@link IWindowRidget} gets
+	 * activated.
+	 */
 	void activated();
 
 }

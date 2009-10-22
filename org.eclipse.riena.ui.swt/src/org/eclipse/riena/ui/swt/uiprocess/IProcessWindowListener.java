@@ -11,9 +11,15 @@
 package org.eclipse.riena.ui.swt.uiprocess;
 
 /**
+ * Listener for the {@link IUIProcessWindow}.
  * 
  */
 public interface IProcessWindowListener {
 
+	/**
+	 * Method that will be called, when the window is about to close.
+	 * <p>
+	 * {@link UIProcessWindow#close() }
+	 */
 	void windowAboutToClose();
 }

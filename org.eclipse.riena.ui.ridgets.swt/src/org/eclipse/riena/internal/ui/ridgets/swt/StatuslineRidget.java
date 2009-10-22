@@ -126,7 +126,7 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 	 * @see org.eclipse.riena.ui.ridgets.IStatuslineRidget#hidePopups()
 	 */
 	public void hidePopups() {
-		// TODO Auto-generated method stub
+		// FIXME remove empty method-block or mark as deprecated
 	}
 
 	/**

@@ -11,10 +11,14 @@
 package org.eclipse.riena.ui.ridgets.uibinding;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+import org.eclipse.riena.ui.ridgets.IRidget;
 
 /**
+ * Extension interface to set a custom label-prefix for the
+ * {@link CorrespondingLabelMapper}.
+ * 
  * @since 1.2
- *
+ * 
  */
 @ExtensionInterface
 public interface ICorrespondingLabelConfigExtension {
@@ -23,5 +27,12 @@ public interface ICorrespondingLabelConfigExtension {
 
 	String EXTENSION_POINT_ID = "org.eclipse.riena.ui.ridgets.correspondinglabel.config"; //$NON-NLS-1$
 
+	/**
+	 * The label-prefix that will be used by the
+	 * {@link CorrespondingLabelMapper}
+	 * 
+	 * @return the label-prefix for finding corresponding labels of a
+	 *         {@link IRidget}
+	 */
 	String getLabelPrefix();
 }

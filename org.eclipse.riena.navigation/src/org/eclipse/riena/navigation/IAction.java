@@ -11,11 +11,15 @@
 package org.eclipse.riena.navigation;
 
 /**
- * A System independent action definition.
- * (e.g. jface.Action is SWT specific)
+ * A System independent action definition. (e.g. jface.Action is SWT specific).
+ * 
+ * @see INavigationNode
  */
 public interface IAction {
 
+	/**
+	 * The Callback-method that will be invoked.
+	 */
 	void run();
-	
+
 }

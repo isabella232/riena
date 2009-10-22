@@ -12,9 +12,12 @@ package org.eclipse.riena.navigation;
 
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 import org.eclipse.riena.navigation.listener.ISubApplicationNodeListener;
+import org.eclipse.riena.navigation.model.SubApplicationNode;
 
 /**
- * Represents a business area within the desktop
+ * Represents a business area within the desktop.
+ * 
+ * @see SubApplicationNode
  */
 public interface ISubApplicationNode extends INavigationNode<IModuleGroupNode>,
 		INavigationNodeListenerable<ISubApplicationNode, IModuleGroupNode, ISubApplicationNodeListener> {

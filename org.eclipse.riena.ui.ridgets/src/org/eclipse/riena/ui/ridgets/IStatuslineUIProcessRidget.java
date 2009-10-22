@@ -15,10 +15,16 @@ import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 
 /**
  * interface for the ridget controlling the display of active {@link UIProcess}
- * ´s infos
+ * ´s infos.
  */
 public interface IStatuslineUIProcessRidget extends IProgressVisualizerObserver, IRidget {
 
+	/**
+	 * Sets the contextLocator that will be used to help determine the current
+	 * active context.
+	 * 
+	 * @param contextLocator
+	 */
 	void setContextLocator(IVisualContextManager contextLocator);
 
 }

@@ -12,6 +12,13 @@ package org.eclipse.riena.ui.ridgets;
 
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
+/**
+ * Ridget for a Window.
+ * <p>
+ * 
+ * Supports methods for controlling the appearance of the underlying UI-Control.
+ * 
+ */
 public interface IWindowRidget extends IRidget {
 
 	/**
@@ -37,6 +44,12 @@ public interface IWindowRidget extends IRidget {
 	 */
 	void removeWindowRidgetListener(IWindowRidgetListener pListener);
 
+	/**
+	 * Sets the window-title of the Ridget.
+	 * 
+	 * @param title
+	 *            a non null String
+	 */
 	void setTitle(String title);
 
 	/**
@@ -56,14 +69,26 @@ public interface IWindowRidget extends IRidget {
 	void setDefaultButton(Object defaultButton);
 
 	/**
-	 * Answer the windows defaultButton or null
+	 * Answer the windows defaultButton or null.
 	 * 
 	 * @return
 	 */
 	Object getDefaultButton();
 
+	/**
+	 * Sets the closeable flag if supported by the implementation, otherwise
+	 * nothing will happen.
+	 * 
+	 * @param closeable
+	 */
 	void setCloseable(boolean closeable);
 
+	/**
+	 * Changes the active-state of the WindowRidget depending of the underlying
+	 * implementation for example enables the shell.
+	 * 
+	 * @param active
+	 */
 	void setActive(boolean active);
 
 	/**

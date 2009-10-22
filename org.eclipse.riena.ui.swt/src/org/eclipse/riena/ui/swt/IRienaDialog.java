@@ -17,7 +17,7 @@ package org.eclipse.riena.ui.swt;
  * super class and so they are not visible for;@link RienaDialogDelegate}. This
  * interface forces the implementation to make this methods .
  * 
- * @deprecated - do not use
+ * @deprecated - use AbstractDialogView instead
  */
 public interface IRienaDialog {
 

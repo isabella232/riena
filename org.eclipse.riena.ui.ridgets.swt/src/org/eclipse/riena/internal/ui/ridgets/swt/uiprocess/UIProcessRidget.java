@@ -499,10 +499,12 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 
 	public void activate() {
 		// we do not need to activate anything here
+		// FIXME remove empty method-block or mark as deprecated
 	}
 
 	public void deactivate() {
 		// we do not need to DeActivate anything here
+		// FIXME remove empty method-block or mark as deprecated
 	}
 
 	private void saveBounds(Object visualContext) {

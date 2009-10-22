@@ -11,7 +11,8 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * Adapter for a status line.
+ * Ridget for a status line consisting of a message and a icon.
+ * 
  */
 public interface IStatuslineRidget extends IComplexRidget {
 
@@ -34,6 +35,8 @@ public interface IStatuslineRidget extends IComplexRidget {
 	void error(String aMessage);
 
 	/**
+	 * Clears the message and the icon.
+	 * 
 	 */
 	void clear();
 
@@ -49,7 +52,7 @@ public interface IStatuslineRidget extends IComplexRidget {
 	void setMessage(String message);
 
 	/**
-	 * 
+	 * Method is not implemented at the moment!
 	 */
 	void hidePopups();
 

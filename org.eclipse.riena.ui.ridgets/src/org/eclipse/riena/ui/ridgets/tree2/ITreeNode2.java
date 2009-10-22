@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.ridgets.tree2;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 
 /**
- * Defines additional requirements for an object that us used as a tree node
+ * Defines additional requirements for an object that is used as a tree node
  * together with a {@link ITreeRidget}.
  * <p>
  * It is recommended to use {@link TreeNode}. This is a default implementation
@@ -45,11 +45,15 @@ public interface ITreeNode2 extends ITreeNode {
 
 	/**
 	 * Returns true if this node is enabled, false otherwise.
+	 * 
+	 * @return <code>true</code> if enabled otherwise <code>false</code>
 	 */
 	boolean isEnabled();
 
 	/**
 	 * Returns true if this node is visible, false otherwise.
+	 * 
+	 * @return <code>true</code> if visible otherwise <code>false</code>
 	 */
 	boolean isVisible();
 }

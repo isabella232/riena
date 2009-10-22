@@ -30,13 +30,17 @@ public interface ILabelRidget extends IValueRidget {
 	String PROPERTY_TEXT = "text"; //$NON-NLS-1$
 
 	/**
-	 * @return Returns the label.
+	 * Gets the text of the underlying Label.
+	 * 
+	 * @return the text.
 	 */
 	String getText();
 
 	/**
+	 * Sets the text on the underlying Label.
+	 * 
 	 * @param text
-	 *            The label to set.
+	 *            The text to set.
 	 */
 	void setText(String text);
 

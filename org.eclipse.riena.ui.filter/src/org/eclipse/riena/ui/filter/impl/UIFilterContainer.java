@@ -22,8 +22,8 @@ import org.eclipse.riena.ui.filter.extension.IFilterNodeIdExtension;
  */
 public class UIFilterContainer implements IUIFilterContainer {
 
-	Collection<String> nodeIds;
-	IUIFilter filter;
+	private Collection<String> nodeIds;
+	private IUIFilter filter;
 
 	public UIFilterContainer(IUIFilter filter, IFilterNodeIdExtension[] ids) {
 

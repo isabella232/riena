@@ -14,11 +14,14 @@ import java.util.Date;
 
 /**
  * Ridget for a date / time field.
+ * 
+ * @see IDateTextRidget
  */
 public interface IDateTimeRidget extends ITextRidget {
 
 	/**
 	 * Property name of the date property.
+	 * <p>
 	 * 
 	 * @see #getDate()
 	 * @see #setDate(Date)
@@ -27,11 +30,15 @@ public interface IDateTimeRidget extends ITextRidget {
 
 	/**
 	 * Get the date value of this ridget.
+	 * <p>
+	 * 
+	 * @return the date
 	 */
 	Date getDate();
 
 	/**
 	 * Set the date value of this ridget.
+	 * <p>
 	 * 
 	 * @param date
 	 *            a Date value

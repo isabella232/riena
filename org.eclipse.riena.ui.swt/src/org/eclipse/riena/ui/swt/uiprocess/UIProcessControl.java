@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 
 /**
@@ -101,8 +100,10 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		this.processing = processing;
 	}
 
-	/**
-	 * changes the window into processing state
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.swt.uiprocess.IProgressControl#showProcessing()
 	 */
 	public void showProcessing() {
 		startProcessing();
@@ -113,7 +114,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	 * technical implementation of progressing in the window
 	 */
 	private void startProcessing() {
-		// only if not allready processing
+		// only if not already processing
 		if (!isProcessing()) {// use the synched way..
 			setProcessing(true);
 
@@ -193,8 +194,12 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		return processWindow.getProgressBar();
 	}
 
-	/**
-	 * visualizes a specific progress of the {@link UIProcess}
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.ui.swt.uiprocess.IProgressControl#showProgress(int,
+	 * int)
 	 */
 	public void showProgress(int value, int maxValue) {
 		stopProcessing();

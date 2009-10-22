@@ -10,31 +10,69 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.uiprocess;
 
+import org.eclipse.riena.ui.core.uiprocess.UIProcess;
+
 /**
+ * Interface for showing the progress.
  * 
+ * @see UIProcessControl
  */
 public interface IProgressControl {
 
 	/**
-	 * start showing progress/process
+	 * Start showing progress/process.
 	 */
 	void start();
 
 	/**
-	 * stop showing progress/process
+	 * Stop showing progress/process.
 	 */
 	void stop();
 
+	/**
+	 * Changes the window into processing state.
+	 */
 	void showProcessing();
 
+	/**
+	 * Visualizes a specific progress of the {@link UIProcess}.
+	 * 
+	 * @param value
+	 *            the current value
+	 * @param maxValue
+	 *            the maximum value
+	 */
 	void showProgress(int value, int maxValue);
 
-	void setDescription(String text);
+	/**
+	 * Sets the description.
+	 * 
+	 * @param description
+	 */
+	void setDescription(String description);
 
-	void setTitle(String text);
+	/**
+	 * Sets the title.
+	 * 
+	 * @param title
+	 */
+	void setTitle(String title);
 
+	/**
+	 * Add an {@link ICancelListener} to be notified about cancel events.
+	 * <p>
+	 * 
+	 * @param a
+	 *            non-null listener
+	 */
 	void addCancelListener(ICancelListener listener);
 
+	/**
+	 * Removes an {@link ICancelListener} from the list of listeners.
+	 * 
+	 * @param a
+	 *            non-null listener
+	 */
 	void removeCancelListener(ICancelListener listener);
 
 }

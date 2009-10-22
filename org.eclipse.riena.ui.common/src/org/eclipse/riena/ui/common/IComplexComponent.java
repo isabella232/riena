@@ -22,7 +22,9 @@ import java.util.List;
 public interface IComplexComponent {
 
 	/**
-	 * @return The UI-controls of the complex component
+	 * Gets the UI-controls of the complex component.
+	 * 
+	 * @return the List of controls
 	 */
 	List<Object> getUIControls();
 
