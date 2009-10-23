@@ -11,9 +11,10 @@
 package org.eclipse.riena.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.BindingException;
-import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -24,7 +25,7 @@ import org.eclipse.riena.ui.core.marker.HiddenMarker;
  */
 public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 
-	private FocusListener focusManager = new FocusManager();
+	private FocusManager focusManager = new FocusManager();
 	private boolean focusable;
 
 	/**
@@ -118,6 +119,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 		super.installListeners();
 		if (getUIControl() != null) {
 			getUIControl().addFocusListener(focusManager);
+			getUIControl().addMouseListener(focusManager);
 		}
 	}
 
@@ -129,6 +131,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	protected final void uninstallListeners() {
 		if (getUIControl() != null) {
 			getUIControl().removeFocusListener(focusManager);
+			getUIControl().removeMouseListener(focusManager);
 		}
 		super.uninstallListeners();
 	}
@@ -149,15 +152,27 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 
 	/**
 	 * Focus listener that also prevents the widget corresponding to this ridget
-	 * from getting the UI focus when the ridget is not focusable.
+	 * from getting the UI focus when the ridget is not focusable or output
+	 * only.
+	 * <p>
+	 * The algorithm is as follows:
+	 * <ul>
+	 * <li>if the widget is non-focusable, select the next focusable widget</li>
+	 * <li>if the widget is output only, select the next focusable widget</li>
+	 * <li>if the widget is output only and was clicked, accept focus</li>
+	 * <li>in any other case, accept focus</li>
+	 * </ul>
+	 * Implementation note: SWT will invoke the focusGained, focusLost methods
+	 * berfore the mouseDown method.
 	 * 
 	 * @see AbstractSWTRidget#setFocusable(boolean).
 	 */
-	private final class FocusManager extends FocusAdapter {
+	private final class FocusManager extends MouseAdapter implements FocusListener {
 
-		@Override
+		private boolean clickToFocus;
+
 		public void focusGained(FocusEvent e) {
-			if (focusable) {
+			if (isFocusable()) {
 				fireFocusGained(new org.eclipse.riena.ui.ridgets.listener.FocusEvent(null, AbstractSWTRidget.this));
 			} else {
 				Control control = (Control) e.widget;
@@ -177,11 +192,23 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 			}
 		}
 
-		@Override
 		public void focusLost(FocusEvent e) {
-			if (focusable) {
+			if (isFocusable()) {
+				clickToFocus = false;
 				fireFocusLost(new org.eclipse.riena.ui.ridgets.listener.FocusEvent(AbstractSWTRidget.this, null));
 			}
+		}
+
+		@Override
+		public void mouseDown(MouseEvent e) {
+			if (focusable && isOutputOnly()) {
+				clickToFocus = true;
+				((Control) e.widget).setFocus();
+			}
+		}
+
+		private boolean isFocusable() {
+			return (focusable && !isOutputOnly()) || clickToFocus;
 		}
 
 		private Control findFocusTarget(Control control, Control[] controls) {

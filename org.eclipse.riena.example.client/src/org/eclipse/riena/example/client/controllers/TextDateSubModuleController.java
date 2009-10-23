@@ -80,14 +80,12 @@ public class TextDateSubModuleController extends SubModuleController {
 		justEights = (IDateTextRidget) getRidget("inJustEights"); //$NON-NLS-1$
 		justEights.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		justEights.setOutputOnly(true);
-		justEights.setFocusable(false);
 		justEights.bindToModel(new StringBean("88.88.8888"), StringBean.PROP_VALUE); //$NON-NLS-1$
 		justEights.updateFromModel();
 
 		IDateTextRidget justSpaces = (IDateTextRidget) getRidget("inJustSpaces"); //$NON-NLS-1$
 		justSpaces.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		justSpaces.setOutputOnly(true);
-		justSpaces.setFocusable(false);
 		justSpaces.bindToModel(new StringBean("  .  .    "), StringBean.PROP_VALUE); //$NON-NLS-1$
 		justSpaces.updateFromModel();
 
@@ -143,7 +141,6 @@ public class TextDateSubModuleController extends SubModuleController {
 		IRidget inputRidget = getRidget("in" + id); //$NON-NLS-1$
 		ITextRidget outputRidget = (ITextRidget) getRidget("out" + id); //$NON-NLS-1$
 		outputRidget.setOutputOnly(true);
-		outputRidget.setFocusable(false);
 		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextRidget.PROPERTY_TEXT), BeansObservables
 				.observeValue(outputRidget, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));

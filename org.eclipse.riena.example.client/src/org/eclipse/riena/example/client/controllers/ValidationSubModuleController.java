@@ -169,7 +169,6 @@ public class ValidationSubModuleController extends SubModuleController {
 	private void makeOutputOnly(ITextRidget... ridgets) {
 		for (ITextRidget ridget : ridgets) {
 			ridget.setOutputOnly(true);
-			ridget.setFocusable(false);
 		}
 	}
 
