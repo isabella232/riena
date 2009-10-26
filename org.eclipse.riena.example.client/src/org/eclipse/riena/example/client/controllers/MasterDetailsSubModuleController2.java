@@ -20,6 +20,7 @@ import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
@@ -28,6 +29,7 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
+import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
  * Demonstrates use of a master/details ridget.
@@ -35,7 +37,7 @@ import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
  * @see IMasterDetailsRidget
  * @see MasterDetailsSubModuleView
  */
-public class MasterDetailsSubModuleController extends SubModuleController {
+public class MasterDetailsSubModuleController2 extends SubModuleController {
 
 	/**
 	 * Setup the ridgets for editing a person (text ridgets for name, single
@@ -50,11 +52,13 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 		public void configureRidgets(IRidgetContainer container) {
 			ITextRidget txtFirst = (ITextRidget) container.getRidget("first"); //$NON-NLS-1$
 			txtFirst.setMandatory(true);
+			txtFirst.setDirectWriting(true);
 			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
 			ITextRidget txtLast = (ITextRidget) container.getRidget("last"); //$NON-NLS-1$
 			txtLast.setMandatory(true);
+			txtLast.setDirectWriting(true);
 			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
 			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
@@ -121,21 +125,21 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 		String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 
-		IMasterDetailsRidget master = (IMasterDetailsRidget) getRidget("master"); //$NON-NLS-1$
-		if (master != null) {
-			master.setDelegate(new PersonDelegate());
-			master.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
-			master.updateFromModel();
-		}
+		IMasterDetailsRidget master2 = (IMasterDetailsRidget) getRidget("master2"); //$NON-NLS-1$
+		master2.setDelegate(new PersonDelegate());
+		master2.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
+		master2.updateFromModel();
+		master2.setApplyRequiresNoErrors(true);
 
-		IMasterDetailsRidget master3 = (IMasterDetailsRidget) getRidget("master3"); //$NON-NLS-1$
-		if (master3 != null) {
-			master3.setDelegate(new PersonDelegate());
-			master3.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
-			master3.updateFromModel();
+		IActionRidget actionApply = (IActionRidget) master2.getRidget(MasterDetailsComposite.BIND_ID_APPLY);
+		actionApply.setIcon("apply_h.png"); //$NON-NLS-1$
 
-			master3.setDirectWriting(true); // enable auto apply
-		}
+		IActionRidget actionNew = (IActionRidget) master2.getRidget(MasterDetailsComposite.BIND_ID_NEW);
+		actionNew.setText(""); //$NON-NLS-1$
+		actionNew.setIcon("new_h.png"); //$NON-NLS-1$
+
+		IActionRidget actionRemove = (IActionRidget) master2.getRidget(MasterDetailsComposite.BIND_ID_REMOVE);
+		actionRemove.setText(""); //$NON-NLS-1$
+		actionRemove.setIcon("remove_h.png"); //$NON-NLS-1$
 	}
-
 }

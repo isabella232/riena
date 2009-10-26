@@ -25,6 +25,7 @@ import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -53,6 +54,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	private IMasterDetailsDelegate delegate;
 	private DataBindingContext dbc;
 	private boolean isDirectWriting;
+	private boolean applyRequiresNoErrors;
+	private boolean detailsEnabled;
 
 	/*
 	 * The object we are currently editing; null if not editing
@@ -70,14 +73,17 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				if (delegate == null
 						|| editable == null
 						// ignore these events:
-						|| IMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName())
+						// || IMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName())
 						|| IRidget.PROPERTY_ENABLED.equals(evt.getPropertyName())
 						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(evt.getPropertyName())) {
 					return;
 				}
 				boolean isChanged = areDetailsChanged();
-				// System.out.println(isChanged + " : " + evt.getPropertyName() + " " + evt.getNewValue());
-				getApplyButtonRidget().setEnabled(isChanged);
+				if (applyRequiresNoErrors) {
+					getApplyButtonRidget().setEnabled(isChanged && !hasErrors());
+				} else {
+					getApplyButtonRidget().setEnabled(isChanged);
+				}
 			}
 		});
 	}
@@ -187,6 +193,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return isDirectWriting;
 	}
 
+	public void setApplyRequiresNoErrors(boolean requiresNoErrors) {
+		this.applyRequiresNoErrors = requiresNoErrors;
+	}
+
 	public final void setDelegate(IMasterDetailsDelegate delegate) {
 		Assert.isLegal(this.delegate == null, "setDelegate can only be called once"); //$NON-NLS-1$
 		Assert.isLegal(delegate != null, "delegate cannot be null"); //$NON-NLS-1$
@@ -244,7 +254,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	protected abstract void setTableSelection(Object value);
 
 	protected final boolean areDetailsChanged() {
-		return editable != null && delegate.isChanged(editable, delegate.getWorkingCopy());
+		if (detailsEnabled) {
+			return editable != null && delegate.isChanged(editable, delegate.getWorkingCopy());
+		}
+		return false;
 	}
 
 	protected final void handleSelectionChange(Object newSelection) {
@@ -330,6 +343,18 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		editable = null;
 	}
 
+	private boolean hasErrors() {
+		for (IRidget ridget : detailRidgets.getRidgets()) {
+			if (ridget instanceof IMarkableRidget) {
+				IMarkableRidget markableRidget = (IMarkableRidget) ridget;
+				if (!markableRidget.getMarkersOfType(ErrorMarker.class).isEmpty()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	private IRidget getTableRidget() {
 		return (IRidget) getRidget(MasterDetailsComposite.BIND_ID_TABLE);
 	}
@@ -356,6 +381,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	private void setEnabled(boolean applyEnabled, boolean detailsEnabled) {
 		getApplyButtonRidget().setEnabled(applyEnabled);
+		this.detailsEnabled = detailsEnabled;
 		for (IRidget ridget : detailRidgets.getRidgets()) {
 			ridget.setEnabled(detailsEnabled);
 		}

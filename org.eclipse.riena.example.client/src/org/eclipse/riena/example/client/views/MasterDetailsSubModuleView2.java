@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleController;
+import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleController2;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
@@ -34,9 +34,9 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * Demonstrates use of a master/details ridget.
  * 
  * @see IMasterDetailsRidget
- * @see MasterDetailsSubModuleController
+ * @see MasterDetailsSubModuleController2
  */
-public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubModuleController> {
+public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubModuleController2> {
 
 	private Color colorLightBlue;
 

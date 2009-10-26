@@ -93,6 +93,19 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	boolean isDirectWriting();
 
 	/**
+	 * When set to true, the 'Apply' button will only enable when all ridgets in
+	 * the Details area have <b>no</b> error markers.
+	 * <p>
+	 * The detault setting for this option is false.
+	 * 
+	 * @param requiresNoErrors
+	 *            The new setting for this option.
+	 * 
+	 * @since 1.2
+	 */
+	void setApplyRequiresNoErrors(boolean requiresNoErrors);
+
+	/**
 	 * Provide this ridget with an {@link IMasterDetailsDelegate} instance,
 	 * which will manage the content of details area.
 	 * 
