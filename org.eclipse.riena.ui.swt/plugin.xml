@@ -2,7 +2,8 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension-point id="lnfrenderer" name="Look and Feel renderer" schema="schema/lnfrenderer.exsd"/>
-   <extension-point id="imagepath" name="Image Path" schema="schema/imagepath.exsd"/>
+   <extension-point id="imagepath" name="Image Path" schema="schema/imagepath-deprecated.exsd"/>
+   <extension-point id="imagePath" name="Image Path" schema="schema/imagePath.exsd"/>
    <extension
          point="org.eclipse.riena.ui.core.uiSynchronizer">
 		<uiSynchronizer class="org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer"/>         
@@ -19,7 +20,7 @@
       </renderer>
    </extension>
    <extension
-         point="org.eclipse.riena.ui.swt.imagepath">
+         point="org.eclipse.riena.ui.swt.imagePath">
       <path
             path="icons">
       </path>

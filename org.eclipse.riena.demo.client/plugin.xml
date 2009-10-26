@@ -441,7 +441,7 @@
         </filter>
      </extension>
      <extension
-         point="org.eclipse.riena.ui.swt.imagepath">
+         point="org.eclipse.riena.ui.swt.imagePath">
       <path
             path="icons">
       </path>
