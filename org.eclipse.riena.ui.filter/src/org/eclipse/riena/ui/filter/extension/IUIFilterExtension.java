@@ -16,11 +16,11 @@ import org.eclipse.riena.core.injector.extension.MapName;
 /**
  * Interface for a UIFiltere extension that defines how to create a filter with
  * a list of rules.
+ * <p>
+ * <b>Note:</b> The "org.eclipse.riena.filter.uifilter" is @deprecated.
  */
-@ExtensionInterface
+@ExtensionInterface(id = "org.eclipse.riena.filter.uifilter,uiFilter")
 public interface IUIFilterExtension {
-
-	String EXTENSION_ID = "org.eclipse.riena.filter.uifilter"; //$NON-NLS-1$
 
 	/**
 	 * Returns the filterID

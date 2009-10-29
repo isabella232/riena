@@ -2,9 +2,9 @@
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.eclipse.riena.ui.filter" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appInfo>
+      <appinfo>
          <meta.schema plugin="org.eclipse.riena.ui.filter" id="org.eclipse.riena.filter.ruleMapper" name="ruleMapper"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          [Enter description of this extension point.]
       </documentation>
@@ -12,9 +12,9 @@
 
    <element name="extension">
       <annotation>
-         <appInfo>
-            <meta.element deprecated="true" replacement="Please use extension point id 'org.eclipse.riena.ui.filter.ruleMapper' instead" />
-         </appInfo>
+         <appinfo>
+            <meta.element />
+         </appinfo>
       </annotation>
       <complexType>
          <sequence>
@@ -39,9 +39,9 @@
                <documentation>
                   
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute translatable="true"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -70,9 +70,9 @@
                <documentation>
                   
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -85,9 +85,9 @@
                <documentation>
                   
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -100,9 +100,9 @@
                <documentation>
                   
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -115,9 +115,9 @@
                <documentation>
                   
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -130,9 +130,9 @@
                <documentation>
                   
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -145,9 +145,9 @@
                <documentation>
                   
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -160,9 +160,9 @@
                <documentation>
                   
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerNavigation"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -175,9 +175,9 @@
                <documentation>
                   
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerNavigation"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -190,45 +190,45 @@
                <documentation>
                   
                </documentation>
-               <appInfo>
+               <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleValidatorRidget"/>
-               </appInfo>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="since"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          [Enter the first release in which this extension point appears.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="examples"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          [Enter extension point usage example here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="apiinfo"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          [Enter API information here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appInfo>
+      <appinfo>
          <meta.section type="implementation"/>
-      </appInfo>
+      </appinfo>
       <documentation>
          [Enter information about supplied implementation of this extension point.]
       </documentation>

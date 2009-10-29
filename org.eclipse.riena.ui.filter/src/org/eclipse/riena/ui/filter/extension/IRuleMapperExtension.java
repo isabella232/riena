@@ -14,11 +14,11 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 /**
  * Mappers for all rules.
+ * <p>
+ * <b>Note:</b> The "org.eclipse.riena.filter.rulemapper" is @deprecated.
  */
-@ExtensionInterface
+@ExtensionInterface(id = "org.eclipse.riena.filter.rulemapper,ruleMapper")
 public interface IRuleMapperExtension {
-
-	String EEXTENSIO_ID = "org.eclipse.riena.filter.rulemapper"; //$NON-NLS-1$
 
 	IRuleMarkerRidgetMapper getRidgetHiddenMarker();
 
