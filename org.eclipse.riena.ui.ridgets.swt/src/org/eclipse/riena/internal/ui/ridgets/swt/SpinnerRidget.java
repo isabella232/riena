@@ -39,9 +39,10 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 	private int textLimit;
 	private int digits;
 
-	private boolean initialized;
-
 	public SpinnerRidget() {
+		super();
+		textLimit = Integer.MIN_VALUE;
+		digits = Integer.MIN_VALUE;
 	}
 
 	@Override
@@ -66,21 +67,21 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 		checkDigits(digits);
 
 		digits = preSetDigits(digits);
-		int oldValue = this.getDigits();
+		Object oldValue = this.digits;
 		this.digits = digits;
 		updateUIDigits();
 		updateToolTip();
-		firePropertyChange(ISpinnerRidget.PROPERTY_DIGITS, oldValue, this.getDigits());
+		firePropertyChange(ISpinnerRidget.PROPERTY_DIGITS, oldValue, this.digits);
 	}
 
 	public void setTextLimit(int textLimit) {
 		checkTextLimit(textLimit);
 
 		textLimit = preSetTextLimit(textLimit);
-		int oldValue = this.getTextLimit();
+		Object oldValue = this.textLimit;
 		this.textLimit = textLimit;
 		updateUITextLimit();
-		firePropertyChange(ISpinnerRidget.PROPERTY_TEXT_LIMIT, oldValue, this.getTextLimit());
+		firePropertyChange(ISpinnerRidget.PROPERTY_TEXT_LIMIT, oldValue, this.textLimit);
 	}
 
 	@Override
@@ -94,17 +95,15 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 	}
 
 	@Override
-	protected void initFromUIControl() {
+	protected void initAdditionalsFromUIControl() {
 		Spinner spinner = getUIControl();
-		if (spinner != null && !initialized) {
-			setMaximum(spinner.getMaximum());
-			setMinimum(spinner.getMinimum());
-			setTextLimit(spinner.getTextLimit());
-			setDigits(spinner.getDigits());
-			setIncrement(spinner.getIncrement());
-			setPageIncrement(spinner.getPageIncrement());
-			setValue(spinner.getSelection());
-			initialized = true;
+		if (spinner != null) {
+			if (getTextLimit() == Integer.MIN_VALUE) {
+				setTextLimit(spinner.getTextLimit());
+			}
+			if (getDigits() == Integer.MIN_VALUE) {
+				setDigits(spinner.getDigits());
+			}
 		}
 	}
 
@@ -170,6 +169,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 	/**
 	 * Updates the uiControl with the values of the ridget.
 	 */
+	@Override
 	protected void updateUIControl() {
 		super.updateUIControl();
 		updateUITextLimit();
@@ -228,6 +228,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 		}
 	}
 
+	@Override
 	protected void updateUIValue() {
 		Spinner control = getUIControl();
 		if (control != null) {
@@ -280,4 +281,30 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 		}
 
 	}
+
+	@Override
+	protected int getUIControlIncrement() {
+		return getUIControl().getIncrement();
+	}
+
+	@Override
+	protected int getUIControlMaximum() {
+		return getUIControl().getMaximum();
+	}
+
+	@Override
+	protected int getUIControlMinimum() {
+		return getUIControl().getMinimum();
+	}
+
+	@Override
+	protected int getUIControlPageIncrement() {
+		return getUIControl().getPageIncrement();
+	}
+
+	@Override
+	protected int getUIControlSelection() {
+		return getUIControl().getSelection();
+	}
+
 }

@@ -24,7 +24,7 @@ import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
- * Tests for the {@link SliderRidget}
+ * Tests for the class {@link SliderRidget}.
  */
 public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 
@@ -85,6 +85,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	// test methods
 	// ////////////
 
+	@Override
 	protected void assertPropertiesEqual(ITraverseRidget ridget, Control control) {
 		super.assertPropertiesEqual(ridget, control);
 
@@ -100,6 +101,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 * Slider specific tests. They differ in the calculation of maximum by
 	 * internalMaximum = maximum - thumb.
 	 */
+	@Override
 	public void testSetValueRidgetBased() {
 		Control control = getWidget();
 		ISliderRidget ridget = getRidget();
@@ -150,6 +152,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 * Slider specific tests. They differ in the calculation of maximum by
 	 * internalMaximum = maximum - thumb.
 	 */
+	@Override
 	public void testSetValueFiresEventsRidgetBased() {
 		ISliderRidget ridget = getRidget();
 		ridget.setMaximum(30);
@@ -187,7 +190,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		// calculate the maximum
 
 		Control control = getWidget();
-		ISliderRidget ridget = (ISliderRidget) getRidget();
+		ISliderRidget ridget = getRidget();
 		/*
 		 * Test 1 - max = value with thumb = 1
 		 */
@@ -421,6 +424,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 * Slider specific tests. They differ in the calculation of maximum by
 	 * internalMaximum = maximum - thumb.
 	 */
+	@Override
 	public void testSetMaximumFiresEventsRidgetBased() {
 		ISliderRidget ridget = getRidget();
 
@@ -506,6 +510,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 * Slider specific tests. They differ in the calculation of maximum by
 	 * internalMaximum = maximum - thumb.
 	 */
+	@Override
 	public void testSetMinimumFiresEventsRidgetBased() {
 		ISliderRidget ridget = getRidget();
 
@@ -543,6 +548,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 * Slider specific tests. They differ in the calculation of maximum by
 	 * internalMaximum = maximum - thumb.
 	 */
+	@Override
 	public void testSetIncrementRidgetBased() {
 		ISliderRidget ridget = getRidget();
 		Control control = getWidget();
@@ -580,6 +586,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 * Slider specific tests. They differ in the calculation of maximum by
 	 * internalMaximum = maximum - thumb.
 	 */
+	@Override
 	public void testSetIncrementFiresEventsRidgetBased() {
 		ISliderRidget ridget = getRidget();
 		ridget.setIncrement(1);
@@ -610,6 +617,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 * Slider specific tests. They differ in the calculation of maximum by
 	 * internalMaximum = maximum - thumb.
 	 */
+	@Override
 	public void testSetPageIncrementRidgetBased() {
 		ISliderRidget ridget = getRidget();
 		Control control = getWidget();
@@ -650,6 +658,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 * Slider specific tests. They differ in the calculation of maximum by
 	 * internalMaximum = maximum - thumb.
 	 */
+	@Override
 	public void testSetPageIncrementFiresEventsRidgetBased() {
 		ISliderRidget ridget = getRidget();
 		ridget.setPageIncrement(1);
@@ -670,6 +679,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		verifyPropertyChangeEvents();
 	}
 
+	@Override
 	public void testSetMinimum() {
 		super.testSetMinimum();
 

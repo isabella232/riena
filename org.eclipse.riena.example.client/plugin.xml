@@ -321,6 +321,13 @@
             name="org.eclipse.riena.example.client.views.ContextMenuSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.TraverseSubModuleView"
+            id="org.eclipse.riena.example.client.views.TraverseSubModuleView"
+            name="org.eclipse.riena.example.client.views.TraverseSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

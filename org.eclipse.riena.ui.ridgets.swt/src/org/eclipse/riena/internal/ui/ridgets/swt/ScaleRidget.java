@@ -26,11 +26,6 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
  */
 public class ScaleRidget extends AbstractTraverseRidget implements ITraverseRidget {
 
-	private boolean initialized;
-
-	public ScaleRidget() {
-	}
-
 	@Override
 	public Scale getUIControl() {
 		return (Scale) super.getUIControl();
@@ -55,16 +50,8 @@ public class ScaleRidget extends AbstractTraverseRidget implements ITraverseRidg
 	}
 
 	@Override
-	protected void initFromUIControl() {
-		Scale scale = getUIControl();
-		if (scale != null && !initialized) {
-			setMaximum(scale.getMaximum());
-			setMinimum(scale.getMinimum());
-			setIncrement(scale.getIncrement());
-			setPageIncrement(scale.getPageIncrement());
-			setValue(scale.getSelection());
-			initialized = true;
-		}
+	protected void initAdditionalsFromUIControl() {
+		// nothing to do
 	}
 
 	@Override
@@ -104,10 +91,37 @@ public class ScaleRidget extends AbstractTraverseRidget implements ITraverseRidg
 		}
 	}
 
+	@Override
 	protected void updateUIValue() {
 		Scale control = getUIControl();
 		if (control != null) {
 			control.setSelection(getValue());
 		}
 	}
+
+	@Override
+	protected int getUIControlIncrement() {
+		return getUIControl().getIncrement();
+	}
+
+	@Override
+	protected int getUIControlMaximum() {
+		return getUIControl().getMaximum();
+	}
+
+	@Override
+	protected int getUIControlMinimum() {
+		return getUIControl().getMinimum();
+	}
+
+	@Override
+	protected int getUIControlPageIncrement() {
+		return getUIControl().getPageIncrement();
+	}
+
+	@Override
+	protected int getUIControlSelection() {
+		return getUIControl().getSelection();
+	}
+
 }

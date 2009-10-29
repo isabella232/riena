@@ -24,7 +24,7 @@ import org.eclipse.riena.beans.common.TypedBean;
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 
 /**
- * Tests for the {@link AbstractTraverseRidget}
+ * Tests for the class {@link AbstractTraverseRidget}.
  */
 public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 
@@ -790,8 +790,10 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetPageIncrement() {
-		ITraverseRidget ridget = getRidget();
+		ITraverseRidget ridget = (ITraverseRidget) createRidget();
 		Control control = getWidget();
+		ridget.setUIControl(control);
+
 		ridget.setMinimum(1);
 		ridget.setMaximum(100);
 

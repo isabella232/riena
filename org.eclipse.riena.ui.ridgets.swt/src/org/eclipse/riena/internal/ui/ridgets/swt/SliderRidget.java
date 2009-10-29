@@ -107,9 +107,10 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 public class SliderRidget extends AbstractTraverseRidget implements ISliderRidget {
 
 	private int thumb;
-	private boolean initialized;
 
 	public SliderRidget() {
+		super();
+		thumb = Integer.MIN_VALUE;
 	}
 
 	@Override
@@ -129,10 +130,10 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	public void setThumb(int thumb) {
 		checkThumb(thumb);
 
-		int oldValue = this.getThumb();
+		Object oldValue = this.thumb;
 		this.thumb = thumb;
 		updateUIThumb();
-		firePropertyChange(ISliderRidget.PROPERTY_THUMB, oldValue, this.getThumb());
+		firePropertyChange(ISliderRidget.PROPERTY_THUMB, oldValue, this.thumb);
 	}
 
 	@Override
@@ -149,7 +150,11 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 * @throws IllegalArgumentException
 	 *             if the given maximum is not a valid value.
 	 */
+	@Override
 	protected void checkMaximum(int maximum) {
+		if (!initialized) {
+			return;
+		}
 		if (calcInternalMaximum(maximum) <= getMinimum()) {
 			new Message(Message.MAX_LE_MIN, maximum, getThumb(), getMinimum()).push();
 		}
@@ -167,7 +172,11 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 * @throws IllegalArgumentException
 	 *             if the given minimum is not a valid value.
 	 */
+	@Override
 	protected void checkMinimum(int minimum) {
+		if (!initialized) {
+			return;
+		}
 		if (minimum >= calcInternalMaximum()) {
 			new Message(Message.MIN_GE_MAX, minimum, getMaximum(), getThumb()).push();
 		}
@@ -201,16 +210,12 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	}
 
 	@Override
-	protected void initFromUIControl() {
+	protected void initAdditionalsFromUIControl() {
 		Slider slider = getUIControl();
-		if (slider != null && !initialized) {
-			setMaximum(slider.getMaximum());
-			setThumb(slider.getThumb());
-			setMinimum(slider.getMinimum());
-			setIncrement(slider.getIncrement());
-			setPageIncrement(slider.getPageIncrement());
-			setValue(slider.getSelection());
-			initialized = true;
+		if (slider != null) {
+			if (getThumb() == Integer.MIN_VALUE) {
+				setThumb(slider.getThumb());
+			}
 		}
 	}
 
@@ -226,7 +231,11 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 *            the increment to set
 	 * @return an adjusted increment
 	 */
+	@Override
 	protected int preSetIncrement(int increment) {
+		if (!initialized) {
+			return increment;
+		}
 		if (increment <= 0) {
 			increment = 1;
 		} else if (increment > calcInternalMaximum() - getMinimum()) {
@@ -247,7 +256,11 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 *            the maximum to set
 	 * @return an adjusted maximum
 	 */
+	@Override
 	protected int preSetMaximum(int maximum) {
+		if (!initialized) {
+			return maximum;
+		}
 		if (calcInternalMaximum(maximum) < getValue()) {
 			setValue(calcInternalMaximum(maximum));
 		}
@@ -273,7 +286,11 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 *            the minimum to set
 	 * @return an adjusted minimum
 	 */
+	@Override
 	protected int preSetMinimum(int minimum) {
+		if (!initialized) {
+			return minimum;
+		}
 		if (getValue() < minimum) {
 			setValue(minimum);
 		}
@@ -299,7 +316,11 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 *            the pageIncrement to set
 	 * @return an adjusted pageIncrement
 	 */
+	@Override
 	protected int preSetPageIncrement(int pageIncrement) {
+		if (!initialized) {
+			return pageIncrement;
+		}
 		if (pageIncrement <= 0) {
 			pageIncrement = 1;
 		} else if (pageIncrement > calcInternalMaximum() - getMinimum()) {
@@ -320,7 +341,11 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 *            the value to set
 	 * @return an adjusted value
 	 */
+	@Override
 	protected int preSetValue(int value) {
+		if (!initialized) {
+			return value;
+		}
 		if (value < 0 || value < getMinimum()) {
 			value = getMinimum();
 		}
@@ -338,6 +363,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	/**
 	 * Updates the uiControl with the values of the ridget.
 	 */
+	@Override
 	protected void updateUIControl() {
 		updateUIMaximum();
 		updateUIThumb();
@@ -386,6 +412,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 		}
 	}
 
+	@Override
 	protected void updateUIValue() {
 		Slider control = getUIControl();
 		if (control != null) {
@@ -431,4 +458,30 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 		}
 
 	}
+
+	@Override
+	protected int getUIControlIncrement() {
+		return getUIControl().getIncrement();
+	}
+
+	@Override
+	protected int getUIControlMaximum() {
+		return getUIControl().getMaximum();
+	}
+
+	@Override
+	protected int getUIControlMinimum() {
+		return getUIControl().getMinimum();
+	}
+
+	@Override
+	protected int getUIControlPageIncrement() {
+		return getUIControl().getPageIncrement();
+	}
+
+	@Override
+	protected int getUIControlSelection() {
+		return getUIControl().getSelection();
+	}
+
 }

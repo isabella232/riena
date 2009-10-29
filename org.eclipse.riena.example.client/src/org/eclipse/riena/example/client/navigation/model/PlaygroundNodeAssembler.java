@@ -40,6 +40,7 @@ import org.eclipse.riena.example.client.controllers.TableSubModuleController;
 import org.eclipse.riena.example.client.controllers.TextDateSubModuleController;
 import org.eclipse.riena.example.client.controllers.TextNumericSubModuleController;
 import org.eclipse.riena.example.client.controllers.TextSubModuleController;
+import org.eclipse.riena.example.client.controllers.TraverseSubModuleController;
 import org.eclipse.riena.example.client.controllers.TreeSubModuleController;
 import org.eclipse.riena.example.client.controllers.TreeTableSubModuleController;
 import org.eclipse.riena.example.client.controllers.ValidationSubModuleController;
@@ -71,6 +72,7 @@ import org.eclipse.riena.example.client.views.TableSubModuleView;
 import org.eclipse.riena.example.client.views.TextDateSubModuleView;
 import org.eclipse.riena.example.client.views.TextNumericSubModuleView;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
+import org.eclipse.riena.example.client.views.TraverseSubModuleView;
 import org.eclipse.riena.example.client.views.TreeSubModuleView;
 import org.eclipse.riena.example.client.views.TreeTableSubModuleView;
 import org.eclipse.riena.example.client.views.ValidationSubModuleView;
@@ -245,6 +247,12 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(textDateSubModule, TextDateSubModuleController.class, TextDateSubModuleView.ID,
 				false);
 		playgroundModule.addChild(textDateSubModule);
+
+		ISubModuleNode traverseSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.traverse"), "Traverse"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(traverseSubModule, TraverseSubModuleController.class, TraverseSubModuleView.ID,
+				false);
+		playgroundModule.addChild(traverseSubModule);
 
 		ISubModuleNode treeSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.tree"), "Tree"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(treeSubModule, TreeSubModuleController.class, TreeSubModuleView.ID, false);

@@ -108,14 +108,20 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	private final ActionObserver actionObserver;
 	private final TooltipChangeHandler tooltipChangedHandler;
 
-	private int value;
-	private int increment;
-	private int maximum;
-
-	private int minimum;
-	private int pageIncrement;
+	protected boolean initialized;
+	protected int maximum;
+	protected int minimum;
+	protected int increment;
+	protected int pageIncrement;
+	protected int value;
 
 	public AbstractTraverseRidget() {
+		initialized = false;
+		maximum = Integer.MIN_VALUE;
+		minimum = Integer.MIN_VALUE;
+		increment = Integer.MIN_VALUE;
+		pageIncrement = Integer.MIN_VALUE;
+		value = Integer.MIN_VALUE;
 		actionObserver = new ActionObserver(this);
 		tooltipChangedHandler = new TooltipChangeHandler();
 		addListener(new ActionListener());
@@ -184,7 +190,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 
 	public void setIncrement(int increment) {
 		increment = preSetIncrement(increment);
-		int oldValue = this.getIncrement();
+		Object oldValue = this.increment;
 		this.increment = increment;
 		updateUIIncrement();
 		firePropertyChange(ITraverseRidget.PROPERTY_INCREMENT, oldValue, this.getIncrement());
@@ -194,10 +200,10 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 		checkMaximum(maximum);
 
 		preSetMaximum(maximum);
-		int oldValue = this.getMaximum();
+		Object oldValue = this.maximum;
 		this.maximum = maximum;
 		updateUIMaximum();
-		firePropertyChange(ITraverseRidget.PROPERTY_MAXIMUM, oldValue, this.getMaximum());
+		firePropertyChange(ITraverseRidget.PROPERTY_MAXIMUM, oldValue, this.maximum);
 	}
 
 	public void setMinimum(int minimum) {
@@ -205,27 +211,27 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 
 		preSetMinimum(minimum);
 
-		int oldValue = this.getMinimum();
+		Object oldValue = this.minimum;
 		this.minimum = minimum;
 		updateUIMinimum();
-		firePropertyChange(ITraverseRidget.PROPERTY_MINIMUM, oldValue, this.getMinimum());
+		firePropertyChange(ITraverseRidget.PROPERTY_MINIMUM, oldValue, this.minimum);
 	}
 
 	public void setPageIncrement(int pageIncrement) {
 		pageIncrement = preSetPageIncrement(pageIncrement);
-		int oldValue = this.getPageIncrement();
+		Object oldValue = this.pageIncrement;
 		this.pageIncrement = pageIncrement;
 		updateUIPageIncrement();
-		firePropertyChange(ITraverseRidget.PROPERTY_PAGE_INCREMENT, oldValue, this.getPageIncrement());
+		firePropertyChange(ITraverseRidget.PROPERTY_PAGE_INCREMENT, oldValue, this.pageIncrement);
 	}
 
 	public void setValue(int value) {
 		value = preSetValue(value);
-		int oldValue = this.getValue();
+		Object oldValue = this.value;
 		this.value = value;
 		updateUIValue();
 		tooltipChangedHandler.updateTooltipPattern();
-		firePropertyChange(ITraverseRidget.PROPERTY_VALUE, oldValue, this.getValue());
+		firePropertyChange(ITraverseRidget.PROPERTY_VALUE, oldValue, this.value);
 	}
 
 	// protected methods
@@ -305,7 +311,39 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * is responsible to ensure, that the properties of the ridget and the
 	 * uiControl are equal.
 	 */
-	protected abstract void initFromUIControl();
+	protected void initFromUIControl() {
+		if (getUIControl() != null && !initialized) {
+			if (getMaximum() == Integer.MIN_VALUE) {
+				setMaximum(getUIControlMaximum());
+			}
+			if (getMinimum() == Integer.MIN_VALUE) {
+				setMinimum(getUIControlMinimum());
+			}
+			if (getIncrement() == Integer.MIN_VALUE) {
+				setIncrement(getUIControlIncrement());
+			}
+			if (getPageIncrement() == Integer.MIN_VALUE) {
+				setPageIncrement(getUIControlPageIncrement());
+			}
+			if (getValue() == Integer.MIN_VALUE) {
+				setValue(getUIControlSelection());
+			}
+			initAdditionalsFromUIControl();
+			initialized = true;
+		}
+	}
+
+	protected abstract void initAdditionalsFromUIControl();
+
+	protected abstract int getUIControlMaximum();
+
+	protected abstract int getUIControlMinimum();
+
+	protected abstract int getUIControlIncrement();
+
+	protected abstract int getUIControlPageIncrement();
+
+	protected abstract int getUIControlSelection();
 
 	// helping methods
 	// ////////////////
@@ -323,6 +361,9 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * @return an adjusted increment
 	 */
 	protected int preSetIncrement(int increment) {
+		if (!initialized) {
+			return increment;
+		}
 		if (increment <= 0) {
 			increment = 1;
 		} else if (increment > maximum - minimum) {
@@ -344,6 +385,9 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * @return an adjusted maximum
 	 */
 	protected int preSetMaximum(int maximum) {
+		if (!initialized) {
+			return maximum;
+		}
 		if (maximum < value) {
 			setValue(maximum);
 		}
@@ -370,6 +414,9 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * @return an adjusted minimum
 	 */
 	protected int preSetMinimum(int minimum) {
+		if (!initialized) {
+			return minimum;
+		}
 		if (value < minimum) {
 			setValue(minimum);
 		}
@@ -396,6 +443,9 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * @return an adjusted pageIncrement
 	 */
 	protected int preSetPageIncrement(int pageIncrement) {
+		if (!initialized) {
+			return pageIncrement;
+		}
 		if (pageIncrement <= 0) {
 			pageIncrement = 1;
 		} else if (pageIncrement > maximum - minimum) {
@@ -417,6 +467,9 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * @return an adjusted value
 	 */
 	protected int preSetValue(int value) {
+		if (!initialized) {
+			return value;
+		}
 		if (value < 0 || value < minimum) {
 			value = getMinimum();
 		}
@@ -441,8 +494,8 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * ) with the value of this ridget.
 	 */
 	protected String replaceToolTipPattern(String toolTipText) {
-		String value = Integer.toString(getValue());
-		return toolTipText.replace(ITraverseRidget.VALUE_PATTERN, value);
+		String strgValue = Integer.toString(getValue());
+		return toolTipText.replace(ITraverseRidget.VALUE_PATTERN, strgValue);
 	}
 
 	@Override
@@ -584,7 +637,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 		public static final String MIN_GE_MAX = "The minimum value of %d must be lower than the maximum value of %d"; //$NON-NLS-1$
 		public static final String MIN_LT_ZERO = "The minimum value of %d must be greater than zero"; //$NON-NLS-1$
 
-		String message;
+		private String message;
 
 		protected Message(String msgConstant, Object... attributes) {
 			message = String.format(msgConstant, attributes);

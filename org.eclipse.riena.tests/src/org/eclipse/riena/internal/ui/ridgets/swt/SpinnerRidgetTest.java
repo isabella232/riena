@@ -24,7 +24,7 @@ import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
- * Tests for the {@link SpinnerRidget}
+ * Tests for the class {@link SpinnerRidget}.
  */
 public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 

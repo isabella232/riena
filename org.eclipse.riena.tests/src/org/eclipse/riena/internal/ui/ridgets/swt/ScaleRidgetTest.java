@@ -21,7 +21,7 @@ import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
- * Tests for the {@link ScaleRidget}
+ * Tests for the class {@link ScaleRidget}.
  */
 public class ScaleRidgetTest extends AbstractTraverseRidgetTest {
 
@@ -32,7 +32,7 @@ public class ScaleRidgetTest extends AbstractTraverseRidgetTest {
 
 	@Override
 	protected ITraverseRidget createRidget() {
-		return new ScaleRidget();
+		return new MyScaleRidget();
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class ScaleRidgetTest extends AbstractTraverseRidgetTest {
 
 	@Override
 	protected ITraverseRidget getRidget() {
-		return (ITraverseRidget) super.getRidget();
+		return super.getRidget();
 	}
 
 	@Override
@@ -82,4 +82,70 @@ public class ScaleRidgetTest extends AbstractTraverseRidgetTest {
 		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(ScaleRidget.class, mapper.getRidgetClass(getWidget()));
 	}
+
+	/**
+	 * Tests the <i>protected</i> method {@code initFromUIControl()}.
+	 */
+	public void testInitFromUIControl() {
+
+		Scale scale = getWidget();
+		scale.setMaximum(22);
+		scale.setMinimum(1);
+		scale.setIncrement(2);
+		scale.setPageIncrement(11);
+
+		MyScaleRidget ridget = (MyScaleRidget) createRidget();
+		scale.setMaximum(22);
+		scale.setMinimum(1);
+		scale.setIncrement(2);
+		scale.setPageIncrement(11);
+		ridget.setUIControl(scale);
+		assertEquals(22, ridget.getMaximum());
+		assertEquals(1, ridget.getMinimum());
+		assertEquals(2, ridget.getIncrement());
+		assertEquals(11, ridget.getPageIncrement());
+
+		ridget = (MyScaleRidget) createRidget();
+		ridget.setMaximum(300);
+		ridget.setMinimum(2);
+		ridget.setIncrement(3);
+		ridget.setPageIncrement(10);
+		scale.setMaximum(22);
+		scale.setMinimum(1);
+		scale.setIncrement(2);
+		scale.setPageIncrement(11);
+		ridget.setUIControl(scale);
+		assertEquals(300, ridget.getMaximum());
+		assertEquals(2, ridget.getMinimum());
+		assertEquals(3, ridget.getIncrement());
+		assertEquals(10, ridget.getPageIncrement());
+
+		ridget = (MyScaleRidget) createRidget();
+		ridget.setMaximum(33);
+		ridget.setIncrement(3);
+		scale.setMaximum(22);
+		scale.setMinimum(1);
+		scale.setIncrement(2);
+		scale.setPageIncrement(11);
+		ridget.setUIControl(scale); // 
+		assertEquals(33, ridget.getMaximum());
+		assertEquals(1, ridget.getMinimum());
+		assertEquals(3, ridget.getIncrement());
+		assertEquals(11, ridget.getPageIncrement());
+
+	}
+
+	/**
+	 * This class extends the class {@code ScaleRidget} only make some protected
+	 * methods public. So these methods can be tested easier.
+	 */
+	private class MyScaleRidget extends ScaleRidget {
+
+		@Override
+		public void initFromUIControl() {
+			super.initFromUIControl();
+		}
+
+	}
+
 }
