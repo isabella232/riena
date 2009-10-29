@@ -15,8 +15,10 @@ import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
  * Descriptor of a renderer.
+ * <p>
+ * <b>Note:</b> The "lnfrenderer" (lower case 'renderer') is @deprecated.
  */
-@ExtensionInterface(id = "lnfrenderer")
+@ExtensionInterface(id = "lnfrenderer,lnfRenderer")
 public interface ILnfRendererExtension {
 
 	/**
