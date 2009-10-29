@@ -408,8 +408,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	/**
 	 * Non API.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 *              TODO [ev] make API ?
 	 */
-	void setDelegate(ITableRidgetDelegate delegate) {
+	public void setDelegate(ITableRidgetDelegate delegate) {
 		this.delegate = delegate;
 	}
 

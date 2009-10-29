@@ -260,7 +260,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return false;
 	}
 
-	protected final void handleSelectionChange(Object newSelection) {
+	protected void handleSelectionChange(Object newSelection) {
 		if (newSelection != null) { // selection changed
 			editable = newSelection;
 			setEnabled(false, true);
