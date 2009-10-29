@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="lnfrenderer" name="Look and Feel renderer" schema="schema/lnfrenderer.exsd"/>
+   <extension-point id="lnfrenderer" name="Look and Feel renderer" schema="schema/lnfrenderer-deprecated.exsd"/>
+   <extension-point id="lnfRenderer" name="Look and Feel renderer" schema="schema/lnfRenderer.exsd"/>
    <extension-point id="imagepath" name="Image Path" schema="schema/imagepath-deprecated.exsd"/>
    <extension-point id="imagePath" name="Image Path" schema="schema/imagePath.exsd"/>
    <extension
@@ -9,7 +10,7 @@
 		<uiSynchronizer class="org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer"/>         
    </extension>
    <extension
-         point="org.eclipse.riena.ui.swt.lnfrenderer">
+         point="org.eclipse.riena.ui.swt.lnfRenderer">
       <renderer
             class="org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer"
             lnfkey="Dialog.borderRenderer">
