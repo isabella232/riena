@@ -495,6 +495,25 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("", row4.column2);
 	}
 
+	/**
+	 * As per bug 293642
+	 */
+	public void testOneColumnFullWidget() {
+		MDWidget widget = getWidget();
+		Table table = widget.getTable();
+
+		assertEquals(0, table.getColumnCount());
+
+		WritableList list = new WritableList(input, MDBean.class);
+		String[] columnProperties = { "column1" };
+		String[] columnHeaders = { "The Header" };
+		getRidget().bindToModel(list, MDBean.class, columnProperties, columnHeaders);
+
+		assertEquals(1, table.getColumnCount());
+		assertEquals("The Header", table.getColumn(0).getText());
+		assertEquals(table.getClientArea().width, table.getColumn(0).getWidth());
+	}
+
 	// helping methods
 	//////////////////
 

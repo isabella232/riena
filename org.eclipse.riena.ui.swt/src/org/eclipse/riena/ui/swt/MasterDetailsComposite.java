@@ -14,6 +14,7 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 
@@ -62,8 +63,21 @@ public class MasterDetailsComposite extends AbstractMasterDetailsComposite {
 		return (Table) super.getTable();
 	}
 
+	/**
+	 * The default implementation will creates a table with zero columns.
+	 * <p>
+	 * Subclasses may override, call super to obtain the {@link Table} and
+	 * create {@link TableColumn}s as needed.
+	 * <p>
+	 * Note: if the number of columns in the Table does not match the number of
+	 * Columns in the Ridget, the MasterDetailsRidget will create the
+	 * appropriate number of columns. The automatically created columns will
+	 * share the full width of the table.
+	 */
 	protected Table createTable(Composite compTable, TableColumnLayout layout) {
 		Table table = new Table(compTable, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER);
+		// Do not create columns here or change the TableColumnLayout.
+		// Clients assume both are pristine so they can configure it to their liking
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		return table;

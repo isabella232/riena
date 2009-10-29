@@ -164,7 +164,7 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 	 */
 	private static final class TablePreparer implements ITableRidgetDelegate {
 		public void prepareTable(Table control, int expectedCols) {
-			int actualCols = control.getColumnCount() == 0 ? 1 : control.getColumnCount();
+			int actualCols = control.getColumnCount();
 			if (actualCols != expectedCols) {
 				for (TableColumn column : control.getColumns()) {
 					column.dispose();
