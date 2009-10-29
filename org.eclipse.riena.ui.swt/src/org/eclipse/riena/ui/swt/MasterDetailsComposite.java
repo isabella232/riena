@@ -15,7 +15,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
-import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 
 /**
@@ -30,7 +29,7 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
  * 
  * @since 1.2
  */
-public class MasterDetailsComposite extends AbstractMasterDetailsComposite implements IComplexComponent {
+public class MasterDetailsComposite extends AbstractMasterDetailsComposite {
 
 	/**
 	 * Creates a master detail composite with the given style and SWT.BOTTOM
