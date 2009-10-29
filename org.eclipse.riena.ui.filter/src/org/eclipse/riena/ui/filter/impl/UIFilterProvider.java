@@ -37,7 +37,7 @@ import org.eclipse.riena.ui.filter.extension.IUIFilterExtension;
  */
 public class UIFilterProvider implements IUIFilterProvider {
 
-	private IUIFilterExtension[] data;
+	private IUIFilterExtension[] uiFilterExtensions;
 
 	/**
 	 * Returns the extension for the given ID.
@@ -48,10 +48,10 @@ public class UIFilterProvider implements IUIFilterProvider {
 	 */
 	protected IUIFilterExtension getUIFilterDefinition(String filterId) {
 
-		if (getData().length == 0 || filterId == null) {
+		if (uiFilterExtensions.length == 0 || filterId == null) {
 			return null;
 		} else {
-			for (IUIFilterExtension extension : getData()) {
+			for (IUIFilterExtension extension : uiFilterExtensions) {
 				if ((extension.getFilterId() != null) && (extension.getFilterId().equals(filterId))) {
 					return extension;
 				}
@@ -157,15 +157,11 @@ public class UIFilterProvider implements IUIFilterProvider {
 	/**
 	 * This is the callback method for the extension injector.
 	 * 
-	 * @param data
+	 * @param uiFilterExtensions
 	 */
-	@InjectExtension(id = IUIFilterExtension.EXTENSION_ID)
-	public void update(IUIFilterExtension[] data) {
-		this.data = data;
-	}
-
-	private IUIFilterExtension[] getData() {
-		return data;
+	@InjectExtension
+	public void update(IUIFilterExtension[] uiFilterExtensions) {
+		this.uiFilterExtensions = uiFilterExtensions;
 	}
 
 	private RulesProvider newRulesProvider() {

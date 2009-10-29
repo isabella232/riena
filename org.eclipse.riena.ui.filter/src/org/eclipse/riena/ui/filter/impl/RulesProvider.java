@@ -24,7 +24,7 @@ import org.eclipse.riena.ui.filter.extension.IRuleValidatorRidgetMapper;
  */
 public class RulesProvider {
 
-	private IRuleMapperExtension[] data;
+	private IRuleMapperExtension[] ruleMapperExtensions;
 
 	/**
 	 * Creates a new instance of {@code RulesProvider}.
@@ -41,12 +41,11 @@ public class RulesProvider {
 	 */
 	public IUIFilterRuleMarkerRidget getRuleMarkerRidget(String type) {
 
-		IUIFilterRuleMarkerRidget rule = null;
 		if (type == null) {
-			return rule;
+			return null;
 		}
 
-		for (IRuleMapperExtension ruleMapperExtension : getData()) {
+		for (IRuleMapperExtension ruleMapperExtension : ruleMapperExtensions) {
 
 			IRuleMarkerRidgetMapper mapper = null;
 			if (type.equals("hidden")) { //$NON-NLS-1$
@@ -59,14 +58,14 @@ public class RulesProvider {
 				mapper = ruleMapperExtension.getRidgetMandatoryMarker();
 			}
 			if (mapper != null) {
-				rule = mapper.getRuleClass();
+				IUIFilterRuleMarkerRidget rule = mapper.getRuleClass();
 				if (rule != null) {
 					return rule;
 				}
 			}
 		}
 
-		return rule;
+		return null;
 
 	}
 
@@ -79,12 +78,11 @@ public class RulesProvider {
 	 */
 	public IUIFilterRuleMarkerRidget getRuleMarkerMenuItem(String type) {
 
-		IUIFilterRuleMarkerRidget rule = null;
 		if (type == null) {
-			return rule;
+			return null;
 		}
 
-		for (IRuleMapperExtension ruleMapperExtension : getData()) {
+		for (IRuleMapperExtension ruleMapperExtension : ruleMapperExtensions) {
 
 			IRuleMarkerRidgetMapper mapper = null;
 			if (type.equals("hidden")) { //$NON-NLS-1$
@@ -93,14 +91,14 @@ public class RulesProvider {
 				mapper = ruleMapperExtension.getMenuItemDisabledMarker();
 			}
 			if (mapper != null) {
-				rule = mapper.getRuleClass();
+				IUIFilterRuleMarkerRidget rule = mapper.getRuleClass();
 				if (rule != null) {
 					return rule;
 				}
 			}
 		}
 
-		return rule;
+		return null;
 
 	}
 
@@ -113,12 +111,11 @@ public class RulesProvider {
 	 */
 	public IUIFilterRuleMarkerNavigation getRuleMarkerNavigation(String type) {
 
-		IUIFilterRuleMarkerNavigation rule = null;
 		if (type == null) {
-			return rule;
+			return null;
 		}
 
-		for (IRuleMapperExtension ruleMapperExtension : getData()) {
+		for (IRuleMapperExtension ruleMapperExtension : ruleMapperExtensions) {
 
 			IRuleMarkerNavigationMapper mapper = null;
 			if (type.equals("hidden")) { //$NON-NLS-1$
@@ -127,14 +124,14 @@ public class RulesProvider {
 				mapper = ruleMapperExtension.getNavigationDisabledMarker();
 			}
 			if (mapper != null) {
-				rule = mapper.getRuleClass();
+				IUIFilterRuleMarkerNavigation rule = mapper.getRuleClass();
 				if (rule != null) {
 					return rule;
 				}
 			}
 		}
 
-		return rule;
+		return null;
 
 	}
 
@@ -145,34 +142,28 @@ public class RulesProvider {
 	 */
 	public IUIFilterRuleValidatorRidget getRuleValidatorRidget() {
 
-		IUIFilterRuleValidatorRidget rule = null;
-
-		for (IRuleMapperExtension ruleMapperExtension : getData()) {
+		for (IRuleMapperExtension ruleMapperExtension : ruleMapperExtensions) {
 			IRuleValidatorRidgetMapper mapper = ruleMapperExtension.getRidgetValidator();
 			if (mapper != null) {
-				rule = mapper.getRuleClass();
+				IUIFilterRuleValidatorRidget rule = mapper.getRuleClass();
 				if (rule != null) {
 					return rule;
 				}
 			}
 		}
 
-		return rule;
+		return null;
 
 	}
 
 	/**
 	 * This is the callback method for the extension injector.
 	 * 
-	 * @param data
+	 * @param ruleMapperExtensions
 	 */
-	@InjectExtension(id = IRuleMapperExtension.EEXTENSIO_ID)
-	public void update(IRuleMapperExtension[] data) {
-		this.data = data;
-	}
-
-	private IRuleMapperExtension[] getData() {
-		return data;
+	@InjectExtension
+	public void update(IRuleMapperExtension[] ruleMapperExtensions) {
+		this.ruleMapperExtensions = ruleMapperExtensions;
 	}
 
 }
