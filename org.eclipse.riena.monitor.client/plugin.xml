@@ -9,6 +9,7 @@
 	<!-- @Deprecated End -->
 
    <extension-point id="collectors" name="Collectors" schema="schema/collectors.exsd"/>
+   <extension-point id="sender" name="Sender" schema="schema/sender.exsd"/>
    
 	<extension
         point="org.eclipse.riena.core.startups">
@@ -39,7 +40,7 @@
       </store>
 	</extension>
 	
-   <extension point="org.eclipse.riena.monitor.sender">
+   <extension point="org.eclipse.riena.monitor.client.sender">
       <sender
             name="SimpleSender"
             class="org.eclipse.riena.monitor.client.SimpleSender:retryTime=20 m">

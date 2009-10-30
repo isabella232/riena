@@ -17,14 +17,26 @@ import org.eclipse.riena.monitor.client.ISender;
 
 /**
  * Extension interface for the {@code ISender} definition.
+ * <p>
+ * <b>Note:</b> The "org.eclipse.riena.monitor.sender" is @deprecated.
  */
 @ExtensionInterface
 public interface ISenderExtension {
 
-	String ID = "org.eclipse.riena.monitor.sender"; //$NON-NLS-1$
+	String ID = "org.eclipse.riena.monitor.sender,sender"; //$NON-NLS-1$
 
+	/**
+	 * Return the descriptive name of the sender.
+	 * 
+	 * @return the descriptive name of the sender
+	 */
 	String getName();
 
+	/**
+	 * Create the configured {@code ISender}.
+	 * 
+	 * @return the sender
+	 */
 	@MapName("class")
 	@DoNotWireExecutable
 	ISender createSender();
