@@ -21,13 +21,29 @@ import org.eclipse.riena.monitor.client.ICollector;
 @ExtensionInterface
 public interface ICollectorExtension {
 
-	String ID = "org.eclipse.riena.monitor.collectors"; //$NON-NLS-1$
+	String ID = "org.eclipse.riena.monitor.collectors,collectors"; //$NON-NLS-1$
 
+	/**
+	 * Return the name of the category this collector belongs to.
+	 * 
+	 * @return the category name
+	 */
 	String getCategory();
 
+/**
+	 * Create the {@code ICollector.
+	 * 
+	 * @return a collector
+	 */
 	@MapName("class")
 	@DoNotWireExecutable
 	ICollector createCollector();
 
+	/**
+	 * Return the maximum number of {@code Collectible} items this collector may
+	 * keep for transfer to the <i>server</i>.
+	 * 
+	 * @return maximum number if items to keep.
+	 */
 	int getMaxItems();
 }
