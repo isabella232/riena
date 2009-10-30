@@ -8,6 +8,7 @@
    <!-- @Deprecated End -->
 
    <extension-point id="logListeners" name=" Log listeneres" schema="schema/logListeners.exsd"/>
+   <extension-point id="logCatchers" name="Log catchers" schema="schema/logCatchers.exsd"/>
    <extension-point id="startups" name="Startup tasks" schema="schema/startups.exsd"/>
    <extension-point id="log4jConfiguration" name="Log4j Configuration" schema="schema/log4jConfiguration.exsd"/>
 
@@ -26,7 +27,7 @@
          -->
    </extension>
    <extension
-         point="org.eclipse.riena.core.logging.catchers">
+         point="org.eclipse.riena.core.logCatchers">
          <!-- This is examplary!
          <logCatcher name="Platform" class="org.eclipse.riena.core.logging.PlatformLogCatcher"/>
          <logCatcher name="Java" class="org.eclipse.riena.core.logging.JavaLogCatcher"/>

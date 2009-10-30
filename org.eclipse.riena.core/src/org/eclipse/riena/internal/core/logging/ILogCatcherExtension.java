@@ -21,7 +21,7 @@ import org.eclipse.riena.internal.core.Activator;
 @ExtensionInterface
 public interface ILogCatcherExtension {
 
-	String EXTENSION_POINT = Activator.PLUGIN_ID + ".logging.catchers"; //$NON-NLS-1$
+	String ID = Activator.PLUGIN_ID + ".logging.catchers,logCatchers"; //$NON-NLS-1$
 
 	String getName();
 

@@ -26,8 +26,7 @@ public class LoggerMillWiring extends AbstractWiring {
 	@Override
 	public void wire(Object bean, BundleContext context) {
 		// get log catchers
-		Inject.extension(ILogCatcherExtension.EXTENSION_POINT).useType(ILogCatcherExtension.class).into(bean).andStart(
-				context);
+		Inject.extension(ILogCatcherExtension.ID).useType(ILogCatcherExtension.class).into(bean).andStart(context);
 
 		// get log listeners
 		Inject.extension(ILogListenerExtension.ID).useType(ILogListenerExtension.class).into(bean).andStart(context);
