@@ -19,7 +19,7 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
  * <p>
  * <b>Note:</b> The "imagepath" (lower case 'path') is @deprecated.
  */
-@ExtensionInterface(id = "imagepath,imagePath")
+@ExtensionInterface(id = "imagepath,imagePaths")
 public interface IImagePathExtension {
 
 	/**

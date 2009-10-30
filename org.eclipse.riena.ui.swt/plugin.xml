@@ -2,15 +2,15 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension-point id="lnfrenderer" name="Look and Feel renderer" schema="schema/lnfrenderer-deprecated.exsd"/>
-   <extension-point id="lnfRenderer" name="Look and Feel renderer" schema="schema/lnfRenderer.exsd"/>
+   <extension-point id="lnfRenderers" name="Look and Feel renderer" schema="schema/lnfRenderers.exsd"/>
    <extension-point id="imagepath" name="Image Path" schema="schema/imagepath-deprecated.exsd"/>
-   <extension-point id="imagePath" name="Image Path" schema="schema/imagePath.exsd"/>
+   <extension-point id="imagePaths" name="Image Path" schema="schema/imagePaths.exsd"/>
    <extension
          point="org.eclipse.riena.ui.core.uiSynchronizer">
 		<uiSynchronizer class="org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer"/>         
    </extension>
    <extension
-         point="org.eclipse.riena.ui.swt.lnfRenderer">
+         point="org.eclipse.riena.ui.swt.lnfRenderers">
       <renderer
             class="org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer"
             lnfkey="Dialog.borderRenderer">
@@ -21,7 +21,7 @@
       </renderer>
    </extension>
    <extension
-         point="org.eclipse.riena.ui.swt.imagePath">
+         point="org.eclipse.riena.ui.swt.imagePaths">
       <path
             path="icons">
       </path>
