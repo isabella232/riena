@@ -24,7 +24,7 @@ import org.eclipse.riena.internal.core.Activator;
 @ExtensionInterface
 public interface ILogListenerExtension {
 
-	String EXTENSION_POINT = Activator.PLUGIN_ID + ".logging.listeners"; //$NON-NLS-1$
+	String ID = Activator.PLUGIN_ID + ".logging.listeners,logListeners"; //$NON-NLS-1$
 
 	String getName();
 
