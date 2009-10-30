@@ -10,6 +10,7 @@
 
    <extension-point id="collectors" name="Collectors" schema="schema/collectors.exsd"/>
    <extension-point id="sender" name="Sender" schema="schema/sender.exsd"/>
+   <extension-point id="store" name="Store" schema="schema/store.exsd"/>
    
 	<extension
         point="org.eclipse.riena.core.startups">
@@ -33,7 +34,7 @@
       </collector>
    </extension>
 
-   <extension point="org.eclipse.riena.monitor.store">
+   <extension point="org.eclipse.riena.monitor.client.store">
       <store
             name="SimpleStore"
             class="org.eclipse.riena.monitor.client.SimpleStore:cleanupDelay=1 h">
