@@ -543,7 +543,7 @@
       </handler>
    </extension>
    <extension
-         point="org.eclipse.riena.ui.swt.lnfRenderer">
+         point="org.eclipse.riena.ui.swt.lnfRenderers">
       <renderer
             class="org.eclipse.riena.example.client.application.ExampleModuleGroupRenderer"
             lnfid="ExampleLnf"
@@ -1041,7 +1041,7 @@
        </splashHandlerProductBinding>
     </extension>
     <extension
-          point="org.eclipse.riena.ui.swt.imagePath">
+          point="org.eclipse.riena.ui.swt.imagePaths">
        <path
              path="icons">
        </path>

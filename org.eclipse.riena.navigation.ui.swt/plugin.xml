@@ -21,7 +21,7 @@
       </view>
    </extension>
    <extension
-         point="org.eclipse.riena.ui.swt.lnfRenderer">
+         point="org.eclipse.riena.ui.swt.lnfRenderers">
       <renderer
             class="org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer"
             lnfkey="TitlelessShell.renderer">
