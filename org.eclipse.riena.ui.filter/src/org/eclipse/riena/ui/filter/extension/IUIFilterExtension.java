@@ -19,7 +19,7 @@ import org.eclipse.riena.core.injector.extension.MapName;
  * <p>
  * <b>Note:</b> The "org.eclipse.riena.filter.uifilter" is @deprecated.
  */
-@ExtensionInterface(id = "org.eclipse.riena.filter.uifilter,uiFilter")
+@ExtensionInterface(id = "org.eclipse.riena.filter.uifilter,uiFilters")
 public interface IUIFilterExtension {
 
 	/**

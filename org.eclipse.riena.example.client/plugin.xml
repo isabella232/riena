@@ -755,7 +755,7 @@
       </assembly>
    </extension>
    <extension
-         point="org.eclipse.riena.ui.filter.uiFilter">
+         point="org.eclipse.riena.ui.filter.uiFilters">
       <filter
             filterId="rienaExample.offline">
          <nodeId
