@@ -11,6 +11,7 @@
    <extension-point id="collectors" name="Collectors" schema="schema/collectors.exsd"/>
    <extension-point id="sender" name="Sender" schema="schema/sender.exsd"/>
    <extension-point id="store" name="Store" schema="schema/store.exsd"/>
+   <extension-point id="clientInfoProvider" name="Client information provider" schema="schema/clientInfoProvider.exsd"/>
    
 	<extension
         point="org.eclipse.riena.core.startups">
@@ -48,7 +49,7 @@
       </sender>
 	</extension>
 
-	<extension point="org.eclipse.riena.monitor.clientinfoprovider">
+	<extension point="org.eclipse.riena.monitor.client.clientInfoProvider">
        <clientInfoProvider
             name="SimpleClientInfoProvider"
             class="org.eclipse.riena.monitor.client.SimpleClientInfoProvider:user.name,x-host.name">

@@ -20,10 +20,20 @@ import org.eclipse.riena.monitor.client.IClientInfoProvider;
 @ExtensionInterface
 public interface IClientInfoProviderExtension {
 
-	String ID = "org.eclipse.riena.monitor.clientinfoprovider"; //$NON-NLS-1$
+	String ID = "org.eclipse.riena.monitor.clientinfoprovider,clientInfoProvider"; //$NON-NLS-1$
 
+	/**
+	 * Return the descriptive name of the client info provider.
+	 * 
+	 * @return the client info provider
+	 */
 	String getName();
 
+	/**
+	 * Create the configured {@code IClientInfoProvider}.
+	 * 
+	 * @return the client info provider
+	 */
 	@MapName("class")
 	IClientInfoProvider createClientInfoProvider();
 
