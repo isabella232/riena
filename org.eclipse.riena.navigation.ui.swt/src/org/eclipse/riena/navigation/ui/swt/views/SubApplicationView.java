@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
@@ -34,8 +35,11 @@ import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.WorkbenchPage;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -68,6 +72,8 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
  */
 public class SubApplicationView implements INavigationNodeView<SubApplicationController, SubApplicationNode>,
 		IPerspectiveFactory {
+
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubApplicationView.class);
 
 	private AbstractViewBindingDelegate binding;
 	private SubApplicationController subApplicationController;
@@ -593,9 +599,15 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		 */
 		private void showView(String id, String secondary) {
 			try {
-				getActivePage().showView(id, secondary, IWorkbenchPage.VIEW_ACTIVATE);
-			} catch (PartInitException e) {
-				e.printStackTrace();
+				IWorkbenchPage page = getActivePage();
+				// open view but don't activate it and don't bring it to top
+				page.showView(id, secondary, IWorkbenchPage.VIEW_VISIBLE);
+				// bring view to top making it visible
+				IViewReference viewRef = page.findViewReference(id, secondary);
+				((WorkbenchPage) page).getActivePerspective().bringToTop(viewRef);
+			} catch (PartInitException exc) {
+				String msg = String.format("Failed to show view: %s, %s", id, secondary); //$NON-NLS-1$
+				LOGGER.log(0, msg, exc);
 			}
 		}
 	}
