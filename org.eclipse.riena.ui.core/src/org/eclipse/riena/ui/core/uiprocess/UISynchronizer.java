@@ -27,6 +27,8 @@ import org.eclipse.riena.internal.ui.core.Activator;
  * In case multiple extension points exist, which define an implementation class
  * for the {@code IUISynchronizer}, there is no guarantee which one will be
  * used.
+ * 
+ * @since 1.2
  */
 public final class UISynchronizer {
 
