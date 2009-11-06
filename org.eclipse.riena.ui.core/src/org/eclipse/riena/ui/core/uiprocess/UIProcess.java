@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
@@ -131,12 +132,16 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 			if (forceMonitorBegin()) {
 				monitor.beginTask(getName(), getTotalWork());
 			}
-			boolean state = true;
+			boolean state = false;
 			try {
 				state = runJob(monitor);
+			} catch (OperationCanceledException e) {
+				if (!monitor.isCanceled()) {
+					monitor.setCanceled(true);
+				}
 			} catch (Throwable t) {
-				// do error handling here
-				state = false;
+				// Forward to exception handler
+				Service.get(Activator.getDefault().getContext(), IExceptionHandlerManager.class).handleException(t);
 			}
 			monitor.done();
 			afterRun(monitor);
