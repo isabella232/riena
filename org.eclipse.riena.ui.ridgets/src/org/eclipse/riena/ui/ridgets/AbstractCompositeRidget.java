@@ -25,9 +25,10 @@ import org.eclipse.riena.ui.common.IComplexComponent;
  */
 public abstract class AbstractCompositeRidget extends AbstractRidget implements IComplexRidget {
 
+	private final PropertyChangeListener propertyChangeListener;
+	private final Map<String, IRidget> ridgets;
+
 	private IComplexComponent uiControl;
-	private Map<String, IRidget> ridgets;
-	private PropertyChangeListener propertyChangeListener;
 	protected boolean markedHidden; // TODO add MarkerSupport instead of boolean flag
 
 	private boolean enabled = true;
@@ -38,8 +39,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 */
 	public AbstractCompositeRidget() {
 		super();
-		ridgets = new HashMap<String, IRidget>();
 		propertyChangeListener = new PropertyChangeHandler();
+		ridgets = new HashMap<String, IRidget>();
 		markedHidden = false;
 	}
 
@@ -141,15 +142,12 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	public void addRidget(String id, IRidget ridget) {
-
 		ridget.addPropertyChangeListener(propertyChangeListener);
 		ridgets.put(id, ridget);
 	}
 
 	public IRidget getRidget(String id) {
-
 		return ridgets.get(id);
-
 	}
 
 	public Collection<? extends IRidget> getRidgets() {
@@ -187,13 +185,6 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		return false;
 	}
 
-	private class PropertyChangeHandler implements PropertyChangeListener {
-		public void propertyChange(PropertyChangeEvent evt) {
-
-			propertyChangeSupport.firePropertyChange(evt);
-		}
-	}
-
 	public String getToolTipText() {
 		return toolTip;
 	}
@@ -214,6 +205,17 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 
 	// protected methods
 	////////////////////
+
+	/**
+	 * This method is provisional and may be removed without warning.
+	 * <p>
+	 * TODO [ev] make api?
+	 * 
+	 * @since 1.2
+	 */
+	public void removeRidget(String key) {
+		ridgets.remove(key);
+	}
 
 	/**
 	 * Updates the visibility of the complex UI control (and of the UI controls
@@ -241,6 +243,19 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 */
 	protected void updateToolTipText() {
 		// does nothing
+	}
+
+	// helping classes 
+	//////////////////
+
+	/**
+	 * Forwards a property change event fired by a (sub) ridget contained in
+	 * this composite ridget, to the listeners of the composite ridget.
+	 */
+	private class PropertyChangeHandler implements PropertyChangeListener {
+		public void propertyChange(PropertyChangeEvent evt) {
+			propertyChangeSupport.firePropertyChange(evt);
+		}
 	}
 
 }
