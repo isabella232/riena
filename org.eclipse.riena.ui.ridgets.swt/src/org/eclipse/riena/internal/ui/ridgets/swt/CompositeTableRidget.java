@@ -545,8 +545,6 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	 */
 	private final class CTRowToRidgetMapper extends RowConstructionListener implements IRowContentProvider {
 
-		private final IControlRidgetMapper<Object> mapper = SwtControlRidgetMapper.getInstance();
-
 		@Override
 		public void headerConstructed(Control newHeader) {
 			// unused
@@ -587,6 +585,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 
 		private IRidget createRidget(Object control) {
+			IControlRidgetMapper<Object> mapper = SwtControlRidgetMapper.getInstance();
 			Class<? extends IRidget> ridgetClass = mapper.getRidgetClass(control);
 			return ReflectionUtils.newInstance(ridgetClass);
 		}
