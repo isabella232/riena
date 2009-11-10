@@ -69,6 +69,16 @@ public class FlasherSupportForRenderer {
 
 	}
 
+	public boolean isFlashing() {
+		Collection<UIProcessFinishedMarker> markers = renderer.getMarkersOfType(UIProcessFinishedMarker.class);
+		for (UIProcessFinishedMarker processMarker : markers) {
+			if (processMarker.isFlashing()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Creates and starts the flasher of a finished UI process.
 	 * 

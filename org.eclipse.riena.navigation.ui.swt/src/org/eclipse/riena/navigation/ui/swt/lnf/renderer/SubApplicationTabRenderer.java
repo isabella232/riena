@@ -100,10 +100,12 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		// Background
 		Color backgroundStartColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR,
-				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR, null);
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR, null,
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_START_COLOR);
 		gc.setForeground(backgroundStartColor);
 		Color backgroundEndColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR,
-				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, null);
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, null,
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_END_COLOR);
 		gc.setBackground(backgroundEndColor);
 		int x = getBounds().x + BORDER_LEFT_WIDTH - 1 - leftInset;
 		int y = getBounds().y + 1;
@@ -128,9 +130,16 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		int y2 = getBounds().y + getHeight() - 1;
 		gc.drawLine(x, y, x2, y2);
 		Color innerBorderColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR);
+
 		if (!isEnabled()) {
 			innerBorderColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR);
 		}
+
+		if (isProcessFinishedInBackground()) {
+			innerBorderColor = lnf
+					.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR);
+		}
+
 		if (!isActive()) {
 			gc.setForeground(innerBorderColor);
 			x += 1;
@@ -168,6 +177,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		gc.drawLine(x, y, x2, y2);
 		// -right
 		gc.setForeground(borderTopRightColor);
+
 		x = getBounds().x + getWidth() + rightInset;
 		y = getBounds().y + BORDER_TOP_WIDTH;
 		x2 = x;
@@ -205,7 +215,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		// Text
 		Color textColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_FOREGROUND,
 				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND,
-				LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND);
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND, null);
 		gc.setForeground(textColor);
 		y = getBounds().y + BORDER_TOP_WIDTH + getTextTopInset();
 
@@ -243,6 +253,28 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		flasherSupport.startFlasher();
 
+	}
+
+	/**
+	 * Returns whether a process finished in the background but the flashing
+	 * state is not active anymore.
+	 * 
+	 * @return true if a process has finished in the background but the tab is
+	 *         not flashing anymore, false otherwise
+	 */
+	private boolean isProcessFinishedInBackground() {
+		return flasherSupport.isProcessMarkerVisible() && !flasherSupport.isFlashing();
+	}
+
+	/**
+	 * Returns whether the processFinishedMarker is visible AND the flashing
+	 * state is true.
+	 * 
+	 * @return true if the tab is flashing and the marker is visible as well,
+	 *         false otherwise
+	 */
+	private boolean isProcessFinishedMarkerVisibleWhileFlashing() {
+		return (flasherSupport.isProcessMarkerVisible() && flasherSupport.isFlashing());
 	}
 
 	int getTextTopInset() {
@@ -435,11 +467,12 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * @return color
 	 * @TODO same code in EmbeddedTitlebarRenderer
 	 */
-	private Color getColor(String activeColorKey, String passiveColorKey, String disabeldColorKey) {
+	private Color getColor(String activeColorKey, String passiveColorKey, String disabeldColorKey,
+			String processFinishedKey) {
 
 		Color color = null;
 
-		String colorKey = getKey(activeColorKey, passiveColorKey, disabeldColorKey);
+		String colorKey = getKey(activeColorKey, passiveColorKey, disabeldColorKey, processFinishedKey);
 		if (colorKey == null) {
 			colorKey = activeColorKey;
 		}
@@ -472,12 +505,14 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * @return key
 	 * @TODO same code in EmbeddedTitlebarRenderer Returns according to the
 	 */
-	private String getKey(String activeKey, String passiveKey, String disabeldKey) {
+	private String getKey(String activeKey, String passiveKey, String disabeldKey, String processFinishedKey) {
 
 		String key = null;
 		if (isEnabled()) {
-			if (isActive() || flasherSupport.isProcessMarkerVisible()) {
+			if (isActive() || isProcessFinishedMarkerVisibleWhileFlashing()) {
 				key = activeKey;
+			} else if (isProcessFinishedInBackground()) {
+				key = processFinishedKey;
 			} else {
 				key = passiveKey;
 			}

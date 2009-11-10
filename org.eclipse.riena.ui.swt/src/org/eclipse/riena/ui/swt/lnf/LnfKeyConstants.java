@@ -212,6 +212,22 @@ public final class LnfKeyConstants {
 	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
 	 *      >Riena Wiki</a>
 	 */
+	public static final String SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_END_COLOR = "SubApplicationSwitcher.processFinishedBackgroundEndColor"; //$NON-NLS-1$
+	/**
+	 * This constant is described in Eclipsepedia.
+	 * 
+	 * @see <a href=
+	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
+	 *      >Riena Wiki</a>
+	 */
+	public static final String SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_START_COLOR = "SubApplicationSwitcher.processFinishedBackgroundStartColor"; //$NON-NLS-1$
+	/**
+	 * This constant is described in Eclipsepedia.
+	 * 
+	 * @see <a href=
+	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
+	 *      >Riena Wiki</a>
+	 */
 	public static final String SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR = "SubApplicationSwitcher.topSelectionColor"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
@@ -236,7 +252,15 @@ public final class LnfKeyConstants {
 	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
 	 *      >Riena Wiki</a>
 	 */
-	public static final String SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR = "SubApplicationSwitcher.innerBorderColor"; //$NON-NLS-1$
+	public static final String SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR = "SubApplicationSwitcher.innerDisabledBorderColor"; //$NON-NLS-1$
+	/**
+	 * This constant is described in Eclipsepedia.
+	 * 
+	 * @see <a href=
+	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
+	 *      >Riena Wiki</a>
+	 */
+	public static final String SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR = "SubApplicationSwitcher.innerProcessFinishedBorderColor"; //$NON-NLS-1$
 
 	/**
 	 * This constant is described in Eclipsepedia.

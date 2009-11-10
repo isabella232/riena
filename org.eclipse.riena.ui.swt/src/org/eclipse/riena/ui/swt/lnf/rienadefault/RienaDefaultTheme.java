@@ -133,6 +133,10 @@ public class RienaDefaultTheme implements ILnfTheme {
 				255, 255));
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(255, 255,
 				255));
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_START_COLOR,
+				new ColorLnfResource(255, 255, 255));
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_END_COLOR, new ColorLnfResource(
+				255, 255, 255));
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(245,
 				245, 245));
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(229, 229,
@@ -143,6 +147,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 				new ColorLnfResource(183, 183, 183));
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR, new ColorLnfResource(245, 245,
 				245));
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR, new ColorLnfResource(
+				245, 245, 245));
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_TOP_RIGHT_COLOR, new ColorLnfResource(226,
 				226, 226));
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_BOTTOM_LEFT_COLOR, new ColorLnfResource(203,
