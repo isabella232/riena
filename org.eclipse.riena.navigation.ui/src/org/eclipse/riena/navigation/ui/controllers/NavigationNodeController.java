@@ -30,6 +30,7 @@ import org.eclipse.riena.ui.core.context.IContext;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IComplexRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
@@ -177,7 +178,17 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidget(java.lang.String)
 	 */
 	public IRidget getRidget(String id) {
-		return ridgets.get(id);
+		IRidget result = ridgets.get(id);
+		// TODO [ev] -- temporary hack -- revisit
+		if (result == null && id.indexOf('.') != -1) {
+			String parentId = id.substring(0, id.lastIndexOf('.'));
+			String childId = id.substring(id.lastIndexOf('.') + 1);
+			IRidget parent = ridgets.get(parentId);
+			if (parent instanceof IComplexRidget) {
+				result = ((IComplexRidget) parent).getRidget(childId);
+			}
+		}
+		return result;
 	}
 
 	/**
