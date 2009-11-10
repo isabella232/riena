@@ -58,12 +58,7 @@ public class DefaultBindingManager implements IBindingManager {
 		this.mapper = mapper;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.uibinding.IBindingManager#injectRidgets(org.eclipse.riena.ui.internal.ridgets.IRidgetContainer,
-	 *      java.util.List)
-	 */
 	public void injectRidgets(IRidgetContainer ridgetContainer, List<Object> uiControls) {
-
 		CorrespondingLabelMapper ridgetMapper = new CorrespondingLabelMapper(ridgetContainer);
 		if (Activator.getDefault() != null) {
 			Wire.instance(ridgetMapper).andStart(Activator.getDefault().getContext());
@@ -90,8 +85,10 @@ public class DefaultBindingManager implements IBindingManager {
 			}
 		}
 
-		// iterate over all controls that are not ILabelRidgets and try to connect them with their corresponding Label
-		for (Iterator<Entry<String, IRidget>> it = controls.entrySet().iterator(); it.hasNext();) {
+		// iterate over all controls that are not ILabelRidgets and try to connect 
+		// them with their corresponding Label
+		Iterator<Entry<String, IRidget>> it = controls.entrySet().iterator();
+		while (it.hasNext()) {
 			Entry<String, IRidget> entry = it.next();
 			ridgetMapper.connectCorrespondingLabel(entry.getValue(), entry.getKey());
 		}
