@@ -27,7 +27,7 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	private static SWTBindingPropertyLocator locator;
 
 	private SWTBindingPropertyLocator() {
-
+		// prevent instantiation
 	}
 
 	/**
@@ -58,6 +58,21 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 		return null;
 	}
 
+	public void setBindingProperty(Object uiControl, String id) {
+		if (uiControl instanceof Widget) {
+			Widget control = (Widget) uiControl;
+			if (control.isDisposed()) {
+				return;
+			}
+			control.setData(BINDING_PROPERTY, id);
+		} else if (uiControl instanceof IPropertyNameProvider) {
+			((IPropertyNameProvider) uiControl).setPropertyName(id);
+		}
+	}
+
+	// helping methods
+	//////////////////
+
 	/**
 	 * Returns the binding property of the given UI control. This method pays
 	 * attention, if the widget is a child of a complex element. In this case
@@ -69,36 +84,20 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	 * @return full binding property
 	 */
 	private String locateBindingProperty(Widget widget) {
-
 		String fullProperty = (String) widget.getData(BINDING_PROPERTY);
 		if (StringUtils.isEmpty(fullProperty)) {
 			fullProperty = ""; //$NON-NLS-1$
-		}
-
-		if (widget instanceof Control) {
-			Composite parent = ((Control) widget).getParent();
-			if (parent != null) {
-				String parentProperty = locateBindingProperty(parent);
-				if (!StringUtils.isEmpty(parentProperty) && (parent instanceof IComplexComponent)) {
-					fullProperty = parentProperty + SEPARATOR + fullProperty;
+		} else {
+			if (widget instanceof Control) {
+				Composite parent = ((Control) widget).getParent();
+				if (parent != null) {
+					String parentProperty = locateBindingProperty(parent);
+					if (!StringUtils.isEmpty(parentProperty) && (parent instanceof IComplexComponent)) {
+						fullProperty = parentProperty + SEPARATOR + fullProperty;
+					}
 				}
 			}
 		}
-
 		return fullProperty;
-
-	}
-
-	public void setBindingProperty(Object uiControl, String id) {
-
-		if (uiControl instanceof Widget) {
-			Widget control = (Widget) uiControl;
-			if (control.isDisposed()) {
-				return;
-			}
-			control.setData(BINDING_PROPERTY, id);
-		} else if (uiControl instanceof IPropertyNameProvider) {
-			((IPropertyNameProvider) uiControl).setPropertyName(id);
-		}
 	}
 }

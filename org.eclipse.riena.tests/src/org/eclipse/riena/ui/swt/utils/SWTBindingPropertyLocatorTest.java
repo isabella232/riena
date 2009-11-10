@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -30,35 +31,58 @@ import org.eclipse.riena.ui.common.IComplexComponent;
 @UITestCase
 public class SWTBindingPropertyLocatorTest extends TestCase {
 
+	private Display display;
+	private Shell shell;
+
+	protected void setUp() {
+		display = Display.getDefault();
+		shell = new Shell(display);
+	}
+
+	@Override
+	protected void tearDown() throws Exception {
+		shell.dispose();
+		display.dispose();
+	}
+
 	/**
 	 * Tests the <i>private</i> method {@code locateBindingProperty(Widget)}.
 	 */
 	public void testLocateBindingProperty() {
-
 		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 
-		Shell shell = new Shell();
 		String prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", shell);
+
 		assertEquals("", prop);
 
 		Label label = new Label(shell, SWT.NONE);
 		locator.setBindingProperty(label, "label1");
 		prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", label);
+
 		assertEquals("label1", prop);
 
 		TestComplexComponent complexComponent = new TestComplexComponent(shell, SWT.NONE);
 		locator.setBindingProperty(complexComponent, "complex1");
 		Text text = new Text(complexComponent, SWT.NONE);
+		prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", text);
+
+		assertEquals("", prop);
+
 		locator.setBindingProperty(text, "text1");
 		prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", text);
+
 		assertEquals("complex1.text1", prop);
 
-		SwtUtilities.disposeWidget(shell);
+		locator.setBindingProperty(complexComponent, "");
+		prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", text);
 
+		assertEquals("text1", prop);
 	}
 
-	private static class TestComplexComponent extends Composite implements IComplexComponent {
+	// helping classes
+	//////////////////
 
+	private static class TestComplexComponent extends Composite implements IComplexComponent {
 		public TestComplexComponent(Composite parent, int style) {
 			super(parent, style);
 		}
@@ -66,7 +90,6 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		public List<Object> getUIControls() {
 			return null;
 		}
-
 	}
 
 }
