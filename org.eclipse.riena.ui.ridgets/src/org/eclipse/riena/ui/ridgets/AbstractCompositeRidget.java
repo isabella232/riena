@@ -58,10 +58,6 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		return savedVisibleState;
 	}
 
-	protected boolean isUIControlVisible() {
-		return true;
-	}
-
 	public void setVisible(boolean visible) {
 		if (this.markedHidden == visible) {
 			this.markedHidden = !visible;
@@ -146,6 +142,17 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		ridgets.put(id, ridget);
 	}
 
+	/**
+	 * This method is provisional and may be removed without warning.
+	 * <p>
+	 * TODO [ev] make api?
+	 * 
+	 * @since 1.2
+	 */
+	public void removeRidget(String key) {
+		ridgets.remove(key);
+	}
+
 	public IRidget getRidget(String id) {
 		return ridgets.get(id);
 	}
@@ -207,14 +214,12 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	////////////////////
 
 	/**
-	 * This method is provisional and may be removed without warning.
-	 * <p>
-	 * TODO [ev] make api?
-	 * 
-	 * @since 1.2
+	 * Returns true if the control of this ridget is visible, false otherwise.
+	 * This default implementation always returns true and should be overriden
+	 * by subclasses.
 	 */
-	public void removeRidget(String key) {
-		ridgets.remove(key);
+	protected boolean isUIControlVisible() {
+		return true;
 	}
 
 	/**
