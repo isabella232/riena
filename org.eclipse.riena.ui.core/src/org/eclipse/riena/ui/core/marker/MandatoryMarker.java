@@ -73,4 +73,13 @@ public class MandatoryMarker extends AbstractMarker implements IIconizableMarker
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 1.2
+	 */
+	public boolean isVisible() {
+		return !isDisabled();
+	}
+
 }

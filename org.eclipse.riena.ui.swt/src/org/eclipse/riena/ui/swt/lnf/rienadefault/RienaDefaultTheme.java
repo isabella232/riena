@@ -64,6 +64,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_INFO = "statusline_info.gif"; //$NON-NLS-1$
 	private static final String IMAGE_ERROR_MARKER = "errorMarker"; //$NON-NLS-1$
 	private static final String IMAGE_MANDATORY_MARKER = "mandatoryMarker"; //$NON-NLS-1$
+	private static final String IMAGE_ATTENTION_MARKER = "attentionMarker"; //$NON-NLS-1$
 	private static final String IMAGE_PROCESS_FINISHED_MARKER = "processFinishedMarker"; //$NON-NLS-1$
 	private static final String IMAGE_SCROLL_UP = "arrowUp.gif"; //$NON-NLS-1$
 	private static final String IMAGE_SCROLL_DOWN = "arrowDown.gif"; //$NON-NLS-1$
@@ -313,6 +314,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(IMAGE_FOLDER_CLOSED));
 		table.put(LnfKeyConstants.SUB_MODULE_TREE_ERROR_MARKER_ICON, new ImageLnfResource(IMAGE_ERROR_MARKER));
 		table.put(LnfKeyConstants.SUB_MODULE_TREE_MANDATORY_MARKER_ICON, new ImageLnfResource(IMAGE_MANDATORY_MARKER));
+		table.put(LnfKeyConstants.SUB_MODULE_TREE_ATTENTION_MARKER_ICON, new ImageLnfResource(IMAGE_ATTENTION_MARKER));
 		table.put(LnfKeyConstants.SUB_MODULE_TREE_PROCESSED_FINISHED_MARKER_ICON, new ImageLnfResource(
 				IMAGE_PROCESS_FINISHED_MARKER));
 		// table.put(LnfKeyConstants."treeFolderOpen.icon",

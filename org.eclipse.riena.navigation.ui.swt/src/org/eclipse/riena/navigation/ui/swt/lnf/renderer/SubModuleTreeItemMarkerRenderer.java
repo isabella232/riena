@@ -20,7 +20,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.TreeItem;
 
 import org.eclipse.riena.ui.core.marker.IIconizableMarker;
-import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
@@ -45,8 +44,7 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
-	 *      java.lang.Object)
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void paint(GC gc, Object value) {
@@ -79,23 +77,22 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 
 		for (IIconizableMarker iconizableMarker : markers) {
 
-			if (iconizableMarker instanceof MandatoryMarker) {
-				MandatoryMarker mandatoryMarker = (MandatoryMarker) iconizableMarker;
-				if (mandatoryMarker.isDisabled()) {
-					continue;
-				}
+			if (!iconizableMarker.isVisible()) {
+				continue;
 			}
 			if (iconizableMarker instanceof UIProcessFinishedMarker) {
 				if (!flasherSupport.isProcessMarkerVisible()) {
-					return;
+					continue;
 				}
 			}
 
 			Image itemImage = item.getImage();
 			String key = iconizableMarker.getIconConfigurationKey();
 			Image markerImage = LnfManager.getLnf().getImage(key);
-			Point pos = calcMarkerCoordinates(itemImage, markerImage, iconizableMarker.getPositionOfMarker());
-			gc.drawImage(markerImage, pos.x, pos.y);
+			if (markerImage != null) {
+				Point pos = calcMarkerCoordinates(itemImage, markerImage, iconizableMarker.getPositionOfMarker());
+				gc.drawImage(markerImage, pos.x, pos.y);
+			}
 
 		}
 

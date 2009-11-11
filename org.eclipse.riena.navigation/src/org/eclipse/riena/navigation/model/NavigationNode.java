@@ -534,9 +534,12 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 			return navigationProcessor;
 		} else if (getParent() != null) {
 			return getParent().getNavigationProcessor();
-		} else {
+		} else if (ApplicationNodeManager.getApplicationNode() != null) {
 			// if no navigation processor was found in the hierarchy, maybe the application node has one
 			return ApplicationNodeManager.getApplicationNode().getNavigationProcessor();
+		} else {
+			// if nobody ha a navigation processor, return the default navigation processor
+			return ApplicationNodeManager.getDefaultNavigationProcessor();
 		}
 	}
 

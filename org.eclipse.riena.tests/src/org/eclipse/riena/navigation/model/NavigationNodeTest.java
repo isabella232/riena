@@ -14,10 +14,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.runtime.AssertionFailedException;
+
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -549,6 +551,34 @@ public class NavigationNodeTest extends RienaTestCase {
 		assertFalse(node.isChildRemovedCalled());
 		assertFalse(node2.isChildRemovedCalled());
 		assertFalse(node3.isChildRemovedCalled());
+
+	}
+
+	/**
+	 * Tests the method {@code getNavigationProcessor()}.
+	 */
+	public void testGetNavigationProcessor() {
+
+		NavigationNodeId id = new NavigationNodeId("4711");
+		NaviNode node = new NaviNode(id);
+
+		assertSame(ApplicationNodeManager.getDefaultNavigationProcessor(), node.getNavigationProcessor());
+
+		NavigationNodeId id2 = new NavigationNodeId("2");
+		NaviNode node2 = new NaviNode(id2);
+		node.addChild(node2);
+
+		assertSame(ApplicationNodeManager.getDefaultNavigationProcessor(), node2.getNavigationProcessor());
+
+		NavigationProcessor naviProcessor = new NavigationProcessor();
+		node.setNavigationProcessor(naviProcessor);
+		assertSame(naviProcessor, node2.getNavigationProcessor());
+
+		NavigationProcessor naviProcessor2 = new NavigationProcessor();
+		node2.setNavigationProcessor(naviProcessor2);
+		assertSame(naviProcessor2, node2.getNavigationProcessor());
+
+		assertSame(naviProcessor, node.getNavigationProcessor());
 
 	}
 

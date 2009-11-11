@@ -34,8 +34,17 @@ public interface IIconizableMarker extends IMarker {
 	/**
 	 * Returns the position of the marker.
 	 * 
-	 * @return position
+	 * @return position of marker
 	 */
 	MarkerPosition getPositionOfMarker();
+
+	/**
+	 * Returns whether the icon of a marker is visible or not.
+	 * 
+	 * @return {@code true} if the icon is visible; otherwise {@code false}
+	 * 
+	 * @since 1.2
+	 */
+	boolean isVisible();
 
 }

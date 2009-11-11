@@ -86,6 +86,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.ui.core.marker.AttentionMarker;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
@@ -196,6 +197,7 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 				new NavigationNodeId("org.eclipse.riena.example.marker"), "Marker"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(markerSubModule, MarkerSubModuleController.class, MarkerSubModuleView.ID, false);
 		playgroundModule.addChild(markerSubModule);
+		markerSubModule.addMarker(new AttentionMarker());
 
 		ISubModuleNode mdSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.masterdetails"), "Master/Details"); //$NON-NLS-1$ //$NON-NLS-2$

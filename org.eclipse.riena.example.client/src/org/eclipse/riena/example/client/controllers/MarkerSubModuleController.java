@@ -14,6 +14,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,10 @@ import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.beans.common.TestBean;
 import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
+import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.core.marker.AttentionMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -234,6 +238,17 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		checkHiddenParent.setText("&hidden parent"); //$NON-NLS-1$
 		checkHiddenParent.addListener(new HiddenParentActionListener(checkHiddenParent, markables));
+
+		getNavigationNode().addSimpleListener(new SimpleNavigationNodeAdapter() {
+			@Override
+			public void afterDeactivated(INavigationNode<?> node) {
+				super.afterDeactivated(node);
+				Collection<AttentionMarker> markers = node.getMarkersOfType(AttentionMarker.class);
+				for (AttentionMarker marker : markers) {
+					node.removeMarker(marker);
+				}
+			}
+		});
 	}
 
 	// helping methods

@@ -31,6 +31,8 @@ public class ApplicationNodeManagerTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
+		ApplicationNodeManager.clear();
+		model = null;
 	}
 
 	public void testAddDefaultModel() throws Exception {
@@ -89,4 +91,15 @@ public class ApplicationNodeManagerTest extends TestCase {
 		assertNotNull(rModel);
 		assertSame(model, rModel);
 	}
+
+	/**
+	 * Tests the method {@code getDefaultNavigationProcessor()}.
+	 */
+	public void testGetDefaultNavigationProcessor() {
+		INavigationProcessor navigationProcessor = ApplicationNodeManager.getDefaultNavigationProcessor();
+		assertNotNull(navigationProcessor);
+		INavigationProcessor navigationProcessor2 = ApplicationNodeManager.getDefaultNavigationProcessor();
+		assertSame(navigationProcessor, navigationProcessor2);
+	}
+
 }

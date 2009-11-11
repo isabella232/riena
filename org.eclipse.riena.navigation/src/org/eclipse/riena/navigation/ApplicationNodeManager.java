@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.riena.navigation.model.ApplicationNode;
+import org.eclipse.riena.navigation.model.NavigationProcessor;
 
 /**
  * This class holds the ApplicationNode(s) of a Riena application in a static
@@ -21,7 +22,9 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
  * ApplicationNode names.
  */
 public final class ApplicationNodeManager {
+
 	private static Map<String, IApplicationNode> nodeMap = new HashMap<String, IApplicationNode>();
+	private static INavigationProcessor defaultNavigationProcessor;
 	private final static String DEFAULT_NODE_NAME = "default"; //$NON-NLS-1$
 
 	private ApplicationNodeManager() {
@@ -90,6 +93,19 @@ public final class ApplicationNodeManager {
 		}
 		nodeMap.put(nodeName, node);
 		return;
+	}
+
+	/**
+	 * Returns the default navigation processor.
+	 * 
+	 * @return navigation processor
+	 * @since 1.2
+	 */
+	public static INavigationProcessor getDefaultNavigationProcessor() {
+		if (defaultNavigationProcessor == null) {
+			defaultNavigationProcessor = new NavigationProcessor();
+		}
+		return defaultNavigationProcessor;
 	}
 
 	public static ISubApplicationNode locateActiveSubApplicationNode() {

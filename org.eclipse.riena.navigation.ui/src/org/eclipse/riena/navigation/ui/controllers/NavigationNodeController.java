@@ -219,7 +219,18 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	protected void updateNavigationNodeMarkers() {
-		getNavigationNode().removeAllMarkers();
+
+		// remove error and mandatory marker
+		Collection<ErrorMarker> errorMarkers = getNavigationNode().getMarkersOfType(ErrorMarker.class);
+		for (IMarker marker : errorMarkers) {
+			getNavigationNode().removeMarker(marker);
+		}
+		Collection<MandatoryMarker> mandatroyMarkers = getNavigationNode().getMarkersOfType(MandatoryMarker.class);
+		for (IMarker marker : mandatroyMarkers) {
+			getNavigationNode().removeMarker(marker);
+		}
+
+		// add error and/or mandatory marker, if a Ridget has an error marker and/or a (enabled) mandatory marker
 		for (IMarker marker : getRidgetMarkers()) {
 			if (marker instanceof ErrorMarker) {
 				getNavigationNode().addMarker(marker);
@@ -230,6 +241,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 				}
 			}
 		}
+
 	}
 
 	private List<IMarker> getRidgetMarkers() {

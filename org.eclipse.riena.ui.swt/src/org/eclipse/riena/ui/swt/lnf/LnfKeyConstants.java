@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
+import org.eclipse.riena.ui.core.marker.AttentionMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
@@ -603,6 +604,10 @@ public final class LnfKeyConstants {
 	 * @since 1.2
 	 */
 	public static final String SUB_MODULE_TREE_MANDATORY_MARKER_ICON = MandatoryMarker.MARKER_KEY;
+	/**
+	 * @since 1.2
+	 */
+	public static final String SUB_MODULE_TREE_ATTENTION_MARKER_ICON = AttentionMarker.MARKER_KEY;
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 

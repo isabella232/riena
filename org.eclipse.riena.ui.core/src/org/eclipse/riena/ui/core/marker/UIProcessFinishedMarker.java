@@ -175,4 +175,15 @@ public class UIProcessFinishedMarker extends AbstractMarker implements IIconizab
 		return 400;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @return {@code true}
+	 * 
+	 * @since 1.2
+	 */
+	public boolean isVisible() {
+		return true;
+	}
+
 }

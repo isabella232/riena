@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationHistoryListener;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -79,7 +80,7 @@ public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplic
 	 * 
 	 */
 	protected void initializeNavigationProcessor() {
-		setNavigationProcessor(new NavigationProcessor());
+		setNavigationProcessor(ApplicationNodeManager.getDefaultNavigationProcessor());
 	}
 
 	/**
