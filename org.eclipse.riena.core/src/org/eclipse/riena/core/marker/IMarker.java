@@ -21,6 +21,17 @@ import java.util.Map;
 public interface IMarker {
 
 	/**
+	 * The priority of a marker is used to guarantee that the marker with the
+	 * highest priority is visible even if (e.g.) a node has more than one
+	 * marker.
+	 * 
+	 * @since 1.2
+	 */
+	enum Priority {
+		VERY_LOW, LOW, NORMAL, HIGH, VERY_HIGH;
+	}
+
+	/**
 	 * Returns the attribute with the given <code>name</code>, or
 	 * <code>null</code> if it does not exist.
 	 * 
@@ -87,6 +98,15 @@ public interface IMarker {
 	 * Returns false if marker is created by a filter, false otherwise. If
 	 * marker is unique, only one unique marker of this marker type is allowed.
 	 */
-
 	boolean isUnique();
+
+	/**
+	 * Returns the priority of this marker.
+	 * 
+	 * @return priority of marker
+	 * 
+	 * @since 1.2
+	 */
+	Priority getPriority();
+
 }

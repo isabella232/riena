@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.GC;
@@ -19,6 +23,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.TreeItem;
 
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.core.marker.IIconizableMarker;
 import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
@@ -75,7 +80,15 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	 */
 	protected void paintMarkers(final GC gc, final Collection<IIconizableMarker> markers, final TreeItem item) {
 
-		for (IIconizableMarker iconizableMarker : markers) {
+		List<IIconizableMarker> sortedMarkers = new ArrayList<IIconizableMarker>(markers);
+		Collections.sort(sortedMarkers, new Comparator<IMarker>() {
+			public int compare(IMarker m1, IMarker m2) {
+				return m1.getPriority().compareTo(m2.getPriority());
+			}
+
+		});
+
+		for (IIconizableMarker iconizableMarker : sortedMarkers) {
 
 			if (!iconizableMarker.isVisible()) {
 				continue;

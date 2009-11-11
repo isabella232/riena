@@ -164,4 +164,14 @@ public abstract class AbstractMarker implements IMarker {
 		return buffer.toString();
 	}
 
+	/**
+	 * {@inheritDoc} The default priority is {@code IMarker.Priority.NORMAL}.
+	 * 
+	 * @return {@code IMarker.Priority.NORMAL}
+	 * @since 1.2
+	 */
+	public Priority getPriority() {
+		return IMarker.Priority.NORMAL;
+	}
+
 }

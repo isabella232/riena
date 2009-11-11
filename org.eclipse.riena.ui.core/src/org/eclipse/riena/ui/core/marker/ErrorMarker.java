@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.core.marker;
 
 import org.eclipse.riena.core.marker.AbstractMarker;
+import org.eclipse.riena.core.marker.IMarker;
 
 /**
  * Marks a Ridget, resp. its associated UI control, as error. The Marker can
@@ -66,6 +67,16 @@ public class ErrorMarker extends AbstractMarker implements IIconizableMarker {
 	 */
 	public boolean isVisible() {
 		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @return {@code IMarker.Priority.VERY_HIGH}
+	 */
+	@Override
+	public Priority getPriority() {
+		return IMarker.Priority.VERY_HIGH;
 	}
 
 }
