@@ -60,11 +60,15 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", label);
 
 		assertEquals("label1", prop);
+	}
 
+	public void testLocateBindingPropertyInComplexComponent() {
+		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		TestComplexComponent complexComponent = new TestComplexComponent(shell, SWT.NONE);
-		locator.setBindingProperty(complexComponent, "complex1");
 		Text text = new Text(complexComponent, SWT.NONE);
-		prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", text);
+
+		locator.setBindingProperty(complexComponent, "complex1");
+		String prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", text);
 
 		assertEquals("", prop);
 
@@ -77,6 +81,56 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", text);
 
 		assertEquals("text1", prop);
+	}
+
+	public void testGetControlsWithBindingProperty() {
+		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		Composite composite1 = new Composite(shell, SWT.NONE);
+		Label label1 = new Label(composite1, SWT.NONE);
+		Label label2 = new Label(composite1, SWT.NONE);
+
+		locator.setBindingProperty(label1, "label1");
+		locator.setBindingProperty(label2, "label2");
+
+		List<Object> result1 = SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
+
+		assertEquals(2, result1.size());
+		assertTrue(result1.contains(label1));
+		assertTrue(result1.contains(label2));
+	}
+
+	public void testGetControlsWithBindingPropertyExcludeFirstComposite() {
+		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		Composite composite1 = new Composite(shell, SWT.NONE);
+		Label label1 = new Label(composite1, SWT.NONE);
+
+		locator.setBindingProperty(composite1, "complex1");
+		locator.setBindingProperty(label1, "label1");
+
+		List<Object> result1 = SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
+
+		assertEquals(1, result1.size());
+		assertTrue(result1.contains(label1));
+	}
+
+	public void testGetControlWithBindingPropertyRecursive() {
+		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+
+		Composite composite1 = new Composite(shell, SWT.NONE);
+		locator.setBindingProperty(composite1, "composite1");
+		Composite composite2 = new Composite(composite1, SWT.NONE);
+		locator.setBindingProperty(composite2, "composite2");
+		Label c2Label1 = new Label(composite2, SWT.NONE);
+		locator.setBindingProperty(c2Label1, "label1");
+		Label c2Label2 = new Label(composite2, SWT.NONE);
+		locator.setBindingProperty(c2Label2, "label2");
+
+		List<Object> result = SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
+
+		assertEquals(3, result.size());
+		assertTrue(result.contains(composite2));
+		assertTrue(result.contains(c2Label1));
+		assertTrue(result.contains(c2Label2));
 	}
 
 	// helping classes
