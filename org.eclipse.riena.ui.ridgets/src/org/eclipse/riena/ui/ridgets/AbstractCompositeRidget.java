@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -158,7 +159,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	public Collection<? extends IRidget> getRidgets() {
-		return ridgets.values();
+		return new ArrayList<IRidget>(ridgets.values());
 	}
 
 	public void requestFocus() {
