@@ -594,12 +594,8 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	}
 
 	public String getID() {
-		if (getUIControl() != null) {
-			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-			return locator.locateBindingProperty(getUIControl());
-		}
-
-		return null;
+		IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		return locator.locateBindingProperty(getUIControl());
 	}
 
 }

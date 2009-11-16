@@ -117,11 +117,8 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	public String getID() {
-		if (getUIControl() != null) {
-			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-			return locator.locateBindingProperty(getUIControl());
-		}
-		return null;
+		IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		return locator.locateBindingProperty(getUIControl());
 	}
 
 	public void requestFocus() {
