@@ -207,6 +207,11 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	public void configureRidgets() {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Always returns null. Implementors should override.
+	 */
 	public String getID() {
 		return null;
 	}
