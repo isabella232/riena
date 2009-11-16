@@ -108,6 +108,9 @@ public final class ApplicationNodeManager {
 		return defaultNavigationProcessor;
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public static ISubApplicationNode locateActiveSubApplicationNode() {
 		ApplicationNode applicationNode = (ApplicationNode) ApplicationNodeManager.getApplicationNode();
 		if (applicationNode == null) {
@@ -121,6 +124,9 @@ public final class ApplicationNodeManager {
 		return null;
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public static IModuleGroupNode locateActiveModuleGroupNode() {
 		ISubApplicationNode subApplicationNode = locateActiveSubApplicationNode();
 		if (subApplicationNode == null) {
@@ -134,6 +140,9 @@ public final class ApplicationNodeManager {
 		return null;
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public static IModuleNode locateActiveModuleNode() {
 		IModuleGroupNode moduleGroupNode = locateActiveModuleGroupNode();
 		if (moduleGroupNode == null) {
@@ -147,6 +156,9 @@ public final class ApplicationNodeManager {
 		return null;
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public static ISubModuleNode locateActiveSubModuleNode() {
 		IModuleNode moduleNode = locateActiveModuleNode();
 		if (moduleNode == null) {
