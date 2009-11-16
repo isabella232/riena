@@ -16,7 +16,6 @@ import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -30,18 +29,15 @@ import org.eclipse.riena.ui.common.IComplexComponent;
 @UITestCase
 public class SWTBindingPropertyLocatorTest extends TestCase {
 
-	private Display display;
 	private Shell shell;
 
 	protected void setUp() {
-		display = Display.getDefault();
-		shell = new Shell(display);
+		shell = new Shell();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		shell.dispose();
-		display.dispose();
 	}
 
 	/**

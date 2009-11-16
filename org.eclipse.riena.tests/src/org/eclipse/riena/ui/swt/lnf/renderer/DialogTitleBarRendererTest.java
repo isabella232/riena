@@ -18,12 +18,12 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.ui.swt.lnf.FontLnfResource;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Tests of the class {@link DialogTitleBarRenderer}.
@@ -44,18 +44,16 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 
 		renderer = new OpenDialogTitleBarRenderer();
 		shell = new Shell();
-		renderer.setShell(shell);
 		gc = new GC(shell);
+		renderer.setShell(shell);
 		renderer.setBounds(0, 0, 100, 100);
 		originalLnf = LnfManager.getLnf();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(shell);
-		gc = null;
+		shell.dispose();
 		renderer.dispose();
-		renderer = null;
 		LnfManager.setLnf(originalLnf);
 
 		super.tearDown();
@@ -94,15 +92,20 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 		LnfManager.setLnf(lnf);
 		lnf.setHideOsBorder(true);
 		Image image = ImageStore.getInstance().getImage(ICON_ECLIPSE);
-		shell.setImage(image);
 
-		Rectangle bounds = renderer.paintImage(gc);
-		assertFalse(bounds.equals(new Rectangle(0, 0, 0, 0)));
-		assertEquals(image.getBounds().width, bounds.width);
-		assertEquals(image.getBounds().height, bounds.height);
+		if (Activator.getDefault() != null) { // osgi running?
+			assertNotNull(image);
+
+			shell.setImage(image);
+
+			Rectangle bounds = renderer.paintImage(gc);
+			assertFalse(bounds.equals(new Rectangle(0, 0, 0, 0)));
+			assertEquals(image.getBounds().width, bounds.width);
+			assertEquals(image.getBounds().height, bounds.height);
+		}
 
 		lnf.setHideOsBorder(false);
-		bounds = renderer.paintImage(gc);
+		Rectangle bounds = renderer.paintImage(gc);
 		assertEquals(new Rectangle(0, 0, 0, 0), bounds);
 
 		lnf.setHideOsBorder(true);
