@@ -60,6 +60,11 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 
 		assertEquals("label1", prop);
 
+		label.dispose();
+		prop = locator.locateBindingProperty(label);
+
+		assertEquals(null, prop);
+
 		prop = locator.locateBindingProperty(null);
 
 		assertEquals(null, prop);
