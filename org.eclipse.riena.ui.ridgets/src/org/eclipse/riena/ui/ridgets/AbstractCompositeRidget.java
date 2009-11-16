@@ -27,12 +27,13 @@ import org.eclipse.riena.ui.common.IComplexComponent;
 public abstract class AbstractCompositeRidget extends AbstractRidget implements IComplexRidget {
 
 	private final PropertyChangeListener propertyChangeListener;
+
 	private final Map<String, IRidget> ridgets;
-
 	private IComplexComponent uiControl;
-	protected boolean markedHidden; // TODO add MarkerSupport instead of boolean flag
 
+	protected boolean markedHidden; // TODO add MarkerSupport instead of boolean flag
 	private boolean enabled = true;
+
 	private String toolTip = null;
 
 	/**
@@ -43,6 +44,62 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		propertyChangeListener = new PropertyChangeHandler();
 		ridgets = new HashMap<String, IRidget>();
 		markedHidden = false;
+	}
+
+	public void addRidget(String id, IRidget ridget) {
+		ridget.addPropertyChangeListener(propertyChangeListener);
+		ridgets.put(id, ridget);
+	}
+
+	public void configureRidgets() {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Always returns null. Implementors should override.
+	 */
+	public String getID() {
+		return null;
+	}
+
+	public IRidget getRidget(String id) {
+		return ridgets.get(id);
+	}
+
+	public Collection<? extends IRidget> getRidgets() {
+		return new ArrayList<IRidget>(ridgets.values());
+	}
+
+	public String getToolTipText() {
+		return toolTip;
+	}
+
+	public IComplexComponent getUIControl() {
+		return uiControl;
+	}
+
+	public boolean hasFocus() {
+		Collection<? extends IRidget> myRidgets = getRidgets();
+		for (IRidget ridget : myRidgets) {
+			if (ridget.hasFocus()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public boolean isFocusable() {
+		for (IRidget ridget : getRidgets()) {
+			if (ridget.isFocusable()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean isVisible() {
@@ -59,15 +116,10 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		return savedVisibleState;
 	}
 
-	public void setVisible(boolean visible) {
-		if (this.markedHidden == visible) {
-			this.markedHidden = !visible;
-			updateVisible();
+	public void requestFocus() {
+		if (!getRidgets().isEmpty()) {
+			getRidgets().iterator().next().requestFocus();
 		}
-	}
-
-	public boolean isEnabled() {
-		return enabled;
 	}
 
 	public void setEnabled(boolean enabled) {
@@ -77,8 +129,17 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		}
 	}
 
-	public IComplexComponent getUIControl() {
-		return uiControl;
+	public void setFocusable(boolean focusable) {
+		for (IRidget ridget : getRidgets()) {
+			ridget.setFocusable(focusable);
+		}
+	}
+
+	public void setToolTipText(String toolTipText) {
+		String oldValue = toolTip;
+		toolTip = toolTipText;
+		updateToolTipText();
+		firePropertyChange(IRidget.PROPERTY_TOOLTIP, oldValue, toolTip);
 	}
 
 	public void setUIControl(Object uiControl) {
@@ -95,6 +156,26 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		updateEnabled();
 		updateToolTipText();
 		bindUIControl();
+	}
+
+	public void setVisible(boolean visible) {
+		if (this.markedHidden == visible) {
+			this.markedHidden = !visible;
+			updateVisible();
+		}
+	}
+
+	/**
+	 * Bind the current <tt>uiControl</tt> to the ridget.
+	 * <p>
+	 * Implementors must call {@link #getUIControl()} to obtain the current
+	 * control. If the control is non-null they must do whatever necessary to
+	 * bind it to the ridget.
+	 * 
+	 * @since 1.2
+	 */
+	protected void bindUIControl() {
+		// implementors should overwrite
 	}
 
 	/**
@@ -114,16 +195,21 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * Bind the current <tt>uiControl</tt> to the ridget.
-	 * <p>
-	 * Implementors must call {@link #getUIControl()} to obtain the current
-	 * control. If the control is non-null they must do whatever necessary to
-	 * bind it to the ridget.
+	 * Returns true if the control of this ridget is visible, false otherwise.
+	 * This default implementation always returns true and should be overriden
+	 * by subclasses.
+	 */
+	protected boolean isUIControlVisible() {
+		return true;
+	}
+
+	/**
+	 * Remove all ridgets contained in this instance.
 	 * 
 	 * @since 1.2
 	 */
-	protected void bindUIControl() {
-		// implementors should overwrite
+	protected final void removeRidgets() {
+		ridgets.clear();
 	}
 
 	/**
@@ -136,105 +222,6 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 */
 	protected void unbindUIControl() {
 		// implementors should overwrite
-	}
-
-	public void addRidget(String id, IRidget ridget) {
-		ridget.addPropertyChangeListener(propertyChangeListener);
-		ridgets.put(id, ridget);
-	}
-
-	/**
-	 * This method is provisional and may be removed without warning.
-	 * <p>
-	 * TODO [ev] make api?
-	 * 
-	 * @since 1.2
-	 */
-	public void removeRidget(String key) {
-		ridgets.remove(key);
-	}
-
-	public IRidget getRidget(String id) {
-		return ridgets.get(id);
-	}
-
-	public Collection<? extends IRidget> getRidgets() {
-		return new ArrayList<IRidget>(ridgets.values());
-	}
-
-	public void requestFocus() {
-		if (!getRidgets().isEmpty()) {
-			getRidgets().iterator().next().requestFocus();
-		}
-	}
-
-	public boolean hasFocus() {
-		Collection<? extends IRidget> myRidgets = getRidgets();
-		for (IRidget ridget : myRidgets) {
-			if (ridget.hasFocus()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void setFocusable(boolean focusable) {
-		for (IRidget ridget : getRidgets()) {
-			ridget.setFocusable(focusable);
-		}
-	}
-
-	public boolean isFocusable() {
-		for (IRidget ridget : getRidgets()) {
-			if (ridget.isFocusable()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public String getToolTipText() {
-		return toolTip;
-	}
-
-	public void setToolTipText(String toolTipText) {
-		String oldValue = toolTip;
-		toolTip = toolTipText;
-		updateToolTipText();
-		firePropertyChange(IRidget.PROPERTY_TOOLTIP, oldValue, toolTip);
-	}
-
-	public void configureRidgets() {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Always returns null. Implementors should override.
-	 */
-	public String getID() {
-		return null;
-	}
-
-	// protected methods
-	////////////////////
-
-	/**
-	 * Returns true if the control of this ridget is visible, false otherwise.
-	 * This default implementation always returns true and should be overriden
-	 * by subclasses.
-	 */
-	protected boolean isUIControlVisible() {
-		return true;
-	}
-
-	/**
-	 * Updates the visibility of the complex UI control (and of the UI controls
-	 * it contains). This default implementation does nothing and should be
-	 * overridden by subclasses.
-	 */
-	protected void updateVisible() {
-		// empty default implementation
 	}
 
 	/**
@@ -254,6 +241,15 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 */
 	protected void updateToolTipText() {
 		// does nothing
+	}
+
+	/**
+	 * Updates the visibility of the complex UI control (and of the UI controls
+	 * it contains). This default implementation does nothing and should be
+	 * overridden by subclasses.
+	 */
+	protected void updateVisible() {
+		// empty default implementation
 	}
 
 	// helping classes 
