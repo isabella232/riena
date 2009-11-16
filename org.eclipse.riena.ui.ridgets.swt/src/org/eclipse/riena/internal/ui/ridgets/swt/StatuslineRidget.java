@@ -37,6 +37,8 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 	private Image image;
 	private IStatuslineNumberRidget statuslineNumberRidget;
 
+	private IStatuslineUIProcessRidget statuslineUIProcessRidget;
+
 	/**
 	 * Creates a new instance of {@code StatuslineRidget}.
 	 */
@@ -69,33 +71,21 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		return getUIControl().getMessageComposite();
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IStatuslineRidget#clear()
-	 */
 	public void clear() {
 		setMessage(LONG_EMPTY_STRING);
 		this.image = null;
 		updateUIIcon();
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IStatuslineRidget#error(java.lang.String)
-	 */
 	public void error(String message) {
 		setImage(LnfManager.getLnf().getImage(LnfKeyConstants.STATUSLINE_ERROR_ICON));
 		setMessage(message);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IStatuslineRidget#getMessage()
-	 */
 	public String getMessage() {
 		return message;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IStatuslineRidget#getStatuslineNumberRidget()
-	 */
 	public IStatuslineNumberRidget getStatuslineNumberRidget() {
 		return statuslineNumberRidget;
 	}
@@ -109,8 +99,6 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		addRidget("numberRidget", statuslineNumberRidget); //$NON-NLS-1$
 	}
 
-	private IStatuslineUIProcessRidget statuslineUIProcessRidget;
-
 	public void setStatuslineUIProcessRidget(IStatuslineUIProcessRidget statuslineUIProcessRidget) {
 		addRidget("UIProcessRidget", statuslineUIProcessRidget); //$NON-NLS-1$
 		this.statuslineUIProcessRidget = statuslineUIProcessRidget;
@@ -120,11 +108,6 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		return statuslineUIProcessRidget;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IStatuslineRidget#hidePopups()
-	 */
 	public void hidePopups() {
 		// FIXME remove empty method-block or mark as deprecated
 	}
@@ -137,15 +120,6 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		setMessage(message);
 	}
 
-	private void setImage(Image image) {
-		this.image = image;
-		updateUIIcon();
-	}
-
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IStatuslineRidget#setMessage(java.lang.String
-	 *      )
-	 */
 	public void setMessage(String message) {
 		if (message != null && !message.equals(this.message)) {
 			this.message = message;
@@ -153,30 +127,14 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		}
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IStatuslineRidget#warning(java.lang.String)
-	 */
 	public void warning(String message) {
 		setImage(LnfManager.getLnf().getImage(LnfKeyConstants.STATUSLINE_WARNING_ICON));
 		setMessage(message);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
-	 */
-	@Override
-	public void configureRidgets() {
-		// nothing to do
-	}
-
-	@Override
 	public String getID() {
-		if (getUIControl() != null) {
-			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-			return locator.locateBindingProperty(getUIControl());
-		}
-
-		return null;
+		IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		return locator.locateBindingProperty(getUIControl());
 	}
 
 	public final synchronized Image getMissingImage() {
@@ -184,6 +142,14 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 			missingImage = ImageDescriptor.getMissingImageDescriptor().createImage();
 		}
 		return missingImage;
+	}
+
+	// helping methods
+	//////////////////
+
+	private void setImage(Image image) {
+		this.image = image;
+		updateUIIcon();
 	}
 
 	private void updateUIIcon() {
