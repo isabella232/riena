@@ -21,7 +21,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.common.IComplexComponent;
 
@@ -51,15 +50,23 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 	public void testLocateBindingProperty() {
 		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 
-		String prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", shell);
+		String prop = locator.locateBindingProperty(shell);
 
 		assertEquals("", prop);
 
 		Label label = new Label(shell, SWT.NONE);
 		locator.setBindingProperty(label, "label1");
-		prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", label);
+		prop = locator.locateBindingProperty(label);
 
 		assertEquals("label1", prop);
+
+		prop = locator.locateBindingProperty(null);
+
+		assertEquals(null, prop);
+
+		prop = locator.locateBindingProperty(new Object());
+
+		assertEquals(null, prop);
 	}
 
 	public void testLocateBindingPropertyInComplexComponent() {
@@ -68,17 +75,17 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		Text text = new Text(complexComponent, SWT.NONE);
 
 		locator.setBindingProperty(complexComponent, "complex1");
-		String prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", text);
+		String prop = locator.locateBindingProperty(text);
 
 		assertEquals("", prop);
 
 		locator.setBindingProperty(text, "text1");
-		prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", text);
+		prop = locator.locateBindingProperty(text);
 
 		assertEquals("complex1.text1", prop);
 
 		locator.setBindingProperty(complexComponent, "");
-		prop = ReflectionUtils.invokeHidden(locator, "locateBindingProperty", text);
+		prop = locator.locateBindingProperty(text);
 
 		assertEquals("text1", prop);
 	}
