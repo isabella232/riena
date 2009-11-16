@@ -18,9 +18,9 @@ import java.util.Collection;
 public interface IRidgetContainer {
 	/**
 	 * Adds the ridget with id to the ridgets of this ridget container.
-     * <p>
-	 * If the given (id, ridget) pair is already in the container, the previous value
-	 * will be replaced.
+	 * <p>
+	 * If the given (id, ridget) pair is already in the container, the previous
+	 * value will be replaced.
 	 * 
 	 * @param id
 	 *            the ridget id.
@@ -30,11 +30,11 @@ public interface IRidgetContainer {
 	void addRidget(String id, IRidget ridget);
 
 	/**
-	 * Return the ridget with id from the ridgets of this ridget container.
+	 * Return the ridget with the given id from this ridget container.
 	 * 
 	 * @param id
 	 *            the ridget id.
-	 * @return the ridget.
+	 * @return the ridget instance or null, if no ridget with this id was found.
 	 */
 	IRidget getRidget(String id);
 
