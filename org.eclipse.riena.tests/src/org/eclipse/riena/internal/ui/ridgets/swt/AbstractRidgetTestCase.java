@@ -115,15 +115,42 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 	// easy mock helper methods
 	// /////////////////////////
 
+	/**
+	 * Clear all expectations with regard to property change events.
+	 */
+	protected final void resetPropertyChangeEvents() {
+		EasyMock.reset(propertyChangeListenerMock);
+	}
+
+	/**
+	 * Check expectations with regard to property change events. This must be
+	 * called after invoking the code under test.
+	 * 
+	 * @see #expectNoPropertyChangeEvent()
+	 * @see #expectPropertyChangeEvent(String, Object, Object)
+	 * @see #expectPropertyChangeEvents(PropertyChangeEvent...)
+	 */
 	protected final void verifyPropertyChangeEvents() {
 		EasyMock.verify(propertyChangeListenerMock);
 	}
 
+	/**
+	 * Expect that no property change event will be fired.
+	 * 
+	 * @see #verifyPropertyChangeEvents()
+	 */
 	protected final void expectNoPropertyChangeEvent() {
 		EasyMock.reset(propertyChangeListenerMock);
 		EasyMock.replay(propertyChangeListenerMock);
 	}
 
+	/**
+	 * Expect that all given property change events will be fired.
+	 * 
+	 * @param propertyChangeEvents
+	 *            one or more property change events
+	 * @see #verifyPropertyChangeEvents()
+	 */
 	protected final void expectPropertyChangeEvents(PropertyChangeEvent... propertyChangeEvents) {
 		EasyMock.reset(propertyChangeListenerMock);
 		for (PropertyChangeEvent propertyChangeEvent : propertyChangeEvents) {
@@ -132,6 +159,17 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 		EasyMock.replay(propertyChangeListenerMock);
 	}
 
+	/**
+	 * Expect that the given property change event will be fired.
+	 * 
+	 * @param propertyName
+	 *            the name of the property change event
+	 * @param oldValue
+	 *            the old value of the property change event
+	 * @param newValue
+	 *            the new value of the property change event
+	 * @see #verifyPropertyChangeEvents()
+	 */
 	protected final void expectPropertyChangeEvent(String propertyName, Object oldValue, Object newValue) {
 		expectPropertyChangeEvents(new PropertyChangeEvent(getRidget(), propertyName, oldValue, newValue));
 	}
