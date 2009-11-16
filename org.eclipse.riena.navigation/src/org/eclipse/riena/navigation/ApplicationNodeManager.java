@@ -109,6 +109,8 @@ public final class ApplicationNodeManager {
 	}
 
 	/**
+	 * Returns the node of the active SubApplication
+	 * 
 	 * @since 1.2
 	 */
 	public static ISubApplicationNode locateActiveSubApplicationNode() {
@@ -125,6 +127,8 @@ public final class ApplicationNodeManager {
 	}
 
 	/**
+	 * Returns the node of the active ModuleGroup
+	 * 
 	 * @since 1.2
 	 */
 	public static IModuleGroupNode locateActiveModuleGroupNode() {
@@ -141,6 +145,8 @@ public final class ApplicationNodeManager {
 	}
 
 	/**
+	 * Returns the node of the active Module
+	 * 
 	 * @since 1.2
 	 */
 	public static IModuleNode locateActiveModuleNode() {
@@ -157,6 +163,8 @@ public final class ApplicationNodeManager {
 	}
 
 	/**
+	 * Returns the node of the active SubModule
+	 * 
 	 * @since 1.2
 	 */
 	public static ISubModuleNode locateActiveSubModuleNode() {
