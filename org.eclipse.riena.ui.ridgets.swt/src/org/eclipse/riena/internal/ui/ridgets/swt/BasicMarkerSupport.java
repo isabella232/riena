@@ -95,8 +95,9 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	 * These controls are affected by bug 258176 in SWT.
 	 */
 	private boolean skipRedrawForBug258176(Control control) {
-		if (alwaysSkipRedraw)
+		if (alwaysSkipRedraw) {
 			return true;
+		}
 		return (control instanceof Combo) || (control instanceof Table) || (control instanceof List);
 	}
 
