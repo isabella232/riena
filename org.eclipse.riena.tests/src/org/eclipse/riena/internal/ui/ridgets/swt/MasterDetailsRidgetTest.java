@@ -20,6 +20,7 @@ import java.util.List;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
@@ -496,7 +497,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * As per bug 293642
+	 * As per Bug 293642
 	 */
 	public void testOneColumnFullWidget() {
 		MDWidget widget = getWidget();
@@ -512,6 +513,29 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(1, table.getColumnCount());
 		assertEquals("The Header", table.getColumn(0).getText());
 		assertEquals(table.getClientArea().width, table.getColumn(0).getWidth());
+	}
+
+	/**
+	 * As per Bug 295305
+	 */
+	public void testAutoCreateTableColumns() {
+		IMasterDetailsRidget ridget = getRidget();
+		Table table = getWidget().getTable();
+
+		assertEquals(0, table.getColumnCount());
+
+		WritableList list = new WritableList(input, MDBean.class);
+		String[] columnProperties3 = { "column1", "column2", "column1" };
+		ridget.bindToModel(list, MDBean.class, columnProperties3, null);
+
+		assertEquals(3, table.getColumnCount());
+		assertTrue(table.getParent().getLayout() instanceof TableColumnLayout);
+
+		String[] columnProperties1 = { "column2" };
+		ridget.bindToModel(list, MDBean.class, columnProperties1, null);
+
+		assertEquals(1, table.getColumnCount());
+		assertTrue(table.getParent().getLayout() instanceof TableColumnLayout);
 	}
 
 	// helping methods
