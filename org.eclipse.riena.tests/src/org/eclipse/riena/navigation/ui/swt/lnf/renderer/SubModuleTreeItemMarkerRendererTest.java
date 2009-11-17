@@ -31,7 +31,9 @@ import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IIconizableMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -139,45 +141,83 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 
 		// create image without markers
 		Collection<IIconizableMarker> markers = new ArrayList<IIconizableMarker>();
-		Image noMarkersImage = new Image(shell.getDisplay(), new Rectangle(0, 0, 10, 10));
-		GC noMarkersGC = new GC(noMarkersImage);
-		// renderer.paintMarkers(noMarkersGC, markers, item);
-		ReflectionUtils.invokeHidden(renderer, "paintMarkers", noMarkersGC, markers, item);
-		byte[] noMarkersBytes = noMarkersImage.getImageData().data;
-		noMarkersGC.dispose();
-		SwtUtilities.disposeResource(noMarkersImage);
+		byte[] noMarkersBytes = paintMarker(renderer, markers, item);
 
 		// no marker -> no marker image is drawn
+		byte[] paintBytes = paintMarker(renderer, markers, item);
+		assertTrue(Arrays.equals(noMarkersBytes, paintBytes));
+
+		// one error marker -> error marker image is drawn
+		markers.add(new ErrorMarker());
+		paintBytes = paintMarker(renderer, markers, item);
+		assertFalse(Arrays.equals(noMarkersBytes, paintBytes));
+
+		// one error marker, but item has no image -> no marker image is drawn
+		item.setImage((Image) null);
+		paintBytes = paintMarker(renderer, markers, item);
+		assertTrue(Arrays.equals(noMarkersBytes, paintBytes));
+
+		renderer.dispose();
+
+	}
+
+	public void testPaintMarkersHierarchically() throws Exception {
+
+		LnfManager.setLnf(new MyLnf() {
+			@Override
+			protected void initSettingsDefaults() {
+				getSettingTable().put(LnfKeyConstants.SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION,
+						IIconizableMarker.MarkerPosition.BOTTOM_RIGHT);
+			}
+		});
+
+		item.setImage(createItemImage());
+
+		SubModuleTreeItemMarkerRenderer renderer = new SubModuleTreeItemMarkerRenderer();
+		renderer.setBounds(0, 0, 100, 25);
+
+		// create image without markers
+		Collection<IIconizableMarker> markers = new ArrayList<IIconizableMarker>();
+		byte[] noMarkersBytes = paintMarker(renderer, markers, item);
+
+		// one ErrorMarker -> ErrorMarker image is drawn
+		markers.add(new ErrorMarker());
+		byte[] errorMarkersBytes = paintMarker(renderer, markers, item);
+		assertFalse(Arrays.equals(noMarkersBytes, errorMarkersBytes));
+
+		// one ErrorMarker and one MandatoryMarker -> only ErrorMarker image is drawn
+		markers.add(new MandatoryMarker());
+		byte[] paintBytes = paintMarker(renderer, markers, item);
+		assertTrue(Arrays.equals(errorMarkersBytes, paintBytes));
+
+		// remove ErrorMarker -> MandatoryMarker is drawn
+		markers.clear();
+		markers.add(new MandatoryMarker());
+		paintBytes = paintMarker(renderer, markers, item);
+		assertFalse(Arrays.equals(noMarkersBytes, paintBytes));
+		assertFalse(Arrays.equals(errorMarkersBytes, paintBytes));
+
+		// one MandatoryMarker, but item has no image -> no marker image is drawn
+		item.setImage((Image) null);
+		paintBytes = paintMarker(renderer, markers, item);
+		assertTrue(Arrays.equals(noMarkersBytes, paintBytes));
+
+		renderer.dispose();
+	}
+
+	/**
+	 * Paints a Collection of markers and returns the bytes written.
+	 */
+	private byte[] paintMarker(SubModuleTreeItemMarkerRenderer renderer, Collection<IIconizableMarker> markers,
+			TreeItem item) {
 		Image paintImage = new Image(shell.getDisplay(), new Rectangle(0, 0, 10, 10));
 		GC paintGC = new GC(paintImage);
 		ReflectionUtils.invokeHidden(renderer, "paintMarkers", paintGC, markers, item);
 		byte[] paintBytes = paintImage.getImageData().data;
 		paintGC.dispose();
 		SwtUtilities.disposeResource(paintImage);
-		assertTrue(Arrays.equals(noMarkersBytes, paintBytes));
 
-		// one error marker -> error marker image is drawn
-		markers.add(new ErrorMarker());
-		paintImage = new Image(shell.getDisplay(), new Rectangle(0, 0, 10, 10));
-		paintGC = new GC(paintImage);
-		ReflectionUtils.invokeHidden(renderer, "paintMarkers", paintGC, markers, item);
-		paintBytes = paintImage.getImageData().data;
-		paintGC.dispose();
-		SwtUtilities.disposeResource(paintImage);
-		assertFalse(Arrays.equals(noMarkersBytes, paintBytes));
-
-		// one error marker, but item has no image -> no marker image is drawn
-		item.setImage((Image) null);
-		paintImage = new Image(shell.getDisplay(), new Rectangle(0, 0, 10, 10));
-		paintGC = new GC(paintImage);
-		ReflectionUtils.invokeHidden(renderer, "paintMarkers", paintGC, markers, item);
-		paintBytes = paintImage.getImageData().data;
-		paintGC.dispose();
-		SwtUtilities.disposeResource(paintImage);
-		assertTrue(Arrays.equals(noMarkersBytes, paintBytes));
-
-		renderer.dispose();
-
+		return paintBytes;
 	}
 
 	/**
@@ -241,6 +281,21 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 		GC imageGC = new GC(image);
 		imageGC.setForeground(LnfManager.getLnf().getColor("red"));
 		imageGC.setBackground(LnfManager.getLnf().getColor("red"));
+		imageGC.fillRectangle(0, 0, 3, 3);
+		imageGC.dispose();
+		return image;
+	}
+
+	/**
+	 * Creates a image with a very small green rectangle.
+	 * 
+	 * @return image
+	 */
+	private Image createMandatoraMarkerImage() {
+		Image image = new Image(shell.getDisplay(), new Rectangle(0, 0, 5, 5));
+		GC imageGC = new GC(image);
+		imageGC.setForeground(LnfManager.getLnf().getColor("green"));
+		imageGC.setBackground(LnfManager.getLnf().getColor("green"));
 		imageGC.fillRectangle(0, 0, 2, 2);
 		imageGC.dispose();
 		return image;
@@ -251,16 +306,22 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 	 */
 	private class MyLnf extends RienaDefaultLnf {
 
-		private Image image;
+		private Image errorImage;
+		private Image mandatoryImage;
 
 		public MyLnf() {
 			super();
-			image = createMarkerImage();
+			errorImage = createMarkerImage();
+			mandatoryImage = createMandatoraMarkerImage();
 		}
 
 		@Override
 		public Image getImage(String key) {
-			return image;
+			if (key.equals("ErrorMarker")) {
+				return errorImage;
+			} else {
+				return mandatoryImage;
+			}
 		}
 
 	}

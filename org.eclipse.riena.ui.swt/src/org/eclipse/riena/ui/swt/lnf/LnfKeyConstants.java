@@ -587,6 +587,13 @@ public final class LnfKeyConstants {
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
+	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Marker"> Riena
+	 *      Wiki</a>
+	 */
+	public static final String SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION = "subModuleTreePaintMarkerInHierarchicOrder"; //$NON-NLS-1$
+	/**
+	 * This constant is described in Eclipsepedia.
+	 * 
 	 * @see <a
 	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
 	 *      Riena Wiki</a>
