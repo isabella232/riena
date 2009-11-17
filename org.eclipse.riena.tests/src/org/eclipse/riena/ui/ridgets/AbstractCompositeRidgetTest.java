@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
@@ -41,7 +42,7 @@ public class AbstractCompositeRidgetTest extends RienaTestCase {
 
 		assertEquals(2, ridget.getRidgets().size());
 
-		ridget.removeRidgets();
+		ReflectionUtils.invokeHidden(ridget, "removeRidgets", (Object[]) null);
 
 		assertEquals(0, ridget.getRidgets().size());
 	}
