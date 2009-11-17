@@ -49,11 +49,14 @@ import org.eclipse.jface.databinding.viewers.IViewerObservableList;
 import org.eclipse.jface.databinding.viewers.ObservableListTreeContentProvider;
 import org.eclipse.jface.databinding.viewers.TreeStructureAdvisor;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.layout.TreeColumnLayout;
+import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
@@ -65,6 +68,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -157,7 +161,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	protected void bindUIControl() {
 		Tree control = getUIControl();
 		if (control != null && treeRoots != null) {
-			checkColumns(control);
+			applyColumns(control);
 			bindToViewer(control);
 			bindToSelection();
 			control.addSelectionListener(selectionTypeEnforcer);
@@ -464,6 +468,42 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	// helping methods
 	// ////////////////
 
+	private void applyColumns(Tree control) {
+		final int columnCount = control.getColumnCount() == 0 ? 1 : control.getColumnCount();
+		final int expectedCols = valueAccessors.length;
+		if (columnCount != expectedCols) {
+			for (TreeColumn column : control.getColumns()) {
+				column.dispose();
+			}
+			for (int i = 0; i < expectedCols; i++) {
+				new TreeColumn(control, SWT.NONE);
+			}
+			final int minWidth = 50;
+			Composite parent = control.getParent();
+			if (control.getLayout() instanceof TableLayout) {
+				TableLayout layout = new TableLayout();
+				for (int i = 0; i < expectedCols; i++) {
+					layout.addColumnData(new ColumnWeightData(1, minWidth));
+				}
+				control.setLayout(layout);
+				parent.layout();
+			} else if ((parent.getLayout() == null && parent.getChildren().length == 1)
+					|| parent.getLayout() instanceof TreeColumnLayout) {
+				TreeColumnLayout layout = new TreeColumnLayout();
+				for (TreeColumn column : control.getColumns()) {
+					layout.setColumnData(column, new ColumnWeightData(1, minWidth));
+				}
+				parent.setLayout(layout);
+				parent.layout();
+			} else {
+				int colWidth = Math.max(minWidth, control.getClientArea().width / expectedCols);
+				for (TreeColumn column : control.getColumns()) {
+					column.setWidth(colWidth);
+				}
+			}
+		}
+	}
+
 	private void applyEraseListener() {
 		if (viewer != null) {
 			Control control = viewer.getControl();
@@ -561,12 +601,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			createMultipleSelectionBinding();
 		}
 		saveSelection();
-	}
-
-	private void checkColumns(Tree control) {
-		int columnCount = control.getColumnCount() == 0 ? 1 : control.getColumnCount();
-		String message = String.format("Tree has %d columns, expected: %d", columnCount, valueAccessors.length); //$NON-NLS-1$
-		Assert.isLegal(columnCount == valueAccessors.length, message);
 	}
 
 	private void createMultipleSelectionBinding() {

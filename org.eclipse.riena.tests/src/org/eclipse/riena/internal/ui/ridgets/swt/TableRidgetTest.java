@@ -19,6 +19,8 @@ import java.util.List;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -33,7 +35,6 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
@@ -55,7 +56,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	@Override
-	protected IRidget createRidget() {
+	protected ITableRidget createRidget() {
 		return new TableRidget();
 	}
 
@@ -94,45 +95,6 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(person1.getLastname(), control.getItem(0).getText(1));
 		assertEquals(person2.getLastname(), control.getItem(1).getText(1));
 		assertEquals(person3.getLastname(), control.getItem(2).getText(1));
-	}
-
-	public void testBindToModelTooFewColumns() {
-		Table control = getWidget();
-
-		assertEquals(2, control.getColumnCount());
-
-		// the table widget has two columns, we bind only one
-		try {
-			getRidget().bindToModel(manager, "persons", Person.class, new String[] { "firstname" },
-					new String[] { "First Name" });
-			fail();
-		} catch (RuntimeException rex) {
-			ok();
-		}
-	}
-
-	public void testBindToModelWithTooManyColumns() {
-		ITableRidget ridget = getRidget();
-		Table control = getWidget();
-
-		assertEquals(2, control.getColumnCount());
-
-		// the table widget has two columns but we bind three
-		try {
-			ridget.bindToModel(manager, "persons", Person.class, new String[] { "firstname", "lastname", "listEntry" },
-					new String[] { "First Name", "Last Name", "First - Last" });
-			fail();
-		} catch (RuntimeException rex) {
-			ok();
-		}
-
-		// table has 1 default column, expected 3
-		try {
-			ridget.setUIControl(new Table(getShell(), SWT.NONE));
-			fail();
-		} catch (RuntimeException rex) {
-			ok();
-		}
 	}
 
 	public void testTableColumnsNumAndHeader() {
@@ -819,6 +781,89 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		// System.out.println("SelectionEvent: " + selectionListener.getSelectionEvent());
 
 		ridget.removeSelectionListener(selectionListener);
+	}
+
+	/**
+	 * As per Bug 285305
+	 */
+	public void testAutoCreateTableColumns() {
+		ITableRidget ridget = createRidget();
+		Table control = new Table(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		ridget.setUIControl(control);
+
+		assertEquals(0, control.getColumnCount());
+
+		String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
+		ridget.bindToModel(manager, "persons", Person.class, columns3, null);
+
+		assertEquals(3, control.getColumnCount());
+
+		String[] columns1 = { Person.PROPERTY_FIRSTNAME };
+		ridget.bindToModel(manager, "persons", Person.class, columns1, null);
+
+		assertEquals(1, control.getColumnCount());
+	}
+
+	/**
+	 * As per Bug 285305
+	 */
+	public void testAutoCreateColumnsWithNoLayout() {
+		ITableRidget ridget = createRidget();
+		Table control = new Table(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		ridget.setUIControl(control);
+
+		getShell().setLayout(null);
+		control.setSize(300, 100);
+		String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
+		ridget.bindToModel(manager, "persons", Person.class, columns3, null);
+
+		assertEquals(null, control.getParent().getLayout());
+		assertEquals(null, control.getLayout());
+		for (int i = 0; i < 3; i++) {
+			assertEquals("col #" + i, 100, control.getColumn(i).getWidth());
+		}
+	}
+
+	/**
+	 * As per Bug 285305
+	 */
+	public void testAutoCreateColumnsWithTableLayout() {
+		ITableRidget ridget = createRidget();
+		Table control = new Table(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		control.setLayout(new TableLayout());
+		ridget.setUIControl(control);
+
+		String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
+		ridget.bindToModel(manager, "persons", Person.class, columns3, null);
+
+		Class<?> shellLayout = getShell().getLayout().getClass();
+		assertSame(shellLayout, control.getParent().getLayout().getClass());
+		assertTrue(control.getLayout() instanceof TableLayout);
+		for (int i = 0; i < 3; i++) {
+			assertEquals("col #" + i, 50, control.getColumn(i).getWidth());
+		}
+	}
+
+	/**
+	 * As per Bug 285305
+	 */
+	public void testAutoCreateColumnsWithTableColumnLayout() {
+		ITableRidget ridget = createRidget();
+		for (Control control : getShell().getChildren()) {
+			control.dispose();
+		}
+		Table control = new Table(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		ridget.setUIControl(control);
+		getShell().setLayout(new TableColumnLayout());
+
+		String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
+		ridget.bindToModel(manager, "persons", Person.class, columns3, null);
+
+		assertTrue(control.getParent().getLayout() instanceof TableColumnLayout);
+		assertEquals(null, control.getLayout());
+		for (int i = 0; i < 3; i++) {
+			assertEquals("col #" + i, 50, control.getColumn(i).getWidth());
+		}
 	}
 
 	// helping methods

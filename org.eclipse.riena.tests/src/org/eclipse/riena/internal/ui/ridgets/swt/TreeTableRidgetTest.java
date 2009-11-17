@@ -13,6 +13,8 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeEvent;
 import java.util.Comparator;
 
+import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -28,7 +30,6 @@ import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
@@ -66,7 +67,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected IRidget createRidget() {
+	protected ITreeTableRidget createRidget() {
 		return new TreeTableRidget();
 	}
 
@@ -104,45 +105,6 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(node2.getLastname(), getUIControlItem(1).getText(1));
 		assertEquals(node3.getLastname(), getUIControlItem(2).getText(1));
 		assertEquals(node4.getLastname(), getUIControlItem(3).getText(1));
-	}
-
-	public void testBindToModelTooFewColumns() {
-		Tree control = getWidget();
-
-		assertEquals(2, control.getColumnCount());
-
-		// the tree widget has two columns, we bind only one
-		try {
-			getRidget().bindToModel(roots, PersonNode.class, "children", "parent", new String[] { "firstname" },
-					new String[] { "First Name" });
-			fail();
-		} catch (RuntimeException rex) {
-			ok();
-		}
-	}
-
-	public void testBindToModelWithTooManyColumns() {
-		Tree control = getWidget();
-
-		assertEquals(2, control.getColumnCount());
-
-		// the tree widget has two columns but we bind three
-		try {
-			getRidget().bindToModel(roots, PersonNode.class, "children", "parent",
-					new String[] { "firstname", "lastname", "entry" },
-					new String[] { "First Name", "Last Name", "First - Last" });
-			fail();
-		} catch (RuntimeException rex) {
-			ok();
-		}
-
-		// tree has 1 default column, expected 3
-		try {
-			getRidget().setUIControl(new Tree(getShell(), SWT.NONE));
-			fail();
-		} catch (RuntimeException rex) {
-			ok();
-		}
 	}
 
 	public void testTableColumnsNumAndHeader() {
@@ -731,6 +693,89 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		// System.out.println("SelectionEvent: " + selectionListener.getSelectionEvent());
 
 		ridget.removeSelectionListener(selectionListener);
+	}
+
+	/**
+	 * As per Bug 285305
+	 */
+	public void testAutoCreateTableColumn() {
+		ITreeTableRidget ridget = createRidget();
+		Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		ridget.setUIControl(control);
+
+		assertEquals(0, control.getColumnCount());
+
+		String[] columns3 = { "firstname", "lastname", "entry" };
+		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
+
+		assertEquals(3, control.getColumnCount());
+
+		String[] columns1 = { "firstname" };
+		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns1, null);
+
+		assertEquals(1, control.getColumnCount());
+	}
+
+	/**
+	 * As per Bug 285305
+	 */
+	public void testAutoCreateColumnsWithNoLayout() {
+		ITreeTableRidget ridget = createRidget();
+		Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		ridget.setUIControl(control);
+
+		getShell().setLayout(null);
+		control.setSize(300, 100);
+		String[] columns3 = { "firstname", "lastname", "entry" };
+		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
+
+		assertEquals(null, control.getParent().getLayout());
+		assertEquals(null, control.getLayout());
+		for (int i = 0; i < 3; i++) {
+			assertEquals("col #" + i, 100, control.getColumn(i).getWidth());
+		}
+	}
+
+	/**
+	 * As per Bug 285305
+	 */
+	public void testAutoCreateColumnsWithTableLayout() {
+		ITreeTableRidget ridget = createRidget();
+		Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		control.setLayout(new TableLayout());
+		ridget.setUIControl(control);
+
+		String[] columns3 = { "firstname", "lastname", "entry" };
+		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
+
+		Class<?> shellLayout = getShell().getLayout().getClass();
+		assertSame(shellLayout, control.getParent().getLayout().getClass());
+		assertTrue(control.getLayout() instanceof TableLayout);
+		for (int i = 0; i < 3; i++) {
+			assertEquals("col #" + i, 50, control.getColumn(i).getWidth());
+		}
+	}
+
+	/**
+	 * As per Bug 285305
+	 */
+	public void testAutoCreateColumnsWithTableColumnLayout() {
+		ITreeTableRidget ridget = createRidget();
+		for (Control control : getShell().getChildren()) {
+			control.dispose();
+		}
+		Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		ridget.setUIControl(control);
+		getShell().setLayout(new TableColumnLayout());
+
+		String[] columns3 = { "firstname", "lastname", "entry" };
+		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
+
+		assertTrue(control.getParent().getLayout() instanceof TableColumnLayout);
+		assertEquals(null, control.getLayout());
+		for (int i = 0; i < 3; i++) {
+			assertEquals("col #" + i, 50, control.getColumn(i).getWidth());
+		}
 	}
 
 	// helping methods
