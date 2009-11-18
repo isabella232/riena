@@ -33,6 +33,9 @@ import org.eclipse.jface.databinding.viewers.IViewerObservableList;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.util.Util;
+import org.eclipse.jface.viewers.ColumnLayoutData;
+import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
@@ -88,6 +91,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	private TableViewer viewer;
 	private String[] columnHeaders;
+	private ColumnLayoutData[] columnWidths;
 	/*
 	 * Data we received in bindToModel(...). May change without our doing.
 	 */
@@ -330,6 +334,39 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Implementation note: if the array is non-null, its elements must be
+	 * {@link ColumnPixelData} or {@link ColumnWeightData} instances.
+	 * 
+	 * @throws RuntimeException
+	 *             if an unsupported array element is encountered
+	 */
+	public void setColumnWidths(Object[] widths) {
+		if (widths != null) {
+			columnWidths = new ColumnLayoutData[widths.length];
+			for (int i = 0; i < widths.length; i++) {
+				if (widths[i] instanceof ColumnPixelData) {
+					ColumnPixelData data = (ColumnPixelData) widths[i];
+					columnWidths[i] = new ColumnPixelData(data.width, data.resizable, data.addTrim);
+				} else if (widths[i] instanceof ColumnWeightData) {
+					ColumnWeightData data = (ColumnWeightData) widths[i];
+					columnWidths[i] = new ColumnWeightData(data.weight, data.minimumWidth, data.resizable);
+				} else {
+					String msg = String.format("Unsupported type in column #%d: %s", i, widths[i]); //$NON-NLS-1$
+					throw new IllegalArgumentException(msg);
+				}
+			}
+		} else {
+			columnWidths = null;
+		}
+		Table control = getUIControl();
+		if (control != null) {
+			applyColumnWidths(control);
+		}
+	}
+
 	public void setSortedAscending(boolean ascending) {
 		if (isSortedAscending != ascending) {
 			boolean oldSortedAscending = isSortedAscending;
@@ -414,7 +451,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 * Non API.
 	 * 
 	 * @noreference This method is not intended to be referenced by clients.
-	 *              TODO [ev] make API ?
 	 */
 	public void setDelegate(ITableRidgetDelegate delegate) {
 		this.delegate = delegate;
@@ -432,27 +468,73 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			for (int i = 0; i < expectedCols; i++) {
 				new TableColumn(control, SWT.NONE);
 			}
-			final int minWidth = 50;
-			Composite parent = control.getParent();
-			if (control.getLayout() instanceof TableLayout) {
-				TableLayout layout = new TableLayout();
-				for (int i = 0; i < expectedCols; i++) {
-					layout.addColumnData(new ColumnWeightData(1, minWidth));
+			applyColumnWidths(control);
+		}
+	}
+
+	private void applyColumnWidths(Table control) {
+		final int expectedCols = control.getColumnCount();
+		final ColumnLayoutData[] columnData;
+		if (columnWidths == null || columnWidths.length != expectedCols) {
+			columnData = new ColumnLayoutData[expectedCols];
+			for (int i = 0; i < expectedCols; i++) {
+				columnData[i] = new ColumnWeightData(1, true);
+			}
+		} else {
+			columnData = columnWidths;
+		}
+		Composite parent = control.getParent();
+		if (control.getLayout() instanceof TableLayout) {
+			// TableLayout: use columnData instance for each column, apply to control
+			TableLayout layout = new TableLayout();
+			for (int index = 0; index < expectedCols; index++) {
+				layout.addColumnData(columnData[index]);
+			}
+			control.setLayout(layout);
+			parent.layout(true, true);
+		} else if ((parent.getLayout() == null && parent.getChildren().length == 1)
+				|| parent.getLayout() instanceof TableColumnLayout) {
+			// TableColumnLayout: use columnData instance for each column, apply to parent
+			TableColumnLayout layout = new TableColumnLayout();
+			for (int index = 0; index < expectedCols; index++) {
+				TableColumn column = control.getColumn(index);
+				layout.setColumnData(column, columnData[index]);
+			}
+			parent.setLayout(layout);
+			parent.layout(true, true);
+		} else {
+			// Other: manually compute width for each columnm, apply to TableColumn
+			// 1. absolute widths: apply absolute widths first
+			// 2. relative widths:
+			//    compute remaining width and total weight; for each column: apply
+			//    the largest value of either the relative width or the minimum width
+			int widthRemaining = control.getClientArea().width;
+			int totalWeights = 0;
+			for (int index = 0; index < expectedCols; index++) {
+				ColumnLayoutData data = columnData[index];
+				TableColumn column = control.getColumn(index);
+				if (data instanceof ColumnPixelData) {
+					ColumnPixelData pixelData = (ColumnPixelData) data;
+					int width = pixelData.width;
+					if (pixelData.addTrim) {
+						width = width + getTrim();
+					}
+					column.setWidth(width);
+					column.setResizable(data.resizable);
+					widthRemaining = widthRemaining - width;
 				}
-				control.setLayout(layout);
-				parent.layout();
-			} else if ((parent.getLayout() == null && parent.getChildren().length == 1)
-					|| parent.getLayout() instanceof TableColumnLayout) {
-				TableColumnLayout layout = new TableColumnLayout();
-				for (TableColumn column : control.getColumns()) {
-					layout.setColumnData(column, new ColumnWeightData(1, minWidth));
+				if (data instanceof ColumnWeightData) {
+					totalWeights = totalWeights + ((ColumnWeightData) data).weight;
 				}
-				parent.setLayout(layout);
-				parent.layout();
-			} else {
-				int colWidth = Math.max(minWidth, control.getClientArea().width / expectedCols);
-				for (TableColumn column : control.getColumns()) {
-					column.setWidth(colWidth);
+			}
+			int slice = totalWeights > 0 ? Math.max(0, widthRemaining / totalWeights) : 0;
+			for (int index = 0; index < expectedCols; index++) {
+				TableColumn column = control.getColumn(index);
+				if (columnData[index] instanceof ColumnWeightData) {
+					ColumnWeightData data = (ColumnWeightData) columnData[index];
+					int width = Math.max(data.minimumWidth, data.weight * slice);
+					column.setWidth(width);
+					column.setResizable(data.resizable);
 				}
 			}
 		}
@@ -575,6 +657,16 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			if (columnFormatter != null) {
 				result[i] = columnFormatter;
 			}
+		}
+		return result;
+	}
+
+	private int getTrim() {
+		int result = 3;
+		if (Util.isWindows()) {
+			result = 4;
+		} else if (Util.isMac()) {
+			result = 24;
 		}
 		return result;
 	}

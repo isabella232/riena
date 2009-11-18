@@ -49,14 +49,11 @@ import org.eclipse.jface.databinding.viewers.IViewerObservableList;
 import org.eclipse.jface.databinding.viewers.ObservableListTreeContentProvider;
 import org.eclipse.jface.databinding.viewers.TreeStructureAdvisor;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
-import org.eclipse.jface.layout.TreeColumnLayout;
-import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
@@ -68,7 +65,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -86,6 +82,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
+import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableRidget;
@@ -288,6 +285,19 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		return new IColumnFormatter[numColumns];
 	}
 
+	/**
+	 * This method changes the width of the Tree's columns.
+	 * <p>
+	 * Does nothing by default. Subclasses implementing {@link ITreeTableRidget}
+	 * must override.
+	 * 
+	 * @param control
+	 *            the Tree control; never null
+	 */
+	protected void applyColumnWidths(Tree control) {
+		// subclasses should override
+	}
+
 	// public methods
 	// ///////////////
 
@@ -478,29 +488,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			for (int i = 0; i < expectedCols; i++) {
 				new TreeColumn(control, SWT.NONE);
 			}
-			final int minWidth = 50;
-			Composite parent = control.getParent();
-			if (control.getLayout() instanceof TableLayout) {
-				TableLayout layout = new TableLayout();
-				for (int i = 0; i < expectedCols; i++) {
-					layout.addColumnData(new ColumnWeightData(1, minWidth));
-				}
-				control.setLayout(layout);
-				parent.layout();
-			} else if ((parent.getLayout() == null && parent.getChildren().length == 1)
-					|| parent.getLayout() instanceof TreeColumnLayout) {
-				TreeColumnLayout layout = new TreeColumnLayout();
-				for (TreeColumn column : control.getColumns()) {
-					layout.setColumnData(column, new ColumnWeightData(1, minWidth));
-				}
-				parent.setLayout(layout);
-				parent.layout();
-			} else {
-				int colWidth = Math.max(minWidth, control.getClientArea().width / expectedCols);
-				for (TreeColumn column : control.getColumns()) {
-					column.setWidth(colWidth);
-				}
-			}
+			applyColumnWidths(control);
 		}
 	}
 

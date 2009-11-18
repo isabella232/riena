@@ -20,6 +20,7 @@ import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -839,8 +840,9 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		Class<?> shellLayout = getShell().getLayout().getClass();
 		assertSame(shellLayout, control.getParent().getLayout().getClass());
 		assertTrue(control.getLayout() instanceof TableLayout);
+		final int expected = control.getSize().x / 3;
 		for (int i = 0; i < 3; i++) {
-			assertEquals("col #" + i, 50, control.getColumn(i).getWidth());
+			assertEquals("col #" + i, expected, control.getColumn(i).getWidth());
 		}
 	}
 
@@ -861,8 +863,69 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 		assertTrue(control.getParent().getLayout() instanceof TableColumnLayout);
 		assertEquals(null, control.getLayout());
+		final int expected = control.getSize().x / 3;
 		for (int i = 0; i < 3; i++) {
-			assertEquals("col #" + i, 50, control.getColumn(i).getWidth());
+			assertEquals("col #" + i, expected, control.getColumn(i).getWidth());
+		}
+	}
+
+	/**
+	 * As per Bug 285305
+	 */
+	public void testSetColumnWidths() {
+		ITableRidget ridget = createRidget();
+		Table control = new Table(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		ridget.setUIControl(control);
+
+		try {
+			ridget.setColumnWidths(new Object[] { null });
+			fail();
+		} catch (RuntimeException rex) {
+			assertTrue(rex.getMessage().contains("null"));
+		}
+
+		try {
+			ridget.setColumnWidths(new Object[] { new Object() });
+			fail();
+		} catch (RuntimeException rex) {
+			assertTrue(rex.getMessage().contains("Object"));
+		}
+
+		ridget
+				.setColumnWidths(new Object[] { new ColumnPixelData(20), new ColumnPixelData(40),
+						new ColumnPixelData(60) });
+		String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
+		ridget.bindToModel(manager, "persons", Person.class, columns3, null);
+
+		int[] expected = { 20, 40, 60 };
+		for (int i = 0; i < 3; i++) {
+			int actual = control.getColumn(i).getWidth();
+			String msg = String.format("col #%d, exp:%d, act:%d", i, expected[i], actual);
+			assertEquals(msg, expected[i], actual);
+		}
+	}
+
+	/**
+	 * As per Bug 285305
+	 */
+	public void testPreserveColumnWidths() {
+		int[] widths = { 50, 100, 150 };
+		ITableRidget ridget = createRidget();
+		Table control = new Table(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		for (int width : widths) {
+			TableColumn column = new TableColumn(control, SWT.NONE);
+			column.setWidth(width);
+		}
+		ridget.setUIControl(control);
+
+		String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
+		ridget.bindToModel(manager, "persons", Person.class, columns3, null);
+		ridget.updateFromModel();
+
+		for (int i = 0; i < 3; i++) {
+			int actual = control.getColumn(i).getWidth();
+			String msg = String.format("col #%d, exp:%d, act:%d", i, widths[i], actual);
+			assertEquals(msg, widths[i], actual);
 		}
 	}
 

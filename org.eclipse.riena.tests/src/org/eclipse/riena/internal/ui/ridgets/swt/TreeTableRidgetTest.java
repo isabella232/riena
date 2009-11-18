@@ -13,7 +13,8 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeEvent;
 import java.util.Comparator;
 
-import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.layout.TreeColumnLayout;
+import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -751,8 +752,9 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		Class<?> shellLayout = getShell().getLayout().getClass();
 		assertSame(shellLayout, control.getParent().getLayout().getClass());
 		assertTrue(control.getLayout() instanceof TableLayout);
+		final int expected = control.getSize().x / 3;
 		for (int i = 0; i < 3; i++) {
-			assertEquals("col #" + i, 50, control.getColumn(i).getWidth());
+			assertEquals("col #" + i, expected, control.getColumn(i).getWidth());
 		}
 	}
 
@@ -766,15 +768,76 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		}
 		Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
 		ridget.setUIControl(control);
-		getShell().setLayout(new TableColumnLayout());
+		getShell().setLayout(new TreeColumnLayout());
 
 		String[] columns3 = { "firstname", "lastname", "entry" };
 		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
 
-		assertTrue(control.getParent().getLayout() instanceof TableColumnLayout);
+		assertTrue(control.getParent().getLayout() instanceof TreeColumnLayout);
 		assertEquals(null, control.getLayout());
+		final int expected = control.getSize().x / 3;
 		for (int i = 0; i < 3; i++) {
-			assertEquals("col #" + i, 50, control.getColumn(i).getWidth());
+			assertEquals("col #" + i, expected, control.getColumn(i).getWidth());
+		}
+	}
+
+	/**
+	 * As per Bug 285305
+	 */
+	public void testSetColumnWidths() {
+		ITreeTableRidget ridget = createRidget();
+		Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		ridget.setUIControl(control);
+
+		try {
+			ridget.setColumnWidths(new Object[] { null });
+			fail();
+		} catch (RuntimeException rex) {
+			assertTrue(rex.getMessage().contains("null"));
+		}
+
+		try {
+			ridget.setColumnWidths(new Object[] { new Object() });
+			fail();
+		} catch (RuntimeException rex) {
+			assertTrue(rex.getMessage().contains("Object"));
+		}
+
+		ridget
+				.setColumnWidths(new Object[] { new ColumnPixelData(20), new ColumnPixelData(40),
+						new ColumnPixelData(60) });
+		String[] columns3 = { "firstname", "lastname", "entry" };
+		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
+
+		int[] expected = { 20, 40, 60 };
+		for (int i = 0; i < 3; i++) {
+			int actual = control.getColumn(i).getWidth();
+			String msg = String.format("col #%d, exp:%d, act:%d", i, expected[i], actual);
+			assertEquals(msg, expected[i], actual);
+		}
+	}
+
+	/**
+	 * As per Bug 285305
+	 */
+	public void testPreserveColumnWidths() {
+		int[] widths = { 50, 100, 150 };
+		ITreeTableRidget ridget = createRidget();
+		Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		for (int width : widths) {
+			TreeColumn column = new TreeColumn(control, SWT.NONE);
+			column.setWidth(width);
+		}
+		ridget.setUIControl(control);
+
+		String[] columns3 = { "firstname", "lastname", "entry" };
+		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
+		ridget.updateFromModel();
+
+		for (int i = 0; i < 3; i++) {
+			int actual = control.getColumn(i).getWidth();
+			String msg = String.format("col #%d, exp:%d, act:%d", i, widths[i], actual);
+			assertEquals(msg, widths[i], actual);
 		}
 	}
 

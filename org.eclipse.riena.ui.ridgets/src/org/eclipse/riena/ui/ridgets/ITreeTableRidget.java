@@ -114,4 +114,11 @@ public interface ITreeTableRidget extends ITreeRidget, ISortableByColumn {
 	 *            formatter from the selected column
 	 */
 	void setColumnFormatter(int columnIndex, IColumnFormatter formatter);
+
+	/**
+	 * TODO [ev] javadoc -- experimental, may be removed without notice
+	 * 
+	 * @since 1.2
+	 */
+	void setColumnWidths(Object[] widths);
 }

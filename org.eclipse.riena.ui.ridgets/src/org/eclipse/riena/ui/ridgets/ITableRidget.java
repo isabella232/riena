@@ -136,6 +136,13 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	void setColumnFormatter(int columnIndex, IColumnFormatter formatter);
 
 	/**
+	 * TODO [ev] javadoc -- experimental, may be removed without notice
+	 * 
+	 * @since 1.2
+	 */
+	void setColumnWidths(Object[] widths);
+
+	/**
 	 * Return true, if this table allows columns to be re-arranged by the user.
 	 * The default value is false.
 	 */

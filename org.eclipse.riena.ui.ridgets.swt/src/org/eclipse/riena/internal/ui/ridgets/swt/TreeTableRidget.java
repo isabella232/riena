@@ -15,10 +15,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.layout.TreeColumnLayout;
+import org.eclipse.jface.util.Util;
+import org.eclipse.jface.viewers.ColumnLayoutData;
+import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -47,6 +54,7 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 	private final Map<Integer, Boolean> sortableColumnsMap;
 	private final Map<Integer, Comparator<Object>> comparatorMap;
 	private final Map<Integer, IColumnFormatter> formatterMap;
+	private ColumnLayoutData[] columnWidths;
 
 	private boolean isGroupingEnabled;
 
@@ -96,6 +104,74 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 			}
 		}
 		return result;
+	}
+
+	protected void applyColumnWidths(Tree control) {
+		final int expectedCols = control.getColumnCount();
+		final ColumnLayoutData[] columnData;
+		if (columnWidths == null || columnWidths.length != expectedCols) {
+			columnData = new ColumnLayoutData[expectedCols];
+			for (int i = 0; i < expectedCols; i++) {
+				columnData[i] = new ColumnWeightData(1, true);
+			}
+		} else {
+			columnData = columnWidths;
+		}
+		Composite parent = control.getParent();
+		if (control.getLayout() instanceof TableLayout) {
+			// TableLayout: use columnData instance for each column, apply to control
+			TableLayout layout = new TableLayout();
+			for (int index = 0; index < expectedCols; index++) {
+				layout.addColumnData(columnData[index]);
+			}
+			control.setLayout(layout);
+			parent.layout(true, true);
+		} else if ((parent.getLayout() == null && parent.getChildren().length == 1)
+				|| parent.getLayout() instanceof TreeColumnLayout) {
+			// TreeColumnLayout: use columnData instance for each column, apply to parent
+			TreeColumnLayout layout = new TreeColumnLayout();
+			for (int index = 0; index < expectedCols; index++) {
+				TreeColumn column = control.getColumn(index);
+				layout.setColumnData(column, columnData[index]);
+			}
+			parent.setLayout(layout);
+			parent.layout();
+		} else {
+			// Other: manually compute width for each columnm, apply to TableColumn
+			// 1. absolute widths: apply absolute widths first
+			// 2. relative widths:
+			//    compute remaining width and total weight; for each column: apply
+			//    the largest value of either the relative width or the minimum width
+			int widthRemaining = control.getClientArea().width;
+			int totalWeights = 0;
+			for (int index = 0; index < expectedCols; index++) {
+				ColumnLayoutData data = columnData[index];
+				TreeColumn column = control.getColumn(index);
+				if (data instanceof ColumnPixelData) {
+					ColumnPixelData pixelData = (ColumnPixelData) data;
+					int width = pixelData.width;
+					if (pixelData.addTrim) {
+						width = width + getTrim();
+					}
+					column.setWidth(width);
+					column.setResizable(data.resizable);
+					widthRemaining = widthRemaining - width;
+				}
+				if (data instanceof ColumnWeightData) {
+					totalWeights = totalWeights + ((ColumnWeightData) data).weight;
+				}
+			}
+			int slice = totalWeights > 0 ? Math.max(0, widthRemaining / totalWeights) : 0;
+			for (int index = 0; index < expectedCols; index++) {
+				TreeColumn column = control.getColumn(index);
+				if (columnData[index] instanceof ColumnWeightData) {
+					ColumnWeightData data = (ColumnWeightData) columnData[index];
+					int width = Math.max(data.minimumWidth, data.weight * slice);
+					column.setWidth(width);
+					column.setResizable(data.resizable);
+				}
+			}
+		}
 	}
 
 	// ITreeTableRidget methods
@@ -173,6 +249,39 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 		}
 		if (!newValue.equals(oldValue)) {
 			firePropertyChange(ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null, columnIndex);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Implementation note: if the array is non-null, its elements must be
+	 * {@link ColumnPixelData} or {@link ColumnWeightData} instances.
+	 * 
+	 * @throws RuntimeException
+	 *             if an unsupported array element is encountered
+	 */
+	public void setColumnWidths(Object[] widths) {
+		if (widths != null) {
+			columnWidths = new ColumnLayoutData[widths.length];
+			for (int i = 0; i < widths.length; i++) {
+				if (widths[i] instanceof ColumnPixelData) {
+					ColumnPixelData data = (ColumnPixelData) widths[i];
+					columnWidths[i] = new ColumnPixelData(data.width, data.resizable, data.addTrim);
+				} else if (widths[i] instanceof ColumnWeightData) {
+					ColumnWeightData data = (ColumnWeightData) widths[i];
+					columnWidths[i] = new ColumnWeightData(data.weight, data.minimumWidth, data.resizable);
+				} else {
+					String msg = String.format("Unsupported type in column #%d: %s", i, widths[i]); //$NON-NLS-1$
+					throw new IllegalArgumentException(msg);
+				}
+			}
+		} else {
+			columnWidths = null;
+		}
+		Tree control = getUIControl();
+		if (control != null) {
+			applyColumnWidths(control);
 		}
 	}
 
@@ -275,6 +384,16 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 		String msg = "columnIndex out of range (0 - " + range + " ): " + columnIndex; //$NON-NLS-1$ //$NON-NLS-2$
 		Assert.isLegal(-1 < columnIndex, msg);
 		Assert.isLegal(columnIndex < range, msg);
+	}
+
+	private int getTrim() {
+		int result = 3;
+		if (Util.isWindows()) {
+			result = 4;
+		} else if (Util.isMac()) {
+			result = 24;
+		}
+		return result;
 	}
 
 	// helping classes

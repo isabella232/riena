@@ -296,6 +296,16 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * This method is not supported by this ridget.
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             this is not supported by this ridget
+	 */
+	public final void setColumnWidths(Object[] widths) {
+		throw new UnsupportedOperationException();
+	}
+
 	public void setSortedAscending(boolean ascending) {
 		if (ascending != isSortedAscending) {
 			boolean oldSortedAscending = isSortedAscending;
