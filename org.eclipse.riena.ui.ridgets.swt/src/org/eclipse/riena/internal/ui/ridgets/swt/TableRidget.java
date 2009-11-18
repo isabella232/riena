@@ -108,8 +108,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private final Map<Integer, IColumnFormatter> formatterMap;
 	private boolean moveableColumns;
 
-	private ITableRidgetDelegate delegate;
-
 	public TableRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		doubleClickForwarder = new DoubleClickForwarder();
@@ -340,23 +338,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 *             if an unsupported array element is encountered
 	 */
 	public void setColumnWidths(Object[] widths) {
-		if (widths != null) {
-			columnWidths = new ColumnLayoutData[widths.length];
-			for (int i = 0; i < widths.length; i++) {
-				if (widths[i] instanceof ColumnPixelData) {
-					ColumnPixelData data = (ColumnPixelData) widths[i];
-					columnWidths[i] = new ColumnPixelData(data.width, data.resizable, data.addTrim);
-				} else if (widths[i] instanceof ColumnWeightData) {
-					ColumnWeightData data = (ColumnWeightData) widths[i];
-					columnWidths[i] = new ColumnWeightData(data.weight, data.minimumWidth, data.resizable);
-				} else {
-					String msg = String.format("Unsupported type in column #%d: %s", i, widths[i]); //$NON-NLS-1$
-					throw new IllegalArgumentException(msg);
-				}
-			}
-		} else {
-			columnWidths = null;
-		}
+		columnWidths = ColumnUtils.copyWidths(widths);
 		Table control = getUIControl();
 		if (control != null) {
 			applyColumnWidths(control);
@@ -441,15 +423,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 		Integer key = Integer.valueOf(columnIndex);
 		formatterMap.put(key, formatter);
-	}
-
-	/**
-	 * Non API.
-	 * 
-	 * @noreference This method is not intended to be referenced by clients.
-	 */
-	public void setDelegate(ITableRidgetDelegate delegate) {
-		this.delegate = delegate;
 	}
 
 	// helping methods
@@ -548,9 +521,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	private void configureControl(Table control) {
 		if (renderingMethods != null) {
-			if (delegate != null) {
-				delegate.prepareTable(control, renderingMethods.length);
-			}
 			applyColumns(control);
 		}
 		applyColumnsMoveable(control);
@@ -705,13 +675,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 			column.getParent().showSelection();
 		}
-	}
-
-	/**
-	 * Non-API.
-	 */
-	public static interface ITableRidgetDelegate {
-		void prepareTable(Table control, int numColumns);
 	}
 
 }

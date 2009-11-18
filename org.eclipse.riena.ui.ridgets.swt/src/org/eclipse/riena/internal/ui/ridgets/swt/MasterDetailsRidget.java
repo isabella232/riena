@@ -12,16 +12,10 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.layout.TableColumnLayout;
-import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 
-import org.eclipse.riena.internal.ui.ridgets.swt.TableRidget.ITableRidgetDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractMasterDetailsRidget;
@@ -74,8 +68,8 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 		getTableRidget().bindToModel(rowObservables, rowClass, columnPropertyNames, columnHeaders);
 	}
 
-	protected final void configureTableRidget() {
-		((TableRidget) getTableRidget()).setDelegate(new TablePreparer());
+	protected void configureTableRidget() {
+		// unused
 	}
 
 	protected final void setTableSelection(Object value) {
@@ -155,29 +149,6 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 
 		void clearSavedSelection() {
 			oldIndex = -1;
-		}
-	}
-
-	/**
-	 * Ensures the table widget has the correct number of columns and layout
-	 * settings.
-	 */
-	private static final class TablePreparer implements ITableRidgetDelegate {
-		public void prepareTable(Table control, int expectedCols) {
-			int actualCols = control.getColumnCount();
-			if (actualCols != expectedCols) {
-				for (TableColumn column : control.getColumns()) {
-					column.dispose();
-				}
-				TableColumnLayout layout = new TableColumnLayout();
-				for (int i = 0; i < expectedCols; i++) {
-					TableColumn column = new TableColumn(control, SWT.NONE);
-					layout.setColumnData(column, new ColumnWeightData(10));
-				}
-				Composite tableComposite = control.getParent();
-				tableComposite.setLayout(layout);
-				tableComposite.layout(true);
-			}
 		}
 	}
 

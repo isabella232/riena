@@ -34,6 +34,7 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
@@ -195,6 +196,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	public void setApplyRequiresNoErrors(boolean requiresNoErrors) {
 		this.applyRequiresNoErrors = requiresNoErrors;
+	}
+
+	public void setColumnWidths(Object[] widths) {
+		((ITableRidget) getTableRidget()).setColumnWidths(widths);
 	}
 
 	public final void setDelegate(IMasterDetailsDelegate delegate) {

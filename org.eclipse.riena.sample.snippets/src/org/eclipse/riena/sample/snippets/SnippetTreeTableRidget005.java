@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.snippets;
 
-import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.swt.SWT;
@@ -35,9 +33,6 @@ public class SnippetTreeTableRidget005 {
 		// need ONE column to show that this tree is a table-tree. The correct
 		// number of columns will be created as needed, when bind is invoked.
 		new TreeColumn(tree, SWT.NONE);
-		GridDataFactory.fillDefaults().grab(true, true).applyTo(tree);
-
-		shell.setSize(500, 100);
 
 		final IGroupedTreeTableRidget treeTableRidget = (IGroupedTreeTableRidget) SwtRidgetFactory.createRidget(tree);
 
@@ -59,9 +54,8 @@ public class SnippetTreeTableRidget005 {
 		Display display = Display.getDefault();
 		try {
 			Shell shell = UIControlsFactory.createShell(display);
-			GridLayoutFactory.swtDefaults().applyTo(shell);
 			new SnippetTreeTableRidget005(shell);
-			shell.pack();
+			shell.setSize(400, 400);
 			shell.open();
 			while (!shell.isDisposed()) {
 				if (!display.readAndDispatch()) {

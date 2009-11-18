@@ -753,6 +753,8 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		assertSame(shellLayout, control.getParent().getLayout().getClass());
 		assertTrue(control.getLayout() instanceof TableLayout);
 		final int expected = control.getSize().x / 3;
+
+		assertTrue(String.valueOf(expected), expected > 0);
 		for (int i = 0; i < 3; i++) {
 			assertEquals("col #" + i, expected, control.getColumn(i).getWidth());
 		}
@@ -761,7 +763,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	/**
 	 * As per Bug 285305
 	 */
-	public void testAutoCreateColumnsWithTableColumnLayout() {
+	public void testAutoCreateColumnsWithTreeColumnLayout() {
 		ITreeTableRidget ridget = createRidget();
 		for (Control control : getShell().getChildren()) {
 			control.dispose();
@@ -776,6 +778,8 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(control.getParent().getLayout() instanceof TreeColumnLayout);
 		assertEquals(null, control.getLayout());
 		final int expected = control.getSize().x / 3;
+
+		assertTrue(String.valueOf(expected), expected > 0);
 		for (int i = 0; i < 3; i++) {
 			assertEquals("col #" + i, expected, control.getColumn(i).getWidth());
 		}

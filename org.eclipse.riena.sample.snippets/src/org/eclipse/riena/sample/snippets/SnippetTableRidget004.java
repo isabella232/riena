@@ -37,8 +37,6 @@ public class SnippetTableRidget004 {
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 
-		shell.setSize(500, 100);
-
 		ITableRidget tableRidget = (ITableRidget) SwtRidgetFactory.createRidget(table);
 
 		// set the widths
@@ -60,7 +58,7 @@ public class SnippetTableRidget004 {
 		try {
 			final Shell shell = new Shell();
 			new SnippetTableRidget004(shell);
-			shell.pack();
+			shell.setSize(500, 300);
 			shell.open();
 			while (!shell.isDisposed()) {
 				if (!display.readAndDispatch()) {

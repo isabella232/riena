@@ -30,12 +30,32 @@ import org.eclipse.swt.widgets.Widget;
  */
 public final class ColumnUtils {
 
-	public static final void applyColumnWidths(Table control, ColumnLayoutData[] columnWidths) {
+	public static void applyColumnWidths(Table control, ColumnLayoutData[] columnWidths) {
 		applyColumnWidths(control, columnWidths, control.getColumnCount());
 	}
 
-	public static final void applyColumnWidths(Tree control, ColumnLayoutData[] columnWidths) {
+	public static void applyColumnWidths(Tree control, ColumnLayoutData[] columnWidths) {
 		applyColumnWidths(control, columnWidths, control.getColumnCount());
+	}
+
+	public static ColumnLayoutData[] copyWidths(Object[] source) {
+		ColumnLayoutData[] result = null;
+		if (source != null) {
+			result = new ColumnLayoutData[source.length];
+			for (int i = 0; i < source.length; i++) {
+				if (source[i] instanceof ColumnPixelData) {
+					ColumnPixelData data = (ColumnPixelData) source[i];
+					result[i] = new ColumnPixelData(data.width, data.resizable, data.addTrim);
+				} else if (source[i] instanceof ColumnWeightData) {
+					ColumnWeightData data = (ColumnWeightData) source[i];
+					result[i] = new ColumnWeightData(data.weight, data.minimumWidth, data.resizable);
+				} else {
+					String msg = String.format("Unsupported type in column #%d: %s", i, source[i]); //$NON-NLS-1$
+					throw new IllegalArgumentException(msg);
+				}
+			}
+		}
+		return result;
 	}
 
 	// helping methods
@@ -59,7 +79,9 @@ public final class ColumnUtils {
 				layout.addColumnData(columnData[index]);
 			}
 			control.setLayout(layout);
-			parent.layout(true, true);
+			if (parent.isVisible()) {
+				parent.layout(true, true);
+			}
 		} else if ((control instanceof Tree && control.getLayout() == null && parent.getLayout() == null && parent
 				.getChildren().length == 1)
 				|| parent.getLayout() instanceof TreeColumnLayout) {
@@ -70,7 +92,9 @@ public final class ColumnUtils {
 				layout.setColumnData(column, columnData[index]);
 			}
 			parent.setLayout(layout);
-			parent.layout();
+			if (parent.isVisible()) {
+				parent.layout();
+			}
 		} else if ((control instanceof Table && control.getLayout() == null && parent.getLayout() == null && parent
 				.getChildren().length == 1)
 				|| parent.getLayout() instanceof TableColumnLayout) {
@@ -81,7 +105,9 @@ public final class ColumnUtils {
 				layout.setColumnData(column, columnData[index]);
 			}
 			parent.setLayout(layout);
-			parent.layout(true, true);
+			if (parent.isVisible()) {
+				parent.layout();
+			}
 		} else {
 			// Other: manually compute width for each columnm, apply to TableColumn
 			// 1. absolute widths: apply absolute widths first

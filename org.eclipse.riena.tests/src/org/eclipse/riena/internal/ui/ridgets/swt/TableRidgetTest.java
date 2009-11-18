@@ -841,6 +841,8 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		assertSame(shellLayout, control.getParent().getLayout().getClass());
 		assertTrue(control.getLayout() instanceof TableLayout);
 		final int expected = control.getSize().x / 3;
+
+		assertTrue(String.valueOf(expected), expected > 0);
 		for (int i = 0; i < 3; i++) {
 			assertEquals("col #" + i, expected, control.getColumn(i).getWidth());
 		}
@@ -864,6 +866,8 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		assertTrue(control.getParent().getLayout() instanceof TableColumnLayout);
 		assertEquals(null, control.getLayout());
 		final int expected = control.getSize().x / 3;
+
+		assertTrue(String.valueOf(expected), expected > 0);
 		for (int i = 0; i < 3; i++) {
 			assertEquals("col #" + i, expected, control.getColumn(i).getWidth());
 		}

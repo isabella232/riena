@@ -106,6 +106,13 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	void setApplyRequiresNoErrors(boolean requiresNoErrors);
 
 	/**
+	 * TODO [ev] javadoc -- experimental, may be removed without notice
+	 * 
+	 * @since 1.2
+	 */
+	void setColumnWidths(Object[] widths);
+
+	/**
 	 * Provide this ridget with an {@link IMasterDetailsDelegate} instance,
 	 * which will manage the content of details area.
 	 * 
