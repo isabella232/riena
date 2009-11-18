@@ -125,13 +125,34 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		windowRidgetListeners.add(listener);
 	}
 
-	public void removeWindowRidgetListener(IWindowRidgetListener listener) {
-		windowRidgetListeners.remove(listener);
+	public void dispose() {
+		getUIControl().dispose();
 	}
 
 	public Object getDefaultButton() {
 		// unused
 		return null;
+	}
+
+	/**
+	 * Always returns true because mandatory markers do not make sense for this
+	 * ridget.
+	 */
+	@Override
+	public boolean isDisableMandatoryMarker() {
+		return true;
+	}
+
+	public void layout() {
+		EmbeddedTitleBar control = getUIControl();
+		if (control != null) {
+			// we want to layout the whole view, which is the parent of the EmbeddedTitleBar
+			control.getParent().layout(true, true);
+		}
+	}
+
+	public void removeWindowRidgetListener(IWindowRidgetListener listener) {
+		windowRidgetListeners.remove(listener);
 	}
 
 	public void setDefaultButton(Object defaultButton) {
@@ -151,13 +172,6 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 			updateCloseable();
 		}
 	}
-
-	public void dispose() {
-		getUIControl().dispose();
-	}
-
-	// helping methods
-	// ////////////////
 
 	/**
 	 * Updates the text of the UI control.
@@ -215,15 +229,6 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 				listener.closed();
 			}
 		}
-	}
-
-	/**
-	 * Always returns true because mandatory markers do not make sense for this
-	 * ridget.
-	 */
-	@Override
-	public boolean isDisableMandatoryMarker() {
-		return true;
 	}
 
 }

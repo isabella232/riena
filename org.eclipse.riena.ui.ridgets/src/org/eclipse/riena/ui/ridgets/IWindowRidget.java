@@ -35,6 +35,24 @@ public interface IWindowRidget extends IRidget {
 	void addWindowRidgetListener(IWindowRidgetListener pListener);
 
 	/**
+	 * Releases all of the native screen resources used by this window.
+	 */
+	void dispose();
+
+	/**
+	 * Re-layout all contents of this window. Calls to this method will be
+	 * ignored if no control is bound.
+	 * 
+	 * @since 1.2
+	 */
+	void layout();
+
+	/**
+	 * Returns the window's defaultButton or null.
+	 */
+	Object getDefaultButton();
+
+	/**
 	 * Removes a listener for receiving window events from this ridget.
 	 * 
 	 * @param listener
@@ -45,33 +63,12 @@ public interface IWindowRidget extends IRidget {
 	void removeWindowRidgetListener(IWindowRidgetListener pListener);
 
 	/**
-	 * Sets the window-title of the Ridget.
+	 * Changes the active-state of the WindowRidget depending of the underlying
+	 * implementation for example enables the shell.
 	 * 
-	 * @param title
-	 *            a non null String
+	 * @param active
 	 */
-	void setTitle(String title);
-
-	/**
-	 * set the icon.
-	 * 
-	 * @param icon
-	 *            The icon name.
-	 */
-	void setIcon(String icon);
-
-	/**
-	 * Sets the default button.
-	 * 
-	 * @param defaultButton
-	 *            default button
-	 */
-	void setDefaultButton(Object defaultButton);
-
-	/**
-	 * Returns the window's defaultButton or null.
-	 */
-	Object getDefaultButton();
+	void setActive(boolean active);
 
 	/**
 	 * Sets the closeable flag if supported by the implementation, otherwise
@@ -82,15 +79,26 @@ public interface IWindowRidget extends IRidget {
 	void setCloseable(boolean closeable);
 
 	/**
-	 * Changes the active-state of the WindowRidget depending of the underlying
-	 * implementation for example enables the shell.
+	 * Sets the default button.
 	 * 
-	 * @param active
+	 * @param defaultButton
+	 *            default button
 	 */
-	void setActive(boolean active);
+	void setDefaultButton(Object defaultButton);
 
 	/**
-	 * Releases all of the native screen resources used by this window.
+	 * set the icon.
+	 * 
+	 * @param icon
+	 *            The icon name.
 	 */
-	void dispose();
+	void setIcon(String icon);
+
+	/**
+	 * Sets the window-title of the Ridget.
+	 * 
+	 * @param title
+	 *            a non null String
+	 */
+	void setTitle(String title);
 }

@@ -100,6 +100,13 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		return savedVisibleState;
 	}
 
+	public void layout() {
+		Shell control = getUIControl();
+		if (control != null) {
+			control.layout(true, true);
+		}
+	}
+
 	public void removeWindowRidgetListener(IWindowRidgetListener listener) {
 		windowRidgetListeners.remove(listener);
 	}
