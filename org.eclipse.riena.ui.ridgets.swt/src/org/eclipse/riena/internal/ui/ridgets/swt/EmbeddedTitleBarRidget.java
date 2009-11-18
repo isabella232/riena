@@ -62,17 +62,11 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		return new BasicMarkerSupport(this, propertyChangeSupport);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#getUIControl()
-	 */
 	@Override
 	public EmbeddedTitleBar getUIControl() {
 		return (EmbeddedTitleBar) super.getUIControl();
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setTitle(java.lang.String)
-	 */
 	public void setTitle(String title) {
 		String oldValue = this.text;
 		this.text = title;
@@ -89,9 +83,6 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		return text;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setIcon(java.lang.String)
-	 */
 	public void setIcon(String icon) {
 		String oldIcon = this.icon;
 		this.icon = icon;
@@ -109,9 +100,6 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		return icon;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#bindUIControl ()
-	 */
 	@Override
 	protected void bindUIControl() {
 		updateTextInControl();
@@ -120,19 +108,11 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		}
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#checkUIControl
-	 *      (java.lang.Object)
-	 */
 	@Override
 	protected void checkUIControl(Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, EmbeddedTitleBar.class);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#unbindUIControl
-	 *      ()
-	 */
 	@Override
 	protected void unbindUIControl() {
 		super.unbindUIControl();
@@ -141,39 +121,23 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		}
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#addWindowRidgetListener(org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener)
-	 */
 	public void addWindowRidgetListener(IWindowRidgetListener listener) {
 		windowRidgetListeners.add(listener);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#removeWindowRidgetListener(org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener)
-	 */
 	public void removeWindowRidgetListener(IWindowRidgetListener listener) {
 		windowRidgetListeners.remove(listener);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#getDefaultButton()
-	 */
 	public Object getDefaultButton() {
 		// unused
 		return null;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setDefaultButton(java.lang
-	 *      .Object)
-	 */
 	public void setDefaultButton(Object defaultButton) {
 		// unused
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setActive(boolean)
-	 */
 	public void setActive(boolean active) {
 		if (this.active == active) {
 			this.active = active;
@@ -181,9 +145,6 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		}
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setCloseable(boolean)
-	 */
 	public void setCloseable(boolean closeable) {
 		if (this.closeable != closeable) {
 			this.closeable = closeable;
@@ -191,11 +152,6 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#dispose()
-	 */
 	public void dispose() {
 		getUIControl().dispose();
 	}
@@ -248,25 +204,17 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	 * Listener of the title bar.
 	 */
 	private class TitleBarListener implements IEmbeddedTitleBarListener {
-
-		/**
-		 * @see org.eclipse.riena.ui.swt.IEmbeddedTitleBarListener#windowActivated(org.eclipse.swt.events.MouseEvent)
-		 */
 		public void windowActivated(MouseEvent e) {
 			for (IWindowRidgetListener listener : windowRidgetListeners.getListeners()) {
 				listener.activated();
 			}
 		}
 
-		/**
-		 * @see org.eclipse.riena.ui.swt.IEmbeddedTitleBarListener#windowClosed(org.eclipse.swt.events.MouseEvent)
-		 */
 		public void windowClosed(MouseEvent e) {
 			for (IWindowRidgetListener listener : windowRidgetListeners.getListeners()) {
 				listener.closed();
 			}
 		}
-
 	}
 
 	/**
