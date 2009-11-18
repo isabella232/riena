@@ -116,8 +116,18 @@ public interface ITreeTableRidget extends ITreeRidget, ISortableByColumn {
 	void setColumnFormatter(int columnIndex, IColumnFormatter formatter);
 
 	/**
-	 * TODO [ev] javadoc -- experimental, may be removed without notice
+	 * Adjust the column widths of the ridget's tree control according to the
+	 * information in the {@code widths} array.
+	 * <p>
+	 * When running on SWT: {@code widths} may only contain sublasses of
+	 * ColumnLayoutData. The following layout managers are supported:
+	 * TableLayout, TreeColumnLayout, other. See ColumnUtils for implementation
+	 * details.
 	 * 
+	 * @param widths
+	 *            an Array with width information, one instance per column. The
+	 *            array may be null, in that case the available width is
+	 *            distributed equally to all columns
 	 * @since 1.2
 	 */
 	void setColumnWidths(Object[] widths);

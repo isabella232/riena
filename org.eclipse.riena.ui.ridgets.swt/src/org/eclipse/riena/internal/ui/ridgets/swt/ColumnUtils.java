@@ -26,18 +26,86 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * TODO [ev] javadoc
+ * Helper class for layouting columns in a Table or Tree.
  */
 public final class ColumnUtils {
 
+	/**
+	 * Adjust the column widths of the given {@link Table}, according to the
+	 * provided {@link ColumnLayoutData} array. The layout managers supported by
+	 * this method are: TableLayout, TableColumnLayout, other.
+	 * <p>
+	 * If the number of entries in {@code columnWidths} does not match the
+	 * number of columns in the widget, the available width will be distributed
+	 * equally to all columns. The same will happen if {@code columnWidths} is
+	 * null. Future width changes are not taken into account.
+	 * <p>
+	 * If the control has a TableLayout, the ColumnLayoutData will be used
+	 * directy. Future width changes are not taken into account.
+	 * <p>
+	 * If the control's parent has a TableColumnLayout, the ColumnLayoutData
+	 * will be used directly. If control and the parent have no layout, and
+	 * parent only contains the control, then a TableColumnLayout is used as
+	 * well. Future width changes ARE taken into account.
+	 * <p>
+	 * In any other case: the available table width <i>at the time when this
+	 * meethod is invoked</i> is distributed directly to the columns (via
+	 * setWidth(...)). Future width changes are not taken into account.
+	 * 
+	 * @param control
+	 *            a Table instance; never null
+	 * @param columnWidths
+	 *            an Array with width information, one instance per column. The
+	 *            array may be null, in that case the available width is
+	 *            distributed equally to all columns
+	 */
 	public static void applyColumnWidths(Table control, ColumnLayoutData[] columnWidths) {
 		applyColumnWidths(control, columnWidths, control.getColumnCount());
 	}
 
+	/**
+	 * Adjust the column widths of the given {@link Tree}, according to the
+	 * provided {@link ColumnLayoutData} array. The layout managers supported by
+	 * this method are: TableLayout, TableColumnLayout, other.
+	 * <p>
+	 * If the number of entries in {@code columnWidths} does not match the
+	 * number of columns in the widget, the available width will be distributed
+	 * equally to all columns. The same will happen if {@code columnWidths} is
+	 * null. Future width changes are not taken into account.
+	 * <p>
+	 * If the control has a TableLayout, the ColumnLayoutData will be used
+	 * directy. Future width changes are not taken into account.
+	 * <p>
+	 * If the control's parent has a TreeColumnLayout, the ColumnLayoutData will
+	 * be used directly. If control and the parent have no layout, and parent
+	 * only contains the control, then a TreeColumnLayout is used as well.
+	 * Future width changes ARE taken into account.
+	 * <p>
+	 * In any other case: the available table width <i>at the time when this
+	 * meethod is invoked</i> is distributed directly to the columns (via
+	 * setWidth(...)). Future width changes are not taken into account.
+	 * 
+	 * @param control
+	 *            a Tree instance; never null
+	 * @param columnWidths
+	 *            an Array with width information, one instance per column. The
+	 *            array may be null, in that case the available width is
+	 *            distributed equally to all columns
+	 */
 	public static void applyColumnWidths(Tree control, ColumnLayoutData[] columnWidths) {
 		applyColumnWidths(control, columnWidths, control.getColumnCount());
 	}
 
+	/**
+	 * Deep copy an array of {@link ColumnLayoutData} instances.
+	 * 
+	 * @param source
+	 *            an Array; may be null
+	 * @return a deep copy of the array or null (if {@code source} is null)
+	 * @throws RuntimeException
+	 *             if the array contains types other than subclasses of
+	 *             {@link ColumnLayoutData}
+	 */
 	public static ColumnLayoutData[] copyWidths(Object[] source) {
 		ColumnLayoutData[] result = null;
 		if (source != null) {
