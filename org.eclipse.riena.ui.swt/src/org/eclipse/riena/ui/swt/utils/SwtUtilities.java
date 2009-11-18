@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
@@ -43,10 +44,8 @@ public final class SwtUtilities {
 	 * @return truncated text
 	 */
 	public static String clipText(final GC gc, final String text, int maxWidth) {
-
 		int textwidth = calcTextWidth(gc, text);
 		if (textwidth > maxWidth) {
-
 			StringBuffer shortText = new StringBuffer(text);
 			shortText.append("..."); //$NON-NLS-1$
 			while (textwidth > maxWidth) {
@@ -56,15 +55,9 @@ public final class SwtUtilities {
 				shortText = shortText.deleteCharAt(shortText.length() - 4);
 				textwidth = calcTextWidth(gc, shortText);
 			}
-
 			return shortText.toString();
-
-		} else {
-
-			return text;
-
 		}
-
+		return text;
 	}
 
 	/**
@@ -96,17 +89,14 @@ public final class SwtUtilities {
 	 * @return width of text
 	 */
 	public static int calcTextWidth(final GC gc, final StringBuffer text) {
-
 		int width = 0;
 		if (text == null) {
 			return width;
 		}
-
 		for (int i = 0; i < text.length(); i++) {
 			width += gc.getAdvanceWidth(text.charAt(i));
 		}
 		return width;
-
 	}
 
 	/**
@@ -124,8 +114,8 @@ public final class SwtUtilities {
 	 */
 	public static Color makeBrighter(final Color color, float f) {
 
-		assert color != null;
-		assert f >= 0.0;
+		Assert.isNotNull(color);
+		Assert.isTrue(f >= 0.0);
 
 		float[] hsb = color.getRGB().getHSB();
 		float h = hsb[0];
@@ -140,7 +130,6 @@ public final class SwtUtilities {
 		RGB rgb = new RGB(h, s, b);
 
 		return new Color(color.getDevice(), rgb);
-
 	}
 
 	/**
@@ -169,7 +158,6 @@ public final class SwtUtilities {
 			widget.dispose();
 		}
 		widget = null;
-
 	}
 
 	/**
