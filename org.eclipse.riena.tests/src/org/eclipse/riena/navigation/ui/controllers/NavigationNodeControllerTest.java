@@ -91,18 +91,13 @@ public class NavigationNodeControllerTest extends TestCase {
 	 * Tests the method {@code updateNavigationNodeMarkers()}.
 	 */
 	public void testUpdateNavigationNodeMarkers() {
-		node.addMarker(new HiddenMarker());
-		controller.updateNavigationNodeMarkers();
-		assertTrue(node.getMarkers().isEmpty());
 
-		node.addMarker(new HiddenMarker());
 		TextRidget ridget = new TextRidget();
 		ridget.setUIControl(new Text(shell, 0));
 		ridget.addMarker(new ErrorMarker());
 		controller.addRidget("4711", ridget);
 		controller.updateNavigationNodeMarkers();
 		assertFalse(node.getMarkers().isEmpty());
-		assertTrue(node.getMarkersOfType(HiddenMarker.class).isEmpty());
 		assertFalse(node.getMarkersOfType(ErrorMarker.class).isEmpty());
 
 		ridget.addMarker(new MandatoryMarker());

@@ -100,11 +100,11 @@ public class LnfManagerTest extends TestCase {
 		LnfManager.setLnf(myLnf);
 		myLnf.initialize();
 
-		assertNotNull(myLnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
+		assertNotNull(myLnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
 
 		LnfManager.dispose();
 
-		assertNull(myLnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
+		assertNull(myLnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
 	}
 
 	public static class TestLnf1 extends RienaDefaultLnf {
