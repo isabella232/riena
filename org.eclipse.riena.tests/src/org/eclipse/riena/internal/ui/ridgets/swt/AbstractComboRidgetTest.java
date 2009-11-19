@@ -985,6 +985,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		} else {
 			throw new IllegalArgumentException("unknown widget type: " + control);
 		}
+		UITestHelper.readAndDispatch(control);
 	}
 
 	// helping classes
