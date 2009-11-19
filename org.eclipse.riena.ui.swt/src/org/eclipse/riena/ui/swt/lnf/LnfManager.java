@@ -47,6 +47,8 @@ public final class LnfManager {
 
 	/**
 	 * Allows setting of an application L&F.
+	 * 
+	 * @since 1.2
 	 */
 	public static final String RIENA_LNF_SYSTEM_PROPERTY = "riena.lnf"; //$NON-NLS-1$
 
