@@ -27,6 +27,7 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
@@ -543,14 +544,14 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setOutputOnly(true);
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), "A");
+		selectA(control);
 
 		assertNull(ridget.getSelection());
 		assertEquals(-1, getSelectionIndex(control));
 
 		ridget.setOutputOnly(false);
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), "A");
+		selectA(control);
 
 		assertEquals("A", ridget.getSelection());
 		assertEquals(0, getSelectionIndex(control));
@@ -731,25 +732,20 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		final FTPropertyChangeListener listener = new FTPropertyChangeListener();
 		listener.setRunnable(new Runnable() {
 			public void run() {
-				assertEquals(1, getSelectionIndex(control));
-				assertEquals("B", ridget.getSelection());
-				assertEquals("B", stringManager.getSelectedItem());
+				assertEquals(0, getSelectionIndex(control));
+				assertEquals("A", ridget.getSelection());
+				assertEquals("A", stringManager.getSelectedItem());
 			}
 		});
 		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, listener);
 
 		control.setFocus();
-		//		if (control instanceof Combo) {
-		UITestHelper.sendString(control.getDisplay(), "B");
-		//		} else if (control instanceof CCombo) {
-		//			((CCombo) control).setText("B");
-		//			System.out.println(getSelectedString(control));
-		//		}
+		selectA(control);
 
 		assertEquals(1, listener.getCount()); // check that listener was called once
-		assertEquals(1, getSelectionIndex(control));
-		assertEquals("B", ridget.getSelection());
-		assertEquals("B", stringManager.getSelectedItem());
+		assertEquals(0, getSelectionIndex(control));
+		assertEquals("A", ridget.getSelection());
+		assertEquals("A", stringManager.getSelectedItem());
 	}
 
 	/**
@@ -975,6 +971,17 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 			((Combo) control).select(index);
 		} else if (control instanceof CCombo) {
 			((CCombo) control).select(index);
+		} else {
+			throw new IllegalArgumentException("unknown widget type: " + control);
+		}
+	}
+
+	private void selectA(Control control) {
+		Display display = control.getDisplay();
+		if (control instanceof Combo) {
+			UITestHelper.sendString(display, "A");
+		} else if (control instanceof CCombo) {
+			UITestHelper.sendKeyAction(display, UITestHelper.KC_ARROW_DOWN);
 		} else {
 			throw new IllegalArgumentException("unknown widget type: " + control);
 		}
