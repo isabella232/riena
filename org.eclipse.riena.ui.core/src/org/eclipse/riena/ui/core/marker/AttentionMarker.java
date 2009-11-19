@@ -35,10 +35,10 @@ public class AttentionMarker extends AbstractMarker implements IIconizableMarker
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @return {@code MarkerPosition.TOP_LEFT}
+	 * @return {@code MarkerPosition.TOP_RIGHT}
 	 */
 	public MarkerPosition getPositionOfMarker() {
-		return MarkerPosition.TOP_LEFT;
+		return MarkerPosition.TOP_RIGHT;
 	}
 
 	/**
