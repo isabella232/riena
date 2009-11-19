@@ -81,10 +81,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	private IConverter strToObjConverter;
 
 	/**
-	 * Binding between the list of choices in the combo and the rowObservables.
-	 * May be null, when there is no control or model.
+	 * The list of items to show in the combo. These entries are created from
+	 * the optionValues by applying the current conversion stategy to them.
 	 */
-	private Binding listBindingInternal;
+	private List<String> items;
 	/**
 	 * Binding between the rowObservables and the list of choices from the
 	 * model. May be null, when there is no model.
@@ -123,11 +123,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			// These bindings are only necessary when we have a model
 			DataBindingContext dbc = new DataBindingContext();
 			if (getUIControl() != null) {
-				// These bindings are only necessary when we have a Combo
-				listBindingInternal = dbc.bindList(getUIControlItemsObservable(), rowObservables,
-						new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST).setConverter(strToObjConverter),
-						new UpdateListStrategy(UpdateValueStrategy.POLICY_ON_REQUEST).setConverter(objToStrConverter));
-				listBindingInternal.updateModelToTarget();
 				applyEnabled();
 			}
 			listBindingExternal = dbc
@@ -149,8 +144,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	@Override
 	protected void unbindUIControl() {
 		super.unbindUIControl();
-		disposeBinding(listBindingInternal);
-		listBindingInternal = null;
 		disposeBinding(listBindingExternal);
 		listBindingExternal = null;
 		disposeBinding(selectionBindingInternal);
@@ -308,9 +301,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		// causes the selection to change temporarily
 		selectionValidator.enableBinding(false);
 		listBindingExternal.updateModelToTarget();
-		if (listBindingInternal != null) {
-			listBindingInternal.updateModelToTarget();
-		}
+		items = new ArrayList<String>();
+		updateValueToItem();
 		// workaround #292679
 		// boolean outputOnly = isOutputOnly();
 		// if (outputOnly) {
@@ -364,6 +356,15 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 */
 	protected abstract void removeAllFromUIControl();
 
+	/**
+	 * Make the given array the list of selectable items in the combo.
+	 * 
+	 * @param arrItems
+	 *            an array; never null.
+	 * @since 1.2
+	 */
+	protected abstract void setItemsToControl(String[] arrItems);
+
 	// helping methods
 	//////////////////
 
@@ -386,9 +387,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * enabled.
 	 */
 	private void bindControlToSelectionAndUpdate() {
-		if (getUIControl() != null && listBindingInternal != null) {
+		if (getUIControl() != null) {
 			/* update list of items in combo */
-			listBindingInternal.updateModelToTarget();
+			updateValueToItem();
 			/* re-create selectionBinding */
 			ISWTObservableValue controlSelection = getUIControlSelectionObservable();
 			controlSelection.addValueChangeListener(valueChangeValidator);
@@ -468,6 +469,21 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 
 	// helping classes
 	//////////////////
+
+	private void updateValueToItem() {
+		if (items != null) {
+			items.clear();
+			try {
+				for (Object value : optionValues) {
+					String item = (String) objToStrConverter.convert(value);
+					items.add(item);
+				}
+			} finally {
+				String[] arrItems = items.toArray(new String[items.size()]);
+				setItemsToControl(arrItems);
+			}
+		}
+	}
 
 	/**
 	 * Convert from model object to combo box items (strings).

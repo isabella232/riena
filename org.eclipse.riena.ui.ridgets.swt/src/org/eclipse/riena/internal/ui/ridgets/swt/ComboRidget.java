@@ -75,4 +75,9 @@ public class ComboRidget extends AbstractComboRidget {
 	protected void selectInUIControl(int index) {
 		getUIControl().select(index);
 	}
+
+	@Override
+	protected void setItemsToControl(String[] arrItems) {
+		getUIControl().setItems(arrItems);
+	}
 }
