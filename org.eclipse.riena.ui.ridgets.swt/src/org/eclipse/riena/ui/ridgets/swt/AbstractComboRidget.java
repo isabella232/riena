@@ -479,8 +479,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 					items.add(item);
 				}
 			} finally {
-				String[] arrItems = items.toArray(new String[items.size()]);
-				setItemsToControl(arrItems);
+				if (getUIControl() != null) {
+					String[] arrItems = items.toArray(new String[items.size()]);
+					setItemsToControl(arrItems);
+				}
 			}
 		}
 	}
