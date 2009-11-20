@@ -21,6 +21,8 @@ import java.util.List;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -34,6 +36,7 @@ import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.beans.common.StringManager;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
+import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 
@@ -846,6 +849,35 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(2, selectionListener.getCount()); // no inc -> lsnr removed
 	}
 
+	/**
+	 * As per Bug 293000
+	 */
+	public void testSelectionListenerWithObjectsOtherThanString() {
+		AbstractComboRidget ridget = getRidget();
+		WritableList options = new WritableList();
+		options.add(selection1);
+		options.add(selection2);
+		WritableValue selection = new WritableValue(null, Person.class);
+		ridget.bindToModel(options, Person.class, null, selection);
+		ridget.updateFromModel();
+
+		FTValueChangeListener valueListener = new FTValueChangeListener();
+		selection.addValueChangeListener(valueListener);
+
+		FTSelectionListener selectionListener = new FTSelectionListener();
+		ridget.addSelectionListener(selectionListener);
+
+		assertEquals(0, valueListener.getCount());
+		assertEquals(0, selectionListener.getCount());
+
+		ridget.setSelection(selection1);
+
+		assertEquals(1, valueListener.getCount());
+		assertEquals(selection1, selection.getValue());
+		assertEquals(1, selectionListener.getCount());
+		assertEquals(selection1, ridget.getSelection());
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -1024,6 +1056,32 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		void setRunnable(Runnable runnable) {
 			this.runnable = runnable;
+		}
+	}
+
+	private static class FTValueChangeListener implements IValueChangeListener {
+
+		private int count;
+
+		public void handleValueChange(ValueChangeEvent event) {
+			count++;
+		}
+
+		int getCount() {
+			return count;
+		}
+	}
+
+	private static class FTSelectionListener implements ISelectionListener {
+
+		private int count;
+
+		public void ridgetSelected(SelectionEvent event) {
+			count++;
+		}
+
+		int getCount() {
+			return count;
 		}
 	}
 

@@ -167,7 +167,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			selectionListeners = new ListenerList<ISelectionListener>(ISelectionListener.class);
 			addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
 				public void propertyChange(PropertyChangeEvent evt) {
-					notifySelectionListeners((String) evt.getOldValue(), (String) evt.getNewValue());
+					notifySelectionListeners(evt.getOldValue(), evt.getNewValue());
 				}
 			});
 		}
@@ -435,13 +435,13 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return selection != null && selection != emptySelection;
 	}
 
-	private void notifySelectionListeners(String oldValue, String newValue) {
+	private void notifySelectionListeners(Object oldValue, Object newValue) {
 		if (selectionListeners != null) {
-			List<String> oldSelectionList = new ArrayList<String>();
+			List<Object> oldSelectionList = new ArrayList<Object>();
 			if (oldValue != null) {
 				oldSelectionList.add(oldValue);
 			}
-			List<String> newSelectionList = new ArrayList<String>();
+			List<Object> newSelectionList = new ArrayList<Object>();
 			if (newValue != null) {
 				newSelectionList.add(newValue);
 			}
