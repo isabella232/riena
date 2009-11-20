@@ -726,13 +726,18 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setUIControl(control);
 
 		assertEquals(-1, getSelectionIndex(control));
-		assertNull(ridget.getSelection());
-		assertNull(stringManager.getSelectedItem());
+		assertEquals(null, getSelectedString(control));
+		assertEquals(null, ridget.getSelection());
+		assertEquals(null, stringManager.getSelectedItem());
 
 		final FTPropertyChangeListener listener = new FTPropertyChangeListener();
 		listener.setRunnable(new Runnable() {
 			public void run() {
-				assertEquals(0, getSelectionIndex(control));
+				if (!(control instanceof CCombo)) {
+					// CCombo updates asynchronously by design, so we skip these two.
+					assertEquals(0, getSelectionIndex(control));
+					assertEquals("A", getSelectedString(control));
+				}
 				assertEquals("A", ridget.getSelection());
 				assertEquals("A", stringManager.getSelectedItem());
 			}
@@ -744,6 +749,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(1, listener.getCount()); // check that listener was called once
 		assertEquals(0, getSelectionIndex(control));
+		assertEquals("A", getSelectedString(control));
 		assertEquals("A", ridget.getSelection());
 		assertEquals("A", stringManager.getSelectedItem());
 	}

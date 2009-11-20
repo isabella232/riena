@@ -54,6 +54,18 @@ public class CComboRidget extends AbstractComboRidget {
 	@Override
 	protected void clearUIControlListSelection() {
 		getUIControl().deselectAll();
+		// Workaround for an SWT feature: when the user clicks in the list,
+		// an asynchronous selection event is added to the end of the event 
+		// queue, which will silenty an item. We asynchronously clear the list 
+		// as well
+		getUIControl().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				CCombo combo = getUIControl();
+				if (combo != null && !combo.isDisposed()) {
+					combo.clearSelection(); // this does not change the text
+				}
+			}
+		});
 	}
 
 	@Override
