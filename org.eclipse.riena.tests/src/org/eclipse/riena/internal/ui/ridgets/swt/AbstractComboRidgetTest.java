@@ -878,6 +878,58 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(selection1, ridget.getSelection());
 	}
 
+	/**
+	 * As per Bug 292679.
+	 */
+	public void testChangeSelectionViaAPIWhenRidgetIsOutputOnly() {
+		AbstractComboRidget ridget = getRidget();
+		Control control = getWidget();
+		WritableList options = new WritableList();
+		options.add(selection1);
+		options.add(selection2);
+		WritableValue selection = new WritableValue(null, Person.class);
+		ridget.setUIControl(control);
+		ridget.bindToModel(options, Person.class, null, selection);
+		ridget.updateFromModel();
+
+		ridget.setOutputOnly(true);
+
+		assertEquals("", getText(control));
+		assertEquals(null, ridget.getSelection());
+		assertEquals(null, selection.getValue());
+
+		ridget.setSelection(selection1);
+
+		assertEquals(selection1.toString(), getText(control));
+		assertEquals(selection1, ridget.getSelection());
+		assertEquals(selection1, selection.getValue());
+	}
+
+	public void testChangeSelectionViaBeanWhenRidgetIsOutputOnly() {
+		AbstractComboRidget ridget = getRidget();
+		Control control = getWidget();
+		WritableList options = new WritableList();
+		options.add(selection1);
+		options.add(selection2);
+		WritableValue selection = new WritableValue(null, Person.class);
+		ridget.setUIControl(control);
+		ridget.bindToModel(options, Person.class, null, selection);
+		ridget.updateFromModel();
+
+		ridget.setOutputOnly(true);
+
+		assertEquals("", getText(control));
+		assertEquals(null, ridget.getSelection());
+		assertEquals(null, selection.getValue());
+
+		selection.setValue(selection1);
+		ridget.updateFromModel();
+
+		assertEquals(selection1.toString(), getText(control));
+		assertEquals(selection1, ridget.getSelection());
+		assertEquals(selection1, selection.getValue());
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -935,9 +987,6 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		return newList;
 	}
-
-	// helping methods
-	// ////////////////
 
 	private boolean find(PersonManager manager, String item) {
 		boolean result = false;

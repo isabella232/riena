@@ -100,6 +100,11 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * May be null, when there is no model.
 	 */
 	private Binding selectionBindingExternal;
+	/**
+	 * If set to true, changes are accepted even when the ridget is in
+	 * outputOnly mode.
+	 */
+	private boolean forceChange;
 
 	public AbstractComboRidget() {
 		super();
@@ -270,13 +275,18 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		assertIsBoundToModel();
 		Object oldSelection = selectionObservable.getValue();
 		if (oldSelection != newSelection) {
-			if (newSelection == null || !rowObservables.contains(newSelection)) {
-				if (getUIControl() != null) {
-					clearUIControlListSelection();
+			forceChange = true;
+			try {
+				if (newSelection == null || !rowObservables.contains(newSelection)) {
+					if (getUIControl() != null) {
+						clearUIControlListSelection();
+					}
+					selectionObservable.setValue(null);
+				} else {
+					selectionObservable.setValue(newSelection);
 				}
-				selectionObservable.setValue(null);
-			} else {
-				selectionObservable.setValue(newSelection);
+			} finally {
+				forceChange = false;
 			}
 		}
 	}
@@ -290,6 +300,14 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
+	public void setModelToUIControlConverter(IConverter converter) {
+		objToStrConverter = (converter != null) ? converter : new ObjectToStringConverter();
+	}
+
+	public void setUIControlToModelConverter(IConverter converter) {
+		strToObjConverter = (converter != null) ? converter : new StringToObjectConverter();
+	}
+
 	// abstract methods
 	///////////////////
 
@@ -297,24 +315,25 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	public void updateFromModel() {
 		assertIsBoundToModel();
 		super.updateFromModel();
-		// disable the selection binding, because updating the combo items
-		// causes the selection to change temporarily
-		selectionValidator.enableBinding(false);
-		listBindingExternal.updateModelToTarget();
-		items = new ArrayList<String>();
-		updateValueToItem();
-		// workaround #292679
-		// boolean outputOnly = isOutputOnly();
-		// if (outputOnly) {
-		// 	setOutputOnly(false);
-		// }
-		selectionValidator.enableBinding(true);
-		selectionBindingExternal.updateModelToTarget();
-		if (selectionBindingInternal != null) {
-			selectionBindingInternal.updateModelToTarget();
+		forceChange = true;
+		try {
+			// disable the selection binding, because updating the combo items
+			// causes the selection to change temporarily
+			selectionValidator.enableBinding(false);
+			try {
+				listBindingExternal.updateModelToTarget();
+				items = new ArrayList<String>();
+				updateValueToItem();
+			} finally {
+				selectionValidator.enableBinding(true);
+			}
+			selectionBindingExternal.updateModelToTarget();
+			if (selectionBindingInternal != null) {
+				selectionBindingInternal.updateModelToTarget();
+			}
+		} finally {
+			forceChange = false;
 		}
-		// workaround #292679
-		// setOutputOnly(outputOnly);
 	}
 
 	/**
@@ -467,9 +486,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
-	// helping classes
-	//////////////////
-
 	private void updateValueToItem() {
 		if (items != null) {
 			items.clear();
@@ -486,6 +502,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			}
 		}
 	}
+
+	// helping classes
+	//////////////////
 
 	/**
 	 * Convert from model object to combo box items (strings).
@@ -513,14 +532,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
-	public void setModelToUIControlConverter(IConverter converter) {
-		objToStrConverter = (converter != null) ? converter : new ObjectToStringConverter();
-	}
-
-	public void setUIControlToModelConverter(IConverter converter) {
-		strToObjConverter = (converter != null) ? converter : new StringToObjectConverter();
-	}
-
 	/**
 	 * This validator can be used to interrupt an update request
 	 */
@@ -531,7 +542,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		public IStatus validate(Object value) {
 			IStatus result = Status.OK_STATUS;
 			// disallow control to ridget update, isEnabled == false || output
-			if (!isEnabled || isOutputOnly()) {
+			if (!isEnabled || (isOutputOnly() && !forceChange)) {
 				result = Status.CANCEL_STATUS;
 			}
 			return result;
@@ -552,7 +563,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		private volatile boolean changing = false;
 
 		public void handleValueChange(ValueChangeEvent event) {
-			if (changing || !isOutputOnly()) {
+			if (changing || forceChange || !isOutputOnly()) {
 				return;
 			}
 			changing = true;
