@@ -24,7 +24,7 @@ import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- *Demonstrates automatic tree column creation and setting the column widths.
+ * Demonstrates automatic tree column creation and setting the column widths.
  */
 public class SnippetTreeTableRidget005 {
 
@@ -54,6 +54,7 @@ public class SnippetTreeTableRidget005 {
 		Display display = Display.getDefault();
 		try {
 			Shell shell = UIControlsFactory.createShell(display);
+			shell.setText(SnippetTreeTableRidget005.class.getSimpleName());
 			new SnippetTreeTableRidget005(shell);
 			shell.setSize(400, 400);
 			shell.open();

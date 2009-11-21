@@ -57,6 +57,7 @@ public class SnippetTableRidget004 {
 		Display display = Display.getDefault();
 		try {
 			final Shell shell = new Shell();
+			shell.setText(SnippetTableRidget004.class.getSimpleName());
 			new SnippetTableRidget004(shell);
 			shell.setSize(500, 300);
 			shell.open();
