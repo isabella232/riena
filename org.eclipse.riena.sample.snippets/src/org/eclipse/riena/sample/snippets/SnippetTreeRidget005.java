@@ -43,6 +43,7 @@ public class SnippetTreeRidget005 {
 		try {
 			final Shell shell = new Shell();
 			shell.setLayout(new FillLayout());
+			shell.setText(SnippetTreeRidget005.class.getSimpleName());
 			new SnippetTreeRidget005(shell);
 			shell.pack();
 			shell.open();
