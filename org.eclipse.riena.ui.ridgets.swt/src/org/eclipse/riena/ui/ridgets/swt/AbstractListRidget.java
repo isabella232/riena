@@ -180,10 +180,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		rowBeanClass = rowClass;
 		modelObservables = rowValues;
 		viewerObservables = null;
-
-		if (columnPropertyNames.length > 0) {
-			renderingMethod = columnPropertyNames[0];
-		}
+		renderingMethod = columnPropertyNames.length > 0 ? columnPropertyNames[0] : null;
 
 		bindUIControl();
 	}
