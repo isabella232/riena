@@ -19,7 +19,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.splash.AbstractSplashHandler;
 
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashView;
 import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewExtension;
@@ -137,6 +138,7 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 		loginView = null;
 	}
 
+	@InjectExtension
 	public void update(ILoginSplashViewExtension[] data) {
 
 		if (data.length > 0) {
@@ -145,8 +147,6 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 	}
 
 	private void initialzeLoginSplashViewDefinition() {
-
-		Inject.extension(ILoginSplashViewExtension.EP_TYPE).useType(ILoginSplashViewExtension.class).into(this)
-				.andStart(Activator.getDefault().getContext());
+		Wire.instance(this).andStart(Activator.getDefault().getContext());
 	}
 }

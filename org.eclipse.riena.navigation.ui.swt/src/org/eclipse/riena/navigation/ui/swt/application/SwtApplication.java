@@ -30,8 +30,9 @@ import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.splash.AbstractSplashHandler;
 
 import org.eclipse.riena.core.exception.ExceptionFailure;
-import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper;
 import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
@@ -135,6 +136,7 @@ public abstract class SwtApplication extends AbstractApplication {
 	/*
 	 * keep public, called via reflection
 	 */
+	@InjectExtension
 	public void update(ILoginSplashViewExtension[] data) {
 		if (data.length > 0) {
 			loginSplashViewExtension = data[0];
@@ -268,8 +270,7 @@ public abstract class SwtApplication extends AbstractApplication {
 	}
 
 	private void initializeLoginSplashViewDefinition() {
-		Inject.extension(ILoginSplashViewExtension.EP_TYPE).useType(ILoginSplashViewExtension.class).into(this)
-				.andStart(Activator.getDefault().getContext());
+		Wire.instance(this).andStart(Activator.getDefault().getContext());
 	}
 
 	private void initilizeShellBackgroundImage(Shell shell, String imageName) {
