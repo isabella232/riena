@@ -27,7 +27,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.DefaultProcessDetailC
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.IProcessDetailComparatorContrib;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.ProcessDetail;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.TimerUtil;
-import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.ui.core.IDisposable;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
@@ -150,9 +150,8 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 		/**
 		 * 
-		 * @return the {@link ProcessDetail} of the
-		 *         {@link IProgressVisualizer} currently visualized in the
-		 *         {@link Statusline}
+		 * @return the {@link ProcessDetail} of the {@link IProgressVisualizer}
+		 *         currently visualized in the {@link Statusline}
 		 */
 		ProcessDetail getStatuslineRelevant() {
 			if (processDetails.size() > 0) {
@@ -418,21 +417,21 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	}
 
 	private boolean checkStillNeeded(IProgressVisualizer visualizer) {
-		List<Object> contexts = new ArrayList<Object>(1);
-		contexts.add(visualizer.getProcessInfo().getContext());
 
 		// if context is disposed, unregister contextUpdateListener
-		Object context = visualizer.getProcessInfo().getContext();
+		final Object context = visualizer.getProcessInfo().getContext();
 
-		if (context instanceof INavigationNode<?> && ((INavigationNode<?>) context).isDisposed()) {
+		if (context instanceof IDisposable && ((IDisposable) context).isDisposed()) {
 			getProcessManager().unregister(getProcessManager().detailForVisualizer(visualizer));
 			unregisterContextUpdateListener(visualizer, false);
 			return false;
 		}
 
-		ProcessDetail detail = getProcessManager().detailForVisualizer(visualizer);
+		final List<Object> contexts = new ArrayList<Object>(1);
+		contexts.add(context);
+		final ProcessDetail detail = getProcessManager().detailForVisualizer(visualizer);
 		if (detail != null
-				&& (detail.getState().equals(ProcessState.FINISHED) || detail.getState().equals(ProcessState.CANCELED))
+				&& (detail.getState() == ProcessState.FINISHED || detail.getState() == ProcessState.CANCELED)
 				&& contextLocator.getActiveContexts(contexts).size() == 1) {
 			getProcessManager().unregister(getProcessManager().detailForVisualizer(visualizer));
 			unregisterContextUpdateListener(visualizer, false);
