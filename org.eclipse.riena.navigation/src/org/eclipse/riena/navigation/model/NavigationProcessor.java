@@ -56,15 +56,14 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	private Map<INavigationNode<?>, INavigationNode<?>> navigationMap = new HashMap<INavigationNode<?>, INavigationNode<?>>();
 	private List<INavigationHistoryListener> navigationListener = new Vector<INavigationHistoryListener>();
 	private static boolean debugNaviProc = false;
-	private static Logger LOGGER;
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationProcessor.class);;
 
 	static {
 		if (Platform.inDebugMode()) {
 			String debug = Platform.getDebugOption(Activator.getDefault().getContext().getBundle().getSymbolicName()
-					+ "/NPdebug"); //$NON-NLS-1$
+					+ "/NaviProc.debug"); //$NON-NLS-1$
 			if (debug != null && debug.equals("true")) { //$NON-NLS-1$
 				debugNaviProc = true;
-				LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationProcessor.class);
 			}
 		}
 	}
