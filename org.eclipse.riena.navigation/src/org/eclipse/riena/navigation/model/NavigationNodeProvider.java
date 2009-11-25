@@ -61,7 +61,7 @@ public final class NavigationNodeProvider {
 	 *            are activated or deactivated
 	 * @since 1.2
 	 */
-	@InjectExtension(id = INavigationNodeProviderExtension.EXTENSION_POINT_ID)
+	@InjectExtension
 	public void update(INavigationNodeProviderExtension[] availableExtensions) {
 
 		if (provider != null) {
@@ -87,10 +87,8 @@ public final class NavigationNodeProvider {
 	/**
 	 * @since 1.2
 	 */
-	@ExtensionInterface
+	@ExtensionInterface(id = "navigationNodeProvider")
 	public interface INavigationNodeProviderExtension {
-
-		String EXTENSION_POINT_ID = "org.eclipse.riena.navigation.navigationNodeProvider"; //$NON-NLS-1$
 
 		String getId();
 
