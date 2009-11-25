@@ -1,0 +1,2 @@
+#set the NavigationProcess to debug output
+org.eclipse.riena.navigation/NPdebug=false

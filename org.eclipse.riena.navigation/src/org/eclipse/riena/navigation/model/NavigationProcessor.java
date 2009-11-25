@@ -20,8 +20,15 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.equinox.log.Logger;
+
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.Nop;
+import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationHistory;
@@ -48,6 +55,19 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
 	private Map<INavigationNode<?>, INavigationNode<?>> navigationMap = new HashMap<INavigationNode<?>, INavigationNode<?>>();
 	private List<INavigationHistoryListener> navigationListener = new Vector<INavigationHistoryListener>();
+	private static boolean debugNaviProc = false;
+	private static Logger LOGGER;
+
+	static {
+		if (Platform.inDebugMode()) {
+			String debug = Platform.getDebugOption(Activator.getDefault().getContext().getBundle().getSymbolicName()
+					+ "/NPdebug"); //$NON-NLS-1$
+			if (debug != null && debug.equals("true")) { //$NON-NLS-1$
+				debugNaviProc = true;
+				LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationProcessor.class);
+			}
+		}
+	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#activate(org.eclipse.riena.navigation.INavigationNode)
@@ -55,15 +75,33 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	public void activate(INavigationNode<?> toActivate) {
 		if (toActivate != null) {
 			if (toActivate.isActivated()) {
+				if (debugNaviProc) {
+					LOGGER
+							.log(
+									LogService.LOG_DEBUG,
+									"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
+				}
 				Nop.reason("see comment below."); //$NON-NLS-1$
 				// do nothing
 				// if toActivate is module, module group or sub application
 				// the same sub module will be activated on activation of
 				// the toActivate, in any case there is nothing to do
 			} else {
+				if (debugNaviProc) {
+					LOGGER.log(LogService.LOG_DEBUG,
+							"NaviProc: - activate triggered for Node " + toActivate.getNodeId()); //$NON-NLS-1$
+				}
 				if (!toActivate.isVisible() || !toActivate.isEnabled()) {
+					if (debugNaviProc) {
+						LOGGER
+								.log(
+										LogService.LOG_DEBUG,
+										"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is not visible or not enabled --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
+					}
+
 					return;
 				}
+
 				// 1.find the chain to activate
 				// 2.find the chain to deactivate
 				// 3.check the deactivation chain
@@ -640,13 +678,22 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	private void activate(INavigationContext context) {
 		for (INavigationNode<?> nextToActivate : context.getToActivate()) {
+			if (debugNaviProc) {
+				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - beforeActivate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
+			}
 			nextToActivate.onBeforeActivate(context);
 		}
 		for (INavigationNode<?> nextToActivate : context.getToActivate()) {
+			if (debugNaviProc) {
+				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - activate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
+			}
 			nextToActivate.activate(context);
 			setAsSelectedChild(nextToActivate);
 		}
 		for (INavigationNode<?> nextToActivate : copyReverse(context.getToActivate())) {
+			if (debugNaviProc) {
+				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - onAfterActivate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
+			}
 			nextToActivate.onAfterActivate(context);
 		}
 	}
@@ -656,17 +703,26 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		for (INavigationNode<?> nextToDeactivate : copyReverse(context.getToDeactivate())) {
 			if (nextToDeactivate.isActivated()) {
 				previouslyActivatedNodes.add(nextToDeactivate);
+				if (debugNaviProc) {
+					LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - beforeDeactivate: " + nextToDeactivate.getNodeId()); //$NON-NLS-1$
+				}
 				nextToDeactivate.onBeforeDeactivate(context);
 			}
 		}
 		for (INavigationNode<?> nextToDeactivate : context.getToDeactivate()) {
 			// check for activated to make this method usable for disposing
 			if (previouslyActivatedNodes.contains(nextToDeactivate)) {
+				if (debugNaviProc) {
+					LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - deactivate: " + nextToDeactivate.getNodeId()); //$NON-NLS-1$
+				}
 				nextToDeactivate.deactivate(context);
 			}
 		}
 		for (INavigationNode<?> nextToDeactivate : context.getToDeactivate()) {
 			if (previouslyActivatedNodes.contains(nextToDeactivate)) {
+				if (debugNaviProc) {
+					LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - onAfterDeactivate: " + nextToDeactivate.getNodeId()); //$NON-NLS-1$
+				}
 				nextToDeactivate.onAfterDeactivate(context);
 			}
 		}
@@ -678,6 +734,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 		for (INavigationNode<?> nextToDispose : context.getToDeactivate()) {
 			// check for activated to make this method usable for disposing
+			if (debugNaviProc) {
+				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - dispos: " + nextToDispose.getNodeId()); //$NON-NLS-1$
+			}
 			nextToDispose.dispose(context);
 			// remove the node from tree
 			INavigationNode<?> parent = nextToDispose.getParent();
@@ -760,7 +819,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				}
 			} else {
 				if (moduleNode.getChildren().size() > 0) {
-					return moduleNode.getChild(0);
+					// find the first selectable node in the list of childs
+					return findSelectableNode(moduleNode.getChild(0));
 				} else {
 					return null;
 				}
@@ -778,6 +838,23 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			}
 			return null;
 		}
+	}
+
+	private ISubModuleNode findSelectableNode(ISubModuleNode startNode) {
+		// selectable node found
+		if (startNode.isSelectable()) {
+			return startNode;
+		}
+		// if not selectable, expand it because it does not get activated some else need to expand it
+		startNode.setExpanded(true);
+		// check childs for selectable node
+		for (ISubModuleNode child : startNode.getChildren()) {
+			ISubModuleNode found = findSelectableNode(child);
+			if (found != null) {
+				return found;
+			}
+		}
+		throw new RuntimeException("no node found that is selectable"); //$NON-NLS-1$
 	}
 
 	private INavigationNode<?> getActiveChild(INavigationNode<?> pNode) {
