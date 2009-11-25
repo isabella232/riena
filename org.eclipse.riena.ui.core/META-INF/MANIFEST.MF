@@ -8,6 +8,7 @@ Require-Bundle: org.eclipse.riena.core
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.internal.ui.core;x-internal:=true,
  org.eclipse.riena.internal.ui.core.resource;x-internal:=true,
+ org.eclipse.riena.ui.core,
  org.eclipse.riena.ui.core.context,
  org.eclipse.riena.ui.core.marker,
  org.eclipse.riena.ui.core.resource,
