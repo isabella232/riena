@@ -14,16 +14,17 @@ import java.util.Hashtable;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
+
 import org.eclipse.riena.internal.ui.workarea.Activator;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaDefinition;
 import org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
-import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegistry, ServiceTrackerCustomizer {
 
@@ -49,7 +50,7 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 				return definition;
 			}
 
-			if (id instanceof INavigationNode) {
+			if (id instanceof INavigationNode<?>) {
 				INavigationNode<?> node = (INavigationNode<?>) id;
 				if (node.getNodeId() != null && node.getNodeId().getTypeId() != null) {
 					definition = registry.getDefinition(node.getNodeId().getTypeId());
