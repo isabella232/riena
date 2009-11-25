@@ -20,7 +20,8 @@ import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.navigation.ui.Activator;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -182,6 +183,7 @@ public abstract class AbstractApplication implements IApplication {
 		}
 	}
 
+	@InjectExtension
 	public void update(ILoginDialogViewExtension[] data) {
 
 		if (data.length > 0) {
@@ -190,7 +192,6 @@ public abstract class AbstractApplication implements IApplication {
 	}
 
 	protected void initializeLoginViewDefinition() {
-		Inject.extension(ILoginDialogViewExtension.EP_TYPE).useType(ILoginDialogViewExtension.class).into(this)
-				.andStart(Activator.getDefault().getContext());
+		Wire.instance(this).andStart(Activator.getDefault().getContext());
 	}
 }

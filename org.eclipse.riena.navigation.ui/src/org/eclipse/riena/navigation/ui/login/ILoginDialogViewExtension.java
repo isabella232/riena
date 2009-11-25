@@ -15,10 +15,8 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 /**
  * The definition for the login dialog view.
  */
-@ExtensionInterface
+@ExtensionInterface(id = "loginDialogViewDefinition")
 public interface ILoginDialogViewExtension {
-
-	String EP_TYPE = "org.eclipse.riena.navigation.ui.loginDialogViewDefinition"; //$NON-NLS-1$
 
 	ILoginDialogView createViewClass();
 
