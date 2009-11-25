@@ -16,8 +16,8 @@ import org.eclipse.riena.core.injector.extension.MapName;
 /**
  * Extension interface for the {@link ILabelFinderStrategy}
  * <p>
- * <b>Note:</b> The "org.eclipse.riena.ui.ridgets.labelfinderstrategy" (lower
- * case 'path') is @deprecated.
+ * <b>Note:</b> The "org.eclipse.riena.ui.ridgets.labelfinderstrategy" is
+ * deprecated.
  * 
  * @since 1.2
  */
