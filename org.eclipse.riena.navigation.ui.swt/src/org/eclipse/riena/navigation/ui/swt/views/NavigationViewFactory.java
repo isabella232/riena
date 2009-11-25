@@ -15,6 +15,7 @@ import java.lang.reflect.Constructor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ModuleController;
@@ -34,6 +35,7 @@ public class NavigationViewFactory implements IViewFactory {
 		this.moduleDescriptionExtension = moduleView;
 	}
 
+	@InjectExtension(min = 0, max = 1)
 	public void update(IModuleGroupDescriptionExtension moduleGroup) {
 		this.moduleGroupDescriptionExtension = moduleGroup;
 	}
