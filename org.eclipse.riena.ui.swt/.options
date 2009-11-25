@@ -1,0 +1,2 @@
+#set the NavigationProcess to debug output
+org.eclipse.riena.ui.swt/WidgetIdentSupport.debug=false

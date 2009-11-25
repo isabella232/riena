@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.swt.utils;
 
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
@@ -28,7 +29,17 @@ public final class WidgetIdentificationSupport {
 
 	public static final String RIENA_ID = "rienaid"; //$NON-NLS-1$
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), WidgetIdentificationSupport.class);
-	private static final boolean VERBOSE = "TRUE".equalsIgnoreCase(System.getProperty("riena.defaultlogging")); //$NON-NLS-1$//$NON-NLS-2$
+	private static boolean debugOutput = false;
+
+	static {
+		if (Platform.inDebugMode()) {
+			String debug = Platform.getDebugOption(Activator.getDefault().getContext().getBundle().getSymbolicName()
+					+ "/WidgetIdentSupport.debug"); //$NON-NLS-1$
+			if (debug != null && debug.equals("true")) { //$NON-NLS-1$
+				debugOutput = true;
+			}
+		}
+	}
 
 	private WidgetIdentificationSupport() {
 		// utility class
@@ -65,7 +76,7 @@ public final class WidgetIdentificationSupport {
 
 			fullId.append(part);
 		}
-		if (VERBOSE) {
+		if (debugOutput) {
 			LOGGER.log(LogService.LOG_DEBUG, String.format(
 					"registering widget %s, (class: %s)", fullId, aWidget.getClass())); //$NON-NLS-1$
 		}
