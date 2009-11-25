@@ -15,7 +15,7 @@ If there is no contribution for this extension point, riena´s standard implemen
    <element name="extension">
       <annotation>
          <appInfo>
-            <meta.element deprecated="true" replacement="processDetailComparator" />
+            <meta.element />
          </appInfo>
       </annotation>
       <complexType>

@@ -16,12 +16,15 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
- * Interface for extension proxies for {@link ProcessDetail} - Comparators
+ * Extension interface for {@link ProcessDetail} comparators.
+ * <p>
+ * <b>Note:</b> The "org.eclipse.riena.ui.ridgets.swt.processdetail" is
+ * deprecated.
  */
-@ExtensionInterface
-public interface IProcessDetailComparatorContrib {
+@ExtensionInterface(id = "processDetailComparator,org.eclipse.riena.ui.ridgets.swt.processdetail")
+public interface IProcessDetailComparatorExtension {
 
 	@MapName("instance")
-	Comparator<ProcessDetail> createComporatorInstance();
+	Comparator<ProcessDetail> createComparator();
 
 }
