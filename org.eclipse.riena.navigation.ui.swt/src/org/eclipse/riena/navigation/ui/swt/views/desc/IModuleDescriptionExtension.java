@@ -17,7 +17,7 @@ import org.eclipse.riena.navigation.ui.swt.views.ModuleView;
 /**
  * interfaces for injecting org.eclipse.riena.navigation.ui.swt.moduleView
  */
-@ExtensionInterface
+@ExtensionInterface(id = "moduleView")
 public interface IModuleDescriptionExtension {
 
 	Class<ModuleView> getView();

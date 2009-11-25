@@ -31,6 +31,7 @@ public class NavigationViewFactory implements IViewFactory {
 	private IModuleDescriptionExtension moduleDescriptionExtension;
 	private IModuleGroupDescriptionExtension moduleGroupDescriptionExtension;
 
+	@InjectExtension(min = 0, max = 1)
 	public void update(IModuleDescriptionExtension moduleView) {
 		this.moduleDescriptionExtension = moduleView;
 	}
