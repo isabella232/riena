@@ -1052,7 +1052,7 @@
        </path>
     </extension>
     <extension
-          point="org.eclipse.riena.ui.swt.statusline">
+          point="org.eclipse.riena.navigation.ui.swt.statusLine">
        <contentFactory
              factory="org.eclipse.riena.example.client.statusline.ExampleStatuslineContentFactory">
        </contentFactory>

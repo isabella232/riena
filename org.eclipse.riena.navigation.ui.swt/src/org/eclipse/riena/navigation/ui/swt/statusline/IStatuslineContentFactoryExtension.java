@@ -14,13 +14,12 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.ui.swt.IStatusLineContentFactory;
 
 /**
- *Interface for proxies for extensions to the extension point
- * "org.eclipse.riena.ui.swt.statusline"
+ * Extension interface for the configuration of the status line.
+ * <p>
+ * <b>Note:</b> The "org.eclipse.riena.ui.swt.statusline" is @deprecated.
  */
-@ExtensionInterface
+@ExtensionInterface(id = "org.eclipse.riena.ui.swt.statusline,statusLine")
 public interface IStatuslineContentFactoryExtension {
-
-	String ID = "org.eclipse.riena.ui.swt.statusline"; //$NON-NLS-1$
 
 	IStatusLineContentFactory createFactory();
 
