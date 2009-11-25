@@ -45,8 +45,8 @@ public class CorrespondingLabelMapper {
 	 * 
 	 * @param labelProperties
 	 */
-	@InjectExtension(id = ICorrespondingLabelConfigExtension.EXTENSION_POINT_ID, min = 0, max = 1)
-	public void setCorrespondingLabelConfig(ICorrespondingLabelConfigExtension labelProperties) {
+	@InjectExtension(min = 0, max = 1)
+	public void setCorrespondingLabelConfig(ICorrespondingLabelExtension labelProperties) {
 		if (null != labelProperties) {
 			if (null != labelProperties.getLabelPrefix()) {
 				labelPrefix = labelProperties.getLabelPrefix();

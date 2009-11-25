@@ -16,16 +16,15 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 /**
  * Extension interface to set a custom label-prefix for the
  * {@link CorrespondingLabelMapper}.
+ * <p>
+ * <b>Note:</b> The "org.eclipse.riena.ui.ridgets.correspondinglabel.config" is
+ * deprecated.
  * 
  * @since 1.2
  * 
  */
-@ExtensionInterface
-public interface ICorrespondingLabelConfigExtension {
-
-	//String EXTENSION_POINT_ID = Activator.PLUGIN_ID + ".correspondingridget.config"; //$NON-NLS-1$ // FIXME
-
-	String EXTENSION_POINT_ID = "org.eclipse.riena.ui.ridgets.correspondinglabel.config"; //$NON-NLS-1$
+@ExtensionInterface(id = "org.eclipse.riena.ui.ridgets.correspondinglabel.config,correspondingLabel")
+public interface ICorrespondingLabelExtension {
 
 	/**
 	 * The label-prefix that will be used by the
