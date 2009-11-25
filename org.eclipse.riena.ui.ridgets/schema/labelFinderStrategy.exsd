@@ -13,7 +13,7 @@
    <element name="extension">
       <annotation>
          <appinfo>
-            <meta.element deprecated="true" replacement="labelFinderStrategy" />
+            <meta.element />
          </appinfo>
       </annotation>
       <complexType>

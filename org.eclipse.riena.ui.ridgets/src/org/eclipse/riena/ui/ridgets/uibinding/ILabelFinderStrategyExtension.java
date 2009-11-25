@@ -15,14 +15,14 @@ import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
  * Extension interface for the {@link ILabelFinderStrategy}
+ * <p>
+ * <b>Note:</b> The "org.eclipse.riena.ui.ridgets.labelfinderstrategy" (lower
+ * case 'path') is @deprecated.
  * 
  * @since 1.2
- * 
  */
-@ExtensionInterface
+@ExtensionInterface(id = "org.eclipse.riena.ui.ridgets.labelfinderstrategy,labelFinderStrategy")
 public interface ILabelFinderStrategyExtension {
-
-	String EXTENSION_POINT_ID = "org.eclipse.riena.ui.ridgets.labelfinderstrategy"; //$NON-NLS-1$
 
 	@MapName("className")
 	String getClassName();

@@ -13,7 +13,6 @@ package org.eclipse.riena.ui.ridgets.uibinding;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -29,8 +28,8 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
  * 
  */
 public class CorrespondingLabelMapper {
+	private final IRidgetContainer ridgetContainer;
 	private String labelPrefix = "label"; //$NON-NLS-1$
-	private IRidgetContainer ridgetContainer;
 	private ILabelFinderStrategy labelFinderStrategy;
 
 	// private Logger logger = Log4r.getLogger(Activator.getDefault(), CorrespondingLabelMapper.class);
@@ -56,20 +55,18 @@ public class CorrespondingLabelMapper {
 		}
 	}
 
-	@InjectExtension(id = ILabelFinderStrategyExtension.EXTENSION_POINT_ID, min = 0, max = 1)
+	@InjectExtension(min = 0, max = 1)
 	public void setLabelFinderStrategy(ILabelFinderStrategyExtension strategyProperties) {
 		// logger.log(LogService.LOG_INFO, "Using extensionpoint labelFinderStrategy: " + strategyProperties); //$NON-NLS-1$
 
 		if (null != strategyProperties) {
-			if (StringUtils.isGiven(strategyProperties.getClassName())) {
-				// logger.log(LogService.LOG_INFO,
-				//		"Using extensionpoint labelFinderStrategy: " + strategyProperties.getClassName()); //$NON-NLS-1$
-				ILabelFinderStrategy customLabelFinderStrategy = strategyProperties.createFinderStrategy();
-				if (null != customLabelFinderStrategy) {
-					this.labelFinderStrategy = customLabelFinderStrategy;
-				}
+			ILabelFinderStrategy customLabelFinderStrategy = strategyProperties.createFinderStrategy();
+			if (null != customLabelFinderStrategy) {
+				this.labelFinderStrategy = customLabelFinderStrategy;
+				return;
 			}
 		}
+		labelFinderStrategy = new DefaultLabelFinderStrategy();
 	}
 
 	/**
