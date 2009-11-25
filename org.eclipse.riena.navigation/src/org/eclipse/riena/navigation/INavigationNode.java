@@ -16,6 +16,7 @@ import java.util.Set;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.common.ITypecastingAdaptable;
+import org.eclipse.riena.ui.core.IDisposable;
 import org.eclipse.riena.ui.filter.IUIFilterable;
 
 /**
@@ -30,7 +31,7 @@ import org.eclipse.riena.ui.filter.IUIFilterable;
  *            the type of child nodes
  */
 public interface INavigationNode<C extends INavigationNode<?>> extends ITypecastingAdaptable, IMarkable, IUIFilterable,
-		INavigationHistory {
+		IDisposable, INavigationHistory {
 
 	/**
 	 * The states of the navigation node.
