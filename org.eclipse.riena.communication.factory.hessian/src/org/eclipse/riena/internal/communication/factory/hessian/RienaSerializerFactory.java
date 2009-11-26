@@ -21,8 +21,9 @@ import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.Serializer;
 import com.caucho.hessian.io.SerializerFactory;
 
-import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.core.wire.Wire;
 
 /**
  * The {@code RienaSerializerFactory} is a delegating {@code
@@ -37,8 +38,7 @@ public class RienaSerializerFactory extends AbstractSerializerFactory {
 
 	public RienaSerializerFactory() {
 		prepareHessianSerializerFactory();
-		Inject.extension(ISerializerFactoryExtension.EXTENSION_ID).into(this).andStart(
-				Activator.getDefault().getContext());
+		Wire.instance(this).andStart(Activator.getDefault().getContext());
 	}
 
 	@Override
@@ -67,6 +67,7 @@ public class RienaSerializerFactory extends AbstractSerializerFactory {
 		return null;
 	}
 
+	@InjectExtension
 	public void update(ISerializerFactoryExtension[] serializerFactoryDefinitions) {
 		List<AbstractRienaSerializerFactory> rienaSerializerFactories = new ArrayList<AbstractRienaSerializerFactory>(
 				serializerFactoryDefinitions.length);
