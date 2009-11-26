@@ -705,6 +705,12 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 				updateExpanded((ISubModuleNode) nodeParent);
 			}
 		}
+
+		@Override
+		public void expandedChanged(ISubModuleNode source) {
+			super.expandedChanged(source);
+			resize();
+		}
 	}
 
 	/**
