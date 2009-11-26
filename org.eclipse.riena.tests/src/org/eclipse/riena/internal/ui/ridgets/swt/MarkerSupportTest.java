@@ -15,9 +15,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -123,6 +125,31 @@ public class MarkerSupportTest extends RienaTestCase {
 			resolveClass(cl);
 			return cl;
 		}
+	}
+
+	public void testDisabledMarker() throws Exception {
+		final Label control = new Label(shell, SWT.None);
+		Realm.runWithDefault(new Realm() {
+
+			@Override
+			public boolean isCurrent() {
+				return true;
+			}
+		}, new Runnable() {
+
+			public void run() {
+				LabelRidget ridget = new LabelRidget();
+				ridget.setUIControl(control);
+				BasicMarkerSupport msup = ReflectionUtils.invokeHidden(ridget, "createMarkerSupport");
+				assertNotNull(msup.getDisabledMarkerVisualizer());
+				ridget.setEnabled(false);
+				assertTrue(control.getForeground().equals(Display.getDefault().getSystemColor(SWT.COLOR_GRAY)));
+				ridget.setEnabled(true);
+				assertTrue(control.getForeground().equals(Display.getDefault().getSystemColor(SWT.COLOR_BLACK)));
+
+			}
+		});
+
 	}
 
 	/**

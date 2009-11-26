@@ -29,6 +29,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 
 	private static boolean alwaysSkipRedraw = false;
 	private static boolean osChecked = false;
+	private DisabledMarkerVisualizer disabledMarkerVisualizer;
 
 	public BasicMarkerSupport(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
@@ -40,6 +41,15 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 				alwaysSkipRedraw = true;
 			}
 		}
+		createDisabledMarkerVisualizer();
+	}
+
+	private void createDisabledMarkerVisualizer() {
+		this.disabledMarkerVisualizer = new DisabledMarkerVisualizer(getRidget());
+	}
+
+	protected DisabledMarkerVisualizer getDisabledMarkerVisualizer() {
+		return disabledMarkerVisualizer;
 	}
 
 	@Override
@@ -75,7 +85,8 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	}
 
 	protected void updateDisabled(Control control) {
-		control.setEnabled(getRidget().isEnabled());
+		// delegate to the visualizer for rendering
+		getDisabledMarkerVisualizer().updateDisabled();
 	}
 
 	private void startRedraw(Control control) {
