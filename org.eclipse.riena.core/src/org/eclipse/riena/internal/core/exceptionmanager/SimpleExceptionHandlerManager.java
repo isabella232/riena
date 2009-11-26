@@ -31,7 +31,7 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 	private List<IExceptionHandler> handlers;
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleExceptionHandlerManager.class);
 
-	@InjectExtension(id = IExceptionHandlerExtension.EXTENSION_POINT)
+	@InjectExtension
 	public void update(IExceptionHandlerExtension[] exceptionHandlerDefinitions) {
 		List<TopologicalNode<IExceptionHandler>> nodes = new ArrayList<TopologicalNode<IExceptionHandler>>(
 				exceptionHandlerDefinitions.length);

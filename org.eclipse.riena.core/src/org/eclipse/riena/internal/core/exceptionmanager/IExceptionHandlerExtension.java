@@ -14,15 +14,14 @@ import org.eclipse.riena.core.exception.IExceptionHandler;
 import org.eclipse.riena.core.injector.extension.DefaultValue;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
-import org.eclipse.riena.internal.core.Activator;
 
 /**
  * Definition for the ExceptionHandlers that are defined
+ * <p>
+ * <b>Note:</b> The "org.eclipse.riena.core.exception.handlers" is @deprecated.
  */
-@ExtensionInterface
+@ExtensionInterface(id = "exceptionHandlers,org.eclipse.riena.core.exception.handlers")
 public interface IExceptionHandlerExtension {
-
-	String EXTENSION_POINT = Activator.PLUGIN_ID + ".exception.handlers"; //$NON-NLS-1$
 
 	String getName();
 

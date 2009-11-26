@@ -950,7 +950,7 @@
 	
     <!-- -->
     <extension
-           point="org.eclipse.riena.core.exception.handlers">
+           point="org.eclipse.riena.core.exceptionHandlers">
         <exceptionHandler
               class="org.eclipse.riena.example.client.exceptionhandler.ExceptionMessageBox"
               name="riena example exception message box">
