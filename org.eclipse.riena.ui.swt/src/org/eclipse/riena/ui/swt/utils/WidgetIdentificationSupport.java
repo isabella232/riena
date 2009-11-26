@@ -12,12 +12,12 @@ package org.eclipse.riena.ui.swt.utils;
 
 import org.osgi.service.log.LogService;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.Trace;
 import org.eclipse.riena.internal.ui.swt.Activator;
 
 /**
@@ -29,17 +29,7 @@ public final class WidgetIdentificationSupport {
 
 	public static final String RIENA_ID = "rienaid"; //$NON-NLS-1$
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), WidgetIdentificationSupport.class);
-	private static boolean debugOutput = false;
-
-	static {
-		if (Platform.inDebugMode()) {
-			String debug = Platform.getDebugOption(Activator.getDefault().getContext().getBundle().getSymbolicName()
-					+ "/WidgetIdentSupport.debug"); //$NON-NLS-1$
-			if (debug != null && debug.equals("true")) { //$NON-NLS-1$
-				debugOutput = true;
-			}
-		}
-	}
+	private static boolean debugOutput = Trace.isOn(WidgetIdentificationSupport.class, "debug"); //$NON-NLS-1$
 
 	private WidgetIdentificationSupport() {
 		// utility class

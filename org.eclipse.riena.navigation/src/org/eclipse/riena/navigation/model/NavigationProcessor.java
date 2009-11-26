@@ -22,12 +22,12 @@ import java.util.Vector;
 
 import org.osgi.service.log.LogService;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.Nop;
+import org.eclipse.riena.core.util.Trace;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
@@ -55,18 +55,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
 	private Map<INavigationNode<?>, INavigationNode<?>> navigationMap = new HashMap<INavigationNode<?>, INavigationNode<?>>();
 	private List<INavigationHistoryListener> navigationListener = new Vector<INavigationHistoryListener>();
-	private static boolean debugNaviProc = false;
+	private static boolean debugNaviProc = Trace.isOn(NavigationProcessor.class, "debug"); //$NON-NLS-1$
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationProcessor.class);;
-
-	static {
-		if (Platform.inDebugMode()) {
-			String debug = Platform.getDebugOption(Activator.getDefault().getContext().getBundle().getSymbolicName()
-					+ "/NaviProc.debug"); //$NON-NLS-1$
-			if (debug != null && debug.equals("true")) { //$NON-NLS-1$
-				debugNaviProc = true;
-			}
-		}
-	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#activate(org.eclipse.riena.navigation.INavigationNode)
