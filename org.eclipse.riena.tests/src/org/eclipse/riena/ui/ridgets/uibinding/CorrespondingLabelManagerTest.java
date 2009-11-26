@@ -157,7 +157,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	}
 
 	public void testCustomLabelPrefix() throws Exception {
-		labelMapper.setCorrespondingLabelConfig(new ICorrespondingLabelConfigExtension() {
+		labelMapper.setCorrespondingLabelConfig(new ICorrespondingLabelExtension() {
 			public String getLabelPrefix() {
 				return "foo";
 			}
