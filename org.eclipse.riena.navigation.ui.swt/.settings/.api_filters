@@ -66,6 +66,24 @@
 </message_arguments>
 </filter>
 </resource>
+<resource path="src/org/eclipse/riena/navigation/ui/swt/views/NavigationViewFactory.java" type="org.eclipse.riena.navigation.ui.swt.views.NavigationViewFactory">
+<filter id="338792546">
+<message_arguments>
+<message_argument value="org.eclipse.riena.navigation.ui.swt.views.NavigationViewFactory"/>
+<message_argument value="update(IModuleGroupDesc)"/>
+</message_arguments>
+</filter>
+<filter id="1143996420">
+<message_arguments>
+<message_argument value="update(IModuleDescriptionExtension)"/>
+</message_arguments>
+</filter>
+<filter id="1143996420">
+<message_arguments>
+<message_argument value="update(IModuleGroupDescriptionExtension)"/>
+</message_arguments>
+</filter>
+</resource>
 <resource path="src/org/eclipse/riena/navigation/ui/swt/views/ScrollingSupport.java" type="org.eclipse.riena.navigation.ui.swt.views.ScrollingSupport">
 <filter id="338792546">
 <message_arguments>
