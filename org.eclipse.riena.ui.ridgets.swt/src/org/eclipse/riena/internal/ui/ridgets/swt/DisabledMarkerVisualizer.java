@@ -59,7 +59,7 @@ public class DisabledMarkerVisualizer {
 		control.removePaintListener(disabledRepresenterPainter);
 
 		if (!getRidget().isEnabled()) {
-			storeRenderMemento();
+			storeHeaderVisiblity();
 			setHeaderVisibility(false);
 			control.addPaintListener(disabledRepresenterPainter);
 		} else {
@@ -69,7 +69,7 @@ public class DisabledMarkerVisualizer {
 
 	}
 
-	private void storeRenderMemento() {
+	private void storeHeaderVisiblity() {
 		if (getControl() instanceof Tree) {
 			Tree tree = (Tree) getControl();
 			renderMemento.headerVisible = tree.getHeaderVisible();
@@ -82,6 +82,7 @@ public class DisabledMarkerVisualizer {
 
 	static class RenderMemento {
 		boolean headerVisible = true;
+		Color foreGround;
 	}
 
 	private void setHeaderVisibility(boolean headerVisible) {
@@ -95,8 +96,14 @@ public class DisabledMarkerVisualizer {
 	}
 
 	private void updateControlColors(Control control) {
-		control.setForeground(getRidget().isEnabled() ? Display.getDefault().getSystemColor(SWT.COLOR_BLACK) : Display
-				.getDefault().getSystemColor(SWT.COLOR_GRAY));
+		Color currentColor = null;
+		if (!getRidget().isEnabled()) {
+			renderMemento.foreGround = control.getForeground();
+			currentColor = Display.getDefault().getSystemColor(SWT.COLOR_GRAY);
+		} else {
+			currentColor = renderMemento.foreGround;
+		}
+		control.setForeground(currentColor);
 	}
 
 	private boolean isSimpleControl(Control control) {
