@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
@@ -31,6 +33,7 @@ public class DisabledMarkerVisualizer {
 	private IRidget ridget;
 
 	private final DisabledPainter disabledRepresenterPainter = new DisabledPainter();
+	private final RenderMemento renderMemento = new RenderMemento();
 
 	public DisabledMarkerVisualizer(IRidget ridget) {
 		this.ridget = ridget;
@@ -56,10 +59,39 @@ public class DisabledMarkerVisualizer {
 		control.removePaintListener(disabledRepresenterPainter);
 
 		if (!getRidget().isEnabled()) {
+			storeRenderMemento();
+			setHeaderVisibility(false);
 			control.addPaintListener(disabledRepresenterPainter);
+		} else {
+			setHeaderVisibility(renderMemento.headerVisible);
 		}
 		control.redraw();
 
+	}
+
+	private void storeRenderMemento() {
+		if (getControl() instanceof Tree) {
+			Tree tree = (Tree) getControl();
+			renderMemento.headerVisible = tree.getHeaderVisible();
+		} else if (getControl() instanceof Table) {
+			Table table = (Table) getControl();
+			renderMemento.headerVisible = table.getHeaderVisible();
+		}
+
+	}
+
+	static class RenderMemento {
+		boolean headerVisible = true;
+	}
+
+	private void setHeaderVisibility(boolean headerVisible) {
+		if (getControl() instanceof Tree) {
+			Tree tree = (Tree) getControl();
+			tree.setHeaderVisible(headerVisible);
+		} else if (getControl() instanceof Table) {
+			Table table = (Table) getControl();
+			table.setHeaderVisible(headerVisible);
+		}
 	}
 
 	private void updateControlColors(Control control) {
