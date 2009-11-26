@@ -19,10 +19,14 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
+import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 
 /**
@@ -60,10 +64,10 @@ public class DisabledMarkerVisualizer {
 
 		if (!getRidget().isEnabled()) {
 			storeHeaderVisiblity();
-			setHeaderVisibility(false);
+			updateComplexControl(false);
 			control.addPaintListener(disabledRepresenterPainter);
 		} else {
-			setHeaderVisibility(renderMemento.headerVisible);
+			updateComplexControl(renderMemento.headerVisible);
 		}
 		control.redraw();
 
@@ -85,14 +89,36 @@ public class DisabledMarkerVisualizer {
 		Color foreGround;
 	}
 
-	private void setHeaderVisibility(boolean headerVisible) {
+	private void updateComplexControl(boolean headerVisible) {
 		if (getControl() instanceof Tree) {
 			Tree tree = (Tree) getControl();
 			tree.setHeaderVisible(headerVisible);
+			if (!getRidget().isEnabled()) {
+				tree.removeAll();
+			} else {
+				ITreeRidget treeRidget = (ITreeRidget) getRidget();
+				treeRidget.updateFromModel();
+			}
+
 		} else if (getControl() instanceof Table) {
 			Table table = (Table) getControl();
 			table.setHeaderVisible(headerVisible);
+			if (!getRidget().isEnabled()) {
+				table.removeAll();
+			} else {
+				ITableRidget tableRidget = (ITableRidget) getRidget();
+				tableRidget.updateFromModel();
+			}
+		} else if (getControl() instanceof List) {
+			List list = (List) getControl();
+			if (!getRidget().isEnabled()) {
+				list.removeAll();
+			} else {
+				IListRidget tableRidget = (IListRidget) getRidget();
+				tableRidget.updateFromModel();
+			}
 		}
+
 	}
 
 	private void updateControlColors(Control control) {
