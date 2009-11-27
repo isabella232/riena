@@ -17,8 +17,10 @@ import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
  * Extension interface for defining {@code ProxySelector}s.
+ * <p>
+ * <b>Note:</b> The "proxyselector" (lower case!) is @deprecated.
  */
-@ExtensionInterface(id = "proxyselector")
+@ExtensionInterface(id = "proxyselector,proxySelectors")
 public interface IProxySelectorExtension {
 
 	/**

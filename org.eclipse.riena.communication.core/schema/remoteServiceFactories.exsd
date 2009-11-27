@@ -13,7 +13,7 @@
    <element name="extension">
       <annotation>
          <appInfo>
-            <meta.element deprecated="true" replacement="remoteServiceFactories" />
+            <meta.element />
          </appInfo>
       </annotation>
       <complexType>
@@ -88,13 +88,14 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         &lt;extension
-  point=&quot;org.eclipse.riena.communication.core.remoteservicefactory&quot;&gt;
-  &lt;factory
-   protocol=&quot;hessian&quot;
-   remoteServiceFactory=&quot;org.eclipse.riena.internal.communication.factory.hessian.RemoteServiceFactoryHessian&quot;&gt;
-  &lt;/factory&gt;
- &lt;/extension&gt;
+         	&lt;extension
+		point=&quot;org.eclipse.riena.communication.core.remoteservicefactory&quot;&gt;
+		&lt;factory
+			protocol=&quot;hessian&quot;
+			remoteServiceFactory=&quot;org.eclipse.riena.internal.communication.factory.hessian.RemoteServiceFactoryHessian&quot;&gt;
+		&lt;/factory&gt;
+	&lt;/extension&gt;
+
       </documentation>
    </annotation>
 

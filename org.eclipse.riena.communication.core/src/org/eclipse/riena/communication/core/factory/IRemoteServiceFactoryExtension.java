@@ -14,8 +14,10 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 /**
  * {@code ExtensionInterface} for reading the available Remote Service Factories
+ * <p>
+ * <b>Note:</b> The "remoteservicefactory" (lower case!) is @deprecated.
  */
-@ExtensionInterface(id = "remoteservicefactory")
+@ExtensionInterface(id = "remoteservicefactory,remoteServiceFactories")
 public interface IRemoteServiceFactoryExtension {
 
 	/**

@@ -14,7 +14,7 @@ This extension point allows to define specialized proxy selectors that should be
    <element name="extension">
       <annotation>
          <appInfo>
-            <meta.element />
+            <meta.element deprecated="true" replacement="proxySelectors" />
          </appInfo>
       </annotation>
       <complexType>
@@ -96,7 +96,7 @@ This extension point allows to define specialized proxy selectors that should be
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-            &lt;extension
+         &lt;extension
          point=&quot;org.eclipse.riena.communication.core.proxyselector&quot;&gt;
       &lt;proxyselector
             order=&quot;100&quot;
@@ -104,7 +104,6 @@ This extension point allows to define specialized proxy selectors that should be
             class=&quot;org.eclipse.riena.communication.core.proxyselector.CoreNetProxySelector&quot;&gt;
       &lt;/proxyselector&gt;
    &lt;/extension&gt;
-
       </documentation>
    </annotation>
 

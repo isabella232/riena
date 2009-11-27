@@ -61,7 +61,7 @@
 	</extension>
 
 	<extension
-		point="org.eclipse.riena.communication.core.remoteservicefactory">
+		point="org.eclipse.riena.communication.core.remoteServiceFactories">
 		<factory
 			protocol="hessian"
 			remoteServiceFactory="org.eclipse.riena.internal.communication.factory.hessian.RemoteServiceFactoryHessian">

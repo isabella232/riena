@@ -3,22 +3,23 @@
 <schema targetNamespace="org.eclipse.riena.communication.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.communication.core" id="org.eclipse.riena.communication.core.factory" name="remote service factory"/>
+         <meta.schema plugin="org.eclipse.riena.communication.core" id="org.eclipse.riena.communication.core.proxyselector" name="proxyselector"/>
       </appInfo>
       <documentation>
-         This extension point allows to register service factories for various remote service protocols, e.g. &quot;hessian&quot;, &quot;axis2&quot;, ..
+         Riena&apos;s hessian communication uses the Java HTTP/SURLConnection which uses Javas ProxySelector API to retrieve the internet proxies to use for the communication.
+This extension point allows to define specialized proxy selectors that should be used.
       </documentation>
    </annotation>
 
    <element name="extension">
       <annotation>
          <appInfo>
-            <meta.element deprecated="true" replacement="remoteServiceFactories" />
+            <meta.element />
          </appInfo>
       </annotation>
       <complexType>
-         <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="factory"/>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <element ref="proxyselector"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,27 +48,34 @@
       </complexType>
    </element>
 
-   <element name="factory">
+   <element name="proxyselector">
       <annotation>
          <documentation>
-            Remote Service Factory for a specific protocol
+            Defines a proxy selector
          </documentation>
       </annotation>
       <complexType>
-         <attribute name="protocol" type="string" use="required">
+         <attribute name="name" type="string">
             <annotation>
                <documentation>
-                  string that identifies this protocol (i.e. &quot;hessian&quot; &quot;axis2&quot; etc.)
+                  A descriptive name of the proxy selector
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="remoteServiceFactory" type="string" use="required">
+         <attribute name="order" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  the order of the proxy selector. The list of proxies is composed of the list of proxies of each proxy selector. The proxies retrieved by the proxy selector with the lowest ´order´  are listed first.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the proxy selector implementation class
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.communication.core.factory.IRemoteServiceFactory"/>
+                  <meta.attribute kind="java" basedOn="java.net.ProxySelector:"/>
                </appInfo>
             </annotation>
          </attribute>
@@ -79,7 +87,7 @@
          <meta.section type="since"/>
       </appInfo>
       <documentation>
-         1.0.0.0
+         1.1.0.0
       </documentation>
    </annotation>
 
@@ -88,13 +96,15 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         &lt;extension
-  point=&quot;org.eclipse.riena.communication.core.remoteservicefactory&quot;&gt;
-  &lt;factory
-   protocol=&quot;hessian&quot;
-   remoteServiceFactory=&quot;org.eclipse.riena.internal.communication.factory.hessian.RemoteServiceFactoryHessian&quot;&gt;
-  &lt;/factory&gt;
- &lt;/extension&gt;
+            &lt;extension
+         point=&quot;org.eclipse.riena.communication.core.proxyselector&quot;&gt;
+      &lt;proxyselector
+            order=&quot;100&quot;
+            name=&quot;Core.Net ProxySelector&quot;
+            class=&quot;org.eclipse.riena.communication.core.proxyselector.CoreNetProxySelector&quot;&gt;
+      &lt;/proxyselector&gt;
+   &lt;/extension&gt;
+
       </documentation>
    </annotation>
 
