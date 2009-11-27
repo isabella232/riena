@@ -194,6 +194,15 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		// implementors should overwrite
 	}
 
+	@Override
+	public void updateFromModel() {
+		super.updateFromModel();
+		//delegate to inner ridgets
+		for (IRidget ridget : ridgets.values()) {
+			ridget.updateFromModel();
+		}
+	}
+
 	/**
 	 * Returns true if the control of this ridget is visible, false otherwise.
 	 * This default implementation always returns true and should be overriden
