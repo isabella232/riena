@@ -8,32 +8,18 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.communication.core.ssl;
+package org.eclipse.riena.communication.core.ssl;
 
 import javax.net.ssl.HostnameVerifier;
-
-import org.osgi.framework.Bundle;
-
-import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+import javax.net.ssl.SSLSession;
 
 /**
- * SSl properties for the ssl configuration
+ * Just the class.
  */
-@ExtensionInterface(id = "ssl")
-public interface ISSLPropertiesExtension {
+public class TestHostnameVerifier implements HostnameVerifier {
 
-	String getProtocol();
+	public boolean verify(String hostname, SSLSession session) {
+		return false;
+	}
 
-	String getKeystore();
-
-	String getPassword();
-
-	HostnameVerifier createHostnameVerifier();
-
-	/**
-	 * Get the contributing bundle. This is required for loading the key store.
-	 * 
-	 * @return the contributing bundle
-	 */
-	Bundle getContributingBundle();
 }

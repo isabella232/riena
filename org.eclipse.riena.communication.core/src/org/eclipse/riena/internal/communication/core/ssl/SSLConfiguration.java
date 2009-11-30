@@ -47,12 +47,13 @@ public class SSLConfiguration {
 	private String protocol;
 	private String keystore;
 	private String password;
+	private HostnameVerifier hostnameVerifier;
 	private Bundle contributingBundle;
 
 	private boolean configured;
 
 	private String previousHttpsProtocol;
-	private HostnameVerifier previousHostNameVerifier;
+	private HostnameVerifier previousHostnameVerifier;
 	private SSLSocketFactory previousSSLSocketFactor;
 
 	private static final String JRE_CACERTS_MARKER = "#jre-cacerts#"; //$NON-NLS-1$
@@ -61,21 +62,21 @@ public class SSLConfiguration {
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SSLConfiguration.class);
 
 	@InjectExtension(min = 0, max = 1)
-	public void configure(ISSLPropertiesExtension properties) {
-		if (configured && properties == null) {
+	public void configure(ISSLPropertiesExtension sslProperties) {
+		if (configured && sslProperties == null) {
 			restore();
 			return;
 		}
 		configured = false;
 
-		if (properties == null) {
+		if (sslProperties == null) {
 			LOGGER.log(LogService.LOG_INFO, "No configuration given!."); //$NON-NLS-1$
 			return;
 		}
-		protocol = properties.getProtocol();
-		keystore = properties.getKeystore();
-		password = properties.getPassword();
-		contributingBundle = properties.getContributingBundle();
+		protocol = sslProperties.getProtocol();
+		keystore = sslProperties.getKeystore();
+		password = sslProperties.getPassword();
+		contributingBundle = sslProperties.getContributingBundle();
 
 		LOGGER.log(LogService.LOG_INFO, "Configuring SSL protocol '" + protocol + "' with keystore '" + keystore //$NON-NLS-1$ //$NON-NLS-2$
 				+ "'."); //$NON-NLS-1$
@@ -159,18 +160,18 @@ public class SSLConfiguration {
 			// set new value
 			HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
 
-			HostnameVerifier hostNameVerifier = new HostnameVerifier() {
-				public boolean verify(String hostName, SSLSession session) {
-					LOGGER.log(LogService.LOG_ERROR, "Hostname '" + hostName //$NON-NLS-1$
-							+ "' does not match the certificate´s host name (" + session.getPeerHost() + ")!"); //$NON-NLS-1$ //$NON-NLS-2$
-					return false;
-				}
-			};
+			hostnameVerifier = sslProperties.createHostnameVerifier();
+			if (hostnameVerifier == null) {
+				hostnameVerifier = new StrictHostnameVerifier();
+			} else {
+				LOGGER.log(LogService.LOG_DEBUG, "Using custom host name verifier " //$NON-NLS-1$
+						+ hostnameVerifier.getClass().getName());
+			}
 
 			// save old value
-			previousHostNameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
+			previousHostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
 			// set new value
-			HttpsURLConnection.setDefaultHostnameVerifier(hostNameVerifier);
+			HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
 
 			LOGGER.log(LogService.LOG_INFO, "Configuring the SSL protocol finished!"); //$NON-NLS-1$
 			configured = true;
@@ -228,16 +229,24 @@ public class SSLConfiguration {
 		if (previousSSLSocketFactor != null) {
 			HttpsURLConnection.setDefaultSSLSocketFactory(previousSSLSocketFactor);
 		}
-		if (previousHostNameVerifier != null) {
-			HttpsURLConnection.setDefaultHostnameVerifier(previousHostNameVerifier);
+		if (previousHostnameVerifier != null) {
+			HttpsURLConnection.setDefaultHostnameVerifier(previousHostnameVerifier);
 		}
 	}
 
-	/*
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "SSLConfiguration: " + protocol + ", " + keystore; //$NON-NLS-1$ //$NON-NLS-2$
+		return "SSLConfiguration [keystore=" + keystore + ", protocol=" + protocol + ", hostnameVerifier=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				+ hostnameVerifier + "]"; //$NON-NLS-1$
+	}
+
+	public final static class StrictHostnameVerifier implements HostnameVerifier {
+
+		public boolean verify(String hostname, SSLSession session) {
+			LOGGER.log(LogService.LOG_ERROR, "Hostname '" + hostname //$NON-NLS-1$
+					+ "' does not match the certificate´s host name (" + session.getPeerHost() + ")!"); //$NON-NLS-1$ //$NON-NLS-2$
+			return false;
+		}
+
 	}
 }

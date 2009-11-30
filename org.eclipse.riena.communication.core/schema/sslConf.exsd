@@ -76,6 +76,16 @@ Otherwise, several attempts are made to interpret the the location as:
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="hostnameVerifier" type="string">
+            <annotation>
+               <documentation>
+                  A optional host name verifier that can relax the strict host name check of the default implementaion which is used if this is not given.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":javax.net.ssl.HostnameVerifier"/>
+               </appInfo>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
