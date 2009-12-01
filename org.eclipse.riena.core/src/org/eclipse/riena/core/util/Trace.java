@@ -15,6 +15,8 @@ import org.osgi.framework.FrameworkUtil;
 
 import org.eclipse.core.runtime.Platform;
 
+import org.eclipse.riena.internal.core.Activator;
+
 /**
  * Tracing support.
  */
@@ -45,6 +47,10 @@ public final class Trace {
 	 * @see Platform.getDebugOption()
 	 */
 	public static boolean isOn(Class<?> clazz, String option) {
+		if (Activator.getDefault() == null) {
+			// No OSGi? Maybe we are running in a plain jUnit test - so yes we want tracing
+			return true;
+		}
 		if (!Platform.inDebugMode()) {
 			return false;
 		}
