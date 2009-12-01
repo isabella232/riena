@@ -141,7 +141,8 @@ public class MarkerSupportTest extends RienaTestCase {
 				LabelRidget ridget = new LabelRidget();
 				ridget.setUIControl(control);
 				BasicMarkerSupport msup = ReflectionUtils.invokeHidden(ridget, "createMarkerSupport");
-				assertNotNull(msup.getDisabledMarkerVisualizer());
+				Object visualizer = ReflectionUtils.invokeHidden(msup, "getDisabledMarkerVisualizer", (Object[]) null);
+				assertNotNull(visualizer);
 				ridget.setEnabled(false);
 				assertTrue(control.getForeground().equals(Display.getDefault().getSystemColor(SWT.COLOR_GRAY)));
 				ridget.setEnabled(true);
