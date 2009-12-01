@@ -785,7 +785,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 			if (!subModuleNode.isSelectable()) {
 				if (!subModuleNode.getChildren().isEmpty()) {
-					return subModuleNode.getChild(0);
+					return findSelectableChildNode(subModuleNode);
 				}
 
 				throw new RuntimeException("submodule node that is selectable=false must have at least one child"); //$NON-NLS-1$
@@ -809,7 +809,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			} else {
 				if (moduleNode.getChildren().size() > 0) {
 					// find the first selectable node in the list of childs
-					return findSelectableNode(moduleNode.getChild(0));
+					return findSelectableChildNode(moduleNode.getChild(0));
 				} else {
 					return null;
 				}
@@ -829,7 +829,11 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	private ISubModuleNode findSelectableNode(ISubModuleNode startNode) {
+	private ISubModuleNode findSelectableChildNode(ISubModuleNode startNode) {
+		// if node is not visible, return null (note: this method is recursive, see below)
+		if (!startNode.isVisible()) {
+			return null;
+		}
 		// selectable node found
 		if (startNode.isSelectable()) {
 			return startNode;
@@ -838,12 +842,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		startNode.setExpanded(true);
 		// check childs for selectable node
 		for (ISubModuleNode child : startNode.getChildren()) {
-			ISubModuleNode found = findSelectableNode(child);
+			ISubModuleNode found = findSelectableChildNode(child);
 			if (found != null) {
 				return found;
 			}
 		}
-		throw new RuntimeException("no node found that is selectable"); //$NON-NLS-1$
+		return null;
 	}
 
 	private INavigationNode<?> getActiveChild(INavigationNode<?> pNode) {
