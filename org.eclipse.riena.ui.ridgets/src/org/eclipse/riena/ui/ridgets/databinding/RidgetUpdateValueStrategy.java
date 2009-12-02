@@ -55,7 +55,7 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 			}
 		}
 
-		if ((fromType instanceof Class) && (toType instanceof Class)) {
+		if ((fromType instanceof Class<?>) && (toType instanceof Class<?>)) {
 			String fromTypeClassName = ((Class<?>) fromType).getName();
 			String toTypeClassName = ((Class<?>) toType).getName();
 			TypePair pair = new TypePair(fromTypeClassName, toTypeClassName);

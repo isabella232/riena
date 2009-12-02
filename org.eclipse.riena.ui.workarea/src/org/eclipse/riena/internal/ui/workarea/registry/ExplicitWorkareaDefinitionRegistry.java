@@ -28,7 +28,7 @@ final class ExplicitWorkareaDefinitionRegistry extends AbstractWorkareaDefinitio
 	@Override
 	public IWorkareaDefinition register(Object id, IWorkareaDefinition definition) {
 
-		if (id instanceof INavigationNode) {
+		if (id instanceof INavigationNode<?>) {
 			return registerDefinition((INavigationNode<?>) id, definition);
 		} else {
 			return super.register(id, definition);
