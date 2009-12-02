@@ -93,6 +93,9 @@ public class RemoteServiceFactory {
 		}
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	@InjectExtension
 	public void update(IRemoteServiceFactoryExtension[] factories) {
 		remoteServiceFactoryImplementations = new HashMap<String, IRemoteServiceFactory>();

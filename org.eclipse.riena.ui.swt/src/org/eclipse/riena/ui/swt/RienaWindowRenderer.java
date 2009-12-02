@@ -38,6 +38,8 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
  * Provides theming & styling for jface {@link Window}s.
+ * 
+ * @since 1.2
  */
 public class RienaWindowRenderer {
 

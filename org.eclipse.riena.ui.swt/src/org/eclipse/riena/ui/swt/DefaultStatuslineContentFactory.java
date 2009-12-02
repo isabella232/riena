@@ -22,6 +22,8 @@ import org.eclipse.riena.core.util.ReflectionUtils;
  * Default implementation of {@link IStatusLineContentFactory}. Layouts the
  * existing {@link StatuslineNumber} and the {@link StatuslineUIProcess} held by
  * the {@link Statusline}. Adds additional
+ * 
+ * @since 1.2
  */
 public class DefaultStatuslineContentFactory implements IStatusLineContentFactory {
 

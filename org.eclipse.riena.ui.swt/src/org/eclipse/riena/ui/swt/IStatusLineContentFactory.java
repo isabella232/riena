@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Widget;
  * #addUIControl to add the additional Widgets for later binding with Ridgets.
  * The {@link Statusline} should at a minimum hold a {@link StatuslineNumber}
  * and a {@link StatuslineUIProcess}.
+ * 
+ * @since 1.2
  */
 public interface IStatusLineContentFactory {
 

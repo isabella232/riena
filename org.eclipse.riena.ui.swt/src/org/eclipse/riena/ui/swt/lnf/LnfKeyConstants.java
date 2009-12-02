@@ -212,6 +212,7 @@ public final class LnfKeyConstants {
 	 * @see <a href=
 	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
 	 *      >Riena Wiki</a>
+	 * @since 1.2
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_END_COLOR = "SubApplicationSwitcher.processFinishedBackgroundEndColor"; //$NON-NLS-1$
 	/**
@@ -220,6 +221,7 @@ public final class LnfKeyConstants {
 	 * @see <a href=
 	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
 	 *      >Riena Wiki</a>
+	 * @since 1.2
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_START_COLOR = "SubApplicationSwitcher.processFinishedBackgroundStartColor"; //$NON-NLS-1$
 	/**
@@ -260,6 +262,7 @@ public final class LnfKeyConstants {
 	 * @see <a href=
 	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Application_Switcher"
 	 *      >Riena Wiki</a>
+	 * @since 1.2
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR = "SubApplicationSwitcher.innerProcessFinishedBorderColor"; //$NON-NLS-1$
 
@@ -589,6 +592,7 @@ public final class LnfKeyConstants {
 	 * 
 	 * @see <a href="http://wiki.eclipse.org/Riena_Look_and_Feel#Marker"> Riena
 	 *      Wiki</a>
+	 * @since 1.2
 	 */
 	public static final String SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION = "subModuleTreePaintMarkerInHierarchicOrder"; //$NON-NLS-1$
 	/**

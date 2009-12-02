@@ -21,8 +21,17 @@ public class Messages extends NLS {
 	public static String MasterDetailsComposite_buttonApply;
 	public static String MasterDetailsComposite_buttonNew;
 	public static String MasterDetailsComposite_buttonRemove;
+	/**
+	 * @since 1.2
+	 */
 	public static String MasterDetailsComposite_dialogMessage_confirmDiscard;
+	/**
+	 * @since 1.2
+	 */
 	public static String MasterDetailsComposite_dialogTitle_confirmDiscard;
+	/**
+	 * @since 1.2
+	 */
 	public static String MasterDetailsComposite_dialogTitle_applyFailed;
 
 	static {

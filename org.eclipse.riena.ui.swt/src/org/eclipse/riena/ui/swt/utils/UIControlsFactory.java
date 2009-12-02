@@ -162,6 +162,7 @@ public class UIControlsFactory {
 	/**
 	 * @wbp.factory.parameter.source text "myLabelText"
 	 * @wbp.factory.parameter.source bindingId "myLabelId"
+	 * @since 1.2
 	 */
 	public static Label createLabel(Composite parent, String text, String bindingId) {
 		return createLabel(parent, text, SWT.None, bindingId);
@@ -314,6 +315,9 @@ public class UIControlsFactory {
 		return text;
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public static Browser createBrowser(Composite parent, int style) {
 		return new Browser(parent, style);
 	}
@@ -321,6 +325,7 @@ public class UIControlsFactory {
 	/**
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 * @wbp.factory.parameter.source bindingId "myBrowserId"
+	 * @since 1.2
 	 */
 	public static Browser createBrowser(Composite parent, int style, String bindingId) {
 		Browser result = createBrowser(parent, style);

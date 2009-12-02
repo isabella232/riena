@@ -99,6 +99,7 @@ public class RienaDefaultLnf {
 	 * 
 	 * @param rendererExtensions
 	 *            descriptors of renderer
+	 * @since 1.2
 	 */
 	@InjectExtension
 	public void update(ILnfRendererExtension[] rendererExtensions) {
@@ -251,8 +252,8 @@ public class RienaDefaultLnf {
 	 *            <code>LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT</code>
 	 *            will be used. See also {@link FontData#setHeight(int)}.
 	 * @param style
-	 *            the font style to use. See also
-	 *            {@link FontData#setStyle(int)}.
+	 *            the font style to use. See also {@link FontData#setStyle(int)}
+	 *            .
 	 * 
 	 * @return the font to which this map maps the specified key with differing
 	 *         height and style, or <code>null</code> if the map contains no
@@ -393,8 +394,8 @@ public class RienaDefaultLnf {
 	 * Loads the theme specified by the given class name.
 	 * 
 	 * @param themeClassName
-	 *            a string specifying the name of the class that implements
-	 *            the theme
+	 *            a string specifying the name of the class that implements the
+	 *            theme
 	 * @return theme
 	 * @throws ClassNotFoundException
 	 * @throws InstantiationException

@@ -69,6 +69,9 @@ public class FlasherSupportForRenderer {
 
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public boolean isFlashing() {
 		Collection<UIProcessFinishedMarker> markers = renderer.getMarkersOfType(UIProcessFinishedMarker.class);
 		for (UIProcessFinishedMarker processMarker : markers) {
