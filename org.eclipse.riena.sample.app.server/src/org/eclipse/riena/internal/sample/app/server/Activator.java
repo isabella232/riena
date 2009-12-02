@@ -19,6 +19,7 @@ import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.publisher.Publish;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.monitor.common.IReceiver;
+import org.eclipse.riena.sample.app.common.ITestcasesWS;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
 import org.eclipse.riena.sample.app.common.calendar.ITestGregorianCalendar;
 import org.eclipse.riena.sample.app.common.exception.IExceptionService;
@@ -75,6 +76,9 @@ public class Activator extends RienaPlugin {
 		context.registerService(IExceptionService.class.getName(), new ExceptionService(), null);
 		Publish.service(IExceptionService.class.getName()).usingPath("/ExceptionService").withProtocol("hessian") //$NON-NLS-1$ //$NON-NLS-2$
 				.andStart(context); // stops automatically when bundle stops
+		context.registerService(ITestcasesWS.class.getName(), new TestcasesService(), null);
+		Publish.service(ITestcasesWS.class.getName())
+				.usingPath("/TestcasesWS").withProtocol("hessian").andStart(context); //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	/*

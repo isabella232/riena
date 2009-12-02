@@ -67,5 +67,11 @@
 			remoteServiceFactory="org.eclipse.riena.internal.communication.factory.hessian.RemoteServiceFactoryHessian">
 		</factory>
 	</extension>
+ <extension
+       point="org.eclipse.riena.communication.hessian.AbstractSerializerFactory">
+    <factory
+          implementation="org.eclipse.riena.internal.communication.factory.hessian.BigIntegerSerializerFactory">
+    </factory>
+ </extension>
 
 </plugin>
