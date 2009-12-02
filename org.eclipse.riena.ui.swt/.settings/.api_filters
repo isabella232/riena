@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component id="org.eclipse.riena.ui.swt" version="2">
+<resource path="src/org/eclipse/riena/ui/swt/RienaMessageDialog.java" type="org.eclipse.riena.ui.swt.RienaMessageDialog">
+<filter id="338792546">
+<message_arguments>
+<message_argument value="org.eclipse.riena.ui.swt.RienaMessageDialog"/>
+<message_argument value="isHideOsBorder()"/>
+</message_arguments>
+</filter>
+</resource>
 <resource path="src/org/eclipse/riena/ui/swt/lnf/LnfKeyConstants.java" type="org.eclipse.riena.ui.swt.lnf.LnfKeyConstants">
 <filter id="338755678">
 <message_arguments>
@@ -11,6 +19,41 @@
 <message_arguments>
 <message_argument value="org.eclipse.riena.ui.swt.lnf.LnfKeyConstants"/>
 <message_argument value="MANDATORY_MARKER_ICON"/>
+</message_arguments>
+</filter>
+<filter id="388194388">
+<message_arguments>
+<message_argument value="org.eclipse.riena.ui.swt.lnf.LnfKeyConstants"/>
+<message_argument value="SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR"/>
+<message_argument value="SubApplicationSwitcher.innerBorderColor"/>
+</message_arguments>
+</filter>
+</resource>
+<resource path="src/org/eclipse/riena/ui/swt/lnf/rienadefault/RienaDefaultLnf.java" type="org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf">
+<filter id="338792546">
+<message_arguments>
+<message_argument value="org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf"/>
+<message_argument value="update(ILnfRendererDesc[])"/>
+</message_arguments>
+</filter>
+</resource>
+<resource path="src/org/eclipse/riena/ui/swt/uiprocess/UIProcessWindow.java" type="org.eclipse.riena.ui.swt.uiprocess.UIProcessWindow">
+<filter id="338792546">
+<message_arguments>
+<message_argument value="org.eclipse.riena.ui.swt.uiprocess.UIProcessWindow"/>
+<message_argument value="isApplicationModal()"/>
+</message_arguments>
+</filter>
+<filter id="338792546">
+<message_arguments>
+<message_argument value="org.eclipse.riena.ui.swt.uiprocess.UIProcessWindow"/>
+<message_argument value="isCloseable()"/>
+</message_arguments>
+</filter>
+<filter id="338792546">
+<message_arguments>
+<message_argument value="org.eclipse.riena.ui.swt.uiprocess.UIProcessWindow"/>
+<message_argument value="isResizeable()"/>
 </message_arguments>
 </filter>
 </resource>
