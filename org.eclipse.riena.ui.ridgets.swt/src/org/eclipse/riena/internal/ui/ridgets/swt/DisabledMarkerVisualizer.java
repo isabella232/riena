@@ -10,24 +10,26 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Responsible for Rendering the disabled state of any control.
@@ -36,7 +38,10 @@ public class DisabledMarkerVisualizer {
 
 	private IRidget ridget;
 
+	// the painter
 	private final DisabledPainter disabledRepresenterPainter = new DisabledPainter();
+
+	// control reconstruction info storage
 	private final RenderMemento renderMemento = new RenderMemento();
 
 	public DisabledMarkerVisualizer(IRidget ridget) {
@@ -51,21 +56,18 @@ public class DisabledMarkerVisualizer {
 		return (Control) getRidget().getUIControl();
 	}
 
+	/**
+	 * This is the entry point for {@link MarkerSupport}
+	 */
 	public void updateDisabled() {
 		Control control = getControl();
 		control.setEnabled(getRidget().isEnabled());
-
-		if (isSimpleControl(control)) {
-			// those controls just get a special foreground
-			updateControlColors(control);
-			return;
-		}
-		control.removePaintListener(disabledRepresenterPainter);
+		removePaintlistener(control);
 
 		if (!getRidget().isEnabled()) {
 			storeHeaderVisiblity();
 			updateComplexControl(false);
-			control.addPaintListener(disabledRepresenterPainter);
+			addPaintlistener(control);
 		} else {
 			updateComplexControl(renderMemento.headerVisible);
 		}
@@ -73,6 +75,35 @@ public class DisabledMarkerVisualizer {
 
 	}
 
+	/////
+	// Control connect and disconnect of the Paintlistener
+
+	protected void removePaintlistener(Control control) {
+		// consider the special case ChoiceComposite
+		if (ChoiceComposite.class.isAssignableFrom(control.getClass())) {
+			ChoiceComposite choice = ChoiceComposite.class.cast(control);
+			for (Control child : choice.getChildren()) {
+				removePaintlistener(child);
+			}
+		} else {
+			control.removePaintListener(disabledRepresenterPainter);
+		}
+	}
+
+	protected void addPaintlistener(Control control) {
+		if (ChoiceComposite.class.isAssignableFrom(control.getClass())) {
+			ChoiceComposite choice = ChoiceComposite.class.cast(control);
+			for (Control child : choice.getChildren()) {
+				addPaintlistener(child);
+			}
+		} else {
+			control.addPaintListener(disabledRepresenterPainter);
+		}
+	}
+
+	/*
+	 * Store the visibility for later reconstruction
+	 */
 	private void storeHeaderVisiblity() {
 		if (getControl() instanceof Tree) {
 			Tree tree = (Tree) getControl();
@@ -84,11 +115,17 @@ public class DisabledMarkerVisualizer {
 
 	}
 
-	static class RenderMemento {
+	/*
+	 * A memento for storing some construction info
+	 */
+	private static class RenderMemento {
 		boolean headerVisible = true;
-		Color foreGround;
 	}
 
+	/*
+	 * throws away the model as long as the control is disabled. This influences
+	 * scrolling behavior.
+	 */
 	private void updateComplexControl(boolean headerVisible) {
 		if (getControl() instanceof Tree) {
 			Tree tree = (Tree) getControl();
@@ -121,29 +158,26 @@ public class DisabledMarkerVisualizer {
 
 	}
 
-	private void updateControlColors(Control control) {
-		Color currentColor = null;
-		if (!getRidget().isEnabled()) {
-			renderMemento.foreGround = control.getForeground();
-			currentColor = Display.getDefault().getSystemColor(SWT.COLOR_GRAY);
-		} else {
-			currentColor = renderMemento.foreGround;
-		}
-		control.setForeground(currentColor);
-	}
-
-	private boolean isSimpleControl(Control control) {
-		return control instanceof Label
-				|| (control instanceof Button && (((control.getStyle() & SWT.RADIO) > 0) || (control.getStyle() & SWT.CHECK) > 0))
-				|| control instanceof ChoiceComposite;
-	}
-
+	/**
+	 * The actual renderer of the {@link DisabledMarker}-State. Colors and Alpha
+	 * values are configurable. See {@link LnfManager} for more details on this.
+	 */
 	private class DisabledPainter implements PaintListener {
 
 		public void paintControl(PaintEvent e) {
 			GC gc = e.gc;
-			gc.setAlpha(190);
-			gc.setBackground(new Color(null, 255, 255, 255));
+			int alpha = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.DISABLED_MARKER_STANDARD_ALPHA);
+			Widget widget = e.widget;
+			if (widget instanceof Table || widget instanceof Tree || widget instanceof List || widget instanceof Combo
+					|| widget instanceof DateTime) {
+				// these controls have a special disabled background color. We need a special alpha value here
+				alpha = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.DISABLED_MARKER_COMPLEX_ALPHA);
+			}
+
+			gc.setAlpha(alpha);
+			Color color = LnfManager.getLnf().getColor(LnfKeyConstants.DISABLED_MARKER_BACKGROUND);
+			gc.setBackground(color);
+			// overdraws the content area
 			gc.fillRectangle(0, 0, getControl().getParent().getBounds().width,
 					getControl().getParent().getBounds().height);
 
