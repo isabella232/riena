@@ -12,8 +12,6 @@ package org.eclipse.riena.ui.ridgets.validation;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-import org.eclipse.riena.ui.ridgets.validation.MinLength;
-import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
 /**
  * Tests for the MinLength rule.
@@ -77,6 +75,17 @@ public class MinLengthTest extends RienaTestCase {
 		assertFalse(rule.validate("12345").isOK());
 		assertTrue(rule.validate("123456").isOK());
 
+	}
+
+	public void testMinLengthAllowEmpty1() throws Exception {
+		MinLength rule = new MinLengthAllowEmpty();
+		rule.setInitializationData(null, null, "5");
+		assertTrue(rule.validate("").isOK());
+		assertTrue(rule.validate(null).isOK());
+		assertFalse(rule.validate("11").isOK());
+		assertFalse(rule.validate("1234").isOK());
+		assertTrue(rule.validate("12345").isOK());
+		assertTrue(rule.validate("123456").isOK());
 	}
 
 }
