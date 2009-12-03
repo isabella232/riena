@@ -14,9 +14,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
-
-import junit.framework.TestCase;
 
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
@@ -30,13 +29,14 @@ import com.caucho.hessian.io.SerializerFactory;
 import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Abstract {@code TestCase} supporting tests of Hessian serializer factories.
  */
 @NonUITestCase
-public abstract class AbstractSerializerFactoryTestCase extends TestCase {
+public abstract class AbstractSerializerFactoryTestCase extends RienaTestCase {
 
 	protected enum HessianSerializerVersion {
 		One, Two
@@ -90,7 +90,10 @@ public abstract class AbstractSerializerFactoryTestCase extends TestCase {
 		try {
 			return expected.equals(inAndOut(expected, version, asReturnType, abstractSerializerFactories));
 		} catch (IOException e) {
-			e.printStackTrace();
+			if (isTrace()) {
+				println("Comparing in and out caused an IOException: ");
+				e.printStackTrace();
+			}
 			return false;
 		}
 	}
@@ -111,8 +114,17 @@ public abstract class AbstractSerializerFactoryTestCase extends TestCase {
 
 		// Serialization
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		AbstractHessianOutput out = version == HessianSerializerVersion.Two ? new Hessian2Output(baos)
-				: new HessianOutput(baos);
+		SerializerFactory factory = out(object, baos, version, asReturnType, abstractSerializerFactories);
+
+		// Deserialization
+		InputStream is = new ByteArrayInputStream(baos.toByteArray());
+		return in(is, version, asReturnType, factory);
+	}
+
+	protected SerializerFactory out(Object object, OutputStream outputStream, HessianSerializerVersion version,
+			Class<?> asReturnType, AbstractSerializerFactory... abstractSerializerFactories) throws IOException {
+		AbstractHessianOutput out = version == HessianSerializerVersion.Two ? new Hessian2Output(outputStream)
+				: new HessianOutput(outputStream);
 		SerializerFactory factory = out.findSerializerFactory();
 		for (AbstractSerializerFactory serializerFactory : abstractSerializerFactories) {
 			factory.addFactory(serializerFactory);
@@ -120,13 +132,16 @@ public abstract class AbstractSerializerFactoryTestCase extends TestCase {
 		factory.setAllowNonSerializable(true);
 		out.writeObject(object);
 		out.close();
-
-		// Deserialization
-		InputStream is = new ByteArrayInputStream(baos.toByteArray());
-		AbstractHessianInput in = version == HessianSerializerVersion.Two ? new Hessian2Input(is)
-				: new HessianInput(is);
-		in.setSerializerFactory(factory);
-		return in.readObject(asReturnType);
+		return factory;
 	}
 
+	protected Object in(InputStream inputStream, HessianSerializerVersion version, Class<?> asReturnType,
+			SerializerFactory factory) throws IOException {
+		AbstractHessianInput in = version == HessianSerializerVersion.Two ? new Hessian2Input(inputStream)
+				: new HessianInput(inputStream);
+		if (factory != null) {
+			in.setSerializerFactory(factory);
+		}
+		return in.readObject(asReturnType);
+	}
 }
