@@ -36,10 +36,8 @@ public final class Trace {
 	 * &lt;symbolic bundle name of bundle containing clazz&gt; { "/" &lt;simple name of clazz&gt; } "/" &lt;option&gt;
 	 * </pre>
 	 * 
-	 * If {@code clazz} is null the option string misses the { } portion.
-	 * 
 	 * @param clazz
-	 *            the class requesting trace support or null
+	 *            the class requesting trace support
 	 * @param option
 	 *            the option string
 	 * @return
@@ -47,6 +45,30 @@ public final class Trace {
 	 * @see Platform.getDebugOption()
 	 */
 	public static boolean isOn(Class<?> clazz, String option) {
+		return isOn(clazz, clazz, option);
+	}
+
+	/**
+	 * This checks whether debug is requested for the debug option string
+	 * created from the method parameters as follows:
+	 * 
+	 * <pre>
+	 * &lt;symbolic bundle name of bundle containing clazzForBundle&gt; { "/" &lt;simple name of clazzForName&gt; } "/" &lt;option&gt;
+	 * </pre>
+	 * 
+	 * If {@code clazzForName} is null the option string misses the { } part.
+	 * 
+	 * @param clazzForName
+	 *            the class requesting trace support or null
+	 * @param clazzForBundle
+	 *            the class used for retrieving the bundle symbolic name or null
+	 * @param option
+	 *            the option string
+	 * @return
+	 * 
+	 * @see Platform.getDebugOption()
+	 */
+	public static boolean isOn(Class<?> clazzForName, Class<?> clazzForBundle, String option) {
 		if (Activator.getDefault() == null) {
 			// No OSGi? Maybe we are running in a plain jUnit test - so yes we want tracing
 			return true;
@@ -54,13 +76,16 @@ public final class Trace {
 		if (!Platform.inDebugMode()) {
 			return false;
 		}
-		final Bundle bundle = FrameworkUtil.getBundle(clazz);
+		if (clazzForBundle == null) {
+			return false;
+		}
+		final Bundle bundle = FrameworkUtil.getBundle(clazzForBundle);
 		if (bundle == null) {
 			return false;
 		}
 		final StringBuilder bob = new StringBuilder(bundle.getSymbolicName());
-		if (clazz != null) {
-			bob.append(SLASH).append(clazz.getSimpleName());
+		if (clazzForName != null) {
+			bob.append(SLASH).append(clazzForName.getSimpleName());
 		}
 		bob.append(SLASH).append(option);
 		final String debug = Platform.getDebugOption(bob.toString());
