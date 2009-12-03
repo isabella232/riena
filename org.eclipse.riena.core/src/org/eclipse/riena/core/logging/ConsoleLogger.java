@@ -48,7 +48,7 @@ public class ConsoleLogger implements Logger {
 	private static final LogFilter LOG_FILTER = new SystemPropertyLogFilter(RIENA_CONSOLE_LOG_LEVEL_PROPERTY, "debug"); //$NON-NLS-1$
 
 	static {
-		String user = System.getProperty("user.name", "?"); //$NON-NLS-1$ //$NON-NLS-2$
+		final String user = System.getProperty("user.name", "?"); //$NON-NLS-1$ //$NON-NLS-2$
 		String host;
 		try {
 			host = Inet4Address.getLocalHost().getHostName();

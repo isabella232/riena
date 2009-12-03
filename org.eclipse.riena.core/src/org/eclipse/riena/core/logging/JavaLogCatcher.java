@@ -81,8 +81,8 @@ public class JavaLogCatcher implements ILogCatcher {
 		public void publish(LogRecord record) {
 
 			// get equinox log level
-			int equinoxLoglevel;
-			int javaLoglevel = record.getLevel().intValue();
+			final int equinoxLoglevel;
+			final int javaLoglevel = record.getLevel().intValue();
 			if (javaLoglevel == Level.SEVERE.intValue()) {
 				equinoxLoglevel = LogService.LOG_ERROR;
 			} else if (javaLoglevel == Level.WARNING.intValue()) {
@@ -94,13 +94,14 @@ public class JavaLogCatcher implements ILogCatcher {
 			}
 
 			// find corresponding equinox logger
-			org.eclipse.equinox.log.Logger logger = Log4r.getLogger(Activator.getDefault(), record.getLoggerName());
+			final org.eclipse.equinox.log.Logger logger = Log4r.getLogger(Activator.getDefault(), record
+					.getLoggerName());
 
 			if (!logger.isLoggable(equinoxLoglevel)) {
 				return;
 			}
 			String message = record.getMessage();
-			Object[] params = record.getParameters();
+			final Object[] params = record.getParameters();
 			if (params != null) {
 				message = MessageFormat.format(message, params);
 			}
