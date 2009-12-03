@@ -166,6 +166,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		table.put(LnfKeyConstants.OUTPUT_MARKER_BACKGROUND, new ColorLnfResource(231, 233, 245));
 
+		table.put(LnfKeyConstants.DISABLED_MARKER_BACKGROUND, getPrimaryBackground());
+
 		// Standard SWT controls
 		table.put("Button.background", getPrimaryBackground()); //$NON-NLS-1$
 		table.put("Button.foreground", getPrimaryForeground()); // Windows: no effect //$NON-NLS-1$
@@ -389,6 +391,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
 
 		table.put(LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT, 8);
+
+		table.put(LnfKeyConstants.DISABLED_MARKER_STANDARD_ALPHA, 90);
+		table.put(LnfKeyConstants.DISABLED_MARKER_COMPLEX_ALPHA, 190);
 
 	}
 

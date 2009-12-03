@@ -406,6 +406,8 @@ public final class LnfKeyConstants {
 	 */
 	public static final String OUTPUT_MARKER_BACKGROUND = "outputMarker.background"; //$NON-NLS-1$
 
+	public static final String DISABLED_MARKER_BACKGROUND = "DisabledMarker.backgroundColor"; //$NON-NLS-1$
+
 	/**
 	 * Font keys
 	 */
@@ -703,6 +705,9 @@ public final class LnfKeyConstants {
 	public static final String TITLELESS_SHELL_SHOW_MIN = "TitlelessShell.showMin"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_SHOW_CLOSE = "TitlelessShell.showClose"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_RESIZEABLE = "TitlelessShell.resizeable"; //$NON-NLS-1$
+
+	public static final String DISABLED_MARKER_STANDARD_ALPHA = "DisabledMarker.standardAlpha"; //$NON-NLS-1$
+	public static final String DISABLED_MARKER_COMPLEX_ALPHA = "DisabledMarker.complexAlpha"; //$NON-NLS-1$
 
 	/**
 	 * This constant is described in Eclipsepedia.
