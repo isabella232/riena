@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -75,7 +76,7 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		final IDecimalTextRidget textPrice = (IDecimalTextRidget) getRidget("textPrice"); //$NON-NLS-1$
 		textPrice.setGrouping(true);
-		textPrice.setText(Double.toString(-29.99));
+		textPrice.setText(NumberFormat.getInstance().format(-29.99));
 
 		final INumericTextRidget textAmount = (INumericTextRidget) getRidget("textAmount"); //$NON-NLS-1$
 		textAmount.setSigned(false);
