@@ -122,11 +122,11 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 	}
 
 	public void logged(LogEntry entry) {
-		ExtendedLogEntry extendedEntry = (ExtendedLogEntry) entry;
-		String loggerName = extendedEntry.getLoggerName();
-		Logger logger = Logger.getLogger(loggerName != null ? loggerName : "<unknown-logger-name>"); //$NON-NLS-1$
+		final ExtendedLogEntry extendedEntry = (ExtendedLogEntry) entry;
+		final String loggerName = extendedEntry.getLoggerName();
+		final Logger logger = Logger.getLogger(loggerName != null ? loggerName : "*unknown-logger-name*"); //$NON-NLS-1$
 
-		Level level;
+		final Level level;
 		switch (extendedEntry.getLevel()) {
 		case LogService.LOG_DEBUG:
 			level = Level.DEBUG;
