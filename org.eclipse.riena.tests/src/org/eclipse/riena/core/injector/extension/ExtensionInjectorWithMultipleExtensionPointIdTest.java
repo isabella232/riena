@@ -20,11 +20,6 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 @NonUITestCase
 public class ExtensionInjectorWithMultipleExtensionPointIdTest extends RienaTestCase {
 
-	{
-		// If you want printing remove the comments below:
-		setPrint(true);
-	}
-
 	public void testWithEPsAandBAndContribsAandB() {
 		printTestName();
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginA.xml");

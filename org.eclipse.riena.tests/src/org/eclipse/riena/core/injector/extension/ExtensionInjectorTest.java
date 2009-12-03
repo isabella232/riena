@@ -29,11 +29,6 @@ import org.eclipse.riena.internal.tests.Activator;
 @NonUITestCase
 public class ExtensionInjectorTest extends RienaTestCase {
 
-	{
-		// If you want printing remove the comments below:
-		setPrint(true);
-	}
-
 	public void testConstructorConstraints() {
 		printTestName();
 		try {

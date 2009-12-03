@@ -20,11 +20,6 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 @NonUITestCase
 public class ExtensionInjectorWithWiringTest extends RienaTestCase {
 
-	{
-		// If you want printing remove the comments below:
-		setPrint(true);
-	}
-
 	public void testWiring() {
 		printTestName();
 		addPluginXml(ExtensionInjectorWithWiringTest.class, "plugin.xml");
