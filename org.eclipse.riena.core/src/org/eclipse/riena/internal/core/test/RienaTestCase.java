@@ -37,6 +37,7 @@ import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
 
 import org.eclipse.riena.core.util.Nop;
+import org.eclipse.riena.core.util.Trace;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 
 /**
@@ -51,7 +52,8 @@ public abstract class RienaTestCase extends TestCase {
 	private final Map<Object, ServiceReference> services = new HashMap<Object, ServiceReference>();
 	// Do not access this field directly! Use the getter getContext() because this does a lazy initialization.
 	private BundleContext context;
-	private boolean print;
+
+	private final boolean trace = Trace.isOn(RienaTestCase.class, getClass(), "debug"); //$NON-NLS-1$
 
 	/**
 	 * 
@@ -156,16 +158,26 @@ public abstract class RienaTestCase extends TestCase {
 	 * Enable/Disable printing.
 	 * 
 	 * @param print
+	 * @Deprecated Has been replaced by Eclipse´s trace facility.
 	 */
+	@Deprecated
 	protected void setPrint(boolean print) {
-		this.print = print;
+	}
+
+	/**
+	 * Check whether trace is switched on or not.
+	 * 
+	 * @return tracing?
+	 */
+	protected boolean isTrace() {
+		return trace;
 	}
 
 	/**
 	 * Print the current test´s name.
 	 */
 	protected void printTestName() {
-		if (!print) {
+		if (!isTrace()) {
 			return;
 		}
 		System.out.println(getName());
@@ -181,7 +193,7 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param string
 	 */
 	protected void print(String string) {
-		if (!print) {
+		if (!isTrace()) {
 			return;
 		}
 		System.out.print(string);
@@ -193,7 +205,7 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param string
 	 */
 	protected void println(String string) {
-		if (!print) {
+		if (!isTrace()) {
 			return;
 		}
 		System.out.println(string);
