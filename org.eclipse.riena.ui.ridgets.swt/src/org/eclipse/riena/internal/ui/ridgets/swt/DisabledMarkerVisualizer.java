@@ -178,8 +178,7 @@ public class DisabledMarkerVisualizer {
 			Color color = LnfManager.getLnf().getColor(LnfKeyConstants.DISABLED_MARKER_BACKGROUND);
 			gc.setBackground(color);
 			// overdraws the content area
-			gc.fillRectangle(0, 0, getControl().getParent().getBounds().width,
-					getControl().getParent().getBounds().height);
+			gc.fillRectangle(0, 0, getControl().getBounds().width, getControl().getBounds().height);
 
 		}
 	}
