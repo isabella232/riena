@@ -30,7 +30,6 @@ import org.eclipse.riena.ui.core.context.IContext;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
-import org.eclipse.riena.ui.ridgets.IComplexRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
@@ -175,17 +174,25 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidget(java.lang.String)
+	 * {@inheritDoc}
+	 * <p>
+	 * Implementation note: for ridgets of the type IRidgetContainer, this
+	 * method supports two-part ids (i.e. nested ids). For example, if the
+	 * ridget "searchComposite" containts the ridget "txtName", you can request:
+	 * "searchComposite.txtName":
+	 * 
+	 * <pre>
+	 * ITextRidget txtName = (ITextRidget) getRidget(&quot;searchComposite.txtName&quot;);
+	 * </pre>
 	 */
 	public IRidget getRidget(String id) {
 		IRidget result = ridgets.get(id);
-		// TODO [ev] -- temporary hack -- revisit
 		if (result == null && id.indexOf('.') != -1) {
 			String parentId = id.substring(0, id.lastIndexOf('.'));
 			String childId = id.substring(id.lastIndexOf('.') + 1);
 			IRidget parent = ridgets.get(parentId);
-			if (parent instanceof IComplexRidget) {
-				result = ((IComplexRidget) parent).getRidget(childId);
+			if (parent instanceof IRidgetContainer) {
+				result = ((IRidgetContainer) parent).getRidget(childId);
 			}
 		}
 		return result;
