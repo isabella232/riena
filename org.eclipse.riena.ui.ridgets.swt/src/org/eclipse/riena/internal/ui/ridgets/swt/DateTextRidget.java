@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.Date;
 import java.util.regex.Pattern;
+
+import com.ibm.icu.text.SimpleDateFormat;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.swt.events.FocusAdapter;
@@ -32,6 +35,7 @@ import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
 import org.eclipse.riena.ui.ridgets.validation.ValidDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
+import org.eclipse.riena.ui.swt.DatePickerComposite.IDateConverterStrategy;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -86,7 +90,14 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 			return;
 		}
 
-		if ((!isValidType(uiControl, Text.class) && !isValidType(uiControl, DatePickerComposite.class))) {
+		boolean isValidDatePicker = isValidType(uiControl, DatePickerComposite.class);
+
+		if (isValidDatePicker) {
+			DatePickerComposite datePicker = (DatePickerComposite) uiControl;
+			datePicker.setDateConverterStrategy(new RidgetAwareDateConverterStrategy());
+		}
+
+		if ((!isValidType(uiControl, Text.class) && !isValidDatePicker)) {
 			throw new BindingException(String.format("uiControl must be a '%s' or a '%s' but was a %s ", //$NON-NLS-1$
 					Text.class.getSimpleName(), DatePickerComposite.class.getSimpleName(), uiControl.getClass()
 							.getSimpleName()));
@@ -166,7 +177,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	//////////////////
 
 	private boolean isValidType(Object uiControl, Class<?> type) {
-		return ((uiControl != null) && !(type.isAssignableFrom(uiControl.getClass())));
+		return ((uiControl != null) && (type.isAssignableFrom(uiControl.getClass())));
 	}
 
 	private String checkAndFormatValue(String text) {
@@ -209,6 +220,37 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	//////////////////
 
 	/**
+	 * A {@link IDateConverterStrategy} that uses the current
+	 * modelToUIControlConverter and uiControlToModelconverter for conversion
+	 * between {@link String} and {@link Date}
+	 * 
+	 * @noinstantiate This class is not intended to be instantiated by clients.
+	 */
+	public final class RidgetAwareDateConverterStrategy implements IDateConverterStrategy {
+		/*
+		 * The dates given are in the local timezone, so that why we use the
+		 * SimpleDateFormat instead of the DateToStringConverter /
+		 * StringToDateConverter
+		 */
+		public void setDateToTextField(Date date) {
+			SimpleDateFormat format = new SimpleDateFormat(pattern);
+			String text = format.format(date);
+			setText(text);
+		}
+
+		public Date getDateFromTextField(String dateString) {
+			Date result;
+			try {
+				SimpleDateFormat format = new SimpleDateFormat(pattern);
+				result = format.parse(dateString);
+			} catch (Exception exc) {
+				result = null; // dateString not parseable, fallback: null
+			}
+			return result;
+		}
+	}
+
+	/**
 	 * This listener handles addition, deletion and replacement of text in the
 	 * Text control. When the text in the control is modified, it will compute
 	 * the new value. Unsupported modifications will be cancelled.
@@ -225,19 +267,8 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 			if (e.doit == false || !isEnabled) {
 				return;
 			}
-			// System.out.println(e);
 			Text control = (Text) e.widget;
 			String oldText = control.getText();
-
-			// FIXME
-			// TODO [ev] this created problems, because it accepts any text, breaks 
-			// assumption that text <= length of pattern
-			// --> suggest removal, details in bugzilla
-			if (e.text != null && e.text.length() > 1) {
-				forceTextToControl(control, e.text);
-				e.doit = false;
-				return;
-			}
 
 			int oldPos = control.getCaretPosition();
 			int newPos = -1;

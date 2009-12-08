@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.swt.SWT;
@@ -26,6 +27,7 @@ import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
+import org.eclipse.riena.ui.swt.DatePickerComposite.IDateConverterStrategy;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -360,6 +362,38 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setMandatory(false);
 
 		TestUtils.assertMandatoryMarker(ridget, 0, false);
+	}
+
+	public void testDateConverterStrategyGetter() {
+		DateTextRidget ridget = (DateTextRidget) getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+		IDateConverterStrategy strategy = ridget.new RidgetAwareDateConverterStrategy();
+
+		assertNull(strategy.getDateFromTextField(null));
+		assertNull(strategy.getDateFromTextField(""));
+		assertNull(strategy.getDateFromTextField("abcd"));
+		assertNull(strategy.getDateFromTextField("12.12"));
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2009, 11, 24, 0, 0, 0);
+		Date expected = calendar.getTime();
+
+		Date result = strategy.getDateFromTextField("24.12.2009");
+		assertEquals(expected.toString(), result.toString());
+	}
+
+	public void testDateConverterStrategySetter() {
+		DateTextRidget ridget = (DateTextRidget) getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYYHHMM);
+		IDateConverterStrategy strategy = ridget.new RidgetAwareDateConverterStrategy();
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2009, 11, 24, 0, 0, 0);
+		Date date = calendar.getTime();
+
+		strategy.setDateToTextField(date);
+
+		assertEquals("24.12.2009 00:00", ridget.getText());
 	}
 
 	// helping methods
