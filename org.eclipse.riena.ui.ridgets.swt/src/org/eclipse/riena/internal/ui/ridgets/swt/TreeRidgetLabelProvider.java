@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Label provider for TreeViewers that provides different images based on the
@@ -175,6 +177,12 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 
 	@Override
 	public Image getImage(Object element) {
+		boolean isNode = viewer.isExpandable(element);
+		String result = null;
+		if (isNode) {
+			boolean isExpanded = viewer.getExpandedState(element);
+			return getImageForNode(element, isExpanded);
+		}
 		String key = getImageKey(element);
 		return Activator.getSharedImage(key);
 	}
@@ -282,6 +290,24 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 			result = isExpanded ? SharedImages.IMG_NODE_EXPANDED : SharedImages.IMG_NODE_COLLAPSED;
 		}
 		return result;
+	}
+
+	private Image getImageForNode(Object element, boolean isExpanded) {
+		Image image = null;
+		if (imageAttribute != null && openImageAttribute != null) {
+			String key = isExpanded ? (String) openImageAttribute.get(element) : (String) imageAttribute.get(element);
+			image = Activator.getSharedImage(key);
+		}
+		if (image == null) {
+			String key = isExpanded ? LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON
+					: LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON;
+			image = LnfManager.getLnf().getImage(key);
+		}
+		if (image == null) {
+			String key = isExpanded ? SharedImages.IMG_NODE_EXPANDED : SharedImages.IMG_NODE_COLLAPSED;
+			image = Activator.getSharedImage(key);
+		}
+		return image;
 	}
 
 	// helping classes

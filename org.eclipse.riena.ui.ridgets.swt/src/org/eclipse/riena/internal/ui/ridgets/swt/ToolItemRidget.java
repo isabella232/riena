@@ -10,12 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.ToolItem;
 
+import org.eclipse.riena.ui.core.resource.IIconManager;
+import org.eclipse.riena.ui.core.resource.IconManagerProvider;
+import org.eclipse.riena.ui.core.resource.IconSize;
+import org.eclipse.riena.ui.core.resource.IconState;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IToolItemRidget;
-import org.eclipse.riena.ui.swt.utils.ImageState;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
@@ -83,9 +85,18 @@ public class ToolItemRidget extends AbstractItemRidget implements IToolItemRidge
 		boolean newImage = super.updateUIIcon();
 		if (newImage) {
 			ToolItem control = getUIControl();
-			if (getIcon() != null) {
-				Image image = ImageStore.getInstance().getImage(getIcon(), ImageState.HOVER);
-				control.setHotImage(image);
+			if ((control != null) && (!control.isDisposed())) {
+				IIconManager manager = IconManagerProvider.getInstance().getIconManager();
+				String iconName = null;
+				String iconId = getIcon();
+				if (iconId != null) {
+					iconName = manager.getName(iconId);
+				}
+				if (iconName != null) {
+					IconSize size = manager.getSize(iconId);
+					iconId = manager.getIconID(iconName, size, IconState.HOVER);
+					control.setHotImage(ImageStore.getInstance().getImage(iconId));
+				}
 			}
 		}
 

@@ -18,6 +18,9 @@ import org.eclipse.ui.menus.CommandContributionItem;
 
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
+import org.eclipse.riena.ui.core.resource.IIconManager;
+import org.eclipse.riena.ui.core.resource.IconManagerProvider;
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
@@ -31,7 +34,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 
 	private Item item;
 	private String text;
-	private String icon;
+	private String iconID;
 	private ActionObserver actionObserver;
 	private boolean textAlreadyInitialized;
 	private boolean useRidgetIcon;
@@ -127,21 +130,26 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	}
 
 	public String getIcon() {
-		return icon;
+		return this.iconID;
+	}
+
+	public void setIcon(String icon) {
+		setIcon(icon, IconSize.NONE);
+	}
+
+	public void setIcon(String icon, IconSize size) {
+		boolean oldUseRidgetIcon = useRidgetIcon;
+		useRidgetIcon = true;
+		String oldIconID = this.iconID;
+		IIconManager manager = IconManagerProvider.getInstance().getIconManager();
+		this.iconID = manager.getIconID(icon, size);
+		if (hasChanged(oldIconID, iconID) || !oldUseRidgetIcon) {
+			updateUIIcon();
+		}
 	}
 
 	public final String getText() {
 		return text;
-	}
-
-	public void setIcon(String icon) {
-		boolean oldUseRidgetIcon = useRidgetIcon;
-		useRidgetIcon = true;
-		String oldIcon = this.icon;
-		this.icon = icon;
-		if (hasChanged(oldIcon, icon) || !oldUseRidgetIcon) {
-			updateUIIcon();
-		}
 	}
 
 	public final void setText(String newText) {

@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.net.URL;
 
+import org.eclipse.riena.ui.core.resource.IconSize;
+
 /**
  * Ridget for a label.
  * <p>
@@ -78,7 +80,19 @@ public interface ILabelRidget extends IValueRidget {
 	 * @see #setIconLocation(URL)
 	 * 
 	 * @param icon
-	 *            icon name.
+	 *            name of the icon
 	 */
 	void setIcon(String icon);
+
+	/**
+	 * Sets the name and the size of the icon.
+	 * 
+	 * @param iconName
+	 *            name of the icon
+	 * @param size
+	 *            size of the icon
+	 * @since 2.0
+	 */
+	void setIcon(String iconName, IconSize size);
+
 }

@@ -10,13 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
+import org.osgi.framework.Bundle;
+
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Shell;
-import org.osgi.framework.Bundle;
 
 /**
  * Tests the class {@link ImageStore}.
@@ -30,11 +32,8 @@ public class ImageStoreTest extends RienaTestCase {
 	public void testGetFullName() {
 
 		ImageStore store = ImageStore.getInstance();
-		String fullName = ReflectionUtils.invokeHidden(store, "getFullName", "abc", ImageState.HOVER,
-				ImageFileExtension.JPG);
-		assertEquals("abc_h_.jpg", fullName);
-		fullName = ReflectionUtils.invokeHidden(store, "getFullName", "abc", ImageState.NORMAL, ImageFileExtension.GIF);
-		assertEquals("abc.gif", fullName);
+		String fullName = ReflectionUtils.invokeHidden(store, "getFullName", "abc", ImageFileExtension.JPG);
+		assertEquals("abc.jpg", fullName);
 
 	}
 
@@ -102,38 +101,6 @@ public class ImageStoreTest extends RienaTestCase {
 		image = store.getImage("eclipse", ImageFileExtension.GIF);
 		assertNotNull(image);
 		image = store.getImage("eclipse", ImageFileExtension.JPG);
-		assertNull(image);
-
-		SwtUtilities.disposeWidget(shell);
-
-	}
-
-	/**
-	 * Tests the method {@code getImage(String,ImageState)}.
-	 */
-	public void testGetImageImageState() {
-
-		Shell shell = new Shell();
-		ImageStore store = ImageStore.getInstance();
-
-		IImagePathExtension extension = new IImagePathExtension() {
-
-			public Bundle getContributingBundle() {
-				return Activator.getDefault().getBundle();
-			}
-
-			public String getPath() {
-				return "icons";
-			}
-
-		};
-		store.update(new IImagePathExtension[] { extension });
-
-		Image image = store.getImage("spirit", ImageState.NORMAL);
-		assertNotNull(image);
-		image = store.getImage("spirit", ImageState.HOVER);
-		assertNotNull(image);
-		image = store.getImage("spirit", ImageState.HOVER_HAS_FOCUS);
 		assertNull(image);
 
 		SwtUtilities.disposeWidget(shell);

@@ -10,33 +10,29 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.resource;
 
-import org.eclipse.riena.internal.ui.core.resource.IconManager;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
- * Retrieves the implementation of <code>IIconManager</code>.
+ * Extension interface to set an icon manager.
  */
-public final class IconManagerAccessor {
-
-	/** <code>ICON_MANAGER_ID</code> */
-	public final static String ICON_MANAGER_ID = "riena.core.client.IconManager"; //$NON-NLS-1$
-
-	private static IIconManager manager;
-
-	private IconManagerAccessor() {
-		super();
-	}
+@ExtensionInterface(id = "iconManager")
+public interface IIconManagerExtension {
 
 	/**
-	 * Returns the icon manager.
+	 * Creates and returns the icon manager.
 	 * 
-	 * @return The implementation of <code>IIconManager</code>.
+	 * @return instance of the icon manager
 	 */
-	public static IIconManager fetchIconManager() {
+	@MapName("iconManager")
+	IIconManager createIconManager();
 
-		if (manager == null) {
-			manager = new IconManager();
-		}
+	/**
+	 * Returns the order. There can be more than one icon manager. The manager
+	 * with the highest order is used.
+	 * 
+	 * @return order
+	 */
+	int getOrder();
 
-		return manager;
-	}
 }

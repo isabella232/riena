@@ -8,22 +8,19 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.core.resource;
+package org.eclipse.riena.ui.core.resource;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.riena.ui.core.resource.IIconManager;
-import org.eclipse.riena.ui.core.resource.IconSize;
-import org.eclipse.riena.ui.core.resource.IconState;
-
 /**
  * Maintains the icons used by the application.
+ * 
+ * @since 2.0
  */
-public final class IconManager implements IIconManager {
+public class IconManager implements IIconManager {
 
-	private static final String EXTENSION_SEPERATOR = "."; //$NON-NLS-1$
-
+	private static final char EXTENSION_SEPARATOR = '.';
 	private Map<String, Icon> icons;
 
 	/**
@@ -34,18 +31,14 @@ public final class IconManager implements IIconManager {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.core.resource#getIconID(java.lang.String,
-	 *      org.eclipse.riena.ui.core.resource.IconSize)
+	 * {@inheritDoc}
 	 */
 	public String getIconID(String name, IconSize size) {
-
 		return getIconID(name, size, IconState.NORMAL);
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.core.resource#getIconID(java.lang.String,
-	 *      org.eclipse.riena.ui.core.resource.IconSize,
-	 *      org.eclipse.riena.ui.core.resource.IconState)
+	 * {@inheritDoc}
 	 */
 	public String getIconID(String name, IconSize size, IconState state) {
 
@@ -53,7 +46,7 @@ public final class IconManager implements IIconManager {
 			return null;
 		}
 
-		Icon icon = new Icon(name, size, state);
+		Icon icon = createIcon(name, size, state);
 		String iconID = icon.getID();
 
 		icons.put(iconID, icon);
@@ -61,8 +54,12 @@ public final class IconManager implements IIconManager {
 		return iconID;
 	}
 
+	protected Icon createIcon(String name, IconSize size, IconState state) {
+		return new Icon(name, size, state);
+	}
+
 	/**
-	 * @see org.eclipse.riena.ui.core.resource.IIconManager#getName(java.lang.String)
+	 * {@inheritDoc}
 	 */
 	public String getName(String iconID) {
 
@@ -75,7 +72,7 @@ public final class IconManager implements IIconManager {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.core.resource.IIconManager#getSize(java.lang.String)
+	 * {@inheritDoc}
 	 */
 	public IconSize getSize(String iconID) {
 
@@ -88,7 +85,7 @@ public final class IconManager implements IIconManager {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.core.resource.IIconManager#getState(java.lang.String)
+	 * {@inheritDoc}
 	 */
 	public IconState getState(String iconID) {
 
@@ -100,12 +97,18 @@ public final class IconManager implements IIconManager {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean hasExtension(String iconID) {
-
-		return iconID.indexOf(EXTENSION_SEPERATOR) != -1;
+		return iconID.indexOf(EXTENSION_SEPARATOR) > 0;
 	}
 
-	private static class Icon {
+	/**
+	 * This class stores all the information of an icon that are necessary to
+	 * create the file name.
+	 */
+	public class Icon {
 
 		private String name;
 		private IconSize size;
@@ -128,28 +131,43 @@ public final class IconManager implements IIconManager {
 		}
 
 		/**
-		 * @return The ID of the icon.
+		 * Returns the ID of the icon.
+		 * 
+		 * @return ID
 		 */
 		public String getID() {
-			return name + state.getDefaultMapping() + size.getDefaultMapping();
+			String id = name;
+			if (state != null) {
+				id += state.getDefaultMapping();
+			}
+			if (size != null) {
+				id += size.getDefaultMapping();
+			}
+			return id;
 		}
 
 		/**
-		 * @return The name of the icon.
+		 * Return the name of the icon
+		 * 
+		 * @return icon name
 		 */
 		public String getName() {
 			return name;
 		}
 
 		/**
-		 * @return The size of the icon.
+		 * Returns the size of the icon.
+		 * 
+		 * @return icon size
 		 */
 		public IconSize getSize() {
 			return size;
 		}
 
 		/**
-		 * @return The state of the icon.
+		 * Returns the state of the icon.
+		 * 
+		 * @return icon state
 		 */
 		public IconState getState() {
 			return state;

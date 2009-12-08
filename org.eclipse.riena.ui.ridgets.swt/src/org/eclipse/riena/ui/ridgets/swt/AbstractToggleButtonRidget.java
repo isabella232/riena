@@ -28,6 +28,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionObserver;
 import org.eclipse.riena.internal.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
+import org.eclipse.riena.ui.core.resource.IIconManager;
+import org.eclipse.riena.ui.core.resource.IconManagerProvider;
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -42,7 +45,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	private final ActionObserver actionObserver;
 	private Binding controlBinding;
 	private String text;
-	private String icon;
+	private String iconID;
 	private boolean selected;
 	private boolean textAlreadyInitialized;
 	private boolean useRidgetIcon;
@@ -157,15 +160,22 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	}
 
 	public String getIcon() {
+		IIconManager manager = IconManagerProvider.getInstance().getIconManager();
+		String icon = manager.getName(this.iconID);
 		return icon;
 	}
 
 	public void setIcon(String icon) {
+		setIcon(icon, IconSize.NONE);
+	}
+
+	public void setIcon(String icon, IconSize size) {
 		boolean oldUseRidgetIcon = useRidgetIcon;
 		useRidgetIcon = true;
-		String oldIcon = this.icon;
-		this.icon = icon;
-		if (hasChanged(oldIcon, icon) || !oldUseRidgetIcon) {
+		String oldIconID = this.iconID;
+		IIconManager manager = IconManagerProvider.getInstance().getIconManager();
+		this.iconID = manager.getIconID(icon, size);
+		if (hasChanged(oldIconID, iconID) || !oldUseRidgetIcon) {
 			updateUIIcon();
 		}
 	}
@@ -223,8 +233,8 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	private void updateUIIcon() {
 		if (getUIControl() != null) {
 			Image image = null;
-			if (icon != null) {
-				image = getManagedImage(icon);
+			if (iconID != null) {
+				image = getManagedImage(iconID);
 			}
 			if ((image != null) || useRidgetIcon) {
 				setUIControlImage(image);

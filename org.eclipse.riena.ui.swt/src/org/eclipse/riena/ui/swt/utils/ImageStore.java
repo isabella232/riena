@@ -59,17 +59,6 @@ public final class ImageStore {
 	}
 
 	/**
-	 * Returns the image for the given image name.
-	 * 
-	 * @param imageName
-	 *            name (ID) of the image
-	 * @return image or {@code null} if no image exists for the given name.
-	 */
-	public Image getImage(String imageName) {
-		return getImage(imageName, ImageState.NORMAL);
-	}
-
-	/**
 	 * Returns the image for the given image name and with the given file
 	 * extension.
 	 * 
@@ -80,7 +69,8 @@ public final class ImageStore {
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
 	public Image getImage(String imageName, ImageFileExtension fileExtension) {
-		return getImage(imageName, ImageState.NORMAL, fileExtension);
+		String fullName = getFullName(imageName, fileExtension);
+		return loadImage(fullName);
 	}
 
 	/**
@@ -92,25 +82,8 @@ public final class ImageStore {
 	 *            state of the image (@see ImageState)
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
-	public Image getImage(String imageName, ImageState state) {
-		return getImage(imageName, state, ImageFileExtension.PNG);
-	}
-
-	/**
-	 * Returns the image for the given image name, given state and with the
-	 * given file extension.
-	 * 
-	 * @param imageName
-	 *            name (ID) of the image
-	 * @param state
-	 *            state of the image (@see ImageState)
-	 * @param fileExtension
-	 *            extension of the image file (@see ImageFileExtension)
-	 * @return image or {@code null} if no image exists for the given name.
-	 */
-	public Image getImage(String imageName, ImageState state, ImageFileExtension fileExtension) {
-		String fullName = getFullName(imageName, state, fileExtension);
-		return loadImage(fullName);
+	public Image getImage(String imageName) {
+		return getImage(imageName, ImageFileExtension.PNG);
 	}
 
 	/**
@@ -124,16 +97,13 @@ public final class ImageStore {
 	 *            extension of the image file (@see ImageFileExtension)
 	 * @return full name of the image (file name).
 	 */
-	private String getFullName(String imageName, ImageState state, ImageFileExtension fileExtension) {
+	private String getFullName(String imageName, ImageFileExtension fileExtension) {
 
 		if (StringUtils.isEmpty(imageName)) {
 			return null;
 		}
 
 		String fullName = imageName;
-		if (state != null) {
-			fullName += state.getStateNameExtension();
-		}
 		// scaling ?!?
 
 		if (imageName.indexOf('.') < 0) {

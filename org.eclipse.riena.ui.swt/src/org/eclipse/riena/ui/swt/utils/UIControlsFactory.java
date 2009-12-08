@@ -334,7 +334,9 @@ public class UIControlsFactory {
 	}
 
 	public static Button createButton(Composite parent) {
-		return new Button(parent, SWT.PUSH);
+		Button button = new Button(parent, SWT.PUSH);
+		button.setBackground(SHARED_BG_COLOR);
+		return button;
 	}
 
 	/**

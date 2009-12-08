@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+import org.eclipse.riena.ui.core.resource.IconSize;
+
 /**
  * A ridget for UI controls that allow an action to be performed on them, like
  * clicking a button.
@@ -91,10 +93,23 @@ public interface IActionRidget extends IRidget {
 	String getIcon();
 
 	/**
-	 * Sets the name of the icon.<br>
+	 * Sets the name of the icon.
 	 * 
 	 * @param name
-	 *            of the new icon
+	 *            name of the icon
+	 * 
 	 */
 	void setIcon(String iconName);
+
+	/**
+	 * Sets the name and the size of the icon.
+	 * 
+	 * @param iconName
+	 *            name of the icon
+	 * @param size
+	 *            size of the icon
+	 * @since 2.0
+	 */
+	void setIcon(String iconName, IconSize size);
+
 }

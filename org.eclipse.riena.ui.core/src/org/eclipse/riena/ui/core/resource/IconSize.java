@@ -13,60 +13,49 @@ package org.eclipse.riena.ui.core.resource;
 /**
  * Constants for icon sizes.
  */
-public final class IconSize {
+public class IconSize {
 
-	/** <code>Size a (16x16 at standard scaling 00) */
-	public static final IconSize A = new IconSize('a');
+	/**
+	 * None special size.
+	 */
+	public static final IconSize NONE = new IconSize(""); //$NON-NLS-1$
 
-	/** <code>Size b (22x22 at standard scaling 00) */
-	public static final IconSize B = new IconSize('b');
+	/** Size a (16x16). */
+	public static final IconSize A16 = new IconSize("a"); //$NON-NLS-1$
 
-	/** <code>Size c (32x32 at standard scaling 00) */
-	public static final IconSize C = new IconSize('c');
+	/** Size b (22x22). */
+	public static final IconSize B22 = new IconSize("b"); //$NON-NLS-1$
 
-	/** <code>Size d (48x48 at standard scaling 00) */
-	public static final IconSize D = new IconSize('d');
+	/** Size c (32x32). */
+	public static final IconSize C32 = new IconSize("c"); //$NON-NLS-1$
 
-	/** <code>Size e (64x64 at standard scaling 00) */
-	public static final IconSize E = new IconSize('e');
+	/** Size d (48x48). */
+	public static final IconSize D48 = new IconSize("d"); //$NON-NLS-1$
 
-	/** <code>Size f (128x128 at standard scaling 00) */
-	public static final IconSize F = new IconSize('f');
+	/** Size e (64x64). */
+	public static final IconSize E64 = new IconSize("e"); //$NON-NLS-1$
 
-	/** <code>Size s (15x15 at standard scaling 00) */
-	public static final IconSize S = new IconSize('s');
+	/** Size f (128x128). */
+	public static final IconSize F128 = new IconSize("f"); //$NON-NLS-1$
 
-	/** <code>Size u (14x14 at standard scaling 00) */
-	public static final IconSize U = new IconSize('u');
+	private String defaultMapping;
 
-	/** <code>Size v (22x27 at standard scaling 00) */
-	public static final IconSize V = new IconSize('v');
-
-	/** <code>Size w (18x18 at standard scaling 00) */
-	public static final IconSize W = new IconSize('w');
-
-	/** <code>Size x (13x13 at standard scaling 00) */
-	public static final IconSize X = new IconSize('x');
-
-	/** <code>Size y (12x12 at standard scaling 00) */
-	public static final IconSize Y = new IconSize('y');
-
-	/** <code>Size z (9x9 at standard scaling 00) */
-	public static final IconSize Z = new IconSize('z');
-
-	/** <code>Size _ (irregular size) */
-	public static final IconSize SPECIAL = new IconSize('_');
-
-	private char defaultMapping;
-
-	private IconSize(char defaultMapping) {
+	private IconSize(String defaultMapping) {
 		this.defaultMapping = defaultMapping;
 	}
 
 	/**
-	 * @return The filename character the icon size is mapped to.
+	 * Returns the mapping of this {@code IconSize}.
+	 * 
+	 * @return the filename character the icon size is mapped to
 	 */
-	public char getDefaultMapping() {
+	public String getDefaultMapping() {
 		return defaultMapping;
 	}
+
+	@Override
+	public String toString() {
+		return getDefaultMapping();
+	}
+
 }

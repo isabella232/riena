@@ -99,4 +99,5 @@ public interface IIconManager {
 	 * @return true, if <code>iconID</code> has a file extension, else false.
 	 */
 	boolean hasExtension(String iconID);
+
 }

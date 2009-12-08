@@ -13,37 +13,43 @@ package org.eclipse.riena.ui.core.resource;
 /**
  * Constants for icon states.
  */
-public final class IconState {
+public class IconState {
 
 	/** Icon state NORMAL. */
 	public static final IconState NORMAL = new IconState(""); //$NON-NLS-1$
 
-	/** Icon state HOVER. */
+	/** Icon state if mouse pointer is of the UI control. */
 	public static final IconState HOVER = new IconState("_h_"); //$NON-NLS-1$
 
-	/** Icon state PRESSED. */
+	/** Icon state if the UI control is pressed. */
 	public static final IconState PRESSED = new IconState("_p_"); //$NON-NLS-1$
 
-	/** Icon state DISABLED. */
+	/** Icon state if the UI control is disabled. */
 	public static final IconState DISABLED = new IconState("_d_"); //$NON-NLS-1$
 
-	/** Icon state SELECTED. */
+	/** Icon state if the UI control is selected. */
 	public static final IconState SELECTED = new IconState("_a_"); //$NON-NLS-1$
 
-	/** Icon state SELECTED_HOVER. */
+	/**
+	 * Icon state if the UI control is selected and the mouse pointer is of the
+	 * UI control.
+	 */
 	public static final IconState SELECTED_HOVER = new IconState("_ah_"); //$NON-NLS-1$
 
-	/** Icon state SELECTED_DISABLED. */
+	/** Icon state if the UI control is selected and disabled. */
 	public static final IconState SELECTED_DISABLED = new IconState("_ad_"); //$NON-NLS-1$
 
 	/** Icon state DEFAULT. */
 	public static final IconState DEFAULT = new IconState("_s_"); //$NON-NLS-1$
 
-	/** Icon state HAS_FOCUS. */
+	/** Icon state if the UI control has the focus. */
 	public static final IconState HAS_FOCUS = new IconState("_f_"); //$NON-NLS-1$
 
-	/** Icon state HAS_ROLLOVER_FOCUS. */
-	public static final IconState HAS_ROLLOVER_FOCUS = new IconState("_hf_"); //$NON-NLS-1$
+	/**
+	 * Icon state if the UI control has the focus and the mouse pointer is over
+	 * the UI control.
+	 */
+	public static final IconState ROLLOVER_HAS_FOCUS = new IconState("_hf_"); //$NON-NLS-1$
 
 	private String defaultMapping;
 
@@ -52,10 +58,17 @@ public final class IconState {
 	}
 
 	/**
-	 * @return The filename character the icon state is mapped to.
+	 * Returns the mapping of this {@code IconState}.
+	 * 
+	 * @return the filename character the icon state is mapped to
 	 */
 	public String getDefaultMapping() {
 		return defaultMapping;
+	}
+
+	@Override
+	public String toString() {
+		return getDefaultMapping();
 	}
 
 }

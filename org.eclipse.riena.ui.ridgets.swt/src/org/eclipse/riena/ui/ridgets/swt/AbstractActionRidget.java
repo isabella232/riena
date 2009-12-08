@@ -17,6 +17,9 @@ import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionObserver;
 import org.eclipse.riena.internal.ui.ridgets.swt.BasicMarkerSupport;
+import org.eclipse.riena.ui.core.resource.IIconManager;
+import org.eclipse.riena.ui.core.resource.IconManagerProvider;
+import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -26,12 +29,13 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
  * org.eclipse.swt.widgets.Button. May be used for Ridgets for custom buttons.
  */
 public abstract class AbstractActionRidget extends AbstractSWTRidget implements IActionRidget {
+
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	protected final ActionObserver actionObserver;
 
 	private String text;
-	private String icon;
+	private String iconID;
 	private boolean textAlreadyInitialized;
 	private boolean useRidgetIcon;
 
@@ -87,19 +91,45 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 		return true;
 	}
 
-	public String getIcon() {
-		return icon;
-	}
-
 	public final String getText() {
 		return text;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The <i>full</i> name of the icon is returned, also called icon ID. The
+	 * icon ID (can) contains the name, the size and the state.
+	 */
+	public String getIcon() {
+		return this.iconID;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * <i>Also sets the size {@code IconSize.NONE} for the icon.</i>
+	 * 
+	 * @see #setIcon(String,IconSize)
+	 */
 	public void setIcon(String icon) {
+		setIcon(icon, IconSize.NONE);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The name and the size of the icon will be managed by an implementation of
+	 * {@code IIconManager}.
+	 * 
+	 * @since 2.0
+	 */
+	public void setIcon(String icon, IconSize size) {
 		boolean oldUseRidgetIcon = useRidgetIcon;
 		useRidgetIcon = true;
-		String oldIcon = this.icon;
-		this.icon = icon;
+		String oldIcon = this.iconID;
+		IIconManager manager = IconManagerProvider.getInstance().getIconManager();
+		this.iconID = manager.getIconID(icon, size);
 		if (hasChanged(oldIcon, icon) || !oldUseRidgetIcon) {
 			updateUIIcon();
 		}
@@ -134,8 +164,8 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	protected void updateUIIcon() {
 		if (getUIControl() != null) {
 			Image image = null;
-			if (icon != null) {
-				image = getManagedImage(icon);
+			if (getIcon() != null) {
+				image = getManagedImage(getIcon());
 			}
 			if ((image != null) || useRidgetIcon) {
 				setUIControlImage(image);
