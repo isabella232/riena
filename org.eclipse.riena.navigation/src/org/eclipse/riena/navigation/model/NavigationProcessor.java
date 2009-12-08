@@ -279,19 +279,26 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 */
 	private void navigateSync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
 			final NavigationArgument navigation) {
-		INavigationNode<?> targetNode = provideNode(sourceNode, targetId, navigation);
+		INavigationNode<?> targetNode = null;
+		try {
+			targetNode = provideNode(sourceNode, targetId, navigation);
+		} catch (NavigationModelFailure failure) {
+			LOGGER.log(LogService.LOG_ERROR, failure.getMessage());
+		}
 		if (targetNode == null) {
 			return;
 		}
 		INavigationNode<?> activateNode = targetNode.findNode(targetId);
-		if (activateNode != null) {
-			navigationMap.put(activateNode, sourceNode);
-			activateNode.activate();
-			setFocusOnRidget(activateNode, navigation);
-		} else {
-			navigationMap.put(targetNode, sourceNode);
-			targetNode.activate();
-			setFocusOnRidget(targetNode, navigation);
+		INavigationNode<?> node = activateNode;
+		if (node == null) {
+			node = targetNode;
+		}
+		navigationMap.put(node, sourceNode);
+		node.activate();
+		try {
+			setFocusOnRidget(node, navigation);
+		} catch (NavigationModelFailure failure) {
+			LOGGER.log(LogService.LOG_ERROR, failure.getMessage());
 		}
 	}
 
@@ -310,7 +317,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			if (null != ridget) {
 				ridget.requestFocus();
 			} else {
-				throw new RuntimeException(String.format("Ridget not found '%s'", navigation.getRidgetId())); //$NON-NLS-1$
+				throw new NavigationModelFailure(String.format("Ridget not found '%s'", navigation.getRidgetId())); //$NON-NLS-1$
 			}
 		}
 	}
@@ -393,7 +400,11 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
 
-		return getNavigationNodeProvider().provideNode(sourceNode, targetId, argument);
+		try {
+			return getNavigationNodeProvider().provideNode(sourceNode, targetId, argument);
+		} catch (ExtensionPointFailure failure) {
+			throw new NavigationModelFailure(String.format("Node not found '%s'", targetId), failure); //$NON-NLS-1$
+		}
 	}
 
 	protected INavigationNodeProvider getNavigationNodeProvider() {
