@@ -11,6 +11,8 @@
 package org.eclipse.riena.core.util;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.internal.variables.StringVariableManager;
 import org.eclipse.core.runtime.CoreException;
@@ -131,4 +133,48 @@ public class VariableManagerUtilTest extends RienaTestCase {
 			ok();
 		}
 	}
+
+	public void testAddMultipleVariables() throws CoreException {
+		Map<String, String> toAdd = new HashMap<String, String>();
+		toAdd.put("a", "1");
+		toAdd.put("b", "2");
+		toAdd.put("c", "3");
+		VariableManagerUtil.addVariables(toAdd);
+		assertEquals("123", VariableManagerUtil.substitute("${a}${b}${c}"));
+	}
+
+	public void testAddMultipleVariablesSomeTwiceButOkBecauseTheyAreEqual() throws CoreException {
+		Map<String, String> toAdd = new HashMap<String, String>();
+		toAdd.put("a", "1");
+		toAdd.put("b", "2");
+		toAdd.put("c", "3");
+		VariableManagerUtil.addVariables(toAdd);
+		assertEquals("123", VariableManagerUtil.substitute("${a}${b}${c}"));
+		toAdd = new HashMap<String, String>();
+		toAdd.put("d", "4");
+		toAdd.put("b", "2");
+		toAdd.put("e", "5");
+		VariableManagerUtil.addVariables(toAdd);
+		assertEquals("12345", VariableManagerUtil.substitute("${a}${b}${c}${d}${e}"));
+	}
+
+	public void testAddMultipleVariablesSomeTwiceButNotOkBecauseTheyAreNotEqualSoThatItShouldFail()
+			throws CoreException {
+		Map<String, String> toAdd = new HashMap<String, String>();
+		toAdd.put("a", "1");
+		toAdd.put("b", "2");
+		toAdd.put("c", "3");
+		VariableManagerUtil.addVariables(toAdd);
+		assertEquals("123", VariableManagerUtil.substitute("${a}${b}${c}"));
+		toAdd = new HashMap<String, String>();
+		toAdd.put("d", "4");
+		toAdd.put("b", "6");
+		toAdd.put("e", "5");
+		try {
+			VariableManagerUtil.addVariables(toAdd);
+		} catch (CoreException e) {
+			ok();
+		}
+	}
+
 }
