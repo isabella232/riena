@@ -13,12 +13,13 @@ package org.eclipse.riena.core.injector.service;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceRegistration;
+
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.injector.InjectionFailure;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * 
@@ -55,11 +56,12 @@ public class ServiceInjectorTest extends RienaTestCase {
 		try {
 			Inject.service(DepOne.class.getName()).into(target).bind("baind").andStart(getContext());
 			fail("Well, that should not have happended");
-		} catch (IllegalArgumentException e) {
+		} catch (InjectionFailure e) {
 			assertTrue(true);
+		} finally {
+			reg.unregister();
 		}
 
-		reg.unregister();
 	}
 
 	public void testInjectDepOneNotSoObviousBindUnbindError() {
@@ -71,11 +73,12 @@ public class ServiceInjectorTest extends RienaTestCase {
 
 		try {
 			Inject.service(DepOne.class.getName()).into(target).bind("binde").unbind("entbinde").andStart(getContext());
-		} catch (IllegalArgumentException e) {
-			assertTrue(true);
+			assertEquals(0, target.count("binde", DepOne.class));
+		} catch (InjectionFailure e) {
+			assertTrue(false);
+		} finally {
+			reg.unregister();
 		}
-
-		reg.unregister();
 	}
 
 	public void testInjectDepOneDefaultBindUnbind() {
