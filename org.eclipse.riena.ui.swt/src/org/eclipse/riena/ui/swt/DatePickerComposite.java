@@ -65,6 +65,9 @@ public class DatePickerComposite extends Composite {
 		pickerButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				if (!(textfield.isEnabled() && textfield.getEditable())) {
+					return;
+				}
 				if (!datePicker.isVisible()) {
 					Point p = textfield.toDisplay(textfield.getLocation().x, textfield.getLocation().y);
 					datePicker.setLocation(p.x, p.y + textfield.getBounds().height);
