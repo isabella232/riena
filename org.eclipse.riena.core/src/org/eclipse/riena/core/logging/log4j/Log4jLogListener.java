@@ -52,6 +52,7 @@ import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.internal.core.Activator;
+import org.eclipse.riena.internal.core.logging.log4j.ILog4jDiagnosticContextExtension;
 import org.eclipse.riena.internal.core.logging.log4j.ILog4jLogListenerConfigurationExtension;
 
 /**
@@ -113,6 +114,8 @@ import org.eclipse.riena.internal.core.logging.log4j.ILog4jLogListenerConfigurat
  */
 public class Log4jLogListener implements LogListener, IExecutableExtension {
 
+	private ILog4jDiagnosticContext log4jDiagnosticContext;
+
 	/**
 	 * The default log4j configuration file (xml).
 	 */
@@ -121,7 +124,7 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 	public Log4jLogListener() {
 	}
 
-	public void logged(LogEntry entry) {
+	public void logged(final LogEntry entry) {
 		final ExtendedLogEntry extendedEntry = (ExtendedLogEntry) entry;
 		final String loggerName = extendedEntry.getLoggerName();
 		final Logger logger = Logger.getLogger(loggerName != null ? loggerName : "*unknown-logger-name*"); //$NON-NLS-1$
@@ -145,10 +148,20 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 			level = CustomLevel.create(extendedEntry.getLevel());
 			break;
 		}
-		logger.log(level, extendedEntry.getMessage(), extendedEntry.getException());
+		final ILog4jDiagnosticContext diagnosticContext = log4jDiagnosticContext;
+		try {
+			if (diagnosticContext != null) {
+				diagnosticContext.push();
+			}
+			logger.log(level, extendedEntry.getMessage(), extendedEntry.getException());
+		} finally {
+			if (diagnosticContext != null) {
+				diagnosticContext.pop();
+			}
+		}
 	}
 
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, Object data)
 			throws CoreException {
 		if (data == null) {
 			data = DEFAULT_CONFIGURATION;
@@ -159,16 +172,16 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 		configure(config, (String) data);
 	}
 
-	protected void configure(IConfigurationElement config, String configuration) throws CoreException {
-		Bundle bundle = ContributorFactoryOSGi.resolve(config.getContributor());
+	protected void configure(final IConfigurationElement config, final String configuration) throws CoreException {
+		final Bundle bundle = ContributorFactoryOSGi.resolve(config.getContributor());
 		configure(bundle, configuration);
 	}
 
-	protected void configure(Bundle bundle, String configuration) throws CoreException {
+	protected void configure(final Bundle bundle, final String configuration) throws CoreException {
 		// fetch URL of log4j configuration file using the context of the bundle where the configuration resides
 		// attention: #getResource(String) would not work for fragments. As we know the exact bundle use #getEntry()
 		// instead
-		URL url = bundle.getEntry(configuration);
+		final URL url = bundle.getEntry(configuration);
 		if (url != null) {
 			configure(createDocument(url).getDocumentElement());
 		} else {
@@ -179,35 +192,35 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 		}
 	}
 
-	private Document createDocument(URL configuration) throws CoreException {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	private Document createDocument(final URL configuration) throws CoreException {
+		final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setValidating(true);
 		try {
-			DocumentBuilder db = dbf.newDocumentBuilder();
+			final DocumentBuilder db = dbf.newDocumentBuilder();
 			db.setErrorHandler(new SAXErrorHandler());
 			db.setEntityResolver(new Log4jEntityResolver());
-			String xml = VariableManagerUtil.substitute(read(configuration.openStream()));
-			InputSource inputSource = new InputSource(new StringReader(xml));
+			final String xml = VariableManagerUtil.substitute(read(configuration.openStream()));
+			final InputSource inputSource = new InputSource(new StringReader(xml));
 			inputSource.setSystemId("dummy://log4j.dtd"); //$NON-NLS-1$
 			return db.parse(inputSource);
-		} catch (ParserConfigurationException e) {
+		} catch (final ParserConfigurationException e) {
 			throw new CoreException(new Status(IStatus.ERROR, Activator.getDefault().getBundle().getSymbolicName(),
 					"Could not configure log4j. Parser configuration error.", e)); //$NON-NLS-1$
-		} catch (SAXException e) {
+		} catch (final SAXException e) {
 			throw new CoreException(new Status(IStatus.ERROR, Activator.getDefault().getBundle().getSymbolicName(),
 					"Could not configure log4j. Unable to parse xml configuration.", e)); //$NON-NLS-1$
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new CoreException(new Status(IStatus.ERROR, Activator.getDefault().getBundle().getSymbolicName(),
 					"Could not configure log4j.", e)); //$NON-NLS-1$
 		}
 	}
 
-	protected void configure(Element root) {
+	protected void configure(final Element root) {
 		// workaround to fix class loader problems with log4j
 		// implementation. see "eclipse rich client platform, eclipse
 		// series, page 340.
-		Thread thread = Thread.currentThread();
-		ClassLoader savedClassLoader = thread.getContextClassLoader();
+		final Thread thread = Thread.currentThread();
+		final ClassLoader savedClassLoader = thread.getContextClassLoader();
 		thread.setContextClassLoader(this.getClass().getClassLoader());
 		try {
 			// configure the log4j with given log4j.xml
@@ -222,9 +235,9 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 	 * @return
 	 * @throws IOException
 	 */
-	protected String read(InputStream inputStream) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-		StringBuilder bob = new StringBuilder();
+	protected String read(final InputStream inputStream) throws IOException {
+		final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+		final StringBuilder bob = new StringBuilder();
 		int ch;
 		while ((ch = reader.read()) != -1) {
 			bob.append((char) ch);
@@ -251,7 +264,7 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 		 * @param osgiLogLevel
 		 * @return
 		 */
-		private static synchronized CustomLevel create(int osgiLogLevel) {
+		private static synchronized CustomLevel create(final int osgiLogLevel) {
 			Assert.isTrue(osgiLogLevel < 1, "custom osgi log levels must be below 1"); //$NON-NLS-1$
 			CustomLevel customLevel = map.get(osgiLogLevel);
 			if (customLevel != null) {
@@ -268,7 +281,7 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 		 * @param levelStr
 		 * @param syslogEquivalent
 		 */
-		private CustomLevel(int level, String levelStr, int syslogEquivalent) {
+		private CustomLevel(final int level, final String levelStr, final int syslogEquivalent) {
 			super(level, levelStr, syslogEquivalent);
 		}
 	}
@@ -285,9 +298,15 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	@InjectExtension()
-	public void update(ILog4jLogListenerConfigurationExtension[] extensions) throws CoreException {
-		for (ILog4jLogListenerConfigurationExtension ext : extensions) {
+	public void update(final ILog4jLogListenerConfigurationExtension[] extensions) throws CoreException {
+		for (final ILog4jLogListenerConfigurationExtension ext : extensions) {
 			configure(ext.getConfigurationElement(), ext.getLocation());
 		}
+	}
+
+	@InjectExtension(min = 0, max = 1)
+	public void update(final ILog4jDiagnosticContextExtension log4jDiagnosticContextExtension) {
+		log4jDiagnosticContext = log4jDiagnosticContextExtension == null ? null : log4jDiagnosticContextExtension
+				.createDiagnosticContext();
 	}
 }
