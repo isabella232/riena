@@ -130,6 +130,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		DateTime dtDate = new DateTime(cmpDate, SWT.DATE | SWT.DROP_DOWN | SWT.MEDIUM);
 		hFillFactory.applyTo(dtDate);
 		addUIControl(dtDate, "dtDate"); //$NON-NLS-1$
+		UIControlsFactory.createDatePickerComposite(cmpDate, "dtPicker"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Age:", "labelcomboAge"); //$NON-NLS-1$ //$NON-NLS-2$
 		final Combo comboAge = UIControlsFactory.createCombo(group);
@@ -157,7 +158,6 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 
 		Table tablePersons = UIControlsFactory.createTable(cmpReviewed, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 		tablePersons.setLinesVisible(true);
-		tablePersons.setHeaderVisible(true);
 		TableColumn tac1 = new TableColumn(tablePersons, SWT.NONE);
 		tac1.setWidth(100);
 		TableColumn tac2 = new TableColumn(tablePersons, SWT.NONE);

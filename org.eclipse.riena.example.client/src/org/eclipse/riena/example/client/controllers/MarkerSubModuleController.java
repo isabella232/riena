@@ -96,6 +96,10 @@ public class MarkerSubModuleController extends SubModuleController {
 			dtDate.setDate(new Date());
 		}
 
+		final IDateTextRidget dtPicker = (IDateTextRidget) getRidget("dtPicker"); //$NON-NLS-1$
+		dtPicker.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+		dtPicker.setText("04.12.2008"); //$NON-NLS-1$
+
 		final IComboRidget comboAge = (IComboRidget) getRidget("comboAge"); //$NON-NLS-1$
 		List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		comboAge.bindToModel(new WritableList(ages, String.class), String.class, null, new WritableValue());
@@ -124,7 +128,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		tablePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		String[] colValues = new String[] { "lastname", "firstname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] colHeaders = new String[] { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
-		tablePersons.bindToModel(createPersonList(), Person.class, colValues, colHeaders);
+		tablePersons.bindToModel(createPersonList(), Person.class, colValues, null); // colHeaders);
 		tablePersons.updateFromModel();
 
 		final ICompositeTableRidget compTable = (ICompositeTableRidget) getRidget("compTable"); //$NON-NLS-1$
@@ -142,9 +146,9 @@ public class MarkerSubModuleController extends SubModuleController {
 		treeWCols.setSelectionType(ISelectableRidget.SelectionType.MULTI);
 		treeWCols.setGroupingEnabled(true);
 		colValues = new String[] { "word", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$
-		colHeaders = new String[] { "Word", "#A" }; //$NON-NLS-1$ //$NON-NLS-2$
+		String[] colHeaders2 = new String[] { "Word", "#A" }; //$NON-NLS-1$ //$NON-NLS-2$
 		treeWCols.bindToModel(createTreeTableRoots(), WordNode.class, ITreeNode.PROPERTY_CHILDREN,
-				ITreeNode.PROPERTY_PARENT, colValues, colHeaders);
+				ITreeNode.PROPERTY_PARENT, colValues, null); // colHeaders);
 		treeWCols.updateFromModel();
 
 		final IToggleButtonRidget buttonToggle = (IToggleButtonRidget) getRidget("buttonToggle"); //$NON-NLS-1$
@@ -155,9 +159,9 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IToggleButtonRidget buttonRadioB = (IToggleButtonRidget) getRidget("buttonRadioB"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonCheck = (IToggleButtonRidget) getRidget("buttonCheck"); //$NON-NLS-1$
 
-		final IRidget[] markables = new IRidget[] { textName, textPrice, textAmount, textDate, dtDate, comboAge,
-				choiceType, choiceFlavor, listPersons, tablePersons, compTable, treePersons, treeWCols, buttonToggle,
-				buttonPush, buttonRadioA, buttonRadioB, buttonCheck };
+		final IRidget[] markables = new IRidget[] { textName, textPrice, textAmount, textDate, dtDate, dtPicker,
+				comboAge, choiceType, choiceFlavor, listPersons, tablePersons, compTable, treePersons, treeWCols,
+				buttonToggle, buttonPush, buttonRadioA, buttonRadioB, buttonCheck };
 
 		final IToggleButtonRidget checkMandatory = (IToggleButtonRidget) getRidget("checkMandatory"); //$NON-NLS-1$
 		final IToggleButtonRidget checkError = (IToggleButtonRidget) getRidget("checkError"); //$NON-NLS-1$
@@ -183,6 +187,7 @@ public class MarkerSubModuleController extends SubModuleController {
 					textPrice.setText(""); //$NON-NLS-1$
 					textAmount.setText(null);
 					textDate.setText(null);
+					dtPicker.setText(null);
 					comboAge.setSelection("<none>"); //$NON-NLS-1$
 					choiceType.setSelection(null);
 					choiceFlavor.setSelection(null);
