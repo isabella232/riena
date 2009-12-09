@@ -31,6 +31,7 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.IStoppable;
+import org.eclipse.riena.core.injector.InjectionFailure;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
@@ -53,7 +54,7 @@ public abstract class ServiceInjector implements IStoppable {
 	private final ServiceDescriptor serviceDesc;
 	private final Object target;
 	private BundleContext context;
-	private String filter;
+	private final String filter;
 	private String bindMethodName;
 	private List<Method> bindMethodProspects;
 	private String unbindMethodName;
@@ -79,7 +80,7 @@ public abstract class ServiceInjector implements IStoppable {
 		this.state = State.INITIAL;
 		this.serviceDesc = serviceDesc;
 		this.target = target;
-		StringBuilder bob = new StringBuilder().append("(").append(Constants.OBJECTCLASS).append("=").append( //$NON-NLS-1$ //$NON-NLS-2$
+		final StringBuilder bob = new StringBuilder().append("(").append(Constants.OBJECTCLASS).append("=").append( //$NON-NLS-1$ //$NON-NLS-2$
 				serviceDesc.getServiceClazz()).append(")"); //$NON-NLS-1$
 		if (serviceDesc.getFilter() != null) {
 			bob.insert(0, "(&"); //$NON-NLS-1$
@@ -165,7 +166,7 @@ public abstract class ServiceInjector implements IStoppable {
 	 * @param bindMethodName
 	 * @return this injector
 	 */
-	public ServiceInjector bind(String bindMethodName) {
+	public ServiceInjector bind(final String bindMethodName) {
 		Assert.isTrue(state == State.INITIAL, "ServiceInjector already started or stopped!"); //$NON-NLS-1$
 		this.bindMethodName = bindMethodName;
 		return this;
@@ -198,8 +199,8 @@ public abstract class ServiceInjector implements IStoppable {
 		}
 		try {
 			context.addServiceListener(serviceListener, filter);
-		} catch (InvalidSyntaxException e) {
-			throw new IllegalArgumentException("The specified filter has syntax errors.", e); //$NON-NLS-1$
+		} catch (final InvalidSyntaxException e) {
+			throw new InjectionFailure("The specified filter has syntax errors.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -234,9 +235,9 @@ public abstract class ServiceInjector implements IStoppable {
 	}
 
 	private List<Method> collectMethods(final String message, final String methodName) {
-		List<Method> prospects = new ArrayList<Method>();
-		Method[] methods = target.getClass().getMethods();
-		for (Method method : methods) {
+		final List<Method> prospects = new ArrayList<Method>();
+		final Method[] methods = target.getClass().getMethods();
+		for (final Method method : methods) {
 			if (method.getName().equals(methodName) && method.getParameterTypes().length == 1) {
 				prospects.add(method);
 			}
@@ -246,7 +247,7 @@ public abstract class ServiceInjector implements IStoppable {
 			return prospects;
 		}
 
-		throw new IllegalArgumentException(message + " '" + methodName + "' does not exist in target class '" //$NON-NLS-1$ //$NON-NLS-2$
+		throw new InjectionFailure(message + " '" + methodName + "' does not exist in target class '" //$NON-NLS-1$ //$NON-NLS-2$
 				+ target.getClass().getName());
 	}
 
@@ -276,8 +277,8 @@ public abstract class ServiceInjector implements IStoppable {
 	protected ServiceReference[] getServiceReferences() {
 		try {
 			return context.getServiceReferences(serviceDesc.getServiceClazz(), filter);
-		} catch (InvalidSyntaxException e) {
-			throw new IllegalArgumentException("The specified filter has syntax errors.", e); //$NON-NLS-1$
+		} catch (final InvalidSyntaxException e) {
+			throw new InjectionFailure("The specified filter has syntax errors.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -292,7 +293,7 @@ public abstract class ServiceInjector implements IStoppable {
 			return;
 		}
 		// increments service use count, now it is ´1´
-		Object service = context.getService(serviceRef);
+		final Object service = context.getService(serviceRef);
 		if (service == null) {
 			return;
 		}
@@ -311,7 +312,7 @@ public abstract class ServiceInjector implements IStoppable {
 		}
 		// need to get the service object, increments the use count, now it is
 		// ´2´
-		Object service = context.getService(serviceRef);
+		final Object service = context.getService(serviceRef);
 		if (service == null) {
 			return;
 		}
@@ -325,7 +326,7 @@ public abstract class ServiceInjector implements IStoppable {
 	private void invokeMethod(final List<Method> methods, final Object service) {
 		assert service != null;
 
-		Method method = findMatchingMethod(methods, service);
+		final Method method = findMatchingMethod(methods, service);
 		if (method == null) {
 			return;
 		}
@@ -336,10 +337,10 @@ public abstract class ServiceInjector implements IStoppable {
 		assert methods != null;
 		assert service != null;
 
-		Class<?> parameterType = service.getClass();
-		List<Method> targetedMethods = new ArrayList<Method>(1);
-		for (Method method : methods) {
-			Class<?>[] parameterTypes = method.getParameterTypes();
+		final Class<?> parameterType = service.getClass();
+		final List<Method> targetedMethods = new ArrayList<Method>(1);
+		for (final Method method : methods) {
+			final Class<?>[] parameterTypes = method.getParameterTypes();
 			if (parameterTypes[0].isAssignableFrom(parameterType)) {
 				targetedMethods.add(method);
 			}
@@ -357,7 +358,7 @@ public abstract class ServiceInjector implements IStoppable {
 		// find most specific method
 		Class<?> superType = parameterType;
 		while (superType != null) {
-			for (Method method : targetedMethods) {
+			for (final Method method : targetedMethods) {
 				if (!method.getParameterTypes()[0].isAssignableFrom(superType)) {
 					return method;
 				}
@@ -375,21 +376,28 @@ public abstract class ServiceInjector implements IStoppable {
 	private void invoke(final Method method, final Object service) {
 		assert method != null;
 		assert service != null;
+		Throwable t = null;
+		String cause = null;
 
 		try {
 			method.invoke(target, service);
-		} catch (SecurityException e) {
-			LOGGER.log(LogService.LOG_ERROR, "Security exception on invoking '" + method + "' on '" //$NON-NLS-1$ //$NON-NLS-2$
-					+ target.getClass().getName() + "'.", e); //$NON-NLS-1$
-		} catch (IllegalArgumentException e) {
-			LOGGER.log(LogService.LOG_ERROR, "Illegal argument exception on invoking '" + method + "' on '" //$NON-NLS-1$ //$NON-NLS-2$
-					+ target.getClass().getName() + "'.", e); //$NON-NLS-1$
-		} catch (IllegalAccessException e) {
-			LOGGER.log(LogService.LOG_ERROR, "Illegal access exception on invoking '" + method + "' on '" //$NON-NLS-1$ //$NON-NLS-2$
-					+ target.getClass().getName() + "'.", e); //$NON-NLS-1$
-		} catch (InvocationTargetException e) {
-			LOGGER.log(LogService.LOG_ERROR, "Invocation target exception on invoking '" + method + "' on '" //$NON-NLS-1$ //$NON-NLS-2$
-					+ target.getClass().getName() + "'.", e); //$NON-NLS-1$
+		} catch (final SecurityException e) {
+			t = e;
+			cause = "Security exception on invoking '"; //$NON-NLS-1$ 
+		} catch (final IllegalArgumentException e) {
+			t = e;
+			cause = "Illegal argument exception on invoking '"; //$NON-NLS-1$
+		} catch (final IllegalAccessException e) {
+			t = e;
+			cause = "Illegal access exception on invoking '"; //$NON-NLS-1$
+		} catch (final InvocationTargetException e) {
+			t = e.getTargetException();
+			cause = "Invocation target exception on invoking '"; //$NON-NLS-1$
+		}
+		if (t != null) {
+			final String message = cause + method + "' on '" + target.getClass().getName() + "'."; //$NON-NLS-1$ //$NON-NLS-2$
+			LOGGER.log(LogService.LOG_ERROR, message, t);
+			throw new InjectionFailure(message, t);
 		}
 	}
 
@@ -398,7 +406,7 @@ public abstract class ServiceInjector implements IStoppable {
 	 */
 	class InjectorServiceListener implements ServiceListener {
 		public void serviceChanged(final ServiceEvent event) {
-			int eventType = event.getType();
+			final int eventType = event.getType();
 			if (eventType == ServiceEvent.REGISTERED || eventType == ServiceEvent.UNREGISTERING) {
 				handleEvent(event);
 			}
@@ -409,7 +417,7 @@ public abstract class ServiceInjector implements IStoppable {
 	 * The bundle listener for this injector.
 	 */
 	class InjectorBundleListener implements SynchronousBundleListener {
-		public void bundleChanged(BundleEvent event) {
+		public void bundleChanged(final BundleEvent event) {
 			if (event.getBundle() != context.getBundle()) {
 				return;
 			}
