@@ -38,9 +38,11 @@ public class LoginDialogController extends AbstractWindowController {
 	public static final String RIDGET_ID_OK = "okButton"; //$NON-NLS-1$
 	public static final String RIDGET_ID_CANCEL = "cancelButton"; //$NON-NLS-1$
 	public static final String RIDGET_ID_MESSAGE_LOGIN_EXCEPTION = "messageLoginException"; //$NON-NLS-1$
+	public static final int EXIT_OK = IApplication.EXIT_OK;
 	public static final int EXIT_ABORT = -1;
 
 	private static final String JAAS_CONFIG_FILE = "config/sample_jaas.config"; //$NON-NLS-1$
+	private boolean canLogin;
 
 	@Override
 	public void afterBind() {
@@ -64,10 +66,11 @@ public class LoginDialogController extends AbstractWindowController {
 
 		IActionRidget okAction = (IActionRidget) getRidget(RIDGET_ID_OK);
 		okAction.addListener(new IActionListener() {
+
 			public void callback() {
-				Boolean checkLogin = checkLogin();
-				if (checkLogin) {
-					dispose(IApplication.EXIT_OK);
+				canLogin = checkLogin();
+				if (canLogin) {
+					dispose(EXIT_OK);
 				} else {
 					user.requestFocus();
 				}
@@ -82,7 +85,7 @@ public class LoginDialogController extends AbstractWindowController {
 	}
 
 	public void onClose() {
-		setReturnCode(EXIT_ABORT);
+		setReturnCode(canLogin ? EXIT_OK : EXIT_ABORT);
 	}
 
 	// helping methods
