@@ -708,6 +708,16 @@ public final class LnfKeyConstants {
 
 	public static final String DISABLED_MARKER_STANDARD_ALPHA = "DisabledMarker.standardAlpha"; //$NON-NLS-1$
 	public static final String DISABLED_MARKER_COMPLEX_ALPHA = "DisabledMarker.complexAlpha"; //$NON-NLS-1$
+	/**
+	 * This constants turns the advanced disabled marker rendering on ({@code
+	 * true}) or off ({@code false}).<br>
+	 * Is advanced rendering turned off for disabled UI control only the method
+	 * setEnabled is called. Is advanced rendering turned off the widgets are
+	 * renderer in a spacial way (@see DisabledMarkerVisualizer).
+	 * 
+	 * @since 1.2
+	 */
+	public static final String DISABLED_MARKER_ADVANCED = "DisabledMarker.advanced"; //$NON-NLS-1$
 
 	/**
 	 * This constant is described in Eclipsepedia.

@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Helper class for Ridgets to delegate their marker issues to that just handles
@@ -85,8 +87,13 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	}
 
 	protected void updateDisabled(Control control) {
-		// delegate to the visualizer for rendering
-		getDisabledMarkerVisualizer().updateDisabled();
+		boolean on = LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DISABLED_MARKER_ADVANCED);
+		if (on) {
+			// delegate to the visualizer for rendering
+			getDisabledMarkerVisualizer().updateDisabled();
+		} else {
+			control.setEnabled(getRidget().isEnabled());
+		}
 	}
 
 	private void startRedraw(Control control) {
