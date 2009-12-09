@@ -10,6 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Map.Entry;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
@@ -26,6 +33,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
+import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
@@ -49,22 +57,16 @@ public class Activator extends RienaPlugin {
 		plugin = this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext
-	 * )
-	 */
 	@Override
 	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 		startLogging();
 		logStage(getLogger(Activator.class));
 		startStartupListener();
 		startExceptionHandling();
+		populateSystemPropertiesAsVariables();
 	}
 
 	/**
@@ -80,36 +82,49 @@ public class Activator extends RienaPlugin {
 	/**
 	 * @param logger
 	 */
-	private void logStage(Logger logger) {
-		IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
+	private void logStage(final Logger logger) {
+		final IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
 		String stage;
 		try {
 			stage = variableManager.performStringSubstitution("Riena is running in stage '${riena.stage}'."); //$NON-NLS-1$
-		} catch (CoreException e) {
+		} catch (final CoreException e) {
 			stage = "No stage information set."; //$NON-NLS-1$
 		}
 		logger.log(LogService.LOG_INFO, stage);
 	}
 
 	private void startStartupListener() {
-		BundleListener bundleListener = new StartupBundleListener();
+		final BundleListener bundleListener = new StartupBundleListener();
 		getContext().addBundleListener(bundleListener);
 	}
 
 	private void startExceptionHandling() {
-		SimpleExceptionHandlerManager handlerManager = new SimpleExceptionHandlerManager();
+		final SimpleExceptionHandlerManager handlerManager = new SimpleExceptionHandlerManager();
 		Wire.instance(handlerManager).andStart(getContext());
 		getContext().registerService(IExceptionHandlerManager.class.getName(), handlerManager,
 				RienaConstants.newDefaultServiceProperties());
 	}
 
-	/*
-	 * @see
-	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	/**
+	 * Populate all system properties plus a few synthetic properties as
+	 * variables (the name is the key of the property prefixed with "riena.")
+	 * into the variable manager.
+	 * 
+	 * @throws CoreException
 	 */
+	private void populateSystemPropertiesAsVariables() throws CoreException {
+		final Properties properties = System.getProperties();
+		final Map<String, String> variables = new HashMap<String, String>(properties.size());
+		for (final Entry<Object, Object> entry : properties.entrySet()) {
+			variables.put(RIENA + entry.getKey(), (String) entry.getValue());
+		}
+		addSyntheticProperties(variables);
+		VariableManagerUtil.addVariables(variables);
+	}
+
 	@Override
 	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		active = false;
 		Activator.plugin = null;
 		context.ungetService(loggerMillServiceReg.getReference());
@@ -135,11 +150,51 @@ public class Activator extends RienaPlugin {
 	}
 
 	/**
+	 * Prefix for "riena" variables.
+	 */
+	private static final String RIENA = "riena."; //$NON-NLS-1$
+
+	/**
+	 * ´Synthetic´ property that retrieves the hosts ip address, i.e. {@code
+	 * InetAddress.getLocalHost().getHostAddress()}
+	 */
+	private static final String HOST_ADDRESS = RIENA + "host.address"; //$NON-NLS-1$
+
+	/**
+	 * ´Synthetic´ property that retrieves the host name, i.e. {@code
+	 * InetAddress.getLocalHost().getHostName()}
+	 */
+	private static final String HOST_NAME = RIENA + "host.name"; //$NON-NLS-1$
+
+	private void addSyntheticProperties(final Map<String, String> variables) {
+		variables.put(HOST_NAME, getHostName());
+		variables.put(HOST_ADDRESS, getHostAddress());
+	}
+
+	private static final String UNKNOWN = "?"; //$NON-NLS-1$
+
+	private String getHostName() {
+		try {
+			return InetAddress.getLocalHost().getHostName();
+		} catch (final UnknownHostException e) {
+			return UNKNOWN;
+		}
+	}
+
+	private String getHostAddress() {
+		try {
+			return InetAddress.getLocalHost().getHostAddress();
+		} catch (final UnknownHostException e) {
+			return UNKNOWN;
+		}
+	}
+
+	/**
 	 *
 	 */
 	private class StartupBundleListener implements BundleListener {
 
-		public void bundleChanged(BundleEvent event) {
+		public void bundleChanged(final BundleEvent event) {
 			if (Activator.getDefault() == null) {
 				return;
 			}
