@@ -29,6 +29,7 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.IStoppable;
+import org.eclipse.riena.core.injector.InjectionFailure;
 import org.eclipse.riena.internal.core.Activator;
 import org.eclipse.riena.internal.core.injector.extension.ExtensionMapper;
 
@@ -57,7 +58,6 @@ public class ExtensionInjector implements IStoppable {
 	private boolean isArray;
 	private Class<?> componentType;
 
-	private static final String ID = "ID"; //$NON-NLS-1$
 	private static final String DEFAULT_UPDATE_METHOD_NAME = "update"; //$NON-NLS-1$
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ExtensionInjector.class);
 
@@ -84,7 +84,7 @@ public class ExtensionInjector implements IStoppable {
 		// with the service injector.
 		// this.context = context;
 		updateMethod = findUpdateMethod();
-		Class<?> parameterType = updateMethod.getParameterTypes()[0];
+		final Class<?> parameterType = updateMethod.getParameterTypes()[0];
 		isArray = parameterType.isArray();
 		// if the interface type is given explicitly it will be used; otherwise
 		// the formal parameter type of the update method will be used.
@@ -100,61 +100,11 @@ public class ExtensionInjector implements IStoppable {
 		Assert.isLegal(extensionRegistry != null,
 				"For some reason the extension registry has not been created. Injecting extensions is not possible."); //$NON-NLS-1$
 		injectorListener = new InjectorListener();
-		for (String id : extensionDesc.getExtensionPointId().compatibleIds()) {
+		for (final String id : extensionDesc.getExtensionPointId().compatibleIds()) {
 			extensionRegistry.addListener(injectorListener, id);
 		}
 		return this;
 	}
-
-	//	/**
-	//	 * The extension point id can also be specified with a simple id. This will
-	//	 * be resolved here.
-	//	 */
-	//	private String[] retrieveFQExtensionPointId() {
-	//		String[] ids = retrieveExtensionPointString().split(",");
-	//		String[] result = new String[ids.length];
-	//		int i = 0;
-	//		for (String id : ids) {
-	//			if (id.contains(".")) { //$NON-NLS-1$
-	//				// already a FQ id
-	//				result[i++] = id;
-	//				//				return id;
-	//			}
-	//			Bundle bundle = FrameworkUtil.getBundle(componentType);
-	//			if (bundle == null) {
-	//				// That might fail later!?
-	//				result[i++] = id;
-	//				//				return id;
-	//			}
-	//			result[i++] = bundle.getSymbolicName() + "." + id;
-	//			//			return bundle.getSymbolicName() + "." + id; //$NON-NLS-1$
-	//		}
-	//		return result;
-	//	}
-	//
-	//	/**
-	//	 * Since the extension point can be given via different ways, will retrieve
-	//	 * it here.
-	//	 */
-	//	private String retrieveExtensionPointString() {
-	//		if (StringUtils.isGiven(extensionDesc.getExtensionPointId())) {
-	//			return extensionDesc.getExtensionPointId();
-	//		}
-	//		ExtensionInterface extensionInterfaceAnnotation = componentType.getAnnotation(ExtensionInterface.class);
-	//		if (extensionInterfaceAnnotation != null && StringUtils.isGiven(extensionInterfaceAnnotation.id())) {
-	//			return extensionInterfaceAnnotation.id();
-	//		}
-	//		try {
-	//			Field idField = componentType.getField(ID);
-	//			Object value = idField.get(null);
-	//			if (value instanceof String) {
-	//				return (String) value;
-	//			}
-	//		} catch (Exception e) {
-	//			Nop.reason("Fall throuh!"); //$NON-NLS-1$
-	//		}
-	//		throw new IllegalArgumentException("It was not possible to retrieve an extension point id!"); //$NON-NLS-1$
-	//	}
 
 	/**
 	 * Define the update method name.<br>
@@ -210,7 +160,7 @@ public class ExtensionInjector implements IStoppable {
 		}
 
 		// cleanup
-		Object emptyExtensions = isArray ? Array.newInstance(componentType, 0) : null;
+		final Object emptyExtensions = isArray ? Array.newInstance(componentType, 0) : null;
 		update(new Object[] { emptyExtensions });
 		injectorListener = null;
 	}
@@ -233,16 +183,16 @@ public class ExtensionInjector implements IStoppable {
 
 			try {
 				return seekMatchingUpdateMethod(extensionDesc.getInterfaceType(), false);
-			} catch (NoSuchMethodException e) {
+			} catch (final NoSuchMethodException e) {
 				// retry with array
 				return seekMatchingUpdateMethod(extensionDesc.getInterfaceType(), true);
 			}
 
-		} catch (SecurityException e) {
-			throw new IllegalStateException("Could not find 'bind' method " + updateMethodName + "(" //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (final SecurityException e) {
+			throw new InjectionFailure("Could not find 'bind' method " + updateMethodName + "(" //$NON-NLS-1$ //$NON-NLS-2$
 					+ extensionDesc.getInterfaceType() + ").", e); //$NON-NLS-1$
-		} catch (NoSuchMethodException e) {
-			throw new IllegalStateException("Could not find 'bind' method " + updateMethodName + "(" //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (final NoSuchMethodException e) {
+			throw new InjectionFailure("Could not find 'bind' method " + updateMethodName + "(" //$NON-NLS-1$ //$NON-NLS-2$
 					+ extensionDesc.getInterfaceType() + ").", e); //$NON-NLS-1$
 		}
 	}
@@ -252,7 +202,7 @@ public class ExtensionInjector implements IStoppable {
 		try {
 			final Class<?> seeking = isArray ? Array.newInstance(interfaceType, 0).getClass() : interfaceType;
 			return target.getClass().getMethod(updateMethodName, seeking);
-		} catch (NoSuchMethodException e) {
+		} catch (final NoSuchMethodException e) {
 			for (final Class<?> superInterfaceType : interfaceType.getInterfaces()) {
 				final Method attempt = seekMatchingUpdateMethod(superInterfaceType, isArray);
 				if (attempt != null) {
@@ -281,7 +231,7 @@ public class ExtensionInjector implements IStoppable {
 		}
 
 		if (candidates.size() == 0) {
-			throw new IllegalStateException("No suitable 'bind' method found. Looking for method " + updateMethodName //$NON-NLS-1$
+			throw new InjectionFailure("No suitable 'bind' method found. Looking for method " + updateMethodName //$NON-NLS-1$
 					+ "(<someinterface>[]). someinterface must be annotated with @ExtensionInterface."); //$NON-NLS-1$
 		}
 
@@ -289,13 +239,13 @@ public class ExtensionInjector implements IStoppable {
 			if (matchesExtensionPointConstraint(candidates.get(0).getParameterTypes()[0])) {
 				return candidates.get(0);
 			} else {
-				throw new IllegalStateException("Found method " + candidates.get(0) //$NON-NLS-1$
+				throw new InjectionFailure("Found method " + candidates.get(0) //$NON-NLS-1$
 						+ " does not match extension point constraints (e.g. requires an array type)."); //$NON-NLS-1$
 			}
 		}
 
 		if (candidates.size() > 2) {
-			throw new IllegalStateException("Too much (>2) candidates (" + candidates + ") for 'bind' method " //$NON-NLS-1$ //$NON-NLS-2$
+			throw new InjectionFailure("Too much (>2) candidates (" + candidates + ") for 'bind' method " //$NON-NLS-1$ //$NON-NLS-2$
 					+ updateMethodName + "."); //$NON-NLS-1$
 		}
 
@@ -307,7 +257,7 @@ public class ExtensionInjector implements IStoppable {
 			return candidates.get(1);
 		}
 
-		throw new IllegalStateException("No suitable candidate from (" + candidates + ") found for 'bind' method " //$NON-NLS-1$ //$NON-NLS-2$
+		throw new InjectionFailure("No suitable candidate from (" + candidates + ") found for 'bind' method " //$NON-NLS-1$ //$NON-NLS-2$
 				+ updateMethodName + "."); //$NON-NLS-1$
 	}
 
@@ -328,7 +278,7 @@ public class ExtensionInjector implements IStoppable {
 		return !extensionDesc.requiresArrayUpdateMethod() || type.isArray();
 	}
 
-	void populateInterfaceBeans(boolean onStart) {
+	void populateInterfaceBeans(final boolean onStart) {
 		try {
 			final Object[] beans = ExtensionMapper.map(symbolReplace, extensionDesc, componentType, nonSpecific);
 			if (!matchesExtensionPointConstraint(beans.length)) {
@@ -341,7 +291,7 @@ public class ExtensionInjector implements IStoppable {
 			} else {
 				update(new Object[] { beans.length > 0 ? beans[0] : null });
 			}
-		} catch (IllegalArgumentException e) {
+		} catch (final InjectionFailure e) {
 			if (onStart) {
 				throw e;
 			}
@@ -349,20 +299,20 @@ public class ExtensionInjector implements IStoppable {
 		}
 	}
 
-	private void update(Object[] params) {
+	private void update(final Object[] params) {
 		try {
 			updateMethod.invoke(target, params);
-		} catch (IllegalArgumentException e) {
-			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " failed.", e); //$NON-NLS-1$ //$NON-NLS-2$
-		} catch (IllegalAccessException e) {
-			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " failed.", e); //$NON-NLS-1$ //$NON-NLS-2$
-		} catch (InvocationTargetException e) {
-			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " failed.", e //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (final IllegalArgumentException e) {
+			throw new InjectionFailure("Calling 'bind' method " + updateMethod + " failed.", e); //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (final IllegalAccessException e) {
+			throw new InjectionFailure("Calling 'bind' method " + updateMethod + " failed.", e); //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (final InvocationTargetException e) {
+			throw new InjectionFailure("Calling 'bind' method " + updateMethod + " failed.", e //$NON-NLS-1$ //$NON-NLS-2$
 					.getTargetException());
 		}
 	}
 
-	private boolean matchesExtensionPointConstraint(int occurence) {
+	private boolean matchesExtensionPointConstraint(final int occurence) {
 		return occurence >= extensionDesc.getMinOccurences() && occurence <= extensionDesc.getMaxOccurences();
 	}
 
