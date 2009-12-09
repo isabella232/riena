@@ -74,6 +74,9 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 		if (!isActive()) {
 			fgColor = LnfManager.getLnf().getColor(LnfKeyConstants.TITLELESS_SHELL_PASSIVE_FOREGROUND);
 		}
+		if (fgColor == null) {
+			return new Rectangle(0, 0, 0, 0);
+		}
 		gc.setForeground(fgColor);
 
 		Font font = LnfManager.getLnf().getFont(LnfKeyConstants.TITLELESS_SHELL_FONT);
