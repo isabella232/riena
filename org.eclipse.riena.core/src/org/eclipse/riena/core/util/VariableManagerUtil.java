@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.CoreException;
@@ -60,7 +65,7 @@ public final class VariableManagerUtil {
 				value) };
 		try {
 			variableManager.addVariables(variables);
-		} catch (CoreException e) {
+		} catch (final CoreException e) {
 			final IValueVariable existingValue = variableManager.getValueVariable(key);
 			if (existingValue.getValue().equals(value)) {
 				LOGGER.log(LogService.LOG_WARNING, "Already defined: (" + key + "," + value + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -68,6 +73,21 @@ public final class VariableManagerUtil {
 				throw e;
 			}
 		}
+	}
+
+	public static void addVariables(final Map<String, String> variables) throws CoreException {
+		final IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
+		final List<IValueVariable> add = new ArrayList<IValueVariable>(variables.size());
+		for (final Entry<String, String> entry : variables.entrySet()) {
+			final IValueVariable value = variableManager.getValueVariable(entry.getKey());
+			if (value != null && value.getValue().equals(entry.getValue())) {
+				LOGGER.log(LogService.LOG_WARNING,
+						"Already defined: (" + value.getName() + "," + value.getValue() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			} else {
+				add.add(variableManager.newValueVariable(entry.getKey(), null, true, entry.getValue()));
+			}
+		}
+		variableManager.addVariables(add.toArray(new IValueVariable[add.size()]));
 	}
 
 	/**
