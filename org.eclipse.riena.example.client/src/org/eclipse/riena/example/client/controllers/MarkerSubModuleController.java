@@ -107,6 +107,13 @@ public class MarkerSubModuleController extends SubModuleController {
 		comboAge.setEmptySelectionItem("<none>"); //$NON-NLS-1$
 		comboAge.setSelection(1);
 
+		final IComboRidget comboSize = (IComboRidget) getRidget("ccomboSize"); //$NON-NLS-1$
+		List<String> sizes = Arrays.asList(new String[] { "<none>", "xs", "s", "m", "l", "xl" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		comboSize.bindToModel(new WritableList(sizes, String.class), String.class, null, new WritableValue());
+		comboSize.updateFromModel();
+		comboSize.setEmptySelectionItem("<none>"); //$NON-NLS-1$
+		comboSize.setSelection(1);
+
 		final ISingleChoiceRidget choiceType = (ISingleChoiceRidget) getRidget("choiceType"); //$NON-NLS-1$
 		choiceType.bindToModel(Arrays.asList("red", "white", "rose"), (List<String>) null, new TestBean(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				TestBean.PROPERTY);
@@ -160,8 +167,8 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IToggleButtonRidget buttonCheck = (IToggleButtonRidget) getRidget("buttonCheck"); //$NON-NLS-1$
 
 		final IRidget[] markables = new IRidget[] { textName, textPrice, textAmount, textDate, dtDate, dtPicker,
-				comboAge, choiceType, choiceFlavor, listPersons, tablePersons, compTable, treePersons, treeWCols,
-				buttonToggle, buttonPush, buttonRadioA, buttonRadioB, buttonCheck };
+				comboAge, comboSize, choiceType, choiceFlavor, listPersons, tablePersons, compTable, treePersons,
+				treeWCols, buttonToggle, buttonPush, buttonRadioA, buttonRadioB, buttonCheck };
 
 		final IToggleButtonRidget checkMandatory = (IToggleButtonRidget) getRidget("checkMandatory"); //$NON-NLS-1$
 		final IToggleButtonRidget checkError = (IToggleButtonRidget) getRidget("checkError"); //$NON-NLS-1$
@@ -189,6 +196,7 @@ public class MarkerSubModuleController extends SubModuleController {
 					textDate.setText(null);
 					dtPicker.setText(null);
 					comboAge.setSelection("<none>"); //$NON-NLS-1$
+					comboSize.setSelection("<none>"); //$NON-NLS-1$
 					choiceType.setSelection(null);
 					choiceFlavor.setSelection(null);
 					listPersons.setSelection((Object) null);

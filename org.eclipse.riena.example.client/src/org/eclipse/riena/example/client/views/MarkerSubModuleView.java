@@ -15,6 +15,7 @@ import java.util.Arrays;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
@@ -136,6 +137,11 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		final Combo comboAge = UIControlsFactory.createCombo(group);
 		hFillFactory.applyTo(comboAge);
 		addUIControl(comboAge, "comboAge"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(group, "Size:", "labelccomboSize"); //$NON-NLS-1$ //$NON-NLS-2$
+		final CCombo ccomboSize = UIControlsFactory.createCCombo(group);
+		hFillFactory.applyTo(ccomboSize);
+		addUIControl(ccomboSize, "ccomboSize"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Type:", "labelchoiceType"); //$NON-NLS-1$ //$NON-NLS-2$
 		ChoiceComposite choiceType = new ChoiceComposite(group, SWT.BORDER, false);
