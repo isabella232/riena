@@ -20,6 +20,10 @@ import org.eclipse.core.runtime.IStatus;
  */
 public class MinLengthAllowEmpty extends MinLength {
 
+	public MinLengthAllowEmpty() {
+		super();
+	}
+
 	public MinLengthAllowEmpty(final int minLength) {
 		super(minLength);
 	}
