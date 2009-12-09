@@ -20,6 +20,10 @@ import org.eclipse.core.runtime.IStatus;
  */
 public class MinLengthAllowEmpty extends MinLength {
 
+	public MinLengthAllowEmpty(final int minLength) {
+		super(minLength);
+	}
+
 	/*
 	 * First check for empty or null value and return ok. Else call the regular
 	 * MinLength Validator (non-Javadoc)
