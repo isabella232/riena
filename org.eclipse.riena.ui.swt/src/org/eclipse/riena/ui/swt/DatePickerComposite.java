@@ -196,7 +196,7 @@ public class DatePickerComposite extends Composite {
 				 * needed until we can close the widget (i.e. last zoom in
 				 * level). See Bug 288354, comment #4, point #3.
 				 */
-				int win32clicks = Util.isWin32() ? 1 : 0;
+				int win32clicks = init();
 
 				@Override
 				public void mouseUp(MouseEvent e) {
@@ -217,8 +217,13 @@ public class DatePickerComposite extends Composite {
 						cal.set(Calendar.DAY_OF_MONTH, calendar.getDay());
 
 						setDateToTextfield(cal.getTime());
+						win32clicks = init();
 						close();
 					}
+				}
+
+				private int init() {
+					return Util.isWin32() ? 1 : 0;
 				}
 			});
 
