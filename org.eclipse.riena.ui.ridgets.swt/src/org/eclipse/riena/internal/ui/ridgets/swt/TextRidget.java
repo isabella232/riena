@@ -332,7 +332,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 */
 	private final class FocusManager implements FocusListener {
 		public void focusGained(FocusEvent e) {
-			if (isFocusable()) {
+			if (isFocusable() && !isOutputOnly()) {
 				selectAll();
 			}
 		}

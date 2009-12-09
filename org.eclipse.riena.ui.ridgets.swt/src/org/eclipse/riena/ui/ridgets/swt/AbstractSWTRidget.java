@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseAdapter;
@@ -223,19 +224,44 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 			int result = -1;
 			for (int i = myIndex + 1; result == -1 && i < controls.length; i++) {
 				Control candidate = controls[i];
-				if (candidate.isEnabled() && candidate.isVisible()) {
+				if (canGetFocus(candidate)) {
 					result = i;
 				}
 			}
 			// find previous possible control
 			for (int i = 0; result == -1 && i < myIndex; i++) {
 				Control candidate = controls[i];
-				if (candidate.isEnabled() && candidate.isVisible()) {
+				if (canGetFocus(candidate)) {
 					result = i;
 				}
 			}
 			return result != -1 ? controls[result] : null;
 		}
+
+		/**
+		 * Tests whether the given control can get the focus or cannot.
+		 * 
+		 * @param control
+		 *            UI control
+		 * @return {@code true} if control can get the focus; otherwise {@code
+		 *         false}.
+		 */
+		private boolean canGetFocus(Control control) {
+
+			if (!control.isEnabled()) {
+				return false;
+			}
+			if (!control.isVisible()) {
+				return false;
+			}
+			if ((control.getStyle() & SWT.READ_ONLY) != 0) {
+				return false;
+			}
+
+			return true;
+
+		}
+
 	};
 
 }
