@@ -15,7 +15,10 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -44,32 +47,52 @@ public class MasterDetailsCompositeTest extends TestCase {
 	}
 
 	public void testGetUIControlsWithBindingProperty() {
-		Text txtFirstName = UIControlsFactory.createText(masterDetails.getDetails(), SWT.BORDER, "txtFirstName");
-		Text txtLastName = UIControlsFactory.createText(masterDetails.getDetails(), SWT.BORDER, "txtLastName");
-		Text txtWithoutID = UIControlsFactory.createText(masterDetails.getDetails(), SWT.BORDER);
+		Composite parent = masterDetails.getDetails();
+		Text txtFirstName = UIControlsFactory.createText(parent, SWT.BORDER, "txtFirstName");
+		Text txtLastName = UIControlsFactory.createText(parent, SWT.BORDER, "txtLastName");
+		Text txtWithoutID = UIControlsFactory.createText(parent, SWT.BORDER);
 
 		List<Object> controls = masterDetails.getUIControls();
 
-		assertNotNull(controls);
 		assertTrue(controls.contains(txtFirstName));
 		assertTrue(controls.contains(txtLastName));
-
 		assertFalse(controls.contains(txtWithoutID));
 	}
 
 	public void testGetUIControlsWithBindingPropertyFromComposite() {
-		Composite detail = new Composite(masterDetails.getDetails(), SWT.NONE);
-
-		Text txtFirstName = UIControlsFactory.createText(detail, SWT.BORDER, "txtFirstName");
-		Text txtLastName = UIControlsFactory.createText(detail, SWT.BORDER, "txtLastName");
-		Text txtWithoutID = UIControlsFactory.createText(detail, SWT.BORDER);
+		Composite parent = new Composite(masterDetails.getDetails(), SWT.NONE);
+		Text txtFirstName = UIControlsFactory.createText(parent, SWT.BORDER, "txtFirstName");
+		Text txtLastName = UIControlsFactory.createText(parent, SWT.BORDER, "txtLastName");
+		Text txtWithoutID = UIControlsFactory.createText(parent, SWT.BORDER);
 
 		List<Object> controls = masterDetails.getUIControls();
 
-		assertNotNull(controls);
 		assertTrue(controls.contains(txtFirstName));
 		assertTrue(controls.contains(txtLastName));
-
 		assertFalse(controls.contains(txtWithoutID));
+	}
+
+	/**
+	 * As per bug 297524.
+	 */
+	public void testGetUIControlsThatAreComposites() {
+		Composite parent = masterDetails.getDetails();
+		Combo combo = UIControlsFactory.createCombo(parent, "combo");
+		CCombo ccombo = UIControlsFactory.createCCombo(parent, "ccombo");
+		DateTime datetime = UIControlsFactory.createDate(parent, SWT.NONE, "datetime");
+
+		List<Object> controls = masterDetails.getUIControls();
+
+		assertTrue(controls.contains(combo));
+		assertTrue(controls.contains(ccombo));
+		assertTrue(controls.contains(datetime));
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		Combo combo2 = UIControlsFactory.createCombo(composite, "combo2");
+
+		controls = masterDetails.getUIControls();
+
+		assertFalse(controls.contains(composite));
+		assertTrue(controls.contains(combo2));
 	}
 }

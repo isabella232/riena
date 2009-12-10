@@ -408,13 +408,12 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	private void addDetailControlsWithBindingProperty(Composite composite) {
 		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		for (Control control : composite.getChildren()) {
+			String bindingProperty = locator.locateBindingProperty(control);
+			if (!controls.contains(control) && StringUtils.isGiven(bindingProperty)) {
+				addUIControl(control, bindingProperty);
+			}
 			if (control instanceof Composite) {
 				addDetailControlsWithBindingProperty((Composite) control);
-			} else {
-				String bindingProperty = locator.locateBindingProperty(control);
-				if (!controls.contains(control) && StringUtils.isGiven(bindingProperty)) {
-					addUIControl(control, bindingProperty);
-				}
 			}
 		}
 	}
