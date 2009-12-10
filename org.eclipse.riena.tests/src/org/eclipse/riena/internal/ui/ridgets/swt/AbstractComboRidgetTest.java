@@ -560,6 +560,58 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(0, getSelectionIndex(control));
 	}
 
+	public void testOutputControlIsDisabledAndHasText() {
+		AbstractComboRidget ridget = getRidget();
+		Control control = getWidget();
+		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
+		ridget.updateFromModel();
+		ridget.setSelection(selection1);
+
+		assertTrue(control.isEnabled());
+		assertEquals(selection1.toString(), getText(control));
+		assertEquals(selection1, ridget.getSelection());
+
+		ridget.setOutputOnly(true);
+
+		assertFalse(control.isEnabled());
+		assertEquals(selection1.toString(), getText(control));
+		assertEquals(selection1, ridget.getSelection());
+
+		ridget.setEnabled(false);
+		ridget.setEnabled(true);
+
+		assertFalse(control.isEnabled());
+		assertEquals(selection1.toString(), getText(control));
+		assertEquals(selection1, ridget.getSelection());
+
+		ridget.setOutputOnly(false);
+
+		assertTrue(control.isEnabled());
+		assertEquals(selection1.toString(), getText(control));
+		assertEquals(selection1, ridget.getSelection());
+	}
+
+	public void testOuputControlIsUpdatedOnBind() {
+		AbstractComboRidget ridget = getRidget();
+		Control control = getWidget();
+
+		ridget.setUIControl(null);
+		ridget.setOutputOnly(true);
+		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
+		ridget.updateFromModel();
+		ridget.setSelection(selection1);
+
+		assertEquals(selection1, ridget.getSelection());
+		assertEquals("", getText(control));
+		assertTrue(control.isEnabled());
+
+		ridget.setUIControl(control);
+
+		assertEquals(selection1, ridget.getSelection());
+		assertEquals(selection1.toString(), getText(control));
+		assertFalse(control.isEnabled());
+	}
+
 	/**
 	 * Tests that changing the selection in ridget works as expected, even when
 	 * the ridget is disabled.
