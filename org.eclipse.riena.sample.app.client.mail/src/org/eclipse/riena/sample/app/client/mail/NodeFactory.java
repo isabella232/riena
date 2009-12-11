@@ -34,6 +34,8 @@ public final class NodeFactory {
 
 	public static ISubModuleNode createSubMobule(String caption, IModuleNode parent, String viewId) {
 		ISubModuleNode result = new SubModuleNode(caption);
+		// path found via org.eclipse.riena.ui.swt.imagePaths in plugin.xml
+		result.setIcon("generic_element.gif"); //$NON-NLS-1$
 		parent.addChild(result);
 		WorkareaManager.getInstance().registerDefinition(result, viewId);
 		return result;

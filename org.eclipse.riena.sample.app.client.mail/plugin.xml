@@ -148,5 +148,10 @@
             commandId="rcp.mail.openMessage">
       </handler>
    </extension>
-
+   <extension
+         point="org.eclipse.riena.ui.swt.imagePaths">
+      <path
+            path="icons">
+      </path>
+   </extension>
 </plugin>
