@@ -39,7 +39,9 @@ public class BigIntegerSerializerFactory extends AbstractRienaSerializerFactory 
 
 				@Override
 				public Object readObject(AbstractHessianInput in, String[] fieldNames) throws IOException {
-					return new BigInteger(in.readString());
+					BigInteger result = new BigInteger(in.readString());
+					in.addRef(result);
+					return result;
 				}
 
 			};
