@@ -30,8 +30,8 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	 * Creates a new instance of <code>StatuslineNumber</code>.
 	 * 
 	 * @param parent
-	 *            a widget which will be the parent of the new instance
-	 *            (cannot be null)
+	 *            a widget which will be the parent of the new instance (cannot
+	 *            be null)
 	 * @param style
 	 *            the style of widget to construct
 	 */
@@ -64,6 +64,7 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	 * Override this method to have fixed width of the label
 	 * 
 	 * @return the fixed with
+	 * @since 1.2
 	 */
 	protected int getFixWidth() {
 		return SWT.NONE;

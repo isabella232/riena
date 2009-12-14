@@ -87,6 +87,7 @@ public interface IColumnFormatter {
 	 *            the row element
 	 * @return horizontal alignment ({@code SWT.LEFT}, {@code SWT.CENTER},
 	 *         {@code SWT.RIGHT} or {@code SWT.DEFAULT})
+	 * @since 1.2
 	 */
 	int getHorizontalAlignment(Object element);
 
@@ -100,6 +101,7 @@ public interface IColumnFormatter {
 	 * @param element
 	 *            the row element
 	 * @return {@code true} for additional left padding; otherwise {@code false}
+	 * @since 1.2
 	 */
 	boolean getLeftPadding(Object element);
 
