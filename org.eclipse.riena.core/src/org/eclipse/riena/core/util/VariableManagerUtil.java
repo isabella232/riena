@@ -75,6 +75,9 @@ public final class VariableManagerUtil {
 		}
 	}
 
+	/**
+	 * @since 1.2
+	 */
 	public static void addVariables(final Map<String, String> variables) throws CoreException {
 		final IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
 		final List<IValueVariable> add = new ArrayList<IValueVariable>(variables.size());

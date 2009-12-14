@@ -22,6 +22,8 @@ import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
  * Some keys are in a special Wiki page of Eclipsepedia: <a
  * href="http://wiki.eclipse.org/Riena_Look_and_Feel">Riena Look and Feel</a>
  * 
+ * @since 1.2
+ * 
  * 
  */
 public final class LnfKeyConstants {
@@ -406,6 +408,9 @@ public final class LnfKeyConstants {
 	 */
 	public static final String OUTPUT_MARKER_BACKGROUND = "outputMarker.background"; //$NON-NLS-1$
 
+	/**
+	 * @since 1.2
+	 */
 	public static final String DISABLED_MARKER_BACKGROUND = "DisabledMarker.backgroundColor"; //$NON-NLS-1$
 
 	/**
@@ -706,7 +711,13 @@ public final class LnfKeyConstants {
 	public static final String TITLELESS_SHELL_SHOW_CLOSE = "TitlelessShell.showClose"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_RESIZEABLE = "TitlelessShell.resizeable"; //$NON-NLS-1$
 
+	/**
+	 * @since 1.2
+	 */
 	public static final String DISABLED_MARKER_STANDARD_ALPHA = "DisabledMarker.standardAlpha"; //$NON-NLS-1$
+	/**
+	 * @since 1.2
+	 */
 	public static final String DISABLED_MARKER_COMPLEX_ALPHA = "DisabledMarker.complexAlpha"; //$NON-NLS-1$
 	/**
 	 * This constants turns the advanced disabled marker rendering on ({@code
