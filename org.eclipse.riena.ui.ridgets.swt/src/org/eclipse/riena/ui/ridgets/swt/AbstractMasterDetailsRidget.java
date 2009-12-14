@@ -43,8 +43,8 @@ import org.eclipse.riena.ui.swt.MasterDetailsComposite;
  * {@link IMasterDetailsRidget}.
  * <p>
  * This class defines several widget-specific abstract methods, which must be
- * implemted by clients. It is expected that clients will write widget-specific
- * subclass of {@link AbstractMasterDetailsComposite}.
+ * implemented by clients. It is expected that clients will write
+ * widget-specific subclass of {@link AbstractMasterDetailsComposite}.
  * 
  * @since 1.2
  */
