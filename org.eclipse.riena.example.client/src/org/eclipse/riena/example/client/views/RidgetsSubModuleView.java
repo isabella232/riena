@@ -10,11 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
-import org.eclipse.riena.example.client.controllers.RidgetsSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
@@ -25,6 +20,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+
+import org.eclipse.riena.example.client.controllers.RidgetsSubModuleController;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * View of the sub module that shows a set of UI controls.
@@ -83,6 +84,8 @@ public class RidgetsSubModuleView extends SubModuleView<RidgetsSubModuleControll
 		image = new Image(display, image.getImageData().scaledTo(16, 16));
 		buttonWithViewImage.setImage(image);
 		addUIControl(buttonWithViewImage, "buttonWithViewImage"); //$NON-NLS-1$
+
+		UIControlsFactory.createImageButton(buttonGroup, SWT.NONE, "imageButton"); //$NON-NLS-1$
 
 	}
 }

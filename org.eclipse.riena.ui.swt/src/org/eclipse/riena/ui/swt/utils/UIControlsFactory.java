@@ -19,6 +19,7 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.widgets.Button;
@@ -40,6 +41,7 @@ import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
+import org.eclipse.riena.ui.swt.ImageButton;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -399,6 +401,63 @@ public class UIControlsFactory {
 		Button button = createButtonRadio(parent);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, bindingId);
 		return button;
+	}
+
+	/**
+	 * Creates a button with only an image (no border, no text).
+	 * 
+	 * @param parent
+	 *            a composite control which will be the parent of the new
+	 *            instance (cannot be null)
+	 * @param image
+	 *            image of the button
+	 * @param style
+	 *            the style of image button to construct
+	 * @param bindingId
+	 *            the binding ID
+	 * @return image button
+	 * 
+	 */
+	public static ImageButton createImageButton(Composite parent, Image image, int style, String bindingId) {
+		ImageButton btn = createImageButton(parent, style, bindingId);
+		btn.setImage(image);
+		return btn;
+	}
+
+	/**
+	 * Creates a button that only display an image (no border, no text).
+	 * 
+	 * @param parent
+	 *            a composite control which will be the parent of the new
+	 *            instance (cannot be null)
+	 * @param style
+	 *            the style of image button to construct
+	 * @param bindingId
+	 *            the binding ID
+	 * @return image button
+	 * 
+	 */
+	public static ImageButton createImageButton(Composite parent, int style, String bindingId) {
+		ImageButton btn = createImageButton(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(btn, bindingId);
+		return btn;
+	}
+
+	/**
+	 * Creates a button that only display an image (no border, no text).
+	 * 
+	 * @param parent
+	 *            a composite control which will be the parent of the new
+	 *            instance (cannot be null)
+	 * @param style
+	 *            the style of image button to construct
+	 * @return image button
+	 * 
+	 */
+	public static ImageButton createImageButton(Composite parent, int style) {
+		ImageButton btn = new ImageButton(parent, style);
+		btn.setBackground(SHARED_BG_COLOR);
+		return btn;
 	}
 
 	public static DateTime createCalendar(Composite parent) {

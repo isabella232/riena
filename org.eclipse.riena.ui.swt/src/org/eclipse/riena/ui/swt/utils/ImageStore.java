@@ -24,6 +24,10 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.ui.swt.Activator;
+import org.eclipse.riena.ui.core.resource.IIconManager;
+import org.eclipse.riena.ui.core.resource.IconManagerProvider;
+import org.eclipse.riena.ui.core.resource.IconSize;
+import org.eclipse.riena.ui.core.resource.IconState;
 
 /**
  * The ImageStore returns the images for given names. The images are loaded form
@@ -70,7 +74,40 @@ public final class ImageStore {
 	 */
 	public Image getImage(String imageName, ImageFileExtension fileExtension) {
 		String fullName = getFullName(imageName, fileExtension);
-		return loadImage(fullName);
+		Image image = loadImage(fullName);
+		if (image == null) {
+			String defaultIconName = getDefaultIconMangerImageName(imageName);
+			fullName = getFullName(defaultIconName, fileExtension);
+			image = loadImage(fullName);
+		}
+		return image;
+	}
+
+	/**
+	 * Uses the default icon manager to generate the icon name/ID.
+	 * 
+	 * @param imageName
+	 *            name of the image (icon ID)
+	 * @return default icon name/ID
+	 */
+	private String getDefaultIconMangerImageName(String imageName) {
+
+		IIconManager iconManager = IconManagerProvider.getInstance().getIconManager();
+		String name = iconManager.getName(imageName);
+		IconSize size = iconManager.getSize(imageName);
+		if ((size == null) || (size.getClass() != IconSize.class)) {
+			size = IconSize.NONE;
+		}
+		IconState state = iconManager.getState(imageName);
+		if ((state == null) || (state.getClass() != IconState.class)) {
+			state = IconState.NORMAL;
+		}
+
+		IIconManager defaultIconManager = IconManagerProvider.getInstance().getDefaultIconManager();
+		String defaultIconName = defaultIconManager.getIconID(name, size, state);
+
+		return defaultIconName;
+
 	}
 
 	/**
@@ -78,8 +115,6 @@ public final class ImageStore {
 	 * 
 	 * @param imageName
 	 *            name (ID) of the image
-	 * @param state
-	 *            state of the image (@see ImageState)
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
 	public Image getImage(String imageName) {

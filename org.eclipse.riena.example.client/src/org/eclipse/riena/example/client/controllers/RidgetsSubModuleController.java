@@ -59,15 +59,10 @@ public class RidgetsSubModuleController extends SubModuleController {
 		return (IToggleButtonRidget) getRidget("checkOne"); //$NON-NLS-1$
 	}
 
-	/**
-	 * Binds and updates the ridgets.
-	 * 
-	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
-	 */
 	@Override
-	public void afterBind() {
+	public void configureRidgets() {
 
-		super.afterBind();
+		super.configureRidgets();
 
 		getToggleOne().setText("&Toggle 1"); //$NON-NLS-1$
 		getToggleOne().setIcon(ICON_SAMPLE);
@@ -96,6 +91,9 @@ public class RidgetsSubModuleController extends SubModuleController {
 				getButtonWithViewImage().setIcon(ICON_GREEN);
 			}
 		});
+
+		IActionRidget imageButton = (IActionRidget) getRidget("imageButton");
+		imageButton.setIcon("imageBtn");
 
 	}
 

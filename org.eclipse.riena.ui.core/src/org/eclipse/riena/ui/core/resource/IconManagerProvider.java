@@ -25,6 +25,7 @@ public class IconManagerProvider {
 
 	private static IconManagerProvider iconManagerProvider = new IconManagerProvider();
 	private IIconManager iconManager;
+	private IIconManager defaultIconManager;
 
 	/**
 	 * Creates a new instance of this provider and wires the extensions.
@@ -53,6 +54,16 @@ public class IconManagerProvider {
 	}
 
 	/**
+	 * Returns the default {@link IIconManager} of Riena. The icon manager with
+	 * the lowest order will be returned.
+	 * 
+	 * @return default icon manger
+	 */
+	public IIconManager getDefaultIconManager() {
+		return defaultIconManager;
+	}
+
+	/**
 	 * Injects the extension of the icon managers.
 	 * 
 	 * @param iconManagerExtensions
@@ -63,6 +74,11 @@ public class IconManagerProvider {
 		if ((iconManagerExtensions != null) && (iconManagerExtensions.length > 0)) {
 			Arrays.sort(iconManagerExtensions, new IconManagerComparator());
 			iconManager = iconManagerExtensions[0].createIconManager();
+			if (iconManagerExtensions.length > 1) {
+				defaultIconManager = iconManagerExtensions[iconManagerExtensions.length - 1].createIconManager();
+			} else {
+				defaultIconManager = iconManager;
+			}
 		}
 	}
 
