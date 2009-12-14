@@ -65,6 +65,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 
 	/** List of available options (model). */
 	private IObservableList optionValues;
+	/** Class of the optional values. */
+	private Class<? extends Object> rowClass;
 	/** The selected option (model). */
 	private IObservableValue selectionValue;
 	/** A string used for converting from Object to String */
@@ -100,6 +102,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 
 	public AbstractComboRidget() {
 		super();
+		rowClass = null;
 		rowObservables = new WritableList();
 		selectionObservable = new WritableValue();
 		objToStrConverter = new ObjectToStringConverter();
@@ -181,6 +184,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		unbindUIControl();
 
 		this.optionValues = optionValues;
+		this.rowClass = rowClass;
 		this.renderingMethod = renderingMethod;
 		this.selectionValue = selectionValue;
 
@@ -424,14 +428,29 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return valueObject.toString();
 	}
 
+	/**
+	 * Returns the value of the given item.
+	 * 
+	 * @param item
+	 *            item of combo box
+	 * @return value relevant object; {@code null} or empty string if no
+	 *         relevant object exists
+	 */
 	private Object getValueFromItem(String item) {
-		String[] items = getUIControlItems();
-		for (int i = 0; i < items.length; i++) {
-			if (items[i].equals(item)) {
+
+		String[] uiItems = getUIControlItems();
+		for (int i = 0; i < uiItems.length; i++) {
+			if (uiItems[i].equals(item)) {
 				return rowObservables.get(i);
 			}
 		}
-		return item;
+
+		if (rowClass == String.class) {
+			return ""; //$NON-NLS-1$
+		} else {
+			return null;
+		}
+
 	}
 
 	private boolean hasInput() {
