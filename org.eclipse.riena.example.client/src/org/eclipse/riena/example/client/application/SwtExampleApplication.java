@@ -12,6 +12,9 @@ package org.eclipse.riena.example.client.application;
 
 import org.osgi.framework.Bundle;
 
+import org.eclipse.ui.application.ActionBarAdvisor;
+import org.eclipse.ui.application.IActionBarConfigurer;
+
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -27,7 +30,7 @@ import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
- * Define the model of the application
+ * Define the model of the application.
  */
 public class SwtExampleApplication extends SwtApplication {
 
@@ -36,6 +39,14 @@ public class SwtExampleApplication extends SwtApplication {
 		ApplicationController controller = super.createApplicationController(node);
 		controller.setMenubarVisible(true);
 		return controller;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
+		return new ExampleActionBarAdvisor(configurer);
 	}
 
 	@Override
