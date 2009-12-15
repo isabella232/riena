@@ -61,7 +61,7 @@ public class TableSubModuleController extends SubModuleController {
 	@Override
 	public void afterBind() {
 		super.afterBind();
-		bindModel();
+		// bindModel();
 	}
 
 	private void bindModel() {
@@ -82,11 +82,11 @@ public class TableSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		table = (ITableRidget) getRidget("table"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonPrintSelection = (IToggleButtonRidget) getRidget("buttonPrintSelection"); //$NON-NLS-1$
-		IActionRidget buttonAddSibling = (IActionRidget) getRidget("buttonAddSibling"); //$NON-NLS-1$
-		buttonRename = (IActionRidget) getRidget("buttonRename"); //$NON-NLS-1$
-		IActionRidget buttonDelete = (IActionRidget) getRidget("buttonDelete"); //$NON-NLS-1$
+		table = getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonPrintSelection = getRidget(IToggleButtonRidget.class, "buttonPrintSelection"); //$NON-NLS-1$
+		IActionRidget buttonAddSibling = getRidget(IActionRidget.class, "buttonAddSibling"); //$NON-NLS-1$
+		buttonRename = getRidget(IActionRidget.class, "buttonRename"); //$NON-NLS-1$
+		IActionRidget buttonDelete = getRidget(IActionRidget.class, "buttonDelete"); //$NON-NLS-1$
 
 		table.addDoubleClickListener(new IActionListener() {
 			public void callback() {
@@ -151,6 +151,8 @@ public class TableSubModuleController extends SubModuleController {
 		DataBindingContext dbc = new DataBindingContext();
 		bindEnablementToValue(dbc, buttonDelete, hasSelection);
 		bindEnablementToValue(dbc, buttonRename, hasSelection);
+
+		bindModel();
 	}
 
 	private void bindEnablementToValue(DataBindingContext dbc, IRidget ridget, IObservableValue value) {

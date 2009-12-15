@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.ui.controllers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,7 +21,9 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.internal.ui.ridgets.swt.ClassRidgetMapper;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
@@ -198,6 +201,39 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
+	public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+		R ridget = (R) getRidget(id);
+
+		if (ridget != null) {
+			return ridget;
+		}
+		if (RienaStatus.isTest()) {
+			try {
+				if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
+					Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(ridgetClazz);
+					if (mappedRidgetClazz != null) {
+						ridget = mappedRidgetClazz.newInstance();
+					}
+					Assert
+							.isNotNull(
+									ridget,
+									"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+				} else {
+					ridget = ridgetClazz.newInstance();
+				}
+			} catch (InstantiationException e) {
+				throw new RuntimeException(e);
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
+
+			addRidget(id, ridget);
+		}
+
+		return ridget;
+	}
+
 	/**
 	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidgets()
 	 */
@@ -226,7 +262,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	protected void updateNavigationNodeMarkers() {
-
 		// remove error and mandatory marker
 		Collection<ErrorMarker> errorMarkers = getNavigationNode().getMarkersOfType(ErrorMarker.class);
 		for (IMarker marker : errorMarkers) {
@@ -248,7 +283,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 				}
 			}
 		}
-
 	}
 
 	private List<IMarker> getRidgetMarkers() {

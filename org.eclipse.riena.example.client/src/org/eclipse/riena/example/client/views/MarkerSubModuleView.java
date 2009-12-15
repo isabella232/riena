@@ -72,17 +72,10 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		Group group = UIControlsFactory.createGroup(parent, "Marker Options:"); //$NON-NLS-1$
 		group.setLayout(createGridLayout(4));
 
-		Button checkMandatory = UIControlsFactory.createButtonCheck(group);
-		addUIControl(checkMandatory, "checkMandatory"); //$NON-NLS-1$
-
-		Button checkError = UIControlsFactory.createButtonCheck(group);
-		addUIControl(checkError, "checkError"); //$NON-NLS-1$
-
-		Button checkDisabled = UIControlsFactory.createButtonCheck(group);
-		addUIControl(checkDisabled, "checkDisabled"); //$NON-NLS-1$
-
-		Button checkOutput = UIControlsFactory.createButtonCheck(group);
-		addUIControl(checkOutput, "checkOutput"); //$NON-NLS-1$
+		UIControlsFactory.createButtonCheck(group, "checkMandatory");//$NON-NLS-1$
+		UIControlsFactory.createButtonCheck(group, "checkError"); //$NON-NLS-1$
+		UIControlsFactory.createButtonCheck(group, "checkDisabled"); //$NON-NLS-1$
+		UIControlsFactory.createButtonCheck(group, "checkOutput"); //$NON-NLS-1$
 
 		return group;
 	}
@@ -91,11 +84,8 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		Group group = UIControlsFactory.createGroup(parent, "Visibility Options:"); //$NON-NLS-1$
 		group.setLayout(createGridLayout(2));
 
-		Button checkHidden = UIControlsFactory.createButtonCheck(group);
-		addUIControl(checkHidden, "checkHidden"); //$NON-NLS-1$
-
-		Button checkHiddenParent = UIControlsFactory.createButtonCheck(group);
-		addUIControl(checkHiddenParent, "checkHiddenParent"); //$NON-NLS-1$
+		UIControlsFactory.createButtonCheck(group, "checkHidden"); //$NON-NLS-1$
+		UIControlsFactory.createButtonCheck(group, "checkHiddenParent"); //$NON-NLS-1$
 
 		return group;
 	}
@@ -109,14 +99,12 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		GridDataFactory hFillFactory = GridDataFactory.fillDefaults().grab(true, false);
 
 		UIControlsFactory.createLabel(group, "Name:", "labeltextName"); //$NON-NLS-1$ //$NON-NLS-2$
-		Text textName = UIControlsFactory.createText(group);
+		Text textName = UIControlsFactory.createText(group, SWT.SINGLE | SWT.BORDER, "textName"); //$NON-NLS-1$
 		hFillFactory.applyTo(textName);
-		addUIControl(textName, "textName"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Price:", "labeltextPrice"); //$NON-NLS-1$ //$NON-NLS-2$
-		Text textPrice = UIControlsFactory.createTextDecimal(group);
+		Text textPrice = UIControlsFactory.createTextDecimal(group, "textPrice"); //$NON-NLS-1$
 		hFillFactory.applyTo(textPrice);
-		addUIControl(textPrice, "textPrice"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Amount:", "labeltextAmount"); //$NON-NLS-1$ //$NON-NLS-2$
 		Text textAmount = UIControlsFactory.createTextNumeric(group);

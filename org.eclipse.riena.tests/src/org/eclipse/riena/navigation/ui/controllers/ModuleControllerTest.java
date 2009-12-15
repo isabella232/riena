@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
@@ -81,8 +82,8 @@ public class ModuleControllerTest extends TestCase {
 
 		// test setLabel() with two submodules
 		ModuleNode modNode = new ModuleNode();
-		SubModuleNode subModNode1 = new SubModuleNode();
-		SubModuleNode subModNode2 = new SubModuleNode();
+		SubModuleNode subModNode1 = new SubModuleNode(new NavigationNodeId("sm1"));
+		SubModuleNode subModNode2 = new SubModuleNode(new NavigationNodeId("sm2"));
 		modNode.addChild(subModNode1);
 		modNode.addChild(subModNode2);
 
@@ -126,9 +127,9 @@ public class ModuleControllerTest extends TestCase {
 
 		ModuleNode node = new ModuleNode();
 		node.setNavigationProcessor(new NavigationProcessor());
-		SubModuleNode sub1 = new SubModuleNode();
+		SubModuleNode sub1 = new SubModuleNode(new NavigationNodeId("sm1"));
 		node.addChild(sub1);
-		SubModuleNode sub2 = new SubModuleNode();
+		SubModuleNode sub2 = new SubModuleNode(new NavigationNodeId("sm2"));
 		node.addChild(sub2);
 		SubModuleNode sub3 = new SubModuleNode();
 		node.addChild(sub3);
@@ -156,9 +157,9 @@ public class ModuleControllerTest extends TestCase {
 
 		ModuleNode node = new ModuleNode();
 		node.setNavigationProcessor(new NavigationProcessor());
-		SubModuleNode sub1 = new SubModuleNode();
+		SubModuleNode sub1 = new SubModuleNode(new NavigationNodeId("sm1"));
 		node.addChild(sub1);
-		SubModuleNode sub2 = new SubModuleNode();
+		SubModuleNode sub2 = new SubModuleNode(new NavigationNodeId("sm2"));
 		node.addChild(sub2);
 		SubModuleNode sub3 = new SubModuleNode();
 		sub2.addChild(sub3);

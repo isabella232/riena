@@ -20,6 +20,8 @@ import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationArgument;
+import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -35,7 +37,7 @@ public class ComboSubModuleController extends SubModuleController {
 	/** Manages a collection of persons. */
 	private final PersonManager manager;
 	/** Holds editable data for a person. */
-	private final PersonModificationBean value;
+	private PersonModificationBean value;
 	private IComboRidget comboOne;
 	private ITextRidget textFirst;
 	private ITextRidget textLast;
@@ -71,12 +73,17 @@ public class ComboSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		comboOne = (IComboRidget) getRidget("comboOne"); //$NON-NLS-1$
+		comboOne = getRidget(IComboRidget.class, "comboOne"); //$NON-NLS-1$
 
 		value.setPerson(manager.getSelectedPerson());
 
-		textFirst = (ITextRidget) getRidget("textFirst"); //$NON-NLS-1$
-		textLast = (ITextRidget) getRidget("textLast"); //$NON-NLS-1$
+		textFirst = getRidget(ITextRidget.class, "textFirst"); //$NON-NLS-1$
+		textLast = getRidget(ITextRidget.class, "textLast"); //$NON-NLS-1$
+
+		if (getNavigationNode().getNavigationArgument() != null
+				&& getNavigationNode().getNavigationArgument().getParameter() instanceof PersonModificationBean) { // we came here from a navigation
+			setValuesFromNavigation();
+		}
 
 		comboOne.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -87,7 +94,7 @@ public class ComboSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IActionRidget buttonSave = (IActionRidget) getRidget("buttonSave"); //$NON-NLS-1$
+		final IActionRidget buttonSave = getRidget(IActionRidget.class, "buttonSave"); //$NON-NLS-1$
 		buttonSave.setText("&Save"); //$NON-NLS-1$
 		buttonSave.addListener(new IActionListener() {
 			public void callback() {
@@ -116,6 +123,27 @@ public class ComboSubModuleController extends SubModuleController {
 					comboOne.updateFromModel();
 				}
 			});
+		}
+		getNavigationNode().addListener(new NavigateSubModuleNavigationNodeListener());
+	}
+
+	private void setValuesFromNavigation() {
+		NavigationArgument navigationArgument = getNavigationNode().getNavigationArgument();
+		if (navigationArgument != null) {
+			value = (PersonModificationBean) navigationArgument.getParameter();
+			manager.setSelectedPerson(value.getPerson());
+			bindModels();
+		}
+	}
+
+	private class NavigateSubModuleNavigationNodeListener extends SubModuleNodeListener {
+		@Override
+		public void afterActivated(ISubModuleNode source) {
+			super.afterActivated(source);
+			if (getNavigationNode().getNavigationArgument() != null
+					&& getNavigationNode().getNavigationArgument().getParameter() instanceof PersonModificationBean) { // we came here from a navigation
+				setValuesFromNavigation();
+			}
 		}
 	}
 }

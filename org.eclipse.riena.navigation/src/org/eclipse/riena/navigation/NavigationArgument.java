@@ -155,4 +155,42 @@ public class NavigationArgument {
 		updateListener.handleUpdate(parameter);
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((parameter == null) ? 0 : parameter.hashCode());
+		result = prime * result + ((ridgetId == null) ? 0 : ridgetId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		NavigationArgument other = (NavigationArgument) obj;
+		if (parameter == null) {
+			if (other.parameter != null) {
+				return false;
+			}
+		} else if (!parameter.equals(other.parameter)) {
+			return false;
+		}
+		if (ridgetId == null) {
+			if (other.ridgetId != null) {
+				return false;
+			}
+		} else if (!ridgetId.equals(other.ridgetId)) {
+			return false;
+		}
+		return true;
+	}
+
 }

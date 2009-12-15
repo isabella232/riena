@@ -34,14 +34,13 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractEditableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 
 /**
  * Ridget for {@link DateTime} widgets.
  */
-public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeRidget, ITextRidget {
+public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeRidget {
 
 	/**
 	 * Holds the date value for this ridget.

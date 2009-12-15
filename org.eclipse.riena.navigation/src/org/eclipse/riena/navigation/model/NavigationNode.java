@@ -63,6 +63,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		extends TypecastingObject implements INavigationNode<C>, INavigationNodeListenerable<S, C, L>, IContext {
 
 	private NavigationNodeId nodeId;
+
 	private State state;
 	private String label;
 	private String icon;
@@ -1252,6 +1253,44 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 			return getParent().getNavigationArgument();
 		}
 		return navigationArgument;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((getLabel() == null) ? 0 : getLabel().hashCode());
+		result = prime * result + ((getNodeId() == null) ? 0 : getNodeId().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		NavigationNode<?, ?, ?> other = (NavigationNode<?, ?, ?>) obj;
+		if (getLabel() == null) {
+			if (other.getLabel() != null) {
+				return false;
+			}
+		} else if (!getLabel().equals(other.getLabel())) {
+			return false;
+		}
+		if (getNodeId() == null) {
+			if (other.getNodeId() != null) {
+				return false;
+			}
+		} else if (!getNodeId().equals(other.getNodeId())) {
+			return false;
+		}
+		return true;
 	}
 
 }

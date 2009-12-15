@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.Assert;
  * List element of the list held by the <code>PersonManager</code>
  */
 public class Person extends AbstractBean {
+
 	/**
 	 * Property name of the first name property ("firstname").
 	 */
@@ -345,5 +346,91 @@ public class Person extends AbstractBean {
 
 	public Integer getNumber() {
 		return number;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
+		result = prime * result + ((birthplace == null) ? 0 : birthplace.hashCode());
+		result = prime * result + eyeColor;
+		result = prime * result + ((firstname == null) ? 0 : firstname.hashCode());
+		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+		result = prime * result + (hasCat ? 1231 : 1237);
+		result = prime * result + (hasDog ? 1231 : 1237);
+		result = prime * result + (hasFish ? 1231 : 1237);
+		result = prime * result + ((lastname == null) ? 0 : lastname.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Person other = (Person) obj;
+		if (address == null) {
+			if (other.address != null) {
+				return false;
+			}
+		} else if (!address.equals(other.address)) {
+			return false;
+		}
+		if (birthday == null) {
+			if (other.birthday != null) {
+				return false;
+			}
+		} else if (!birthday.equals(other.birthday)) {
+			return false;
+		}
+		if (birthplace == null) {
+			if (other.birthplace != null) {
+				return false;
+			}
+		} else if (!birthplace.equals(other.birthplace)) {
+			return false;
+		}
+		if (eyeColor != other.eyeColor) {
+			return false;
+		}
+		if (firstname == null) {
+			if (other.firstname != null) {
+				return false;
+			}
+		} else if (!firstname.equals(other.firstname)) {
+			return false;
+		}
+		if (gender == null) {
+			if (other.gender != null) {
+				return false;
+			}
+		} else if (!gender.equals(other.gender)) {
+			return false;
+		}
+		if (hasCat != other.hasCat) {
+			return false;
+		}
+		if (hasDog != other.hasDog) {
+			return false;
+		}
+		if (hasFish != other.hasFish) {
+			return false;
+		}
+		if (lastname == null) {
+			if (other.lastname != null) {
+				return false;
+			}
+		} else if (!lastname.equals(other.lastname)) {
+			return false;
+		}
+		return true;
 	}
 }

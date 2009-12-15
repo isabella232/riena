@@ -67,6 +67,10 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		return ridgets.get(id);
 	}
 
+	public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+		return (R) getRidget(id);
+	}
+
 	public Collection<? extends IRidget> getRidgets() {
 		return new ArrayList<IRidget>(ridgets.values());
 	}

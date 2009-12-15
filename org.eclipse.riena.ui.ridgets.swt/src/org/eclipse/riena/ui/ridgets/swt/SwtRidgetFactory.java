@@ -103,6 +103,11 @@ public final class SwtRidgetFactory {
 		void clear() {
 			this.ridget = null;
 		}
+
+		@SuppressWarnings("unchecked")
+		public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+			return (R) getRidget(id);
+		}
 	}
 
 }

@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.example.client.views.ChoiceSubModuleView;
+import org.eclipse.riena.internal.ui.ridgets.swt.SingleChoiceRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -35,10 +36,17 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 /**
  * Controller for the {@link ChoiceSubModuleView} example.
  */
+@SuppressWarnings("restriction")
 public class ChoiceSubModuleController extends SubModuleController {
+
+	private CarConfig carConfig = new CarConfig();
 
 	public ChoiceSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
+	}
+
+	public CarConfig getCarConfig() {
+		return carConfig;
 	}
 
 	/**
@@ -49,40 +57,39 @@ public class ChoiceSubModuleController extends SubModuleController {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void configureRidgets() {
-		final CarConfig carConfig = new CarConfig();
 
-		final ISingleChoiceRidget compositeCarModel = (ISingleChoiceRidget) getRidget("compositeCarModel"); //$NON-NLS-1$
+		final SingleChoiceRidget compositeCarModel = getRidget(SingleChoiceRidget.class, "compositeCarModel"); //$NON-NLS-1$
 		compositeCarModel.bindToModel(toList(CarModels.values()), BeansObservables.observeValue(carConfig,
 				CarConfig.PROP_MODEL));
 		compositeCarModel.addMarker(new MandatoryMarker());
 		compositeCarModel.updateFromModel();
 
-		final IMultipleChoiceRidget compositeCarExtras = (IMultipleChoiceRidget) getRidget("compositeCarExtras"); //$NON-NLS-1$
+		final IMultipleChoiceRidget compositeCarExtras = getRidget(IMultipleChoiceRidget.class, "compositeCarExtras"); //$NON-NLS-1$
 		String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				"Park Distance Control System", }; //$NON-NLS-1$
 		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig,
 				CarConfig.PROP_OPTIONS);
 		compositeCarExtras.updateFromModel();
 
-		final ISingleChoiceRidget compositeCarWarranty = (ISingleChoiceRidget) getRidget("compositeCarWarranty"); //$NON-NLS-1$
+		final ISingleChoiceRidget compositeCarWarranty = getRidget(ISingleChoiceRidget.class, "compositeCarWarranty"); //$NON-NLS-1$
 		compositeCarWarranty.bindToModel(toList(CarWarranties.values()), BeansObservables.observeValue(carConfig,
 				CarConfig.PROP_WARRANTY));
 		compositeCarWarranty.addMarker(new MandatoryMarker());
 		compositeCarWarranty.updateFromModel();
 
-		final IMultipleChoiceRidget compositeCarPlates = (IMultipleChoiceRidget) getRidget("compositeCarPlates"); //$NON-NLS-1$
+		final IMultipleChoiceRidget compositeCarPlates = getRidget(IMultipleChoiceRidget.class, "compositeCarPlates"); //$NON-NLS-1$
 		compositeCarPlates
 				.bindToModel(toList(carPlates), PojoObservables.observeList(carConfig, CarConfig.PROP_PLATES));
 		compositeCarPlates.addMarker(new MandatoryMarker());
 		compositeCarPlates.updateFromModel();
 
-		ITextRidget txtPrice = (ITextRidget) getRidget("txtPrice"); //$NON-NLS-1$
+		ITextRidget txtPrice = getRidget(ITextRidget.class, "txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
 		DataBindingContext dbc = new DataBindingContext();
 		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextRidget.PROPERTY_TEXT), BeansObservables
 				.observeValue(carConfig, CarConfig.PROP_PRICE), null, null);
 
-		IActionRidget buttonPreset = (IActionRidget) getRidget("buttonPreset"); //$NON-NLS-1$
+		IActionRidget buttonPreset = getRidget(IActionRidget.class, "buttonPreset"); //$NON-NLS-1$
 		buttonPreset.setText("&Quick Config"); //$NON-NLS-1$
 		buttonPreset.addListener(new IActionListener() {
 			public void callback() {
@@ -92,7 +99,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 				compositeCarPlates.setSelection(Arrays.asList(new String[] { carPlates[0] }));
 			}
 		});
-		IActionRidget buttonReset = (IActionRidget) getRidget("buttonReset"); //$NON-NLS-1$
+		IActionRidget buttonReset = getRidget(IActionRidget.class, "buttonReset"); //$NON-NLS-1$
 
 		buttonReset.setText("&Reset"); //$NON-NLS-1$
 		buttonReset.addListener(new IActionListener() {
@@ -106,9 +113,6 @@ public class ChoiceSubModuleController extends SubModuleController {
 		});
 	}
 
-	// helping methods
-	// ////////////////
-
 	private WritableList toList(Object[] values) {
 		return new WritableList(Arrays.asList(values), Object.class);
 	}
@@ -120,7 +124,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 	 * Bean that holds a single car configuration composed of: model, option(s),
 	 * warranty, plate(s).
 	 */
-	private static final class CarConfig extends AbstractBean {
+	public static final class CarConfig extends AbstractBean {
 		public static final String PROP_MODEL = "model"; //$NON-NLS-1$
 		public static final String PROP_OPTIONS = "options"; //$NON-NLS-1$
 		public static final String PROP_WARRANTY = "warranty"; //$NON-NLS-1$
@@ -132,7 +136,6 @@ public class ChoiceSubModuleController extends SubModuleController {
 		private CarWarranties warranty;
 		private List<String> plates = new ArrayList<String>();
 
-		@SuppressWarnings("unused")
 		public CarModels getModel() {
 			return model;
 		}
@@ -142,7 +145,6 @@ public class ChoiceSubModuleController extends SubModuleController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
-		@SuppressWarnings("unused")
 		public List<CarOptions> getOptions() {
 			return Collections.unmodifiableList(options);
 		}
@@ -152,7 +154,6 @@ public class ChoiceSubModuleController extends SubModuleController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
-		@SuppressWarnings("unused")
 		public CarWarranties getWarranty() {
 			return warranty;
 		}
@@ -162,7 +163,6 @@ public class ChoiceSubModuleController extends SubModuleController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
-		@SuppressWarnings("unused")
 		public List<String> getPlates() {
 			return Collections.unmodifiableList(plates);
 		}
@@ -193,7 +193,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 		}
 	}
 
-	private enum CarModels {
+	public enum CarModels {
 		ASTON_MARTIN("Aston Martin V-12 Vanquish"), LOTUS("Lotus Esprit Turbo"), BMW("BMW Z8"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		private String label;
@@ -209,7 +209,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 		}
 	}
 
-	private enum CarOptions {
+	public enum CarOptions {
 		FRONT_GUNS, SELF_DESTRUCT, UNDERWATER, PDCS
 	}
 

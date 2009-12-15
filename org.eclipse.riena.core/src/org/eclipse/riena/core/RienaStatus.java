@@ -23,10 +23,21 @@ public final class RienaStatus {
 	public static final String RIENA_DEVELOPMENT_SYSTEM_PROPERTY = "riena.development"; //$NON-NLS-1$
 
 	/**
+	 * This system property controls {@code RienaStatus.isTest()}
+	 */
+	public static final String RIENA_TEST_SYSTEM_PROPERTY = "riena.test"; //$NON-NLS-1$
+
+	/**
 	 * This is the default value (i.e. if the value is not explicitly defined)
 	 * for the system property {@code RIENA_DEVELOPMENT_SYSTEM_PROPERTY}
 	 */
 	public static final String DEVELOPMENT_DEFAULT = "true"; //$NON-NLS-1$
+
+	/**
+	 * This is the default value (i.e. if the value is not explicitly defined)
+	 * for the system property {@code RIENA_TEST_SYSTEM_PROPERTY}
+	 */
+	public static final String TEST_DEFAULT = "false"; //$NON-NLS-1$
 
 	private RienaStatus() {
 		// Utility
@@ -55,5 +66,16 @@ public final class RienaStatus {
 	 */
 	public static boolean isDevelopment() {
 		return Boolean.parseBoolean(System.getProperty(RIENA_DEVELOPMENT_SYSTEM_PROPERTY, DEVELOPMENT_DEFAULT));
+	}
+
+	/**
+	 * Are we running a <i>test case</i>?<br>
+	 * If {@code true} certain services/functionalities behave more appropriate
+	 * for testing, e.g. ridgets are cretated on the fly
+	 * 
+	 * @return
+	 */
+	public static boolean isTest() {
+		return Boolean.parseBoolean(System.getProperty(RIENA_TEST_SYSTEM_PROPERTY, TEST_DEFAULT));
 	}
 }

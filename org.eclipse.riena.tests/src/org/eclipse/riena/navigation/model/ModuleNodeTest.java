@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.model;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.navigation.NavigationNodeId;
 
 /**
  * Tests of the class {@link ModuleNode}.
@@ -28,15 +29,15 @@ public class ModuleNodeTest extends TestCase {
 		ModuleNode m = new ModuleNode();
 		assertEquals(0, m.calcDepth());
 
-		SubModuleNode sm = new SubModuleNode();
+		SubModuleNode sm = new SubModuleNode(new NavigationNodeId("module1"));
 		m.addChild(sm);
 		assertEquals(0, m.calcDepth());
 
-		SubModuleNode sm2 = new SubModuleNode();
+		SubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("module2"));
 		m.addChild(sm2);
 		assertEquals(2, m.calcDepth());
 
-		SubModuleNode sm21 = new SubModuleNode();
+		SubModuleNode sm21 = new SubModuleNode(new NavigationNodeId("module21"));
 		sm21.setNavigationProcessor(new NavigationProcessor());
 		sm2.addChild(sm21);
 		assertEquals(2, m.calcDepth());

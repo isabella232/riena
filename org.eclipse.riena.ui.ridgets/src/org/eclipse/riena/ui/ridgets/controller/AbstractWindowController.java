@@ -79,6 +79,11 @@ public abstract class AbstractWindowController implements IController, IContext 
 		return ridgets.get(id);
 	}
 
+	@SuppressWarnings("unchecked")
+	public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+		return (R) getRidget(id);
+	}
+
 	public Collection<? extends IRidget> getRidgets() {
 		return ridgets.values();
 	}

@@ -71,23 +71,23 @@ public class MarkerSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		final ITextRidget textName = (ITextRidget) getRidget("textName"); //$NON-NLS-1$
+		final ITextRidget textName = getRidget(ITextRidget.class, "textName"); //$NON-NLS-1$
 		textName.setText("Chateau Schaedelbrummer"); //$NON-NLS-1$
 
-		final IDecimalTextRidget textPrice = (IDecimalTextRidget) getRidget("textPrice"); //$NON-NLS-1$
+		final IDecimalTextRidget textPrice = getRidget(IDecimalTextRidget.class, "textPrice"); //$NON-NLS-1$
 		textPrice.setGrouping(true);
 		textPrice.setText(NumberFormat.getInstance().format(-29.99));
 
-		final INumericTextRidget textAmount = (INumericTextRidget) getRidget("textAmount"); //$NON-NLS-1$
+		final INumericTextRidget textAmount = getRidget(INumericTextRidget.class, "textAmount"); //$NON-NLS-1$
 		textAmount.setSigned(false);
 		textAmount.setGrouping(true);
 		textAmount.setText("1001"); //$NON-NLS-1$
 
-		final IDateTextRidget textDate = (IDateTextRidget) getRidget("textDate"); //$NON-NLS-1$
+		final IDateTextRidget textDate = getRidget(IDateTextRidget.class, "textDate"); //$NON-NLS-1$
 		textDate.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		textDate.setText("04.12.2008"); //$NON-NLS-1$
 
-		final IDateTimeRidget dtDate = (IDateTimeRidget) getRidget("dtDate"); //$NON-NLS-1$
+		final IDateTimeRidget dtDate = getRidget(IDateTimeRidget.class, "dtDate"); //$NON-NLS-1$
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); //$NON-NLS-1$
 		try {
 			Date date = dateFormat.parse("04.12.2008"); //$NON-NLS-1$
@@ -96,86 +96,86 @@ public class MarkerSubModuleController extends SubModuleController {
 			dtDate.setDate(new Date());
 		}
 
-		final IDateTextRidget dtPicker = (IDateTextRidget) getRidget("dtPicker"); //$NON-NLS-1$
+		final IDateTextRidget dtPicker = getRidget(IDateTextRidget.class, "dtPicker"); //$NON-NLS-1$
 		dtPicker.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		dtPicker.setText("04.12.2008"); //$NON-NLS-1$
 
-		final IComboRidget comboAge = (IComboRidget) getRidget("comboAge"); //$NON-NLS-1$
+		final IComboRidget comboAge = getRidget(IComboRidget.class, "comboAge"); //$NON-NLS-1$
 		List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		comboAge.bindToModel(new WritableList(ages, String.class), String.class, null, new WritableValue());
 		comboAge.updateFromModel();
 		comboAge.setEmptySelectionItem("<none>"); //$NON-NLS-1$
 		comboAge.setSelection(1);
 
-		final IComboRidget comboSize = (IComboRidget) getRidget("ccomboSize"); //$NON-NLS-1$
-		List<String> sizes = Arrays.asList(new String[] { "<none>", "xs", "s", "m", "l", "xl" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final IComboRidget comboSize = getRidget(IComboRidget.class, "ccomboSize"); //$NON-NLS-1$
+		List<String> sizes = Arrays.asList(new String[] { "<none>", "xs", "s", "m", "l", "xl" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		comboSize.bindToModel(new WritableList(sizes, String.class), String.class, null, new WritableValue());
 		comboSize.updateFromModel();
 		comboSize.setEmptySelectionItem("<none>"); //$NON-NLS-1$
 		comboSize.setSelection(1);
 
-		final ISingleChoiceRidget choiceType = (ISingleChoiceRidget) getRidget("choiceType"); //$NON-NLS-1$
+		final ISingleChoiceRidget choiceType = getRidget(ISingleChoiceRidget.class, "choiceType"); //$NON-NLS-1$
 		choiceType.bindToModel(Arrays.asList("red", "white", "rose"), (List<String>) null, new TestBean(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				TestBean.PROPERTY);
 		choiceType.updateFromModel();
 		choiceType.setSelection("red"); //$NON-NLS-1$
 
-		final IMultipleChoiceRidget choiceFlavor = (IMultipleChoiceRidget) getRidget("choiceFlavor"); //$NON-NLS-1$
+		final IMultipleChoiceRidget choiceFlavor = getRidget(IMultipleChoiceRidget.class, "choiceFlavor"); //$NON-NLS-1$
 		choiceFlavor.bindToModel(Arrays.asList("dry", "sweet", "sour", "spicy"), (List<String>) null, new TestBean(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				TestBean.PROPERTY);
 		choiceFlavor.updateFromModel();
 		choiceFlavor.setSelection(Arrays.asList("dry")); //$NON-NLS-1$
 
-		final IListRidget listPersons = (IListRidget) getRidget("listPersons"); //$NON-NLS-1$
+		final IListRidget listPersons = getRidget(IListRidget.class, "listPersons"); //$NON-NLS-1$
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		listPersons.bindToModel(createPersonList(), Person.class, "listEntry"); //$NON-NLS-1$
 		listPersons.updateFromModel();
 
-		final ITableRidget tablePersons = (ITableRidget) getRidget("tablePersons"); //$NON-NLS-1$
+		final ITableRidget tablePersons = getRidget(ITableRidget.class, "tablePersons"); //$NON-NLS-1$
 		tablePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		String[] colValues = new String[] { "lastname", "firstname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] colHeaders = new String[] { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 		tablePersons.bindToModel(createPersonList(), Person.class, colValues, null); // colHeaders);
 		tablePersons.updateFromModel();
 
-		final ICompositeTableRidget compTable = (ICompositeTableRidget) getRidget("compTable"); //$NON-NLS-1$
+		final ICompositeTableRidget compTable = getRidget(ICompositeTableRidget.class, "compTable"); //$NON-NLS-1$
 		WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
 		compTable.bindToModel(input, Person.class, RowRidget.class);
 		compTable.updateFromModel();
 
-		final ITreeRidget treePersons = (ITreeRidget) getRidget("treePersons"); //$NON-NLS-1$
+		final ITreeRidget treePersons = getRidget(ITreeRidget.class, "treePersons"); //$NON-NLS-1$
 		treePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		treePersons.bindToModel(createTreeRoots(), ITreeNode.class, ITreeNode.PROPERTY_CHILDREN,
 				ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE);
 		treePersons.updateFromModel();
 
-		final IGroupedTreeTableRidget treeWCols = (IGroupedTreeTableRidget) getRidget("treeWCols"); //$NON-NLS-1$
+		final IGroupedTreeTableRidget treeWCols = getRidget(IGroupedTreeTableRidget.class, "treeWCols"); //$NON-NLS-1$
 		treeWCols.setSelectionType(ISelectableRidget.SelectionType.MULTI);
 		treeWCols.setGroupingEnabled(true);
 		colValues = new String[] { "word", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] colHeaders2 = new String[] { "Word", "#A" }; //$NON-NLS-1$ //$NON-NLS-2$
 		treeWCols.bindToModel(createTreeTableRoots(), WordNode.class, ITreeNode.PROPERTY_CHILDREN,
-				ITreeNode.PROPERTY_PARENT, colValues, null); // colHeaders);
+				ITreeNode.PROPERTY_PARENT, colValues, null); // colHeaders2);
 		treeWCols.updateFromModel();
 
-		final IToggleButtonRidget buttonToggle = (IToggleButtonRidget) getRidget("buttonToggle"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonToggle = getRidget(IToggleButtonRidget.class, "buttonToggle"); //$NON-NLS-1$
 		buttonToggle.setText("Toggle"); //$NON-NLS-1$
 		buttonToggle.setSelected(true);
-		final IActionRidget buttonPush = (IActionRidget) getRidget("buttonPush"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonRadioA = (IToggleButtonRidget) getRidget("buttonRadioA"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonRadioB = (IToggleButtonRidget) getRidget("buttonRadioB"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonCheck = (IToggleButtonRidget) getRidget("buttonCheck"); //$NON-NLS-1$
+		final IActionRidget buttonPush = getRidget(IActionRidget.class, "buttonPush"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonRadioA = getRidget(IToggleButtonRidget.class, "buttonRadioA"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonRadioB = getRidget(IToggleButtonRidget.class, "buttonRadioB"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonCheck = getRidget(IToggleButtonRidget.class, "buttonCheck"); //$NON-NLS-1$
 
 		final IRidget[] markables = new IRidget[] { textName, textPrice, textAmount, textDate, dtDate, dtPicker,
 				comboAge, comboSize, choiceType, choiceFlavor, listPersons, tablePersons, compTable, treePersons,
 				treeWCols, buttonToggle, buttonPush, buttonRadioA, buttonRadioB, buttonCheck };
 
-		final IToggleButtonRidget checkMandatory = (IToggleButtonRidget) getRidget("checkMandatory"); //$NON-NLS-1$
-		final IToggleButtonRidget checkError = (IToggleButtonRidget) getRidget("checkError"); //$NON-NLS-1$
-		final IToggleButtonRidget checkDisabled = (IToggleButtonRidget) getRidget("checkDisabled"); //$NON-NLS-1$
-		final IToggleButtonRidget checkOutput = (IToggleButtonRidget) getRidget("checkOutput"); //$NON-NLS-1$
-		final IToggleButtonRidget checkHidden = (IToggleButtonRidget) getRidget("checkHidden"); //$NON-NLS-1$
-		final IToggleButtonRidget checkHiddenParent = (IToggleButtonRidget) getRidget("checkHiddenParent"); //$NON-NLS-1$
+		final IToggleButtonRidget checkMandatory = getRidget(IToggleButtonRidget.class, "checkMandatory"); //$NON-NLS-1$
+		final IToggleButtonRidget checkError = getRidget(IToggleButtonRidget.class, "checkError"); //$NON-NLS-1$
+		final IToggleButtonRidget checkDisabled = getRidget(IToggleButtonRidget.class, "checkDisabled"); //$NON-NLS-1$
+		final IToggleButtonRidget checkOutput = getRidget(IToggleButtonRidget.class, "checkOutput"); //$NON-NLS-1$
+		final IToggleButtonRidget checkHidden = getRidget(IToggleButtonRidget.class, "checkHidden"); //$NON-NLS-1$
+		final IToggleButtonRidget checkHiddenParent = getRidget(IToggleButtonRidget.class, "checkHiddenParent"); //$NON-NLS-1$
 
 		checkMandatory.setText("&mandatory"); //$NON-NLS-1$
 		checkMandatory.addListener(new IActionListener() {

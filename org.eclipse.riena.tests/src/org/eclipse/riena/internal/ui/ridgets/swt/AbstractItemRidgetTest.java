@@ -77,6 +77,22 @@ public class AbstractItemRidgetTest extends TestCase {
 
 	}
 
+	public void testFireAction() {
+		FTActionListener listener1 = new FTActionListener();
+		FTActionListener listener2 = new FTActionListener();
+
+		itemRidget.addListener(listener1);
+
+		itemRidget.fireAction();
+		itemRidget.fireAction();
+		assertEquals(2, listener1.getCount());
+
+		itemRidget.addListener(listener2);
+		itemRidget.fireAction();
+		assertEquals(3, listener1.getCount());
+		assertEquals(1, listener2.getCount());
+	}
+
 	// helping methods
 	//////////////////
 

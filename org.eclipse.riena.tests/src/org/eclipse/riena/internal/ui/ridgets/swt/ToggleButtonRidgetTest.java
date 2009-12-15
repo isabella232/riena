@@ -512,6 +512,32 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(control.getSelection());
 	}
 
+	public void testFireAction() {
+		IToggleButtonRidget ridget = getRidget();
+		FTActionListener listener1 = new FTActionListener();
+		FTActionListener listener2 = new FTActionListener();
+
+		ridget.addListener(listener1);
+
+		BooleanTestPojo model = new BooleanTestPojo();
+		model.setSelected(true);
+		IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
+		ridget.bindToModel(modelOV);
+		ridget.updateFromModel();
+
+		assertTrue(ridget.isSelected());
+
+		ridget.fireAction();
+		ridget.fireAction();
+		assertEquals(5, listener1.getCount());
+
+		ridget.addListener(listener2);
+		ridget.fireAction();
+		assertEquals(7, listener1.getCount());
+		assertEquals(2, listener2.getCount());
+		assertFalse(ridget.isSelected());
+	}
+
 	// helping classes
 	// ////////////////
 

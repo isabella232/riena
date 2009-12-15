@@ -246,6 +246,23 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 		assertMarkerIgnored(new NegativeMarker());
 	}
 
+	public void testFireAction() {
+		IActionRidget ridget = getRidget();
+		FTActionListener listener1 = new FTActionListener();
+		FTActionListener listener2 = new FTActionListener();
+
+		ridget.addListener(listener1);
+
+		ridget.fireAction();
+		ridget.fireAction();
+		assertEquals(2, listener1.getCount());
+
+		ridget.addListener(listener2);
+		ridget.fireAction();
+		assertEquals(3, listener1.getCount());
+		assertEquals(1, listener2.getCount());
+	}
+
 	// helping methods
 	// ////////////////
 

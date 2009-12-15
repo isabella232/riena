@@ -86,4 +86,68 @@ public class Address extends AbstractBean {
 		return town;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((country == null) ? 0 : country.hashCode());
+		result = prime * result + ((postalCode == null) ? 0 : postalCode.hashCode());
+		result = prime * result + ((streetAndNumber == null) ? 0 : streetAndNumber.hashCode());
+		result = prime * result + ((town == null) ? 0 : town.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Address other = (Address) obj;
+		if (country == null) {
+			if (other.country != null) {
+				return false;
+			}
+		} else if (!country.equals(other.country)) {
+			return false;
+		}
+		if (postalCode == null) {
+			if (other.postalCode != null) {
+				return false;
+			}
+		} else if (!postalCode.equals(other.postalCode)) {
+			return false;
+		}
+		if (streetAndNumber == null) {
+			if (other.streetAndNumber != null) {
+				return false;
+			}
+		} else if (!streetAndNumber.equals(other.streetAndNumber)) {
+			return false;
+		}
+		if (town == null) {
+			if (other.town != null) {
+				return false;
+			}
+		} else if (!town.equals(other.town)) {
+			return false;
+		}
+		return true;
+	}
+
 }

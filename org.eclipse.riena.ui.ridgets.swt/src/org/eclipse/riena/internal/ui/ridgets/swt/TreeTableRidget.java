@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
-import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
 
@@ -40,7 +39,7 @@ import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
  * Ridget for SWT @link {@link Tree} widgets, that shows a tree with multiple
  * columns.
  */
-public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGroupedTreeTableRidget {
+public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidget {
 
 	private final ColumnSortListener sortListener;
 	private final Listener groupedTableListener;

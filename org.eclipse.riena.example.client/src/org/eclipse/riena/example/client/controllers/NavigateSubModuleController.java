@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -17,10 +19,11 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
-public class NavigateSubModuleController extends SubModuleController /*
-																	 * implements
-																	 * IInjectAllRidgets
-																	 */{
+/*
+ * implements
+ * IInjectAllRidgets
+ */
+public class NavigateSubModuleController extends SubModuleController {
 
 	public NavigateSubModuleController() {
 		this(null);
@@ -30,28 +33,28 @@ public class NavigateSubModuleController extends SubModuleController /*
 		super(navigationNode);
 	}
 
-	/*
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
-	 */
 	@Override
 	public void configureRidgets() {
 
-		IActionRidget comboAndList = (IActionRidget) getRidget("comboAndList"); //$NON-NLS-1$
+		IActionRidget comboAndList = getRidget(IActionRidget.class, "comboAndList"); //$NON-NLS-1$
 		comboAndList.setText("Combo and List (SubApplication 1)"); //$NON-NLS-1$
 		comboAndList.addListener(new ComboAndListListener());
 
-		IActionRidget tableTextAndTree = (IActionRidget) getRidget("tableTextAndTree"); //$NON-NLS-1$
+		IActionRidget tableTextAndTree = getRidget(IActionRidget.class, "tableTextAndTree"); //$NON-NLS-1$
 		tableTextAndTree.setText("Table, Text and Tree (SubApplication 2)"); //$NON-NLS-1$
 		tableTextAndTree.addListener(new TableTextAndTreeListener());
 
-		IActionRidget navigateRidget = (IActionRidget) getRidget("btnNavigateToRidget"); //$NON-NLS-1$
+		final PersonModificationBean bean = new PersonModificationBean();
+		bean.setPerson(new Person("Doe", "Jane")); //$NON-NLS-1$ //$NON-NLS-2$
+		IActionRidget navigateRidget = getRidget(IActionRidget.class, "btnNavigateToRidget"); //$NON-NLS-1$
 		navigateRidget.addListener(new IActionListener() {
 			public void callback() {
 				getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.combo"), //$NON-NLS-1$
-						new NavigationArgument(null, "textFirst")); //$NON-NLS-1$
+						new NavigationArgument(bean, "textFirst")); //$NON-NLS-1$
 
 			}
 		});
+
 	}
 
 	private class ComboAndListListener implements IActionListener {

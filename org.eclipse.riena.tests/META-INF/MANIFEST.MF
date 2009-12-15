@@ -30,7 +30,8 @@ Require-Bundle: org.eclipse.core.databinding,
  org.eclipse.riena.ui.filter,
  org.eclipse.riena.monitor.client,
  org.eclipse.riena.client,
- org.eclipse.riena.monitor.common
+ org.eclipse.riena.monitor.common,
+ org.eclipse.riena.example.client
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
 Export-Package: org.eclipse.riena,

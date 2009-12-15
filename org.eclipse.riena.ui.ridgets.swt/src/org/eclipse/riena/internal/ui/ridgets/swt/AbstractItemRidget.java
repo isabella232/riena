@@ -268,4 +268,8 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 		}
 	}
 
+	public void fireAction() {
+		actionObserver.widgetSelected(null);
+	}
+
 }

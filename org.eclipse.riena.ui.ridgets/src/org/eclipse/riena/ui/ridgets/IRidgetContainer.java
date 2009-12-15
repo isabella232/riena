@@ -30,7 +30,7 @@ public interface IRidgetContainer {
 	void addRidget(String id, IRidget ridget);
 
 	/**
-	 * Return the ridget with the given id from this ridget container.
+	 * Returns the ridget with the given id from this ridget container.
 	 * 
 	 * @param id
 	 *            the ridget id.
@@ -39,7 +39,23 @@ public interface IRidgetContainer {
 	IRidget getRidget(String id);
 
 	/**
-	 * Return the ridgets of this ridget container.
+	 * Returns the ridget with the given id from this container. <br>
+	 * If no ridget with that id can be found (e.g. when running controller
+	 * tests), this method creates and returns a ridget of the given ridgetClazz
+	 * and adds it to the container.
+	 * 
+	 * @param <R>
+	 *            the type of class
+	 * @param ridgetClazz
+	 *            the class of the ridget
+	 * @param id
+	 *            the id of the ridget
+	 * @return the ridget instance
+	 */
+	<R extends IRidget> R getRidget(Class<R> ridgetClazz, String id);
+
+	/**
+	 * Returns the ridgets of this ridget container.
 	 * 
 	 * @return the ridgets.
 	 */

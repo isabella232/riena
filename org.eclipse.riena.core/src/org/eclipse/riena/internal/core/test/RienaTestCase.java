@@ -48,7 +48,7 @@ import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 @SuppressWarnings("restriction")
 public abstract class RienaTestCase extends TestCase {
 
-	// Keep track of services and and corresponding service references.
+	// Keep track of services and corresponding service references.
 	private final Map<Object, ServiceReference> services = new HashMap<Object, ServiceReference>();
 	// Do not access this field directly! Use the getter getContext() because this does a lazy initialization.
 	private BundleContext context;

@@ -100,7 +100,7 @@ public interface IActionRidget extends IRidget {
 	 * 
 	 */
 	void setIcon(String iconName);
-
+	
 	/**
 	 * Sets the name and the size of the icon.
 	 * 
@@ -112,4 +112,8 @@ public interface IActionRidget extends IRidget {
 	 */
 	void setIcon(String iconName, IconSize size);
 
+	/**
+	 * Invokes a selection command on the ridget.
+	 */
+	void fireAction();
 }

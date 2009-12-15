@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Widget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.BrowserRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.CComboRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.ClassRidgetMapper;
 import org.eclipse.riena.internal.ui.ridgets.swt.ComboRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.CompositeTableRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.DateTextRidget;
@@ -153,6 +154,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
 		Mapping mapping = new Mapping(controlClazz, ridgetClazz);
 		mappings.add(mapping);
+		addMappingToClassRidgetMapper(ridgetClazz);
 	}
 
 	/**
@@ -175,6 +177,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz, int swtStyle) {
 		Mapping mapping = new Mapping(controlClazz, ridgetClazz, swtStyle);
 		mappings.add(mapping);
+		addMappingToClassRidgetMapper(ridgetClazz);
 	}
 
 	/**
@@ -200,6 +203,11 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 			IMappingCondition condition) {
 		Mapping mapping = new Mapping(controlClazz, ridgetClazz, condition);
 		mappings.add(mapping);
+		addMappingToClassRidgetMapper(ridgetClazz);
+	}
+
+	private void addMappingToClassRidgetMapper(Class<? extends IRidget> ridgetClazz) {
+		ClassRidgetMapper.getInstance().addMapping(ridgetClazz);
 	}
 
 	public Class<? extends IRidget> getRidgetClass(Class<? extends Object> controlClazz) {

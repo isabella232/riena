@@ -202,6 +202,11 @@ public class InjectBindingManagerTest extends TestCase {
 		public void configureRidgets() {
 		}
 
+		@SuppressWarnings("unchecked")
+		public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+			return (R) getRidget(id);
+		}
+
 	}
 
 }

@@ -178,4 +178,8 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	 */
 	protected abstract void setUIControlImage(Image image);
 
+	public void fireAction() {
+		actionObserver.widgetSelected(null);
+	}
+
 }

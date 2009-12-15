@@ -257,6 +257,11 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 			boolean cancel = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT && !isEnabled();
 			return cancel ? Status.CANCEL_STATUS : Status.OK_STATUS;
 		}
-	};
+	}
+
+	public void fireAction() {
+		actionObserver.widgetSelected(null);
+		setSelected(!isSelected());
+	}
 
 }

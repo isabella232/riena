@@ -18,9 +18,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.riena.example.client.controllers.NavigationSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -62,13 +60,4 @@ public class NavigationSubModuleView extends SubModuleView<NavigationSubModuleCo
 		addModuleGroupBtn.setLayoutData(gridData);
 
 	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleView#createBinding()
-	 */
-	@Override
-	protected AbstractViewBindingDelegate createBinding() {
-		return new InjectSwtViewBindingDelegate();
-	}
-
 }

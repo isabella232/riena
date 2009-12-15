@@ -78,6 +78,18 @@ public abstract class AbstractRidgetController implements IController {
 		return map.get(id);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.IRidgetContainer#getRidget(java.lang.Class,
+	 * java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+		return (R) getRidget(id);
+	}
+
 	public final Collection<? extends IRidget> getRidgets() {
 		return Collections.unmodifiableCollection(map.values());
 	}

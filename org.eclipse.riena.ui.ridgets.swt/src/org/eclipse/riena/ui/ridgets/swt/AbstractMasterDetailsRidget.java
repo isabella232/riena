@@ -491,6 +491,11 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			result.remove(getTableRidget());
 			return result;
 		}
+
+		@SuppressWarnings("unchecked")
+		public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+			return (R) getRidget(id);
+		}
 	}
 
 }

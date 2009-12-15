@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 
-import junit.framework.TestCase;
-
+import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.widgets.Display;
@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
@@ -35,13 +36,15 @@ import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Tests of the class {@link NavigationNodeController}.
  */
 @UITestCase
-public class NavigationNodeControllerTest extends TestCase {
+public class NavigationNodeControllerTest extends RienaTestCase {
 
 	private MyNavigationNodeController controller;
 	private SubModuleNode node;
@@ -154,6 +157,18 @@ public class NavigationNodeControllerTest extends TestCase {
 
 	}
 
+	public void testGetRidget() throws Exception {
+		IRidget ridget = controller.getRidget(MockRidget.class, "myMock");
+		assertEquals(MockRidget.class, ridget.getClass());
+
+		try {
+			ridget = controller.getRidget(IMockRidget.class, "myMockInterface");
+			fail("BindingException expected");
+		} catch (BindingException e) {
+			ok("BindingException expected");
+		}
+	}
+
 	/**
 	 * Test for bug 269131.
 	 */
@@ -205,7 +220,7 @@ public class NavigationNodeControllerTest extends TestCase {
 		assertTrue(markers.contains(mandatoryMarker));
 	}
 
-	private static class MyNavigationNodeController extends SubModuleController {
+	public static class MyNavigationNodeController extends SubModuleController {
 
 		public MyNavigationNodeController(ISubModuleNode navigationNode) {
 			super(navigationNode);
@@ -219,7 +234,90 @@ public class NavigationNodeControllerTest extends TestCase {
 	}
 
 	private static class CompositeRidget extends AbstractCompositeRidget {
+	}
 
+	private interface IMockRidget extends IRidget {
+
+	}
+
+	/**
+	 * Mock implementation of ridget.
+	 */
+	public static class MockRidget implements IMockRidget {
+
+		public Object getUIControl() {
+			return null;
+		}
+
+		public void setUIControl(Object uiControl) {
+		}
+
+		public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		}
+
+		public void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		}
+
+		public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		}
+
+		public void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		}
+
+		public boolean isVisible() {
+			return false;
+		}
+
+		public void setVisible(boolean visible) {
+		}
+
+		public boolean isEnabled() {
+			return false;
+		}
+
+		public void setEnabled(boolean enabled) {
+		}
+
+		public void addFocusListener(IFocusListener listener) {
+		}
+
+		public void removeFocusListener(IFocusListener listener) {
+		}
+
+		public void updateFromModel() {
+		}
+
+		public void requestFocus() {
+		}
+
+		public boolean hasFocus() {
+			return false;
+		}
+
+		public boolean isFocusable() {
+			return false;
+		}
+
+		public void setFocusable(boolean focusable) {
+		}
+
+		public String getToolTipText() {
+			return null;
+		}
+
+		public void setToolTipText(String toolTipText) {
+		}
+
+		public boolean isBlocked() {
+			return false;
+		}
+
+		public void setBlocked(boolean blocked) {
+		}
+
+		public String getID() {
+			return null;
+		}
 	}
 
 }
