@@ -25,8 +25,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 /**
  * A mapper that maps ridget interfaces to concrete ridget implementations.
  * 
- * TODO abstract classes are not really practicable here, but there seems to be
- * no other way!
+ * @since 2.0
  */
 public final class ClassRidgetMapper {
 

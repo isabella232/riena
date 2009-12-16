@@ -51,6 +51,8 @@ public interface IRidgetContainer {
 	 * @param id
 	 *            the id of the ridget
 	 * @return the ridget instance
+	 * 
+	 * @since 2.0
 	 */
 	<R extends IRidget> R getRidget(Class<R> ridgetClazz, String id);
 

@@ -71,9 +71,11 @@ public final class RienaStatus {
 	/**
 	 * Are we running a <i>test case</i>?<br>
 	 * If {@code true} certain services/functionalities behave more appropriate
-	 * for testing, e.g. ridgets are cretated on the fly
+	 * for testing, e.g. ridgets are created on the fly
 	 * 
-	 * @return
+	 * @return whether we are running a test
+	 * 
+	 * @since 2.0
 	 */
 	public static boolean isTest() {
 		return Boolean.parseBoolean(System.getProperty(RIENA_TEST_SYSTEM_PROPERTY, TEST_DEFAULT));
