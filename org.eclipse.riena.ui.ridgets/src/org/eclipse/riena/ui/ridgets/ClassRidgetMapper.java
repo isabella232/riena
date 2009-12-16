@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt;
+package org.eclipse.riena.ui.ridgets;
 
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.internal.ui.ridgets.Activator;
 
 /**
  * A mapper that maps ridget interfaces to concrete ridget implementations.
@@ -46,25 +46,6 @@ public final class ClassRidgetMapper {
 
 	private ClassRidgetMapper() {
 		mappings = new HashMap<Class<? extends IRidget>, Class<? extends IRidget>>();
-		initDefaultMappings();
-	}
-
-	private void initDefaultMappings() {
-		//		addMapping(IComboRidget.class, ComboRidget.class);
-		//		addMapping(IDecimalTextRidget.class, DecimalTextRidget.class);
-		//		addMapping(INumericTextRidget.class, NumericTextRidget.class);
-		//		addMapping(IDateTextRidget.class, DateTextRidget.class);
-		//		addMapping(IDateTimeRidget.class, DateTimeRidget.class);
-		//		addMapping(ITextRidget.class, TextRidget.class);
-		//		addMapping(IActionRidget.class, ActionRidget.class);
-		//		addMapping(IToggleButtonRidget.class, ToggleButtonRidget.class);
-		//		addMapping(ISingleChoiceRidget.class, SingleChoiceRidget.class);
-		//		addMapping(IMultipleChoiceRidget.class, MultipleChoiceRidget.class);
-		//		addMapping(ITableRidget.class, TableRidget.class);
-		//		addMapping(IListRidget.class, ListRidget.class);
-		//		addMapping(ICompositeTableRidget.class, CompositeTableRidget.class);
-		//		addMapping(ITreeRidget.class, TreeRidget.class);
-		//		addMapping(IGroupedTreeTableRidget.class, TreeTableRidget.class);
 	}
 
 	/**

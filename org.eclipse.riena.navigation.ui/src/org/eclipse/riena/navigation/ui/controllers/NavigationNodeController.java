@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.internal.ui.ridgets.swt.ClassRidgetMapper;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
@@ -32,6 +31,7 @@ import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 import org.eclipse.riena.ui.core.context.IContext;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;

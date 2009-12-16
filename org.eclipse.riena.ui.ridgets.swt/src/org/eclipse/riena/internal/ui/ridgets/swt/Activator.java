@@ -10,14 +10,17 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
-import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.osgi.framework.BundleContext;
+
+import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
+import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -41,6 +44,7 @@ public class Activator extends AbstractRienaUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		initializeDefaultClassRidgetMappings();
 	}
 
 	@Override
@@ -110,6 +114,15 @@ public class Activator extends AbstractRienaUIPlugin {
 			sharedColors = new SharedColors(display);
 		}
 		return sharedColors.getSharedColor(colorKey);
+	}
+
+	/**
+	 * Method to add default mappings used in the {@link ClassRidgetMapper}. <br>
+	 * Example: ClassRidgetMapper.getInstance().addMapping(IComboRidget.class,
+	 * ComboRidget.class)
+	 */
+	private void initializeDefaultClassRidgetMappings() {
+		// add mappings here
 	}
 
 }
