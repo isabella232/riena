@@ -15,12 +15,14 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 
+import org.eclipse.riena.beans.common.ListBean;
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.example.client.views.LayoutSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.ICompositeRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
@@ -39,25 +41,26 @@ public class LayoutSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		ISingleChoiceRidget ccGender = (ISingleChoiceRidget) getRidget("ccGender"); //$NON-NLS-1$
+		ISingleChoiceRidget ccGender = getRidget(ISingleChoiceRidget.class, "ccGender"); //$NON-NLS-1$
 		ccGender.bindToModel(Arrays.asList(Person.FEMALE, Person.MALE), (List<String>) null, new StringBean(),
 				StringBean.PROP_VALUE);
 		ccGender.updateFromModel();
 
-		IMultipleChoiceRidget ccPets = (IMultipleChoiceRidget) getRidget("ccPets"); //$NON-NLS-1$
-		ccPets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, new StringBean(),
-				StringBean.PROP_VALUE);
+		IMultipleChoiceRidget ccPets = getRidget(IMultipleChoiceRidget.class, "ccPets"); //$NON-NLS-1$
+		ccPets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, new ListBean(),
+				ListBean.PROPERTY_VALUES);
 		ccPets.updateFromModel();
 
-		IActionRidget btnMore = (IActionRidget) getRidget("btnMore"); //$NON-NLS-1$
-		final IActionRidget btnLess = (IActionRidget) getRidget("btnLess"); //$NON-NLS-1$
+		IActionRidget btnMore = getRidget(IActionRidget.class, "btnMore"); //$NON-NLS-1$
+		final IActionRidget btnLess = getRidget(IActionRidget.class, "btnLess"); //$NON-NLS-1$
 
 		btnMore.addListener(new IActionListener() {
 			public void callback() {
 				length++;
 				btnLess.setEnabled(true);
 				updateCaptions(ridgets, captions, length);
-				layout();
+				// Method 1: compositeRidget.layout() will layout the contents of that ridget
+				getRidget(ICompositeRidget.class, "parent").layout(); //$NON-NLS-1$
 			}
 		});
 
@@ -66,6 +69,7 @@ public class LayoutSubModuleController extends SubModuleController {
 				length--;
 				btnLess.setEnabled(length > 1);
 				updateCaptions(ridgets, captions, length);
+				// Method 2: SubModuleController.layout() will layout all contents
 				layout();
 			}
 		});

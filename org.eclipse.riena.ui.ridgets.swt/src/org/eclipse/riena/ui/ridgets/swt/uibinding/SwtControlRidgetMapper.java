@@ -227,9 +227,6 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		// TODO: to optimize avoid double iteration over mappings
 		for (Mapping mapping : mappings) {
 			if ((!mapping.isControlStyleIgnore() || mapping.hasCondition()) && mapping.isMatching(control)) {
-				if ((!mapping.isControlStyleIgnore() || mapping.hasCondition()) && mapping.isMatching(control)) {
-					System.out.println(mapping);
-				}
 				return mapping.getRidgetClazz();
 			}
 		}

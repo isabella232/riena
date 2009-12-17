@@ -35,6 +35,7 @@ public class LayoutSubModuleView extends SubModuleView<LayoutSubModuleController
 	protected void basicCreatePartControl(Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(20, 5).applyTo(parent);
+		addUIControl(parent, "parent"); //$NON-NLS-1$
 
 		createDetails(parent);
 		createButtonBar(parent);
