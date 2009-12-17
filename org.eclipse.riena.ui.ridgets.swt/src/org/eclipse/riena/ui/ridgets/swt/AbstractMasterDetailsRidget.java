@@ -301,7 +301,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	protected final void updateVisible() {
 		AbstractMasterDetailsComposite control = getUIControl();
 		if (control != null) {
-			control.setVisible(!markedHidden);
+			control.setVisible(!isMarkedHidden());
 		}
 	}
 

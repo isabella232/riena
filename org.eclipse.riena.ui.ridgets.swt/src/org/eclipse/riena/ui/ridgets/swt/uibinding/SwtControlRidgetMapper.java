@@ -21,6 +21,7 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
@@ -39,6 +40,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.BrowserRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.CComboRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ComboRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.CompositeRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.CompositeTableRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.DateTextRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.DateTimeRidget;
@@ -131,6 +133,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(ImageButton.class, ImageButtonRidget.class);
 		addMapping(ChoiceComposite.class, SingleChoiceRidget.class, new SingleChoiceCondition());
 		addMapping(ChoiceComposite.class, MultipleChoiceRidget.class, new MultipleChoiceCondition());
+		addMapping(Composite.class, CompositeRidget.class, new CompositeWithBindingIdCondition());
 		addMapping(Combo.class, ComboRidget.class);
 		addMapping(CCombo.class, CComboRidget.class);
 		addMapping(DateTime.class, DateTimeRidget.class);
@@ -224,6 +227,9 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		// TODO: to optimize avoid double iteration over mappings
 		for (Mapping mapping : mappings) {
 			if ((!mapping.isControlStyleIgnore() || mapping.hasCondition()) && mapping.isMatching(control)) {
+				if ((!mapping.isControlStyleIgnore() || mapping.hasCondition()) && mapping.isMatching(control)) {
+					System.out.println(mapping);
+				}
 				return mapping.getRidgetClazz();
 			}
 		}

@@ -61,6 +61,19 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 		return new ArrayList<Object>(map.values());
 	}
 
+	/**
+	 * Returns true if the given UI control has a binding property, false
+	 * otherwise.
+	 * 
+	 * @param uiControl
+	 *            UI control; may be null
+	 * @since 2.0
+	 */
+	public boolean hasBindingProperty(Object uiControl) {
+		String prop = locateBindingProperty(uiControl);
+		return !StringUtils.isDeepEmpty(prop);
+	}
+
 	public String locateBindingProperty(Object uiControl) {
 		if (uiControl instanceof Widget) {
 			Widget widget = (Widget) uiControl;

@@ -19,20 +19,17 @@ import java.util.Map;
 
 import org.eclipse.core.databinding.BindingException;
 
-import org.eclipse.riena.ui.common.IComplexComponent;
-
 /**
  * 
  */
 public abstract class AbstractCompositeRidget extends AbstractRidget implements IComplexRidget {
 
 	private final PropertyChangeListener propertyChangeListener;
-
 	private final Map<String, IRidget> ridgets;
-	private IComplexComponent uiControl;
 
-	protected boolean markedHidden; // TODO add MarkerSupport instead of boolean flag
-	private boolean enabled = true;
+	private Object uiControl;
+	private boolean markedHidden;
+	private boolean enabled;
 
 	private String toolTip = null;
 
@@ -43,7 +40,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		super();
 		propertyChangeListener = new PropertyChangeHandler();
 		ridgets = new HashMap<String, IRidget>();
-		markedHidden = false;
+		enabled = true;
 	}
 
 	public void addRidget(String id, IRidget ridget) {
@@ -67,6 +64,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		return ridgets.get(id);
 	}
 
+	@SuppressWarnings("unchecked")
 	public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
 		return (R) getRidget(id);
 	}
@@ -79,7 +77,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		return toolTip;
 	}
 
-	public IComplexComponent getUIControl() {
+	public Object getUIControl() {
 		return uiControl;
 	}
 
@@ -147,15 +145,11 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	public void setUIControl(Object uiControl) {
-		if (uiControl != null && !(uiControl instanceof IComplexComponent)) {
-			throw new UIBindingFailure("uiControl of a AbstractCompositeRidget must be a IComplexComponent but was a " //$NON-NLS-1$
-					+ uiControl.getClass().getSimpleName());
-		}
 		checkUIControl(uiControl);
 		unbindUIControl();
 		// save state
 		this.savedVisibleState = getUIControl() != null ? isUIControlVisible() : savedVisibleState;
-		this.uiControl = (IComplexComponent) uiControl;
+		this.uiControl = uiControl;
 		updateVisible();
 		updateEnabled();
 		updateToolTipText();
@@ -208,9 +202,23 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
+	 * Returns true if the ridget is marked as hidden (visible = false). Note:
+	 * this reflects the ridget state, not the control state. The ridget may not
+	 * have control yet.
+	 * 
+	 * @since 2.0
+	 */
+	protected final boolean isMarkedHidden() {
+		return markedHidden;
+	}
+
+	/**
 	 * Returns true if the control of this ridget is visible, false otherwise.
 	 * This default implementation always returns true and should be overriden
 	 * by subclasses.
+	 * <p>
+	 * Note: this will only be called when the UI control is know to be
+	 * non-null.
 	 */
 	protected boolean isUIControlVisible() {
 		return true;
