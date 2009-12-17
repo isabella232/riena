@@ -49,13 +49,14 @@ public class DisabledMarkerVisualizer {
 		removePaintlistener(control);
 
 		if (!getRidget().isEnabled()) {
-			renderMemento = storeState();
-			setHeaderVisible(false);
+			// TODO [ev] Disabled because of: 298024 Table - setHeaderVisible will reset scroll bars to top,left
+			// renderMemento = storeState();
+			// setHeaderVisible(false);
 			addPaintlistener(control);
 		} else {
-			if (renderMemento != null) {
-				setHeaderVisible(renderMemento.headerVisible);
-			}
+			//			if (renderMemento != null) {
+			//				setHeaderVisible(renderMemento.headerVisible);
+			//			}
 		}
 		control.redraw();
 	}
