@@ -479,7 +479,9 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static CCombo createCCombo(Composite parent) {
-		return new CCombo(parent, SWT.BORDER | SWT.READ_ONLY);
+		CCombo result = new CCombo(parent, SWT.BORDER | SWT.READ_ONLY);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
