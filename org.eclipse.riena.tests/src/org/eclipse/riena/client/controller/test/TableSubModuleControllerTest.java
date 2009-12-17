@@ -46,7 +46,6 @@ public class TableSubModuleControllerTest extends AbstractSubModuleControllerTes
 
 		// FIXME wait for 
 		// 298033: Make row selection in TableRidget independent of the UIControl https://bugs.eclipse.org/bugs/show_bug.cgi?id=298033
-		// assertEquals(0, table.getSelectionIndex()); 
 		//assertTrue(table.getSelection().isEmpty());
 		//assertFalse(buttonDelete.isEnabled());
 
@@ -67,5 +66,18 @@ public class TableSubModuleControllerTest extends AbstractSubModuleControllerTes
 		assertFalse(table.getSelection().isEmpty());
 		buttonDelete.fireAction();
 		assertEquals(count - 2, table.getOptionCount());
+	}
+
+	public void testAddButton() {
+		ITableRidget table = controller.getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
+		IActionRidget buttonAdd = controller.getRidget(IActionRidget.class, "buttonAddSibling"); //$NON-NLS-1$
+		int count = table.getOptionCount();
+
+		buttonAdd.fireAction();
+		assertEquals(count + 1, table.getOptionCount());
+		assertEquals("A_NEW_SIBLING", table.getOption(count).toString());
+
+		table.clearSelection();
+		assertTrue(buttonAdd.isEnabled());
 	}
 }
