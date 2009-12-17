@@ -12,7 +12,6 @@ package org.eclipse.riena.client.controller.test;
 
 import org.eclipse.riena.example.client.controllers.TableSubModuleController;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -25,7 +24,6 @@ public class TableSubModuleControllerTest extends AbstractSubModuleControllerTes
 
 	@Override
 	protected TableSubModuleController createController(ISubModuleNode node) {
-
 		return new TableSubModuleController(node);
 	}
 
@@ -34,20 +32,32 @@ public class TableSubModuleControllerTest extends AbstractSubModuleControllerTes
 		ITableRidget table = controller.getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
 		int count = table.getOptionCount();
 
-		ActionRidget buttonDelete = (ActionRidget) controller.getRidget(IActionRidget.class, "buttonDelete"); //$NON-NLS-1$
+		IActionRidget buttonDelete = controller.getRidget(IActionRidget.class, "buttonDelete"); //$NON-NLS-1$
 		// select and delete one item
 		table.setSelection(0);
-		// FIXME assertEquals(0, table.getSelectionIndex());
+
+		// FIXME wait for 
+		// 298033: Make row selection in TableRidget independent of the UIControl https://bugs.eclipse.org/bugs/show_bug.cgi?id=298033
+		// assertEquals(0, table.getSelectionIndex());
+		assertEquals("[Adventure]", table.getSelection().toString());
+
 		buttonDelete.fireAction();
 		assertEquals(count - 1, table.getOptionCount());
+
+		// FIXME wait for 
+		// 298033: Make row selection in TableRidget independent of the UIControl https://bugs.eclipse.org/bugs/show_bug.cgi?id=298033
+		// assertEquals(0, table.getSelectionIndex()); 
+		//assertTrue(table.getSelection().isEmpty());
+		//assertFalse(buttonDelete.isEnabled());
+
+		table.setSelection(0);
 
 		table.clearSelection();
 		assertEquals(-1, table.getSelectionIndex());
 		assertTrue(table.getSelection().isEmpty());
 
-		// Fehler: Button nicht diabled -> s. table.updateFromModel(); -> selection changed event getriggert durch
-		// tabelviewer
-		// assertFalse(buttonDelete.isEnabled());
+		assertFalse(buttonDelete.isEnabled());
+
 		// nothing selected -> nothing deleted
 		buttonDelete.fireAction();
 		assertEquals(count - 1, table.getOptionCount());
