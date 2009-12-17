@@ -522,6 +522,17 @@ public class UIControlsFactory {
 
 	/**
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @wbp.factory.parameter.source bindingId "myCompositeId"
+	 * @since 2.0
+	 */
+	public static Composite createComposite(Composite parent, int style, String bindingId) {
+		Composite composite = createComposite(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(composite, bindingId);
+		return composite;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 */
 	public static CompositeTable createCompositeTable(Composite parent, int style) {
 		CompositeTable result = new CompositeTable(parent, style);
