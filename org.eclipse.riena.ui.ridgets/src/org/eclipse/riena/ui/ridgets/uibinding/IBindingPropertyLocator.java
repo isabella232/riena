@@ -26,7 +26,8 @@ public interface IBindingPropertyLocator {
 	 * 
 	 * @param uiControl
 	 *            UI control; may be null
-	 * @return the ID String or null, if uiControl is null or disposed
+	 * @return the ID String if one is available, the empty string if no ID is
+	 *         available, null if uiControl is null or disposed
 	 */
 	String locateBindingProperty(Object uiControl);
 
