@@ -148,8 +148,14 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		addValidationRule(validIntermediateDateRule, ValidationTime.ON_UI_CONTROL_EDIT);
 		setUIControlToModelConverter(uiControlToModelconverter);
 		setModelToUIControlConverter(modelToUIControlConverter);
+		getValueBindingSupport().rebindToModel();
 
-		setText(new SegmentedString(pattern).toString());
+		boolean isBound = getValueBindingSupport().getModelObservable() != null;
+		if (isBound && getValueBindingSupport().getModelObservable().getValueType() == Date.class) {
+			updateFromModel();
+		} else {
+			setText(new SegmentedString(pattern).toString()); // clear
+		}
 	}
 
 	/**

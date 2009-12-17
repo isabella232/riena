@@ -236,11 +236,11 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("01.10.2008", ridget.getText());
 		assertEquals("01.10.2008", bean.getValue());
 
+		// As per Bug 289535. See also #testSetFormatWithStringBean
 		ridget.setFormat(IDateTextRidget.FORMAT_HHMM);
 
 		assertEquals("  :  ", control.getText());
 		assertEquals("  :  ", ridget.getText());
-		// TODO [ev] revisit as part of 289535
 		assertEquals("  :  ", bean.getValue());
 	}
 
@@ -288,27 +288,96 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(new Date(0L), bean.getValue());
 	}
 
-	// TODO [ev] revisit as part of 289535
+	/**
+	 * As per Bug 289535
+	 * <p>
+	 * When the ridget / control value on setFormat(...) it will be overwritten
+	 * with the freshly formatted data from the model. If there is no model it
+	 * will be cleared.
+	 */
+	public void testSetFormatWithDateBean() {
+		IDateTextRidget ridget = getRidget();
+		Text control = getWidget();
+		DateBean bean = new DateBean(new Date(0L));
 
-	//	public void testSetFormatAfterBind() {
-	//		IDateTextRidget ridget = getRidget();
-	//		Text control = getWidget();
-	//		TypedBean<Date> bean = new TypedBean<Date>(new Date(0L));
-	//
-	//		ridget.bindToModel(bean, TypedBean.PROP_VALUE);
-	//		ridget.updateFromModel();
-	//		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYY);
-	//
-	//		assertEquals("01.01.70", ridget.getText());
-	//		assertEquals("01.01.70", control.getText());
-	//		assertEquals(0, bean.getValue());
-	//
-	//		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
-	//
-	//		assertEquals("01.01.1970", ridget.getText());
-	//		assertEquals("01.01.1970", control.getText());
-	//		assertEquals(0, bean.getValue());
-	//	}
+		ridget.bindToModel(bean, DateBean.DATE_PROPERTY);
+		ridget.updateFromModel();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYY);
+
+		assertEquals("01.01.70", ridget.getText());
+		assertEquals("01.01.70", control.getText());
+		assertEquals(new Date(0L), bean.getValue());
+
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+
+		assertEquals("01.01.1970", ridget.getText());
+		assertEquals("01.01.1970", control.getText());
+		assertEquals(new Date(0L), bean.getValue());
+	}
+
+	/**
+	 * As per Bug 289535
+	 * <p>
+	 * When the format is incompatible with the model (this can never happen
+	 * when the model is backed by a Date. It can only happen when the model is
+	 * backed by a String), the format will be changed and the value of the
+	 * model will be applied as is to the ridget / widget. If the value is
+	 * longer than the format pattern, it will be truncated. In any case the
+	 * resulting value will most likely be incorrect (since it is based on the
+	 * old format) and may cause an error marker to appear.
+	 */
+	public void testSetFormatWithStringBean() {
+		IDateTextRidget ridget = getRidget();
+		Text control = getWidget();
+		StringBean bean = new StringBean("01.01.1970");
+
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+		ridget.bindToModel(bean, StringBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		assertEquals("01.01.1970", ridget.getText());
+		assertEquals("01.01.1970", control.getText());
+		assertEquals("01.01.1970", bean.getValue());
+
+		ridget.setFormat("dd/MM/yy");
+
+		assertEquals("  /  /  ", ridget.getText());
+		assertEquals("  /  /  ", control.getText());
+		assertEquals("  /  /  ", bean.getValue());
+		assertFalse(ridget.isErrorMarked());
+
+		control.setFocus();
+
+		UITestHelper.sendString(control.getDisplay(), "01/01/70\t");
+
+		assertEquals("01/01/70", ridget.getText());
+		assertEquals("01/01/70", control.getText());
+		assertEquals("01/01/70", bean.getValue());
+		assertFalse(ridget.isErrorMarked());
+	}
+
+	/**
+	 * As per Bug 289535
+	 * <p>
+	 * When the ridget / control value on setFormat(...) it will be overwritten
+	 * with the freshly formatted data from the model. If there is no model it
+	 * will be cleared.
+	 */
+	public void testSetFormatWithNoBean() {
+		IDateTextRidget ridget = getRidget();
+		Text control = getWidget();
+
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+		ridget.setText("01.01.1970");
+
+		assertEquals("01.01.1970", ridget.getText());
+		assertEquals("01.01.1970", control.getText());
+
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYY);
+
+		assertEquals("  .  .  ", ridget.getText());
+		assertEquals("  .  .  ", control.getText());
+	}
 
 	public void testAutoFillYYYY() {
 		IDateTextRidget ridget = getRidget();
