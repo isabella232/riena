@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -26,6 +25,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -56,7 +56,7 @@ public class MarkerSupportTest extends RienaTestCase {
 
 	public void testHideDisabledRidgetContentSystemProperty() throws IOException {
 		System.clearProperty(HIDE_DISABLED_RIDGET_CONTENT);
-		assertTrue(getHideDisabledRidgetContent());
+		assertFalse(getHideDisabledRidgetContent());
 
 		System.setProperty(HIDE_DISABLED_RIDGET_CONTENT, Boolean.FALSE.toString());
 		assertFalse(getHideDisabledRidgetContent());
@@ -100,13 +100,39 @@ public class MarkerSupportTest extends RienaTestCase {
 		return ReflectionUtils.getHidden(markerSupportClass, HIDE_DISABLED_RIDGET_CONTENT);
 	}
 
+	public void testDisabledMarker() throws Exception {
+		DefaultRealm realm = new DefaultRealm();
+		try {
+			final Label control = new Label(shell, SWT.NONE);
+
+			LabelRidget ridget = new LabelRidget();
+			ridget.setUIControl(control);
+			BasicMarkerSupport msup = ReflectionUtils.invokeHidden(ridget, "createMarkerSupport");
+			Object visualizer = ReflectionUtils.invokeHidden(msup, "getDisabledMarkerVisualizer", (Object[]) null);
+
+			assertNotNull(visualizer);
+
+			ridget.setEnabled(false);
+
+			assertEquals(1, control.getListeners(SWT.Paint).length);
+
+			ridget.setEnabled(true);
+
+			assertEquals(0, control.getListeners(SWT.Paint).length);
+		} finally {
+			realm.dispose();
+		}
+	}
+
+	// helping classes
+	//////////////////
+
 	/**
 	 * This {@code ClassLoader}s method {@code getFreshMarkSupportClass()}
 	 * retrieves with each call a new, fresh {@code MarkSupport} class. This
 	 * allows testing of the static field which gets initialized on class load.
 	 */
 	private static class MarkSupportClassLoader extends ClassLoader {
-
 		public MarkSupportClassLoader() {
 			super(MarkSupportClassLoader.class.getClassLoader());
 		}
@@ -127,51 +153,22 @@ public class MarkerSupportTest extends RienaTestCase {
 		}
 	}
 
-	public void testDisabledMarker() throws Exception {
-		final Label control = new Label(shell, SWT.None);
-		Realm.runWithDefault(new Realm() {
-
-			@Override
-			public boolean isCurrent() {
-				return true;
-			}
-		}, new Runnable() {
-
-			public void run() {
-				LabelRidget ridget = new LabelRidget();
-				ridget.setUIControl(control);
-				BasicMarkerSupport msup = ReflectionUtils.invokeHidden(ridget, "createMarkerSupport");
-				Object visualizer = ReflectionUtils.invokeHidden(msup, "getDisabledMarkerVisualizer", (Object[]) null);
-				assertNotNull(visualizer);
-				ridget.setEnabled(false);
-				assertTrue(control.getForeground().equals(Display.getDefault().getSystemColor(SWT.COLOR_GRAY)));
-				ridget.setEnabled(true);
-				assertTrue(control.getForeground().equals(Display.getDefault().getSystemColor(SWT.COLOR_BLACK)));
-
-			}
-		});
-
-	}
-
 	/**
 	 * Look and Feel with correct setting.
 	 */
 	private static class MyLnf extends RienaDefaultLnf {
-
 		@Override
 		protected void initSettingsDefaults() {
 			getSettingTable().put(LnfKeyConstants.ERROR_MARKER_MARGIN, 100);
 			getSettingTable().put(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.RIGHT);
 			getSettingTable().put(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.BOTTOM);
 		}
-
 	}
 
 	/**
 	 * Look and Feel with invalid setting: no setting and no images
 	 */
 	private static class MyNonsenseLnf extends RienaDefaultLnf {
-
 		@Override
 		protected void initSettingsDefaults() {
 		}
@@ -179,7 +176,6 @@ public class MarkerSupportTest extends RienaTestCase {
 		@Override
 		protected void initImageDefaults() {
 		}
-
 	}
 
 }

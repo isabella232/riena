@@ -15,6 +15,7 @@ import java.util.Iterator;
 
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.swt.SWT;
@@ -80,55 +81,35 @@ public class MarkerSupport extends BasicMarkerSupport {
 		errorDecoration.show();
 	}
 
-	/**
-	 * Creates a decoration with an error marker for the given control.
-	 * 
-	 * @param control
-	 *            the control to be decorated with an error marker
-	 * @return decoration of the given control
-	 */
-	private ControlDecoration createErrorDecoration(Control control) {
-
-		RienaDefaultLnf lnf = LnfManager.getLnf();
-
-		int position = 0;
-		int hPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
-		if (hPos == SWT.RIGHT || hPos == SWT.LEFT) {
-			position |= hPos;
-		} else {
-			LOGGER.log(LogService.LOG_WARNING, "Invalid horizonal error marker position!"); //$NON-NLS-1$
-			position |= SWT.LEFT;
-		}
-		int vPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);
-		if (vPos == SWT.TOP || vPos == SWT.CENTER || vPos == SWT.BOTTOM) {
-			position |= vPos;
-		} else {
-			LOGGER.log(LogService.LOG_WARNING, "Invalid vertical error marker position!"); //$NON-NLS-1$
-			position |= SWT.TOP;
-		}
-		ControlDecoration ctrlDecoration = new ControlDecoration(control, position);
-
-		// setMargin has to be before setImage!
-		int margin = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
-		ctrlDecoration.setMarginWidth(margin);
-		Image image = lnf.getImage(LnfKeyConstants.ERROR_MARKER_ICON);
-		if (image == null) {
-			image = Activator.getSharedImage(SharedImages.IMG_ERROR_DECO);
-		}
-		ctrlDecoration.setImage(image);
-
-		return ctrlDecoration;
-
-	}
-
 	protected void clearError(Control control) {
 		if (errorDecoration != null) {
 			errorDecoration.hide();
 		}
 	}
 
+	/**
+	 * Precedence of visibility and marker states for a ridget:
+	 * <ol>
+	 * <li>ridget is hidden - no decorations are not shown</li>
+	 * <li>disabled on - all other states not shown on the ridget</li>
+	 * <li>output on - output decoration is shown</li>
+	 * <li>mandatory on - mandatory decoration is shown</li>
+	 * <li>error on - error decoration is shown</li>
+	 * <li>negative on - negative decoration is shown</li>
+	 * <ol>
+	 */
+	@Override
+	protected void updateUIControl(Control control) {
+		updateVisible(control);
+		updateDisabled(control);
+		updateOutput(control);
+		updateMandatory(control);
+		updateError(control);
+		updateNegative(control);
+	}
+
 	// helping methods
-	// ////////////////
+	//////////////////
 
 	private void addMandatory(Control control) {
 		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) == null) {
@@ -175,6 +156,66 @@ public class MarkerSupport extends BasicMarkerSupport {
 			control.setBackground((Color) control.getData(PRE_OUTPUT_BACKGROUND_KEY));
 			control.setData(PRE_OUTPUT_BACKGROUND_KEY, null);
 		}
+	}
+
+	// helping methods
+	//////////////////
+	
+	/**
+	 * Creates a decoration with an error marker for the given control.
+	 * 
+	 * @param control
+	 *            the control to be decorated with an error marker
+	 * @return decoration of the given control
+	 */
+	private ControlDecoration createErrorDecoration(Control control) {
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		ControlDecoration ctrlDecoration = new ControlDecoration(control, getDecorationPosition(lnf));
+	
+		// setMargin has to be before setImage!
+		int margin = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
+		ctrlDecoration.setMarginWidth(margin);
+		ctrlDecoration.setImage(getDecorationImage(lnf));
+	
+		return ctrlDecoration;
+	}
+
+	// helping methods
+	//////////////////
+	
+	private Image getDecorationImage(RienaDefaultLnf lnf) {
+		Image image = null;
+		if (Platform.getBundle(Activator.PLUGIN_ID) != null) {
+			// ensure OSGi is available before calling this
+			image = lnf.getImage(LnfKeyConstants.ERROR_MARKER_ICON);
+		}
+		if (image == null) {
+			image = Activator.getSharedImage(SharedImages.IMG_ERROR_DECO);
+		}
+		return image;
+	}
+
+	private int getDecorationPosition(RienaDefaultLnf lnf) {
+		int result = SWT.NONE;
+		int hPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
+		if (hPos == SWT.RIGHT || hPos == SWT.LEFT) {
+			result |= hPos;
+		} else {
+			LOGGER.log(LogService.LOG_WARNING, "Invalid horizonal error marker position!"); //$NON-NLS-1$
+			result |= SWT.LEFT;
+		}
+		int vPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);
+		if (vPos == SWT.TOP || vPos == SWT.CENTER || vPos == SWT.BOTTOM) {
+			result |= vPos;
+		} else {
+			LOGGER.log(LogService.LOG_WARNING, "Invalid vertical error marker position!"); //$NON-NLS-1$
+			result |= SWT.TOP;
+		}
+		return result;
+	}
+
+	private boolean isButton(Control control) {
+		return control instanceof Button || getRidget() instanceof AbstractActionRidget;
 	}
 
 	private boolean isMandatory(IMarkableRidget ridget) {
@@ -228,31 +269,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 		} else {
 			clearOutput(control);
 		}
-	}
-
-	/**
-	 * Precedence of visibility and marker states for a ridget:
-	 * <ol>
-	 * <li>ridget is hidden - no decorations are not shown</li>
-	 * <li>disabled on - all other states not shown on the ridget</li>
-	 * <li>output on - output decoration is shown</li>
-	 * <li>mandatory on - mandatory decoration is shown</li>
-	 * <li>error on - error decoration is shown</li>
-	 * <li>negative on - negative decoration is shown</li>
-	 * <ol>
-	 */
-	@Override
-	protected void updateUIControl(Control control) {
-		updateVisible(control);
-		updateDisabled(control);
-		updateOutput(control);
-		updateMandatory(control);
-		updateError(control);
-		updateNegative(control);
-	}
-
-	private boolean isButton(Control control) {
-		return control instanceof Button || getRidget() instanceof AbstractActionRidget;
 	}
 
 }
