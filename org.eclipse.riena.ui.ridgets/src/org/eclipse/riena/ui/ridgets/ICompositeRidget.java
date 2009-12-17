@@ -11,12 +11,15 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * TODO [ev] javadoc
+ * An {@link IComplexRidget} with support for updating the layout.
  * 
  * @since 2.0
  */
 public interface ICompositeRidget extends IComplexRidget {
 
+	/**
+	 * Triggers a re-layout of all the contents of this ridget.
+	 */
 	public void layout();
 
 }

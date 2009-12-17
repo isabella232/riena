@@ -20,7 +20,7 @@ import java.util.Map;
 import org.eclipse.core.databinding.BindingException;
 
 /**
- * 
+ * TODO [ev] javadoc + rename to AbstractComplexRidget?
  */
 public abstract class AbstractCompositeRidget extends AbstractRidget implements IComplexRidget {
 
