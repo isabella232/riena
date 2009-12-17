@@ -135,7 +135,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		tablePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		String[] colValues = new String[] { "lastname", "firstname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] colHeaders = new String[] { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
-		tablePersons.bindToModel(createPersonList(), Person.class, colValues, null); // colHeaders);
+		tablePersons.bindToModel(createPersonList(), Person.class, colValues, colHeaders);
 		tablePersons.updateFromModel();
 
 		final ICompositeTableRidget compTable = getRidget(ICompositeTableRidget.class, "compTable"); //$NON-NLS-1$
@@ -155,7 +155,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		colValues = new String[] { "word", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] colHeaders2 = new String[] { "Word", "#A" }; //$NON-NLS-1$ //$NON-NLS-2$
 		treeWCols.bindToModel(createTreeTableRoots(), WordNode.class, ITreeNode.PROPERTY_CHILDREN,
-				ITreeNode.PROPERTY_PARENT, colValues, null); // colHeaders2);
+				ITreeNode.PROPERTY_PARENT, colValues, colHeaders2);
 		treeWCols.updateFromModel();
 
 		final IToggleButtonRidget buttonToggle = getRidget(IToggleButtonRidget.class, "buttonToggle"); //$NON-NLS-1$

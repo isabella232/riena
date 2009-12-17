@@ -392,10 +392,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		table.put(LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT, 8);
 
-		table.put(LnfKeyConstants.DISABLED_MARKER_ADVANCED, false);
+		table.put(LnfKeyConstants.DISABLED_MARKER_ADVANCED, true);
 		table.put(LnfKeyConstants.DISABLED_MARKER_STANDARD_ALPHA, 90);
-		table.put(LnfKeyConstants.DISABLED_MARKER_COMPLEX_ALPHA, 190);
-
+		// table.put(LnfKeyConstants.DISABLED_MARKER_COMPLEX_ALPHA, 190);
 	}
 
 	//

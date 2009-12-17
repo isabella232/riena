@@ -713,6 +713,7 @@ public final class LnfKeyConstants {
 	public static final String DISABLED_MARKER_STANDARD_ALPHA = "DisabledMarker.standardAlpha"; //$NON-NLS-1$
 	/**
 	 * @since 1.2
+	 * @deprecated unused
 	 */
 	public static final String DISABLED_MARKER_COMPLEX_ALPHA = "DisabledMarker.complexAlpha"; //$NON-NLS-1$
 	/**
