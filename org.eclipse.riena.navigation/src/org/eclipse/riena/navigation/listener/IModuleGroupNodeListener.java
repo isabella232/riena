@@ -18,6 +18,7 @@ import org.eclipse.riena.navigation.IModuleNode;
  */
 public interface IModuleGroupNodeListener extends INavigationNodeListener<IModuleGroupNode, IModuleNode> {
 
+	@Deprecated
 	void presentWithSingleModuleChanged(IModuleGroupNode source);
 
 }

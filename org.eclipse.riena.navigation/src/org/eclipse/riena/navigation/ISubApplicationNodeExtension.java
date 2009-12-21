@@ -19,14 +19,17 @@ import org.eclipse.riena.core.injector.extension.MapName;
  */
 @ExtensionInterface
 public interface ISubApplicationNodeExtension extends INodeExtension {
-
 	/**
-	 * @return This subapplications label
+	 * Returns the label of the sub application.
+	 * 
+	 * @return label of the sub application
 	 */
 	String getLabel();
 
 	/**
-	 * @return This subapplications icon id
+	 * Returns the icon ID of the sub application.
+	 * 
+	 * @return icon ID
 	 */
 	String getIcon();
 

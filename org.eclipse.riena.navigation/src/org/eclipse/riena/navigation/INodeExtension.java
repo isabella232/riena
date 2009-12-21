@@ -35,27 +35,33 @@ public interface INodeExtension {
 	IConfigurationElement getConfigurationElement();
 
 	/**
-	 * @return A navigation assembler that creates a node or a subtree for this
-	 *         submodul or <code>null</code>.
+	 * Creates and returns a navigation assembler that creates a node or a
+	 * subtree for this sub module or <code>null</code>.
+	 * 
+	 * @return navigation assembler
 	 */
 	@MapName("assembler")
 	INavigationAssembler createNavigationAssembler();
 
 	/**
-	 * @return The type part of the ID of a navigation node.
+	 * Returns the type part of the ID of a navigation node.
+	 * 
+	 * @return the type part of the ID
 	 * @see NavigationNodeId#getTypeId()
 	 */
 	String getTypeId();
 
 	/**
-	 * @return The instance part of the ID of a navigation node.
+	 * Returns the instance part of the ID of a navigation node.
+	 * 
+	 * @return the instance part of the ID
 	 * @see NavigationNodeId#getInstanceId()
 	 */
 	String getInstanceId();
 
 	/**
 	 * @return The child navigation node definitions of the receiver. These may
-	 *         be subapplication-, module group-, module- or sumodule node
+	 *         be subapplication-, module group-, module- or sub module node
 	 *         definitions.
 	 * @see ISubApplicationNodeExtension
 	 * @see IModuleGroupNodeExtension

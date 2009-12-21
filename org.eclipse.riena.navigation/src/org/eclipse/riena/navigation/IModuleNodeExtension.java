@@ -21,16 +21,22 @@ import org.eclipse.riena.core.injector.extension.MapName;
 public interface IModuleNodeExtension extends INodeExtension {
 
 	/**
-	 * @return This modules label
+	 * Returns the label of the module.
+	 * 
+	 * @return label of the module
 	 */
 	String getLabel();
 
 	/**
-	 * @return This modules icon id
+	 * Returns the icon ID of the module.
+	 * 
+	 * @return icon ID
 	 */
 	String getIcon();
 
 	/**
+	 * Returns whether the user can close the module.
+	 * 
 	 * @return <code>true</code> if this item is closable, <code>false</code>
 	 *         otherwise. Default is <code>false</code>.
 	 */
@@ -45,4 +51,5 @@ public interface IModuleNodeExtension extends INodeExtension {
 
 	@MapName("submodule")
 	ISubModuleNodeExtension[] getChildNodes();
+
 }

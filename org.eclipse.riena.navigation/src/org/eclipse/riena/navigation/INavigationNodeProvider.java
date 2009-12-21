@@ -24,22 +24,25 @@ public interface INavigationNodeProvider {
 	 * node is created if it not yet exists.
 	 * 
 	 * @param sourceNode
+	 *            an existing node in the navigation model
 	 * @param targetId
+	 *            the ID of the target node
 	 * @param argument
-	 * @return
+	 *            contains information passed used for providing the target node
+	 * @return target node
 	 */
 	INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
 	 * Return a sorted list of startup nodes.
 	 * 
-	 * @return
+	 * @return sorted list of startup nodes
 	 * @since 1.2
 	 */
 	List<StartupNodeInfo> getSortedStartupNodeInfos();
 
 	/**
-	 * Perform some housekeeping
+	 * Perform some housekeeping.
 	 */
 	void cleanUp();
 

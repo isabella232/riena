@@ -15,10 +15,12 @@ package org.eclipse.riena.navigation;
  * navigation history changes, the matching listener method is called.
  */
 public interface INavigationHistoryListener {
+
 	/**
 	 * This method is called, when the backward history is changed.
 	 * 
 	 * @param event
+	 *            history event
 	 */
 	void backHistoryChanged(INavigationHistoryEvent event);
 
@@ -26,6 +28,8 @@ public interface INavigationHistoryListener {
 	 * This method is called, when the forward history is changed.
 	 * 
 	 * @param event
+	 *            history event
 	 */
 	void forwardHistoryChanged(INavigationHistoryEvent event);
+
 }

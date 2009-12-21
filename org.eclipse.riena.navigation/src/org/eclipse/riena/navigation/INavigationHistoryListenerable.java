@@ -15,8 +15,20 @@ package org.eclipse.riena.navigation;
  */
 public interface INavigationHistoryListenerable {
 
+	/**
+	 * Adds the given listener.
+	 * 
+	 * @param pListener
+	 *            history listener to add
+	 */
 	void addNavigationHistoryListener(INavigationHistoryListener pListener);
 
+	/**
+	 * Removes the given listener.
+	 * 
+	 * @param pListener
+	 *            history listener to remove
+	 */
 	void removeNavigationHistoryListener(INavigationHistoryListener pListener);
 
 	/**

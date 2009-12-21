@@ -20,6 +20,7 @@ import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 public interface IUIProcessMarkupStrategy {
 
 	/**
+	 * Adds the given marker to the given node and to all parent nodes.
 	 * 
 	 * @param baseNode
 	 *            the node where the {@link UIProcess} was started

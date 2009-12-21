@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation;
 
 import org.eclipse.core.runtime.IConfigurationElement;
+
 import org.eclipse.riena.core.injector.extension.DoNotReplaceSymbols;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
@@ -22,8 +23,10 @@ import org.eclipse.riena.core.injector.extension.MapName;
 public interface IForEachExtension {
 
 	/**
-	 * @return The name of the iteration variable, ie <code>obj</code> in
-	 *         <code>for(Object obj : list);</code>
+	 * Returns the name of the iteration variable, ie <code>obj</code> in
+	 * <code>for(Object obj : list);</code>
+	 * 
+	 * @return name of the iteration variable
 	 */
 	String getElement();
 
@@ -37,11 +40,14 @@ public interface IForEachExtension {
 	String getIn();
 
 	/**
-	 * @return A list of submodule node definitions that are children of the
-	 *         receiver
+	 * Returns a list of submodule node definitions that are children of the
+	 * receiver
+	 * 
+	 * @return ist of submodule
 	 */
 	@MapName("submodule")
 	ISubModuleNodeExtension[] getSubModuleNodes();
 
 	IConfigurationElement getConfigurationElement();
+
 }

@@ -17,17 +17,21 @@ import java.util.List;
  * The activation context knows all nodes which have to be activated and
  * deactivated while a selected node has to be activated. The INavigationContext
  * is created by a NavigationProcessor, which decides which nodes are activated
- * an which
+ * an which.
  */
 public interface INavigationContext {
 
 	/**
-	 * @return an ordered list of nodes which have to be deactivated
+	 * Returns a list of nodes which have to be deactivated.
+	 * 
+	 * @return ordered list of nodes to deactivated
 	 */
 	List<INavigationNode<?>> getToDeactivate();
 
 	/**
-	 * @return an ordered list of nodes which have to be activated
+	 * Returns a list of nodes which have to beeactivated.
+	 * 
+	 * @return ordered list of nodes to activated
 	 */
 	List<INavigationNode<?>> getToActivate();
 

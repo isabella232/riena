@@ -16,7 +16,9 @@ package org.eclipse.riena.navigation;
 public interface IAssemblerProvider {
 
 	/**
-	 * @return The navigation assembler with id=assemblyId.
+	 * Returns the assembler for the given {@code assemblyId}.
+	 * 
+	 * @return the navigation assembler with id=assemblyId.
 	 */
 	INavigationAssembler getNavigationAssembler(String assemblyId);
 }

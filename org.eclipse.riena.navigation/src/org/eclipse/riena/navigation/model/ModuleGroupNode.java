@@ -46,15 +46,18 @@ public class ModuleGroupNode extends NavigationNode<IModuleGroupNode, IModuleNod
 		super(nodeId);
 	}
 
+	@Deprecated
 	public boolean isPresentWithSingleModule() {
 		return presentWithSingleModule;
 	}
 
+	@Deprecated
 	public void setPresentWithSingleModule(boolean pPresentWithSingleModule) {
 		presentWithSingleModule = pPresentWithSingleModule;
 		notifyPresentWithSingleModule();
 	}
 
+	@Deprecated
 	private void notifyPresentWithSingleModule() {
 		for (IModuleGroupNodeListener next : getListeners()) {
 			next.presentWithSingleModuleChanged(this);

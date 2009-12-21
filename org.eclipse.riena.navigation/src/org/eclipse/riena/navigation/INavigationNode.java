@@ -149,6 +149,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * 
 	 * @param pContext
 	 *            the Context to check within
+	 * @return {@code true} if the node can be activated; otherwise {@code
+	 *         false}
 	 */
 	boolean allowsActivate(INavigationContext pContext);
 
@@ -158,6 +160,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * 
 	 * @param pContext
 	 *            the Context to check within
+	 * @return {@code true} if the node can be deactivated; otherwise {@code
+	 *         false}
 	 */
 	boolean allowsDeactivate(INavigationContext pContext);
 
@@ -167,6 +171,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * 
 	 * @param pContext
 	 *            the Context to check within
+	 * @return {@code true} if the node can be disposed; otherwise {@code false}
 	 */
 	boolean allowsDispose(INavigationContext pContext);
 
@@ -232,16 +237,19 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	INavigationNodeController getNavigationNodeController();
 
 	/**
-	 * Look for the next in the hierarchy available controller
+	 * Look for the next in the hierarchy available controller.
+	 * 
+	 * @return next controller
 	 */
 	INavigationNodeController getNextNavigationNodeController();
 
 	/**
-	 * Sets the NavigationNodeController.
+	 * Sets the controller of this navigation node.
 	 * 
-	 * @param pNavigationNodeController
+	 * @param controller
+	 *            controller of this navigation node
 	 */
-	void setNavigationNodeController(INavigationNodeController pNavigationNodeController);
+	void setNavigationNodeController(INavigationNodeController controller);
 
 	/**
 	 * Gets the label of this node.
@@ -316,13 +324,15 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * added.
 	 * 
 	 * @param pListener
+	 *            the listener to remove
 	 */
 	void removeSimpleListener(ISimpleNavigationNodeListener pListener);
 
 	/**
 	 * Returns true, if this navigation node should be presented expanded.
 	 * 
-	 * @return the expanded state
+	 * @return {@code true} if the node is expanded; {@code false} if the node
+	 *         is collapsed
 	 */
 	boolean isExpanded();
 
@@ -330,13 +340,15 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Sets the expanded state
 	 * 
 	 * @param pExpanded
+	 *            {@code true} if the node is expanded; {@code false} if the
+	 *            node is collapsed
 	 */
 	void setExpanded(boolean pExpanded);
 
 	/**
 	 * Answer true if the node is a leaf = does not have children
 	 * 
-	 * @return
+	 * @return {@code true} if the node is a leaf; otherwise {@code false}
 	 */
 	boolean isLeaf();
 
@@ -351,6 +363,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Returns the next in hierarchy available context.
 	 * 
 	 * @param key
+	 *            the key whose associated context is to be returned
 	 * @return the context
 	 */
 	Object getContext(String key);
@@ -359,7 +372,9 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Sets the context.
 	 * 
 	 * @param key
+	 *            the key whose associated context is to be returned
 	 * @param pContext
+	 *            context to set
 	 */
 	void setContext(String key, Object pContext);
 
@@ -395,39 +410,57 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	Set<IAction> getAllActions();
 
 	/**
-	 * @return the current state of this node.
+	 * Returns the current state of this node.
+	 * 
+	 * @return the current state
 	 * @see State
 	 */
 	State getState();
 
 	/**
-	 * @return true if this node has the state ACTIVATED
+	 * Returns whether the node is activated or not.
+	 * 
+	 * @return {@code true} if this node has the state ACTIVATED; otherwise
+	 *         {@code false}
 	 */
 	boolean isActivated();
 
 	/**
-	 * @return true if this node has the state DEACTIVATED
+	 * Returns whether the node is deactivated or not.
+	 * 
+	 * @return {@code true} if this node has the state DEACTIVATED; otherwise
+	 *         {@code false}
 	 */
 	boolean isDeactivated();
 
 	/**
-	 * @return true if this node has the state DISPOSED
+	 * Returns whether the node is disposed or not.
+	 * 
+	 * @return {@code true} if this node has the state DISPOSED; otherwise
+	 *         {@code false}
 	 */
 	boolean isDisposed();
 
 	/**
-	 * @return true if this node has the state CREATED
+	 * Returns whether the node is created or not.
+	 * 
+	 * @return {@code true} if this node has the state CREATED; otherwise
+	 *         {@code false}
 	 */
 	boolean isCreated();
 
 	/**
-	 * @return the selected
+	 * Returns whether the node is selected or not.
+	 * 
+	 * @return {@code true} if this node is selected; otherwise {@code false}
 	 */
 	boolean isSelected();
 
 	/**
+	 * Sets whether the node is selected or not.
+	 * 
 	 * @param selected
-	 *            the selected to set
+	 *            {@code true} if this node is selected; otherwise {@code false}
 	 */
 	void setSelected(boolean selected);
 
@@ -447,7 +480,6 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * @param blocked
 	 *            true blocks user input
 	 */
-
 	void setBlocked(boolean blocked);
 
 	/**

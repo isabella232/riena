@@ -22,12 +22,16 @@ import org.eclipse.riena.core.injector.extension.MapName;
 public interface ISubModuleNodeExtension extends INodeExtension {
 
 	/**
-	 * @return This submodules label
+	 * Returns the label of the sub module.
+	 * 
+	 * @return label of the sub module
 	 */
 	String getLabel();
 
 	/**
-	 * @return This submodules icon id
+	 * Returns the icon ID of the sub module.
+	 * 
+	 * @return icon ID
 	 */
 	String getIcon();
 

@@ -16,7 +16,21 @@ import java.util.List;
  * This event is fired, when the navigation history is changed.
  */
 public interface INavigationHistoryEvent {
+
+	/**
+	 * Returns the number of all nodes inside he history stack at the time the
+	 * event was fired.
+	 * 
+	 * @return number of nodes in the history
+	 */
 	int getHistorySize();
 
+	/**
+	 * Returns the list of all nodes inside the history stack at the time the
+	 * event was fired.
+	 * 
+	 * @return list of nodes in the history
+	 */
 	List<INavigationNode<?>> getHistoryNodes();
+
 }
