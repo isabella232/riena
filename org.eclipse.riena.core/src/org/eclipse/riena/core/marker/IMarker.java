@@ -16,7 +16,6 @@ import java.util.Map;
  * A <code>IMarker</code> is used to mark an adapter, resp. its associated UI
  * control. Implementations supported by Spirit are and {@link MandatoryMarker
  * MandatoryMarker}{@link ErrorMarker ErrorMarker}.
- * 
  */
 public interface IMarker {
 
@@ -95,8 +94,12 @@ public interface IMarker {
 	void removeAttributeChangeListener(IMarkerAttributeChangeListener listener);
 
 	/**
-	 * Returns false if marker is created by a filter, false otherwise. If
-	 * marker is unique, only one unique marker of this marker type is allowed.
+	 * Returns {@code true} if marker is created by a filter, {@code false}
+	 * otherwise. If marker is unique, only one unique marker of this marker
+	 * type is allowed.
+	 * 
+	 * @return {@code true} if marker is created by a filter; otherwise {@code
+	 *         false}
 	 */
 	boolean isUnique();
 
