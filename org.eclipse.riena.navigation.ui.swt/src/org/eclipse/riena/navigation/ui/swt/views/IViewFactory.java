@@ -32,10 +32,12 @@ public interface IViewFactory {
 	ModuleView createModuleView(Composite parent);
 
 	/**
-	 * Creates a ModuleController for a Module in the Navigation
+	 * Creates a controller for a module in the navigation.
 	 * 
 	 * @param moduleNode
-	 * @return
+	 *            node of a module
+	 * 
+	 * @return created module controller
 	 */
 	ModuleController createModuleController(IModuleNode moduleNode);
 
@@ -49,10 +51,11 @@ public interface IViewFactory {
 	ModuleGroupView createModuleGroupView(Composite parent);
 
 	/**
-	 * Creates a ModuleGroupController for the ModuleGroup in the Navigation
+	 * Creates a controller for the module group in the navigation.
 	 * 
 	 * @param moduleGroupNode
-	 * @return
+	 *            node of a module group
+	 * @return created module group controller
 	 */
 	ModuleGroupController createModuleGroupController(IModuleGroupNode moduleGroupNode);
 

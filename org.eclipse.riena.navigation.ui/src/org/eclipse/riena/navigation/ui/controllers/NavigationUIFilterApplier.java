@@ -206,7 +206,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 
 	/**
 	 * Closure to execute the {@code apply} method of {@link IUIFilterRule} .
-	 * */
+	 */
 	private static class ApplyClosure implements IUIFilterRuleClosure {
 
 		public void execute(INavigationNode<?> node, IUIFilterRule attr, Object obj) {

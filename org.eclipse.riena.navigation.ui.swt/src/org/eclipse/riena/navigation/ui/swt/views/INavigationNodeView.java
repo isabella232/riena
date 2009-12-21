@@ -13,6 +13,14 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 
+/**
+ * View (UI representation) of a navigation node.
+ * 
+ * @param <C>
+ *            implementation the controller of the navigation node
+ * @param <N>
+ *            implementation the navigation node
+ */
 public interface INavigationNodeView<C extends IController, N extends INavigationNode<?>> {
 
 	/**
@@ -20,7 +28,7 @@ public interface INavigationNodeView<C extends IController, N extends INavigatio
 	 * controller if necessary.
 	 * 
 	 * @param node
-	 *            The node to bind.
+	 *            the node to bind.
 	 */
 	void bind(N node);
 
@@ -36,6 +44,12 @@ public interface INavigationNodeView<C extends IController, N extends INavigatio
 	 */
 	N getNavigationNode();
 
+	/**
+	 * Adds the given listener.
+	 * 
+	 * @param listener
+	 *            listener that will be added
+	 */
 	void addUpdateListener(IComponentUpdateListener listener);
 
 }

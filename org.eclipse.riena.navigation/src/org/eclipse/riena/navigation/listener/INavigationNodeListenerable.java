@@ -18,6 +18,13 @@ import org.eclipse.riena.navigation.INavigationNode;
  * Describes the ability of a navigation node to carry a listener. The ability
  * is not a part of the INavigationNode, because there are nodes which cannot be
  * listened to.
+ * 
+ * @param <S>
+ *            the type of implemented node
+ * @param <C>
+ *            the type of the child nodes
+ * @param <L>
+ *            the type of the listener
  */
 public interface INavigationNodeListenerable<S extends INavigationNode<C>, C extends INavigationNode<?>, L extends INavigationNodeListener<S, C>> {
 
@@ -29,12 +36,36 @@ public interface INavigationNodeListenerable<S extends INavigationNode<C>, C ext
 	 */
 	String PROPERTY_CHILDREN = "children"; //$NON-NLS-1$
 
+	/**
+	 * Adds the given listener.
+	 * 
+	 * @param pListener
+	 *            listener that will be added
+	 */
 	void addListener(L pListener);
 
+	/**
+	 * Removes the given listener.
+	 * 
+	 * @param pListener
+	 *            listener that will be removed
+	 */
 	void removeListener(L pListener);
 
+	/**
+	 * Adds the given {@code PropertyChangeListener}.
+	 * 
+	 * @param propertyChangeListener
+	 *            listener that will be added
+	 */
 	void addPropertyChangeListener(PropertyChangeListener propertyChangeListener);
 
+	/**
+	 * Removes the given {@code PropertyChangeListener}.
+	 * 
+	 * @param propertyChangeListener
+	 *            listener that will be removes
+	 */
 	void removePropertyChangeListener(PropertyChangeListener propertyChangeListener);
 
 }

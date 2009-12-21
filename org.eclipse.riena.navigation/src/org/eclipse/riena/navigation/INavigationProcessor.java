@@ -17,7 +17,7 @@ import org.eclipse.riena.core.marker.IMarker;
  * navigation processor works with the INavigationNode. What does the navigation
  * processor? The navigation processor decides how many nodes in his scope can
  * be active at the same time -> the default navigation processor allows only
- * one node of each type
+ * one node of each type.
  */
 public interface INavigationProcessor extends INavigationHistory, INavigationHistoryListenerable {
 
@@ -42,7 +42,7 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 * 
 	 * @see INavigationNode#dispose()
 	 * @see INavigationNode#allowsDeactivate(INavigationContext)
-	 * @param toActivate
+	 * @param toDispose
 	 *            The node to dispose.
 	 */
 	void dispose(INavigationNode<?> toDispose);
@@ -99,6 +99,9 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 * last source node of a navigate(..)-call that lead to the activation of
 	 * the target node.
 	 * 
+	 * @param targetNode
+	 *            the navigation node whose last navigate should be undo
+	 * 
 	 * @see #navigate(INavigationNode, NavigationNodeId, NavigationArgument)
 	 */
 	void navigateBack(INavigationNode<?> targetNode);
@@ -111,6 +114,14 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 */
 	INavigationNode<?> getSelectedNode();
 
+	/**
+	 * Adds the given marker to the given navigation node.
+	 * 
+	 * @param toMark
+	 *            navigation node
+	 * @param marker
+	 *            marker that will be added
+	 */
 	void addMarker(INavigationNode<?> toMark, IMarker marker);
 
 }

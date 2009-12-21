@@ -14,27 +14,34 @@ import org.eclipse.riena.navigation.listener.IModuleNodeListener;
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 
 /**
- * this is a node containing sub module nodes
+ * This is a node containing sub module nodes.
  */
 public interface IModuleNode extends INavigationNode<ISubModuleNode>,
 		INavigationNodeListenerable<IModuleNode, ISubModuleNode, IModuleNodeListener> {
 
 	/**
-	 * @return true if a single sub module should be shown
+	 * Returns whether a single sub module should be shown.
+	 * 
+	 * @return {@code true} if a single sub module should be shown; otherwise
+	 *         {@code false}
 	 */
 	boolean isPresentSingleSubModule();
 
 	/**
-	 * @param pPresentSingleSubModule
-	 *            true if a single sub module should be shown
+	 * Sets whether a single sub module should be shown.
+	 * 
+	 * @param present
+	 *            {@code true} if a single sub module should be shown; otherwise
+	 *            {@code false}
 	 */
-	void setPresentSingleSubModule(boolean pPresentSingleSubModule);
+	void setPresentSingleSubModule(boolean present);
 
 	/**
-	 * Return true, if the module has more than one sub module or the flag
-	 * present single submodule is true
+	 * Returns {@code true}, if the module has more than one sub module or the
+	 * flag present single submodule is {@code true}.
 	 * 
-	 * @return true, if the submodule should be presented
+	 * @return {@code true} if the submodule should be presented; otherwise
+	 *         {@code false}
 	 */
 	boolean isPresentSubModules();
 
@@ -49,13 +56,16 @@ public interface IModuleNode extends INavigationNode<ISubModuleNode>,
 	 * Indicates whether the user should have an opportunity to close the
 	 * module.
 	 * 
-	 * @return false if the module should never be closed; by default is true.
+	 * @return {@code false} if the module should never be closed; by default is
+	 *         {@code true}
 	 */
 	boolean isClosable();
 
 	/**
+	 * Sets whether the user should have an opportunity to close the module.
+	 * 
 	 * @param closable
-	 *            false if the module should never be closed.
+	 *            {@code false} if the module should never be closed
 	 */
 	void setClosable(boolean closable);
 

@@ -18,6 +18,9 @@ import org.eclipse.riena.core.marker.IMarker;
  */
 public interface IIconizableMarker extends IMarker {
 
+	/**
+	 * Ennumeration of all four possible marker positions.
+	 */
 	enum MarkerPosition {
 		TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT;
 	}

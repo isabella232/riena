@@ -43,6 +43,8 @@ public interface ISortableByColumn {
 	String PROPERTY_SORT_ASCENDING = "sortAscending"; //$NON-NLS-1$
 
 	/**
+	 * Returns whether the currently sorted column is in ascending order.
+	 * 
 	 * @return <code>true</code> if and only if the currently sorted column is
 	 *         in ascending order. Otherwise <code>false</code>
 	 */
@@ -60,6 +62,9 @@ public interface ISortableByColumn {
 	void setSortedAscending(boolean ascending);
 
 	/**
+	 * Returns index of the currently sorted column or -1 if no column is
+	 * sorted.
+	 * 
 	 * @return the 0-based index of the currently sorted column or
 	 *         <code>-1</code> if no column is currently sorted.
 	 */
@@ -91,6 +96,7 @@ public interface ISortableByColumn {
 	 * @param columnIndex
 	 *            a columnIndex in the allowed range (0 &le; columnIndex &lt;
 	 *            numColumns)
+	 * @return {@code true} if the column is sortable; otherwise {@code false}
 	 * @throws RuntimeException
 	 *             if <code>columnIndex</code> is out of range
 	 */
@@ -121,4 +127,5 @@ public interface ISortableByColumn {
 	 *             if <code>columnIndex</code> is out of range
 	 */
 	void setColumnSortable(int columnIndex, boolean sortable);
+
 }

@@ -21,6 +21,9 @@ public interface IUIFilterRuleClosure {
 	/**
 	 * Executes a method of {@link IUIFilterRule}.
 	 * 
+	 * @param node
+	 *            navigation node to which the given object ({@code obj})
+	 *            belongs
 	 * @param attr
 	 *            filter rule
 	 * @param obj
