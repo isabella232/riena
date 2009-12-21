@@ -130,8 +130,8 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 		}
 	}
 
+	@Deprecated
 	public boolean isPresentGroupMember() {
-
 		return ((IModuleGroupNode) getNavigationNode().getParent()).isPresentGroupNode();
 	}
 

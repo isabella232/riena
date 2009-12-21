@@ -61,6 +61,7 @@ public class ModuleGroupNode extends NavigationNode<IModuleGroupNode, IModuleNod
 		}
 	}
 
+	@Deprecated
 	public boolean isPresentGroupNode() {
 		return isPresentWithSingleModule() || getChildren().size() > 1;
 	}

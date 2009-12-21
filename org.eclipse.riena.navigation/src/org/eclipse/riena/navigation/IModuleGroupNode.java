@@ -14,16 +14,19 @@ import org.eclipse.riena.navigation.listener.IModuleGroupNodeListener;
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 
 /**
- * this is a node containing module nodes
+ * This is a node containing module nodes.
  */
-public interface IModuleGroupNode extends INavigationNode<IModuleNode>, INavigationNodeListenerable<IModuleGroupNode, IModuleNode, IModuleGroupNodeListener> {
+public interface IModuleGroupNode extends INavigationNode<IModuleNode>,
+		INavigationNodeListenerable<IModuleGroupNode, IModuleNode, IModuleGroupNodeListener> {
 
 	/**
 	 * @return true, if the group should be presented with a single module
 	 *         contained. default is false
 	 */
+	@Deprecated
 	boolean isPresentWithSingleModule();
 
+	@Deprecated
 	void setPresentWithSingleModule(boolean pPresentWithSingleModule);
 
 	/**
@@ -33,6 +36,7 @@ public interface IModuleGroupNode extends INavigationNode<IModuleNode>, INavigat
 	 * @return true, if this group node should be explicitly presented to the
 	 *         user
 	 */
+	@Deprecated
 	boolean isPresentGroupNode();
 
 }
