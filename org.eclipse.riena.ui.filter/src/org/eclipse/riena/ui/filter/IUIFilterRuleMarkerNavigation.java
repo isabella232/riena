@@ -11,12 +11,15 @@
 package org.eclipse.riena.ui.filter;
 
 /**
- *
+ * This filter rule adds a marker to a navigation node.
  */
 public interface IUIFilterRuleMarkerNavigation extends IUIFilterRuleMarker {
 
 	/**
-	 * Sets the ID of the navigation node
+	 * Sets the ID of the navigation node.
+	 * 
+	 * @param nodeId
+	 *            ID of navigation node
 	 */
 	void setNode(String nodeId);
 

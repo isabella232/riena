@@ -18,13 +18,22 @@ import org.eclipse.riena.ui.filter.IUIFilterContainer;
 import org.eclipse.riena.ui.filter.extension.IFilterNodeIdExtension;
 
 /**
- *
+ * This container stores an UI filter and a collection of node ID on which the
+ * filter maybe applied.
  */
 public class UIFilterContainer implements IUIFilterContainer {
 
 	private Collection<String> nodeIds;
 	private IUIFilter filter;
 
+	/**
+	 * Creates a container to stores the given filter and th according node IDs.
+	 * 
+	 * @param filter
+	 *            the UI filter of this container
+	 * @param idsS
+	 *            array of navigation-node IDs
+	 */
 	public UIFilterContainer(IUIFilter filter, IFilterNodeIdExtension[] ids) {
 
 		nodeIds = new ArrayList<String>();
@@ -35,10 +44,16 @@ public class UIFilterContainer implements IUIFilterContainer {
 		this.filter = filter;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public IUIFilter getFilter() {
 		return filter;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Collection<String> getFilterTargetNodeIds() {
 		return nodeIds;
 	}

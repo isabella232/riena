@@ -26,8 +26,10 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 public interface IEditableRidget extends IValueRidget {
 
 	/**
-	 * @return The converter used when updating from the UI-control to the
-	 *         model.
+	 * Returns the converter that is used when updating from the UI-control to
+	 * the model.
+	 * 
+	 * @return converter from UI-control to model
 	 */
 	IConverter getUIControlToModelConverter();
 
@@ -40,7 +42,9 @@ public interface IEditableRidget extends IValueRidget {
 	void setUIControlToModelConverter(IConverter converter);
 
 	/**
-	 * @return The validation rules.
+	 * Returns all validators that were added to this ridget.
+	 * 
+	 * @return the validation rules
 	 * 
 	 * @see #addValidationRule(IValidator)
 	 */
@@ -64,8 +68,6 @@ public interface IEditableRidget extends IValueRidget {
 	 *            The validator to add (non-null).
 	 * @param validationTime
 	 *            a value specifying when to evaluate the validator (non-null)
-	 * @throws RuntimeException
-	 *             if the validator or validationTime is null
 	 * 
 	 * @see #removeValidationRule(IValidator)
 	 * @see #revalidate()

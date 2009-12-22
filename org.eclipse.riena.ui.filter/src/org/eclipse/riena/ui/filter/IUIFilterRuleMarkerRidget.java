@@ -11,12 +11,16 @@
 package org.eclipse.riena.ui.filter;
 
 /**
- *
+ * This filter rule adds a marker to Ridget.
  */
 public interface IUIFilterRuleMarkerRidget extends IUIFilterRuleMarker {
 
 	/**
-	 * Sets the id
+	 * Sets the ID of the Ridget.
+	 * 
+	 * @param id
+	 *            ID of the Ridget
 	 */
 	void setId(String id);
+
 }

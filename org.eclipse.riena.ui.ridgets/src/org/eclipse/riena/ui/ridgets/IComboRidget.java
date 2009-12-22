@@ -26,6 +26,9 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	String PROPERTY_SELECTION = "selection"; //$NON-NLS-1$
 
 	/**
+	 * Binds the combo to the given model data and specifies which value is
+	 * holding the selection.
+	 * 
 	 * @param optionValues
 	 *            An observable list with a list of options.
 	 * @param rowClass
@@ -41,6 +44,9 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 			IObservableValue selectionValue);
 
 	/**
+	 * Binds the combo to the given model data and specifies which object is
+	 * holding the selection inside which property.
+	 * 
 	 * @param listHolder
 	 *            An object holding a list of values (objects).
 	 * @param listPropertyName

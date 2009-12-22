@@ -11,30 +11,33 @@
 package org.eclipse.riena.ui.filter;
 
 import org.eclipse.core.databinding.validation.IValidator;
+
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 
 /**
- *
+ * This filter rule adds a validator to a Ridget.
  */
 public interface IUIFilterRuleValidatorRidget extends IUIFilterRuleValidator {
 
 	/**
-	 * Sets the ID of the ridget.
+	 * Sets the ID of the ridget, to which the validator of the rule will be
+	 * added.
 	 * 
 	 * @param id
-	 *            ridget ID
+	 *            ID of the ridget
 	 */
 	void setId(String id);
 
 	/**
-	 * Sets the validator of this rule
+	 * Sets the validator of this rule.
 	 * 
 	 * @param validator
+	 *            validator which will be added to a Ridget
 	 */
 	void setValidator(IValidator validator);
 
 	/**
-	 * Sete the time of validation.
+	 * Sets the time of validation.
 	 * 
 	 * @param validationTime
 	 *            time of validation

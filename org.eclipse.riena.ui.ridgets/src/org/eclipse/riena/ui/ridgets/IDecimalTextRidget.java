@@ -26,8 +26,14 @@ package org.eclipse.riena.ui.ridgets;
  */
 public interface IDecimalTextRidget extends INumericTextRidget {
 
+	/**
+	 * Name of the property <i>precision</i>.
+	 */
 	String PROPERTY_PRECISION = "precision"; //$NON-NLS-1$
 
+	/**
+	 * Name of the property <i>maxLength</i>.
+	 */
 	String PROPERTY_MAXLENGTH = "maxLength"; //$NON-NLS-1$
 
 	/**
@@ -40,8 +46,6 @@ public interface IDecimalTextRidget extends INumericTextRidget {
 	 * 
 	 * @param numberOfFractionDigits
 	 *            a value equal or greater than 0
-	 * @throws RuntimeException
-	 *             if an invalid value is used
 	 */
 	void setPrecision(int numberOfFractionDigits);
 
@@ -62,8 +66,6 @@ public interface IDecimalTextRidget extends INumericTextRidget {
 	 * 
 	 * @param maxLength
 	 *            a value greater than 0
-	 * @throws RuntimeException
-	 *             if an invalid value is used
 	 */
 	void setMaxLength(int maxLength);
 

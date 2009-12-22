@@ -60,6 +60,8 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	void setSelectionType(SelectionType selectionType);
 
 	/**
+	 * Returns the value that holds the selection of this Ridget.
+	 * 
 	 * @return An observable value that holds the single selection of this
 	 *         ridget. If the selection type is set to multiple selection the
 	 *         single selection will contain one of the selected values.
@@ -96,6 +98,8 @@ public interface ISelectableRidget extends IMarkableRidget, ISelectionObservable
 	void updateSingleSelectionFromModel();
 
 	/**
+	 * Returns the list that holds the selection(s) of this Ridget.
+	 * 
 	 * @return An observable list that holds the multiple selection of this
 	 *         ridget. If the selection type is set to single selection the
 	 *         multiple selection will be either empty or contain the single

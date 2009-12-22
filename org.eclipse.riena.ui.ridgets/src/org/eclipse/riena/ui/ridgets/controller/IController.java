@@ -29,6 +29,8 @@ public interface IController extends IRidgetContainer {
 	 * is bound.
 	 * 
 	 * @param blocked
+	 *            {@code true} if input is blocked for the view; otherwise
+	 *            {@code false}
 	 */
 	void setBlocked(boolean blocked);
 
@@ -36,7 +38,8 @@ public interface IController extends IRidgetContainer {
 	 * Returns true if user input for the view to which this controller is bound
 	 * is blocked.
 	 * 
-	 * @return true if input is blocked for the view
+	 * @return {@code true} if input is blocked for the view; otherwise {@code
+	 *         false}
 	 */
 	boolean isBlocked();
 }

@@ -389,6 +389,8 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * otherwise.
 	 * <p>
 	 * The default setting is true.
+	 * 
+	 * @return {@code true}: show roots; otherwise {@code false}
 	 */
 	boolean getRootsVisible();
 

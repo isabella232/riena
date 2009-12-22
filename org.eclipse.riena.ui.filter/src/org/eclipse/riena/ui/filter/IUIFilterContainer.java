@@ -13,17 +13,22 @@ package org.eclipse.riena.ui.filter;
 import java.util.Collection;
 
 /**
- *
+ * This container stores an UI filter and a collection of node ID on which the
+ * filter maybe applied.
  */
 public interface IUIFilterContainer {
 
 	/**
-	 * Returns the created filter
+	 * Returns the UI filter of the container.
+	 * 
+	 * @return UI filter
 	 */
 	IUIFilter getFilter();
 
 	/**
-	 * Returns the navigation-node ID on which the filter maybe applied
+	 * Returns the navigation-node IDs on which the filter maybe applied.
+	 * 
+	 * @return collection of node IDs
 	 */
 	Collection<String> getFilterTargetNodeIds();
 

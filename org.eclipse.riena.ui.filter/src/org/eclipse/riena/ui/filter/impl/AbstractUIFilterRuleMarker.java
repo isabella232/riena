@@ -14,7 +14,8 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarker;
 
 /**
- *
+ * This filter rule adds a marker to an UI element (e.g. ridget or navigation
+ * node).
  */
 public abstract class AbstractUIFilterRuleMarker implements IUIFilterRuleMarker {
 

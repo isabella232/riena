@@ -20,6 +20,8 @@ public interface IUIFilterRuleMarker extends IUIFilterRule {
 
 	/**
 	 * Returns the marker of this IUIFilterRuleMarker.
+	 * 
+	 * @return marker
 	 */
 	IMarker getMarker();
 

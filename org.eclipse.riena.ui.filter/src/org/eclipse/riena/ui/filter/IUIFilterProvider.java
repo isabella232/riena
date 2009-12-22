@@ -16,13 +16,16 @@ package org.eclipse.riena.ui.filter;
  * filter-ID.
  */
 public interface IUIFilterProvider {
+
 	/**
 	 * Returns a UIFilter identified by the given filterId. The filter is
 	 * created if it not yet exists.
 	 * 
 	 * @param filterID
+	 *            ID of the filter
 	 * 
-	 * @return a UIFilter
+	 * @return a container with an UI filter
 	 */
 	IUIFilterContainer provideFilter(String filterID);
+
 }

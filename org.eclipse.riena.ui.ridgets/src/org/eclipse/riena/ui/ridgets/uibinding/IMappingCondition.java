@@ -21,11 +21,16 @@ package org.eclipse.riena.ui.ridgets.uibinding;
  *      IMappingCondition)
  */
 public interface IMappingCondition {
+
 	/**
-	 * Returns true if the given widget matches the implemented condition.
+	 * Returns {@code true} if the given widget matches the implemented
+	 * condition.
 	 * 
 	 * @param widget
-	 *            a widget instance
+	 *            widget to check
+	 * 
+	 * @return {@code true} if the widget string matches; otherwise {@code
+	 *         false}
 	 */
 	boolean isMatch(Object widget);
 }

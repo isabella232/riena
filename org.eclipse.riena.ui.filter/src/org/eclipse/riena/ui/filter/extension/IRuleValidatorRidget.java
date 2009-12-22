@@ -11,23 +11,25 @@
 package org.eclipse.riena.ui.filter.extension;
 
 import org.eclipse.core.databinding.validation.IValidator;
+
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 /**
- * The rule to add a validator to a ridget.
+ * The rule to add a validator or to a ridget.
  */
 @ExtensionInterface
 public interface IRuleValidatorRidget {
 
 	/**
-	 * Returns the ID of a ridget.
+	 * Returns the ID of a ridget, to which the validator of the rule will be
+	 * added.
 	 * 
-	 * @return ID
+	 * @return ID of ridget
 	 */
 	String getRidgetId();
 
 	/**
-	 * Returns a string that specifies when to evaluate the validator.
+	 * Returns a {@code String} that specifies when to evaluate the validator.
 	 * 
 	 * @return "onUIControlEdit" or "onUpdateToModel"
 	 */
@@ -36,7 +38,7 @@ public interface IRuleValidatorRidget {
 	/**
 	 * Returns the a new instance of validator.
 	 * 
-	 * @return validator.
+	 * @return validator which will be added to a Ridget
 	 */
 	IValidator getValidator();
 

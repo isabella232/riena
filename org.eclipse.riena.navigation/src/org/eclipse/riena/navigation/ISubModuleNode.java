@@ -14,16 +14,17 @@ import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 import org.eclipse.riena.navigation.listener.ISubModuleNodeListener;
 
 /**
- * A Node containing other sub sub module nodes
+ * A Node containing other sub sub module nodes.
  */
 public interface ISubModuleNode extends INavigationNode<ISubModuleNode>,
 		INavigationNodeListenerable<ISubModuleNode, ISubModuleNode, ISubModuleNodeListener> {
 
 	/**
-	 * Indicates wheter this Node is selectable or not. If this has children and
-	 * is not selectable, then the first child will be selected in navigation.
+	 * Indicates whether this Node is selectable or not. If this has children
+	 * and is not selectable, then the first child will be selected in
+	 * navigation.
 	 * 
-	 * @return true if selectable, otherwise false
+	 * @return {@code true} if selectable, otherwise {@code false}
 	 * @since 1.2
 	 */
 	boolean isSelectable();
@@ -32,6 +33,7 @@ public interface ISubModuleNode extends INavigationNode<ISubModuleNode>,
 	 * Sets the selectable-state of this Node.
 	 * 
 	 * @param selectable
+	 *            {@code true} if selectable, otherwise {@code false}
 	 * @since 1.2
 	 */
 	void setSelectable(boolean selectable);

@@ -11,16 +11,19 @@
 package org.eclipse.riena.ui.filter;
 
 import org.eclipse.core.databinding.validation.IValidator;
+
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 
 /**
- * This filter rule adds an validator to an UI element (i.g. ridget or
- * navigation node).
+ * This filter rule adds a validator to an UI element (i.g. ridget or navigation
+ * node).
  */
 public interface IUIFilterRuleValidator extends IUIFilterRule {
 
 	/**
 	 * Returns the validator of this IUIFilterRuleValidator.
+	 * 
+	 * @return validator
 	 */
 	IValidator getValidator();
 

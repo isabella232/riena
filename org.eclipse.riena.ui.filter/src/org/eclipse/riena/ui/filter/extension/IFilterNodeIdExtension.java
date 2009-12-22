@@ -19,7 +19,9 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 public interface IFilterNodeIdExtension {
 
 	/**
-	 * Returns the id
+	 * Returns the ID of the navigation node to that the filter will be added.
+	 * 
+	 * @return ID of the node
 	 */
 	String getId();
 

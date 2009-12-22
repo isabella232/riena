@@ -17,10 +17,10 @@ package org.eclipse.riena.ui.filter;
 public interface IUIFilterRule {
 
 	/**
-	 * Returns whether the given object matches the conditions of this rule.
+	 * Returns whether the given object(s) matches the conditions of this rule.
 	 * 
-	 * @param object
-	 *            object to check
+	 * @param args
+	 *            object(s) to check
 	 * @return {@code true} if the given object matches; otherwise {@code false}
 	 */
 	boolean matches(Object... args);
@@ -29,6 +29,7 @@ public interface IUIFilterRule {
 	 * Modifies the given object.
 	 * 
 	 * @param object
+	 *            object to modify
 	 */
 	void apply(Object object);
 
@@ -36,6 +37,7 @@ public interface IUIFilterRule {
 	 * Removes this modification from the given object.
 	 * 
 	 * @param object
+	 *            object whose modification will be removed
 	 */
 	void remove(Object object);
 

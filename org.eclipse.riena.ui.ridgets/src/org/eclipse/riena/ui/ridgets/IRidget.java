@@ -53,6 +53,8 @@ public interface IRidget {
 	String PROPERTY_SHOWING = "showing"; //$NON-NLS-1$
 
 	/**
+	 * Returns whether the UI-control is visible or invisible.
+	 * 
 	 * @return Indicates whether the UI-control is visible.
 	 */
 	boolean isVisible();
@@ -66,6 +68,8 @@ public interface IRidget {
 	void setVisible(boolean visible);
 
 	/**
+	 * Returns whether the UI-control is enabled or disabled.
+	 * 
 	 * @return Indicates whether the UI-control is enabled.
 	 */
 	boolean isEnabled();
@@ -73,7 +77,7 @@ public interface IRidget {
 	/**
 	 * Sets whether the UI-control is enabled.
 	 * 
-	 * @param visible
+	 * @param enabled
 	 *            The new enabled state.
 	 */
 	void setEnabled(boolean enabled);
@@ -227,13 +231,18 @@ public interface IRidget {
 	void setFocusable(boolean focusable);
 
 	/**
-	 * @return the toolTipText for the ridget.
+	 * Returns the text that is shown in the tool tip of this Ridget.
+	 * 
+	 * @return the text of tool tip for this ridget.
 	 */
 	String getToolTipText();
 
 	/**
+	 * Sets the text that is shown in the tool tip of this Ridget.
+	 * 
 	 * @param toolTipText
-	 *            The toolTipText to set. May be null to turn off the tooltip.
+	 *            The text of tool tip to set. May be {@code null} to turn off
+	 *            the tool tip.
 	 */
 	void setToolTipText(String toolTipText);
 
@@ -256,7 +265,8 @@ public interface IRidget {
 	/**
 	 * Returns the ID of the ridget.
 	 * 
-	 * @return ID
+	 * @return ID of this ridget
 	 */
 	String getID();
+
 }

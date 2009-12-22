@@ -45,8 +45,10 @@ public interface IValueRidget extends IRidget {
 	void bindToModel(Object valueHolder, String valuePropertyName);
 
 	/**
-	 * @return The converter used when updating from the model to the
-	 *         UI-control.
+	 * Returns The converter used when updating from the model to the
+	 * UI-control.
+	 * 
+	 * @return converter model to UI-control
 	 */
 	IConverter getModelToUIControlConverter();
 
@@ -54,7 +56,7 @@ public interface IValueRidget extends IRidget {
 	 * Sets the converter used when updating from the model to the UI-control.
 	 * 
 	 * @param converter
-	 *            The new converter.
+	 *            new converter model to UI-control
 	 */
 	void setModelToUIControlConverter(IConverter converter);
 }

@@ -14,23 +14,28 @@ package org.eclipse.riena.ui.ridgets;
  * Interface for the Adapter of the number component of the status line
  */
 public interface IStatuslineNumberRidget extends IRidget {
+
 	/**
-	 * @return Returns the number.
+	 * Returns the number that will be display in the status line.
+	 * 
+	 * @return the number of the status line
 	 */
 	Integer getNumber();
 
 	/**
+	 * Sets the number that will be display in the status line.
+	 * 
 	 * <b>Note: </b> If you set the number, the number string is set
 	 * <code>null</code>
 	 * 
 	 * @param number
-	 *            The number to set.
+	 *            the new number of the status line
 	 * @see #setNumberString(String)
 	 */
 	void setNumber(Integer number);
 
 	/**
-	 * Returns the string, that will be display in the status line at the
+	 * Returns the string that will be display in the status line at the
 	 * position of the number.
 	 * 
 	 * @return string in the status line at the position of the number
@@ -48,4 +53,5 @@ public interface IStatuslineNumberRidget extends IRidget {
 	 * @see #setNumber(int)
 	 */
 	void setNumberString(String numberStrg);
+
 }
