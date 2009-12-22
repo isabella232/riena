@@ -117,5 +117,15 @@ public class CComboSubModuleController extends SubModuleController {
 				}
 			});
 		}
+
+		final IActionRidget buttonClear = (IActionRidget) getRidget("buttonClear"); //$NON-NLS-1$
+		buttonClear.setText("&Clear"); //$NON-NLS-1$
+		buttonClear.addListener(new IActionListener() {
+			public void callback() {
+				comboOne.setSelection(-1);
+			}
+		});
+
 	}
+
 }

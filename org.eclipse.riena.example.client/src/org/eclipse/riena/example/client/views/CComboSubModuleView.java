@@ -61,6 +61,10 @@ public class CComboSubModuleView extends SubModuleView<ComboSubModuleController>
 		Button buttonSecondValue = UIControlsFactory.createButtonCheck(parent);
 		fillFactory.applyTo(buttonSecondValue);
 		addUIControl(buttonSecondValue, "buttonSecondValue"); //$NON-NLS-1$
+
+		Button buttonClear = UIControlsFactory.createButton(parent);
+		fillFactory.applyTo(buttonClear);
+		addUIControl(buttonClear, "buttonClear"); //$NON-NLS-1$
 	}
 
 }
