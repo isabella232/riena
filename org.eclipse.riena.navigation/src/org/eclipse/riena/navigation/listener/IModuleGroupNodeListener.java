@@ -18,7 +18,14 @@ import org.eclipse.riena.navigation.IModuleNode;
  */
 public interface IModuleGroupNodeListener extends INavigationNodeListener<IModuleGroupNode, IModuleNode> {
 
-	@Deprecated
+	/**
+	 * This method is called when the flag that decides, if a module group with
+	 * a single module node is displayed, has changed.
+	 * 
+	 * @param source
+	 *            the node whose flag that decides to module group with single
+	 *            module has changed
+	 */
 	void presentWithSingleModuleChanged(IModuleGroupNode source);
 
 }

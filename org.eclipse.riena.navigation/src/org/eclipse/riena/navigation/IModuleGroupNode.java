@@ -20,23 +20,37 @@ public interface IModuleGroupNode extends INavigationNode<IModuleNode>,
 		INavigationNodeListenerable<IModuleGroupNode, IModuleNode, IModuleGroupNodeListener> {
 
 	/**
-	 * @return true, if the group should be presented with a single module
-	 *         contained. default is false
+	 * Returns whether a group with a single module should be present.
+	 * <p>
+	 * <i>At the moment no implementation makes a different between a group with
+	 * a single module or a couple of modules. All module groups have always a
+	 * border. (The default value is {@code true})</i>
+	 * <p>
+	 * <i>A possible alternative implementation can be that a group with only
+	 * one child module has no border and a group with a couple of modules has a
+	 * border. </i>
+	 * 
+	 * @return {@code true}, if the group should be presented with a single
+	 *         module contained; otherwise {@code false}
 	 */
-	@Deprecated
 	boolean isPresentWithSingleModule();
 
-	@Deprecated
+	/**
+	 * Sets whether a group with a single module should be present.
+	 * 
+	 * @param pPresentWithSingleModule
+	 *            {@code true}, if the group should be presented with a single
+	 *            module contained; otherwise {@code false}
+	 */
 	void setPresentWithSingleModule(boolean pPresentWithSingleModule);
 
 	/**
-	 * The method answers true if more than one module is contained or the flag
-	 * PresentWithSingleModule is set to true
+	 * The method answers {@code true} if more than one module is contained or
+	 * the flag PresentWithSingleModule is set to {@code true}
 	 * 
-	 * @return true, if this group node should be explicitly presented to the
-	 *         user
+	 * @return {@code true}, if this group node should be explicitly presented
+	 *         to the user; otherwise {@code false}
 	 */
-	@Deprecated
 	boolean isPresentGroupNode();
 
 }

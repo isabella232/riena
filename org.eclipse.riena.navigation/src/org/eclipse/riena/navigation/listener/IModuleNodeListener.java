@@ -19,8 +19,8 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 public interface IModuleNodeListener extends INavigationNodeListener<IModuleNode, ISubModuleNode> {
 
 	/**
-	 * This method is called when the flag that decides if a single sub module
-	 * node is displayed in the module view has changed.
+	 * This method is called when the flag that decides, if a single sub module
+	 * node is displayed in the module view, has changed.
 	 * 
 	 * @param source
 	 *            the node whose flag that decides to display single nodes has
