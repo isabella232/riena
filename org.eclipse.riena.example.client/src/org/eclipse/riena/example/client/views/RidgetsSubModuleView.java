@@ -60,8 +60,9 @@ public class RidgetsSubModuleView extends SubModuleView<RidgetsSubModuleControll
 		Group buttonGroup = UIControlsFactory.createGroup(parent, "Buttons"); //$NON-NLS-1$
 		buttonGroup.setLayout(new RowLayout(SWT.VERTICAL));
 		FormData fd = new FormData();
-		fd.top = new FormAttachment(0, 0);
-		fd.left = new FormAttachment(0, 0);
+		fd.top = new FormAttachment(0, 5);
+		fd.left = new FormAttachment(0, 5);
+		fd.right = new FormAttachment(100, -5);
 		buttonGroup.setLayoutData(fd);
 
 		Button toggleButton = UIControlsFactory.createButtonToggle(buttonGroup);
@@ -85,7 +86,16 @@ public class RidgetsSubModuleView extends SubModuleView<RidgetsSubModuleControll
 		buttonWithViewImage.setImage(image);
 		addUIControl(buttonWithViewImage, "buttonWithViewImage"); //$NON-NLS-1$
 
-		UIControlsFactory.createImageButton(buttonGroup, SWT.NONE, "imageButton"); //$NON-NLS-1$
+		Group rienaButtonGroup = UIControlsFactory.createGroup(parent, "Riena Buttons"); //$NON-NLS-1$
+		rienaButtonGroup.setLayout(new RowLayout(SWT.VERTICAL));
+		fd = new FormData();
+		fd.top = new FormAttachment(buttonGroup, 10);
+		fd.left = new FormAttachment(0, 5);
+		fd.right = new FormAttachment(100, -5);
+		rienaButtonGroup.setLayoutData(fd);
+
+		UIControlsFactory.createImageButton(rienaButtonGroup, SWT.NONE, "imageButton"); //$NON-NLS-1$
 
 	}
+
 }
