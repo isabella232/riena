@@ -30,7 +30,7 @@ public enum ImageFileExtension {
 	 * 
 	 * @return extension of file name.
 	 */
-	String getFileNameExtension() {
+	public String getFileNameExtension() {
 		return fileNameExtension;
 	}
 
