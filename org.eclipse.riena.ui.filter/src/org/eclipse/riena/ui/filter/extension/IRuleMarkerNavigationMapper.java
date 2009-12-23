@@ -14,11 +14,18 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerNavigation;
 
 /**
+ * {@inheritDoc}
+ * <p>
  * The mapped rule class to mark a navigation node.
  */
 @ExtensionInterface
 public interface IRuleMarkerNavigationMapper extends IRuleMapper {
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @return rule to add a marker to a navigation node
+	 */
 	IUIFilterRuleMarkerNavigation getRuleClass();
 
 }

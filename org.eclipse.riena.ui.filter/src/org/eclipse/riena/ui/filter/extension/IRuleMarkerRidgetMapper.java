@@ -14,11 +14,18 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
 
 /**
+ * {@inheritDoc}
+ * <p>
  * The mapped rule class to mark a ridget.
  */
 @ExtensionInterface
 public interface IRuleMarkerRidgetMapper extends IRuleMapper {
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @return rule to add a marker to a ridget
+	 */
 	IUIFilterRuleMarkerRidget getRuleClass();
 
 }

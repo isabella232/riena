@@ -13,12 +13,15 @@ package org.eclipse.riena.ui.filter.extension;
 import org.eclipse.riena.ui.filter.IUIFilterRule;
 
 /**
- * The mapped rule class.
+ * To avoid problems with bundle dependencies (e.g. cycles) the classes of the
+ * different rules of the UI Filters are defined with extensions.
  */
 public interface IRuleMapper {
 
 	/**
-	 * Creates and returns (a new) rule class.
+	 * Creates and returns (a new) rule.
+	 * 
+	 * @return new rule
 	 */
 	IUIFilterRule getRuleClass();
 

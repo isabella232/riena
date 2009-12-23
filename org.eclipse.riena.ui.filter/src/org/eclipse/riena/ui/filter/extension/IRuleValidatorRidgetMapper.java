@@ -14,11 +14,18 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.ui.filter.IUIFilterRuleValidatorRidget;
 
 /**
+ * {@inheritDoc}
+ * <p>
  * The mapper rule class to add a validator to a ridget.
  */
 @ExtensionInterface
 public interface IRuleValidatorRidgetMapper extends IRuleMapper {
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @return rule to add a validator to a ridget
+	 */
 	IUIFilterRuleValidatorRidget getRuleClass();
 
 }
