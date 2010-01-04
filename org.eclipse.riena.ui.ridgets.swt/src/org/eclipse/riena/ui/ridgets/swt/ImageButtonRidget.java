@@ -153,7 +153,7 @@ public class ImageButtonRidget extends AbstractActionRidget {
 				control.setPressedImage(ImageStore.getInstance().getImage(iconId));
 				iconId = manager.getIconID(iconName, size, IconState.HAS_FOCUS);
 				control.setFocusedImage(ImageStore.getInstance().getImage(iconId));
-				iconId = manager.getIconID(iconName, size, IconState.ROLLOVER_HAS_FOCUS);
+				iconId = manager.getIconID(iconName, size, IconState.HOVER_HAS_FOCUS);
 				control.setHoverFocusedImage(ImageStore.getInstance().getImage(iconId));
 			} else {
 				control.setDisabledImage(null);

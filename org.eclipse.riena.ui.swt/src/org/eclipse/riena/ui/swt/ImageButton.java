@@ -28,23 +28,27 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.TypedListener;
 
 /**
- * A button with only an image. (No (button) border, no text).
- * <p>
- * The button can have different image for different button states (e.g. pressed
- * or disabled).
+ * @since 2.0
+ * 
  */
 public class ImageButton extends Composite {
 
+	private static final Point DEF_HORIZONTAL_MARGIN = new Point(0, 0);
+	private static final Point DEF_HOVER_BUTTON_HORIZONTAL_MARGIN = new Point(12, 12);
 	private static final int IMAGE_INDEX = 0;
 	private static final int PRESSED_IMAGE_INDEX = 1; // p
 	private static final int FOCUSED_IMAGE_INDEX = 2; // f
@@ -65,6 +69,8 @@ public class ImageButton extends Composite {
 	private FocusListener focusListener;
 	private TraverseListener traverseListener;
 	private ButtonKeyListener keyListener;
+	private Button hoverButton;
+	private Point horizontalMargin = DEF_HORIZONTAL_MARGIN;
 
 	/**
 	 * Creates a new instance of {@code ImageButton}, initializes the button
@@ -74,15 +80,44 @@ public class ImageButton extends Composite {
 	 *            a widget which will be the parent of the new {@code
 	 *            ImageButton} (cannot be null)
 	 * @param style
-	 *            the style of widget to construct
+	 *            the style of widget to construct; SWT.HOT adds a button border
+	 *            and buttons background that is only visible if the mouse
+	 *            pointer is over the {@code ImageButton}.
 	 */
 	public ImageButton(Composite parent, int style) {
+
 		super(parent, style | SWT.DOUBLE_BUFFERED);
+
 		useIdealHeight = false;
 		pressed = false;
 		hover = false;
 		focused = false;
+
+		if ((style & SWT.HOT) == SWT.HOT) {
+			setHorizontalMargin(DEF_HOVER_BUTTON_HORIZONTAL_MARGIN);
+			setLayout(new FormLayout());
+			addHoverButton();
+		}
+
 		addListeners();
+
+	}
+
+	/**
+	 * Adds the "hover" button. The hover button is only visible if the mouse
+	 * pointer is over this UI control.
+	 */
+	private void addHoverButton() {
+
+		hoverButton = new Button(this, SWT.PUSH);
+		FormData data = new FormData();
+		data.left = new FormAttachment(0, 0);
+		data.right = new FormAttachment(100, 0);
+		data.top = new FormAttachment(0, 0);
+		data.bottom = new FormAttachment(100, 0);
+		hoverButton.setLayoutData(data);
+		hoverButton.setVisible(false);
+
 	}
 
 	/**
@@ -97,6 +132,11 @@ public class ImageButton extends Composite {
 		addMouseListener(mouseListener);
 		addMouseTrackListener(mouseListener);
 		addMouseMoveListener(mouseListener);
+		if (hoverButton != null) {
+			hoverButton.addMouseListener(mouseListener);
+			hoverButton.addMouseTrackListener(mouseListener);
+			hoverButton.addMouseMoveListener(mouseListener);
+		}
 
 		focusListener = new ButtonFocusListener();
 		addFocusListener(focusListener);
@@ -146,6 +186,11 @@ public class ImageButton extends Composite {
 		}
 
 		if (mouseListener != null) {
+			if (hoverButton != null) {
+				hoverButton.removeMouseListener(mouseListener);
+				hoverButton.removeMouseTrackListener(mouseListener);
+				hoverButton.removeMouseMoveListener(mouseListener);
+			}
 			removeMouseListener(mouseListener);
 			removeMouseTrackListener(mouseListener);
 			removeMouseMoveListener(mouseListener);
@@ -183,6 +228,10 @@ public class ImageButton extends Composite {
 	 *            e an event containing information about the paint
 	 */
 	private void onPaint(PaintEvent event) {
+
+		if (hoverButton != null && hoverButton.isVisible()) {
+			return;
+		}
 
 		Image image = getImageToDraw();
 		if (image != null) {
@@ -303,6 +352,19 @@ public class ImageButton extends Composite {
 			}
 		}
 
+		if (hoverButton != null) {
+			Point btnSize = hoverButton.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			if (size.x < btnSize.x) {
+				size.x = btnSize.x;
+			}
+			if (size.y < btnSize.y) {
+				size.y = btnSize.y;
+			}
+		}
+
+		size.x += getHorizontalMargin().x;
+		size.x += getHorizontalMargin().y;
+
 		if (wHint != SWT.DEFAULT) {
 			size.x = wHint;
 		}
@@ -311,6 +373,34 @@ public class ImageButton extends Composite {
 		}
 
 		return size;
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setBackground(Color color) {
+		super.setBackground(color);
+		if (hoverButton != null) {
+			hoverButton.setBackground(color);
+		}
+	}
+
+	/**
+	 * Show or hides the "hover" button depending in the hover state.
+	 */
+	private void updateHoverButton() {
+
+		if (hoverButton != null) {
+			boolean visible = isHover();
+			if (visible != hoverButton.isVisible()) {
+				hoverButton.setVisible(visible);
+			}
+			if (hoverButton.isVisible()) {
+				hoverButton.setImage(getImageToDraw());
+			}
+		}
 
 	}
 
@@ -572,6 +662,21 @@ public class ImageButton extends Composite {
 	}
 
 	/**
+	 * @param horizontalMargin
+	 *            the horizontalMargin to set
+	 */
+	public void setHorizontalMargin(Point horizontalMargin) {
+		this.horizontalMargin = horizontalMargin;
+	}
+
+	/**
+	 * @return the horizontalMargin
+	 */
+	public Point getHorizontalMargin() {
+		return horizontalMargin;
+	}
+
+	/**
 	 * Presses the button after the space key was pressed and fires a selection
 	 * event after the space key was released.
 	 */
@@ -648,12 +753,13 @@ public class ImageButton extends Composite {
 			if (!isEnabled()) {
 				return;
 			}
-			if (!ignore(e)) {
+			if (!ignoreMouseButton(e) && !ignoreWidget(e)) {
 				if (isPressed() && isHover()) {
 					Event event = new Event();
 					notifyListeners(SWT.Selection, event);
 				}
 				setPressed(false);
+				updateHoverButton();
 			}
 		}
 
@@ -666,8 +772,9 @@ public class ImageButton extends Composite {
 			if (!isEnabled()) {
 				return;
 			}
-			if (!ignore(e)) {
+			if (!ignoreMouseButton(e) && !ignoreWidget(e)) {
 				setPressed(true);
+				updateHoverButton();
 			}
 		}
 
@@ -687,7 +794,13 @@ public class ImageButton extends Composite {
 			if (!isEnabled()) {
 				return;
 			}
-			setHover(true);
+			if (!ignoreWidget(e)) {
+				boolean oldHover = isHover();
+				setHover(true);
+				if (oldHover != isHover()) {
+					updateHoverButton();
+				}
+			}
 		}
 
 		/**
@@ -699,7 +812,13 @@ public class ImageButton extends Composite {
 			if (!isEnabled()) {
 				return;
 			}
-			setHover(false);
+			if (!ignoreWidget(e)) {
+				boolean oldHover = isHover();
+				setHover(false);
+				if (oldHover != isHover()) {
+					updateHoverButton();
+				}
+			}
 		}
 
 		/**
@@ -719,12 +838,18 @@ public class ImageButton extends Composite {
 			if (!isEnabled()) {
 				return;
 			}
-			if (isPressed()) {
-				Point point = new Point(e.x, e.y);
-				if (isOverButton(point)) {
-					setHover(true);
-				} else {
-					setHover(false);
+			if (!ignoreWidget(e)) {
+				if (isPressed()) {
+					boolean oldHover = isHover();
+					Point point = new Point(e.x, e.y);
+					if (isOverButton(point)) {
+						setHover(true);
+					} else {
+						setHover(false);
+					}
+					if (oldHover != isHover()) {
+						updateHoverButton();
+					}
 				}
 			}
 		}
@@ -732,9 +857,31 @@ public class ImageButton extends Composite {
 		/**
 		 * Ignores mouse events if the event is not associated with the left
 		 * mouse button.
+		 * 
+		 * @param e
+		 *            mouse event
+		 * @return {@code true} ignore event; otherwise {@code false}
 		 */
-		private boolean ignore(MouseEvent e) {
+		private boolean ignoreMouseButton(MouseEvent e) {
 			return e.button != 1;
+		}
+
+		/**
+		 * Ignores mouse events if the source widget is "invisible"
+		 * 
+		 * @param e
+		 *            mouse event
+		 * @return {@code true} ignore event; otherwise {@code false}
+		 */
+		private boolean ignoreWidget(MouseEvent e) {
+			if (hoverButton != null) {
+				if (hoverButton.isVisible()) {
+					return e.widget != hoverButton;
+				} else {
+					return e.widget == hoverButton;
+				}
+			}
+			return false;
 		}
 
 		/**

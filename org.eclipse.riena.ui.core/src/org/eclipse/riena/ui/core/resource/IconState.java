@@ -49,7 +49,7 @@ public class IconState {
 	 * Icon state if the UI control has the focus and the mouse pointer is over
 	 * the UI control.
 	 */
-	public static final IconState ROLLOVER_HAS_FOCUS = new IconState("_hf_"); //$NON-NLS-1$
+	public static final IconState HOVER_HAS_FOCUS = new IconState("_hf_"); //$NON-NLS-1$
 
 	private String defaultMapping;
 

@@ -93,7 +93,20 @@ public class RidgetsSubModuleController extends SubModuleController {
 		});
 
 		IActionRidget imageButton = (IActionRidget) getRidget("imageButton");
-		imageButton.setIcon("imageBtn");
+		imageButton.setIcon("arrowRight");
+		imageButton.addListener(new IActionListener() {
+			public void callback() {
+				System.out.println("Button klicked...");
+			}
+		});
+
+		IActionRidget imageHotButton = (IActionRidget) getRidget("imageHotButton");
+		imageHotButton.setIcon("arrowRight");
+		imageHotButton.addListener(new IActionListener() {
+			public void callback() {
+				System.out.println("Button klicked...");
+			}
+		});
 
 	}
 
