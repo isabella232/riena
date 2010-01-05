@@ -13,16 +13,17 @@ package org.eclipse.riena.sample.snippets;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.ui.core.marker.ValidationTime;
-import org.eclipse.riena.ui.ridgets.ILabelRidget;
-import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
-import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
+import org.eclipse.riena.ui.ridgets.validation.MinLength;
 
 /**
  * Text field ridget with minimum length validation rule and direct writing.
@@ -35,7 +36,7 @@ public final class SnippetTextRidget001 {
 			Shell shell = new Shell();
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
-			createLabel(shell, "Input (>5):"); //$NON-NLS-1$
+			createLabel(shell, "Input (>4 chars):"); //$NON-NLS-1$
 			Text text = new Text(shell, SWT.BORDER);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(text);
 
