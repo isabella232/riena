@@ -96,7 +96,9 @@ public class RidgetsSubModuleView extends SubModuleView<RidgetsSubModuleControll
 
 		UIControlsFactory.createImageButton(rienaButtonGroup, SWT.NONE, "imageButton"); //$NON-NLS-1$
 
-		UIControlsFactory.createImageButton(rienaButtonGroup, SWT.HOT, "imageHotButton"); //$NON-NLS-1$
+		UIControlsFactory.createImageButton(rienaButtonGroup, SWT.NONE, "arrowButton"); //$NON-NLS-1$
+
+		UIControlsFactory.createImageButton(rienaButtonGroup, SWT.HOT, "arrowHotButton"); //$NON-NLS-1$
 
 	}
 }

@@ -92,19 +92,27 @@ public class RidgetsSubModuleController extends SubModuleController {
 			}
 		});
 
-		IActionRidget imageButton = (IActionRidget) getRidget("imageButton");
-		imageButton.setIcon("arrowRight");
+		IActionRidget imageButton = (IActionRidget) getRidget("imageButton"); //$NON-NLS-1$
+		imageButton.setIcon("imageBtn"); //$NON-NLS-1$
 		imageButton.addListener(new IActionListener() {
 			public void callback() {
-				System.out.println("Button klicked...");
+				System.out.println("Button klicked..."); //$NON-NLS-1$
 			}
 		});
 
-		IActionRidget imageHotButton = (IActionRidget) getRidget("imageHotButton");
-		imageHotButton.setIcon("arrowRight");
-		imageHotButton.addListener(new IActionListener() {
+		IActionRidget arrowButton = (IActionRidget) getRidget("arrowButton"); //$NON-NLS-1$
+		arrowButton.setIcon("arrowRight"); //$NON-NLS-1$
+		arrowButton.addListener(new IActionListener() {
 			public void callback() {
-				System.out.println("Button klicked...");
+				System.out.println("Button klicked..."); //$NON-NLS-1$
+			}
+		});
+
+		IActionRidget arrowHotButton = (IActionRidget) getRidget("arrowHotButton"); //$NON-NLS-1$
+		arrowHotButton.setIcon("arrowRight"); //$NON-NLS-1$
+		arrowHotButton.addListener(new IActionListener() {
+			public void callback() {
+				System.out.println("Button klicked..."); //$NON-NLS-1$
 			}
 		});
 

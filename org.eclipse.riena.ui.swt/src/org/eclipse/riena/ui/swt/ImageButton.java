@@ -42,6 +42,13 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.TypedListener;
 
 /**
+ * A button with only an image. (No (button) border, no text). If the button has
+ * the style {@code SWT.HOT}, the button has a border and a background like
+ * other SWT buttons if the mouse pointer is over the button (hot/hover).
+ * <p>
+ * The button can have different image for different button states (e.g. pressed
+ * or disabled).
+ * 
  * @since 2.0
  * 
  */
@@ -93,13 +100,26 @@ public class ImageButton extends Composite {
 		hover = false;
 		focused = false;
 
-		if ((style & SWT.HOT) == SWT.HOT) {
+		if (hasHotStyle()) {
 			setHorizontalMargin(DEF_HOVER_BUTTON_HORIZONTAL_MARGIN);
 			setLayout(new FormLayout());
 			addHoverButton();
 		}
 
 		addListeners();
+
+	}
+
+	/**
+	 * Returns whether the style of the button has {@code SWT.HOT}.
+	 * 
+	 * @return {@code true} if style has {@code SWT.HOT}; otherwise {@code
+	 *         false}
+	 */
+	private boolean hasHotStyle() {
+
+		int style = getStyle();
+		return (style & SWT.HOT) == SWT.HOT;
 
 	}
 
@@ -121,7 +141,8 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Adds listeners to this {@code ImageButton}.
+	 * Adds listeners to this {@code ImageButton} and to the "hover" button (if
+	 * exists).
 	 */
 	private void addListeners() {
 
@@ -161,7 +182,8 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Removes all listeners form this {@code ImageButton}.
+	 * Removes all listeners form this {@code ImageButton} and from the "hover"
+	 * button (if exists).
 	 */
 	private void removeListeners() {
 
@@ -266,6 +288,9 @@ public class ImageButton extends Composite {
 			if (y < 0) {
 				y = 0;
 			}
+			if (hasHotStyle() && ((event.height % 2) != 0)) {
+				y++;
+			}
 		}
 
 		return new Point(x, y);
@@ -290,25 +315,25 @@ public class ImageButton extends Composite {
 			return imageToDraw;
 		}
 
-		if (isHover()) {
-			if (isPressed()) {
-				imageToDraw = getPressedImage();
-				if (imageToDraw == null) {
-					imageToDraw = getImage();
-				}
-				return imageToDraw;
-			} else {
-				if (isFocused()) {
-					imageToDraw = getHoverFocusedImage();
-				}
-				if (imageToDraw == null) {
-					imageToDraw = getHoverImage();
-				}
-				if (imageToDraw == null) {
-					imageToDraw = getImage();
-				}
-				return imageToDraw;
+		if (isPressed()) {
+			imageToDraw = getPressedImage();
+			if (imageToDraw == null) {
+				imageToDraw = getImage();
 			}
+			return imageToDraw;
+		}
+
+		if (isHover()) {
+			if (isFocused()) {
+				imageToDraw = getHoverFocusedImage();
+			}
+			if (imageToDraw == null) {
+				imageToDraw = getHoverImage();
+			}
+			if (imageToDraw == null) {
+				imageToDraw = getImage();
+			}
+			return imageToDraw;
 		}
 
 		if (isFocused()) {
@@ -393,7 +418,7 @@ public class ImageButton extends Composite {
 	private void updateHoverButton() {
 
 		if (hoverButton != null) {
-			boolean visible = isHover();
+			boolean visible = isHover() || isPressed();
 			if (visible != hoverButton.isVisible()) {
 				hoverButton.setVisible(visible);
 			}
@@ -596,8 +621,10 @@ public class ImageButton extends Composite {
 	}
 
 	/**
+	 * Sets whether the button is pressed.
+	 * 
 	 * @param pressed
-	 *            the pressed to set
+	 *            {@code true} if button is pressed; otherwise {@code false}
 	 */
 	private void setPressed(boolean pressed) {
 		if (this.pressed != pressed) {
@@ -607,7 +634,9 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * @return the pressed
+	 * Returns whether the button is pressed.
+	 * 
+	 * @return {@code true} if button is pressed; otherwise {@code false}
 	 */
 	private boolean isPressed() {
 		return pressed;
@@ -662,15 +691,20 @@ public class ImageButton extends Composite {
 	}
 
 	/**
+	 * Sets the left and right margin between button border and image.
+	 * 
 	 * @param horizontalMargin
-	 *            the horizontalMargin to set
+	 *            left and right margin
+	 * 
 	 */
 	public void setHorizontalMargin(Point horizontalMargin) {
 		this.horizontalMargin = horizontalMargin;
 	}
 
 	/**
-	 * @return the horizontalMargin
+	 * Returns the left and right margin between button border and image.
+	 * 
+	 * @return left and right margin
 	 */
 	public Point getHorizontalMargin() {
 		return horizontalMargin;
@@ -691,6 +725,7 @@ public class ImageButton extends Composite {
 			}
 			if (!ignore(e)) {
 				setPressed(true);
+				updateHoverButton();
 			}
 		}
 
@@ -707,6 +742,7 @@ public class ImageButton extends Composite {
 					notifyListeners(SWT.Selection, event);
 				}
 				setPressed(false);
+				updateHoverButton();
 			}
 		}
 
@@ -909,6 +945,7 @@ public class ImageButton extends Composite {
 		 */
 		public void focusGained(FocusEvent e) {
 			setFocused(true);
+			updateHoverButton();
 		}
 
 		/**
@@ -916,6 +953,7 @@ public class ImageButton extends Composite {
 		 */
 		public void focusLost(FocusEvent e) {
 			setFocused(false);
+			updateHoverButton();
 		}
 
 	}

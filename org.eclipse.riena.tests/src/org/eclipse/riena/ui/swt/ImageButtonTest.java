@@ -16,6 +16,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
@@ -70,6 +71,15 @@ public class ImageButtonTest extends TestCase {
 		// DisposeListener added?
 		assertEquals(1, button.getListeners(SWT.Dispose).length);
 
+		button = new ImageButton(shell, SWT.HOT);
+		Button hoverButton = ReflectionUtils.getHidden(button, "hoverButton");
+		// MouseListener added?
+		assertEquals(1, hoverButton.getListeners(SWT.MouseDown).length);
+		// MouseTrackListener added?
+		assertEquals(1, hoverButton.getListeners(SWT.MouseEnter).length);
+		// MouseMoveListener added?
+		assertEquals(1, hoverButton.getListeners(SWT.MouseMove).length);
+
 	}
 
 	/**
@@ -96,6 +106,16 @@ public class ImageButtonTest extends TestCase {
 		assertEquals(0, button.getListeners(SWT.Traverse).length);
 		// DisposeListener removed?
 		assertEquals(0, button.getListeners(SWT.Dispose).length);
+
+		button = new ImageButton(shell, SWT.HOT);
+		ReflectionUtils.invokeHidden(button, "removeListeners");
+		Button hoverButton = ReflectionUtils.getHidden(button, "hoverButton");
+		// MouseListener added?
+		assertEquals(0, hoverButton.getListeners(SWT.MouseDown).length);
+		// MouseTrackListener added?
+		assertEquals(0, hoverButton.getListeners(SWT.MouseEnter).length);
+		// MouseMoveListener added?
+		assertEquals(0, hoverButton.getListeners(SWT.MouseMove).length);
 
 	}
 
@@ -207,6 +227,37 @@ public class ImageButtonTest extends TestCase {
 
 		SwtUtilities.disposeResource(image);
 		SwtUtilities.disposeResource(bigImage);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code updateHoverButton()}.
+	 */
+	public void testUpdateHoverButton() {
+
+		shell.setVisible(true);
+
+		button = new ImageButton(shell, SWT.HOT);
+		Button hoverButton = ReflectionUtils.getHidden(button, "hoverButton");
+		assertFalse(hoverButton.isVisible());
+
+		ReflectionUtils.invokeHidden(button, "setPressed", true);
+		ReflectionUtils.invokeHidden(button, "updateHoverButton");
+		assertTrue(hoverButton.isVisible());
+
+		ReflectionUtils.invokeHidden(button, "setPressed", false);
+		ReflectionUtils.invokeHidden(button, "updateHoverButton");
+		assertFalse(hoverButton.isVisible());
+
+		ReflectionUtils.invokeHidden(button, "setHover", true);
+		ReflectionUtils.invokeHidden(button, "updateHoverButton");
+		assertTrue(hoverButton.isVisible());
+
+		ReflectionUtils.invokeHidden(button, "setPressed", true);
+		ReflectionUtils.invokeHidden(button, "updateHoverButton");
+		assertTrue(hoverButton.isVisible());
+
+		shell.setVisible(false);
 
 	}
 
