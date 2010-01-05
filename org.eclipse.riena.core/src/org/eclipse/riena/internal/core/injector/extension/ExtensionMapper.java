@@ -100,11 +100,11 @@ public final class ExtensionMapper {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T[] map(final boolean symbolReplace, final ExtensionDescriptor extensionDesc,
-			final Class<T> componentType, boolean nonSpecific) {
+			final Class<T> componentType, final boolean nonSpecific) {
 		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
 		final List<Object> list = new ArrayList<Object>();
 		boolean atLeastOneExtensionPointExists = false;
-		for (String extensionPointId : extensionDesc.getExtensionPointId().compatibleIds()) {
+		for (final String extensionPointId : extensionDesc.getExtensionPointId().compatibleIds()) {
 			final IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(extensionPointId);
 			if (extensionPoint == null) {
 				continue;
@@ -122,7 +122,7 @@ public final class ExtensionMapper {
 							.newInstance(symbolReplace, componentType, new Wrapper(extensionPoint)));
 				}
 			} else {
-				for (IExtension extension : extensionPoint.getExtensions()) {
+				for (final IExtension extension : extensionPoint.getExtensions()) {
 					list.add(InterfaceBeanFactory.newInstance(symbolReplace, componentType, new Wrapper(extension)));
 				}
 			}
@@ -156,59 +156,49 @@ public final class ExtensionMapper {
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.core.runtime.IConfigurationElement#createExecutableExtension
-		 * (java.lang.String)
+		 * {@inheritDoc}
 		 */
-		public Object createExecutableExtension(String propertyName) throws CoreException {
+		public Object createExecutableExtension(final String propertyName) throws CoreException {
 			throw new UnsupportedOperationException("IExtension/Point does not support createExecutableExtension()"); //$NON-NLS-1$
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.core.runtime.IConfigurationElement#getAttribute(java.
-		 * lang.String)
+		 * {@inheritDoc}
 		 */
-		public String getAttribute(String name) {
+		public String getAttribute(final String name) {
 			return null;
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.core.runtime.IConfigurationElement#getAttributeAsIs(java
-		 * .lang.String)
+		 * {@inheritDoc}
 		 */
-		public String getAttributeAsIs(String name) {
+		public String getAttribute(final String attrName, final String locale) {
 			return null;
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.core.runtime.IConfigurationElement#getAttributeNames()
+		 * {@inheritDoc}
+		 */
+		public String getAttributeAsIs(final String name) {
+			return null;
+		}
+
+		/*
+		 * {@inheritDoc}
 		 */
 		public String[] getAttributeNames() {
 			return new String[0];
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.core.runtime.IConfigurationElement#getChildren()
+		 * {@inheritDoc}
 		 */
 		public IConfigurationElement[] getChildren() {
 			if (wrappedExtension != null) {
 				return wrappedExtension.getConfigurationElements();
 			}
 
-			List<IConfigurationElement> elements = new ArrayList<IConfigurationElement>();
+			final List<IConfigurationElement> elements = new ArrayList<IConfigurationElement>();
 			for (final IExtension extension : wrappedExtensionPoint.getExtensions()) {
 				elements.addAll(Arrays.asList(extension.getConfigurationElements()));
 			}
@@ -217,13 +207,9 @@ public final class ExtensionMapper {
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.core.runtime.IConfigurationElement#getChildren(java.lang
-		 * .String)
+		 * {@inheritDoc}
 		 */
-		public IConfigurationElement[] getChildren(String name) {
+		public IConfigurationElement[] getChildren(final String name) {
 			final IConfigurationElement[] configurationElements = wrappedExtension != null ? wrappedExtension
 					.getConfigurationElements() : wrappedExtensionPoint.getConfigurationElements();
 
@@ -237,9 +223,7 @@ public final class ExtensionMapper {
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.core.runtime.IConfigurationElement#getContributor()
+		 * {@inheritDoc}
 		 */
 		public IContributor getContributor() {
 			return wrappedExtension != null ? wrappedExtension.getContributor() : wrappedExtensionPoint
@@ -247,29 +231,21 @@ public final class ExtensionMapper {
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.core.runtime.IConfigurationElement#getDeclaringExtension
-		 * ()
+		 * {@inheritDoc}
 		 */
 		public IExtension getDeclaringExtension() {
 			throw new UnsupportedOperationException("IExtensionPoint does not support getDeclaringExtension()"); //$NON-NLS-1$
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.core.runtime.IConfigurationElement#getName()
+		 * {@inheritDoc}
 		 */
 		public String getName() {
 			return wrappedExtension != null ? wrappedExtension.getLabel() : wrappedExtensionPoint.getLabel();
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.core.runtime.IConfigurationElement#getNamespace()
+		 * {@inheritDoc}
 		 */
 		@SuppressWarnings("deprecation")
 		public String getNamespace() {
@@ -278,11 +254,7 @@ public final class ExtensionMapper {
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.core.runtime.IConfigurationElement#getNamespaceIdentifier
-		 * ()
+		 * {@inheritDoc}
 		 */
 		public String getNamespaceIdentifier() {
 			return wrappedExtension != null ? wrappedExtension.getNamespaceIdentifier() : wrappedExtensionPoint
@@ -290,36 +262,35 @@ public final class ExtensionMapper {
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.core.runtime.IConfigurationElement#getParent()
+		 * {@inheritDoc}
 		 */
 		public Object getParent() {
 			throw new UnsupportedOperationException("IExtensionPoint does not support getParent()"); //$NON-NLS-1$
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.core.runtime.IConfigurationElement#getValue()
+		 * {@inheritDoc}
 		 */
 		public String getValue() {
 			throw new UnsupportedOperationException("IExtensionPoint does not support getValue()"); //$NON-NLS-1$
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.core.runtime.IConfigurationElement#getValueAsIs()
+		 * {@inheritDoc}
+		 */
+		public String getValue(final String locale) {
+			throw new UnsupportedOperationException("IExtensionPoint does not support getValue(String locale)"); //$NON-NLS-1$
+		}
+
+		/*
+		 * {@inheritDoc}
 		 */
 		public String getValueAsIs() {
 			throw new UnsupportedOperationException("IExtensionPoint does not support getValueAsIs()"); //$NON-NLS-1$
 		}
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.core.runtime.IConfigurationElement#isValid()
+		 * {@inheritDoc}
 		 */
 		public boolean isValid() {
 			return wrappedExtension != null ? wrappedExtension.isValid() : wrappedExtensionPoint.isValid();
