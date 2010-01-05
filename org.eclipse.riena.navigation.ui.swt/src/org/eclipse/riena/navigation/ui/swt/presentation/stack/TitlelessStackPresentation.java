@@ -97,11 +97,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 */
 	public static final int DEFAULT_PADDING_RIGHT = DEFAULT_PADDING_LEFT;
 	/**
-	 * Top padding of the sub-module view.<br>
-	 * Gap between application switcher and sub-module view.
-	 */
-	public static final int PADDING_TOP = 10;
-	/**
 	 * Bottom padding of the navigation/the sub-module view.<br>
 	 * Gap between bottom shell border and sub-module view.
 	 */
@@ -314,17 +309,15 @@ public class TitlelessStackPresentation extends StackPresentation {
 		GC gc = new GC(parent);
 		try {
 			Point size = getModuleGroupRenderer().computeSize(gc, SWT.DEFAULT, SWT.DEFAULT);
-
 			int x = getShellNavigationGap();
-			int y = PADDING_TOP;
 			int width = size.x;
-			int height = parent.getBounds().height - PADDING_BOTTOM - PADDING_TOP
+			int height = parent.getBounds().height - PADDING_BOTTOM
 					- LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
-
-			return new Rectangle(x, y, width, height);
+			return new Rectangle(x, 0, width, height);
 		} finally {
 			gc.dispose();
 		}
+
 	}
 
 	/**

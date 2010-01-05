@@ -723,7 +723,7 @@ public final class LnfKeyConstants {
 	 * setEnabled is called. Is advanced rendering turned off the widgets are
 	 * renderer in a spacial way (@see DisabledMarkerVisualizer).
 	 * 
-	 * @since 1.2
+	 * @since 2.0
 	 */
 	public static final String DISABLED_MARKER_ADVANCED = "DisabledMarker.advanced"; //$NON-NLS-1$
 
@@ -772,6 +772,12 @@ public final class LnfKeyConstants {
 	public static final String NAVIGATION_WIDTH = "navigation.width"; //$NON-NLS-1$
 
 	/**
+	 * This constant is described in Eclipsepedia.
+	 * 
+	 * @see <a href=
+	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Menu_Bar_.2F_Tool_Bar">Riena
+	 *      Wiki</a>
+	 * 
 	 * @since 1.2
 	 */
 	public static final String TOOLBAR_WORK_AREA_VERTICAL_GAP = "toolbar.workarea.vertical.gap"; //$NON-NLS-1$
@@ -787,11 +793,25 @@ public final class LnfKeyConstants {
 	 * @since 1.2
 	 */
 	public static final String NAVIGATION_SUB_MODULE_GAP = "NavigationSubModule.gap"; //$NON-NLS-1$
+
 	/**
+	 * This constant is described in Eclipsepedia.
+	 * 
+	 * @see <a href=
+	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Menu_Bar_.2F_Tool_Bar">Riena
+	 *      Wiki</a>
+	 * 
 	 * @since 1.2
 	 */
 	public static final String MENUBAR_TOP_MARGIN = "Menubar.topMargin"; //$NON-NLS-1$
+
 	/**
+	 * This constant is described in Eclipsepedia.
+	 * 
+	 * @see <a href=
+	 *      "http://wiki.eclipse.org/Riena_Look_and_Feel#Menu_Bar_.2F_Tool_Bar">Riena
+	 *      Wiki</a>
+	 * 
 	 * @since 1.2
 	 */
 	public static final String TOOLBAR_TOP_MARGIN = "Toolbar.topMargin"; //$NON-NLS-1$

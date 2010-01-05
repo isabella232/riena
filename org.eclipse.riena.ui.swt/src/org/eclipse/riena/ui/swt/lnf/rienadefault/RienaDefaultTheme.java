@@ -364,7 +364,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		//		table.put(LnfKeyConstants.SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION,
 		//				IIconizableMarker.MarkerPosition.BOTTOM_RIGHT);
 
-		table.put(LnfKeyConstants.TOOLBAR_WORK_AREA_VERTICAL_GAP, 0);
+		table.put(LnfKeyConstants.TOOLBAR_WORK_AREA_VERTICAL_GAP, 5);
 
 		table.put(LnfKeyConstants.NAVIGATION_WIDTH, 165);
 
