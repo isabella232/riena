@@ -624,6 +624,14 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	}
 
+	public void testCreate() {
+
+		INavigationNode<?> targetNode = navigationProcessor.create(module, new NavigationNodeId(
+				"org.eclipse.riena.navigation.model.test.subModule"), null);
+		assertEquals(subModule, targetNode);
+
+	}
+
 	private static class TestSubModuleNode extends SubModuleNode {
 
 		private boolean allowsActivate;

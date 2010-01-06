@@ -239,22 +239,22 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationProcessor#create(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.NavigationNodeId)
+	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
-	public void create(INavigationNode<?> sourceNode, NavigationNodeId targetId) {
-		provideNode(sourceNode, targetId, null);
+	public INavigationNode<?> create(INavigationNode<?> sourceNode, NavigationNodeId targetId) {
+		return provideNode(sourceNode, targetId, null);
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.riena.navigation.INavigationProcessor#create(org.eclipse.
-	 *      riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.NavigationNodeId,
-	 *      org.eclipse.riena.navigation.NavigationArgument)
+	 * @since 2.0
 	 */
-	public void create(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument) {
-		provideNode(sourceNode, targetId, argument);
+	public INavigationNode<?> create(INavigationNode<?> sourceNode, NavigationNodeId targetId,
+			NavigationArgument argument) {
+		return provideNode(sourceNode, targetId, argument);
 	}
 
 	/**

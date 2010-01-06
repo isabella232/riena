@@ -208,8 +208,8 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 		if (id != null) {
 			return new StartupNodeInfo(Level.SUBMODULE, sequence, id);
 		}
-		Assert.isNotNull(assembly.getNavigationAssembler(), "Assembly '" + assembly.getId()
-				+ "' must have an assembler specified since no immediate child has a typeId.");
+		Assert.isNotNull(assembly.getNavigationAssembler(), "Assembly '" + assembly.getId() //$NON-NLS-1$
+				+ "' must have an assembler specified since no immediate child has a typeId."); //$NON-NLS-1$
 		id = assembly.getId();
 		if (id != null) {
 			return new StartupNodeInfo(Level.CUSTOM, sequence, id);
@@ -240,8 +240,8 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	}
 
 	public void registerNavigationAssembler(String id, INavigationAssembler assembler) {
-		Assert.isTrue(assemblyId2AssemblerCache.get(id) == null, "There are two assembly extension definitions for '"
-				+ id + "'.");
+		Assert.isTrue(assemblyId2AssemblerCache.get(id) == null, "There are two assembly extension definitions for '" //$NON-NLS-1$
+				+ id + "'."); //$NON-NLS-1$
 		assemblyId2AssemblerCache.put(id, assembler);
 	}
 
@@ -381,6 +381,9 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	 */
 	public void update(INavigationAssemblyExtension[] data) {
 
+		if (data == null) {
+			throw new RuntimeException();
+		}
 		cleanUp();
 		for (INavigationAssemblyExtension assembly : data) {
 			register(assembly);

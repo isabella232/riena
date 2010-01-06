@@ -56,9 +56,11 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 * @param targetId
 	 *            ID of the node to create. Also refers to an extension point
 	 *            used to create the target node if it does not exist.
+	 * @return target node
 	 * @see INavigationAssembler
+	 * @since 2.0
 	 */
-	void create(INavigationNode<?> sourceNode, NavigationNodeId targetId);
+	INavigationNode<?> create(INavigationNode<?> sourceNode, NavigationNodeId targetId);
 
 	/**
 	 * Creates the specified navigation node and adds it to the application
@@ -73,9 +75,11 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 * @param argument
 	 *            Contains information passed on to the target node and/or used
 	 *            during its creation.
+	 * @return target node
 	 * @see INavigationAssembler
+	 * @since 2.0
 	 */
-	void create(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
+	INavigationNode<?> create(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
 	 * Navigates from the specified source node to the specified target node.
