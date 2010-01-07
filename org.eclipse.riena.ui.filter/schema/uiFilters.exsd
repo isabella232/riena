@@ -2,9 +2,9 @@
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.eclipse.riena.ui.filter" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appinfo>
+      <appInfo>
          <meta.schema plugin="org.eclipse.riena.ui.filter" id="org.eclipse.riena.filter.uiFilter" name="uiFilter"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter description of this extension point.]
       </documentation>
@@ -12,9 +12,9 @@
 
    <element name="extension">
       <annotation>
-         <appinfo>
+         <appInfo>
             <meta.element />
-         </appinfo>
+         </appInfo>
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
@@ -39,9 +39,9 @@
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
@@ -71,7 +71,10 @@
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The filter with its rules will be added to all the node with the given (long) ID.
+
+Note: The &lt;i&gt;long&lt;/i&gt; ID is a combination of the ID of the node and all its parent. The IDs are separated with slashes (&quot;/&quot;).
+e.g.: /app1/subApp2
                </documentation>
             </annotation>
          </attribute>
@@ -83,14 +86,17 @@
          <attribute name="ridgetId" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The long  ID of the Ridget. It also can be a pattern with *&quot; and &quot;?&quot; wildcards.
+
+Note: The &lt;i&gt;long&lt;/i&gt; ID is a combination of the ID of the sub module, which contains the parent, all the parent nodes of the sub module and the ID of the Ridget. The IDs are separated with slashes (&quot;/&quot;).
+e.g.: /app1/subApp2/modGroup3/mod4/subMod4711/ridget0815
                </documentation>
             </annotation>
          </attribute>
          <attribute name="marker" use="required">
             <annotation>
                <documentation>
-                  
+                  The marker that will be added to the Ridget.
                </documentation>
             </annotation>
             <simpleType>
@@ -114,14 +120,14 @@
          <attribute name="itemId" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The ID of the menu item or tool bar item. It also can be a pattern with *&quot; and &quot;?&quot; wildcards.
                </documentation>
             </annotation>
          </attribute>
          <attribute name="marker" use="required">
             <annotation>
                <documentation>
-                  
+                  The marker that will be added to the menu item.
                </documentation>
             </annotation>
             <simpleType>
@@ -141,14 +147,17 @@
          <attribute name="nodeId" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The long  ID of the navigation node. It also can be a pattern with *&quot; and &quot;?&quot; wildcards.
+
+Note: The &lt;i&gt;long&lt;/i&gt; ID is a combination of the ID of the node and all its parent. The IDs are separated with slashes (&quot;/&quot;).
+e.g.: /app1/subApp2/modGroup3/mod4/subMod4711
                </documentation>
             </annotation>
          </attribute>
          <attribute name="marker" use="required">
             <annotation>
                <documentation>
-                  
+                  The marker that will be added to the navigation node.
                </documentation>
             </annotation>
             <simpleType>
@@ -168,14 +177,21 @@
          <attribute name="ridgetId" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The long  ID of the Ridget. It also can be a pattern with *&quot; and &quot;?&quot; wildcards.
+
+Note: The &lt;i&gt;long&lt;/i&gt; ID is a combination of the ID of the sub module, which contains the parent, all the parent nodes of the sub module and the ID of the Ridget. The IDs are separated with slashes (&quot;/&quot;).
+e.g.: /app1/subApp2/modGroup3/mod4/subMod4711/ridget0815
                </documentation>
             </annotation>
          </attribute>
          <attribute name="validationTime" use="required">
             <annotation>
                <documentation>
-                  
+                  Specifies when the validator will be evaluated.
+
+onUIControlEdit: This happens after the user has changed a value in the widget and before copying the new value into the ridget.
+
+onUpdateToModel: This happens while copying the current ridget value into the model.
                </documentation>
             </annotation>
             <simpleType>
@@ -192,48 +208,47 @@
                <documentation>
                   The validator must have a default constructor.
 
-It is possible to pass arguments, if the validator implements also implements the inteface &lt;tt&gt;org.eclipse.core.runtime.IExecutableExtension&lt;/tt&gt;. The arguments are appended to class name of the validator. Class name and argument are separated with &quot;:&quot;. The single arguments a separated with &quot;,&quot;. 
-Example: &lt;tt&gt;&lt;/tt&gt;
+It is possible to pass arguments, if the validator implements also implements the inteface &lt;tt&gt;org.eclipse.core.runtime.IExecutableExtension&lt;/tt&gt;. The arguments are appended to class name of the validator. Class name and argument are separated with &quot;:&quot;. The single arguments a separated with &quot;,&quot;.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.core.databinding.validation.IValidator"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="since"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter the first release in which this extension point appears.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="examples"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter extension point usage example here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="apiinfo"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter API information here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="implementation"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter information about supplied implementation of this extension point.]
       </documentation>

@@ -2,9 +2,9 @@
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.eclipse.riena.ui.swt" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appinfo>
+      <appInfo>
          <meta.schema plugin="org.eclipse.riena.ui.swt" id="org.eclipse.riena.ui.swt.lnfrenderer" name="org.eclipse.riena.ui.swt.lnfrenderer"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter description of this extension point.]
       </documentation>
@@ -12,9 +12,9 @@
 
    <element name="extension">
       <annotation>
-         <appinfo>
+         <appInfo>
             <meta.element />
-         </appinfo>
+         </appInfo>
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
@@ -39,37 +39,43 @@
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
    <element name="renderer">
+      <annotation>
+         <documentation>
+            For a number of Riena widget it is possible to define who it (or a part of it) will be drawn. For these widgets a renderer exists. These renderer can be replaced by another renderer.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="lnfkey" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The key that is used in the Look and Feeld (L&amp;F) of Riena to find the renderer that will be used to draw the Riena widget (or a part of the widget).
                </documentation>
             </annotation>
          </attribute>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The renderer that will to used to draw the Riena widget (or a part of the widget).
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.swt.lnf.ILnfRenderer"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="lnfid" type="string">
             <annotation>
                <documentation>
-                  
+                  No ID is defined: so this is the default Renderer to draw the widget (or a part of the widget).
+ID is defined: this Renderer is only used if the current Look and Feel (L&amp;F) has the same ID (RienaDeafultLnf.getLnfId()).
                </documentation>
             </annotation>
          </attribute>
@@ -77,36 +83,36 @@
    </element>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="since"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter the first release in which this extension point appears.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="examples"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter extension point usage example here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="apiinfo"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter API information here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="implementation"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter information about supplied implementation of this extension point.]
       </documentation>
