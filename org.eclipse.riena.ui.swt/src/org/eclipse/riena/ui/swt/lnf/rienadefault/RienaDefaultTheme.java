@@ -55,8 +55,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_RESTORE_HOVER = "mb_restore_hover.gif"; //$NON-NLS-1$
 	private static final String IMAGE_RESTORE_HOVER_SELECTED = "mb_restore_hover_selected.gif"; //$NON-NLS-1$
 	private static final String IMAGE_RESTORE_INACTIVE_ICON = "mb_restore_inactive.gif"; //$NON-NLS-1$
-	private static final String IMAGE_HAND = "hand"; //$NON-NLS-1$
-	private static final String IMAGE_GRAB = "grab"; //$NON-NLS-1$
+	private static final String IMAGE_HAND = "hand.gif"; //$NON-NLS-1$
+	private static final String IMAGE_GRAB = "grab.gif"; //$NON-NLS-1$
 	private static final String IMAGE_GRAB_CORNER = "grabCorner"; //$NON-NLS-1$
 	private static final String IMAGE_SPACER = "spacer"; //$NON-NLS-1$
 	private static final String IMAGE_ERROR = "statusline_error.gif"; //$NON-NLS-1$
