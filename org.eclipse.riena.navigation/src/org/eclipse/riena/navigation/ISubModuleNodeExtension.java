@@ -39,7 +39,7 @@ public interface ISubModuleNodeExtension extends INodeExtension {
 	 * @return A controller that controlles the UI widgets in the view through
 	 *         ridgets (see org.eclipse.riena.ui.internal.ridgets.IRidget)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	Class getController();
 
 	/**
