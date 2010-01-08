@@ -29,9 +29,9 @@ Require-Bundle: org.eclipse.core.databinding,
  org.junit,
  org.eclipse.riena.ui.filter,
  org.eclipse.riena.monitor.client,
- org.eclipse.riena.client,
  org.eclipse.riena.monitor.common,
- org.eclipse.riena.example.client
+ org.eclipse.riena.example.client,
+ org.eclipse.riena.client;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
 Export-Package: org.eclipse.riena,
