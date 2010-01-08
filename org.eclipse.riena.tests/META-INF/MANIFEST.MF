@@ -24,6 +24,7 @@ Require-Bundle: org.eclipse.core.databinding,
  org.eclipse.riena.ui.common,
  org.eclipse.riena.ui.ridgets,
  org.eclipse.riena.ui.ridgets.swt,
+ org.eclipse.riena.ui.ridgets.swt.optional,
  org.eclipse.riena.ui.swt,
  org.eclipse.ui;bundle-version="3.4.0",
  org.junit,
@@ -31,7 +32,7 @@ Require-Bundle: org.eclipse.core.databinding,
  org.eclipse.riena.monitor.client,
  org.eclipse.riena.monitor.common,
  org.eclipse.riena.example.client,
- org.eclipse.riena.client;bundle-version="2.0.0"
+ org.eclipse.riena.client
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
 Export-Package: org.eclipse.riena,
