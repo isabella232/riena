@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +88,9 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Default implementation of {@link IControlRidgetMapper} for SWT.
+ * <p>
+ * Note: for mappings between Interfaces and Ridget implementations see
+ * {@link ClassRidgetMapper}
  */
 public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object> {
 
@@ -210,7 +214,9 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 	}
 
 	private void addMappingToClassRidgetMapper(Class<? extends IRidget> ridgetClazz) {
-		ClassRidgetMapper.getInstance().addMapping(ridgetClazz);
+		if (!Modifier.isAbstract(ridgetClazz.getModifiers())) {
+			ClassRidgetMapper.getInstance().addMapping(getPrimaryRidgetInterface(ridgetClazz), ridgetClazz);
+		}
 	}
 
 	public Class<? extends IRidget> getRidgetClass(Class<? extends Object> controlClazz) {
@@ -237,6 +243,30 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 			}
 		}
 		return getRidgetClass(control.getClass());
+	}
+
+	/**
+	 * Finds the Primary-Interface for a given Ridget-Class. The
+	 * Primary-Interface is the one that is used to represent a specific Ridget
+	 * e.g. LabelRidget => ILabelRidget. This Method tries to find a Interface
+	 * that extends IRidget, if nothing was found in the current class, it
+	 * searches the superclasses recursively.
+	 * 
+	 * @param ridgetClass
+	 * @return the Primary-Interface extending IRidget or null if nothing was
+	 *         found
+	 */
+	public Class<? extends IRidget> getPrimaryRidgetInterface(Class<? extends IRidget> ridgetClass) {
+		if (ridgetClass == null || ridgetClass.isInterface()) {
+			return null;
+		}
+
+		for (Class<?> inf : ridgetClass.getInterfaces()) {
+			if (IRidget.class.isAssignableFrom(inf)) {
+				return (Class<? extends IRidget>) inf;
+			}
+		}
+		return getPrimaryRidgetInterface((Class<? extends IRidget>) ridgetClass.getSuperclass());
 	}
 
 	// helping classes

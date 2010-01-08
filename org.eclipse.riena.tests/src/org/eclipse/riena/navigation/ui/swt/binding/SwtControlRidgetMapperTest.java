@@ -25,6 +25,8 @@ import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToggleButtonRidget;
+import org.eclipse.riena.navigation.IAction;
+import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
@@ -252,6 +254,29 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 
 	}
 
+	public void testGetPrimaryRidgetInterface() {
+		assertEquals(IRidget.class, mapper.getPrimaryRidgetInterface(MockRidget.class));
+		assertEquals(IMockRidget2.class, mapper.getPrimaryRidgetInterface(MockRidget3.class));
+		assertEquals(IMockRidget2.class, mapper.getPrimaryRidgetInterface(MockRidgetImplementigSeveralInterfaces.class));
+	}
+
+	public void testAddMappingToClassRidgetMapper() {
+		ClassRidgetMapper classRidgetMapper = ClassRidgetMapper.getInstance();
+
+		mapper.addMapping(MockComposite.class, MockRidget.class);
+		assertEquals(MockRidget.class, classRidgetMapper.getRidgetClass(IRidget.class));
+
+		mapper.addMapping(MockComposite2.class, MockRidget3.class);
+		assertEquals(MockRidget3.class, classRidgetMapper.getRidgetClass(IMockRidget2.class));
+
+		try {
+			classRidgetMapper.getRidgetClass(IMockRidget.class);
+			fail("BindingException expected");
+		} catch (BindingException e) {
+			ok("BindingException expected");
+		}
+	}
+
 	// helping classes
 	// ////////////////
 
@@ -457,6 +482,196 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		public String getID() {
 			return null;
 		}
+	}
+
+	/**
+	 * Mock interface extending IRidget.
+	 */
+	static interface IMockRidget2 extends IMockRidget {
+
+	}
+
+	/**
+	 * Mock interface extending IRidget.
+	 */
+	static interface IMockRidget extends IRidget {
+
+	}
+
+	/**
+	 * abstract mock implementation of ridget.
+	 */
+	private static abstract class AbstractMockRidget implements IMockRidget2 {
+		public Object getUIControl() {
+			return null;
+		}
+
+		public void setUIControl(Object uiControl) {
+		}
+
+		public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		}
+
+		public void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		}
+
+		public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		}
+
+		public void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		}
+
+		public boolean isVisible() {
+			return false;
+		}
+
+		public void setVisible(boolean visible) {
+		}
+
+		public boolean isEnabled() {
+			return false;
+		}
+
+		public void setEnabled(boolean enabled) {
+		}
+
+		public void addFocusListener(IFocusListener listener) {
+		}
+
+		public void removeFocusListener(IFocusListener listener) {
+		}
+
+		public void updateFromModel() {
+		}
+
+		public void requestFocus() {
+		}
+
+		public boolean hasFocus() {
+			return false;
+		}
+
+		public boolean isFocusable() {
+			return false;
+		}
+
+		public void setFocusable(boolean focusable) {
+		}
+
+		public String getToolTipText() {
+			return null;
+		}
+
+		public void setToolTipText(String toolTipText) {
+		}
+
+		public boolean isBlocked() {
+			return false;
+		}
+
+		public void setBlocked(boolean blocked) {
+		}
+
+		public String getID() {
+			return null;
+		}
+	}
+
+	/**
+	 * Another mock implementation of ridget.
+	 */
+	private static class MockRidget3 extends AbstractMockRidget {
+
+	}
+
+	private static class MockNonRidgetSuperClass implements Comparable<MockNonRidgetSuperClass> {
+
+		public int compareTo(MockNonRidgetSuperClass o) {
+			return 0;
+		}
+
+	}
+
+	private static class MockRidgetImplementigSeveralInterfaces extends MockNonRidgetSuperClass implements
+			IMockRidget2, IAction {
+
+		public Object getUIControl() {
+			return null;
+		}
+
+		public void setUIControl(Object uiControl) {
+		}
+
+		public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		}
+
+		public void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		}
+
+		public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		}
+
+		public void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		}
+
+		public boolean isVisible() {
+			return false;
+		}
+
+		public void setVisible(boolean visible) {
+		}
+
+		public boolean isEnabled() {
+			return false;
+		}
+
+		public void setEnabled(boolean enabled) {
+		}
+
+		public void addFocusListener(IFocusListener listener) {
+		}
+
+		public void removeFocusListener(IFocusListener listener) {
+		}
+
+		public void updateFromModel() {
+		}
+
+		public void requestFocus() {
+		}
+
+		public boolean hasFocus() {
+			return false;
+		}
+
+		public boolean isFocusable() {
+			return false;
+		}
+
+		public void setFocusable(boolean focusable) {
+		}
+
+		public String getToolTipText() {
+			return null;
+		}
+
+		public void setToolTipText(String toolTipText) {
+		}
+
+		public boolean isBlocked() {
+			return false;
+		}
+
+		public void setBlocked(boolean blocked) {
+		}
+
+		public String getID() {
+			return null;
+		}
+
+		public void run() {
+		}
+
 	}
 
 }
