@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2009, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -104,7 +104,7 @@ public class SnippetTableRidget003 {
 
 	private Date createDate(int year, int month, int day) {
 		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.set(year, month, day);
+		calendar.set(year, month - 1, day); // month value is 0-based
 		return calendar.getTime();
 	}
 
