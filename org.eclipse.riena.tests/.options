@@ -1,2 +1,0 @@
-#set RienaTestCase to debug output
-org.eclipse.riena.tests/RienaTestCase/debug=false
