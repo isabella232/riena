@@ -37,6 +37,7 @@ import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.ui.ridgets.swt.optional.CompositeTableRidget;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.common.ISortableByColumn;
