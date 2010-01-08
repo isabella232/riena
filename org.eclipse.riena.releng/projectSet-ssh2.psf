@@ -62,5 +62,6 @@
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.build.feature.core.sdk,org.eclipse.riena.build.feature.core.sdk"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.build.feature.samples.sdk,org.eclipse.riena.build.feature.samples.sdk"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.build3,org.eclipse.riena.build3"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.ui.ridgets.swt.optional,org.eclipse.riena.ui.ridgets.swt.optional"/>
 </provider>
 </psf>
