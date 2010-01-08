@@ -15,13 +15,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
-
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.example.client.controllers.MarkerSubModuleController;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-import org.eclipse.riena.internal.ui.ridgets.swt.optional.CompositeTableRidget;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -42,7 +39,6 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 import org.eclipse.riena.ui.tests.base.TestSingleSelectionBean;
@@ -57,7 +53,6 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 
 	@Override
 	protected void setUp() throws Exception {
-		SwtControlRidgetMapper.getInstance().addMapping(CompositeTable.class, CompositeTableRidget.class);
 		super.setUp();
 
 		personList = PersonFactory.createPersonList();
