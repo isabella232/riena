@@ -20,4 +20,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.osgi.service.log;version="1.3.0"
-Export-Package: org.eclipse.riena.internal.ui.ridgets.swt.optional;x-friends:="de.compeople.scp.tests"
+Export-Package: org.eclipse.riena.internal.ui.ridgets.swt.optional;x-friends:="org.eclipse.riena.tests"
