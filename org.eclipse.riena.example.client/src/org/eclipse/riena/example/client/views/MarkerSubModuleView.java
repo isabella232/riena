@@ -107,57 +107,49 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		hFillFactory.applyTo(textPrice);
 
 		UIControlsFactory.createLabel(group, "Amount:", "labeltextAmount"); //$NON-NLS-1$ //$NON-NLS-2$
-		Text textAmount = UIControlsFactory.createTextNumeric(group);
+		Text textAmount = UIControlsFactory.createTextNumeric(group, "textAmount"); //$NON-NLS-1$
 		hFillFactory.applyTo(textAmount);
-		addUIControl(textAmount, "textAmount"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Production Date:", "labeltextDate"); //$NON-NLS-1$ //$NON-NLS-2$
 		Composite cmpDate = createComposite(group, 3, true);
-		Text textDate = UIControlsFactory.createTextDate(cmpDate);
+		Text textDate = UIControlsFactory.createTextDate(cmpDate, "textDate"); //$NON-NLS-1$
 		hFillFactory.applyTo(textDate);
-		addUIControl(textDate, "textDate"); //$NON-NLS-1$
-		DateTime dtDate = new DateTime(cmpDate, SWT.DATE | SWT.DROP_DOWN | SWT.MEDIUM);
+		DateTime dtDate = UIControlsFactory.createDate(cmpDate, SWT.DATE | SWT.DROP_DOWN | SWT.MEDIUM, "dtDate"); //$NON-NLS-1$
 		hFillFactory.applyTo(dtDate);
-		addUIControl(dtDate, "dtDate"); //$NON-NLS-1$
 		UIControlsFactory.createDatePickerComposite(cmpDate, "dtPicker"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Age:", "labelcomboAge"); //$NON-NLS-1$ //$NON-NLS-2$
-		final Combo comboAge = UIControlsFactory.createCombo(group);
+		final Combo comboAge = UIControlsFactory.createCombo(group, "comboAge"); //$NON-NLS-1$
 		hFillFactory.applyTo(comboAge);
-		addUIControl(comboAge, "comboAge"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Size:", "labelccomboSize"); //$NON-NLS-1$ //$NON-NLS-2$
-		final CCombo ccomboSize = UIControlsFactory.createCCombo(group);
+		final CCombo ccomboSize = UIControlsFactory.createCCombo(group, "ccomboSize"); //$NON-NLS-1$
 		hFillFactory.applyTo(ccomboSize);
-		addUIControl(ccomboSize, "ccomboSize"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Type:", "labelchoiceType"); //$NON-NLS-1$ //$NON-NLS-2$
-		ChoiceComposite choiceType = new ChoiceComposite(group, SWT.BORDER, false);
+		ChoiceComposite choiceType = UIControlsFactory.createChoiceComposite(group, SWT.BORDER, false, "choiceType"); //$NON-NLS-1$
 		choiceType.setOrientation(SWT.HORIZONTAL);
-		addUIControl(choiceType, "choiceType"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Flavor:", "labelchoiceFlavor"); //$NON-NLS-1$ //$NON-NLS-2$
-		ChoiceComposite choiceFlavor = new ChoiceComposite(group, SWT.BORDER, true);
+		ChoiceComposite choiceFlavor = UIControlsFactory.createChoiceComposite(group, SWT.BORDER, true, "choiceFlavor"); //$NON-NLS-1$
 		choiceFlavor.setOrientation(SWT.HORIZONTAL);
-		addUIControl(choiceFlavor, "choiceFlavor"); //$NON-NLS-1$
 
 		Label lblReviewed = UIControlsFactory.createLabel(group, "Reviewed by:", "labellistPersons"); //$NON-NLS-1$ //$NON-NLS-2$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblReviewed);
 		Composite cmpReviewed = createComposite(group, 3, true);
 
-		List listPersons = UIControlsFactory.createList(cmpReviewed, false, true);
+		List listPersons = UIControlsFactory.createList(cmpReviewed, false, true, "listPersons"); //$NON-NLS-1$
 		int hHint = UIControlsFactory.getHeightHint(listPersons, 5);
 		hFillFactory.hint(150, hHint).applyTo(listPersons);
-		addUIControl(listPersons, "listPersons"); //$NON-NLS-1$
 
-		Table tablePersons = UIControlsFactory.createTable(cmpReviewed, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
+		Table tablePersons = UIControlsFactory.createTable(cmpReviewed, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION,
+				"tablePersons"); //$NON-NLS-1$
 		tablePersons.setLinesVisible(true);
 		TableColumn tac1 = new TableColumn(tablePersons, SWT.NONE);
 		tac1.setWidth(100);
 		TableColumn tac2 = new TableColumn(tablePersons, SWT.NONE);
 		tac2.setWidth(70);
 		hFillFactory.hint(170, hHint).applyTo(tablePersons);
-		addUIControl(tablePersons, "tablePersons"); //$NON-NLS-1$
 
 		CompositeTable compTable = UIControlsFactory.createCompositeTable(cmpReviewed, SWT.BORDER);
 		new Header(compTable, SWT.NONE);
@@ -169,12 +161,12 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		UIControlsFactory.createLabel(group, ""); //$NON-NLS-1$
 		Composite cmpReviewed2 = createComposite(group, 3, true);
 
-		Tree treePersons = UIControlsFactory.createTree(cmpReviewed2, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
+		Tree treePersons = UIControlsFactory.createTree(cmpReviewed2, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION,
+				"treePersons"); //$NON-NLS-1$
 		hFillFactory.hint(150, hHint).applyTo(treePersons);
-		addUIControl(treePersons, "treePersons"); //$NON-NLS-1$
 
 		Tree treeWCols = UIControlsFactory.createTree(cmpReviewed2, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION
-				| SWT.MULTI);
+				| SWT.MULTI, "treeWCols"); //$NON-NLS-1$
 		treeWCols.setLinesVisible(true);
 		treeWCols.setHeaderVisible(true);
 		TreeColumn trc1 = new TreeColumn(treeWCols, SWT.NONE);
@@ -182,26 +174,20 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		TreeColumn trc2 = new TreeColumn(treeWCols, SWT.NONE);
 		trc2.setWidth(40);
 		hFillFactory.hint(200, hHint).applyTo(treeWCols);
-		addUIControl(treeWCols, "treeWCols"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(cmpReviewed2, ""); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Buttons:", "labelbuttonToggle"); //$NON-NLS-1$ //$NON-NLS-2$
 		Composite cmpButtons = createComposite(group, 5, false);
-		Button buttonToggle = UIControlsFactory.createButtonToggle(cmpButtons);
-		addUIControl(buttonToggle, "buttonToggle"); //$NON-NLS-1$
-		Button buttonPush = UIControlsFactory.createButton(cmpButtons);
+		UIControlsFactory.createButtonToggle(cmpButtons, "buttonToggle"); //$NON-NLS-1$
+		Button buttonPush = UIControlsFactory.createButton(cmpButtons, "buttonPush"); //$NON-NLS-1$
 		buttonPush.setText("Push"); //$NON-NLS-1$
-		addUIControl(buttonPush, "buttonPush"); //$NON-NLS-1$
-		Button buttonRadioA = UIControlsFactory.createButtonRadio(cmpButtons);
+		Button buttonRadioA = UIControlsFactory.createButtonRadio(cmpButtons, "buttonRadioA"); //$NON-NLS-1$
 		buttonRadioA.setText("Radio A"); //$NON-NLS-1$
-		addUIControl(buttonRadioA, "buttonRadioA"); //$NON-NLS-1$
-		Button buttonRadioB = UIControlsFactory.createButtonRadio(cmpButtons);
+		Button buttonRadioB = UIControlsFactory.createButtonRadio(cmpButtons, "buttonRadioB"); //$NON-NLS-1$
 		buttonRadioB.setText("Radio B"); //$NON-NLS-1$
-		addUIControl(buttonRadioB, "buttonRadioB"); //$NON-NLS-1$
-		Button buttonCheck = UIControlsFactory.createButtonCheck(cmpButtons);
+		Button buttonCheck = UIControlsFactory.createButtonCheck(cmpButtons, "buttonCheck"); //$NON-NLS-1$
 		buttonCheck.setText("Check"); //$NON-NLS-1$
-		addUIControl(buttonCheck, "buttonCheck"); //$NON-NLS-1$
 
 		return group;
 	}
