@@ -26,7 +26,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 @NonUITestCase
 public abstract class AbstractSubModuleControllerTest<C extends SubModuleController> extends RienaTestCase {
 
-	protected C controller;
+	private C controller;
 	private INavigationProcessor mockNavigationProcessor = EasyMock.createMock(INavigationProcessor.class);
 
 	@Override
@@ -53,6 +53,10 @@ public abstract class AbstractSubModuleControllerTest<C extends SubModuleControl
 		controller.configureRidgets();
 		controller.afterBind();
 
+	}
+
+	protected C getController() {
+		return controller;
 	}
 
 	protected INavigationProcessor getMockNavigationProcessor() {

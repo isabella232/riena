@@ -22,6 +22,7 @@ import org.eclipse.riena.example.client.controllers.ComboAndChoiceSubModuleContr
 import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
 import org.eclipse.riena.example.client.controllers.CompositeTableSubModuleController;
 import org.eclipse.riena.example.client.controllers.ContextMenuSubModuleController;
+import org.eclipse.riena.example.client.controllers.ControllerTestsPlaygroundSubModuleController;
 import org.eclipse.riena.example.client.controllers.DateTimeSubModuleController;
 import org.eclipse.riena.example.client.controllers.DetachedSubModuleController;
 import org.eclipse.riena.example.client.controllers.DialogSubModuleController;
@@ -52,6 +53,7 @@ import org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.example.client.views.CompositeTableSubModuleView;
 import org.eclipse.riena.example.client.views.ContextMenuSubModuleView;
+import org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView;
 import org.eclipse.riena.example.client.views.DateTimeSubModuleView;
 import org.eclipse.riena.example.client.views.DetachedSubModuleView;
 import org.eclipse.riena.example.client.views.DialogSubModuleView;
@@ -156,6 +158,12 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(contextMenuSubModule, ContextMenuSubModuleController.class,
 				ContextMenuSubModuleView.ID, false);
 		playgroundModule.addChild(contextMenuSubModule);
+
+		ISubModuleNode controllerTestsPlaygroundSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.controllerTestsPlayground"), "Controller Tests Playground"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(controllerTestsPlaygroundSubModule,
+				ControllerTestsPlaygroundSubModuleController.class, ControllerTestsPlaygroundSubModuleView.ID);
+		playgroundModule.addChild(controllerTestsPlaygroundSubModule);
 
 		ISubModuleNode dateTimeSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.datetime"), "DateTime"); //$NON-NLS-1$ //$NON-NLS-2$

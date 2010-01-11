@@ -132,6 +132,10 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 		actionObserver.addListener(listener);
 	}
 
+	public void triggerListener() {
+		actionObserver.fireAction(null);
+	}
+
 	@Override
 	public void bindUIControl() {
 		Control control = getUIControl();
@@ -553,8 +557,10 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 */
 	private final class ActionListener implements IActionListener {
 		public void callback() {
-			int selection = getValue(getUIControl());
-			setValue(selection);
+			if (getUIControl() != null) {
+				int selection = getValue(getUIControl());
+				setValue(selection);
+			}
 		}
 	}
 

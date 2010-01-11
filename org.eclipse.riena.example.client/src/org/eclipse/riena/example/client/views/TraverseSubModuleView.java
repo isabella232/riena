@@ -36,16 +36,16 @@ public class TraverseSubModuleView extends SubModuleView<TraverseSubModuleContro
 		parent.setLayout(new GridLayout(2, false));
 
 		Label lblDegreesFahrenheit = new Label(parent, SWT.NONE);
-		lblDegreesFahrenheit.setText("Degrees Fahrenheit:");
+		lblDegreesFahrenheit.setText("Degrees Fahrenheit:"); //$NON-NLS-1$
 
 		Spinner fahrenheitSpinner = new Spinner(parent, SWT.BORDER);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(fahrenheitSpinner, "fahrenheitSpinner");
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(fahrenheitSpinner, "fahrenheitSpinner"); //$NON-NLS-1$
 
 		Label lblDegreeCelsius = new Label(parent, SWT.NONE);
-		lblDegreeCelsius.setText("Degree Celsius:");
+		lblDegreeCelsius.setText("Degree Celsius:"); //$NON-NLS-1$
 
 		Scale celsiusScale = new Scale(parent, SWT.NONE);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(celsiusScale, "celsiusScale");
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(celsiusScale, "celsiusScale"); //$NON-NLS-1$
 		new Label(parent, SWT.NONE);
 
 		Composite composite = new Composite(parent, SWT.NONE);
@@ -53,13 +53,13 @@ public class TraverseSubModuleView extends SubModuleView<TraverseSubModuleContro
 		composite.setLayout(new GridLayout(3, false));
 
 		Label lblZero = new Label(composite, SWT.NONE);
-		lblZero.setText("0\u00B0");
+		lblZero.setText("0\u00B0"); //$NON-NLS-1$
 
 		Label label_1 = new Label(composite, SWT.NONE);
 		label_1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 
 		Label lblPlus50 = new Label(composite, SWT.NONE);
-		lblPlus50.setText("50\u00B0");
+		lblPlus50.setText("50\u00B0"); //$NON-NLS-1$
 	}
 
 }

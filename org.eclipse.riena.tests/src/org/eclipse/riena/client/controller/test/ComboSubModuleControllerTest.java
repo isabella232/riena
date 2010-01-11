@@ -38,17 +38,17 @@ public class ComboSubModuleControllerTest extends AbstractSubModuleControllerTes
 	}
 
 	public void testNoSelection() {
-		IComboRidget combo = controller.getRidget(IComboRidget.class, "comboOne");
+		IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne");
 		combo.setSelection(null);
 		assertEquals(-1, combo.getSelectionIndex());
 		assertEquals(null, combo.getSelection());
 	}
 
 	public void testSaveName() {
-		ITextRidget textFirst = controller.getRidget(ITextRidget.class, "textFirst");
-		ITextRidget textLast = controller.getRidget(ITextRidget.class, "textLast");
-		IComboRidget combo = controller.getRidget(IComboRidget.class, "comboOne");
-		IActionRidget saveButton = controller.getRidget(IActionRidget.class, "buttonSave");
+		ITextRidget textFirst = getController().getRidget(ITextRidget.class, "textFirst");
+		ITextRidget textLast = getController().getRidget(ITextRidget.class, "textLast");
+		IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne");
+		IActionRidget saveButton = getController().getRidget(IActionRidget.class, "buttonSave");
 
 		// set new name and save
 		Person newPerson = (Person) combo.getSelection();
@@ -61,9 +61,9 @@ public class ComboSubModuleControllerTest extends AbstractSubModuleControllerTes
 	}
 
 	private void basicTestComboSelection(int index) {
-		ITextRidget textFirst = controller.getRidget(ITextRidget.class, "textFirst");
-		ITextRidget textLast = controller.getRidget(ITextRidget.class, "textLast");
-		IComboRidget combo = controller.getRidget(IComboRidget.class, "comboOne");
+		ITextRidget textFirst = getController().getRidget(ITextRidget.class, "textFirst");
+		ITextRidget textLast = getController().getRidget(ITextRidget.class, "textLast");
+		IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne");
 		List<Person> expected = PersonFactory.createPersonList();
 
 		combo.setSelection(index);

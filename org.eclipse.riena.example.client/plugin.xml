@@ -333,6 +333,13 @@
             name="org.eclipse.riena.example.client.views.TraverseSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView"
+            id="org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView"
+            name="org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

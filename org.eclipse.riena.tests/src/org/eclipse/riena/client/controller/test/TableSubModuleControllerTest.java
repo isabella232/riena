@@ -29,10 +29,10 @@ public class TableSubModuleControllerTest extends AbstractSubModuleControllerTes
 
 	public void testButtonDelete() {
 
-		ITableRidget table = controller.getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
+		ITableRidget table = getController().getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
 		int count = table.getOptionCount();
 
-		IActionRidget buttonDelete = controller.getRidget(IActionRidget.class, "buttonDelete"); //$NON-NLS-1$
+		IActionRidget buttonDelete = getController().getRidget(IActionRidget.class, "buttonDelete"); //$NON-NLS-1$
 		// select and delete one item
 		table.setSelection(0);
 
@@ -69,8 +69,8 @@ public class TableSubModuleControllerTest extends AbstractSubModuleControllerTes
 	}
 
 	public void testAddButton() {
-		ITableRidget table = controller.getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
-		IActionRidget buttonAdd = controller.getRidget(IActionRidget.class, "buttonAddSibling"); //$NON-NLS-1$
+		ITableRidget table = getController().getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
+		IActionRidget buttonAdd = getController().getRidget(IActionRidget.class, "buttonAddSibling"); //$NON-NLS-1$
 		int count = table.getOptionCount();
 
 		buttonAdd.fireAction();

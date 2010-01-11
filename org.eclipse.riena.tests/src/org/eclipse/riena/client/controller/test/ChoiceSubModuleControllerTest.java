@@ -16,7 +16,6 @@ import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController.CarModels;
 import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController.CarOptions;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
@@ -35,17 +34,19 @@ public class ChoiceSubModuleControllerTest extends AbstractSubModuleControllerTe
 
 	public void testPriceAstonMartin() {
 
-		ISingleChoiceRidget compositeCarModel = controller.getRidget(ISingleChoiceRidget.class, "compositeCarModel"); //$NON-NLS-1$
+		ISingleChoiceRidget compositeCarModel = getController().getRidget(ISingleChoiceRidget.class,
+				"compositeCarModel"); //$NON-NLS-1$
 		compositeCarModel.setSelection(CarModels.ASTON_MARTIN);
 
 		assertEquals(compositeCarModel.getSelection(), CarModels.ASTON_MARTIN);
-		assertEquals(controller.getCarConfig().getPrice(), 100000);
+		assertEquals(getController().getCarConfig().getPrice(), 100000);
 	}
 
 	public void testPriceAstonMartinWithOptions() {
 
-		ISingleChoiceRidget compositeCarModel = controller.getRidget(ISingleChoiceRidget.class, "compositeCarModel"); //$NON-NLS-1$
-		IMultipleChoiceRidget compositeCarExtras = controller.getRidget(IMultipleChoiceRidget.class,
+		ISingleChoiceRidget compositeCarModel = getController().getRidget(ISingleChoiceRidget.class,
+				"compositeCarModel"); //$NON-NLS-1$
+		IMultipleChoiceRidget compositeCarExtras = getController().getRidget(IMultipleChoiceRidget.class,
 				"compositeCarExtras"); //$NON-NLS-1$
 
 		compositeCarModel.setSelection(CarModels.ASTON_MARTIN);
@@ -56,35 +57,37 @@ public class ChoiceSubModuleControllerTest extends AbstractSubModuleControllerTe
 		assertEquals(compositeCarExtras.getSelection().get(0), CarOptions.FRONT_GUNS);
 		assertEquals(compositeCarExtras.getSelection().get(1), CarOptions.UNDERWATER);
 
-		assertEquals(controller.getCarConfig().getPrice(), 150000);
+		assertEquals(getController().getCarConfig().getPrice(), 150000);
 	}
 
 	public void testQuickConfig() {
 
-		ActionRidget buttonPreset = (ActionRidget) controller.getRidget(IActionRidget.class, "buttonPreset"); //$NON-NLS-1$
+		IActionRidget buttonPreset = getController().getRidget(IActionRidget.class, "buttonPreset"); //$NON-NLS-1$
 		buttonPreset.fireAction();
 
-		ISingleChoiceRidget compositeCarModel = controller.getRidget(ISingleChoiceRidget.class, "compositeCarModel"); //$NON-NLS-1$
-		IMultipleChoiceRidget compositeCarExtras = controller.getRidget(IMultipleChoiceRidget.class,
+		ISingleChoiceRidget compositeCarModel = getController().getRidget(ISingleChoiceRidget.class,
+				"compositeCarModel"); //$NON-NLS-1$
+		IMultipleChoiceRidget compositeCarExtras = getController().getRidget(IMultipleChoiceRidget.class,
 				"compositeCarExtras"); //$NON-NLS-1$
 
 		assertEquals(compositeCarModel.getSelection(), ChoiceSubModuleController.CarModels.BMW);
 		assertEquals(compositeCarExtras.getSelection().size(), 1);
 		assertEquals(compositeCarExtras.getSelection().get(0), CarOptions.PDCS);
-		assertEquals(controller.getCarConfig().getPrice(), 135200);
+		assertEquals(getController().getCarConfig().getPrice(), 135200);
 	}
 
 	public void testReset() {
 
-		ActionRidget buttonReset = (ActionRidget) controller.getRidget(IActionRidget.class, "buttonReset"); //$NON-NLS-1$
+		IActionRidget buttonReset = getController().getRidget(IActionRidget.class, "buttonReset"); //$NON-NLS-1$
 		buttonReset.fireAction();
 
-		ISingleChoiceRidget compositeCarModel = controller.getRidget(ISingleChoiceRidget.class, "compositeCarModel"); //$NON-NLS-1$
-		IMultipleChoiceRidget compositeCarExtras = controller.getRidget(IMultipleChoiceRidget.class,
+		ISingleChoiceRidget compositeCarModel = getController().getRidget(ISingleChoiceRidget.class,
+				"compositeCarModel"); //$NON-NLS-1$
+		IMultipleChoiceRidget compositeCarExtras = getController().getRidget(IMultipleChoiceRidget.class,
 				"compositeCarExtras"); //$NON-NLS-1$
 
 		assertNull(compositeCarModel.getSelection());
 		assertEquals(compositeCarExtras.getSelection().size(), 0);
-		assertEquals(controller.getCarConfig().getPrice(), 0);
+		assertEquals(getController().getCarConfig().getPrice(), 0);
 	}
 }

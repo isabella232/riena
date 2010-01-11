@@ -47,7 +47,7 @@ public class NavigationSubModuleControllerTest extends AbstractSubModuleControll
 
 		EasyMock.replay(getMockNavigationProcessor());
 
-		IActionRidget addSubModuleToSelf = controller.getRidget(IActionRidget.class, "addSubModuleToSelfBtn");
+		IActionRidget addSubModuleToSelf = getController().getRidget(IActionRidget.class, "addSubModuleToSelfBtn");
 		addSubModuleToSelf.fireAction();
 
 		EasyMock.verify(getMockNavigationProcessor());

@@ -203,4 +203,12 @@ public interface ITraverseRidget extends IEditableRidget, IMarkableRidget {
 	 */
 	void setPageIncrement(int pageIncrement);
 
+	/**
+	 * Triggers the listener of the ridget manually. Should only be used in
+	 * Controller Tests.
+	 * 
+	 * @since 2.0
+	 */
+	void triggerListener();
+
 }

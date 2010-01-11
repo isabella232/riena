@@ -41,13 +41,13 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 	}
 
 	public void testNavigateCombo() {
-		getMockNavigationProcessor().navigate(EasyMock.eq(controller.getNavigationNode()),
+		getMockNavigationProcessor().navigate(EasyMock.eq(getController().getNavigationNode()),
 				EasyMock.eq(new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList")),
 				(NavigationArgument) EasyMock.isNull());
 
 		EasyMock.replay(getMockNavigationProcessor());
 
-		IActionRidget navigateToComboButton = controller.getRidget(IActionRidget.class, "comboAndList");
+		IActionRidget navigateToComboButton = getController().getRidget(IActionRidget.class, "comboAndList");
 		navigateToComboButton.fireAction();
 
 		EasyMock.verify(getMockNavigationProcessor());
@@ -67,7 +67,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 		PersonModificationBean bean = new PersonModificationBean();
 		bean.setPerson(new Person("Doe", "Jane"));
 
-		getMockNavigationProcessor().navigate(EasyMock.eq(controller.getNavigationNode()),
+		getMockNavigationProcessor().navigate(EasyMock.eq(getController().getNavigationNode()),
 				EasyMock.eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
 				EasyMock.cmp(new NavigationArgument(bean, "textFirst"), new Comparator<NavigationArgument>() {
 
@@ -84,7 +84,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 				}, LogicalOperator.EQUAL));
 
 		EasyMock.replay(getMockNavigationProcessor());
-		IActionRidget navigateToNavigateRidget = controller.getRidget(IActionRidget.class, "btnNavigateToRidget");
+		IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class, "btnNavigateToRidget");
 		navigateToNavigateRidget.fireAction();
 		EasyMock.verify(getMockNavigationProcessor());
 	}
@@ -98,12 +98,12 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 	 * a parameter that is not null
 	 */
 	public void testNavigateToRidgetWithNotNull() {
-		getMockNavigationProcessor().navigate(EasyMock.eq(controller.getNavigationNode()),
+		getMockNavigationProcessor().navigate(EasyMock.eq(getController().getNavigationNode()),
 				EasyMock.eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
 				new NavigationArgument(EasyMock.notNull(), "textFirst"));
 
 		EasyMock.replay(getMockNavigationProcessor());
-		IActionRidget navigateToNavigateRidget = controller.getRidget(IActionRidget.class, "btnNavigateToRidget");
+		IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class, "btnNavigateToRidget");
 		navigateToNavigateRidget.fireAction();
 		EasyMock.verify(getMockNavigationProcessor());
 	}
@@ -120,23 +120,23 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 		PersonModificationBean bean = new PersonModificationBean();
 		bean.setPerson(new Person("Doe", "Jane"));
 
-		getMockNavigationProcessor().navigate(EasyMock.eq(controller.getNavigationNode()),
+		getMockNavigationProcessor().navigate(EasyMock.eq(getController().getNavigationNode()),
 				EasyMock.eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
 				EasyMock.eq(new NavigationArgument(bean, "textFirst")));
 
 		EasyMock.replay(getMockNavigationProcessor());
-		IActionRidget navigateToNavigateRidget = controller.getRidget(IActionRidget.class, "btnNavigateToRidget");
+		IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class, "btnNavigateToRidget");
 		navigateToNavigateRidget.fireAction();
 		EasyMock.verify(getMockNavigationProcessor());
 	}
 
 	public void testNavigateTableTextAndTree() {
-		getMockNavigationProcessor().navigate(EasyMock.eq(controller.getNavigationNode()),
+		getMockNavigationProcessor().navigate(EasyMock.eq(getController().getNavigationNode()),
 				EasyMock.eq(new NavigationNodeId("org.eclipse.riena.example.navigate.tableTextAndTree")),
 				(NavigationArgument) EasyMock.isNull());
 
 		EasyMock.replay(getMockNavigationProcessor());
-		IActionRidget navigateToTableTextAndTree = controller.getRidget(IActionRidget.class, "tableTextAndTree");
+		IActionRidget navigateToTableTextAndTree = getController().getRidget(IActionRidget.class, "tableTextAndTree");
 		navigateToTableTextAndTree.fireAction();
 		EasyMock.verify(getMockNavigationProcessor());
 	}
