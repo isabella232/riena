@@ -177,12 +177,13 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 
 	@Override
 	public Image getImage(Object element) {
-		boolean isNode = viewer.isExpandable(element);
-		String result = null;
-		if (isNode) {
-			boolean isExpanded = viewer.getExpandedState(element);
-			return getImageForNode(element, isExpanded);
-		}
+		// TODO [ev] this fails when run without osgi - see Bug 299267
+		//		boolean isNode = viewer.isExpandable(element);
+		//		String result = null;
+		//		if (isNode) {
+		//			boolean isExpanded = viewer.getExpandedState(element);
+		//			return getImageForNode(element, isExpanded);
+		//		}
 		String key = getImageKey(element);
 		return Activator.getSharedImage(key);
 	}
