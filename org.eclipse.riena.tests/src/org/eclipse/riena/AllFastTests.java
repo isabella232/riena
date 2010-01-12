@@ -44,8 +44,8 @@ public class AllFastTests extends TestCase {
 		LONG_TESTS.add("NumericTextRidgetTest");
 		LONG_TESTS.add("TextRidgetTest2");
 		LONG_TESTS.add("DateTimeRidgetTest");
-		LONG_TESTS.add("TreeRidgetTest2");
-		LONG_TESTS.add("TreeTableRidgetTest");
+		// LONG_TESTS.add("TreeRidgetTest2");
+		// LONG_TESTS.add("TreeTableRidgetTest");
 		LONG_TESTS.add("CheckTestConstraintsTest");
 	};
 
