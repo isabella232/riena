@@ -143,7 +143,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		addToComboButton.addListener(new IActionListener() {
 			public void callback() {
 				String comboString = comboText.getText();
-				if (!comboString.isEmpty()) {
+				if (comboString.length() >= 0) {
 					ages.add(comboString);
 				}
 				comboAge.bindToModel(new WritableList(ages, String.class), String.class, null, new WritableValue());
