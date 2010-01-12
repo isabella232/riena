@@ -376,6 +376,131 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		}
 	}
 
+	public void testSetSelectionWithNoBoundControl() {
+		ISelectableIndexedRidget ridget = getRidget();
+
+		ridget.setSelection(person2);
+
+		assertNotNull(ridget.getUIControl());
+		assertEquals(person2, ridget.getSelection().get(0));
+
+		ridget.setUIControl(null);
+		ridget.setSelection(person1);
+
+		assertNull(ridget.getUIControl());
+		assertEquals(person1, ridget.getSelection().get(0));
+	}
+
+	/**
+	 * As per Bug 298033 comment #1
+	 */
+	public void testUpdateSingleSelectionFromModelWithNoBoundControl() {
+		ISelectableIndexedRidget ridget = getRidget();
+		//		ridget.addPropertyChangeListener(ISelectableIndexedRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
+		//			public void propertyChange(PropertyChangeEvent evt) {
+		//				List list = (List) evt.getNewValue();
+		//				System.out.println(list.isEmpty() ? "empty" : list.get(0));
+		//			}
+		//		});
+
+		ridget.setSelectionType(SelectionType.SINGLE);
+		ridget.setSelection(person2);
+
+		assertEquals(person2, ridget.getSelection().get(0));
+
+		// remove selected element while not bound to a control
+		ridget.setUIControl(null);
+		manager.getPersons().remove(person2);
+		ridget.updateFromModel();
+
+		assertNull(ridget.getUIControl());
+		assertTrue(ridget.getSelection().isEmpty());
+	}
+
+	/**
+	 * As per Bug 298033 comment #1
+	 */
+	public void testUpdateMultiSelectionFromModelWithNoBoundControl() {
+		if (!supportsMulti()) {
+			System.out.println("skipping testUpdateMultiSelectionFromModelWithNoBoundControl() for " + getRidget());
+			return;
+		}
+		ISelectableIndexedRidget ridget = getRidget();
+		//		ridget.addPropertyChangeListener(ISelectableIndexedRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
+		//			public void propertyChange(PropertyChangeEvent evt) {
+		//				List list = (List) evt.getNewValue();
+		//				System.out.println("\t" + (list.isEmpty() ? "empty" : Arrays.toString(list.toArray())));
+		//			}
+		//		});
+
+		ridget.setSelectionType(SelectionType.MULTI);
+		ridget.setSelection(Arrays.asList(person1, person2));
+
+		assertEquals(2, ridget.getSelection().size());
+		assertEquals(person1, ridget.getSelection().get(0));
+		assertEquals(person2, ridget.getSelection().get(1));
+
+		// remove selected element while not bound to a control
+		ridget.setUIControl(null);
+		manager.getPersons().remove(person2);
+		ridget.updateFromModel();
+
+		assertNull(ridget.getUIControl());
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(person1, ridget.getSelection().get(0));
+	}
+
+	public void testUpdateSingleSelectionFromModelWithBoundControl() {
+		ISelectableIndexedRidget ridget = getRidget();
+		//		ridget.addPropertyChangeListener(ISelectableIndexedRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
+		//			public void propertyChange(PropertyChangeEvent evt) {
+		//				List list = (List) evt.getNewValue();
+		//				System.out.println(list.isEmpty() ? "empty" : list.get(0));
+		//			}
+		//		});
+
+		ridget.setSelectionType(SelectionType.SINGLE);
+		ridget.setSelection(person2);
+
+		assertEquals(person2, ridget.getSelection().get(0));
+
+		// remove selected element while bound to a control
+		manager.getPersons().remove(person2);
+		ridget.updateFromModel();
+
+		assertNotNull(ridget.getUIControl());
+		assertTrue(ridget.getSelection().isEmpty());
+	}
+
+	public void testUpdateMultiSelectionFromModelWithBoundControl() {
+		if (!supportsMulti()) {
+			System.out.println("skipping testUpdateMultiSelectionFromModelWithBoundControl() for " + getRidget());
+			return;
+		}
+		ISelectableIndexedRidget ridget = getRidget();
+		//		ridget.addPropertyChangeListener(ISelectableIndexedRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
+		//			public void propertyChange(PropertyChangeEvent evt) {
+		//				List list = (List) evt.getNewValue();
+		//				System.err.println("\t" + (list.isEmpty() ? "empty" : Arrays.toString(list.toArray())));
+		//			}
+		//		});
+
+		ridget.setSelectionType(SelectionType.MULTI);
+		ridget.setSelection(Arrays.asList(person1, person2));
+
+		assertEquals(2, ridget.getSelection().size());
+		assertEquals(person1, ridget.getSelection().get(0));
+		assertEquals(person2, ridget.getSelection().get(1));
+
+		// remove selected element while bound to a control
+		manager.getPersons().remove(person2);
+		ridget.updateFromModel();
+
+		assertNotNull(ridget.getUIControl());
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(person1, ridget.getSelection().get(0));
+	}
+
 	public void testUpdateMultiSelectionCustomBinding() {
 		if (!supportsMulti()) {
 			return;

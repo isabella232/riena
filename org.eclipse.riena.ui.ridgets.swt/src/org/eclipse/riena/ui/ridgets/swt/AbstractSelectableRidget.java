@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
@@ -30,6 +31,7 @@ import org.eclipse.core.databinding.observable.list.ListDiff;
 import org.eclipse.core.databinding.observable.list.ListDiffEntry;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.ValueDiff;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
 
@@ -221,6 +223,28 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		}
 	}
 
+	/**
+	 * TODO [ev] javadoc
+	 */
+	protected final void refreshSelection() {
+		List<?> rowObservables = getRowObservables();
+		if (rowObservables != null) {
+			boolean doUpdate = false;
+			List<Object> oldSelection = getSelection();
+			List<Object> newSelection = new ArrayList<Object>();
+			for (Object candidate : oldSelection) {
+				if (!rowObservables.contains(candidate)) {
+					doUpdate = true;
+				} else {
+					newSelection.add(candidate);
+				}
+			}
+			if (doUpdate) {
+				setSelection(newSelection);
+			}
+		}
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -252,13 +276,27 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	 * to monitor and maintain the selection state for single selection and fire
 	 * appropriate events.
 	 */
-	private static final class SingleSelectionObservable extends WritableValue {
-
+	private final class SingleSelectionObservable extends WritableValue {
 		SingleSelectionObservable() {
 			super(null, Object.class);
 		}
 
-	};
+		@Override
+		protected void fireValueChange(ValueDiff diff) {
+			super.fireValueChange(diff);
+			Object newValue = diff.getNewValue();
+			Object oldValue = diff.getOldValue();
+			if (oldValue != newValue && getSelectionType() == SelectionType.SINGLE) {
+				String key = ISelectableRidget.PROPERTY_SELECTION;
+				AbstractSelectableRidget.this.propertyChangeSupport.firePropertyChange(key, toList(oldValue),
+						toList(newValue));
+			}
+		}
+
+		private List<?> toList(Object value) {
+			return value == null ? Collections.EMPTY_LIST : Arrays.asList(new Object[] { value });
+		}
+	}
 
 	/**
 	 * Observable list for multiple selection. This class is used by this ridget
@@ -266,7 +304,6 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	 * fire appropriate events.
 	 */
 	private final class MultiSelectionObservable extends WritableList {
-
 		MultiSelectionObservable() {
 			super(new ArrayList<Object>(), Object.class);
 		}
@@ -278,10 +315,12 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		@Override
 		protected void fireListChange(ListDiff diff) {
 			super.fireListChange(diff);
-			List<Object> newSelection = Arrays.asList(toArray());
-			List<Object> oldSelection = computeOldSelection(diff, newSelection);
-			String key = ISelectableRidget.PROPERTY_SELECTION;
-			AbstractSelectableRidget.this.propertyChangeSupport.firePropertyChange(key, oldSelection, newSelection);
+			if (getSelectionType() == SelectionType.MULTI) {
+				List<Object> newSelection = Arrays.asList(toArray());
+				List<Object> oldSelection = computeOldSelection(diff, newSelection);
+				String key = ISelectableRidget.PROPERTY_SELECTION;
+				AbstractSelectableRidget.this.propertyChangeSupport.firePropertyChange(key, oldSelection, newSelection);
+			}
 		}
 
 		private List<Object> computeOldSelection(ListDiff diff, List<Object> newSelection) {

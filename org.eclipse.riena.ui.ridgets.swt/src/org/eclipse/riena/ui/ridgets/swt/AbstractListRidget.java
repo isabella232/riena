@@ -211,16 +211,20 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 			List<Object> copy = new ArrayList<Object>(modelObservables);
 			viewerObservables = new WritableList(copy, rowBeanClass);
 		}
-		if (hasViewer() && viewerObservables != null) {
-			AbstractListViewer viewer = getViewer();
-			viewer.getControl().setRedraw(false); // prevent flicker during
-			// update
-			StructuredSelection currentSelection = new StructuredSelection(getSelection());
-			try {
-				configureViewer(viewer);
-			} finally {
-				viewer.setSelection(currentSelection);
-				viewer.getControl().setRedraw(true);
+		if (viewerObservables != null) {
+			if (hasViewer()) {
+				AbstractListViewer viewer = getViewer();
+				viewer.getControl().setRedraw(false); // prevent flicker during
+				// update
+				StructuredSelection currentSelection = new StructuredSelection(getSelection());
+				try {
+					configureViewer(viewer);
+				} finally {
+					viewer.setSelection(currentSelection);
+					viewer.getControl().setRedraw(true);
+				}
+			} else {
+				refreshSelection();
 			}
 		}
 	}

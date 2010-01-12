@@ -211,7 +211,12 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			rowValues = new Object[0];
 		}
 		rowValuesUnsorted = null;
-		updateControl(control);
+		if (control != null) {
+			updateControl(control);
+		} else {
+			refreshSelection();
+		}
+
 	}
 
 	@Override
@@ -507,15 +512,13 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	private void updateControl(CompositeTable control) {
-		if (control != null) {
-			control.setRedraw(false);
-			try {
-				control.setNumRowsInCollection(rowValues.length);
-				applyComparator();
-				updateSelection();
-			} finally {
-				control.setRedraw(true);
-			}
+		control.setRedraw(false);
+		try {
+			control.setNumRowsInCollection(rowValues.length);
+			applyComparator();
+			updateSelection();
+		} finally {
+			control.setRedraw(true);
 		}
 	}
 

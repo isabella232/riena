@@ -45,13 +45,17 @@ public interface ISelectableIndexedRidget extends ISelectableRidget {
 
 	/**
 	 * Return the index of the first selected item or -1 if none.
+	 * <p>
+	 * If no control is bound to the ridget, the method always returns -1.
 	 * 
 	 * @return index of the first selected item or -1 if none
 	 */
 	int getSelectionIndex();
 
 	/**
-	 * Returns an array of indices of the selected items.
+	 * Returns an array of indices of the selected items. *
+	 * <p>
+	 * If no control is bound to the ridget, the method always returns -1.
 	 * 
 	 * @return indices of the selected items; never null; may be empty
 	 */
@@ -59,6 +63,8 @@ public interface ISelectableIndexedRidget extends ISelectableRidget {
 
 	/**
 	 * Index of the option among the selectable options.
+	 * <p>
+	 * If no control is bound to the ridget, the method always returns -1.
 	 * 
 	 * @param option
 	 *            An option.
