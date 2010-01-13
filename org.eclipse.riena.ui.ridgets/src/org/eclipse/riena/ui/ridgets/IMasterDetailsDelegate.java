@@ -175,6 +175,8 @@ public interface IMasterDetailsDelegate {
 	 * This method is called when a row in the master table is selected. On
 	 * selection change, this will be called before any other methods of the
 	 * delegate. The given <code>newSelection</code> is the selection.
+	 * <p>
+	 * TODO [ev] add javadoc about no guarantee that this is still selected?
 	 * 
 	 * @param newSelection
 	 *            the selected item behind the master row. Can never be null.
@@ -183,13 +185,13 @@ public interface IMasterDetailsDelegate {
 	void itemSelected(Object newSelection);
 
 	/**
-	 * This method is called when a new item is added to the master table.
+	 * This method is called when a new item is created.
 	 * 
 	 * @param newItem
 	 *            the added item behind the master row. Can never be null.
 	 * @since 2.0
 	 */
-	void itemAdded(Object newItem);
+	void itemCreated(Object newItem);
 
 	/**
 	 * This method is called when an item is removed from the master table.

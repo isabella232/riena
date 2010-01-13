@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+
 /**
  * TODO [ev] javadoc
  * 
@@ -40,7 +41,7 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
 	 */
-	public void itemAdded(Object newItem) {
+	public void itemCreated(Object newItem) {
 	}
 
 	/**

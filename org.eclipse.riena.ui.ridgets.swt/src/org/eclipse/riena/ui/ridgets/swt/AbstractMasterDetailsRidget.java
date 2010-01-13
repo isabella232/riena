@@ -270,6 +270,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	protected void handleSelectionChange(Object newSelection) {
 		if (newSelection != null) { // selection changed
 			editable = newSelection;
+			delegate.itemSelected(editable);
 			setEnabled(false, true);
 			updateDetails(editable);
 		} else { // nothing selected
@@ -413,6 +414,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		if (!isDirectWriting) {
 			// create the editable and update the details
 			editable = delegate.createWorkingCopy();
+			delegate.itemCreated(editable);
 			setEnabled(false, true);
 			updateDetails(editable);
 			clearTableSelection();
@@ -420,6 +422,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		} else {
 			// create the editable, add it to the table, update the details
 			editable = delegate.createWorkingCopy();
+			delegate.itemCreated(editable);
 			rowObservables.add(editable);
 			getTableRidget().updateFromModel();
 			setSelection(editable);
@@ -441,6 +444,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		clearTableSelection();
 		getTableRidget().updateFromModel();
 		setEnabled(false, false);
+		delegate.itemRemoved(selection);
 	}
 
 	/**
@@ -450,6 +454,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		assertIsBoundToModel();
 		Assert.isNotNull(editable);
 		delegate.copyBean(delegate.getWorkingCopy(), editable);
+		delegate.itemApplied(editable);
 		if (!rowObservables.contains(editable)) { // add to table
 			rowObservables.add(editable);
 			getTableRidget().updateFromModel();

@@ -22,6 +22,7 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
@@ -111,8 +112,29 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 			}
 			return null;
 		}
+
+		@Override
+		public void itemCreated(Object item) {
+			System.out.println("itemCreated: " + item);
+		}
+
+		@Override
+		public void itemRemoved(Object item) {
+			System.out.println("itemRemoved: " + item);
+		}
+
+		@Override
+		public void itemApplied(Object item) {
+			System.out.println("itemApplied: " + item);
+		}
+
+		@Override
+		public void itemSelected(Object item) {
+			System.out.println("itemSelected: " + item);
+		}
 	}
 
+	private ILabelRidget lblStatus;
 	private List<Person> input = PersonFactory.createPersonList();
 
 	@Override
@@ -120,20 +142,22 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 		String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 
-		IMasterDetailsRidget master2 = (IMasterDetailsRidget) getRidget("master2"); //$NON-NLS-1$
+		IMasterDetailsRidget master2 = getRidget(IMasterDetailsRidget.class, "master2"); //$NON-NLS-1$
 		master2.setDelegate(new PersonDelegate());
 		master2.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
 		master2.updateFromModel();
 		master2.setApplyRequiresNoErrors(true);
 
-		IActionRidget actionApply = (IActionRidget) master2.getRidget(MasterDetailsComposite.BIND_ID_APPLY);
+		lblStatus = getRidget(ILabelRidget.class, "lblStatus"); //$NON-NLS-1$
+
+		IActionRidget actionApply = master2.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
 		actionApply.setIcon("apply_h.png"); //$NON-NLS-1$
 
-		IActionRidget actionNew = (IActionRidget) master2.getRidget(MasterDetailsComposite.BIND_ID_NEW);
+		IActionRidget actionNew = master2.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_NEW);
 		actionNew.setText(""); //$NON-NLS-1$
 		actionNew.setIcon("new_h.png"); //$NON-NLS-1$
 
-		IActionRidget actionRemove = (IActionRidget) master2.getRidget(MasterDetailsComposite.BIND_ID_REMOVE);
+		IActionRidget actionRemove = master2.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_REMOVE);
 		actionRemove.setText(""); //$NON-NLS-1$
 		actionRemove.setIcon("remove_h.png"); //$NON-NLS-1$
 	}
