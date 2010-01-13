@@ -34,7 +34,7 @@ import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Demonstrates a master details composite that asks for confirmation before
+ * Demonstrates a master details widget that asks for confirmation before
  * removal.
  */
 public final class SnippetMasterDetailsRidget003 {
@@ -113,6 +113,14 @@ public final class SnippetMasterDetailsRidget003 {
 
 		public Person getWorkingCopy() {
 			return workingCopy;
+		}
+
+		@Override
+		public boolean isChanged(Object source, Object target) {
+			Person p1 = (Person) source;
+			Person p2 = (Person) target;
+			boolean equal = p1.getFirstname().equals(p2.getFirstname()) && p1.getLastname().equals(p2.getLastname());
+			return !equal;
 		}
 	}
 
