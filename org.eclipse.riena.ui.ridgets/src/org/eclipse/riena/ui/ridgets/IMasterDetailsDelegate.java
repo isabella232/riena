@@ -22,10 +22,15 @@ package org.eclipse.riena.ui.ridgets;
  * <li>deciding if data in the details area is valid
  * </ul>
  * <p>
+ * It is recommended to extend AbstractMasterDetailsDelegate instead of
+ * implementing the interface yourself.
+ * <p>
  * Developers using a {@link IMasterDetailsRidget} must introduce an appropriate
  * implementation of this interface to the ridget, by invoking
  * {@link IMasterDetailsRidget#setDelegate(IMasterDetailsDelegate)}.
- */
+ * <p>
+ * TODO [ev] javadoc update
+ * */
 public interface IMasterDetailsDelegate {
 
 	/**
@@ -165,5 +170,44 @@ public interface IMasterDetailsDelegate {
 	 *            to obtain a reference to a ridget with that id. Never null.
 	 */
 	void updateDetails(IRidgetContainer container);
+
+	/**
+	 * This method is called when a row in the master table is selected. On
+	 * selection change, this will be called before any other methods of the
+	 * delegate. The given <code>newSelection</code> is the selection.
+	 * 
+	 * @param newSelection
+	 *            the selected item behind the master row. Can never be null.
+	 * @since 2.0
+	 */
+	void itemSelected(Object newSelection);
+
+	/**
+	 * This method is called when a new item is added to the master table.
+	 * 
+	 * @param newItem
+	 *            the added item behind the master row. Can never be null.
+	 * @since 2.0
+	 */
+	void itemAdded(Object newItem);
+
+	/**
+	 * This method is called when an item is removed from the master table.
+	 * 
+	 * @param oldItem
+	 *            the removed item behind the master row. Can never be null.
+	 * @since 2.0
+	 */
+	void itemRemoved(Object oldItem);
+
+	/**
+	 * This method is called after a new master record changes are applied to an
+	 * item.
+	 * 
+	 * @param changedItem
+	 *            the changed item behind the master row. Can never be null.
+	 * @since 2.0
+	 */
+	void itemApplied(Object changedItem);
 
 }

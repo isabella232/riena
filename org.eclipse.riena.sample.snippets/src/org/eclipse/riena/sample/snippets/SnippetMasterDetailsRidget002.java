@@ -23,9 +23,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
-import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
+import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
@@ -77,7 +76,7 @@ public final class SnippetMasterDetailsRidget002 {
 	/**
 	 * A IMasterDetailsDelegate that renames a person.
 	 */
-	private static final class PersonDelegate implements IMasterDetailsDelegate {
+	private static final class PersonDelegate extends AbstractMasterDetailsDelegate {
 
 		private final Person workingCopy = createWorkingCopy();
 
@@ -110,6 +109,7 @@ public final class SnippetMasterDetailsRidget002 {
 			return workingCopy;
 		}
 
+		@Override
 		public boolean isChanged(Object source, Object target) {
 			Person p1 = (Person) source;
 			Person p2 = (Person) target;
@@ -117,18 +117,13 @@ public final class SnippetMasterDetailsRidget002 {
 			return !equal;
 		}
 
+		@Override
 		public String isValid(IRidgetContainer container) {
 			ITextRidget txtLast = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
 			if (txtLast.isErrorMarked()) {
 				return "'Last Name' is not valid."; //$NON-NLS-1$
 			}
 			return null;
-		}
-
-		public void updateDetails(IRidgetContainer container) {
-			for (IRidget ridget : container.getRidgets()) {
-				ridget.updateFromModel();
-			}
 		}
 	}
 

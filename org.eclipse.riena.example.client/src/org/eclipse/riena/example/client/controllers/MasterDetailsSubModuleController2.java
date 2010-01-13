@@ -20,11 +20,10 @@ import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -43,7 +42,7 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 	 * Setup the ridgets for editing a person (text ridgets for name, single
 	 * choice ridget for gender, multiple choice ridgets for pets).
 	 */
-	private static final class PersonDelegate implements IMasterDetailsDelegate {
+	private static final class PersonDelegate extends AbstractMasterDetailsDelegate {
 
 		private static final String[] GENDER = { Person.FEMALE, Person.MALE };
 
@@ -95,12 +94,7 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 			return workingCopy;
 		}
 
-		public void updateDetails(IRidgetContainer container) {
-			for (IRidget ridget : container.getRidgets()) {
-				ridget.updateFromModel();
-			}
-		}
-
+		@Override
 		public boolean isChanged(Object source, Object target) {
 			Person p1 = (Person) source;
 			Person p2 = (Person) target;
@@ -109,6 +103,7 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 			return !equals;
 		}
 
+		@Override
 		public String isValid(IRidgetContainer container) {
 			ITextRidget txtLast = (ITextRidget) container.getRidget("last"); //$NON-NLS-1$
 			if (txtLast.isErrorMarked()) {

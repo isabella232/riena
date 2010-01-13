@@ -17,9 +17,8 @@ import org.eclipse.riena.demo.common.Customer;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
+import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
@@ -58,7 +57,7 @@ public class CustomerContractController extends SubModuleController {
 		});
 	}
 
-	public static final class ContractDelegate implements IMasterDetailsDelegate {
+	public static final class ContractDelegate extends AbstractMasterDetailsDelegate {
 
 		private final Contract workingCopy = createWorkingCopy();
 
@@ -84,7 +83,6 @@ public class CustomerContractController extends SubModuleController {
 			// txtStatus.setMandatory(true);
 			txtStatus.bindToModel(workingCopy, "status"); //$NON-NLS-1$
 			txtStatus.updateFromModel();
-
 		}
 
 		public Contract createWorkingCopy() {
@@ -105,12 +103,7 @@ public class CustomerContractController extends SubModuleController {
 			return workingCopy;
 		}
 
-		public void updateDetails(IRidgetContainer container) {
-			for (IRidget ridget : container.getRidgets()) {
-				ridget.updateFromModel();
-			}
-		}
-
+		@Override
 		public boolean isChanged(Object source, Object target) {
 			Contract source2 = (Contract) source;
 			Contract target2 = (Contract) target;
@@ -119,11 +112,6 @@ public class CustomerContractController extends SubModuleController {
 					|| !source2.getDescription().equals(target2.getDescription()) || !source2.getStatus().equals(
 					target2.getStatus()));
 		}
-
-		public String isValid(IRidgetContainer container) {
-			return null;
-		}
-
 	}
 
 }

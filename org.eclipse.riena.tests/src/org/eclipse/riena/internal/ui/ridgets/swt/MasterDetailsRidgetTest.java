@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
-import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
+import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
@@ -659,7 +659,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	 * Implements a delegate with two text ridgets. This class is a companion
 	 * class to {@link MDBean} and {@link MDWidget}.
 	 */
-	private static class MDDelegate implements IMasterDetailsDelegate {
+	private static class MDDelegate extends AbstractMasterDetailsDelegate {
 
 		private final MDBean workingCopy = createWorkingCopy();
 		private boolean txtColumn1Isenabled = true;
@@ -692,15 +692,13 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			return workingCopy;
 		}
 
-		public boolean isChanged(Object source, Object target) {
-			return true;
-		}
-
+		@Override
 		public String isValid(IRidgetContainer container) {
 			checkContainer(container);
 			return null;
 		}
 
+		@Override
 		public void updateDetails(IRidgetContainer container) {
 			checkContainer(container);
 
@@ -724,7 +722,6 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			assertNotNull(container.getRidget("txtColumn2"));
 			assertEquals(2, container.getRidgets().size());
 		}
-
 	}
 
 	/**
