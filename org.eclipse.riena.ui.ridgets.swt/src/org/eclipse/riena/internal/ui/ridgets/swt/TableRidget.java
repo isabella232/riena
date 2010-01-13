@@ -62,6 +62,7 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
+import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
 
 /**
@@ -287,7 +288,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	public int getSortedColumn() {
 		boolean isSorted = sortedColumn != -1 && isColumnSortable(sortedColumn);
 		return isSorted ? sortedColumn : -1;
-	}
+			}
 
 	// TODO [ev] remove after closing 298033 ?
 	//	public int getSortedColumn() {
@@ -315,7 +316,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	public boolean isSortedAscending() {
 		return getSortedColumn() != -1 && isSortedAscending;
-	}
+		}
 
 	// TODO [ev] remove after closing 298033 ?
 	//	public boolean isSortedAscending() {

@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt;
+package org.eclipse.riena.ui.ridgets.swt;
 
 import java.beans.PropertyChangeSupport;
 import java.util.Iterator;
@@ -27,11 +27,13 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.internal.ui.ridgets.swt.Activator;
+import org.eclipse.riena.internal.ui.ridgets.swt.SharedColors;
+import org.eclipse.riena.internal.ui.ridgets.swt.SharedImages;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractActionRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -59,6 +61,10 @@ public class MarkerSupport extends BasicMarkerSupport {
 			"HIDE_DISABLED_RIDGET_CONTENT", Boolean.FALSE.toString())); //$NON-NLS-1$
 
 	private ControlDecoration errorDecoration;
+
+	public MarkerSupport() {
+		super();
+	}
 
 	public MarkerSupport(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
@@ -160,9 +166,11 @@ public class MarkerSupport extends BasicMarkerSupport {
 
 	// helping methods
 	//////////////////
-	
+
 	/**
 	 * Creates a decoration with an error marker for the given control.
+	 * <p>
+	 * The decoration draws an image before or after the UI control.
 	 * 
 	 * @param control
 	 *            the control to be decorated with an error marker
@@ -171,18 +179,15 @@ public class MarkerSupport extends BasicMarkerSupport {
 	private ControlDecoration createErrorDecoration(Control control) {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		ControlDecoration ctrlDecoration = new ControlDecoration(control, getDecorationPosition(lnf));
-	
+
 		// setMargin has to be before setImage!
 		int margin = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
 		ctrlDecoration.setMarginWidth(margin);
 		ctrlDecoration.setImage(getDecorationImage(lnf));
-	
+
 		return ctrlDecoration;
 	}
 
-	// helping methods
-	//////////////////
-	
 	private Image getDecorationImage(RienaDefaultLnf lnf) {
 		Image image = null;
 		if (Platform.getBundle(Activator.PLUGIN_ID) != null) {

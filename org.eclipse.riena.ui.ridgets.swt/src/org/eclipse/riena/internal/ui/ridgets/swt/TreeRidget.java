@@ -86,6 +86,7 @@ import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableRidget;
+import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 
 /**
  * Ridget for SWT {@link Tree} widgets.

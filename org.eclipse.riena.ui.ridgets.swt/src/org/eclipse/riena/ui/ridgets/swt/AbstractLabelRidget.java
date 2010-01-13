@@ -17,7 +17,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.riena.internal.ui.ridgets.swt.BasicMarkerSupport;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.resource.IconManagerProvider;
 import org.eclipse.riena.ui.core.resource.IconSize;

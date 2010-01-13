@@ -11,26 +11,37 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.rienadefault;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Resource;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.ui.swt.Activator;
+import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
 import org.eclipse.riena.ui.swt.lnf.FontDescriptor;
+import org.eclipse.riena.ui.swt.lnf.ILnfMarkerSupportExtension;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfRendererExtension;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
@@ -38,10 +49,13 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  */
 public class RienaDefaultLnf {
 
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RienaDefaultLnf.class);
+
 	private static final String DEFAULT_THEME_CLASSNAME = RienaDefaultTheme.class.getName();
 	private final Map<String, ILnfResource> resourceTable = new Hashtable<String, ILnfResource>();
 	private final Map<String, Object> settingTable = new Hashtable<String, Object>();
 	private final Map<String, ILnfRenderer> rendererTable = new Hashtable<String, ILnfRenderer>();
+	private final List<ILnfMarkerSupportExtension> markerSupportList = new ArrayList<ILnfMarkerSupportExtension>();
 	private ILnfTheme theme;
 	private boolean initialized;
 	private boolean defaultColorsInitialized = false;
@@ -118,6 +132,63 @@ public class RienaDefaultLnf {
 				getRendererTable().put(rendererExtension.getLnfKey(), rendererExtension.createRenderer());
 			}
 		}
+
+	}
+
+	/**
+	 * Stores the given marker supports in a list.
+	 * 
+	 * @param markerSupportExtensions
+	 *            array of marker supports
+	 * @since 2.0
+	 */
+	@InjectExtension
+	public void update(ILnfMarkerSupportExtension[] markerSupportExtensions) {
+		if (markerSupportExtensions == null) {
+			return;
+		}
+		markerSupportList.clear();
+		markerSupportList.addAll(Arrays.asList(markerSupportExtensions));
+
+	}
+
+	/**
+	 * Returns the marker support that will be used according to the Look&Feel
+	 * setting ({@code LnfKeyConstants.MARKER_SUPPORT_ID}) and for the given
+	 * Ridget class.
+	 * 
+	 * @param ridgetClass
+	 *            class of the Ridget
+	 * @return marker support or {@code null} if no appropriate marker support
+	 *         was found
+	 * @since 2.0
+	 */
+	public AbstractMarkerSupport getMarkerSupport(Class<? extends IRidget> ridgetClass) {
+
+		String markerSupportID = getStringSetting(LnfKeyConstants.MARKER_SUPPORT_ID);
+
+		// same ID
+		for (ILnfMarkerSupportExtension lnfMarkerSupportExtension : markerSupportList) {
+			if (StringUtils.isEmpty(lnfMarkerSupportExtension.getId())) {
+				continue;
+			}
+			if (lnfMarkerSupportExtension.getId().equals(markerSupportID)) {
+				return lnfMarkerSupportExtension.createMarkerSupport();
+			}
+		}
+
+		if (!StringUtils.isEmpty(markerSupportID)) {
+			LOGGER.log(LogService.LOG_INFO, "No MarkerSupport with the ID \"" + markerSupportID + "\" exists."); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		// use the first one in the list without an ID
+		for (ILnfMarkerSupportExtension lnfMarkerSupportExtension : markerSupportList) {
+			if (StringUtils.isEmpty(lnfMarkerSupportExtension.getId())) {
+				return lnfMarkerSupportExtension.createMarkerSupport();
+			}
+		}
+
+		return null;
 
 	}
 

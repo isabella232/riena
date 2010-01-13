@@ -26,6 +26,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractEditableRidget;
+import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
 
 /**
  * This ridget is an abstraction for all TraverseRidgets and offers general
@@ -558,10 +559,10 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	private final class ActionListener implements IActionListener {
 		public void callback() {
 			if (getUIControl() != null) {
-				int selection = getValue(getUIControl());
-				setValue(selection);
-			}
+			int selection = getValue(getUIControl());
+			setValue(selection);
 		}
+	}
 	}
 
 	/**

@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt;
+package org.eclipse.riena.ui.ridgets.swt;
 
 import java.beans.PropertyChangeSupport;
 
@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Table;
 
+import org.eclipse.riena.internal.ui.ridgets.swt.DisabledMarkerVisualizer;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -33,8 +34,20 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	private static boolean osChecked = false;
 	private DisabledMarkerVisualizer disabledMarkerVisualizer;
 
+	public BasicMarkerSupport() {
+		super();
+	}
+
 	public BasicMarkerSupport(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void init(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+		super.init(ridget, propertyChangeSupport);
 		// workaround for 272863
 		if (!osChecked) {
 			osChecked = true;

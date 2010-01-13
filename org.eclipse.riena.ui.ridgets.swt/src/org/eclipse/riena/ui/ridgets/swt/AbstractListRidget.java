@@ -44,7 +44,6 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionListener;
 
 import org.eclipse.riena.core.util.ListenerList;
-import org.eclipse.riena.internal.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.internal.ui.ridgets.swt.OutputAwareValidator;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -213,16 +212,16 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		}
 		if (viewerObservables != null) {
 			if (hasViewer()) {
-				AbstractListViewer viewer = getViewer();
-				viewer.getControl().setRedraw(false); // prevent flicker during
-				// update
-				StructuredSelection currentSelection = new StructuredSelection(getSelection());
-				try {
-					configureViewer(viewer);
-				} finally {
-					viewer.setSelection(currentSelection);
-					viewer.getControl().setRedraw(true);
-				}
+			AbstractListViewer viewer = getViewer();
+			viewer.getControl().setRedraw(false); // prevent flicker during
+			// update
+			StructuredSelection currentSelection = new StructuredSelection(getSelection());
+			try {
+				configureViewer(viewer);
+			} finally {
+				viewer.setSelection(currentSelection);
+				viewer.getControl().setRedraw(true);
+			}
 			} else {
 				refreshSelection();
 			}

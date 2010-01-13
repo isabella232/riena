@@ -28,6 +28,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractValueRidget;
+import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
 
 /**
  * Ridget for an SWT {@link Link} widget.

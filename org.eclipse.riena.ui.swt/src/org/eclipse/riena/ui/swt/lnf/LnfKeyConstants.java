@@ -400,6 +400,11 @@ public final class LnfKeyConstants {
 	public static final String MANDATORY_MARKER_BACKGROUND = "mandatoryMarker.background"; //$NON-NLS-1$
 
 	/**
+	 * @since 2.0
+	 */
+	public static final String ERROR_MARKER_BORDER_COLOR = "errorMarker.borderColor"; //$NON-NLS-1$
+
+	/**
 	 * @since 1.2
 	 */
 	public static final String OUTPUT_MARKER_BACKGROUND = "outputMarker.background"; //$NON-NLS-1$
@@ -830,9 +835,22 @@ public final class LnfKeyConstants {
 	public static final String ERROR_MARKER_MARGIN = "errorMarker.margin"; //$NON-NLS-1$
 
 	/**
+	 * @since 2.0
+	 */
+	public static final String ERROR_MARKER_BORDER_WIDTH = "errorMarker.borderWidth"; //$NON-NLS-1$
+
+	/**
 	 * @since 1.2
 	 */
 	public static final String FONTDESCRIPTOR_DEFAULT_HEIGHT = "FontDescriptor.defaultHeight"; //$NON-NLS-1$
+
+	/**
+	 * ID of the marker support that will be used to display the markers in the
+	 * UI.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String MARKER_SUPPORT_ID = "markerSupportID"; //$NON-NLS-1$
 
 	/**
 	 * Renderer keys

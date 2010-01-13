@@ -45,7 +45,6 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.internal.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
@@ -56,6 +55,7 @@ import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableIndexedRidget;
+import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
@@ -212,10 +212,10 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 		rowValuesUnsorted = null;
 		if (control != null) {
-			updateControl(control);
+		updateControl(control);
 		} else {
 			refreshSelection();
-		}
+	}
 
 	}
 
@@ -512,15 +512,15 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	private void updateControl(CompositeTable control) {
-		control.setRedraw(false);
-		try {
-			control.setNumRowsInCollection(rowValues.length);
-			applyComparator();
-			updateSelection();
-		} finally {
-			control.setRedraw(true);
+			control.setRedraw(false);
+			try {
+				control.setNumRowsInCollection(rowValues.length);
+				applyComparator();
+				updateSelection();
+			} finally {
+				control.setRedraw(true);
+			}
 		}
-	}
 
 	// helping classes
 	//////////////////

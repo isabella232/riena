@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractListRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 
 /**
  * Ridget for SWT {@link List} widgets.

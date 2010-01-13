@@ -163,6 +163,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		table.put(LnfKeyConstants.GRAB_CORNER_BACKGROUND, getPrimaryBackground());
 		table.put(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND, new ColorLnfResource(255, 255, 175));
+		table.put(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR, new ColorLnfResource(200, 0, 0));
 
 		table.put(LnfKeyConstants.OUTPUT_MARKER_BACKGROUND, new ColorLnfResource(231, 233, 245));
 
@@ -395,6 +396,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.DISABLED_MARKER_ADVANCED, true);
 		table.put(LnfKeyConstants.DISABLED_MARKER_STANDARD_ALPHA, 90);
 		// table.put(LnfKeyConstants.DISABLED_MARKER_COMPLEX_ALPHA, 190);
+
+		table.put(LnfKeyConstants.MARKER_SUPPORT_ID, "defaultMarkerSupport"); //$NON-NLS-1$
+
 	}
 
 	//

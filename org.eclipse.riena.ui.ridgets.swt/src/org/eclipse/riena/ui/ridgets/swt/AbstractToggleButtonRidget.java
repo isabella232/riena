@@ -26,7 +26,6 @@ import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionObserver;
-import org.eclipse.riena.internal.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.resource.IconManagerProvider;

@@ -24,6 +24,7 @@ import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
+import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
 
 /**
  * The ridget for a Shell control.

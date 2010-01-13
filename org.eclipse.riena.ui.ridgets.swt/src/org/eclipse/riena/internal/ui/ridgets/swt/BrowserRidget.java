@@ -22,6 +22,7 @@ import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractValueRidget;
+import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
 
 /**
  * Ridget for an SWT {@link Browser} widget.

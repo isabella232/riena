@@ -36,10 +36,30 @@ public abstract class AbstractMarkerSupport {
 	private PropertyChangeSupport propertyChangeSupport;
 	private IMarkerAttributeChangeListener markerAttributeChangeListener;
 
+	/**
+	 * @since 2.0
+	 */
+	public AbstractMarkerSupport() {
+		markerAttributeChangeListener = new MarkerAttributeChangeListener();
+	}
+
 	public AbstractMarkerSupport(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+		super();
+		init(ridget, propertyChangeSupport);
+	}
+
+	/**
+	 * Initializes this marker support with the Ridget and the property change
+	 * support.
+	 * 
+	 * @param ridget
+	 *            the Ridget that needs the marker support.
+	 * @param propertyChangeSupport
+	 * @since 2.0
+	 */
+	public void init(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
 		this.ridget = ridget;
 		this.propertyChangeSupport = propertyChangeSupport;
-		markerAttributeChangeListener = new MarkerAttributeChangeListener();
 	}
 
 	/**

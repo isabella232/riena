@@ -39,6 +39,7 @@ import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
+import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 
 /**
  * Tests of the class {@link ComboRidget}.
