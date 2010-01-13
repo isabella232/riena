@@ -148,6 +148,20 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	/**
+	 * Ask the user to confirm removal of the selected entry.
+	 * <p>
+	 * The default implementation always returns true. Subclasses may override.
+	 * 
+	 * @param item
+	 *            the item to be removed. Can never be null.
+	 * @return true to remove the selected entry, false otherwise.
+	 * @since 2.0
+	 */
+	public boolean confirmRemove(Object item) {
+		return true;
+	}
+
+	/**
 	 * Informs the user that apply failed for the given {@code reason}.
 	 * <p>
 	 * This implementation will show a blocking dialog. Subclasses may overwrite

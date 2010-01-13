@@ -123,7 +123,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		if (hasRemoveButton()) {
 			getRemoveButtonRidget().addListener(new IActionListener() {
 				public void callback() {
-					handleRemove();
+					if (canRemove()) {
+						handleRemove();
+					}
 				}
 			});
 		}
@@ -335,6 +337,12 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			getUIControl().warnApplyFailed(reason);
 		}
 		return reason == null;
+	}
+
+	private boolean canRemove() {
+		Object selection = getSelection();
+		Assert.isNotNull(selection);
+		return getUIControl().confirmRemove(selection);
 	}
 
 	private void checkDelegate() {
