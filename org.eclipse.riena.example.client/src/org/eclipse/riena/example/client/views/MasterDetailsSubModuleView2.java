@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
@@ -20,6 +22,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleController2;
@@ -67,10 +70,7 @@ public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubM
 
 	private Group createMasterDetails(Composite parent) {
 		Group result = UIControlsFactory.createGroup(parent, "Master/Details:"); //$NON-NLS-1$
-		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
-		layout.marginHeight = 20;
-		layout.marginWidth = 20;
-		result.setLayout(layout);
+		GridLayoutFactory.fillDefaults().margins(20, 20).applyTo(result);
 
 		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.TOP) {
 			@Override
@@ -91,9 +91,17 @@ public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubM
 
 				return result;
 			}
+
+			public boolean confirmRemove(Object item) {
+				String title = "Confirm Remove"; //$NON-NLS-1$
+				String message = String.format("Delete '%s' ?", item.toString()); //$NON-NLS-1$
+				boolean result = MessageDialog.openQuestion(getShell(), title, message);
+				return result;
+			}
 		};
 		mdComposite.setBackground(colorLightBlue);
 		addUIControl(mdComposite, "master2"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(mdComposite);
 
 		Composite details = mdComposite.getDetails();
 		GridLayout gridLayout = new GridLayout(3, false);
@@ -111,6 +119,9 @@ public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubM
 			Button btnApply = new Button(details, SWT.PUSH | SWT.FLAT);
 			mdComposite.addUIControl(btnApply, MasterDetailsComposite.BIND_ID_APPLY);
 		}
+
+		Label lblStatus = UIControlsFactory.createLabel(result, "", "lblStatus"); //$NON-NLS-1$ //$NON-NLS-2$
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(lblStatus);
 
 		return result;
 	}
