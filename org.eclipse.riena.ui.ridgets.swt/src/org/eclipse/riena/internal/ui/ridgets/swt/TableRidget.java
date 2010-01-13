@@ -288,7 +288,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	public int getSortedColumn() {
 		boolean isSorted = sortedColumn != -1 && isColumnSortable(sortedColumn);
 		return isSorted ? sortedColumn : -1;
-			}
+	}
 
 	// TODO [ev] remove after closing 298033 ?
 	//	public int getSortedColumn() {
@@ -316,7 +316,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	public boolean isSortedAscending() {
 		return getSortedColumn() != -1 && isSortedAscending;
-		}
+	}
 
 	// TODO [ev] remove after closing 298033 ?
 	//	public boolean isSortedAscending() {
