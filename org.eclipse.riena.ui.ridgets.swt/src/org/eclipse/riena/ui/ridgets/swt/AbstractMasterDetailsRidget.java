@@ -462,6 +462,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		} else { // update
 			getTableRidget().updateFromModel();
 		}
+		clearTableSelection(); // TODO [ev] continue here <----
 		setEnabled(false, false);
 	}
 
