@@ -23,6 +23,7 @@ import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
@@ -195,7 +196,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(newEntry, ridget.getSelection());
 
-		delegate.setTxtColumn1IsEnabled(false);
+		delegate.isTxtColumn1IsEnabled = false;
 		ridget.handleAdd();
 		assertFalse(txtColumn1.isEnabled());
 		assertTrue(txtColumn2.isEnabled());
@@ -401,7 +402,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(txtColumn1.isEnabled());
 		assertFalse(txtColumn2.isEnabled());
 
-		delegate.setTxtColumn1IsEnabled(false);
+		delegate.isTxtColumn1IsEnabled = false;
 		ridget.setSelection(item0);
 
 		assertFalse(txtColumn1.isEnabled());
@@ -538,6 +539,83 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(table.getParent().getLayout() instanceof TableColumnLayout);
 	}
 
+	public void testDelegateItemCreated() {
+		MasterDetailsRidget ridget = getRidget();
+		bindToModel(true);
+
+		assertEquals(0, delegate.createCount);
+
+		ridget.handleAdd();
+
+		assertEquals(1, delegate.createCount);
+		MDBean lastItem = (MDBean) delegate.lastItem;
+		assertEquals(delegate.getWorkingCopy().column1, lastItem.column1);
+		assertEquals(delegate.getWorkingCopy().column2, lastItem.column2);
+	}
+
+	public void testDelegateItemRemoved() {
+		MasterDetailsRidget ridget = getRidget();
+		bindToModel(true);
+
+		assertEquals(0, delegate.removeCount);
+
+		Object first = input.get(0);
+		ridget.setSelection(first);
+		ridget.handleRemove();
+
+		assertEquals(1, delegate.removeCount);
+		assertEquals(first, delegate.lastItem);
+	}
+
+	public void testDelegateItemApplied() {
+		MasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
+		bindToModel(true);
+
+		assertEquals(0, delegate.applyCount);
+
+		MDBean first = input.get(0);
+		ridget.setSelection(first);
+		widget.txtColumn1.setFocus();
+		UITestHelper.sendString(widget.getDisplay(), "A\r");
+		ridget.handleApply();
+
+		assertEquals(1, delegate.applyCount);
+		assertEquals(first, delegate.lastItem);
+	}
+
+	public void testDelegateItemSelected() {
+		bindToModel(true);
+
+		assertEquals(0, delegate.selectionCount);
+		assertNull(delegate.lastItem);
+
+		Object first = input.get(0);
+		getRidget().setSelection(first);
+
+		assertEquals(1, delegate.selectionCount);
+		assertEquals(first, delegate.lastItem);
+	}
+
+	public void testReselectingSelectedRowIsIgnored() {
+		bindToModel(true);
+		MDWidget widget = getWidget();
+		Object first = input.get(0);
+
+		assertEquals(0, delegate.selectionCount);
+		assertNull(delegate.lastItem);
+
+		Table table = widget.getTable();
+		table.setSelection(0);
+		Event event1 = createSelectionEvent(widget, first);
+		table.notifyListeners(SWT.Selection, event1);
+		Event event2 = createSelectionEvent(widget, first);
+		table.notifyListeners(SWT.Selection, event2);
+
+		assertEquals(1, delegate.selectionCount);
+		assertEquals(first, delegate.lastItem);
+	}
+
 	// helping methods
 	//////////////////
 
@@ -579,6 +657,15 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			String c2 = String.format("TestR%dC2", i);
 			result.add(new MDBean(c1, c2));
 		}
+		return result;
+	}
+
+	private Event createSelectionEvent(MDWidget widget, Object first) {
+		Event result = new Event();
+		result.type = SWT.Selection;
+		// hack; we only care about w.getData() so we use this here instead of the TableItem
+		widget.setData(first);
+		result.item = widget;
 		return result;
 	}
 
@@ -653,6 +740,11 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			hFill.applyTo(txtColumn2);
 			addUIControl(txtColumn2, "txtColumn2");
 		}
+
+		@Override
+		public boolean confirmDiscardChanges() {
+			return true; // always accept, don't want a modal dialog in the test
+		}
 	}
 
 	/**
@@ -662,7 +754,13 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	private static class MDDelegate extends AbstractMasterDetailsDelegate {
 
 		private final MDBean workingCopy = createWorkingCopy();
-		private boolean txtColumn1Isenabled = true;
+		private boolean isTxtColumn1IsEnabled = true;
+
+		int createCount;
+		int removeCount;
+		int applyCount;
+		int selectionCount;
+		Object lastItem;
 
 		public void configureRidgets(IRidgetContainer container) {
 			checkContainer(container);
@@ -703,18 +801,34 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			checkContainer(container);
 
 			ITextRidget txtColumn1 = (ITextRidget) container.getRidget("txtColumn1");
-			txtColumn1.setEnabled(isTxtColumn1IsEnabled());
+			txtColumn1.setEnabled(isTxtColumn1IsEnabled);
 			for (IRidget ridget : container.getRidgets()) {
 				ridget.updateFromModel();
 			}
 		}
 
-		public boolean isTxtColumn1IsEnabled() {
-			return txtColumn1Isenabled;
+		@Override
+		public void itemApplied(Object changedItem) {
+			applyCount++;
+			lastItem = changedItem;
 		}
 
-		public void setTxtColumn1IsEnabled(boolean enabled) {
-			this.txtColumn1Isenabled = enabled;
+		@Override
+		public void itemCreated(Object newItem) {
+			createCount++;
+			lastItem = newItem;
+		}
+
+		@Override
+		public void itemRemoved(Object oldItem) {
+			removeCount++;
+			lastItem = oldItem;
+		}
+
+		@Override
+		public void itemSelected(Object newSelection) {
+			selectionCount++;
+			lastItem = newSelection;
 		}
 
 		private void checkContainer(IRidgetContainer container) {

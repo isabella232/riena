@@ -132,11 +132,15 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 	 * details area.
 	 */
 	private final class DirtyDetailsChecker extends SelectionAdapter {
-		int oldIndex = -1; // single selection 
+
+		private int oldIndex = -1; // single selection 
 
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			Table table = (Table) e.widget;
+			if (oldIndex == table.getSelectionIndex()) { // already selected
+				return;
+			}
 			if (areDetailsChanged()) {
 				if (!getUIControl().confirmDiscardChanges()) {
 					table.setSelection(oldIndex);
