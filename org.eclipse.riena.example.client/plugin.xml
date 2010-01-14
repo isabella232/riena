@@ -16,10 +16,10 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="org.eclipse.riena.example.client.application"
-            name="Riena Example">
+            name="%product.name">
          <property
                name="appName"
-               value="Riena Example">
+               value="%product.name">
          </property>
       </product>
    </extension>
@@ -702,7 +702,7 @@
                   label="UI-Filters">
                <submodule
                      controller="org.eclipse.riena.example.client.controllers.FilterExampleSubModuleController"
-                     label="Example"
+                     label="%submodule.label.6"
                      shared="false"
                      typeId="org.eclipse.riena.example.filterexample"
                      view="org.eclipse.riena.example.client.views.FilterExampleSubModuleView">

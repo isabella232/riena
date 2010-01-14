@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.example.client.controllers.LoginDialogController;
+import org.eclipse.riena.internal.example.client.nls.Messages;
 import org.eclipse.riena.navigation.ui.swt.login.AbstractLoginSplashView;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -51,7 +52,7 @@ public class LoginSplashView extends AbstractLoginSplashView {
 
 		Label infoArea = new Label(parent, SWT.NONE);
 		infoArea
-				.setText("\nTo authenticate with running Sample App Server\n    type: user=john, password=john.\n    To omit it just press login."); //$NON-NLS-1$
+				.setText(Messages.LoginSplashView_infoArea); 
 		infoArea.setLayoutData(GD11LEFTBOTTOMFILL);
 
 		Composite inputArea = new Composite(parent, SWT.NONE);
@@ -63,7 +64,7 @@ public class LoginSplashView extends AbstractLoginSplashView {
 		// dummy to occupy the cell
 		new Label(inputArea, SWT.NONE).setText(""); //$NON-NLS-1$
 
-		new Label(inputArea, SWT.NONE).setText("User"); //$NON-NLS-1$
+		new Label(inputArea, SWT.NONE).setText(Messages.LoginSplashView_user); 
 		Text user = UIControlsFactory.createText(inputArea);
 		user.setLayoutData(GD21FILL);
 		addUIControl(user, LoginDialogController.RIDGET_ID_USER);
@@ -71,7 +72,7 @@ public class LoginSplashView extends AbstractLoginSplashView {
 		// dummy to occupy the cell
 		new Label(inputArea, SWT.NONE);
 
-		new Label(inputArea, SWT.NONE).setText("Password"); //$NON-NLS-1$
+		new Label(inputArea, SWT.NONE).setText(Messages.LoginSplashView_password); 
 		Text password = UIControlsFactory.createText(inputArea);
 		password.setLayoutData(GD21FILL);
 		addUIControl(password, LoginDialogController.RIDGET_ID_PASSWORD);
@@ -82,12 +83,12 @@ public class LoginSplashView extends AbstractLoginSplashView {
 		new Label(inputArea, SWT.NONE);
 
 		Button okButton = UIControlsFactory.createButton(inputArea);
-		okButton.setText("   Login   "); //$NON-NLS-1$
+		okButton.setText(Messages.LoginSplashView_login); 
 		okButton.setLayoutData(GD11FILL);
 		addUIControl(okButton, LoginDialogController.RIDGET_ID_OK);
 
 		Button cancelButton = UIControlsFactory.createButton(inputArea);
-		cancelButton.setText("   Cancel   "); //$NON-NLS-1$
+		cancelButton.setText(Messages.LoginSplashView_cancel); 
 		cancelButton.setLayoutData(GD11FILL);
 		addUIControl(cancelButton, LoginDialogController.RIDGET_ID_CANCEL);
 
