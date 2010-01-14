@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.SharedColors;
 import org.eclipse.riena.internal.ui.ridgets.swt.SharedImages;
@@ -178,12 +179,10 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 */
 	private ControlDecoration createErrorDecoration(Control control) {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		ControlDecoration ctrlDecoration = new ControlDecoration(control, getDecorationPosition(lnf));
-
-		// setMargin has to be before setImage!
 		int margin = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
-		ctrlDecoration.setMarginWidth(margin);
-		ctrlDecoration.setImage(getDecorationImage(lnf));
+
+		MarkerControlDecoration ctrlDecoration = new MarkerControlDecoration(control, getDecorationPosition(lnf),
+				margin, getDecorationImage(lnf));
 
 		return ctrlDecoration;
 	}
@@ -274,6 +273,23 @@ public class MarkerSupport extends BasicMarkerSupport {
 		} else {
 			clearOutput(control);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The constructor of this implementation sets the margin width and the
+	 * image to avoid unnesseccary updates.
+	 */
+	private static class MarkerControlDecoration extends ControlDecoration {
+
+		public MarkerControlDecoration(Control control, int position, int marginWidth, Image image) {
+			super(control, position);
+			ReflectionUtils.setHidden(this, "marginWidth", marginWidth); //$NON-NLS-1$
+			ReflectionUtils.setHidden(this, "image", image); //$NON-NLS-1$
+			update();
+		}
+
 	}
 
 }

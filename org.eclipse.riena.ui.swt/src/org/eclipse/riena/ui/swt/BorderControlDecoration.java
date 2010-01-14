@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,7 @@ import org.eclipse.riena.internal.ui.swt.Activator;
 public class BorderControlDecoration {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), BorderControlDecoration.class);
+	private static final Rectangle ZERO_RECTANGLE = new Rectangle(0, 0, 0, 0);
 	private static final int DEFAULT_BORDER_WIDTH = 1;
 
 	private Control control;
@@ -54,9 +55,7 @@ public class BorderControlDecoration {
 	 *            the control to be decorated
 	 */
 	public BorderControlDecoration(Control control) {
-
 		this(control, DEFAULT_BORDER_WIDTH);
-
 	}
 
 	/**
@@ -67,6 +66,17 @@ public class BorderControlDecoration {
 	 *            the control to be decorated
 	 */
 	public BorderControlDecoration(Control control, int borderWidth) {
+		this(control, borderWidth, null);
+	}
+
+	/**
+	 * Creates a new instance of {@code ControlDecoration} for decorating the
+	 * specified control.
+	 * 
+	 * @param control
+	 *            the control to be decorated
+	 */
+	public BorderControlDecoration(Control control, int borderWidth, Color borderColor) {
 
 		this.control = control;
 		// workaround for DatePicker
@@ -78,6 +88,7 @@ public class BorderControlDecoration {
 			borderWidth = 0;
 			LOGGER.log(LogService.LOG_WARNING, "BorderWidth is lower eqauls 0!"); //$NON-NLS-1$
 		}
+		this.borderColor = borderColor;
 
 		visible = false;
 		addControlListeners();
@@ -278,7 +289,7 @@ public class BorderControlDecoration {
 	private Rectangle getDecorationRectangle(Control targetControl) {
 
 		if (control == null) {
-			return new Rectangle(0, 0, 0, 0);
+			return ZERO_RECTANGLE;
 		}
 
 		Rectangle controlBounds = control.getBounds();

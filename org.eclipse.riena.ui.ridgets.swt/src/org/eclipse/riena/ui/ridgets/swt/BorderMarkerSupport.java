@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -90,9 +90,8 @@ public class BorderMarkerSupport extends MarkerSupport {
 	protected BorderControlDecoration createErrorDecoration(Control control) {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		int width = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_BORDER_WIDTH, 1);
-		BorderControlDecoration ctrlDecoration = new BorderControlDecoration(control, width);
 		Color borderColor = lnf.getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
-		ctrlDecoration.setBorderColor(borderColor);
+		BorderControlDecoration ctrlDecoration = new BorderControlDecoration(control, width, borderColor);
 		return ctrlDecoration;
 	}
 
