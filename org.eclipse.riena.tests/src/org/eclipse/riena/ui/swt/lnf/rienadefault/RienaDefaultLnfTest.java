@@ -20,7 +20,11 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.riena.ui.ridgets.swt.BorderMarkerSupport;
+import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -225,6 +229,46 @@ public class RienaDefaultLnfTest extends TestCase {
 
 	}
 
+	/**
+	 * Tests the method {@code getMarkerSupport}.
+	 */
+	public void testGetMarkerSupport() {
+
+		AbstractMarkerSupport markerSupport = lnf.getMarkerSupport(null);
+		assertNotNull(markerSupport);
+		assertTrue(markerSupport.getClass() == MarkerSupport.class);
+
+		lnf.setTheme(new DummyTheme());
+		lnf.initialize();
+		markerSupport = lnf.getMarkerSupport(null);
+		assertNull(markerSupport);
+
+		lnf.setTheme(new DummyTheme2());
+		lnf.initialize();
+		markerSupport = lnf.getMarkerSupport(null);
+		assertNotNull(markerSupport);
+		assertTrue(markerSupport.getClass() == BorderMarkerSupport.class);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code readSystemProperties()}.
+	 */
+	public void testReadSystemProperties() {
+
+		lnf.setTheme(new DummyTheme());
+		lnf.initialize();
+		assertEquals(INTEGER_VALUE, lnf.getIntegerSetting(INTEGER_KEY));
+
+		System.setProperty("riena.lnf.setting." + INTEGER_KEY, "4711");
+		ReflectionUtils.invokeHidden(lnf, "readSystemProperties");
+		assertEquals(Integer.valueOf(4711), lnf.getIntegerSetting(INTEGER_KEY));
+
+	}
+
+	/**
+	 * A simple look and feel theme with a couple of custom settings.
+	 */
 	private static class DummyTheme implements ILnfTheme {
 
 		/**
@@ -251,6 +295,24 @@ public class RienaDefaultLnfTest extends TestCase {
 		public void addCustomSettings(Map<String, Object> table) {
 			table.put(INTEGER_KEY, INTEGER_VALUE);
 			table.put(BOOLEAN_KEY, BOOLEAN_VALUE);
+			table.put(LnfKeyConstants.MARKER_SUPPORT_ID, "0815");
+		}
+
+	}
+
+	/**
+	 * A simple look and feel theme thats overwrites settings of the {@code
+	 * DummyTheme}.
+	 */
+	private static class DummyTheme2 extends DummyTheme {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void addCustomSettings(Map<String, Object> table) {
+			super.addCustomSettings(table);
+			table.put(LnfKeyConstants.MARKER_SUPPORT_ID, "borderMarkerSupport");
 		}
 
 	}

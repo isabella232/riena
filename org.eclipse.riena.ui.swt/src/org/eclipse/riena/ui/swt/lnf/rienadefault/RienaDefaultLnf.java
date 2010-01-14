@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import org.osgi.service.log.LogService;
@@ -52,6 +53,7 @@ public class RienaDefaultLnf {
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RienaDefaultLnf.class);
 
 	private static final String DEFAULT_THEME_CLASSNAME = RienaDefaultTheme.class.getName();
+	private static final String SYSTEM_PROPERTY_LNF_SETTING_PREFIX = "riena.lnf.setting."; //$NON-NLS-1$
 	private final Map<String, ILnfResource> resourceTable = new Hashtable<String, ILnfResource>();
 	private final Map<String, Object> settingTable = new Hashtable<String, Object>();
 	private final Map<String, ILnfRenderer> rendererTable = new Hashtable<String, ILnfRenderer>();
@@ -82,7 +84,26 @@ public class RienaDefaultLnf {
 			setInitialized(true);
 			initWidgetRendererDefaults();
 			initResourceDefaults();
+			readSystemProperties();
 		}
+	}
+
+	/**
+	 * Reads system properties to overwrite Look&Feel settings.
+	 */
+	private void readSystemProperties() {
+
+		Properties sysProps = System.getProperties();
+		Set<Object> sysPropKeys = sysProps.keySet();
+		for (Object propKey : sysPropKeys) {
+			String propKeyName = propKey.toString();
+			if (propKeyName.startsWith(SYSTEM_PROPERTY_LNF_SETTING_PREFIX)) {
+				String lnfKey = propKeyName.substring(SYSTEM_PROPERTY_LNF_SETTING_PREFIX.length());
+				Object lnfValue = sysProps.get(propKeyName);
+				getSettingTable().put(lnfKey, lnfValue);
+			}
+		}
+
 	}
 
 	/**
@@ -167,7 +188,6 @@ public class RienaDefaultLnf {
 
 		String markerSupportID = getStringSetting(LnfKeyConstants.MARKER_SUPPORT_ID);
 
-		// same ID
 		for (ILnfMarkerSupportExtension lnfMarkerSupportExtension : markerSupportList) {
 			if (StringUtils.isEmpty(lnfMarkerSupportExtension.getId())) {
 				continue;
@@ -177,16 +197,7 @@ public class RienaDefaultLnf {
 			}
 		}
 
-		if (!StringUtils.isEmpty(markerSupportID)) {
-			LOGGER.log(LogService.LOG_INFO, "No MarkerSupport with the ID \"" + markerSupportID + "\" exists."); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		// use the first one in the list without an ID
-		for (ILnfMarkerSupportExtension lnfMarkerSupportExtension : markerSupportList) {
-			if (StringUtils.isEmpty(lnfMarkerSupportExtension.getId())) {
-				return lnfMarkerSupportExtension.createMarkerSupport();
-			}
-		}
+		LOGGER.log(LogService.LOG_INFO, "No MarkerSupport with the ID \"" + markerSupportID + "\" exists."); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return null;
 
@@ -387,10 +398,18 @@ public class RienaDefaultLnf {
 	 */
 	public Integer getIntegerSetting(String key) {
 		Object value = getSetting(key);
+		if (value == null) {
+			return null;
+		}
 		if (value instanceof Integer) {
 			return (Integer) value;
 		} else {
-			return null;
+			String strgValue = value.toString();
+			try {
+				return new Integer(strgValue);
+			} catch (NumberFormatException e) {
+				return null;
+			}
 		}
 	}
 
@@ -423,7 +442,20 @@ public class RienaDefaultLnf {
 	 *         <code>false</code> if the map contains no mapping for this key.
 	 */
 	public Boolean getBooleanSetting(String key) {
-		return getBooleanSetting(key, false);
+		Object value = getSetting(key);
+		if (value == null) {
+			return null;
+		}
+		if (value instanceof Boolean) {
+			return (Boolean) value;
+		} else {
+			String strgValue = value.toString();
+			try {
+				return new Boolean(strgValue);
+			} catch (NumberFormatException e) {
+				return null;
+			}
+		}
 	}
 
 	/**
@@ -431,17 +463,18 @@ public class RienaDefaultLnf {
 	 * 
 	 * @param key
 	 *            key whose associated setting is to be returned.
+	 * @param defaultValue
+	 *            value to return, if no value is set
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>false</code> if the map contains no mapping for this key.
 	 * @since 1.2
 	 */
-	public Boolean getBooleanSetting(String key, boolean defalutValue) {
-		Object value = getSetting(key);
-		if (value instanceof Boolean) {
-			return (Boolean) value;
-		} else {
-			return defalutValue;
+	public Boolean getBooleanSetting(String key, boolean defaultValue) {
+		Boolean value = getBooleanSetting(key);
+		if (value == null) {
+			value = defaultValue;
 		}
+		return value;
 	}
 
 	/**
@@ -454,6 +487,9 @@ public class RienaDefaultLnf {
 	 */
 	public String getStringSetting(String key) {
 		Object value = getSetting(key);
+		if (value == null) {
+			return null;
+		}
 		if (value instanceof String) {
 			return (String) value;
 		} else {

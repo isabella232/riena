@@ -29,8 +29,8 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.ui.swt.Activator;
 
 /**
- * This class renders a border decoration around the control.
- * <p>
+ * This class renders a decoration around the control. For every decorated
+ * control a border is painted.
  * 
  * @since 2.0
  */
@@ -118,10 +118,10 @@ public class BorderControlDecoration {
 				// We just installed on a shell, so don't go further
 				c = null;
 			} else {
-				Rectangle b1 = getDecorationRectangle(c);
-				if (((b1.x >= 0) && (b1.y >= 0))
-						&& ((controlBounds.width + getBorderWidth() <= b1.width) && (controlBounds.height
-								+ getBorderWidth() <= b1.height))) {
+				Rectangle decoRect = getDecorationRectangle(c);
+				if (((decoRect.x >= 0) && (decoRect.y >= 0))
+						&& ((controlBounds.width + getBorderWidth() <= decoRect.width) && (controlBounds.height
+								+ getBorderWidth() <= decoRect.height))) {
 					c = null;
 				} else {
 					c = c.getParent();
@@ -146,7 +146,7 @@ public class BorderControlDecoration {
 
 	/**
 	 * Removes every listeners installed on the controls.
-	 **/
+	 */
 	private void removeControlListeners() {
 
 		if (control == null) {
@@ -169,12 +169,18 @@ public class BorderControlDecoration {
 		paintListener = null;
 	}
 
+	/**
+	 * Installs the listeners used to paint on the composite.
+	 */
 	private void installCompositeListeners(Composite c) {
 		if (!c.isDisposed()) {
 			c.addPaintListener(paintListener);
 		}
 	}
 
+	/**
+	 * Removes the listeners used to paint on the composite.
+	 */
 	private void removeCompositeListeners(Composite c) {
 		if (!c.isDisposed()) {
 			c.removePaintListener(paintListener);

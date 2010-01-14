@@ -9,6 +9,10 @@
             class="org.eclipse.riena.ui.ridgets.swt.MarkerSupport"
             id="defaultMarkerSupport">
       </markerSupport>
+      <markerSupport
+            class="org.eclipse.riena.ui.ridgets.swt.BorderMarkerSupport"
+            id="borderMarkerSupport">
+      </markerSupport>
    </extension>
 
 </plugin>

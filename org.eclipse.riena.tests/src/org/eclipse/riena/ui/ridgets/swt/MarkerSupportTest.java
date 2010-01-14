@@ -166,15 +166,17 @@ public class MarkerSupportTest extends RienaTestCase {
 	}
 
 	/**
-	 * Look and Feel with invalid setting: no setting and no images
+	 * Look and Feel with invalid setting: no settings and no images
 	 */
 	private static class MyNonsenseLnf extends RienaDefaultLnf {
 		@Override
 		protected void initSettingsDefaults() {
+			getSettingTable().clear();
 		}
 
 		@Override
 		protected void initImageDefaults() {
+			getResourceTable().clear();
 		}
 	}
 

@@ -850,7 +850,7 @@ public final class LnfKeyConstants {
 	 * 
 	 * @since 2.0
 	 */
-	public static final String MARKER_SUPPORT_ID = "markerSupportID"; //$NON-NLS-1$
+	public static final String MARKER_SUPPORT_ID = "markerSupport.id"; //$NON-NLS-1$
 
 	/**
 	 * Renderer keys
