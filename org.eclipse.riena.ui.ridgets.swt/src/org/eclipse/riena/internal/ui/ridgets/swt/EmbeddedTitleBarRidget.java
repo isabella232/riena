@@ -12,6 +12,8 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
@@ -157,7 +159,20 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	}
 
 	public void setDefaultButton(Object defaultButton) {
-		// unused
+		// TODO [ev] experimental code until 291708 is addressed.
+		// Issues:
+		// - why not IActionRidget? typically we work with ridgets not controlls
+		// - what if no UI control is bound, should remember and set later
+		// - since several controllers share one shell we must set the appropriate
+		//   default button for a given situation
+		// - how to handle several default buttons per controllers
+		// - see also ShellRidget.setDefaultButton
+		if (defaultButton instanceof Button) {
+			if (getUIControl() != null) {
+				Shell shell = getUIControl().getShell();
+				shell.setDefaultButton((Button) defaultButton);
+			}
+		}
 	}
 
 	public void setActive(boolean active) {
