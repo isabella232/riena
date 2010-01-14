@@ -190,7 +190,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	/**
 	 * Return the 'New' button.
 	 * 
-	 * @return a Button instance; never null.
+	 * @return a Button instance; may be null if 'New' is unsupported.
 	 */
 	public final Button getButtonNew() {
 		return (Button) getUIControl(BIND_ID_NEW);
@@ -199,7 +199,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	/**
 	 * Return the 'Remove' button.
 	 * 
-	 * @return a Button instance; never null.
+	 * @return a Button instance; may be null if 'Remove' is unsupported.
 	 */
 	public final Button getButtonRemove() {
 		return (Button) getUIControl(BIND_ID_REMOVE);
@@ -215,7 +215,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	/**
-	 * Returns the Table control of the 'master' area/
+	 * Returns the Table control of the 'master' area.
 	 * 
 	 * @return a Table; never null
 	 */
@@ -246,7 +246,8 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * 
 	 * @return a Button or null. If this returns null you are responsible for
 	 *         adding a button with the binding id {@link #BIND_ID_NEW} to this
-	 *         composite elsewhere.
+	 *         composite elsewhere &ndash; otherwise 'New' will not be
+	 *         available.
 	 */
 	protected Button createButtonNew(Composite compButton) {
 		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonNew);
@@ -260,7 +261,8 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * 
 	 * @return a Button or null. If this returns null you are responsible for
 	 *         adding a button with the binding id {@link #BIND_ID_REMOVE} to
-	 *         this composite elsewhere.
+	 *         this composite elsewhere &ndash; otherwise 'Remove' will not be
+	 *         available.
 	 */
 	protected Button createButtonRemove(Composite compButton) {
 		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonRemove);
