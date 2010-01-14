@@ -21,12 +21,14 @@ import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
+import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
  * Demonstrates use of a master/details ridget.
@@ -130,6 +132,16 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 			master3.updateFromModel();
 
 			master3.setDirectWriting(true); // enable auto apply
+		}
+	}
+
+	@Override
+	public void afterBind() {
+		super.afterBind();
+		IMasterDetailsRidget master = (IMasterDetailsRidget) getRidget("master"); //$NON-NLS-1$
+		if (master != null) {
+			// TODO [ev] this is clunky... should not have to be in after bind
+			setDefaultButton((IActionRidget) master.getRidget(MasterDetailsComposite.BIND_ID_APPLY));
 		}
 	}
 
