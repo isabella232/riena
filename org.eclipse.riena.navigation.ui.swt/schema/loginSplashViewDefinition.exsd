@@ -2,19 +2,19 @@
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.eclipse.riena.navigation.ui.swt" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appinfo>
+      <appInfo>
          <meta.schema plugin="org.eclipse.riena.navigation.ui.swt" id="org.eclipse.riena.navigation.ui.swt.loginSplashViewDefinition" name="loginSplashViewDefinition"/>
-      </appinfo>
+      </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         Holds the definition for the login splash dialog view.
       </documentation>
    </annotation>
 
    <element name="extension">
       <annotation>
-         <appinfo>
+         <appInfo>
             <meta.element />
-         </appinfo>
+         </appInfo>
       </annotation>
       <complexType>
          <sequence minOccurs="0" maxOccurs="1">
@@ -39,15 +39,20 @@
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
    <element name="loginSplashViewDefinition">
+      <annotation>
+         <documentation>
+            Holds the definition for the login splash dialog view.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="nonActivityDuration" type="string" use="default" value="0">
             <annotation>
@@ -61,45 +66,51 @@
                <documentation>
                   The class of the view implementing the login dialog.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.navigation.ui.swt.login.ILoginSplashView"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="since"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter the first release in which this extension point appears.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="examples"/>
-      </appinfo>
+      </appInfo>
       <documentation>
-         [Enter extension point usage example here.]
+         &lt;extension
+          point=&quot;org.eclipse.riena.navigation.ui.swt.loginSplashViewDefinition&quot;&gt;
+       &lt;loginSplashViewDefinition
+             nonActivityDuration=&quot;0&quot;
+             viewClass=&quot;org.eclipse.riena.example.client.views.LoginSplashView&quot;&gt;
+       &lt;/loginSplashViewDefinition&gt;
+&lt;/extension&gt;
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="apiinfo"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter API information here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="implementation"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter information about supplied implementation of this extension point.]
       </documentation>

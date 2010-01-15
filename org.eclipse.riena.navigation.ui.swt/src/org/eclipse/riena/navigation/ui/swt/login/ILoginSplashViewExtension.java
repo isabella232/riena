@@ -13,7 +13,8 @@ package org.eclipse.riena.navigation.ui.swt.login;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 /**
- * The definition for the login splash dialog view.
+ * The definition for the login splash dialog view (see also
+ * <code>ILoginSplashView</code>).
  */
 @ExtensionInterface(id = "loginSplashViewDefinition")
 public interface ILoginSplashViewExtension {

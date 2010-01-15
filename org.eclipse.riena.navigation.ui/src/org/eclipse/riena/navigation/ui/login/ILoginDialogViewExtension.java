@@ -13,7 +13,8 @@ package org.eclipse.riena.navigation.ui.login;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 /**
- * The definition for the login dialog view.
+ * The definition for the login dialog view (see also
+ * <code>ILoginDialogView</code>).
  */
 @ExtensionInterface(id = "loginDialogViewDefinition")
 public interface ILoginDialogViewExtension {
