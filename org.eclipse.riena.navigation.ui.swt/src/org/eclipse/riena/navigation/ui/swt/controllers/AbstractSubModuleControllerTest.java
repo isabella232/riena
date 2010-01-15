@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.eclipse.riena.client.controller.test;
+package org.eclipse.riena.navigation.ui.swt.controllers;
 
 import org.easymock.EasyMock;
 

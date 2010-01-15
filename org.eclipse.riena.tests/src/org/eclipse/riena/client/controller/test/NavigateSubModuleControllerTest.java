@@ -22,6 +22,7 @@ import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.ui.swt.controllers.AbstractSubModuleControllerTest;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
 /**
@@ -36,7 +37,6 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 		NavigateSubModuleController newInst = new NavigateSubModuleController();
 		node.setNodeId(new NavigationNodeId("org.eclipse.riena.example.navigate"));
 		newInst.setNavigationNode(node);
-
 		return newInst;
 	}
 

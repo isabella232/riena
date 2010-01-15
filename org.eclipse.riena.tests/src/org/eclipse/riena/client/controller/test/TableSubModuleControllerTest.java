@@ -13,6 +13,7 @@ package org.eclipse.riena.client.controller.test;
 import org.eclipse.riena.example.client.controllers.TableSubModuleController;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.ui.swt.controllers.AbstractSubModuleControllerTest;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 

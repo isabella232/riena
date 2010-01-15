@@ -19,7 +19,9 @@ Require-Bundle: org.eclipse.core.databinding,
  org.eclipse.riena.ui.ridgets,
  org.eclipse.riena.ui.ridgets.swt,
  org.eclipse.riena.ui.swt,
- org.eclipse.riena.ui.workarea;bundle-version="1.0.0"
+ org.eclipse.riena.ui.workarea;bundle-version="1.0.0",
+ org.junit;bundle-version="3.8.2";resolution:=optional,
+ org.easymock;bundle-version="2.4.0";resolution:=optional
 Bundle-ActivationPolicy: lazy 
 Export-Package: org.eclipse.riena.internal.navigation.ui.swt;x-friends:="org.eclipse.riena.tests",
  org.eclipse.riena.internal.navigation.ui.swt.handlers;x-friends:="org.eclipse.riena.tests",
@@ -27,6 +29,7 @@ Export-Package: org.eclipse.riena.internal.navigation.ui.swt;x-friends:="org.ecl
  org.eclipse.riena.navigation.ui.swt.application,
  org.eclipse.riena.navigation.ui.swt.binding,
  org.eclipse.riena.navigation.ui.swt.component;x-friends:="org.eclipse.riena.tests",
+ org.eclipse.riena.navigation.ui.swt.controllers,
  org.eclipse.riena.navigation.ui.swt.lnf.renderer,
  org.eclipse.riena.navigation.ui.swt.login,
  org.eclipse.riena.navigation.ui.swt.presentation,
