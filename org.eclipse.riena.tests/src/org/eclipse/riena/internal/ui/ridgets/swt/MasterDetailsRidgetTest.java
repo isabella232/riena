@@ -194,13 +194,12 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("A", newEntry.column1);
 		assertEquals("B", newEntry.column2);
 
-		assertEquals(newEntry, ridget.getSelection());
-
-		delegate.isTxtColumn1IsEnabled = false;
-		ridget.handleAdd();
-		assertFalse(txtColumn1.isEnabled());
+		// when there is a 'new' button handleApply() automatically invokes it
+		assertNull(ridget.getSelection());
+		assertTrue(txtColumn1.isEnabled());
 		assertTrue(txtColumn2.isEnabled());
-
+		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn2.getText());
 	}
 
 	public void testDeleteBean() {
@@ -573,15 +572,20 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		bindToModel(true);
 
 		assertEquals(0, delegate.applyCount);
+		assertEquals(0, delegate.selectionCount);
 
 		MDBean first = input.get(0);
 		ridget.setSelection(first);
+
+		assertEquals(0, delegate.applyCount);
+		assertEquals(1, delegate.selectionCount);
+
 		widget.txtColumn1.setFocus();
 		UITestHelper.sendString(widget.getDisplay(), "A\r");
 		ridget.handleApply();
 
 		assertEquals(1, delegate.applyCount);
-		assertEquals(first, delegate.lastItem);
+		assertEquals(1, delegate.selectionCount);
 	}
 
 	public void testDelegateItemSelected() {

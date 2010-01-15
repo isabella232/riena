@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.databinding.BindingException;
@@ -24,6 +25,7 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
@@ -357,16 +359,16 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		editable = null;
 	}
 
-	private boolean hasErrors() {
-		for (IRidget ridget : detailRidgets.getRidgets()) {
-			if (ridget instanceof IMarkableRidget) {
-				IMarkableRidget markableRidget = (IMarkableRidget) ridget;
-				if (!markableRidget.getMarkersOfType(ErrorMarker.class).isEmpty()) {
-					return true;
-				}
+	private Control findFocusableControl() {
+		Control result = null;
+		Iterator<? extends IRidget> iter = detailRidgets.getRidgets().iterator();
+		while (result == null && iter.hasNext()) {
+			IRidget ridget = iter.next();
+			if (ridget.isFocusable() && ridget.getUIControl() instanceof Control) {
+				result = (Control) ridget.getUIControl();
 			}
 		}
-		return false;
+		return result;
 	}
 
 	private IRidget getTableRidget() {
@@ -385,6 +387,18 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_APPLY);
 	}
 
+	private boolean hasErrors() {
+		for (IRidget ridget : detailRidgets.getRidgets()) {
+			if (ridget instanceof IMarkableRidget) {
+				IMarkableRidget markableRidget = (IMarkableRidget) ridget;
+				if (!markableRidget.getMarkersOfType(ErrorMarker.class).isEmpty()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	private boolean hasNewButton() {
 		return getNewButtonRidget() != null;
 	}
@@ -398,6 +412,37 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		this.detailsEnabled = detailsEnabled;
 		for (IRidget ridget : detailRidgets.getRidgets()) {
 			ridget.setEnabled(detailsEnabled);
+		}
+	}
+
+	private void setFocusToDetails() {
+		final Control focusable = findFocusableControl();
+		if (focusable != null) {
+			focusable.getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					if (!focusable.isDisposed()) {
+						clearTableSelection();
+						focusable.setFocus();
+					}
+				}
+			});
+		}
+	}
+
+	private void setFocusToTable() {
+		AbstractMasterDetailsComposite control = getUIControl();
+		if (control != null) {
+			final Control table = control.getTable();
+			table.getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					if (!table.isDisposed()) {
+						table.setFocus();
+						// this has to be after table.setFocus() otherwise
+						// the 'focus' rectangle is sometimes lost
+						clearTableSelection();
+					}
+				}
+			});
 		}
 	}
 
@@ -458,16 +503,19 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		if (!rowObservables.contains(editable)) { // add to table
 			rowObservables.add(editable);
 			getTableRidget().updateFromModel();
-			setSelection(editable);
+			setTableSelection(editable);
+			revealTableSelection();
 		} else { // update
 			getTableRidget().updateFromModel();
 		}
-		clearTableSelection(); // TODO [ev] continue here <----
-		setEnabled(false, false);
+		if (hasNewButton() && !isDirectWriting) {
+			handleAdd(); // automatically hit the 'new/add' button
+			setFocusToDetails();
+		} else {
+			setEnabled(false, false);
+			setFocusToTable();
+		}
 	}
-
-	// helping classes
-	//////////////////
 
 	/**
 	 * IRidgetContainer exposing the 'detail' ridgets only (instead of all
