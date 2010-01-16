@@ -59,6 +59,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	private boolean isDirectWriting;
 	private boolean applyRequiresNoErrors;
 	private boolean detailsEnabled;
+	private boolean ignoreChanges;
 
 	/*
 	 * The object we are currently editing; null if not editing
@@ -73,14 +74,15 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	public AbstractMasterDetailsRidget() {
 		addPropertyChangeListener(null, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (delegate == null
+				if (ignoreChanges || delegate == null
 						|| editable == null
 						// ignore these events:
-						// || IMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName())
+						|| (!applyRequiresNoErrors && IMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName()))
 						|| IRidget.PROPERTY_ENABLED.equals(evt.getPropertyName())
 						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(evt.getPropertyName())) {
 					return;
 				}
+				// System.out.println(String.format("\tMD: %s %s", evt.getPropertyName(), evt.getSource()));
 				boolean isChanged = areDetailsChanged();
 				if (applyRequiresNoErrors) {
 					getApplyButtonRidget().setEnabled(isChanged && !hasErrors());
@@ -408,10 +410,15 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	private void setEnabled(boolean applyEnabled, boolean detailsEnabled) {
-		getApplyButtonRidget().setEnabled(applyEnabled);
-		this.detailsEnabled = detailsEnabled;
-		for (IRidget ridget : detailRidgets.getRidgets()) {
-			ridget.setEnabled(detailsEnabled);
+		ignoreChanges = true;
+		try {
+			getApplyButtonRidget().setEnabled(applyEnabled);
+			this.detailsEnabled = detailsEnabled;
+			for (IRidget ridget : detailRidgets.getRidgets()) {
+				ridget.setEnabled(detailsEnabled);
+			}
+		} finally {
+			ignoreChanges = false;
 		}
 	}
 
@@ -448,8 +455,13 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	private void updateDetails(Object bean) {
 		Assert.isNotNull(bean);
-		delegate.copyBean(bean, delegate.getWorkingCopy());
-		delegate.updateDetails(detailRidgets);
+		ignoreChanges = true;
+		try {
+			delegate.copyBean(bean, delegate.getWorkingCopy());
+			delegate.updateDetails(detailRidgets);
+		} finally {
+			ignoreChanges = false;
+		}
 	}
 
 	/**
