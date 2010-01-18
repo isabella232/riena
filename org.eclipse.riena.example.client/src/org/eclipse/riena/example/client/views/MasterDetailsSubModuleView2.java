@@ -120,7 +120,8 @@ public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubM
 			mdComposite.addUIControl(btnApply, MasterDetailsComposite.BIND_ID_APPLY);
 		}
 
-		Label lblStatus = UIControlsFactory.createLabel(result, "", "lblStatus"); //$NON-NLS-1$ //$NON-NLS-2$
+		Label lblStatus = UIControlsFactory.createLabel(result, "", SWT.CENTER, "lblStatus"); //$NON-NLS-1$ //$NON-NLS-2$
+		lblStatus.setBackground(colorLightBlue);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(lblStatus);
 
 		return result;

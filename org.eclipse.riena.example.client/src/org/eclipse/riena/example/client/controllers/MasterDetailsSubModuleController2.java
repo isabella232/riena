@@ -43,33 +43,32 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 	 * Setup the ridgets for editing a person (text ridgets for name, single
 	 * choice ridget for gender, multiple choice ridgets for pets).
 	 */
-	private static final class PersonDelegate extends AbstractMasterDetailsDelegate {
+	private final class PersonDelegate extends AbstractMasterDetailsDelegate {
 
-		private static final String[] GENDER = { Person.FEMALE, Person.MALE };
-
+		private final String[] GENDER = { Person.FEMALE, Person.MALE };
 		private final Person workingCopy = createWorkingCopy();
 
 		public void configureRidgets(IRidgetContainer container) {
-			ITextRidget txtFirst = (ITextRidget) container.getRidget("first"); //$NON-NLS-1$
+			ITextRidget txtFirst = container.getRidget(ITextRidget.class, "first"); //$NON-NLS-1$
 			txtFirst.setMandatory(true);
 			txtFirst.setDirectWriting(true);
 			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
-			ITextRidget txtLast = (ITextRidget) container.getRidget("last"); //$NON-NLS-1$
+			ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
 			txtLast.setMandatory(true);
 			txtLast.setDirectWriting(true);
 			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
 			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 
-			ISingleChoiceRidget gender = (ISingleChoiceRidget) container.getRidget("gender"); //$NON-NLS-1$
+			ISingleChoiceRidget gender = container.getRidget(ISingleChoiceRidget.class, "gender"); //$NON-NLS-1$
 			if (gender != null) {
 				gender.bindToModel(Arrays.asList(GENDER), (List<String>) null, workingCopy, Person.PROPERTY_GENDER);
 				gender.updateFromModel();
 			}
 
-			IMultipleChoiceRidget pets = (IMultipleChoiceRidget) container.getRidget("pets"); //$NON-NLS-1$
+			IMultipleChoiceRidget pets = container.getRidget(IMultipleChoiceRidget.class, "pets"); //$NON-NLS-1$
 			if (pets != null) {
 				pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, workingCopy,
 						Person.PROPERTY_PETS);
@@ -115,27 +114,27 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 
 		@Override
 		public void itemCreated(Object item) {
-			System.out.println("itemCreated: " + item);
+			lblStatus.setText("New item created"); //$NON-NLS-1$
 		}
 
 		@Override
 		public void itemRemoved(Object item) {
-			System.out.println("itemRemoved: " + item);
+			lblStatus.setText("Item removed: " + item); //$NON-NLS-1$
 		}
 
 		@Override
 		public void itemApplied(Object item) {
-			System.out.println("itemApplied: " + item);
+			lblStatus.setText("Item changed: " + item); //$NON-NLS-1$
 		}
 
 		@Override
 		public void itemSelected(Object item) {
-			System.out.println("itemSelected: " + item);
+			lblStatus.setText("Item selected: " + item); //$NON-NLS-1$
 		}
 	}
 
-	private ILabelRidget lblStatus;
 	private List<Person> input = PersonFactory.createPersonList();
+	private ILabelRidget lblStatus;
 
 	@Override
 	public void configureRidgets() {
