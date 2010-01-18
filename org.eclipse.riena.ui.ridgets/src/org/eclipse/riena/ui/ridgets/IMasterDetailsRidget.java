@@ -75,6 +75,15 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 			String[] columnPropertyNames, String[] headerNames);
 
 	/**
+	 * Return the current {@link IMasterDetailsDelegate} or null, if none has
+	 * (yet) been set.
+	 * 
+	 * @return the current {@link IMasterDetailsDelegate} or null
+	 * @since 2.0
+	 */
+	IMasterDetailsDelegate getDelegate();
+
+	/**
 	 * Returns the currently object corresponding to the currently selected row
 	 * in the ridget.
 	 * 

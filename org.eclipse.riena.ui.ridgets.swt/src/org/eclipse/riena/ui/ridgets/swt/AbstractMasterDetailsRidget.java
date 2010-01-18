@@ -179,9 +179,6 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
-	/**
-	 * Non API (not part of the interface); public for testing only.
-	 */
 	public final IMasterDetailsDelegate getDelegate() {
 		return this.delegate;
 	}
