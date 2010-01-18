@@ -155,4 +155,14 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 *            selection
 	 */
 	void setSelection(final Object newSelection);
+
+	/**
+	 * Suggest the given object as a 'new' entry. It will be made editable in
+	 * the details area. The apply button will enable.
+	 * 
+	 * @param entry
+	 *            a non-null object
+	 * @since 2.0
+	 */
+	void suggestNewEntry(Object entry);
 }

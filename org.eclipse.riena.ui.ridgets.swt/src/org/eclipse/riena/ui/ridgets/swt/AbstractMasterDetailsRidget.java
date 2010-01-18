@@ -230,6 +230,13 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
+	public void suggestNewEntry(Object entry) {
+		editable = entry;
+		delegate.itemSelected(editable);
+		setEnabled(true, true);
+		updateDetails(editable);
+	}
+
 	@Override
 	public void updateFromModel() {
 		checkDelegate();
