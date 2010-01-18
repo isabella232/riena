@@ -14,7 +14,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.databinding.BindingException;
@@ -361,14 +360,11 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		editable = null;
 	}
 
-	private Control findFocusableControl() {
+	private Control getDetailsControl() {
 		Control result = null;
-		Iterator<? extends IRidget> iter = detailRidgets.getRidgets().iterator();
-		while (result == null && iter.hasNext()) {
-			IRidget ridget = iter.next();
-			if (ridget.isFocusable() && ridget.getUIControl() instanceof Control) {
-				result = (Control) ridget.getUIControl();
-			}
+		AbstractMasterDetailsComposite control = getUIControl();
+		if (control != null) {
+			result = control.getDetails();
 		}
 		return result;
 	}
@@ -423,7 +419,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	private void setFocusToDetails() {
-		final Control focusable = findFocusableControl();
+		final Control focusable = getDetailsControl();
 		if (focusable != null) {
 			focusable.getDisplay().asyncExec(new Runnable() {
 				public void run() {
