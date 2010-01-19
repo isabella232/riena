@@ -13,6 +13,8 @@ package org.eclipse.riena.ui.swt;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -43,6 +45,7 @@ public class BorderControlDecoration {
 	private Control control;
 	private DisposeListener disposeListener;
 	private PaintListener paintListener;
+	private ControlListener controlListener;
 	private boolean visible;
 	private Color borderColor;
 	private int borderWidth = DEFAULT_BORDER_WIDTH;
@@ -102,13 +105,57 @@ public class BorderControlDecoration {
 	private void addControlListeners() {
 
 		disposeListener = new DisposeListener() {
+			/**
+			 * {@inheritDoc}
+			 */
 			public void widgetDisposed(DisposeEvent event) {
 				dispose();
 			}
 		};
 		control.addDisposeListener(disposeListener);
 
+		controlListener = new ControlListener() {
+			/**
+			 * {@inheritDoc}
+			 * <p>
+			 * After moving the control will be redrawn.
+			 */
+			public void controlMoved(ControlEvent e) {
+				redrawControl(e);
+			}
+
+			/**
+			 * {@inheritDoc}
+			 * <p>
+			 * After resizing the control will be redrawn.
+			 */
+			public void controlResized(ControlEvent e) {
+				redrawControl(e);
+			}
+
+			/**
+			 * Redraws the control of the given ControlEvent.
+			 * 
+			 * @param e
+			 *            an event containing information about the resize or
+			 *            the move.
+			 */
+			private void redrawControl(ControlEvent e) {
+				if (e.widget instanceof Control) {
+					Control ctrl = (Control) e.widget;
+					ctrl.setRedraw(false);
+					ctrl.setRedraw(true);
+				}
+			}
+		};
+
 		paintListener = new PaintListener() {
+			/**
+			 * {@inheritDoc}
+			 * <p>
+			 * Paints a border around the decorated control, if the decoration
+			 * is visible.
+			 */
 			public void paintControl(PaintEvent event) {
 				if (shouldShowDecoration()) {
 					Control uiControl = (Control) event.widget;
@@ -164,7 +211,7 @@ public class BorderControlDecoration {
 			return;
 		}
 		control.removeDisposeListener(disposeListener);
-		disposeListener = null;
+		control.removeControlListener(controlListener);
 
 		Composite c = control.getParent();
 		while (c != null) {
@@ -177,7 +224,11 @@ public class BorderControlDecoration {
 				c = c.getParent();
 			}
 		}
+
 		paintListener = null;
+		controlListener = null;
+		disposeListener = null;
+
 	}
 
 	/**
@@ -186,6 +237,7 @@ public class BorderControlDecoration {
 	private void installCompositeListeners(Composite c) {
 		if (!c.isDisposed()) {
 			c.addPaintListener(paintListener);
+			c.addControlListener(controlListener);
 		}
 	}
 
@@ -194,12 +246,13 @@ public class BorderControlDecoration {
 	 */
 	private void removeCompositeListeners(Composite c) {
 		if (!c.isDisposed()) {
+			c.removeControlListener(controlListener);
 			c.removePaintListener(paintListener);
 		}
 	}
 
 	/**
-	 * Draws the border.
+	 * Paints the border.
 	 * 
 	 * @param gc
 	 *            graphical context
