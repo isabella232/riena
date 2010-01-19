@@ -50,4 +50,13 @@
             name="Simple riena core handler">
       </exceptionHandler>
    </extension>
+   
+   	<extension point="org.eclipse.core.variables.dynamicVariables">
+		<variable
+			description="Java system property resolver"
+			name="java.system.property"
+			resolver="org.eclipse.riena.core.util.JavaSystemPropertiesResolver"
+			supportsArgument="true"/>
+	</extension>
+   
 </plugin>
