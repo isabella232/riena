@@ -620,6 +620,40 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(first, delegate.lastItem);
 	}
 
+	public void testSuggestNewEntry() {
+		bindToModel(true);
+		IMasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
+
+		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn2.getText());
+		assertEquals(false, widget.getButtonApply().isEnabled());
+
+		MDBean newEntry = new MDBean("col1", "col2");
+		ridget.suggestNewEntry(newEntry);
+
+		assertEquals("col1", widget.txtColumn1.getText());
+		assertEquals("col2", widget.txtColumn2.getText());
+		assertTrue(widget.getButtonApply().isEnabled());
+		assertFalse(input.contains(newEntry));
+	}
+
+	public void testUpdateApplyButton() {
+		bindToModel(true);
+		IMasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
+
+		MDBean first = input.get(0);
+		ridget.setSelection(first);
+
+		assertFalse(widget.getButtonApply().isEnabled());
+
+		first.column1 = "col1";
+		ridget.updateApplyButton();
+
+		assertTrue(widget.getButtonApply().isEnabled());
+	}
+
 	// helping methods
 	//////////////////
 

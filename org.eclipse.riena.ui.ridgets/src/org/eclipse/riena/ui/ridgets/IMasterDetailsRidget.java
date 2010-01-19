@@ -174,4 +174,18 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * @since 2.0
 	 */
 	void suggestNewEntry(Object entry);
+
+	/**
+	 * Toggles the 'Apply' button state, according to the presence of changes in
+	 * the details area. It will use delegate.isChanged(...) to compare the data
+	 * in the details area with the original and enable the 'Apply' button if it
+	 * differs.
+	 * <p>
+	 * Use this method when the data in the details has been modified without
+	 * sending a notification to the IMasterDetailsRidget (for example, in a
+	 * separate dialog that was opened).
+	 * 
+	 * @since 2.0
+	 */
+	void updateApplyButton();
 }

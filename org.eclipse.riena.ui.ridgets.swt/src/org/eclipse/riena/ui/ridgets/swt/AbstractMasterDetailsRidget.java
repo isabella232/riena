@@ -82,12 +82,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 					return;
 				}
 				// System.out.println(String.format("\tMD: %s %s", evt.getPropertyName(), evt.getSource()));
-				boolean isChanged = areDetailsChanged();
-				if (applyRequiresNoErrors) {
-					getApplyButtonRidget().setEnabled(isChanged && !hasErrors());
-				} else {
-					getApplyButtonRidget().setEnabled(isChanged);
-				}
+				updateApplyButton();
 			}
 		});
 	}
@@ -232,6 +227,15 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		delegate.itemSelected(editable);
 		setEnabled(true, true);
 		updateDetails(editable);
+	}
+
+	public final void updateApplyButton() {
+		boolean isChanged = areDetailsChanged();
+		if (applyRequiresNoErrors) {
+			getApplyButtonRidget().setEnabled(isChanged && !hasErrors());
+		} else {
+			getApplyButtonRidget().setEnabled(isChanged);
+		}
 	}
 
 	@Override
