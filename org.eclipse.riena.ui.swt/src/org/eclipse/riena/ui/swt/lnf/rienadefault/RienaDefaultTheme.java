@@ -69,6 +69,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_SCROLL_UP = "arrowUp.gif"; //$NON-NLS-1$
 	private static final String IMAGE_SCROLL_DOWN = "arrowDown.gif"; //$NON-NLS-1$
 	private static final String IMAGE_DEFAULT_NODE_ICON = "defaultNode.png"; //$NON-NLS-1$
+	private static final String IMAGE_STATUSLINE_UI_PROCESS_ICON = "uiProcess.png"; //$NON-NLS-1$
 	private FontLnfResource primaryFont;
 	private ColorLnfResource primaryBackground;
 	private ColorLnfResource primaryForeground;
@@ -334,6 +335,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.STATUSLINE_ERROR_ICON, new ImageLnfResource(IMAGE_ERROR));
 		table.put(LnfKeyConstants.STATUSLINE_WARNING_ICON, new ImageLnfResource(IMAGE_WARNING));
 		table.put(LnfKeyConstants.STATUSLINE_INFO_ICON, new ImageLnfResource(IMAGE_INFO));
+		table.put(LnfKeyConstants.STATUSLINE_UI_PROCESS_ICON, new ImageLnfResource(IMAGE_STATUSLINE_UI_PROCESS_ICON));
 
 		table.put(LnfKeyConstants.NAVIGATION_SCROLL_UP_ICON, new ImageLnfResource(IMAGE_SCROLL_UP));
 		table.put(LnfKeyConstants.NAVIGATION_SCROLL_DOWN_ICON, new ImageLnfResource(IMAGE_SCROLL_DOWN));

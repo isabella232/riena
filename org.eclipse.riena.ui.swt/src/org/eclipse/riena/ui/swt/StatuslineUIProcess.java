@@ -189,7 +189,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		statusLabel.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 
 		openLabel = new Label(this, SWT.NONE);
-		openLabel.setImage(LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON));
+		openLabel.setImage(LnfManager.getLnf().getImage(LnfKeyConstants.STATUSLINE_UI_PROCESS_ICON));
 		openLabel.addMouseListener(new PopupController());
 		//		openLabel.setText("open"); //$NON-NLS-1$ TODO
 		openLabel.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
