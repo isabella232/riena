@@ -28,6 +28,19 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	String PROPERTY_ROOTS_VISIBLE = "rootsVisible"; //$NON-NLS-1$
 
 	/**
+	 * Adds the listener to the collection of listeners who will be notified
+	 * when the bound control is double-clicked.
+	 * <p>
+	 * Adding the same listener several times has no effect.
+	 * 
+	 * @param listener
+	 *            a non-null {@link IActionListener} instance
+	 * @throws RuntimeException
+	 *             if listener is null
+	 */
+	void addDoubleClickListener(IActionListener listener);
+
+	/**
 	 * Creates a binding between the Tree Ridget and the specified treeRoots.
 	 * <p>
 	 * Each tree element must have an accessor that provides a list of children
@@ -299,18 +312,21 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 			String imageAccessor, String openNodeImageAccessor);
 
 	/**
-	 * Expands all nodes of the tree based on the current ITreeModel value if
-	 * the Ridget is currently bound to a tree UI-control.
+	 * Collapses a node if it is part of the data-model currently bound to the
+	 * tree. If the node is not part of the model nothing will happen.
 	 * <p>
-	 * If the UI-control is null when this method is invoked, the expansion will
-	 * be queued and applied to the ridget at a later time. Re-binding the
+	 * If the UI-control is null when this method is invoked, the collapsing
+	 * will be queued and applied to the ridget at a later time. Re-binding the
 	 * ridget to another model will cancel any queued expand/collapse
 	 * operations.
+	 * 
+	 * @param node
+	 *            The node to collapse.
 	 * 
 	 * @see #bindToModel(Object, Class, String, String)
 	 * @see IRidget#getUIControl()
 	 */
-	void expandAll();
+	void collapse(Object node);
 
 	/**
 	 * Collapses all nodes of the tree if the Ridget is currently bound to a
@@ -344,34 +360,41 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	void expand(Object node);
 
 	/**
-	 * Collapses a node if it is part of the data-model currently bound to the
-	 * tree. If the node is not part of the model nothing will happen.
+	 * Expands all nodes of the tree based on the current ITreeModel value if
+	 * the Ridget is currently bound to a tree UI-control.
 	 * <p>
-	 * If the UI-control is null when this method is invoked, the collapsing
-	 * will be queued and applied to the ridget at a later time. Re-binding the
+	 * If the UI-control is null when this method is invoked, the expansion will
+	 * be queued and applied to the ridget at a later time. Re-binding the
 	 * ridget to another model will cancel any queued expand/collapse
 	 * operations.
-	 * 
-	 * @param node
-	 *            The node to collapse.
 	 * 
 	 * @see #bindToModel(Object, Class, String, String)
 	 * @see IRidget#getUIControl()
 	 */
-	void collapse(Object node);
+	void expandAll();
 
 	/**
-	 * Adds the listener to the collection of listeners who will be notified
-	 * when the bound control is double-clicked.
+	 * Returns true, if the roots of the tree shall be shown and false
+	 * otherwise.
 	 * <p>
-	 * Adding the same listener several times has no effect.
+	 * The default setting is true.
 	 * 
-	 * @param listener
-	 *            a non-null {@link IActionListener} instance
-	 * @throws RuntimeException
-	 *             if listener is null
+	 * @return {@code true}: show roots; otherwise {@code false}
 	 */
-	void addDoubleClickListener(IActionListener listener);
+	boolean getRootsVisible();
+
+	/**
+	 * Refresh the given row or rows.
+	 * <p>
+	 * This may be useful when the values shown by the ridget do not fire
+	 * property change notifications when they are changed (pojos).
+	 * 
+	 * @param node
+	 *            the row value that should be refreshed or null to refresh all
+	 *            rows
+	 * @since 2.0
+	 */
+	void refresh(Object node);
 
 	/**
 	 * Removes the listener from the collection of listeners who will be
@@ -383,16 +406,6 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 *             if listener is null
 	 */
 	void removeDoubleClickListener(IActionListener listener);
-
-	/**
-	 * Returns true, if the roots of the tree shall be shown and false
-	 * otherwise.
-	 * <p>
-	 * The default setting is true.
-	 * 
-	 * @return {@code true}: show roots; otherwise {@code false}
-	 */
-	boolean getRootsVisible();
 
 	/**
 	 * Indicates that the roots of the tree should be shown, if the argument is

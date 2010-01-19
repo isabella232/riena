@@ -476,6 +476,80 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		verifyPropertyChangeEvents();
 	}
 
+	/**
+	 * As per bug 300014
+	 */
+	public void testRefreshNull() {
+		ITreeRidget ridget = getRidget();
+		Tree control = getWidget();
+
+		TreeNode root = new TreeNode(null) {
+			private Object myvalue;
+
+			// hack to create an implementation that does not fire an event[[[
+			public void setValue(Object value) {
+				myvalue = value;
+			}
+
+			@Override
+			public Object getValue() {
+				return myvalue;
+			}
+		};
+		root.setValue("hello world");
+		ridget.bindToModel(new Object[] { root }, TreeNode.class, TreeNode.PROPERTY_CHILDREN, TreeNode.PROPERTY_PARENT,
+				TreeNode.PROPERTY_VALUE);
+		ridget.updateFromModel();
+
+		TreeItem treeRoot = control.getItems()[0];
+		assertEquals("hello world", treeRoot.getText());
+
+		root.setValue("changed");
+
+		assertEquals("hello world", treeRoot.getText());
+
+		ridget.refresh(null);
+
+		assertEquals("changed", treeRoot.getText());
+	}
+
+	/**
+	 * As per bug 300014
+	 */
+	public void testRefresh() {
+		ITreeRidget ridget = getRidget();
+		Tree control = getWidget();
+
+		TreeNode root = new TreeNode(null) {
+			private Object myvalue;
+
+			// hack to create an implementation that does not fire an event[[[
+			public void setValue(Object value) {
+				myvalue = value;
+			}
+
+			@Override
+			public Object getValue() {
+				return myvalue;
+			}
+		};
+		root.setValue("hello world");
+		ridget.bindToModel(new Object[] { root }, TreeNode.class, TreeNode.PROPERTY_CHILDREN, TreeNode.PROPERTY_PARENT,
+				TreeNode.PROPERTY_VALUE);
+		ridget.updateFromModel();
+
+		TreeItem treeRoot = control.getItems()[0];
+		assertEquals("hello world", treeRoot.getText());
+
+		root.setValue("changed");
+
+		assertEquals("hello world", treeRoot.getText());
+
+		ridget.refresh(root);
+
+		assertEquals("changed", treeRoot.getText());
+	}
+
 	// helping methods
 	// ////////////////
 

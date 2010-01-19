@@ -315,6 +315,18 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		doubleClickListeners.add(listener);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This implementation will try to expand the path to the give option, to
+	 * ensure that the corresponding tree element exists.
+	 */
+	@Override
+	public boolean containsOption(Object option) {
+		reveal(new Object[] { option });
+		return super.containsOption(option);
+	}
+
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String valueAccessor) {
 		Assert.isNotNull(valueAccessor);
@@ -384,22 +396,29 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		updateExpansionState();
 	}
 
+	public boolean getRootsVisible() {
+		return showRoots;
+	}
+
+	/**
+	 * Always returns true because mandatory markers do not make sense for this
+	 * ridget.
+	 */
+	@Override
+	public boolean isDisableMandatoryMarker() {
+		return true;
+	}
+
+	public void refresh(Object node) {
+		if (viewer != null) {
+			viewer.refresh(node, true);
+		}
+	}
+
 	public void removeDoubleClickListener(IActionListener listener) {
 		if (doubleClickListeners != null) {
 			doubleClickListeners.remove(listener);
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * This implementation will try to expand the path to the give option, to
-	 * ensure that the corresponding tree element exists.
-	 */
-	@Override
-	public boolean containsOption(Object option) {
-		reveal(new Object[] { option });
-		return super.containsOption(option);
 	}
 
 	/**
@@ -414,10 +433,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		reveal(newSelection.toArray());
 		super.setSelection(newSelection);
 		saveSelection();
-	}
-
-	public boolean getRootsVisible() {
-		return showRoots;
 	}
 
 	/**
@@ -466,18 +481,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			}
 		}
 	}
-
-	/**
-	 * Always returns true because mandatory markers do not make sense for this
-	 * ridget.
-	 */
-	@Override
-	public boolean isDisableMandatoryMarker() {
-		return true;
-	}
-
-	// helping methods
-	// ////////////////
 
 	private void applyColumns(Tree control) {
 		final int columnCount = control.getColumnCount() == 0 ? 1 : control.getColumnCount();
