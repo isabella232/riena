@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Ridget for an SWT control.
@@ -94,7 +95,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 			return false;
 		}
 
-		if ((getUIControl() != null) && (!getUIControl().isDisposed())) {
+		if (!SwtUtilities.isDisposed(getUIControl())) {
 			// the swt control is bound
 			return getUIControl().isVisible();
 		}
