@@ -132,6 +132,7 @@ public final class SnippetMasterDetailsRidget004 {
 	public static void main(String[] args) {
 		Display display = Display.getDefault();
 		Shell shell = UIControlsFactory.createShell(display);
+		shell.setText(SnippetMasterDetailsRidget004.class.getSimpleName());
 		shell.setLayout(new FillLayout());
 
 		PersonMasterDetails details = new PersonMasterDetails(shell, SWT.NONE);

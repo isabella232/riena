@@ -121,7 +121,7 @@ public final class SnippetMasterDetailsRidget005 {
 
 	public static void main(final String[] args) {
 		Display display = Display.getDefault();
-		Shell shell = new Shell(display);
+		Shell shell = UIControlsFactory.createShell(display);
 		shell.setText(SnippetMasterDetailsRidget005.class.getSimpleName());
 		shell.setLayout(new FillLayout());
 
@@ -129,9 +129,10 @@ public final class SnippetMasterDetailsRidget005 {
 		IMasterDetailsRidget ridget = (IMasterDetailsRidget) SwtRidgetFactory.createRidget(details);
 		ridget.setDelegate(new PersonDelegate());
 
-		Label info = new Label(details, SWT.MULTI);
-		info
-				.setText("Select a 'Jackson' do see different suggestion in the Combo.\nThis is updated dynamically when an item is selected."); //$NON-NLS-1$
+		String text = "Select a 'Jackson' do see different suggestion in the Combo.\n" //$NON-NLS-1$
+				+ "This is updated dynamically when an item is selected."; //$NON-NLS-1$
+		Label info = UIControlsFactory.createLabel(details, text, SWT.WRAP);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(info);
 
 		WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
 		String[] properties = { Person.PROPERTY_LASTNAME, Person.PROPERTY_FIRSTNAME };
