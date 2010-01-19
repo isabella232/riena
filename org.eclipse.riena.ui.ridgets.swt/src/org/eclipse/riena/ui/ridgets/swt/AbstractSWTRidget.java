@@ -94,7 +94,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 			return false;
 		}
 
-		if (getUIControl() != null) {
+		if ((getUIControl() != null) && (!getUIControl().isDisposed())) {
 			// the swt control is bound
 			return getUIControl().isVisible();
 		}

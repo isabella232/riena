@@ -52,6 +52,7 @@ public class MarkerSupportTest extends RienaTestCase {
 	@Override
 	protected void tearDown() {
 		SwtUtilities.disposeWidget(shell);
+		display = null;
 	}
 
 	public void testHideDisabledRidgetContentSystemProperty() throws IOException {

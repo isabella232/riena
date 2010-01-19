@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.ridgets.swt;
 
 import java.beans.PropertyChangeSupport;
 
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.List;
@@ -46,8 +48,19 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+	public void init(final IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+
 		super.init(ridget, propertyChangeSupport);
+
+		Control control = getUIControl();
+		if (control != null) {
+			control.addDisposeListener(new DisposeListener() {
+				public void widgetDisposed(DisposeEvent e) {
+					ridget.removeAllMarkers();
+				}
+			});
+		}
+
 		// workaround for 272863
 		if (!osChecked) {
 			osChecked = true;
@@ -56,7 +69,17 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 				alwaysSkipRedraw = true;
 			}
 		}
+
 		createDisabledMarkerVisualizer();
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Control getUIControl() {
+		return (Control) super.getUIControl();
 	}
 
 	private void createDisabledMarkerVisualizer() {
@@ -79,7 +102,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	}
 
 	private void updateUIControl() {
-		Control control = (Control) getUIControl();
+		Control control = getUIControl();
 		if (control != null) {
 			stopRedraw(control);
 			try {
