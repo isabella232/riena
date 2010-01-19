@@ -169,7 +169,7 @@ public final class SwtUtilities {
 	 *         otherwise {@code false}.
 	 */
 	public static boolean isDisposed(Widget widget) {
-		return !((widget != null) && (!widget.isDisposed()));
+		return widget == null || widget.isDisposed();
 	}
 
 	/**
