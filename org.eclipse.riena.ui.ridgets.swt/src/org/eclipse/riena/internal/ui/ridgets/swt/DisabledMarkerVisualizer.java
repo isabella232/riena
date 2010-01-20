@@ -15,6 +15,7 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
@@ -45,20 +46,33 @@ public class DisabledMarkerVisualizer {
 	 * This is the entry point for {@link MarkerSupport}
 	 */
 	public void updateDisabled() {
-		Control control = getControl();
-		control.setEnabled(getRidget().isEnabled());
+		updateDisabled(getControl(), getRidget().isEnabled());
+	}
+
+	private void updateDisabled(Control control, boolean enabled) {
+		control.setEnabled(enabled);
 		removePaintlistener(control);
 
-		if (!getRidget().isEnabled()) {
+		if (!enabled) {
 			// TODO [ev] Disabled because of: 298024 Table - setHeaderVisible will reset scroll bars to top,left
 			// renderMemento = storeState();
 			// setHeaderVisible(false);
 			addPaintlistener(control);
+			System.out.println("DisabledMarkerVisualizer.updateDisabled()");
 		} else {
 			//			if (renderMemento != null) {
 			//				setHeaderVisible(renderMemento.headerVisible);
 			//			}
 		}
+
+		if (control instanceof Composite) {
+			Composite composite = (Composite) control;
+			Control[] children = composite.getChildren();
+			for (Control child : children) {
+				updateDisabled(child, enabled);
+			}
+		}
+
 		control.redraw();
 	}
 
@@ -129,6 +143,7 @@ public class DisabledMarkerVisualizer {
 		public void paintControl(PaintEvent e) {
 			GC gc = e.gc;
 			Control control = (Control) e.widget;
+			System.out.println("DisabledMarkerVisualizer.DisabledPainter.paintControl() " + control.getClass());
 			int alpha = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.DISABLED_MARKER_STANDARD_ALPHA);
 			gc.setAlpha(alpha);
 			Color color = LnfManager.getLnf().getColor(LnfKeyConstants.DISABLED_MARKER_BACKGROUND);

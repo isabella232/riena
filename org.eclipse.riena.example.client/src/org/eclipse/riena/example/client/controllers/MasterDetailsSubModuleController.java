@@ -21,6 +21,7 @@ import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
+import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
@@ -118,14 +119,14 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 		String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 
-		IMasterDetailsRidget master = (IMasterDetailsRidget) getRidget("master"); //$NON-NLS-1$
+		final IMasterDetailsRidget master = (IMasterDetailsRidget) getRidget("master"); //$NON-NLS-1$
 		if (master != null) {
 			master.setDelegate(new PersonDelegate());
 			master.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
 			master.updateFromModel();
 		}
 
-		IMasterDetailsRidget master3 = (IMasterDetailsRidget) getRidget("master3"); //$NON-NLS-1$
+		final IMasterDetailsRidget master3 = (IMasterDetailsRidget) getRidget("master3"); //$NON-NLS-1$
 		if (master3 != null) {
 			master3.setDelegate(new PersonDelegate());
 			master3.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
@@ -133,6 +134,21 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 
 			master3.setDirectWriting(true); // enable auto apply
 		}
+
+		IActionRidget enableDisableButton = getRidget(IActionRidget.class, "enableDisable"); //$NON-NLS-1$
+		if (enableDisableButton != null) {
+			enableDisableButton.addListener(new IActionListener() {
+				public void callback() {
+					if (master != null) {
+						master.setEnabled(!master.isEnabled());
+					}
+					if (master3 != null) {
+						master3.setEnabled(!master3.isEnabled());
+					}
+				}
+			});
+		}
+
 	}
 
 	@Override
