@@ -10,19 +10,24 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -94,5 +99,42 @@ public class MasterDetailsCompositeTest extends TestCase {
 
 		assertFalse(controls.contains(composite));
 		assertTrue(controls.contains(combo2));
+	}
+
+	public void testSkipIComplexComponent() {
+		MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE) {
+			protected void createDetails(Composite details) {
+				IComplexComponent complex = new TestComplexComponent(details, SWT.NONE);
+				addUIControl(complex, "complex");
+			}
+		};
+		List<Object> controls = widget.getUIControls();
+
+		System.out.println(Arrays.toString(controls.toArray()));
+
+		// should contain the complex control, but not it's children 
+		// even if they have an id
+		assertEquals(5, controls.size());
+		assertTrue(controls.get(0) instanceof Table);
+		assertTrue(controls.get(1) instanceof Button);
+		assertTrue(controls.get(2) instanceof Button);
+		assertTrue(controls.get(3) instanceof Button);
+		assertTrue(controls.get(4) instanceof TestComplexComponent);
+	}
+
+	// helping classes
+	//////////////////
+
+	private static class TestComplexComponent extends Composite implements IComplexComponent {
+		private final Label label;
+
+		public TestComplexComponent(Composite parent, int style) {
+			super(parent, style);
+			label = UIControlsFactory.createLabel(this, "txt", "label");
+		}
+
+		public List<Object> getUIControls() {
+			return Arrays.asList(new Object[] { label });
+		}
 	}
 }

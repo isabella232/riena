@@ -422,13 +422,14 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * the List of Controls.
 	 */
 	private void addDetailControlsWithBindingProperty(Composite composite) {
+		// TODO [ev] ### unify
 		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		for (Control control : composite.getChildren()) {
 			String bindingProperty = locator.locateBindingProperty(control);
 			if (!controls.contains(control) && StringUtils.isGiven(bindingProperty)) {
 				addUIControl(control, bindingProperty);
 			}
-			if (control instanceof Composite) {
+			if ((control instanceof Composite) && !(control instanceof IComplexComponent)) {
 				addDetailControlsWithBindingProperty((Composite) control);
 			}
 		}
