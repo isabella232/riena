@@ -80,8 +80,8 @@ public class BasicMarkerSupportTest extends TestCase {
 		private boolean clearAllMarkersCalled;
 
 		@Override
-		protected void clearAllMarkes(Control control) {
-			super.clearAllMarkes(control);
+		protected void clearAllMarkers(Control control) {
+			super.clearAllMarkers(control);
 			setClearAllMarkersCalled(true);
 		}
 

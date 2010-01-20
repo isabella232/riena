@@ -54,10 +54,11 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 
 		Control control = getUIControl();
 		if (control != null) {
+			System.out.println("BasicMarkerSupport.init() - " + control.hashCode());
 			control.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
 					if (e.widget == getUIControl()) {
-						clearAllMarkes(getUIControl());
+						clearAllMarkers(getUIControl());
 					}
 				}
 			});
@@ -76,8 +77,14 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 
 	}
 
-	protected void clearAllMarkes(Control control) {
-
+	/**
+	 * Does nothing. Subclasses may override.
+	 * 
+	 * @param control
+	 *            the control
+	 */
+	protected void clearAllMarkers(Control control) {
+		// does nothing
 	}
 
 	/**

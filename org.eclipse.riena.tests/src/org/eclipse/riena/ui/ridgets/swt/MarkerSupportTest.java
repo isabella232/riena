@@ -156,21 +156,21 @@ public class MarkerSupportTest extends RienaTestCase {
 			markerSupport.updateMarkers();
 			assertFalse(background.equals(control.getBackground()));
 
-			markerSupport.clearAllMarkes(control);
+			markerSupport.clearAllMarkers(control);
 			assertEquals(background, control.getBackground());
 
 			ridget.addMarker(new OutputMarker());
 			markerSupport.updateMarkers();
 			assertFalse(background.equals(control.getBackground()));
 
-			markerSupport.clearAllMarkes(control);
+			markerSupport.clearAllMarkers(control);
 			assertEquals(background, control.getBackground());
 
 			ridget.addMarker(new NegativeMarker());
 			markerSupport.updateMarkers();
 			assertFalse(foreground.equals(control.getForeground()));
 
-			markerSupport.clearAllMarkes(control);
+			markerSupport.clearAllMarkers(control);
 			assertEquals(foreground, control.getForeground());
 
 			ridget.addMarker(new ErrorMarker());
@@ -179,7 +179,7 @@ public class MarkerSupportTest extends RienaTestCase {
 			assertNotNull(errorDecoration);
 			assertTrue(errorDecoration.isVisible());
 
-			markerSupport.clearAllMarkes(control);
+			markerSupport.clearAllMarkers(control);
 			assertFalse(errorDecoration.isVisible());
 
 		} finally {
@@ -251,8 +251,8 @@ public class MarkerSupportTest extends RienaTestCase {
 	private static class MyMarkerSupport extends MarkerSupport {
 
 		@Override
-		public void clearAllMarkes(Control control) {
-			super.clearAllMarkes(control);
+		public void clearAllMarkers(Control control) {
+			super.clearAllMarkers(control);
 		}
 
 	}

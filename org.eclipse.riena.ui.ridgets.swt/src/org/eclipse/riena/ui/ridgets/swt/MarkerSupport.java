@@ -88,19 +88,19 @@ public class MarkerSupport extends BasicMarkerSupport {
 		errorDecoration.show();
 	}
 
-	protected void clearError(Control control) {
-		if (errorDecoration != null) {
-			errorDecoration.hide();
-		}
-	}
-
 	@Override
-	protected void clearAllMarkes(Control control) {
-		super.clearAllMarkes(control);
+	protected void clearAllMarkers(Control control) {
+		super.clearAllMarkers(control);
 		clearError(control);
 		clearMandatory(control);
 		clearNegative(control);
 		clearOutput(control);
+	}
+
+	protected void clearError(Control control) {
+		if (errorDecoration != null) {
+			errorDecoration.hide();
+		}
 	}
 
 	/**
