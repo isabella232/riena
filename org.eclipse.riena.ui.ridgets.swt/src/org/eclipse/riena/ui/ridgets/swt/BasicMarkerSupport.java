@@ -56,7 +56,9 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		if (control != null) {
 			control.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
-					ridget.removeAllMarkers();
+					if (e.widget == getUIControl()) {
+						clearAllMarkes(getUIControl());
+					}
 				}
 			});
 		}
@@ -71,6 +73,10 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		}
 
 		createDisabledMarkerVisualizer();
+
+	}
+
+	protected void clearAllMarkes(Control control) {
 
 	}
 

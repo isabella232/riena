@@ -14,6 +14,7 @@ import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
@@ -38,6 +39,7 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 		txtFirst.bindToModel(personBean, Person.PROPERTY_FIRSTNAME);
 
 		ITextRidget txtLast = (ITextRidget) getRidget("txtLast"); //$NON-NLS-1$
+		txtLast.addMarker(new MandatoryMarker());
 		txtLast.bindToModel(personBean, Person.PROPERTY_LASTNAME);
 	}
 

@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.ridgets.swt;
 import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -60,14 +61,36 @@ public class BasicMarkerSupportTest extends TestCase {
 			ridget.addMarker(new ErrorMarker());
 			ridget.addMarker(new MandatoryMarker());
 
-			BasicMarkerSupport markerSupport = new BasicMarkerSupport();
+			MyBasicMarkerSupport markerSupport = new MyBasicMarkerSupport();
+			markerSupport.setClearAllMarkersCalled(false);
 			markerSupport.init(ridget, null);
 			assertEquals(2, ridget.getMarkers().size());
 
 			control.dispose();
-			assertEquals(0, ridget.getMarkers().size());
+			assertEquals(2, ridget.getMarkers().size());
+			assertTrue(markerSupport.isClearAllMarkersCalled());
 		} finally {
 			realm.dispose();
+		}
+
+	}
+
+	private static class MyBasicMarkerSupport extends BasicMarkerSupport {
+
+		private boolean clearAllMarkersCalled;
+
+		@Override
+		protected void clearAllMarkes(Control control) {
+			super.clearAllMarkes(control);
+			setClearAllMarkersCalled(true);
+		}
+
+		public void setClearAllMarkersCalled(boolean clearAllMarkersCalled) {
+			this.clearAllMarkersCalled = clearAllMarkersCalled;
+		}
+
+		public boolean isClearAllMarkersCalled() {
+			return clearAllMarkersCalled;
 		}
 
 	}

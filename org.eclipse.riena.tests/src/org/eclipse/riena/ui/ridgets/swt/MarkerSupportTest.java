@@ -17,6 +17,8 @@ import java.net.URL;
 
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -26,6 +28,12 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.core.marker.NegativeMarker;
+import org.eclipse.riena.ui.core.marker.OutputMarker;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -74,9 +82,12 @@ public class MarkerSupportTest extends RienaTestCase {
 	 */
 	public void testCreateErrorDecoration() throws Exception {
 		RienaDefaultLnf originalLnf = LnfManager.getLnf();
+		DefaultRealm realm = new DefaultRealm();
 		try {
-			MarkerSupport support = new MarkerSupport(null, null);
-			Text text = new Text(shell, SWT.NONE);
+			final Text text = new Text(shell, SWT.NONE);
+			ITextRidget ridget = new TextRidget();
+			ridget.setUIControl(text);
+			MarkerSupport support = new MarkerSupport(ridget, null);
 
 			LnfManager.setLnf(new MyLnf());
 			ControlDecoration deco = ReflectionUtils.invokeHidden(support, "createErrorDecoration", text);
@@ -92,6 +103,7 @@ public class MarkerSupportTest extends RienaTestCase {
 			SwtUtilities.disposeWidget(text);
 		} finally {
 			LnfManager.setLnf(originalLnf);
+			realm.dispose();
 		}
 	}
 
@@ -123,6 +135,57 @@ public class MarkerSupportTest extends RienaTestCase {
 		} finally {
 			realm.dispose();
 		}
+	}
+
+	public void testClearAllMarkes() {
+
+		DefaultRealm realm = new DefaultRealm();
+		try {
+
+			Text control = new Text(shell, SWT.NONE);
+			shell.setVisible(true);
+			Color background = control.getBackground();
+			Color foreground = control.getForeground();
+
+			ITextRidget ridget = new TextRidget();
+			ridget.setUIControl(control);
+			MyMarkerSupport markerSupport = new MyMarkerSupport();
+			markerSupport.init(ridget, null);
+
+			ridget.addMarker(new MandatoryMarker());
+			markerSupport.updateMarkers();
+			assertFalse(background.equals(control.getBackground()));
+
+			markerSupport.clearAllMarkes(control);
+			assertEquals(background, control.getBackground());
+
+			ridget.addMarker(new OutputMarker());
+			markerSupport.updateMarkers();
+			assertFalse(background.equals(control.getBackground()));
+
+			markerSupport.clearAllMarkes(control);
+			assertEquals(background, control.getBackground());
+
+			ridget.addMarker(new NegativeMarker());
+			markerSupport.updateMarkers();
+			assertFalse(foreground.equals(control.getForeground()));
+
+			markerSupport.clearAllMarkes(control);
+			assertEquals(foreground, control.getForeground());
+
+			ridget.addMarker(new ErrorMarker());
+			markerSupport.updateMarkers();
+			ControlDecoration errorDecoration = ReflectionUtils.getHidden(markerSupport, "errorDecoration");
+			assertNotNull(errorDecoration);
+			assertTrue(errorDecoration.isVisible());
+
+			markerSupport.clearAllMarkes(control);
+			assertFalse(errorDecoration.isVisible());
+
+		} finally {
+			realm.dispose();
+		}
+
 	}
 
 	// helping classes
@@ -179,6 +242,19 @@ public class MarkerSupportTest extends RienaTestCase {
 		protected void initImageDefaults() {
 			getResourceTable().clear();
 		}
+	}
+
+	/**
+	 * This extension changes the visibility of some protected methods for
+	 * testing.
+	 */
+	private static class MyMarkerSupport extends MarkerSupport {
+
+		@Override
+		public void clearAllMarkes(Control control) {
+			super.clearAllMarkes(control);
+		}
+
 	}
 
 }
