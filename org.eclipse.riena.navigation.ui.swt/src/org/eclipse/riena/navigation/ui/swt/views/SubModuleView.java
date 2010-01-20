@@ -59,6 +59,7 @@ import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
@@ -386,26 +387,21 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	//////////////////
 
 	private void addUIControls(Composite composite) {
-		Control[] controls = composite.getChildren();
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		for (Control uiControl : controls) {
-			String bindingProperty = locator.locateBindingProperty(uiControl);
-			if (!StringUtils.isEmpty(bindingProperty)) {
-				if (isChildOfComplexComponent(uiControl)) {
-					continue;
+		SWTControlFinder finder = new SWTControlFinder(composite) {
+			@Override
+			public void handleBoundControl(Control control, String bindingProperty) {
+				addUIControl(control);
+			}
+
+			@Override
+			public void handleControl(Control control) {
+				if (control.getMenu() != null) {
+					addMenuControl(control.getMenu());
 				}
-				addUIControl(uiControl);
+				super.handleControl(control);
 			}
-
-			if (uiControl instanceof Composite) {
-				addUIControls((Composite) uiControl);
-			}
-
-			// if the control has a contextmenu, check if a MenuItem has a bindingId and add it to the list of controls
-			if (uiControl.getMenu() != null) {
-				addMenuControl(uiControl.getMenu());
-			}
-		}
+		};
+		finder.run();
 	}
 
 	private void addMenuControl(Menu menu) {

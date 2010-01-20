@@ -30,12 +30,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 
-import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -224,7 +224,18 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	public final List<Object> getUIControls() {
-		addDetailControlsWithBindingProperty(details);
+		SWTControlFinder finder = new SWTControlFinder(details) {
+			@Override
+			public boolean contains(Control control) {
+				return controls.contains(control);
+			}
+
+			@Override
+			public void handleBoundControl(Control control, String bindingProperty) {
+				controls.add(control);
+			}
+		};
+		finder.run();
 		return Collections.unmodifiableList(controls);
 	}
 
@@ -415,24 +426,6 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 		}
 		addUIControl(table, BIND_ID_TABLE);
 		return result;
-	}
-
-	/**
-	 * Adds the Controls of the DetailsComposite with a valid BindingProperty to
-	 * the List of Controls.
-	 */
-	private void addDetailControlsWithBindingProperty(Composite composite) {
-		// TODO [ev] ### unify
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		for (Control control : composite.getChildren()) {
-			String bindingProperty = locator.locateBindingProperty(control);
-			if (!controls.contains(control) && StringUtils.isGiven(bindingProperty)) {
-				addUIControl(control, bindingProperty);
-			}
-			if ((control instanceof Composite) && !(control instanceof IComplexComponent)) {
-				addDetailControlsWithBindingProperty((Composite) control);
-			}
-		}
 	}
 
 	private Control getUIControl(String id) {

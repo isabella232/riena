@@ -17,12 +17,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.swt.RienaDialog;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
 
 /**
  * Base class for SWT dialogs.
@@ -53,31 +51,14 @@ public abstract class DialogView extends RienaDialog {
 		}
 	}
 
-	private boolean isChildOfComplexComponent(Control uiControl) {
-		if (uiControl.getParent() == null) {
-			return false;
-		}
-		if (uiControl.getParent() instanceof IComplexComponent) {
-			return true;
-		}
-		return isChildOfComplexComponent(uiControl.getParent());
-	}
-
 	private void addUIControls(Composite composite) {
-		Control[] controls = composite.getChildren();
-		for (Control uiControl : controls) {
-
-			String bindingProperty = SWTBindingPropertyLocator.getInstance().locateBindingProperty(uiControl);
-			if (!StringUtils.isEmpty(bindingProperty)) {
-				if (isChildOfComplexComponent(uiControl)) {
-					continue;
-				}
-				addUIControl(uiControl, bindingProperty);
+		SWTControlFinder finder = new SWTControlFinder(composite) {
+			@Override
+			public void handleBoundControl(Control control, String bindingProperty) {
+				addUIControl(control, bindingProperty);
 			}
-			if (uiControl instanceof Composite) {
-				addUIControls((Composite) uiControl);
-			}
-		}
+		};
+		finder.run();
 	}
 
 	/**
