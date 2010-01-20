@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.ui.swt.BorderControlDecoration;
 import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -53,9 +54,12 @@ public class BorderMarkerSupportTest extends TestCase {
 	public void testCreateErrorDecoration() {
 
 		RienaDefaultLnf originalLnf = LnfManager.getLnf();
+		DefaultRealm realm = new DefaultRealm();
 		try {
-			BorderMarkerSupport support = new BorderMarkerSupport(null, null);
-			Text text = new Text(shell, SWT.NONE);
+			final Text text = new Text(shell, SWT.NONE);
+			TextRidget ridget = new TextRidget();
+			ridget.setUIControl(text);
+			BorderMarkerSupport support = new BorderMarkerSupport(ridget, null);
 
 			LnfManager.setLnf(new MyLnf());
 			BorderControlDecoration deco = ReflectionUtils.invokeHidden(support, "createErrorDecoration", text);
@@ -71,6 +75,7 @@ public class BorderMarkerSupportTest extends TestCase {
 			SwtUtilities.disposeWidget(text);
 		} finally {
 			LnfManager.setLnf(originalLnf);
+			realm.dispose();
 		}
 
 	}
