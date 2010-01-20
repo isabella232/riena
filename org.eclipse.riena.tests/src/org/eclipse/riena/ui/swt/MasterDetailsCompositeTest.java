@@ -59,9 +59,13 @@ public class MasterDetailsCompositeTest extends TestCase {
 
 		List<Object> controls = masterDetails.getUIControls();
 
+		assertEquals(6, controls.size());
 		assertTrue(controls.contains(txtFirstName));
 		assertTrue(controls.contains(txtLastName));
 		assertFalse(controls.contains(txtWithoutID));
+
+		List<Object> controls2 = masterDetails.getUIControls();
+		assertEquals(6, controls2.size());
 	}
 
 	public void testGetUIControlsWithBindingPropertyFromComposite() {
