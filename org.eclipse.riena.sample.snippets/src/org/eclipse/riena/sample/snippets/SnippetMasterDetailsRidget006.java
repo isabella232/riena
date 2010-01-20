@@ -36,7 +36,7 @@ import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Demonstates how to update the Apply button enablement, after modifying the
+ * Demonstrates how to update the Apply button enablement, after modifying the
  * details of the current selection programmatically.
  */
 public final class SnippetMasterDetailsRidget006 {
