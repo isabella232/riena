@@ -299,10 +299,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	protected final void updateEnabled() {
 		AbstractMasterDetailsComposite control = getUIControl();
 		if (control != null) {
-			Collection<? extends IRidget> ridgets = getRidgets();
 			if (!isEnabled()) {
 				clearSelection();
 				clearTableSelection();
+				Collection<? extends IRidget> ridgets = getRidgets();
 				for (IRidget ridget : ridgets) {
 					ridget.setEnabled(false);
 				}

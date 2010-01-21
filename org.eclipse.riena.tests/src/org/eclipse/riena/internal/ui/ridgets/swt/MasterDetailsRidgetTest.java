@@ -36,6 +36,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
@@ -654,6 +655,44 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(widget.getButtonApply().isEnabled());
 	}
 
+	/**
+	 * Tests the method {@code updateEnabled()} of the class
+	 * {@link AbstractMasterDetailsRidget}.
+	 */
+	public void testUpdateEnabled() {
+
+		bindToModel(true);
+
+		MasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
+
+		MDBean first = input.get(0);
+		ridget.setSelection(first);
+		assertTrue(widget.getButtonNew().isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+		assertFalse(widget.getButtonApply().isEnabled());
+		assertNotNull(ridget.getSelection());
+		assertTrue(delegate.txtColumn1.isEnabled());
+		assertTrue(delegate.txtColumn2.isEnabled());
+
+		ridget.setEnabled(false);
+		assertFalse(widget.getButtonNew().isEnabled());
+		assertFalse(widget.getButtonRemove().isEnabled());
+		assertFalse(widget.getButtonApply().isEnabled());
+		assertNull(ridget.getSelection());
+		assertFalse(delegate.txtColumn1.isEnabled());
+		assertFalse(delegate.txtColumn2.isEnabled());
+
+		ridget.setEnabled(true);
+		assertTrue(widget.getButtonNew().isEnabled());
+		assertFalse(widget.getButtonRemove().isEnabled());
+		assertFalse(widget.getButtonApply().isEnabled());
+		assertNull(ridget.getSelection());
+		assertFalse(delegate.txtColumn1.isEnabled());
+		assertFalse(delegate.txtColumn2.isEnabled());
+
+	}
+
 	// helping methods
 	//////////////////
 
@@ -799,15 +838,17 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		int applyCount;
 		int selectionCount;
 		Object lastItem;
+		private ITextRidget txtColumn1;
+		private ITextRidget txtColumn2;
 
 		public void configureRidgets(IRidgetContainer container) {
 			checkContainer(container);
 
-			ITextRidget txtColumn1 = (ITextRidget) container.getRidget("txtColumn1");
+			txtColumn1 = (ITextRidget) container.getRidget("txtColumn1");
 			txtColumn1.bindToModel(workingCopy, MDBean.PROPERTY_COLUMN_1);
 			txtColumn1.updateFromModel();
 
-			ITextRidget txtColumn2 = (ITextRidget) container.getRidget("txtColumn2");
+			txtColumn2 = (ITextRidget) container.getRidget("txtColumn2");
 			txtColumn2.bindToModel(workingCopy, MDBean.PROPERTY_COLUMN_2);
 			txtColumn2.updateFromModel();
 		}
