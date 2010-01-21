@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
+import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ApplicationNode;
@@ -40,8 +40,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 /**
  * Tests for the SubModuleNodeView.
  */
-// UITestCase FIXME: test failed with Hudson, because of addPluginXml does not work correct
-@ManualTestCase
+@UITestCase
 public class SubModuleViewTest extends RienaTestCase {
 
 	private SubModuleView<SubModuleController> subModuleNodeView;
