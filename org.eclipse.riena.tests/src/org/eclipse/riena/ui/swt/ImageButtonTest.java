@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import junit.framework.TestCase;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Image;
@@ -21,14 +19,16 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Tests of the class {@link ImageButton}.
  */
 @UITestCase
-public class ImageButtonTest extends TestCase {
+public class ImageButtonTest extends RienaTestCase {
 
 	private Shell shell;
 	private ImageButton button;
@@ -127,20 +127,20 @@ public class ImageButtonTest extends TestCase {
 		Image retImage = ReflectionUtils.invokeHidden(button, "getImageToDraw");
 		assertNull(retImage);
 
-		Image image = new Image(shell.getDisplay(), "icons/eclipse.gif");
+		Image image = ImageStore.getInstance().getImage("imagebutton.png");
 		button.setImage(image);
 		retImage = ReflectionUtils.invokeHidden(button, "getImageToDraw");
 		assertSame(image, retImage);
 
-		Image focusedImage = new Image(shell.getDisplay(), "icons/eclipse.gif");
+		Image focusedImage = ImageStore.getInstance().getImage("spirit.png");
 		button.setFocusedImage(focusedImage);
-		Image hoverFocusedImage = new Image(shell.getDisplay(), "icons/eclipse.gif");
+		Image hoverFocusedImage = ImageStore.getInstance().getImage("spirit_h_.png");
 		button.setHoverFocusedImage(hoverFocusedImage);
-		Image hoverImage = new Image(shell.getDisplay(), "icons/eclipse.gif");
+		Image hoverImage = ImageStore.getInstance().getImage("imagebutton_h_.png");
 		button.setHoverImage(hoverImage);
-		Image pressedImage = new Image(shell.getDisplay(), "icons/eclipse.gif");
+		Image pressedImage = ImageStore.getInstance().getImage("imagebutton_p_.png");
 		button.setPressedImage(pressedImage);
-		Image disabledImage = new Image(shell.getDisplay(), "icons/eclipse.gif");
+		Image disabledImage = ImageStore.getInstance().getImage("eclipse.gif");
 		button.setDisabledImage(disabledImage);
 
 		ReflectionUtils.invokeHidden(button, "setFocused", true);
@@ -176,7 +176,7 @@ public class ImageButtonTest extends TestCase {
 		Point size = button.computeSize(SWT.DEFAULT, SWT.DEFAULT, false);
 		assertEquals(new Point(0, 0), size);
 
-		Image image = new Image(shell.getDisplay(), "icons/eclipse.gif");
+		Image image = ImageStore.getInstance().getImage("eclipse.gif");
 		button.setImage(image);
 		size = button.computeSize(SWT.DEFAULT, SWT.DEFAULT, false);
 		assertEquals(new Point(16, 16), size);
