@@ -29,6 +29,7 @@ import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -735,7 +736,11 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setEnabled(false);
 
 		assertFalse(ridget.isEnabled());
-		assertEquals("", control.getText());
+		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			assertEquals("", control.getText());
+		} else {
+			assertEquals(localize("12,00"), control.getText());
+		}
 		assertEquals("12", ridget.getText());
 
 		ridget.setEnabled(true);
