@@ -58,7 +58,6 @@ public class DisabledMarkerVisualizer {
 			// renderMemento = storeState();
 			// setHeaderVisible(false);
 			addPaintlistener(control);
-			// System.out.println("DisabledMarkerVisualizer.updateDisabled()");
 		} else {
 			//			if (renderMemento != null) {
 			//				setHeaderVisible(renderMemento.headerVisible);
@@ -143,7 +142,6 @@ public class DisabledMarkerVisualizer {
 		public void paintControl(PaintEvent e) {
 			GC gc = e.gc;
 			Control control = (Control) e.widget;
-			// System.out.println("DisabledMarkerVisualizer.DisabledPainter.paintControl() " + control.getClass());
 			int alpha = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.DISABLED_MARKER_STANDARD_ALPHA);
 			gc.setAlpha(alpha);
 			Color color = LnfManager.getLnf().getColor(LnfKeyConstants.DISABLED_MARKER_BACKGROUND);
