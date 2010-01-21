@@ -25,6 +25,7 @@ import org.eclipse.riena.example.client.controllers.LoginDialogController;
 import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.swt.views.AbstractDialogView;
+import org.eclipse.riena.ui.swt.DefaultButtonManager;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -95,6 +96,9 @@ public class LoginDialogView extends AbstractDialogView implements ILoginDialogV
 		okButton.setText("   Login   "); //$NON-NLS-1$
 		okButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		addUIControl(okButton, LoginDialogController.RIDGET_ID_OK);
+
+		DefaultButtonManager dbm = new DefaultButtonManager(parent.getShell());
+		dbm.addButton(okButton, content);
 
 		Button cancelButton = UIControlsFactory.createButton(content);
 		cancelButton.setText("   Cancel   "); //$NON-NLS-1$

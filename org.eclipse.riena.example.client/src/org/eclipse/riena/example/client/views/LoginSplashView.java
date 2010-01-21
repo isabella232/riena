@@ -23,6 +23,7 @@ import org.eclipse.riena.example.client.controllers.LoginDialogController;
 import org.eclipse.riena.internal.example.client.nls.Messages;
 import org.eclipse.riena.navigation.ui.swt.login.AbstractLoginSplashView;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
+import org.eclipse.riena.ui.swt.DefaultButtonManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -51,8 +52,7 @@ public class LoginSplashView extends AbstractLoginSplashView {
 	private Composite createContentView(Composite parent) {
 
 		Label infoArea = new Label(parent, SWT.NONE);
-		infoArea
-				.setText(Messages.LoginSplashView_infoArea); 
+		infoArea.setText(Messages.LoginSplashView_infoArea);
 		infoArea.setLayoutData(GD11LEFTBOTTOMFILL);
 
 		Composite inputArea = new Composite(parent, SWT.NONE);
@@ -64,7 +64,7 @@ public class LoginSplashView extends AbstractLoginSplashView {
 		// dummy to occupy the cell
 		new Label(inputArea, SWT.NONE).setText(""); //$NON-NLS-1$
 
-		new Label(inputArea, SWT.NONE).setText(Messages.LoginSplashView_user); 
+		new Label(inputArea, SWT.NONE).setText(Messages.LoginSplashView_user);
 		Text user = UIControlsFactory.createText(inputArea);
 		user.setLayoutData(GD21FILL);
 		addUIControl(user, LoginDialogController.RIDGET_ID_USER);
@@ -72,7 +72,7 @@ public class LoginSplashView extends AbstractLoginSplashView {
 		// dummy to occupy the cell
 		new Label(inputArea, SWT.NONE);
 
-		new Label(inputArea, SWT.NONE).setText(Messages.LoginSplashView_password); 
+		new Label(inputArea, SWT.NONE).setText(Messages.LoginSplashView_password);
 		Text password = UIControlsFactory.createText(inputArea);
 		password.setLayoutData(GD21FILL);
 		addUIControl(password, LoginDialogController.RIDGET_ID_PASSWORD);
@@ -83,12 +83,15 @@ public class LoginSplashView extends AbstractLoginSplashView {
 		new Label(inputArea, SWT.NONE);
 
 		Button okButton = UIControlsFactory.createButton(inputArea);
-		okButton.setText(Messages.LoginSplashView_login); 
+		okButton.setText(Messages.LoginSplashView_login);
 		okButton.setLayoutData(GD11FILL);
 		addUIControl(okButton, LoginDialogController.RIDGET_ID_OK);
 
+		DefaultButtonManager dbm = new DefaultButtonManager(parent.getShell());
+		dbm.addButton(okButton, inputArea);
+
 		Button cancelButton = UIControlsFactory.createButton(inputArea);
-		cancelButton.setText(Messages.LoginSplashView_cancel); 
+		cancelButton.setText(Messages.LoginSplashView_cancel);
 		cancelButton.setLayoutData(GD11FILL);
 		addUIControl(cancelButton, LoginDialogController.RIDGET_ID_CANCEL);
 

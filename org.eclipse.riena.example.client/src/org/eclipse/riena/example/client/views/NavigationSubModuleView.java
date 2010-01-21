@@ -30,9 +30,6 @@ public class NavigationSubModuleView extends SubModuleView<NavigationSubModuleCo
 
 	public static final String ID = NavigationSubModuleView.class.getName();
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleView#basicCreatePartControl(org.eclipse.swt.widgets.Composite)
-	 */
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
@@ -58,6 +55,5 @@ public class NavigationSubModuleView extends SubModuleView<NavigationSubModuleCo
 		Button addModuleGroupBtn = UIControlsFactory.createButton(parent, "", "addModuleGroupBtn"); //$NON-NLS-1$ //$NON-NLS-2$ 
 		gridData = GridDataFactory.copyData(gridData);
 		addModuleGroupBtn.setLayoutData(gridData);
-
 	}
 }

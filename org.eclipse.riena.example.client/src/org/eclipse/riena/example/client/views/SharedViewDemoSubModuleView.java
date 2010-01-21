@@ -16,12 +16,14 @@ import java.util.List;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.DefaultButtonManager;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -59,6 +61,10 @@ public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSub
 		UIControlsFactory.createLabel(parent, "&Last Name:"); //$NON-NLS-1$
 		Text txtLast = UIControlsFactory.createText(parent, SWT.SINGLE, "txtLast"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().hint(200, SWT.DEFAULT).applyTo(txtLast);
+
+		Button button = UIControlsFactory.createButton(parent, "Default Button"); // TODO [ev] remove
+		DefaultButtonManager dmb = new DefaultButtonManager(parent.getShell());
+		dmb.addButton(button, parent);
 	}
 
 	@Override

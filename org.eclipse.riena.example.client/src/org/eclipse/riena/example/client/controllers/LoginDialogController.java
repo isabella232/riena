@@ -47,8 +47,6 @@ public class LoginDialogController extends AbstractWindowController {
 	@Override
 	public void afterBind() {
 		super.afterBind();
-
-		getWindowRidget().setDefaultButton(getRidget(RIDGET_ID_OK).getUIControl());
 		getRidget(RIDGET_ID_USER).requestFocus();
 	}
 

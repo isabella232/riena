@@ -63,7 +63,6 @@ public class NavigationSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-
 		addSubModuleToModuleBtn = getRidget(IActionRidget.class, "addSubModuleToModuleBtn"); //$NON-NLS-1$
 		addSubModuleToModuleBtn.setText("Add Sub-Module to &Root"); //$NON-NLS-1$
 		addSubModuleToModuleBtn.addListener(new IActionListener() {
@@ -123,9 +122,6 @@ public class NavigationSubModuleController extends SubModuleController {
 				showStatusLineMessage("Module-Group was added!"); //$NON-NLS-1$
 			}
 		});
-
-		setDefaultButton(addModuleGroupBtn);
-
 	}
 
 	private void showStatusLineMessage(String text) {

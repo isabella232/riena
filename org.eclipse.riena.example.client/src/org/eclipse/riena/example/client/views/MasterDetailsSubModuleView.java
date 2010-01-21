@@ -22,6 +22,7 @@ import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleContro
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.DefaultButtonManager;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -85,6 +86,9 @@ public class MasterDetailsSubModuleView extends SubModuleView<MasterDetailsSubMo
 		mdComposite.addUIControl(ccPets, "pets"); //$NON-NLS-1$
 
 		this.addUIControl(mdComposite, "master"); //$NON-NLS-1$
+
+		DefaultButtonManager dbm = new DefaultButtonManager(parent.getShell());
+		dbm.addButton(mdComposite.getButtonApply(), mdComposite);
 
 		return result;
 	}

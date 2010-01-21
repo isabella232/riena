@@ -29,7 +29,6 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
-import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
  * Demonstrates use of a master/details ridget.
@@ -148,17 +147,5 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 				}
 			});
 		}
-
 	}
-
-	@Override
-	public void afterBind() {
-		super.afterBind();
-		IMasterDetailsRidget master = (IMasterDetailsRidget) getRidget("master"); //$NON-NLS-1$
-		if (master != null) {
-			// TODO [ev] this is clunky... should not have to be in after bind
-			setDefaultButton((IActionRidget) master.getRidget(MasterDetailsComposite.BIND_ID_APPLY));
-		}
-	}
-
 }
