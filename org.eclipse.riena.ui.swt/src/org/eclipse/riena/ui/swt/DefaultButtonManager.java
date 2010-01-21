@@ -15,6 +15,8 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -29,7 +31,7 @@ import org.eclipse.swt.widgets.Shell;
  * 
  * @since 2.0
  */
-public class DefaultButtonManager implements Listener {
+public class DefaultButtonManager implements Listener, DisposeListener {
 
 	private final Shell shell;
 
@@ -48,14 +50,14 @@ public class DefaultButtonManager implements Listener {
 			Display display = shell.getDisplay();
 			display.addFilter(SWT.FocusIn, this);
 		}
-		control2button.put(focusControl, button);
+		if (control2button.put(focusControl, button) == null) {
+			focusControl.addDisposeListener(this);
+		}
 	}
 
-	public void dispose() {
-		Display display = shell.getDisplay();
-		display.removeFilter(SWT.FocusIn, this);
-	}
-
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
 	public void handleEvent(Event event) {
 		if (SWT.FocusIn == event.type && event.widget instanceof Control) {
 			Button button = findDefaultButton((Control) event.widget);
@@ -66,8 +68,27 @@ public class DefaultButtonManager implements Listener {
 		}
 	}
 
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public void widgetDisposed(DisposeEvent e) {
+		if (control2button != null) {
+			control2button.remove(e.widget);
+			if (control2button.isEmpty()) {
+				dispose();
+			}
+		}
+	}
+
 	// helping methods
 	//////////////////
+
+	private void dispose() {
+		System.out.println("Dispose: " + this);
+		Display display = shell.getDisplay();
+		display.removeFilter(SWT.FocusIn, this);
+		control2button = null;
+	}
 
 	private Button findDefaultButton(Control start) {
 		Button result = null;
