@@ -61,8 +61,8 @@ public class DefaultButtonManager implements Listener, DisposeListener {
 	public void handleEvent(Event event) {
 		if (SWT.FocusIn == event.type && event.widget instanceof Control) {
 			Button button = findDefaultButton((Control) event.widget);
-			if (button != shell.getDefaultButton()) {
-				System.out.println("Focus on: " + event.widget + ", " + button);
+			if (button != null && button != shell.getDefaultButton()) {
+				// System.out.println("Focus on: " + event.widget + ", " + button);
 				shell.setDefaultButton(button);
 			}
 		}
@@ -84,7 +84,7 @@ public class DefaultButtonManager implements Listener, DisposeListener {
 	//////////////////
 
 	private void dispose() {
-		System.out.println("Dispose: " + this);
+		// System.out.println("Dispose: " + this);
 		Display display = shell.getDisplay();
 		display.removeFilter(SWT.FocusIn, this);
 		control2button = null;
