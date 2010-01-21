@@ -180,8 +180,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		UIControlsFactory.createLabel(group, "Buttons:", "labelbuttonToggle"); //$NON-NLS-1$ //$NON-NLS-2$
 		Composite cmpButtons = createComposite(group, 5, false);
 		UIControlsFactory.createButtonToggle(cmpButtons, "buttonToggle"); //$NON-NLS-1$
-		Button buttonPush = UIControlsFactory.createButton(cmpButtons, "buttonPush"); //$NON-NLS-1$
-		buttonPush.setText("Push"); //$NON-NLS-1$
+		UIControlsFactory.createButton(cmpButtons, "Push", "buttonPush"); //$NON-NLS-1$ //$NON-NLS-2$
 		Button buttonRadioA = UIControlsFactory.createButtonRadio(cmpButtons, "buttonRadioA"); //$NON-NLS-1$
 		buttonRadioA.setText("Radio A"); //$NON-NLS-1$
 		Button buttonRadioB = UIControlsFactory.createButtonRadio(cmpButtons, "buttonRadioB"); //$NON-NLS-1$

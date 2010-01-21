@@ -14,9 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -61,8 +59,6 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	private boolean applyRequiresNoErrors;
 	private boolean detailsEnabled;
 	private boolean ignoreChanges;
-	private Map<String, Boolean> preEnabledStates = new Hashtable<String, Boolean>();
-	private Object beforeDisabledSelection;
 
 	/*
 	 * The object we are currently editing; null if not editing
@@ -305,24 +301,20 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		if (control != null) {
 			Collection<? extends IRidget> ridgets = getRidgets();
 			if (!isEnabled()) {
-				for (IRidget ridget : ridgets) {
-					preEnabledStates.put(ridget.getID(), ridget.isEnabled());
-					ridget.setEnabled(false);
-				}
-				beforeDisabledSelection = getSelection();
 				clearSelection();
 				clearTableSelection();
-			} else {
 				for (IRidget ridget : ridgets) {
-					Boolean ridgetEnabled = preEnabledStates.get(ridget.getID());
-					if (ridgetEnabled != null) {
-						ridget.setEnabled(ridgetEnabled);
-					}
+					ridget.setEnabled(false);
 				}
-				if (beforeDisabledSelection != null) {
-					setSelection(beforeDisabledSelection);
+			} else {
+				if (getTableRidget() != null) {
+					getTableRidget().setEnabled(true);
+				}
+				if (getNewButtonRidget() != null) {
+					getNewButtonRidget().setEnabled(true);
 				}
 			}
+			control.setEnabled(isEnabled());
 		}
 	}
 

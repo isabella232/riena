@@ -43,12 +43,25 @@ public class MasterDetailsSubModuleView extends SubModuleView<MasterDetailsSubMo
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
+
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
+
+		parent.setLayout(new GridLayout(1, false));
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridData data = new GridData();
+		data.grabExcessHorizontalSpace = true;
+		data.horizontalAlignment = SWT.FILL;
+		composite.setLayoutData(data);
+
 		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
 		layout.marginHeight = 5;
 		layout.marginWidth = 5;
-		parent.setLayout(layout);
-		createMasterDetails(parent);
+		composite.setLayout(layout);
+		createMasterDetails(composite);
+
+		UIControlsFactory.createButton(parent, "enable/disable", "enableDisable"); //$NON-NLS-1$ //$NON-NLS-2$
+
 	}
 
 	// helping methods
