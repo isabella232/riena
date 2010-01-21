@@ -17,13 +17,14 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
 import org.eclipse.riena.internal.tests.Activator;
 
 /**
  * Test the {@code Wire} stuff.
  */
-@NonUITestCase
+//NonUITestCase FIXME addPluginXML does not work
+@ManualTestCase
 public class WireTest extends RienaTestCase {
 
 	private BundleContext context = Activator.getDefault().getContext();
