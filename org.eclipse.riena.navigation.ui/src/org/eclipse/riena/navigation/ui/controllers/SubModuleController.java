@@ -25,7 +25,6 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
-import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
@@ -70,16 +69,14 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		// unused
 	}
 
-	/**
-	 * @return
-	 */
-	public Object getDefaultButton() {
-		IWindowRidget windowRidget = getWindowRidget();
-		if (windowRidget != null) {
-			return windowRidget.getDefaultButton();
-		}
-		return null;
-	}
+	// TODO [ev] remove
+	//	public Object getDefaultButton() {
+	//		IWindowRidget windowRidget = getWindowRidget();
+	//		if (windowRidget != null) {
+	//			return windowRidget.getDefaultButton();
+	//		}
+	//		return null;
+	//	}
 
 	/**
 	 * Returns the controller of the parent module.
@@ -89,11 +86,10 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 */
 	public ModuleController getModuleController() {
 		IModuleNode moduleNode = getNavigationNode().getParentOfType(IModuleNode.class);
-		if (moduleNode == null) {
-			return null;
-		} else {
+		if (moduleNode != null) {
 			return (ModuleController) moduleNode.getNavigationNodeController();
 		}
+		return null;
 	}
 
 	/**
@@ -103,22 +99,16 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		return (IWindowRidget) getRidget(WINDOW_RIDGET);
 	}
 
-	/**
-	 * @param actionRidget
-	 */
-	public void setDefaultButton(IActionRidget actionRidget) {
-		IWindowRidget windowRidget = getWindowRidget();
-		if (windowRidget != null) {
-			windowRidget.setDefaultButton(actionRidget.getUIControl());
-		}
-	}
+	// TODO [ev] remove
+	//	public void setDefaultButton(IActionRidget actionRidget) {
+	//		IWindowRidget windowRidget = getWindowRidget();
+	//		if (windowRidget != null) {
+	//			windowRidget.setDefaultButton(actionRidget.getUIControl());
+	//		}
+	//	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.NavigationNodeController#setNavigationNode(org.eclipse.riena.navigation.INavigationNode)
-	 */
 	@Override
 	public void setNavigationNode(ISubModuleNode navigationNode) {
-
 		super.setNavigationNode(navigationNode);
 
 		if (getModuleController() != null) {
@@ -142,7 +132,6 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 				updateLabel();
 			}
 		});
-
 	}
 
 	/**
@@ -237,12 +226,10 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 *         not shown; otherwise {@code false}
 	 */
 	private boolean isInvisibleInTree() {
-
 		if (getModuleController() != null && getModuleController().hasSingleLeafChild()) {
 			return !getModuleController().getNavigationNode().isPresentSingleSubModule();
 		}
 		return false;
-
 	}
 
 	private void updateActive() {
