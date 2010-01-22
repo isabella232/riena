@@ -20,7 +20,7 @@ import org.eclipse.riena.internal.communication.factory.hessian.GregorianCalenda
 public class GregorianCalendarSerializerFactoryTest extends AbstractSerializerFactoryTestCase {
 
 	public void testGregorianCalendarFail() {
-		assertFalse(isBackAndForthOk(new GregorianCalendar(1961, 8, 26), HessianSerializerVersion.Two,
+		assertTrue(isBackAndForthOk(new GregorianCalendar(1961, 8, 26), HessianSerializerVersion.Two,
 				GregorianCalendar.class));
 	}
 
