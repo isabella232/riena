@@ -820,9 +820,8 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 		assertEquals(null, control.getParent().getLayout());
 		assertEquals(null, control.getLayout());
-		for (int i = 0; i < 3; i++) {
-			assertEquals("col #" + i, 100, control.getColumn(i).getWidth());
-		}
+
+		assertColumnWidthsCalculatedCorrectly(control, 3);
 	}
 
 	/**
@@ -840,12 +839,12 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		Class<?> shellLayout = getShell().getLayout().getClass();
 		assertSame(shellLayout, control.getParent().getLayout().getClass());
 		assertTrue(control.getLayout() instanceof TableLayout);
-		final int expected = control.getSize().x / 3;
 
-		assertTrue(String.valueOf(expected), expected > 0);
+		int totalWidthOfColumns = 0;
 		for (int i = 0; i < 3; i++) {
-			assertEquals("col #" + i, expected, control.getColumn(i).getWidth());
+			totalWidthOfColumns += control.getColumn(i).getWidth();
 		}
+		assertColumnWidthsCalculatedCorrectly(control, 3);
 	}
 
 	/**
@@ -865,12 +864,8 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 		assertTrue(control.getParent().getLayout() instanceof TableColumnLayout);
 		assertEquals(null, control.getLayout());
-		final int expected = control.getSize().x / 3;
 
-		assertTrue(String.valueOf(expected), expected > 0);
-		for (int i = 0; i < 3; i++) {
-			assertEquals("col #" + i, expected, control.getColumn(i).getWidth());
-		}
+		assertColumnWidthsCalculatedCorrectly(control, 3);
 	}
 
 	/**
@@ -930,6 +925,28 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 			int actual = control.getColumn(i).getWidth();
 			String msg = String.format("col #%d, exp:%d, act:%d", i, widths[i], actual);
 			assertEquals(msg, widths[i], actual);
+		}
+	}
+
+	/**
+	 * For a given control, tests that the layouting results in
+	 * correctly-calculated column widths.
+	 * 
+	 * @param control
+	 *            the Table widget to check
+	 * @param numberOfCols
+	 *            the number of columns that the Table displays
+	 */
+	private void assertColumnWidthsCalculatedCorrectly(Table control, int numberOfCols) {
+		final int expected = control.getSize().x / numberOfCols;
+		assertTrue(String.valueOf(expected), expected > 0);
+
+		String message;
+		for (int i = 0; i < numberOfCols; i++) {
+			int actual = control.getColumn(i).getWidth();
+			// take into account rounding errors, e.g. total width 85 => col widths (29, 28, 28)
+			message = "col #" + i + ", expected " + expected + " <= x <= " + (expected + 1) + ", but was " + actual;
+			assertTrue(message, (expected <= actual && actual <= expected + 1));
 		}
 	}
 

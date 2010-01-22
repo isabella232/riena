@@ -157,7 +157,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 		newValue = ridget.getMarkers();
 		markers = ridget.getMarkers();
 		assertEquals(1, markers.size());
-		assertEquals(true, markers.contains(marker1));
+		assertTrue(markers.contains(marker1));
 
 		newValue.add(marker2);
 		expectPropertyChangeEvents(new ExpectedMarkerPropertyChangeEvent(ridget.getMarkers(), newValue, false));
@@ -167,8 +167,8 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 		verifyPropertyChangeEvents();
 		markers = ridget.getMarkers();
 		assertEquals(2, markers.size());
-		assertEquals(true, markers.contains(marker1));
-		assertEquals(true, markers.contains(marker2));
+		assertTrue(markers.contains(marker1));
+		assertTrue(markers.contains(marker2));
 
 		expectNoPropertyChangeEvent();
 
@@ -177,8 +177,10 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 		verifyPropertyChangeEvents();
 		markers = ridget.getMarkers();
 		assertEquals(2, markers.size());
-		assertEquals(true, markers.contains(marker1));
-		assertEquals(true, markers.contains(marker2));
+		assertTrue(markers.contains(marker1));
+		assertTrue(markers.contains(marker2));
+
+		resetPropertyChangeEvents();
 	}
 
 	public void testRemoveMarker() throws Exception {
@@ -208,13 +210,15 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 		verifyPropertyChangeEvents();
 		Collection<?> markers = ridget.getMarkers();
 		assertEquals(1, markers.size());
-		assertEquals(true, markers.contains(marker2));
+		assertTrue(markers.contains(marker2));
 
 		expectNoPropertyChangeEvent();
 
 		marker1.setAttribute("TestAttribute", "TestValue");
 
 		verifyPropertyChangeEvents();
+
+		resetPropertyChangeEvents();
 	}
 
 	public void testRemoveAllMarkers() throws Exception {
@@ -277,15 +281,15 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 
 		markers = ridget.getMarkersOfType(ErrorMarker.class);
 		Iterator<?> iterator = markers.iterator();
-		assertEquals(true, iterator.hasNext());
+		assertTrue(iterator.hasNext());
 		assertSame(errorMarker, iterator.next());
-		assertEquals(false, iterator.hasNext());
+		assertFalse(iterator.hasNext());
 
 		markers = ridget.getMarkersOfType(MandatoryMarker.class);
 		iterator = markers.iterator();
-		assertEquals(true, iterator.hasNext());
+		assertTrue(iterator.hasNext());
 		assertSame(mandatoryMarker, iterator.next());
-		assertEquals(false, iterator.hasNext());
+		assertFalse(iterator.hasNext());
 
 		markers = ridget.getMarkersOfType(null);
 		assertNotNull(markers);
