@@ -149,7 +149,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 	}
 
 	// FIXME this test is disabled until we find a solution for the addPluginXml problem
-	public void texxxstNavigate() throws Exception {
+	public void testNavigate() throws Exception {
 
 		subModule.activate();
 
