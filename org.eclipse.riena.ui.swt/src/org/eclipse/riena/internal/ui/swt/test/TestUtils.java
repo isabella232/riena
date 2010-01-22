@@ -68,7 +68,7 @@ public final class TestUtils {
 	 * @param count
 	 *            the expected count; 0 or greater
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void assertMessageCount(IMarkable ridget, Class markerType, int count) {
 		Collection<IMessageMarker> collection = ridget.getMarkersOfType(markerType);
 		if (count != collection.size()) {
@@ -92,7 +92,7 @@ public final class TestUtils {
 	 * @param message
 	 *            the message to find
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void assertMessage(IMarkable ridget, Class markerType, String message) {
 		Collection<IMessageMarker> collection = ridget.getMarkersOfType(markerType);
 		boolean wasFound = false;
