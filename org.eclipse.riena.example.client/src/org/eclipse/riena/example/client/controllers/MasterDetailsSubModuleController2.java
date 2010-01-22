@@ -167,6 +167,6 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 		// TODO [ev] this is clunky... should not have to be in after bind
 		IMasterDetailsRidget master2 = getRidget(IMasterDetailsRidget.class, "master2"); //$NON-NLS-1$
 		IActionRidget actionApply = master2.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
-		setDefaultButton(actionApply);
+		//		setDefaultButton(actionApply); FIXME
 	}
 }
