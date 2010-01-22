@@ -162,7 +162,7 @@ public final class UITestHelper {
 			boolean result = false;
 			if (Character.isLetter(ch)) {
 				result = Character.isUpperCase(ch);
-			} else if (ch == '/' && Locale.GERMANY == Locale.getDefault()) {
+			} else if (ch == '/' && Locale.US != Locale.getDefault()) {
 				result = true;
 			}
 			return result;
