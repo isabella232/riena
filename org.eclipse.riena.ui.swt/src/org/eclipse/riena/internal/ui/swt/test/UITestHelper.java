@@ -96,10 +96,19 @@ public final class UITestHelper {
 		}
 	}
 
+	/**
+	 * Wraps and sends keyboard events to the shell.
+	 */
 	private static class EventSender implements Runnable {
 
 		private static final int MS_SHORT_WAIT = 10;
 		private static final int MS_LONG_WAIT = 250;
+
+		/**
+		 * Characters that make necessary framing the event proper with 'Shift'
+		 * KeyDown/Up events.
+		 */
+		private final char[] charsRequiringShift = { '/' };
 
 		private final Display display;
 		private final int keyCode;
@@ -125,10 +134,18 @@ public final class UITestHelper {
 			}
 		}
 
+		/**
+		 * Posting a character key-down event apparently simulates pressing the
+		 * <em>physical-keyboard</em> key that is bound to the character.
+		 * 
+		 * On Win32 at least, the OS's input manager for switching between
+		 * different logical keyboard layouts is ignored. So with a physical
+		 * QWERTZ keyboard, '/' is invariably sent as '7', and '&' as '6'.
+		 */
 		private void sendMessage() {
 			for (int i = 0; i < message.length(); i++) {
 				char ch = message.charAt(i);
-				boolean isShift = Character.isUpperCase(ch);
+				boolean isShift = doShift(ch);
 				if (isShift) {
 					postShift(true);
 				}
@@ -137,6 +154,24 @@ public final class UITestHelper {
 					postShift(false);
 				}
 			}
+		}
+
+		/**
+		 * @param ch
+		 *            character to decide upon
+		 * @return whether the character necessitates sending 'Shift' KeyDown/Up
+		 *         events
+		 */
+		private boolean doShift(char ch) {
+			if (Character.isLetter(ch)) {
+				return Character.isUpperCase(ch);
+			}
+			for (char c : charsRequiringShift) {
+				if (c == ch) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 		private void sendKeyEvent() {
