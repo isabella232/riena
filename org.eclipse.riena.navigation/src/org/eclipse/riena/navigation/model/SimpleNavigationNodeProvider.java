@@ -23,6 +23,7 @@ import java.util.Random;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
@@ -103,7 +104,7 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	 *      org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected INavigationNode<?> provideNodeHook(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
 
@@ -240,9 +241,15 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	}
 
 	public void registerNavigationAssembler(String id, INavigationAssembler assembler) {
-		Assert.isTrue(assemblyId2AssemblerCache.get(id) == null, "There are two assembly extension definitions for '" //$NON-NLS-1$
-				+ id + "'."); //$NON-NLS-1$
-		assemblyId2AssemblerCache.put(id, assembler);
+		try {
+			Assert.isTrue(assemblyId2AssemblerCache.get(id) == null,
+					"There are two assembly extension definitions for '" //$NON-NLS-1$
+							+ id + "'."); //$NON-NLS-1$
+			assemblyId2AssemblerCache.put(id, assembler);
+		} catch (AssertionFailedException exc) {
+			LOGGER.log(LogService.LOG_ERROR, "registerNavigationAssembler(): ", exc); //$NON-NLS-1$
+			throw exc;
+		}
 	}
 
 	public INavigationAssembler getNavigationAssembler(String assemblyId) {
