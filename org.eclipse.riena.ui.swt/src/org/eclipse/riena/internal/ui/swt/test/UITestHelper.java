@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.swt.test;
 
+import java.util.Locale;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
@@ -104,12 +106,6 @@ public final class UITestHelper {
 		private static final int MS_SHORT_WAIT = 10;
 		private static final int MS_LONG_WAIT = 250;
 
-		/**
-		 * Characters that make necessary framing the event proper with 'Shift'
-		 * KeyDown/Up events.
-		 */
-		private final char[] charsRequiringShift = { '/' };
-
 		private final Display display;
 		private final int keyCode;
 		private final String message;
@@ -163,15 +159,13 @@ public final class UITestHelper {
 		 *         events
 		 */
 		private boolean doShift(char ch) {
+			boolean result = false;
 			if (Character.isLetter(ch)) {
-				return Character.isUpperCase(ch);
+				result = Character.isUpperCase(ch);
+			} else if (ch == '/' && Locale.GERMANY == Locale.getDefault()) {
+				result = true;
 			}
-			for (char c : charsRequiringShift) {
-				if (c == ch) {
-					return true;
-				}
-			}
-			return false;
+			return result;
 		}
 
 		private void sendKeyEvent() {
