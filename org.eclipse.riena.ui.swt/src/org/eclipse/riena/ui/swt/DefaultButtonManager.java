@@ -46,7 +46,7 @@ public class DefaultButtonManager implements Listener, DisposeListener {
 		Assert.isNotNull(button);
 		Assert.isNotNull(focusControl);
 		if (control2button == null) {
-			control2button = new HashMap<Control, Button>();
+			control2button = new HashMap<Control, Button>(1);
 			Display display = shell.getDisplay();
 			display.addFilter(SWT.FocusIn, this);
 		}
