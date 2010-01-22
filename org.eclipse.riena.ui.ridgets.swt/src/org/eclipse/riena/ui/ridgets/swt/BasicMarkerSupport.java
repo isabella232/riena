@@ -54,7 +54,6 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 
 		Control control = getUIControl();
 		if (control != null) {
-			System.out.println("BasicMarkerSupport.init() - " + control.hashCode());
 			control.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
 					if (e.widget == getUIControl()) {
