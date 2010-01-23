@@ -64,7 +64,7 @@ public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSub
 
 		Button button = UIControlsFactory.createButton(parent, "Default Button"); // TODO [ev] remove
 		DefaultButtonManager dmb = new DefaultButtonManager(parent.getShell());
-		dmb.addButton(button, parent);
+		//		dmb.addButton(button, parent);
 	}
 
 	@Override
