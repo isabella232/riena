@@ -29,6 +29,7 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
+import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
  * Demonstrates use of a master/details ridget.
@@ -123,6 +124,9 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 			master.setDelegate(new PersonDelegate());
 			master.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
 			master.updateFromModel();
+
+			IActionRidget actionApply = master.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
+			addDefaultAction(master, actionApply);
 		}
 
 		final IMasterDetailsRidget master3 = (IMasterDetailsRidget) getRidget("master3"); //$NON-NLS-1$

@@ -22,7 +22,6 @@ import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleContro
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
-import org.eclipse.riena.ui.swt.DefaultButtonManager;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -76,7 +75,8 @@ public class MasterDetailsSubModuleView extends SubModuleView<MasterDetailsSubMo
 
 		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.BOTTOM);
 		Composite details = mdComposite.getDetails();
-		details.setLayout(new GridLayout(2, false));
+		GridLayout layout2 = new GridLayout(2, false);
+		details.setLayout(layout2);
 
 		UIControlsFactory.createLabel(details, "First Name:"); //$NON-NLS-1$
 		Text txtFirst = UIControlsFactory.createText(details, SWT.BORDER, "first"); //$NON-NLS-1$
@@ -100,8 +100,8 @@ public class MasterDetailsSubModuleView extends SubModuleView<MasterDetailsSubMo
 
 		this.addUIControl(mdComposite, "master"); //$NON-NLS-1$
 
-		DefaultButtonManager dbm = new DefaultButtonManager(parent.getShell());
-		dbm.addButton(mdComposite.getButtonApply(), mdComposite);
+		//DefaultButtonManager dbm = new DefaultButtonManager(parent.getShell());
+		//dbm.addButton(mdComposite.getButtonApply(), mdComposite);
 
 		return result;
 	}

@@ -8,15 +8,13 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.swt;
+package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -24,35 +22,72 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
+import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IWindowRidget;
+
 /**
- * TODO [ev] Experimental. May go away.
+ * Experimental. May go away.
  * <p>
- * TODO [ev] docs
+ * TODO [ev] docs, tests
  * 
  * @since 2.0
  */
-public class DefaultButtonManager implements Listener, DisposeListener {
+final class DefaultActionManager implements IDefaultActionManager, Listener {
 
-	private final Shell shell;
+	private final IWindowRidget windowRidget;
+	private final Map<IRidget, IActionRidget> ridget2button;
 
 	private Map<Control, Button> control2button;
+	private Shell shell;
+	private Display display;
 
-	public DefaultButtonManager(Shell shell) {
-		Assert.isNotNull(shell);
-		this.shell = shell;
+	DefaultActionManager(IWindowRidget windowRidget) {
+		Assert.isNotNull(windowRidget);
+		this.windowRidget = windowRidget;
+		ridget2button = new HashMap<IRidget, IActionRidget>(1);
 	}
 
-	public void addButton(Control focusControl, Button button) {
-		Assert.isNotNull(focusControl);
-		Assert.isNotNull(button);
+	public void addAction(IActionRidget ridget, IRidget focusRidget) {
+		Assert.isNotNull(ridget);
+		Assert.isNotNull(focusRidget);
+		if (ridget2button == null) {
+		}
+		ridget2button.put(focusRidget, ridget);
+	}
+
+	public void activate() {
+		Assert.isTrue(control2button == null);
 		if (control2button == null) {
-			control2button = new HashMap<Control, Button>(1);
-			Display display = shell.getDisplay();
+			shell = ((Control) windowRidget.getUIControl()).getShell();
+			display = shell.getDisplay();
+			control2button = new HashMap<Control, Button>();
+			for (Map.Entry<IRidget, IActionRidget> entry : ridget2button.entrySet()) {
+				Control control = (Control) entry.getKey().getUIControl();
+				Assert.isNotNull(control);
+
+				Button button = (Button) entry.getValue().getUIControl();
+				Assert.isNotNull(button);
+
+				control2button.put(control, button);
+			}
 			display.addFilter(SWT.FocusIn, this);
 		}
-		if (control2button.put(focusControl, button) == null) {
-			focusControl.addDisposeListener(this);
+	}
+
+	public void deactivate() {
+		if (display != null) {
+			display.removeFilter(SWT.FocusIn, this);
 		}
+		display = null;
+		shell = null;
+		control2button = null;
+	}
+
+	public void dispose() {
+		deactivate();
+		ridget2button.clear();
 	}
 
 	/**
@@ -68,27 +103,8 @@ public class DefaultButtonManager implements Listener, DisposeListener {
 		}
 	}
 
-	/**
-	 * @noreference This method is not intended to be referenced by clients.
-	 */
-	public void widgetDisposed(DisposeEvent e) {
-		if (control2button != null) {
-			control2button.remove(e.widget);
-			if (control2button.isEmpty()) {
-				dispose();
-			}
-		}
-	}
-
 	// helping methods
 	//////////////////
-
-	private void dispose() {
-		// System.out.println("Dispose: " + this);
-		Display display = shell.getDisplay();
-		display.removeFilter(SWT.FocusIn, this);
-		control2button = null;
-	}
 
 	private Button findDefaultButton(Control start) {
 		Button result = null;

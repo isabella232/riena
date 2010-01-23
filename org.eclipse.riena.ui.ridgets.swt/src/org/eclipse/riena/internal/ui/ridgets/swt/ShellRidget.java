@@ -20,6 +20,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
@@ -53,6 +56,11 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		setUIControl(shell);
 	}
 
+	public IDefaultActionManager addDefaultAction(IRidget focusRidget, IActionRidget action) {
+		// TODO [ev] implement
+		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+	}
+
 	public void addWindowRidgetListener(IWindowRidgetListener listener) {
 		windowRidgetListeners.add(listener);
 	}
@@ -61,6 +69,9 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		getUIControl().dispose();
 	}
 
+	/**
+	 * @deprecated Use {@link #addDefaultAction(IRidget, IActionRidget)}
+	 */
 	public Object getDefaultButton() {
 		return getUIControl().getDefaultButton();
 	}
@@ -130,6 +141,9 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		}
 	}
 
+	/**
+	 * @deprecated Use {@link #addDefaultAction(IRidget, IActionRidget)}
+	 */
 	public void setDefaultButton(Object defaultButton) {
 		if (defaultButton instanceof Button) {
 			getUIControl().setDefaultButton((Button) defaultButton);

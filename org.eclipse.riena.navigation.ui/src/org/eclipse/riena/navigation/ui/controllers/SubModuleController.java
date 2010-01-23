@@ -25,6 +25,8 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
@@ -39,8 +41,9 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	public static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
 
 	private static final String TITLE_SEPARATOR = " - "; //$NON-NLS-1$
-
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubModuleController.class);
+
+	private IDefaultActionManager actionManager;
 
 	public SubModuleController() {
 		this(null);
@@ -48,6 +51,17 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 
 	public SubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
+	}
+
+	/**
+	 * TODO [ev] docs
+	 * 
+	 * @param actionApply
+	 * @param master
+	 * @since 2.0
+	 */
+	public void addDefaultAction(IRidget focusRidget, IActionRidget action) {
+		actionManager = getWindowRidget().addDefaultAction(focusRidget, action);
 	}
 
 	@Override
@@ -69,14 +83,14 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		// unused
 	}
 
-	// TODO [ev] remove
-	//	public Object getDefaultButton() {
-	//		IWindowRidget windowRidget = getWindowRidget();
-	//		if (windowRidget != null) {
-	//			return windowRidget.getDefaultButton();
-	//		}
-	//		return null;
-	//	}
+	/**
+	 * Always returns null.
+	 * 
+	 * @deprecated See {@link #addDefaultAction(IRidget, IActionRidget)}
+	 */
+	public Object getDefaultButton() {
+		return null;
+	}
 
 	/**
 	 * Returns the controller of the parent module.
@@ -99,13 +113,14 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		return (IWindowRidget) getRidget(WINDOW_RIDGET);
 	}
 
-	// TODO [ev] remove
-	//	public void setDefaultButton(IActionRidget actionRidget) {
-	//		IWindowRidget windowRidget = getWindowRidget();
-	//		if (windowRidget != null) {
-	//			windowRidget.setDefaultButton(actionRidget.getUIControl());
-	//		}
-	//	}
+	/**
+	 * Has no effect.
+	 * 
+	 * @deprecated Use {@link #addDefaultAction(IRidget, IActionRidget)}
+	 */
+	public void setDefaultButton(IActionRidget actionRidget) {
+		// unused
+	}
 
 	@Override
 	public void setNavigationNode(ISubModuleNode navigationNode) {
@@ -130,6 +145,27 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 			@Override
 			public void labelChanged(ISubModuleNode subModuleNode) {
 				updateLabel();
+			}
+
+			@Override
+			public void afterActivated(ISubModuleNode source) {
+				if (actionManager != null) {
+					actionManager.activate();
+				}
+			}
+
+			public void afterDeactivated(ISubModuleNode source) {
+				if (actionManager != null) {
+					actionManager.deactivate();
+				}
+			}
+
+			@Override
+			public void beforeDisposed(ISubModuleNode source) {
+				if (actionManager != null) {
+					actionManager.dispose();
+					actionManager = null;
+				}
 			}
 		});
 	}

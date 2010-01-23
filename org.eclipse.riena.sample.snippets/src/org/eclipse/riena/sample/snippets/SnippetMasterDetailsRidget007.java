@@ -139,7 +139,7 @@ public final class SnippetMasterDetailsRidget007 {
 			ridget.bindToModel(input, Person.class, properties, headers);
 			ridget.updateFromModel();
 
-			buttonMan.addButton(details.getButtonApply(), details);
+			buttonMan.addButton(details, details.getButtonApply());
 		}
 
 		shell.pack();

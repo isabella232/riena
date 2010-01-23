@@ -159,14 +159,7 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 		IActionRidget actionRemove = master2.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_REMOVE);
 		actionRemove.setText(""); //$NON-NLS-1$
 		actionRemove.setIcon("remove_h.png"); //$NON-NLS-1$
-	}
 
-	@Override
-	public void afterBind() {
-		super.afterBind();
-		// TODO [ev] this is clunky... should not have to be in after bind
-		IMasterDetailsRidget master2 = getRidget(IMasterDetailsRidget.class, "master2"); //$NON-NLS-1$
-		IActionRidget actionApply = master2.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
-		//		setDefaultButton(actionApply); FIXME
+		addDefaultAction(master2, actionApply);
 	}
 }

@@ -88,7 +88,7 @@ public class LoginSplashView extends AbstractLoginSplashView {
 		addUIControl(okButton, LoginDialogController.RIDGET_ID_OK);
 
 		DefaultButtonManager dbm = new DefaultButtonManager(parent.getShell());
-		dbm.addButton(okButton, inputArea);
+		dbm.addButton(inputArea, okButton);
 
 		Button cancelButton = UIControlsFactory.createButton(inputArea);
 		cancelButton.setText(Messages.LoginSplashView_cancel);

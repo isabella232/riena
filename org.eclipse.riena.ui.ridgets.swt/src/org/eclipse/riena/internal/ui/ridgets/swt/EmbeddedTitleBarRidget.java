@@ -12,12 +12,13 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
@@ -38,6 +39,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	private boolean closeable;
 	private boolean active;
 	private IEmbeddedTitleBarListener titleBarListener;
+	private DefaultActionManager actionManager;
 
 	/**
 	 * Creates a new instance of {@code EmbeddedTitleBarRidget}.
@@ -124,14 +126,31 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		}
 	}
 
+	public IDefaultActionManager addDefaultAction(IRidget focusRidget, IActionRidget action) {
+		if (actionManager == null) {
+			actionManager = new DefaultActionManager(this);
+		}
+		actionManager.addAction(action, focusRidget);
+		return actionManager;
+	}
+
 	public void addWindowRidgetListener(IWindowRidgetListener listener) {
 		windowRidgetListeners.add(listener);
 	}
 
 	public void dispose() {
 		getUIControl().dispose();
+		if (actionManager != null) {
+			actionManager.dispose();
+			actionManager = null;
+		}
 	}
 
+	/**
+	 * Always returns null.
+	 * 
+	 * @deprecated See {@link #addDefaultAction(IRidget, IActionRidget)}
+	 */
 	public Object getDefaultButton() {
 		// unused
 		return null;
@@ -158,21 +177,13 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		windowRidgetListeners.remove(listener);
 	}
 
+	/**
+	 * Has no effect.
+	 * 
+	 * @deprecated See {@link #addDefaultAction(IRidget, IActionRidget)}
+	 */
 	public void setDefaultButton(Object defaultButton) {
-		// TODO [ev] experimental code until 291708 is addressed.
-		// Issues:
-		// - why not IActionRidget? typically we work with ridgets not controlls
-		// - what if no UI control is bound, should remember and set later
-		// - since several controllers share one shell we must set the appropriate
-		//   default button for a given situation
-		// - how to handle several default buttons per controllers
-		// - see also ShellRidget.setDefaultButton
-		if (defaultButton instanceof Button) {
-			if (getUIControl() != null) {
-				Shell shell = getUIControl().getShell();
-				shell.setDefaultButton((Button) defaultButton);
-			}
-		}
+		// unused
 	}
 
 	public void setActive(boolean active) {

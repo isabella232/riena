@@ -22,6 +22,15 @@ import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 public interface IWindowRidget extends IRidget {
 
 	/**
+	 * TODO [ev] docs
+	 * 
+	 * @param focusRidget
+	 * @param action
+	 * @since 2.0
+	 */
+	IDefaultActionManager addDefaultAction(IRidget focusRidget, IActionRidget action);
+
+	/**
 	 * Adds a {@link IWindowRidgetListener} for receiving window events from
 	 * this ridget.
 	 * <p>
@@ -49,6 +58,9 @@ public interface IWindowRidget extends IRidget {
 
 	/**
 	 * Returns the window's defaultButton or null.
+	 * 
+	 * @deprecated Do not use, see
+	 *             {@link #addDefaultAction(IRidget, IActionRidget)}
 	 */
 	Object getDefaultButton();
 
@@ -83,6 +95,7 @@ public interface IWindowRidget extends IRidget {
 	 * 
 	 * @param defaultButton
 	 *            default button
+	 * @deprecated -- use {@link #addDefaultAction(IRidget, IActionRidget)}
 	 */
 	void setDefaultButton(Object defaultButton);
 

@@ -60,7 +60,11 @@ public class MasterDetailsSubModuleView3 extends SubModuleView<MasterDetailsSubM
 		layout.marginWidth = 20;
 		result.setLayout(layout);
 
-		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.BOTTOM);
+		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.BOTTOM) {
+			protected int getDetailsStyle() {
+				return SWT.BORDER;
+			}
+		};
 		Composite details = mdComposite.getDetails();
 		details.setLayout(new GridLayout(2, false));
 

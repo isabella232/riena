@@ -98,7 +98,7 @@ public class LoginDialogView extends AbstractDialogView implements ILoginDialogV
 		addUIControl(okButton, LoginDialogController.RIDGET_ID_OK);
 
 		DefaultButtonManager dbm = new DefaultButtonManager(parent.getShell());
-		dbm.addButton(okButton, content);
+		dbm.addButton(content, okButton);
 
 		Button cancelButton = UIControlsFactory.createButton(content);
 		cancelButton.setText("   Cancel   "); //$NON-NLS-1$
