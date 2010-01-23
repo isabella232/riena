@@ -95,7 +95,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 		super(parent, style);
 		checkOrientation(orientation);
 
-		setLayout(new GridLayout(1, false));
+		setLayout(GridLayoutFactory.swtDefaults().margins(0, 0).create());
 		if (orientation == SWT.TOP) {
 			details = createComposite(getDetailsStyle());
 			createDetails(details);
@@ -159,23 +159,6 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 */
 	public boolean confirmRemove(Object item) {
 		return true;
-	}
-
-	/**
-	 * Informs the user that apply failed for the given {@code reason}.
-	 * <p>
-	 * This implementation will show a blocking dialog. Subclasses may overwrite
-	 * this method without calling super, to change the standard behavior.
-	 * 
-	 * @param reason
-	 *            A string describing why apply failed; never null
-	 * 
-	 * @since 1.2
-	 */
-	public void warnApplyFailed(String reason) {
-		Assert.isNotNull(reason);
-		String title = Messages.MasterDetailsComposite_dialogTitle_applyFailed;
-		MessageDialog.openWarning(getShell(), title, reason);
 	}
 
 	/**
@@ -250,6 +233,58 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	/**
+	 * Sets the margin for the top/bottom, left/right edges of the widget.
+	 * 
+	 * @param marginHeight
+	 *            the margin, in pixels, that will be placed along the top and
+	 *            bottom edges of the widget. The default value is 0.
+	 * @param marginWidth
+	 *            the margin, in pixels, that will be placed along the left and
+	 *            right edges of the widget. The default value is 0.
+	 * @since 2.0
+	 */
+	public void setMargins(int marginHeight, int marginWidth) {
+		GridLayout layout = (GridLayout) getLayout();
+		layout.marginHeight = marginHeight;
+		layout.marginWidth = marginWidth;
+		layout(false);
+	}
+
+	/**
+	 * Informs the user that apply failed for the given {@code reason}.
+	 * <p>
+	 * This implementation will show a blocking dialog. Subclasses may overwrite
+	 * this method without calling super, to change the standard behavior.
+	 * 
+	 * @param reason
+	 *            A string describing why apply failed; never null
+	 * 
+	 * @since 1.2
+	 */
+	public void warnApplyFailed(String reason) {
+		Assert.isNotNull(reason);
+		String title = Messages.MasterDetailsComposite_dialogTitle_applyFailed;
+		MessageDialog.openWarning(getShell(), title, reason);
+	}
+
+	// protected methods
+	////////////////////
+
+	/**
+	 * Creates the 'Apply' Button. Subclasses may override.
+	 * 
+	 * @param compButton
+	 *            the parent composite; never null
+	 * 
+	 * @return a Button or null. If this returns null you are responsible for
+	 *         adding a button with the binding id {@link #BIND_ID_APPLY} to
+	 *         this control elsewhere.
+	 */
+	protected Button createButtonApply(Composite compButton) {
+		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonApply);
+	}
+
+	/**
 	 * Creates the 'New' Button. Subclasses may override.
 	 * 
 	 * @param compButton
@@ -277,20 +312,6 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 */
 	protected Button createButtonRemove(Composite compButton) {
 		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonRemove);
-	}
-
-	/**
-	 * Creates the 'Apply' Button. Subclasses may override.
-	 * 
-	 * @param compButton
-	 *            the parent composite; never null
-	 * 
-	 * @return a Button or null. If this returns null you are responsible for
-	 *         adding a button with the binding id {@link #BIND_ID_APPLY} to
-	 *         this control elsewhere.
-	 */
-	protected Button createButtonApply(Composite compButton) {
-		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonApply);
 	}
 
 	/**

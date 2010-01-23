@@ -52,6 +52,7 @@ public final class SnippetMasterDetailsRidget004 {
 
 		PersonMasterDetails(Composite parent, int style) {
 			super(parent, style, SWT.BOTTOM);
+			setMargins(5, 5);
 		}
 
 		@Override

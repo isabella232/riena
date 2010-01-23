@@ -17,6 +17,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -124,6 +125,21 @@ public class MasterDetailsCompositeTest extends TestCase {
 		assertTrue(controls.get(2) instanceof Button);
 		assertTrue(controls.get(3) instanceof Button);
 		assertTrue(controls.get(4) instanceof TestComplexComponent);
+	}
+
+	public void testSetMargins() {
+		MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE);
+
+		GridLayout layout = (GridLayout) widget.getLayout();
+
+		assertEquals(0, layout.marginHeight);
+		assertEquals(0, layout.marginWidth);
+
+		widget.setMargins(4, 5);
+		layout = (GridLayout) widget.getLayout();
+
+		assertEquals(4, layout.marginHeight);
+		assertEquals(5, layout.marginWidth);
 	}
 
 	// helping classes
