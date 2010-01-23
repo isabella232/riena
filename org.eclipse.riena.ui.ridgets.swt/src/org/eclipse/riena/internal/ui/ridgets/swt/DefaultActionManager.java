@@ -52,8 +52,6 @@ final class DefaultActionManager implements IDefaultActionManager, Listener {
 	public void addAction(IActionRidget ridget, IRidget focusRidget) {
 		Assert.isNotNull(ridget);
 		Assert.isNotNull(focusRidget);
-		if (ridget2button == null) {
-		}
 		ridget2button.put(focusRidget, ridget);
 	}
 
@@ -79,9 +77,16 @@ final class DefaultActionManager implements IDefaultActionManager, Listener {
 	public void deactivate() {
 		if (display != null) {
 			display.removeFilter(SWT.FocusIn, this);
+			display = null;
 		}
-		display = null;
-		shell = null;
+		if (shell != null) {
+			// the setDefaultButton(...) API is strange! The first call
+			// will just reset the saved button to null, the second call will 
+			// make null the default button
+			shell.setDefaultButton(null);
+			shell.setDefaultButton(null);
+			shell = null;
+		}
 		control2button = null;
 	}
 

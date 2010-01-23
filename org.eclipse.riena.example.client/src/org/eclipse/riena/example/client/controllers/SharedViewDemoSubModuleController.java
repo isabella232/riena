@@ -15,6 +15,8 @@ import org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
@@ -35,12 +37,19 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		ITextRidget txtFirst = (ITextRidget) getRidget("txtFirst"); //$NON-NLS-1$
+		ITextRidget txtFirst = getRidget(ITextRidget.class, "txtFirst"); //$NON-NLS-1$
 		txtFirst.bindToModel(personBean, Person.PROPERTY_FIRSTNAME);
 
-		ITextRidget txtLast = (ITextRidget) getRidget("txtLast"); //$NON-NLS-1$
+		ITextRidget txtLast = getRidget(ITextRidget.class, "txtLast"); //$NON-NLS-1$
 		txtLast.addMarker(new MandatoryMarker());
 		txtLast.bindToModel(personBean, Person.PROPERTY_LASTNAME);
-	}
 
+		final IActionRidget btnDefault = getRidget(IActionRidget.class, "btnDefault"); //$NON-NLS-1$
+		addDefaultAction(getRidget("view"), btnDefault); //$NON-NLS-1$
+		btnDefault.addListener(new IActionListener() {
+			public void callback() {
+				System.out.println(btnDefault.getText() + " pushed."); //$NON-NLS-1$
+			}
+		});
+	}
 }
