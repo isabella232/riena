@@ -45,9 +45,6 @@ public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubM
 
 	public static final String ID = MasterDetailsSubModuleView2.class.getName();
 
-	public MasterDetailsSubModuleView2() {
-	}
-
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 		colorLightBlue = new Color(parent.getDisplay(), 222, 232, 247);
@@ -75,8 +72,7 @@ public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubM
 		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.TOP) {
 			@Override
 			protected Composite createButtons(Composite parent) {
-				Composite result = UIControlsFactory.createComposite(parent, SWT.BORDER);
-				GridDataFactory.fillDefaults().applyTo(result);
+				Composite result = UIControlsFactory.createComposite(parent, SWT.NONE);
 
 				RowLayout buttonLayout = new RowLayout(SWT.VERTICAL);
 				buttonLayout.marginTop = 10;
