@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -63,6 +64,9 @@ public class MasterDetailsComposite extends AbstractMasterDetailsComposite {
 		return (Table) super.getTable();
 	}
 
+	// protected methods
+	////////////////////
+
 	/**
 	 * The default implementation will creates a table with zero columns.
 	 * <p>
@@ -75,12 +79,28 @@ public class MasterDetailsComposite extends AbstractMasterDetailsComposite {
 	 * share the full width of the table.
 	 */
 	protected Table createTable(Composite compTable, TableColumnLayout layout) {
-		Table table = new Table(compTable, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER);
+		Table table = new Table(compTable, getTableStyle());
+		// Check that table does not allow multiple selection
+		Assert.isLegal((table.getStyle() & SWT.MULTI) == 0);
 		// Do not create columns here or change the TableColumnLayout.
 		// Clients assume both are pristine so they can configure it to their liking
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		return table;
+	}
+
+	/**
+	 * Returns the style bits for the 'table'. Subclasses may override, but has
+	 * to return a value that is supported by the {@link Table}.
+	 * <p>
+	 * Never return SWT.MULTI. By design, this widget does not support multiple
+	 * selection.
+	 * 
+	 * @return SWT.SINGLE | SWT.FULL_SELECTION
+	 * @since 2.0
+	 */
+	protected int getTableStyle() {
+		return SWT.SINGLE | SWT.FULL_SELECTION;
 	}
 
 }

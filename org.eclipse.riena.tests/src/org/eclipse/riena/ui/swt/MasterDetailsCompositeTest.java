@@ -142,6 +142,30 @@ public class MasterDetailsCompositeTest extends TestCase {
 		assertEquals(5, layout.marginWidth);
 	}
 
+	public void testGetMargins() {
+		MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE);
+
+		assertEquals(0, widget.getMargins().x);
+		assertEquals(0, widget.getMargins().y);
+
+		widget.setMargins(4, 5);
+
+		assertEquals(4, widget.getMargins().x);
+		assertEquals(5, widget.getMargins().y);
+	}
+
+	public void testGetSetSpacing() {
+		MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE);
+
+		assertEquals(0, widget.getSpacing().x);
+		assertEquals(5, widget.getSpacing().y);
+
+		widget.setSpacing(3, 4);
+
+		assertEquals(3, widget.getSpacing().x);
+		assertEquals(4, widget.getSpacing().y);
+	}
+
 	// helping classes
 	//////////////////
 

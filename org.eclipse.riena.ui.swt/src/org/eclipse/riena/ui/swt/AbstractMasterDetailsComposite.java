@@ -21,7 +21,12 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -95,7 +100,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 		super(parent, style);
 		checkOrientation(orientation);
 
-		setLayout(GridLayoutFactory.swtDefaults().margins(0, 0).create());
+		setLayout(GridLayoutFactory.swtDefaults().margins(0, 0).spacing(0, 5).create());
 		if (orientation == SWT.TOP) {
 			details = createComposite(getDetailsStyle());
 			createDetails(details);
@@ -198,6 +203,35 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	/**
+	 * Return the margins, in pixels, for the top/bottom, left/right edges of
+	 * the widget.
+	 * 
+	 * @return a Point; never null. The x value corresponds to the top/bottom
+	 *         margin. The y value corresponds to the left/right margin.
+	 * @since 2.0
+	 */
+	public Point getMargins() {
+		GridLayout layout = (GridLayout) getLayout();
+		Point result = new Point(layout.marginHeight, layout.marginWidth);
+		return result;
+	}
+
+	/**
+	 * Return the spacing, in pixels, for the right/left and top/bottom edgets
+	 * of the cells within the widget.
+	 * 
+	 * @return a Point; never null. The x value corresponds to the right/left
+	 *         spacing. The y value corresponds to the top/bottom spacing.
+	 * @since 2.0
+	 */
+	public Point getSpacing() {
+		GridLayout layout = (GridLayout) getLayout();
+		GridLayout mLayout = (GridLayout) master.getLayout();
+		Point result = new Point(mLayout.horizontalSpacing, layout.verticalSpacing);
+		return result;
+	}
+
+	/**
 	 * Returns the Table control of the 'master' area.
 	 * 
 	 * @return a Table; never null
@@ -247,6 +281,26 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 		GridLayout layout = (GridLayout) getLayout();
 		layout.marginHeight = marginHeight;
 		layout.marginWidth = marginWidth;
+		layout(false);
+	}
+
+	/**
+	 * Sets the spacing for the right/left and top/bottom edges of the cells
+	 * within the widget.
+	 * 
+	 * @param hSpacing
+	 *            the space, in pixels, between the right edge of a cell and the
+	 *            left edge of the cell to the left. The default value is 0.
+	 * @param vSpacing
+	 *            the space, in pixels, between the bottom edge of a cell and
+	 *            the top edge of the cell underneath. The default value is 5.
+	 * @since 2.0
+	 */
+	public void setSpacing(int hSpacing, int vSpacing) {
+		GridLayout layout = (GridLayout) getLayout();
+		layout.verticalSpacing = vSpacing;
+		GridLayout mLayout = (GridLayout) master.getLayout();
+		mLayout.horizontalSpacing = hSpacing;
 		layout(false);
 	}
 
@@ -329,26 +383,29 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 */
 	protected Composite createButtons(Composite parent) {
 		Composite result = UIControlsFactory.createComposite(parent);
-		// result.setBackground(compButton.getDisplay().getSystemColor(SWT.COLOR_GREEN));
-		GridDataFactory.fillDefaults().applyTo(result);
+		// result.setBackground(getDisplay().getSystemColor(SWT.COLOR_GREEN));
 		RowLayout buttonLayout = new RowLayout(SWT.VERTICAL);
 		buttonLayout.marginTop = 0;
-		buttonLayout.marginLeft = 0;
-		buttonLayout.marginRight = 0;
+		buttonLayout.marginLeft = 3;
+		buttonLayout.marginRight = 2;
 		buttonLayout.fill = true;
 		result.setLayout(buttonLayout);
+
 		Button btnNew = createButtonNew(result);
 		if (btnNew != null) {
 			addUIControl(btnNew, BIND_ID_NEW);
 		}
+
 		Button btnRemove = createButtonRemove(result);
 		if (btnRemove != null) {
 			addUIControl(btnRemove, BIND_ID_REMOVE);
 		}
+
 		Button btnApply = createButtonApply(result);
 		if (btnApply != null) {
 			addUIControl(btnApply, BIND_ID_APPLY);
 		}
+
 		return result;
 	}
 
@@ -399,10 +456,10 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * override, but has to return a value that is supported by
 	 * {@link Composite}.
 	 * 
-	 * @return {@code SWT.NONE}
+	 * @return {@code SWT.BORDER} (since 2.0)
 	 */
 	protected int getMasterStyle() {
-		return SWT.NONE;
+		return SWT.BORDER;
 	}
 
 	// helping methods
@@ -425,10 +482,17 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	private void createMaster(Composite parent) {
-		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(parent);
+		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).spacing(0, 0).applyTo(parent);
 		Composite compTable = createTableComposite(parent);
 		Composite compButton = createButtons(parent);
-		if (compButton == null) {
+		if (compButton != null) {
+			if (compButton.getLayoutData() == null) {
+				GridDataFactory.fillDefaults().applyTo(compButton);
+			}
+			if ((compButton.getStyle() & SWT.BORDER) == 0) {
+				compButton.addPaintListener(new LinePaintListener());
+			}
+		} else {
 			((GridData) compTable.getLayoutData()).horizontalSpan = 2;
 		}
 	}
@@ -461,6 +525,25 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 		}
 		Assert.isNotNull(result);
 		return result;
+	}
+
+	// helping classes
+	//////////////////
+
+	private static final class LinePaintListener implements PaintListener {
+		private Color fgColor;
+
+		public void paintControl(PaintEvent e) {
+			GC gc = e.gc;
+			Color oldFg = gc.getForeground();
+			if (fgColor == null) {
+				fgColor = new Color(e.display, 171, 179, 179);
+			}
+			gc.setForeground(fgColor);
+			Rectangle bounds = ((Control) e.widget).getBounds();
+			gc.drawLine(0, 0, 0, bounds.height);
+			gc.setForeground(oldFg);
+		}
 	}
 
 }
