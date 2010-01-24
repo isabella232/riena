@@ -880,6 +880,11 @@ public final class LnfKeyConstants {
 	 */
 	public static final String SUB_MODULE_VIEW_SEPARATOR_LINE_RENDERER = "SubModuleView.separatorLineRenderer"; //$NON-NLS-1$
 
+	/**
+	 * @since 2.0
+	 */
+	public static final String MASTER_DETAILS_WIDGET_SEPARATOR_FOREGROUND = "MDW.separatorForeground"; //$NON-NLS-1$
+
 	private LnfKeyConstants() {
 		super();
 	}

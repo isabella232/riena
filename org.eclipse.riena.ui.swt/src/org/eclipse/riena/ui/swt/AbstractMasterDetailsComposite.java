@@ -537,7 +537,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 			GC gc = e.gc;
 			Color oldFg = gc.getForeground();
 			if (fgColor == null) {
-				fgColor = new Color(e.display, 171, 179, 179);
+				fgColor = LnfManager.getLnf().getColor(LnfKeyConstants.MASTER_DETAILS_WIDGET_SEPARATOR_FOREGROUND);
 			}
 			gc.setForeground(fgColor);
 			Rectangle bounds = ((Control) e.widget).getBounds();
