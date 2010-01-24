@@ -126,6 +126,7 @@ public final class SnippetMasterDetailsRidget007 {
 	public static void main(String[] args) {
 		Display display = Display.getDefault();
 		final Shell shell = new Shell(display);
+		shell.setText(SnippetMasterDetailsRidget007.class.getSimpleName());
 		shell.setLayout(new FillLayout());
 
 		DefaultButtonManager buttonMan = new DefaultButtonManager(shell);

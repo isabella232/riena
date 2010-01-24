@@ -67,11 +67,6 @@ public final class SnippetMasterDetailsRidget002 {
 			hFill.applyTo(txtFirst);
 			addUIControl(txtFirst, "txtFirst"); //$NON-NLS-1$
 		}
-
-		@Override
-		protected int getDetailsStyle() {
-			return SWT.BORDER;
-		}
 	}
 
 	/**
@@ -131,6 +126,7 @@ public final class SnippetMasterDetailsRidget002 {
 	public static void main(String[] args) {
 		Display display = Display.getDefault();
 		Shell shell = new Shell(display);
+		shell.setText(SnippetMasterDetailsRidget002.class.getSimpleName());
 		shell.setLayout(new FillLayout());
 
 		PersonMasterDetails details = new PersonMasterDetails(shell, SWT.NONE);

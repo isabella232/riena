@@ -19,6 +19,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -60,6 +61,11 @@ public final class SnippetMasterDetailsRidget005 {
 			UIControlsFactory.createLabel(parent, "First Name:"); //$NON-NLS-1$
 			Combo combo = UIControlsFactory.createCombo(parent, "combo"); //$NON-NLS-1$
 			hFill.applyTo(combo);
+		}
+
+		@Override
+		protected Button createButtonNew(Composite compButton) {
+			return null; // no 'New' button
 		}
 	}
 

@@ -128,6 +128,7 @@ public final class SnippetMasterDetailsRidget003 {
 	public static void main(String[] args) {
 		Display display = Display.getDefault();
 		final Shell shell = new Shell(display);
+		shell.setText(SnippetMasterDetailsRidget003.class.getSimpleName());
 		shell.setLayout(new FillLayout());
 
 		PersonMasterDetails details = new PersonMasterDetails(shell, SWT.NONE);

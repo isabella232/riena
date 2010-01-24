@@ -71,11 +71,6 @@ public final class SnippetMasterDetailsRidget004 {
 			hFill.applyTo(txtFirst);
 			addUIControl(txtFirst, "txtFirst"); //$NON-NLS-1$
 		}
-
-		@Override
-		protected int getDetailsStyle() {
-			return SWT.BORDER;
-		}
 	}
 
 	/**
