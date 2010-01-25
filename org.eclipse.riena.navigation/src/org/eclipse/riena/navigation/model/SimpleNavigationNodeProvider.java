@@ -240,8 +240,13 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	}
 
 	public void registerNavigationAssembler(String id, INavigationAssembler assembler) {
-		Assert.isTrue(assemblyId2AssemblerCache.put(id, assembler) == null,
-				"There are two assembly extension definitions for '" + id + "'."); //$NON-NLS-1$ //$NON-NLS-2$
+		INavigationAssembler oldAssembler = assemblyId2AssemblerCache.put(id, assembler);
+		if (oldAssembler != null) {
+			String msg = String.format("There are two assembly extension definitions for '%s'.", id); //$NON-NLS-1$
+			RuntimeException runtimeExc = new IllegalStateException(msg);
+			LOGGER.log(LogService.LOG_ERROR, msg, runtimeExc);
+			throw runtimeExc;
+		}
 	}
 
 	public INavigationAssembler getNavigationAssembler(String assemblyId) {
