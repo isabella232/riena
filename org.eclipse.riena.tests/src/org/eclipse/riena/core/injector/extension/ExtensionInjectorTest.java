@@ -541,7 +541,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
 		VariableManagerUtil.removeVariable("value");
-		VariableManagerUtil.removeVariable("key");
+		VariableManagerUtil.removeVariable("text");
 	}
 
 	public void testModifyGlobalOff() throws CoreException {
@@ -562,7 +562,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
 		VariableManagerUtil.removeVariable("value");
-		VariableManagerUtil.removeVariable("key");
+		VariableManagerUtil.removeVariable("text");
 	}
 
 	public void testModifyInterfaceOff() throws CoreException {
@@ -583,7 +583,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
 		VariableManagerUtil.removeVariable("value");
-		VariableManagerUtil.removeVariable("key");
+		VariableManagerUtil.removeVariable("text");
 	}
 
 	public void testModifyMethodOff() throws CoreException {
@@ -604,7 +604,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
 		VariableManagerUtil.removeVariable("value");
-		VariableManagerUtil.removeVariable("key");
+		VariableManagerUtil.removeVariable("text");
 	}
 
 	// public void testMasses() {
