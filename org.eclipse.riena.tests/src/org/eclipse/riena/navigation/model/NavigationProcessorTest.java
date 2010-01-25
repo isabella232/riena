@@ -18,7 +18,7 @@ import org.easymock.EasyMock;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -38,8 +38,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 /**
  * Tests for the NavigationProcessor.
  */
-// @NonUITestCase FIXME when addPluginXml works again
-@ManualTestCase
+@NonUITestCase
 public class NavigationProcessorTest extends RienaTestCase {
 
 	private NavigationProcessor navigationProcessor;
@@ -69,11 +68,6 @@ public class NavigationProcessorTest extends RienaTestCase {
 		module.addChild(subModule);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.tests.RienaTestCase#tearDown()
-	 */
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
@@ -149,12 +143,9 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	}
 
-	// FIXME this test is disabled until we find a solution for the addPluginXml problem
 	public void testNavigate() throws Exception {
 
 		subModule.activate();
-
-		System.err.println("NODE: " + applicationNode);
 
 		assertEquals(1, applicationNode.getChildren().size());
 		assertTrue(subApplication.isActivated());
