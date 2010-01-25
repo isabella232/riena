@@ -12,13 +12,12 @@ package org.eclipse.riena.core.injector.extension;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Test the {@code ExtensionInjector} with respect to the wiring feature.
  */
-//NonUITestCase FIXME addPluginXML does not work
-@ManualTestCase
+@NonUITestCase
 public class ExtensionInjectorWithMultipleExtensionPointIdTest extends RienaTestCase {
 
 	public void testWithEPsAandBAndContribsAandB() {
@@ -96,11 +95,13 @@ public class ExtensionInjectorWithMultipleExtensionPointIdTest extends RienaTest
 
 		removeExtension("core.test.extpoint.id2");
 		removeExtensionPoint("core.test.extpointB");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginA.xml");
+		removeExtension("core.test.extpoint.id1");
+		removeExtensionPoint("core.test.extpointA");
 		injector.stop();
 	}
 
-	// TODO Have to find out why this fails.
-	public void XXXtestWithEPsAAndContribsAandB() {
+	public void testWithEPsAAndContribsAandB() {
 		printTestName();
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginA.xml");
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epA.xml");
@@ -115,6 +116,9 @@ public class ExtensionInjectorWithMultipleExtensionPointIdTest extends RienaTest
 
 		removeExtension("core.test.extpoint.id1");
 		removeExtensionPoint("core.test.extpointA");
+		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginB.xml");
+		removeExtension("core.test.extpoint.id2");
+		removeExtensionPoint("core.test.extpointB");
 		injector.stop();
 	}
 
