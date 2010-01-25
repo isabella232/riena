@@ -20,14 +20,13 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.tests.Activator;
 
 /**
  * Test the {@code ExtensionInjector}.
  */
-// @NonUITestCase FIXME when addPluginXml works again
-@ManualTestCase
+@NonUITestCase
 public class ExtensionInjectorTest extends RienaTestCase {
 
 	public void testConstructorConstraints() {

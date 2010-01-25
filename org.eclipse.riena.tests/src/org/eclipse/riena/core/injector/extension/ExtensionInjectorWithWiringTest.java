@@ -12,13 +12,12 @@ package org.eclipse.riena.core.injector.extension;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Test the {@code ExtensionInjector} with respect to the wiring feature.
  */
-//NonUITestCase FIXME addPluginXML does not work
-@ManualTestCase
+@NonUITestCase
 public class ExtensionInjectorWithWiringTest extends RienaTestCase {
 
 	public void testWiring() {
