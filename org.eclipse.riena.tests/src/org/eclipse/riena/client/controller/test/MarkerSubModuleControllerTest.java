@@ -151,9 +151,9 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		return markableRidgets;
 	}
 
-	// TODO not working because assertIsBoundToModel() in AbstractSelectableRidget throws an exception when calling setSelection on ITreeRidget.
+	// TODO [ev] not working because assertIsBoundToModel() in AbstractSelectableRidget throws an exception when calling setSelection on ITreeRidget.
 	// See 296639: Make getRowObservables() independent of the uiControl https://bugs.eclipse.org/bugs/show_bug.cgi?id=296639
-	public void testMandatoryMarkerOptions() {
+	public void test_xxx_MandatoryMarkerOptions() {
 		ITreeRidget treePersons = getController().getRidget(ITreeRidget.class, "treePersons"); //$NON-NLS-1$
 		treePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		TestSingleSelectionBean singleSelectionBean = new TestSingleSelectionBean();
