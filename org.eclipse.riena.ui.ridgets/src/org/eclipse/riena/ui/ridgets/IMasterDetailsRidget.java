@@ -102,10 +102,30 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	boolean isDirectWriting();
 
 	/**
+	 * Return true if the 'Apply' button enables on the condition that all
+	 * ridgets in the Details are have <b>no</b> error markers.
+	 * <p>
+	 * The default setting for this option is false.
+	 * 
+	 * @since 2.0
+	 */
+	boolean isApplyRequiresNoErrors();
+
+	/**
+	 * Return true if the 'Apply' button enables on the condition that all
+	 * ridgets in the Details are have <b>no</b> mandatory markers.
+	 * <p>
+	 * The default setting for this option is false.
+	 * 
+	 * @since 2.0
+	 */
+	boolean isApplyRequiresNoMandatories();
+
+	/**
 	 * When set to true, the 'Apply' button will only enable when all ridgets in
 	 * the Details area have <b>no</b> error markers.
 	 * <p>
-	 * The detault setting for this option is false.
+	 * The default setting for this option is false.
 	 * 
 	 * @param requiresNoErrors
 	 *            The new setting for this option.
@@ -113,6 +133,19 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * @since 1.2
 	 */
 	void setApplyRequiresNoErrors(boolean requiresNoErrors);
+
+	/**
+	 * When set to true, the 'Apply' button will only enable when all ridgets in
+	 * the Details area have <b>no</b> mandatory markers.
+	 * <p>
+	 * The default setting for this option is false.
+	 * 
+	 * @param requiresNoMandatories
+	 *            The new setting for this option.
+	 * 
+	 * @since 2.0
+	 */
+	void setApplyRequiresNoMandatories(boolean requiresNoMandatories);
 
 	/**
 	 * Adjust the column widths of the ridget's table control according to the

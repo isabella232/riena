@@ -22,6 +22,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Table;
@@ -30,6 +31,8 @@ import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -40,6 +43,7 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
+import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -162,8 +166,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	public void testAddBean() {
 		MasterDetailsRidget ridget = getRidget();
 		MDWidget widget = getWidget();
-		ITextRidget txtColumn1 = (ITextRidget) ridget.getRidget("txtColumn1");
-		ITextRidget txtColumn2 = (ITextRidget) ridget.getRidget("txtColumn2");
+		ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
 
 		bindToModel(true);
 		int oldSize = input.size();
@@ -207,8 +211,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		MasterDetailsRidget ridget = getRidget();
 		MDWidget widget = getWidget();
 		Table table = widget.getTable();
-		ITextRidget txtColumn1 = (ITextRidget) ridget.getRidget("txtColumn1");
-		ITextRidget txtColumn2 = (ITextRidget) ridget.getRidget("txtColumn2");
+		ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
 
 		bindToModel(true);
 
@@ -388,8 +392,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	public void testHandleSelectionChange() {
 		IMasterDetailsRidget ridget = getRidget();
 		bindToModel(true);
-		ITextRidget txtColumn1 = (ITextRidget) ridget.getRidget("txtColumn1");
-		ITextRidget txtColumn2 = (ITextRidget) ridget.getRidget("txtColumn2");
+		ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
 
 		MDBean item0 = input.get(0);
 		ridget.setSelection(item0);
@@ -660,7 +664,6 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	 * {@link AbstractMasterDetailsRidget}.
 	 */
 	public void testUpdateEnabled() {
-
 		bindToModel(true);
 
 		MasterDetailsRidget ridget = getRidget();
@@ -691,6 +694,81 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(delegate.txtColumn1.isEnabled());
 		assertFalse(delegate.txtColumn2.isEnabled());
 
+	}
+
+	public void testApplyRequiresNoErrors() {
+		bindToModel(true);
+
+		IMasterDetailsRidget ridget = getRidget();
+		MDBean first = input.get(0);
+		ridget.setSelection(first);
+		Button applyButton = getWidget().getButtonApply();
+		ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		txtColumn1.addValidationRule(new MinLength(5), ValidationTime.ON_UPDATE_TO_MODEL);
+		txtColumn1.setText("abc");
+
+		assertTrue(txtColumn1.isErrorMarked());
+		assertFalse(ridget.isApplyRequiresNoErrors());
+		assertTrue(applyButton.isEnabled());
+
+		ridget.setApplyRequiresNoErrors(true);
+
+		assertTrue(txtColumn1.isErrorMarked());
+		assertTrue(ridget.isApplyRequiresNoErrors());
+		assertFalse(applyButton.isEnabled());
+
+		txtColumn1.setText("abcdef");
+
+		assertFalse(txtColumn1.isErrorMarked());
+		assertTrue(ridget.isApplyRequiresNoErrors());
+		assertTrue(applyButton.isEnabled());
+
+		txtColumn1.setText("abc");
+		ridget.setApplyRequiresNoErrors(false);
+
+		assertTrue(txtColumn1.isErrorMarked());
+		assertFalse(ridget.isApplyRequiresNoErrors());
+		assertTrue(applyButton.isEnabled());
+	}
+
+	public void testApplyRequiresNoMandatories() {
+		bindToModel(true);
+
+		IMasterDetailsRidget ridget = getRidget();
+		MDBean first = input.get(0);
+		ridget.setSelection(first);
+		Button applyButton = getWidget().getButtonApply();
+		ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		MandatoryMarker marker = new MandatoryMarker();
+		txtColumn1.addMarker(marker);
+		txtColumn1.setText("");
+
+		assertTrue(txtColumn1.isMandatory());
+		assertFalse(marker.isDisabled());
+		assertFalse(ridget.isApplyRequiresNoMandatories());
+		assertTrue(applyButton.isEnabled());
+
+		ridget.setApplyRequiresNoMandatories(true);
+
+		assertTrue(txtColumn1.isMandatory());
+		assertFalse(marker.isDisabled());
+		assertTrue(ridget.isApplyRequiresNoMandatories());
+		assertFalse(applyButton.isEnabled());
+
+		txtColumn1.setText("abc");
+
+		assertTrue(txtColumn1.isMandatory());
+		assertTrue(marker.isDisabled());
+		assertTrue(ridget.isApplyRequiresNoMandatories());
+		assertTrue(applyButton.isEnabled());
+
+		txtColumn1.setText("");
+		ridget.setApplyRequiresNoMandatories(false);
+
+		assertTrue(txtColumn1.isMandatory());
+		assertFalse(marker.isDisabled());
+		assertFalse(ridget.isApplyRequiresNoMandatories());
+		assertTrue(applyButton.isEnabled());
 	}
 
 	// helping methods

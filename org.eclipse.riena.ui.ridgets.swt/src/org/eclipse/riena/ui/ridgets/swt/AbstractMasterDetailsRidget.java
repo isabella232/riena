@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -57,6 +58,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	private DataBindingContext dbc;
 	private boolean isDirectWriting;
 	private boolean applyRequiresNoErrors;
+	private boolean applyRequiresNoMandatories;
 	private boolean detailsEnabled;
 	private boolean ignoreChanges;
 
@@ -73,12 +75,15 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	public AbstractMasterDetailsRidget() {
 		addPropertyChangeListener(null, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (ignoreChanges || delegate == null
+				String propertyName = evt.getPropertyName();
+				if (ignoreChanges
+						|| delegate == null
 						|| editable == null
 						// ignore these events:
-						|| (!applyRequiresNoErrors && IMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName()))
-						|| IRidget.PROPERTY_ENABLED.equals(evt.getPropertyName())
-						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(evt.getPropertyName())) {
+						|| (!applyRequiresNoErrors && IMarkableRidget.PROPERTY_MARKER.equals(propertyName))
+						|| (!applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER.equals(propertyName))
+						|| IRidget.PROPERTY_ENABLED.equals(propertyName)
+						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)) {
 					return;
 				}
 				// System.out.println(String.format("\tMD: %s %s", evt.getPropertyName(), evt.getSource()));
@@ -187,12 +192,30 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return (AbstractMasterDetailsComposite) super.getUIControl();
 	}
 
+	public boolean isApplyRequiresNoErrors() {
+		return applyRequiresNoErrors;
+	}
+
+	public boolean isApplyRequiresNoMandatories() {
+		return applyRequiresNoMandatories;
+	}
+
 	public boolean isDirectWriting() {
 		return isDirectWriting;
 	}
 
 	public void setApplyRequiresNoErrors(boolean requiresNoErrors) {
-		this.applyRequiresNoErrors = requiresNoErrors;
+		if (applyRequiresNoErrors != requiresNoErrors) {
+			applyRequiresNoErrors = requiresNoErrors;
+			updateApplyButton();
+		}
+	}
+
+	public void setApplyRequiresNoMandatories(boolean requiresNoMandatories) {
+		if (applyRequiresNoMandatories != requiresNoMandatories) {
+			applyRequiresNoMandatories = requiresNoMandatories;
+			updateApplyButton();
+		}
 	}
 
 	public void setColumnWidths(Object[] widths) {
@@ -231,8 +254,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	public final void updateApplyButton() {
 		boolean isChanged = areDetailsChanged();
-		if (applyRequiresNoErrors) {
-			getApplyButtonRidget().setEnabled(isChanged && !hasErrors());
+		if (applyRequiresNoErrors || applyRequiresNoMandatories) {
+			boolean noErrors = applyRequiresNoErrors ? !hasErrors() : true;
+			boolean noMandatories = applyRequiresNoMandatories ? !hasMandatories() : true;
+			getApplyButtonRidget().setEnabled(isChanged && noErrors && noMandatories);
 		} else {
 			getApplyButtonRidget().setEnabled(isChanged);
 		}
@@ -414,6 +439,20 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				IMarkableRidget markableRidget = (IMarkableRidget) ridget;
 				if (!markableRidget.getMarkersOfType(ErrorMarker.class).isEmpty()) {
 					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean hasMandatories() {
+		for (IRidget ridget : detailRidgets.getRidgets()) {
+			if (ridget instanceof IMarkableRidget) {
+				IMarkableRidget markableRidget = (IMarkableRidget) ridget;
+				for (MandatoryMarker marker : markableRidget.getMarkersOfType(MandatoryMarker.class)) {
+					if (!marker.isDisabled()) {
+						return true;
+					}
 				}
 			}
 		}
