@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,7 @@ import org.eclipse.riena.internal.core.injector.extension.ExtensionMapper;
 public class ExtensionInjector implements IStoppable {
 
 	/**
-	 * When this system property is set to {@code true} than the {@code
+	 * When this system property is set to {@code true} then the {@code
 	 * ExtensionInjector} will not wire created executable extension.
 	 */
 	public static final String RIENA_EXTENSIONS_DONOTWIRE_SYSTEM_PROPERTY = "riena.extensions.donotwire"; //$NON-NLS-1$
@@ -71,7 +71,7 @@ public class ExtensionInjector implements IStoppable {
 	}
 
 	/**
-	 * Start the extension injector.<br>
+	 * Start the extension injector.
 	 * 
 	 * @param context
 	 * @return itself
@@ -245,7 +245,7 @@ public class ExtensionInjector implements IStoppable {
 		}
 
 		if (candidates.size() > 2) {
-			throw new InjectionFailure("Too much (>2) candidates (" + candidates + ") for 'bind' method " //$NON-NLS-1$ //$NON-NLS-2$
+			throw new InjectionFailure("Too many (>2) candidates (" + candidates + ") for 'bind' method " //$NON-NLS-1$ //$NON-NLS-2$
 					+ updateMethodName + "."); //$NON-NLS-1$
 		}
 
@@ -283,7 +283,7 @@ public class ExtensionInjector implements IStoppable {
 			final Object[] beans = ExtensionMapper.map(symbolReplace, extensionDesc, componentType, nonSpecific);
 			if (!matchesExtensionPointConstraint(beans.length)) {
 				LOGGER.log(LogService.LOG_ERROR, "Number of extensions " + beans.length //$NON-NLS-1$
-						+ " does not fullfil the extension point's " + extensionDesc.getExtensionPointId() //$NON-NLS-1$
+						+ " does not fulfill the extension point's " + extensionDesc.getExtensionPointId() //$NON-NLS-1$
 						+ " constraints."); //$NON-NLS-1$
 			}
 			if (isArray) {
@@ -355,7 +355,7 @@ public class ExtensionInjector implements IStoppable {
 		 * .core. runtime.IExtensionPoint[])
 		 */
 		public void removed(final IExtensionPoint[] extensionPoints) {
-			// We don´t care about other extension points. We only listen to the
+			// We don't care about other extension points. We only listen to the
 			// extensions for the id <code>extensionDesc</code>!
 		}
 

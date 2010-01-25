@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -93,7 +93,7 @@ public abstract class ServiceInjector implements IStoppable {
 	/**
 	 * Start the binding/un-binding/tracking for the target.
 	 * <p>
-	 * If there are matching and available services than they will be bound
+	 * If there are matching and available services then they will be bound
 	 * before returning from this method.
 	 * 
 	 * @throws some_kind_of_unchecked_exception
