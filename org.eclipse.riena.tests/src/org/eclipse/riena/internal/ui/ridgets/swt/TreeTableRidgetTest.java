@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.beans.common.WordNode;
+import org.eclipse.riena.internal.ui.swt.test.TestUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
@@ -752,12 +753,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		Class<?> shellLayout = getShell().getLayout().getClass();
 		assertSame(shellLayout, control.getParent().getLayout().getClass());
 		assertTrue(control.getLayout() instanceof TableLayout);
-		final int expected = control.getSize().x / 3;
-
-		assertTrue(String.valueOf(expected), expected > 0);
-		for (int i = 0; i < 3; i++) {
-			assertEquals("col #" + i, expected, control.getColumn(i).getWidth());
-		}
+		TestUtils.assertColumnWidths(control, 3);
 	}
 
 	/**

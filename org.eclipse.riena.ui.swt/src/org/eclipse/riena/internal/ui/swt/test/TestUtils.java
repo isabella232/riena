@@ -18,8 +18,11 @@ import java.util.Locale;
 import junit.framework.Assert;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.IMarker;
@@ -34,6 +37,28 @@ public final class TestUtils {
 
 	private TestUtils() {
 		// utility class
+	}
+
+	/**
+	 * For a given Tree or Table, tests that the layouting results in
+	 * correctly-calculated column widths.
+	 * 
+	 * @param control
+	 *            the Tree or Table widget to check
+	 * @param numberOfCols
+	 *            the number of columns that the widget displays
+	 */
+	public static void assertColumnWidths(Control control, int numberOfCols) {
+		final int expected = control.getSize().x / numberOfCols;
+		Assert.assertTrue(String.valueOf(expected), expected > 0);
+
+		for (int column = 0; column < numberOfCols; column++) {
+			int actual = getColumnWidth(control, column);
+			// take into account rounding errors, e.g. total width 85 => col widths (29, 28, 28)
+			String message = String.format(
+					"col %d, expected %d <= x <= %d but was %d", column, expected, (expected + 1), actual); //$NON-NLS-1$
+			Assert.assertTrue(message, (expected <= actual && actual <= expected + 1));
+		}
 	}
 
 	/**
@@ -256,6 +281,15 @@ public final class TestUtils {
 			// System.out.println("exp car: " + expected);
 			Assert.assertEquals(expected, control.getCaretPosition());
 		}
+	}
+
+	private static int getColumnWidth(Control control, int colIndex) {
+		if (control instanceof Tree) {
+			return ((Tree) control).getColumn(colIndex).getWidth();
+		} else if (control instanceof Table) {
+			return ((Table) control).getColumn(colIndex).getWidth();
+		}
+		throw new IllegalArgumentException("unsupported control: " + control); //$NON-NLS-1$
 	}
 
 	private static String removePositionMarkers(String input) {
