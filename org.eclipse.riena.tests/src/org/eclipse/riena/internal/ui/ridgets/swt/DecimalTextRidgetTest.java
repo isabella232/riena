@@ -736,7 +736,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setEnabled(false);
 
 		assertFalse(ridget.isEnabled());
-		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (MarkerSupport.isHideDisabledRidgetContent()) {
 			assertEquals("", control.getText());
 		} else {
 			assertEquals(localize("12,00"), control.getText());

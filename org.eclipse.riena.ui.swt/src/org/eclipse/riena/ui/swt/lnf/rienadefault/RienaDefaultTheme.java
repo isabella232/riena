@@ -400,6 +400,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.DISABLED_MARKER_ADVANCED, true);
 		table.put(LnfKeyConstants.DISABLED_MARKER_STANDARD_ALPHA, 90);
 		// table.put(LnfKeyConstants.DISABLED_MARKER_COMPLEX_ALPHA, 190);
+		table.put(LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT, true);
 
 		table.put(LnfKeyConstants.MARKER_SUPPORT_ID, "defaultMarkerSupport"); //$NON-NLS-1$
 

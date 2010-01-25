@@ -459,14 +459,14 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertEquals("Option A", optionProvider.getSelectedOption());
 		assertEquals("Option A", ridget.getSelection());
-		String expectedA = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT ? null : "Option A";
+		String expectedA = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option A";
 		assertEquals(expectedA, getSelectedControlValue(control));
 
 		ridget.setSelection("Option B");
 
 		assertEquals("Option B", optionProvider.getSelectedOption());
 		assertEquals("Option B", ridget.getSelection());
-		String expectedB = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT ? null : "Option B";
+		String expectedB = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option B";
 		assertEquals(expectedB, getSelectedControlValue(control));
 
 		ridget.setEnabled(true);
@@ -490,7 +490,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertEquals("Option A", optionProvider.getSelectedOption());
 		assertEquals("Option A", ridget.getSelection());
-		String expectedA = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT ? null : "Option A";
+		String expectedA = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option A";
 		assertEquals(expectedA, getSelectedControlValue(control));
 
 		optionProvider.setSelectedOption("Option B");
@@ -498,7 +498,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertEquals("Option B", optionProvider.getSelectedOption());
 		assertEquals("Option B", ridget.getSelection());
-		String expectedB = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT ? null : "Option B";
+		String expectedB = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option B";
 		assertEquals(expectedB, getSelectedControlValue(control));
 
 		ridget.setEnabled(true);
@@ -542,7 +542,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		ridget.setUIControl(control);
 
 		assertFalse(control.isEnabled());
-		String expectedB = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT ? null : "Option B";
+		String expectedB = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option B";
 		assertEquals(expectedB, getSelectedControlValue(control));
 
 		ridget.setEnabled(true);

@@ -492,7 +492,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		if (viewer != null) {
 			Control control = viewer.getControl();
 			control.removeListener(SWT.EraseItem, ERASE_LISTENER);
-			if (!isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			if (!isEnabled() && MarkerSupport.isHideDisabledRidgetContent()) {
 				control.addListener(SWT.EraseItem, ERASE_LISTENER);
 			}
 		}

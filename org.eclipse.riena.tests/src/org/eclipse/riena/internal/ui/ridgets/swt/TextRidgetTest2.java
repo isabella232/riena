@@ -1321,7 +1321,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testDisabledHasNoTextFromRidget() {
-		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (!MarkerSupport.isHideDisabledRidgetContent()) {
 			System.out.println("Skipping TextRidgetTest2.testDisabledHasNoTextFromRidget()");
 			return;
 		}
@@ -1356,7 +1356,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testDisabledHasNoTextFromModel() {
-		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (!MarkerSupport.isHideDisabledRidgetContent()) {
 			System.out.println("Skipping TextRidgetTest2.testDisabledHasNoTextFromModel()");
 			return;
 		}
@@ -1398,7 +1398,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	 * @see http://bugs.eclipse.org/281891
 	 */
 	public void testDisabledControlHasNoText() {
-		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (!MarkerSupport.isHideDisabledRidgetContent()) {
 			System.out.println("Skipping TextRidgetTest2.testDisabledHasNoText()");
 			return;
 		}

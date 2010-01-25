@@ -483,7 +483,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			disposeBinding(selectionBindingInternal);
 			selectionBindingInternal = null;
 			/* clear combo */
-			if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			if (MarkerSupport.isHideDisabledRidgetContent()) {
 				removeAllFromUIControl();
 			}
 		}

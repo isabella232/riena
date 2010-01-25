@@ -584,7 +584,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertEquals("Option A", optionProvider.getSelectedOptions().get(0));
 		assertEquals("Option A", ridget.getSelection().get(0));
-		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (MarkerSupport.isHideDisabledRidgetContent()) {
 			assertEquals(0, getSelectionCount(control));
 		} else {
 			assertEquals("Option A", getSelectedControlValues(control).get(0));
@@ -594,7 +594,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertEquals("Option B", optionProvider.getSelectedOptions().get(0));
 		assertEquals("Option B", ridget.getSelection().get(0));
-		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (MarkerSupport.isHideDisabledRidgetContent()) {
 			assertEquals(0, getSelectionCount(control));
 		} else {
 			assertEquals("Option B", getSelectedControlValues(control).get(0));
@@ -621,7 +621,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertEquals("Option A", optionProvider.getSelectedOptions().get(0));
 		assertEquals("Option A", ridget.getSelection().get(0));
-		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (MarkerSupport.isHideDisabledRidgetContent()) {
 			assertEquals(0, getSelectionCount(control));
 		} else {
 			assertEquals("Option A", getSelectedControlValues(control).get(0));
@@ -632,7 +632,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertEquals("Option B", optionProvider.getSelectedOptions().get(0));
 		assertEquals("Option B", ridget.getSelection().get(0));
-		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (MarkerSupport.isHideDisabledRidgetContent()) {
 			assertEquals(0, getSelectionCount(control));
 		} else {
 			assertEquals("Option B", getSelectedControlValues(control).get(0));
@@ -679,7 +679,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		ridget.setUIControl(control);
 
 		assertFalse(control.isEnabled());
-		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (MarkerSupport.isHideDisabledRidgetContent()) {
 			assertEquals(0, getSelectionCount(control));
 		} else {
 			assertEquals(1, getSelectionCount(control));

@@ -500,7 +500,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * the ridget is disabled.
 	 */
 	public void testDisabledListIsEmptyFromRidget() {
-		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (!MarkerSupport.isHideDisabledRidgetContent()) {
 			System.out.println("Skipping ListRidgetTest.testDisabledListIsEmptyFromRidget()");
 			return;
 		}
@@ -540,7 +540,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * even when the ridget is disabled.
 	 */
 	public void testDisabledListIsEmptyFromModel() {
-		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (!MarkerSupport.isHideDisabledRidgetContent()) {
 			System.out.println("Skipping ListRidgetTest.testDisabledListIsEmptyFromModel()");
 			return;
 		}
@@ -628,7 +628,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * the ridget.
 	 */
 	public void testDisableAndClearOnBind() {
-		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (!MarkerSupport.isHideDisabledRidgetContent()) {
 			System.out.println("Skipping ListRidgetTest.testDisableAndClearOnBind()");
 			return;
 		}

@@ -212,16 +212,16 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		}
 		if (viewerObservables != null) {
 			if (hasViewer()) {
-			AbstractListViewer viewer = getViewer();
-			viewer.getControl().setRedraw(false); // prevent flicker during
-			// update
-			StructuredSelection currentSelection = new StructuredSelection(getSelection());
-			try {
-				configureViewer(viewer);
-			} finally {
-				viewer.setSelection(currentSelection);
-				viewer.getControl().setRedraw(true);
-			}
+				AbstractListViewer viewer = getViewer();
+				viewer.getControl().setRedraw(false); // prevent flicker during
+				// update
+				StructuredSelection currentSelection = new StructuredSelection(getSelection());
+				try {
+					configureViewer(viewer);
+				} finally {
+					viewer.setSelection(currentSelection);
+					viewer.getControl().setRedraw(true);
+				}
 			} else {
 				refreshSelection();
 			}
@@ -483,7 +483,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		@Override
 		public String getColumnText(Object element, int columnIndex) {
 			String result;
-			if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT && !isEnabled()) {
+			if (MarkerSupport.isHideDisabledRidgetContent() && !isEnabled()) {
 				result = ""; //$NON-NLS-1$
 			} else {
 				result = useToString ? toString(element) : super.getColumnText(element, columnIndex);

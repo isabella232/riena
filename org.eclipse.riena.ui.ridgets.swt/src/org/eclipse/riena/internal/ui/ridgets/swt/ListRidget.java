@@ -112,7 +112,7 @@ public class ListRidget extends AbstractListRidget {
 			if (hasViewer()) {
 				refreshViewer();
 				List list = viewer.getList();
-				if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+				if (MarkerSupport.isHideDisabledRidgetContent()) {
 					list.deselectAll();
 				}
 				list.setData(savedBackgroundKey, list.getBackground());

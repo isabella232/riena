@@ -455,7 +455,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 
 	private void refreshRowStyle(Control rowControl, boolean isEnabled, boolean isOutput, Color bgColor) {
 		rowControl.setBackground(bgColor);
-		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (MarkerSupport.isHideDisabledRidgetContent()) {
 			rowControl.setVisible(isEnabled);
 		}
 		rowControl.setEnabled(isEnabled && !isOutput);

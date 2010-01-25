@@ -618,7 +618,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	 * the ridget is disabled.
 	 */
 	public void testDisabledComboIsEmptyFromRidget() {
-		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (!MarkerSupport.isHideDisabledRidgetContent()) {
 			System.out.println("Skipping ComboRidgetTest.testDisabledComboIsEmptyFromRidget()");
 			return;
 		}
@@ -658,7 +658,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	 * even when the ridget is disabled.
 	 */
 	public void testDisabledComboIsEmptyFromModel() {
-		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (!MarkerSupport.isHideDisabledRidgetContent()) {
 			System.out.println("Skipping ComboRidgetTest.testDisabledComboIsEmptyFromModel()");
 			return;
 		}

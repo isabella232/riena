@@ -675,6 +675,11 @@ public final class LnfKeyConstants {
 	public static final String STATUSLINE_ERROR_ICON = "statusline.errorIcon"; //$NON-NLS-1$
 	public static final String STATUSLINE_INFO_ICON = "statusline.infoIcon"; //$NON-NLS-1$
 	public static final String STATUSLINE_WARNING_ICON = "statusline.warningIcon"; //$NON-NLS-1$
+	/**
+	 * Returns the icon in the status line to open the process list.
+	 * 
+	 * @since 2.0
+	 */
 	public static final String STATUSLINE_UI_PROCESS_ICON = "statusline.uiProcessIcon"; //$NON-NLS-1$
 
 	public static final String NAVIGATION_SCROLL_UP_ICON = "navigation.scrollup"; //$NON-NLS-1$
@@ -732,6 +737,14 @@ public final class LnfKeyConstants {
 	 * @since 2.0
 	 */
 	public static final String DISABLED_MARKER_ADVANCED = "DisabledMarker.advanced"; //$NON-NLS-1$
+
+	/**
+	 * This constants returns whether the content of a disabled ridget should be
+	 * visible ({@code false}) or hidden {@code true}.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String DISABLED_MARKER_HIDE_CONTENT = "DisabledMarker.advancedContent"; //$NON-NLS-1$
 
 	/**
 	 * This constant is described in Eclipsepedia.

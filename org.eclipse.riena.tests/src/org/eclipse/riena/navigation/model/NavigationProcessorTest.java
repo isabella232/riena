@@ -626,11 +626,19 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	}
 
+	/**
+	 * Tests the method {@code create}.
+	 */
 	public void testCreate() {
 
 		INavigationNode<?> targetNode = navigationProcessor.create(module, new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.subModule"), null);
 		assertEquals(subModule, targetNode);
+
+		addPluginXml(NavigationProcessorTest.class, "NavigationProcessorTest.xml");
+		targetNode = navigationProcessor.create(module, new NavigationNodeId(
+				"org.eclipse.riena.navigation.model.test.secondModuleGroup"), null);
+		assertEquals("org.eclipse.riena.navigation.model.test.secondModuleGroup", targetNode.getNodeId().getTypeId());
 
 	}
 

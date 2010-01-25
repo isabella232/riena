@@ -50,16 +50,19 @@ public class MarkerSupport extends BasicMarkerSupport {
 	private static final String PRE_NEGATIVE_FOREGROUND_KEY = "org.eclipse.riena.MarkerSupport.preNegativeForeground"; //$NON-NLS-1$
 
 	/**
-	 * This flag controls whether disabled ridget do hide their content. Since
-	 * v2.0 the default value is {@code false}. It can be overridden by setting
-	 * the system property {@code 'HIDE_DISABLED_RIDGET_CONTENT'} to {@code
-	 * true}.
+	 * This flag defines the default value that defines whether disabled ridgets
+	 * do hide their content. Since v2.0 the default value is {@code false}. It
+	 * can be overridden by setting the system property {@code 
+	 * 'HIDE_DISABLED_RIDGET_CONTENT'} to {@code true}.
 	 * <p>
-	 * Note: this field was made public for testing purposes. It should not be
-	 * referenced outside this package.
+	 * Note: A Look&Feel constants exits to define whether disabled ridgets do
+	 * hide their content: {@code LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT}.
+	 * The default value is only used, if the current Look&Feel doesn't use
+	 * {@code LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT}.
 	 */
-	public static final boolean HIDE_DISABLED_RIDGET_CONTENT = Boolean.parseBoolean(System.getProperty(
+	private static final boolean HIDE_DISABLED_RIDGET_CONTENT = Boolean.parseBoolean(System.getProperty(
 			"HIDE_DISABLED_RIDGET_CONTENT", Boolean.FALSE.toString())); //$NON-NLS-1$
+	private static Boolean hideDisabledRidgetContent;
 
 	private ControlDecoration errorDecoration;
 
@@ -101,6 +104,20 @@ public class MarkerSupport extends BasicMarkerSupport {
 		if (errorDecoration != null) {
 			errorDecoration.hide();
 		}
+	}
+
+	/**
+	 * Returns whether the content of a disabled ridget should be visible (
+	 * {@code false}) or hidden {@code true}.
+	 * 
+	 * @return ({@code false}): visible; {@code true}: hidden
+	 */
+	public static boolean isHideDisabledRidgetContent() {
+		if (hideDisabledRidgetContent == null) {
+			hideDisabledRidgetContent = LnfManager.getLnf().getBooleanSetting(
+					LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT, HIDE_DISABLED_RIDGET_CONTENT);
+		}
+		return hideDisabledRidgetContent;
 	}
 
 	/**

@@ -209,7 +209,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	 *            true if this ridget is enabled, false otherwise
 	 */
 	private void updateSelection(boolean isRidgetEnabled) {
-		if (getUIControl() != null && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (getUIControl() != null && MarkerSupport.isHideDisabledRidgetContent()) {
 			if (!isRidgetEnabled) {
 				setUIControlSelection(false);
 			} else {
@@ -253,7 +253,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	 */
 	private final class CancelControlUpdateWhenDisabled implements IValidator {
 		public IStatus validate(Object value) {
-			boolean cancel = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT && !isEnabled();
+			boolean cancel = MarkerSupport.isHideDisabledRidgetContent() && !isEnabled();
 			return cancel ? Status.CANCEL_STATUS : Status.OK_STATUS;
 		}
 	}

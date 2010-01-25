@@ -942,7 +942,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testDisabledHasNoTextFromModel() {
-		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (!MarkerSupport.isHideDisabledRidgetContent()) {
 			System.out.println("Skipping TextRidgetTest2.testDisabledHasNoTextFromModel()");
 			return;
 		}

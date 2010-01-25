@@ -265,7 +265,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	// ////////////////
 
 	private String getTextBasedOnEnablement(String value) {
-		boolean hideValue = !isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT;
+		boolean hideValue = !isEnabled() && MarkerSupport.isHideDisabledRidgetContent();
 		return hideValue ? EMPTY_STRING : value;
 	}
 

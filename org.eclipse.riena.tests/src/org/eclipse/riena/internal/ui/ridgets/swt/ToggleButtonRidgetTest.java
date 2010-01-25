@@ -383,7 +383,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		assertTrue(model.isSelected());
 		assertTrue(ridget.isSelected());
-		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (MarkerSupport.isHideDisabledRidgetContent()) {
 			assertFalse(control.getSelection());
 		} else {
 			assertTrue(control.getSelection());
@@ -419,7 +419,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		assertTrue(model.isSelected());
 		assertTrue(ridget.isSelected());
-		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (MarkerSupport.isHideDisabledRidgetContent()) {
 			assertFalse(control.getSelection());
 		} else {
 			assertTrue(control.getSelection());
@@ -453,7 +453,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(ridget.isEnabled());
 		assertTrue(ridget.isSelected());
 		assertFalse(control.isEnabled());
-		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (MarkerSupport.isHideDisabledRidgetContent()) {
 			assertFalse(control.getSelection());
 		} else {
 			assertTrue(control.getSelection());
@@ -501,7 +501,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setUIControl(control);
 
 		assertFalse(control.isEnabled());
-		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+		if (MarkerSupport.isHideDisabledRidgetContent()) {
 			assertFalse(control.getSelection());
 		} else {
 			assertTrue(control.getSelection());
