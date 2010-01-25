@@ -51,9 +51,10 @@ public class SubModuleViewTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-
 		super.setUp();
+
 		addPluginXml(SubModuleViewTest.class, "SubModuleViewTest.xml");
+
 		ApplicationNode appNode = new ApplicationNode();
 		SubApplicationNode subAppNode = new SubApplicationNode();
 		appNode.addChild(subAppNode);
@@ -74,6 +75,12 @@ public class SubModuleViewTest extends RienaTestCase {
 		parent.addChild(node);
 		subModuleNodeView.createPartControl(new Shell());
 		node.activate();
+	}
+
+	@Override
+	protected void tearDown() throws Exception {
+		removeExtension("sub.module.view.test");
+		super.tearDown();
 	}
 
 	public void testCreateController() throws Exception {

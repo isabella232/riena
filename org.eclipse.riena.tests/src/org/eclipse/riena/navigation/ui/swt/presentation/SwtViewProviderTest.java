@@ -33,6 +33,12 @@ public class SwtViewProviderTest extends RienaTestCase {
 		addPluginXml(SwtViewProviderTest.class, "SwtViewProviderTest.xml");
 	}
 
+	@Override
+	protected void tearDown() throws Exception {
+		removeExtension("swt.view.provider.test");
+		super.tearDown();
+	}
+
 	public void testGetSwtViewIdSharedView() throws Exception {
 
 		ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId1"));

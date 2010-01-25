@@ -107,15 +107,18 @@ public class WireTest extends RienaTestCase {
 	public void testAnnotatedExtensionWiring() {
 		addPluginXml(WireTest.class, "plugin.xml");
 		addPluginXml(WireTest.class, "plugin_ext.xml");
-		AnnoExtBeanB beanB = new AnnoExtBeanB();
-		SequenceUtil.init();
-		WirePuller puller = Wire.instance(beanB).andStart(context);
-		SequenceUtil.assertExpected("textA", "infoB");
-		SequenceUtil.init();
-		puller.stop();
-		SequenceUtil.assertExpected("-IDataB", "-IDataA");
-		removeExtension("core.test.extpoint.idA");
-		removeExtension("core.test.extpoint.idB");
 
+		try {
+			AnnoExtBeanB beanB = new AnnoExtBeanB();
+			SequenceUtil.init();
+			WirePuller puller = Wire.instance(beanB).andStart(context);
+			SequenceUtil.assertExpected("textA", "infoB");
+			SequenceUtil.init();
+			puller.stop();
+			SequenceUtil.assertExpected("-IDataB", "-IDataA");
+		} finally {
+			removeExtension("core.test.extpoint.idA");
+			removeExtension("core.test.extpoint.idB");
+		}
 	}
 }

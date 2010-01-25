@@ -57,55 +57,63 @@ public class NavigationViewFactoryTest extends RienaTestCase {
 
 	public void testConfiguredNavigationViewFactory() {
 		NavigationViewFactory viewFactory = new NavigationViewFactory();
-		this.addPluginXml(this.getClass(), "pluginXmlNavigationViewFactory.xml");
-		Wire.instance(viewFactory).andStart(getContext());
+		addPluginXml(this.getClass(), "pluginXmlNavigationViewFactory.xml");
 
-		ModuleView moduleView = viewFactory.createModuleView(new Shell());
+		try {
+			Wire.instance(viewFactory).andStart(getContext());
 
-		assertNotNull(moduleView);
-		assertTrue(moduleView.getClass() == TestModuleView.class);
+			ModuleView moduleView = viewFactory.createModuleView(new Shell());
 
-		ModuleController moduleController = viewFactory.createModuleController(new ModuleNode());
-		assertNotNull(moduleController);
-		assertTrue(moduleController.getClass() == SWTModuleController.class);
+			assertNotNull(moduleView);
+			assertTrue(moduleView.getClass() == TestModuleView.class);
 
-		ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
+			ModuleController moduleController = viewFactory.createModuleController(new ModuleNode());
+			assertNotNull(moduleController);
+			assertTrue(moduleController.getClass() == SWTModuleController.class);
 
-		assertNotNull(moduleGroupView);
-		assertTrue(moduleGroupView.getClass() == TestModuleGroupView.class);
+			ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
 
-		ModuleGroupController moduleGroupController = viewFactory.createModuleGroupController(new ModuleGroupNode());
-		assertNotNull(moduleGroupController);
-		assertTrue(moduleGroupController.getClass() == ModuleGroupController.class);
+			assertNotNull(moduleGroupView);
+			assertTrue(moduleGroupView.getClass() == TestModuleGroupView.class);
 
-		this.removeExtension("org.eclipse.riena.test.navigationModuleView");
-		this.removeExtension("org.eclipse.riena.test.navigationModuleGroupView");
+			ModuleGroupController moduleGroupController = viewFactory
+					.createModuleGroupController(new ModuleGroupNode());
+			assertNotNull(moduleGroupController);
+			assertTrue(moduleGroupController.getClass() == ModuleGroupController.class);
+		} finally {
+			removeExtension("org.eclipse.riena.test.navigationModuleView");
+			removeExtension("org.eclipse.riena.test.navigationModuleGroupView");
+		}
 	}
 
 	public void testConfiguredNavigationViewFactorySecond() {
 		NavigationViewFactory viewFactory = new NavigationViewFactory();
-		this.addPluginXml(this.getClass(), "pluginXmlNavigationViewFactoryWithController.xml");
-		Wire.instance(viewFactory).andStart(getContext());
+		addPluginXml(this.getClass(), "pluginXmlNavigationViewFactoryWithController.xml");
 
-		ModuleView moduleView = viewFactory.createModuleView(new Shell());
+		try {
+			Wire.instance(viewFactory).andStart(getContext());
 
-		assertNotNull(moduleView);
-		assertTrue(moduleView.getClass() == TestModuleView.class);
+			ModuleView moduleView = viewFactory.createModuleView(new Shell());
 
-		ModuleController moduleController = viewFactory.createModuleController(new ModuleNode());
-		assertNotNull(moduleController);
-		assertTrue(moduleController.getClass() == TestModuleController.class);
+			assertNotNull(moduleView);
+			assertTrue(moduleView.getClass() == TestModuleView.class);
 
-		ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
+			ModuleController moduleController = viewFactory.createModuleController(new ModuleNode());
+			assertNotNull(moduleController);
+			assertTrue(moduleController.getClass() == TestModuleController.class);
 
-		assertNotNull(moduleGroupView);
-		assertTrue(moduleGroupView.getClass() == TestModuleGroupView.class);
+			ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
 
-		ModuleGroupController moduleGroupController = viewFactory.createModuleGroupController(new ModuleGroupNode());
-		assertNotNull(moduleGroupController);
-		assertTrue(moduleGroupController.getClass() == TestModuleGroupController.class);
+			assertNotNull(moduleGroupView);
+			assertTrue(moduleGroupView.getClass() == TestModuleGroupView.class);
 
-		this.removeExtension("org.eclipse.riena.test.navigationModuleView");
-		this.removeExtension("org.eclipse.riena.test.navigationModuleGroupView");
+			ModuleGroupController moduleGroupController = viewFactory
+					.createModuleGroupController(new ModuleGroupNode());
+			assertNotNull(moduleGroupController);
+			assertTrue(moduleGroupController.getClass() == TestModuleGroupController.class);
+		} finally {
+			removeExtension("org.eclipse.riena.test.navigationModuleView");
+			removeExtension("org.eclipse.riena.test.navigationModuleGroupView");
+		}
 	}
 }

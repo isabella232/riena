@@ -143,7 +143,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	}
 
-	public void xxx_testNavigate() throws Exception {
+	public void testNavigate() throws Exception {
 
 		subModule.activate();
 
@@ -151,41 +151,45 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertTrue(subApplication.isActivated());
 
 		addPluginXml(NavigationProcessorTest.class, "NavigationProcessorTest.xml");
-		subModule.navigate(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"));
+		try {
+			subModule.navigate(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"));
 
-		assertEquals(2, applicationNode.getChildren().size());
-		assertFalse(subApplication.isActivated());
-		ISubApplicationNode secondSubApplication = applicationNode.getChild(1);
-		assertEquals(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondSubApplication"),
-				secondSubApplication.getNodeId());
-		assertTrue(secondSubApplication.isActivated());
-		assertEquals(1, secondSubApplication.getChildren().size());
-		IModuleGroupNode secondModuleGroup = secondSubApplication.getChild(0);
-		assertEquals(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"),
-				secondModuleGroup.getNodeId());
-		assertTrue(secondModuleGroup.isActivated());
-		IModuleNode secondModule = secondModuleGroup.getChild(0);
-		ISubModuleNode secondSubModule = secondModule.getChild(0);
-		assertTrue(secondSubModule.isActivated());
+			assertEquals(2, applicationNode.getChildren().size());
+			assertFalse(subApplication.isActivated());
+			ISubApplicationNode secondSubApplication = applicationNode.getChild(1);
+			assertEquals(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondSubApplication"),
+					secondSubApplication.getNodeId());
+			assertTrue(secondSubApplication.isActivated());
+			assertEquals(1, secondSubApplication.getChildren().size());
+			IModuleGroupNode secondModuleGroup = secondSubApplication.getChild(0);
+			assertEquals(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"),
+					secondModuleGroup.getNodeId());
+			assertTrue(secondModuleGroup.isActivated());
+			IModuleNode secondModule = secondModuleGroup.getChild(0);
+			ISubModuleNode secondSubModule = secondModule.getChild(0);
+			assertTrue(secondSubModule.isActivated());
 
-		secondSubModule.navigateBack();
+			secondSubModule.navigateBack();
 
-		assertFalse(secondSubApplication.isActivated());
-		assertFalse(secondSubModule.isActivated());
-		assertTrue(subApplication.isActivated());
-		assertTrue(subModule.isActivated());
+			assertFalse(secondSubApplication.isActivated());
+			assertFalse(secondSubModule.isActivated());
+			assertTrue(subApplication.isActivated());
+			assertTrue(subModule.isActivated());
 
-		subModule.navigate(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"));
+			subModule.navigate(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"));
 
-		assertFalse(subApplication.isActivated());
-		assertFalse(subModule.isActivated());
-		assertEquals(2, applicationNode.getChildren().size());
-		assertSame(secondSubApplication, applicationNode.getChild(1));
-		assertTrue(secondSubApplication.isActivated());
-		assertEquals(1, secondSubApplication.getChildren().size());
-		assertSame(secondModuleGroup, secondSubApplication.getChild(0));
-		assertTrue(secondModuleGroup.isActivated());
-		assertTrue(secondSubModule.isActivated());
+			assertFalse(subApplication.isActivated());
+			assertFalse(subModule.isActivated());
+			assertEquals(2, applicationNode.getChildren().size());
+			assertSame(secondSubApplication, applicationNode.getChild(1));
+			assertTrue(secondSubApplication.isActivated());
+			assertEquals(1, secondSubApplication.getChildren().size());
+			assertSame(secondModuleGroup, secondSubApplication.getChild(0));
+			assertTrue(secondModuleGroup.isActivated());
+			assertTrue(secondSubModule.isActivated());
+		} finally {
+			removeExtension("navigation.processor.test");
+		}
 	}
 
 	/**
@@ -620,17 +624,21 @@ public class NavigationProcessorTest extends RienaTestCase {
 	/**
 	 * Tests the method {@code create}.
 	 */
-	public void xxx_testCreate() {
+	public void testCreate() {
 
 		INavigationNode<?> targetNode = navigationProcessor.create(module, new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.subModule"), null);
 		assertEquals(subModule, targetNode);
 
 		addPluginXml(NavigationProcessorTest.class, "NavigationProcessorTest.xml");
-		targetNode = navigationProcessor.create(module, new NavigationNodeId(
-				"org.eclipse.riena.navigation.model.test.secondModuleGroup"), null);
-		assertEquals("org.eclipse.riena.navigation.model.test.secondModuleGroup", targetNode.getNodeId().getTypeId());
-
+		try {
+			targetNode = navigationProcessor.create(module, new NavigationNodeId(
+					"org.eclipse.riena.navigation.model.test.secondModuleGroup"), null);
+			assertEquals("org.eclipse.riena.navigation.model.test.secondModuleGroup", targetNode.getNodeId()
+					.getTypeId());
+		} finally {
+			removeExtension("navigation.processor.test");
+		}
 	}
 
 	private static class TestSubModuleNode extends SubModuleNode {
