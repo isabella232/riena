@@ -65,20 +65,25 @@ public class NavigationViewFactory implements IViewFactory {
 	 * @see org.eclipse.riena.navigation.ui.swt.views.IViewFactory#createModuleGroupController(org.eclipse.riena.navigation.IModuleGroupNode)
 	 */
 	public ModuleGroupController createModuleGroupController(IModuleGroupNode moduleGroupNode) {
+		ModuleGroupController controller = null;
 		if (moduleGroupDescriptionExtension != null) {
 			Class<ModuleGroupController> moduleGroupClazz = moduleGroupDescriptionExtension.getController();
 			if (moduleGroupClazz != null) {
 				try {
 					Constructor<ModuleGroupController> constructor = moduleGroupClazz
 							.getConstructor(IModuleGroupNode.class);
-					return constructor.newInstance(moduleGroupNode);
+					controller = constructor.newInstance(moduleGroupNode);
 				} catch (Exception e) {
 					throw new RuntimeException("Instantiating the configured ModuleGroupController " + moduleGroupClazz //$NON-NLS-1$
 							+ " failed.", e); //$NON-NLS-1$
 				}
 			}
 		}
-		return new ModuleGroupController(moduleGroupNode);
+		if (controller == null) {
+			controller = new ModuleGroupController(moduleGroupNode);
+		}
+		controller.setNavigationNode(moduleGroupNode);
+		return controller;
 	}
 
 	/**
@@ -102,19 +107,24 @@ public class NavigationViewFactory implements IViewFactory {
 	 * @see org.eclipse.riena.navigation.ui.swt.views.IViewFactory#createModuleController(org.eclipse.riena.navigation.IModuleNode)
 	 */
 	public ModuleController createModuleController(IModuleNode moduleNode) {
+		ModuleController controller = null;
 		if (moduleDescriptionExtension != null) {
 			Class<ModuleController> moduleViewClazz = moduleDescriptionExtension.getController();
 			if (moduleViewClazz != null) {
 				try {
 					Constructor<ModuleController> constructor = moduleViewClazz.getConstructor(IModuleNode.class);
-					return constructor.newInstance(moduleNode);
+					controller = constructor.newInstance(moduleNode);
 				} catch (Exception e) {
 					throw new RuntimeException("Instantiating the configured ModuleController " + moduleViewClazz //$NON-NLS-1$
 							+ " failed.", e); //$NON-NLS-1$
 				}
 			}
 		}
-		return new SWTModuleController(moduleNode);
+		if (controller == null) {
+			controller = new SWTModuleController(moduleNode);
+		}
+		controller.setNavigationNode(moduleNode);
+		return controller;
 	}
 
 }
