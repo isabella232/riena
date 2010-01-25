@@ -26,20 +26,26 @@ public class ExtensionInjectorWithMultipleExtensionPointIdTest extends RienaTest
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginB.xml");
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epA.xml");
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epB.xml");
-		ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
-		ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target).andStart(
-				getContext());
-		IDataMultipleExtensionPointId[] data = target.getData();
-		assertNotNull(data);
-		assertEquals(2, data.length);
-		assertEquals("A", data[0].getText());
-		assertEquals("B", data[1].getText());
 
-		removeExtension("core.test.extpoint.id1");
-		removeExtension("core.test.extpoint.id2");
-		removeExtensionPoint("core.test.extpointA");
-		removeExtensionPoint("core.test.extpointB");
-		injector.stop();
+		try {
+			ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
+			ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target)
+					.andStart(getContext());
+			try {
+				IDataMultipleExtensionPointId[] data = target.getData();
+				assertNotNull(data);
+				assertEquals(2, data.length);
+				assertEquals("A", data[0].getText());
+				assertEquals("B", data[1].getText());
+			} finally {
+				injector.stop();
+			}
+		} finally {
+			removeExtension("core.test.extpoint.id1");
+			removeExtension("core.test.extpoint.id2");
+			removeExtensionPoint("core.test.extpointA");
+			removeExtensionPoint("core.test.extpointB");
+		}
 	}
 
 	public void testWithEPsAandBAndContribA() {
@@ -47,18 +53,24 @@ public class ExtensionInjectorWithMultipleExtensionPointIdTest extends RienaTest
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginA.xml");
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginB.xml");
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epA.xml");
-		ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
-		ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target).andStart(
-				getContext());
-		IDataMultipleExtensionPointId[] data = target.getData();
-		assertNotNull(data);
-		assertEquals(1, data.length);
-		assertEquals("A", data[0].getText());
 
-		removeExtension("core.test.extpoint.id1");
-		removeExtensionPoint("core.test.extpointA");
-		removeExtensionPoint("core.test.extpointB");
-		injector.stop();
+		try {
+			ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
+			ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target)
+					.andStart(getContext());
+			try {
+				IDataMultipleExtensionPointId[] data = target.getData();
+				assertNotNull(data);
+				assertEquals(1, data.length);
+				assertEquals("A", data[0].getText());
+			} finally {
+				injector.stop();
+			}
+		} finally {
+			removeExtension("core.test.extpoint.id1");
+			removeExtensionPoint("core.test.extpointA");
+			removeExtensionPoint("core.test.extpointB");
+		}
 	}
 
 	public void testWithEPsAandBAndContribB() {
@@ -66,18 +78,24 @@ public class ExtensionInjectorWithMultipleExtensionPointIdTest extends RienaTest
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginA.xml");
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginB.xml");
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epB.xml");
-		ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
-		ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target).andStart(
-				getContext());
-		IDataMultipleExtensionPointId[] data = target.getData();
-		assertNotNull(data);
-		assertEquals(1, data.length);
-		assertEquals("B", data[0].getText());
 
-		removeExtension("core.test.extpoint.id2");
-		removeExtensionPoint("core.test.extpointA");
-		removeExtensionPoint("core.test.extpointB");
-		injector.stop();
+		try {
+			ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
+			ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target)
+					.andStart(getContext());
+			try {
+				IDataMultipleExtensionPointId[] data = target.getData();
+				assertNotNull(data);
+				assertEquals(1, data.length);
+				assertEquals("B", data[0].getText());
+			} finally {
+				injector.stop();
+			}
+		} finally {
+			removeExtension("core.test.extpoint.id2");
+			removeExtensionPoint("core.test.extpointA");
+			removeExtensionPoint("core.test.extpointB");
+		}
 	}
 
 	public void testWithEPsBAndContribsAandB() {
@@ -85,20 +103,26 @@ public class ExtensionInjectorWithMultipleExtensionPointIdTest extends RienaTest
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginB.xml");
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epA.xml");
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epB.xml");
-		ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
-		ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target).andStart(
-				getContext());
-		IDataMultipleExtensionPointId[] data = target.getData();
-		assertNotNull(data);
-		assertEquals(1, data.length);
-		assertEquals("B", data[0].getText());
 
-		removeExtension("core.test.extpoint.id2");
-		removeExtensionPoint("core.test.extpointB");
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginA.xml");
-		removeExtension("core.test.extpoint.id1");
-		removeExtensionPoint("core.test.extpointA");
-		injector.stop();
+		try {
+			ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
+			ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target)
+					.andStart(getContext());
+			try {
+				IDataMultipleExtensionPointId[] data = target.getData();
+				assertNotNull(data);
+				assertEquals(1, data.length);
+				assertEquals("B", data[0].getText());
+			} finally {
+				injector.stop();
+			}
+		} finally {
+			removeExtension("core.test.extpoint.id2");
+			removeExtensionPoint("core.test.extpointB");
+			addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginA.xml");
+			removeExtension("core.test.extpoint.id1");
+			removeExtensionPoint("core.test.extpointA");
+		}
 	}
 
 	public void testWithEPsAAndContribsAandB() {
@@ -106,20 +130,26 @@ public class ExtensionInjectorWithMultipleExtensionPointIdTest extends RienaTest
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginA.xml");
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epA.xml");
 		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "plugin_multiple_epB.xml");
-		ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
-		ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target).andStart(
-				getContext());
-		IDataMultipleExtensionPointId[] data = target.getData();
-		assertNotNull(data);
-		assertEquals(1, data.length);
-		assertEquals("A", data[0].getText());
 
-		removeExtension("core.test.extpoint.id1");
-		removeExtensionPoint("core.test.extpointA");
-		addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginB.xml");
-		removeExtension("core.test.extpoint.id2");
-		removeExtensionPoint("core.test.extpointB");
-		injector.stop();
+		try {
+			ConfigurableMultipleExtensionPointThing target = new ConfigurableMultipleExtensionPointThing();
+			ExtensionInjector injector = Inject.extension("core.test.extpointA,core.test.extpointB").into(target)
+					.andStart(getContext());
+			try {
+				IDataMultipleExtensionPointId[] data = target.getData();
+				assertNotNull(data);
+				assertEquals(1, data.length);
+				assertEquals("A", data[0].getText());
+			} finally {
+				injector.stop();
+			}
+		} finally {
+			removeExtension("core.test.extpoint.id1");
+			removeExtensionPoint("core.test.extpointA");
+			addPluginXml(ExtensionInjectorWithMultipleExtensionPointIdTest.class, "pluginB.xml");
+			removeExtension("core.test.extpoint.id2");
+			removeExtensionPoint("core.test.extpointB");
+		}
 	}
 
 }

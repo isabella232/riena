@@ -24,29 +24,36 @@ public class ExtensionInjectorWithWiringTest extends RienaTestCase {
 		printTestName();
 		addPluginXml(ExtensionInjectorWithWiringTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorWithWiringTest.class, "plugin_ext_wire.xml");
-		ConfigurableWiredThing target = new ConfigurableWiredThing();
-		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).andStart(
-				getContext());
-		IWireData data = target.getData();
-		assertNotNull(data);
-		// TODO warning suppression. Ignoring three FindBugs problems below
-		// about writing to static field. Since this is used only for testing
-		// manipulation of multiple instances is not an issue.
-		Wireable.wired = false;
-		assertTrue(data.createObjectTypeWithWire().isWired());
-		Wireable.wired = false;
-		assertFalse(data.createObjectTypeWithoutWire().isWired());
-		Wireable.wired = false;
-		IWireable wireable = data.createLazyObjectTypeWithWire();
-		assertFalse(Wireable.wired);
-		assertTrue(wireable.isWired());
-		Wireable.wired = false;
-		wireable = data.createLazyObjectTypeWithoutWire();
-		assertFalse(Wireable.wired);
-		assertFalse(wireable.isWired());
-		removeExtension("core.test.extpoint.id1");
-		removeExtensionPoint("core.test.extpoint");
-		injector.stop();
+
+		try {
+			ConfigurableWiredThing target = new ConfigurableWiredThing();
+			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+					.andStart(getContext());
+			try {
+				IWireData data = target.getData();
+				assertNotNull(data);
+				// TODO warning suppression. Ignoring three FindBugs problems below
+				// about writing to static field. Since this is used only for testing
+				// manipulation of multiple instances is not an issue.
+				Wireable.wired = false;
+				assertTrue(data.createObjectTypeWithWire().isWired());
+				Wireable.wired = false;
+				assertFalse(data.createObjectTypeWithoutWire().isWired());
+				Wireable.wired = false;
+				IWireable wireable = data.createLazyObjectTypeWithWire();
+				assertFalse(Wireable.wired);
+				assertTrue(wireable.isWired());
+				Wireable.wired = false;
+				wireable = data.createLazyObjectTypeWithoutWire();
+				assertFalse(Wireable.wired);
+				assertFalse(wireable.isWired());
+			} finally {
+				injector.stop();
+			}
+		} finally {
+			removeExtension("core.test.extpoint.id1");
+			removeExtensionPoint("core.test.extpoint");
+		}
 	}
 
 	public void testWiringWithSystemPropertySetToFalse() {
@@ -54,30 +61,37 @@ public class ExtensionInjectorWithWiringTest extends RienaTestCase {
 		System.setProperty(ExtensionInjector.RIENA_EXTENSIONS_DONOTWIRE_SYSTEM_PROPERTY, Boolean.TRUE.toString());
 		addPluginXml(ExtensionInjectorWithWiringTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorWithWiringTest.class, "plugin_ext_wire.xml");
-		ConfigurableWiredThing target = new ConfigurableWiredThing();
-		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).andStart(
-				getContext());
-		IWireData data = target.getData();
-		assertNotNull(data);
-		// TODO warning suppression. Ignoring three FindBugs problems below
-		// about writing to static field. Since this is used only for testing
-		// manipulation of multiple instances is not an issue.
-		Wireable.wired = false;
-		assertFalse(data.createObjectTypeWithWire().isWired());
-		Wireable.wired = false;
-		assertFalse(data.createObjectTypeWithoutWire().isWired());
-		Wireable.wired = false;
-		IWireable wireable = data.createLazyObjectTypeWithWire();
-		assertFalse(Wireable.wired);
-		assertFalse(wireable.isWired());
-		Wireable.wired = false;
-		wireable = data.createLazyObjectTypeWithoutWire();
-		assertFalse(Wireable.wired);
-		assertFalse(wireable.isWired());
-		removeExtension("core.test.extpoint.id1");
-		removeExtensionPoint("core.test.extpoint");
-		injector.stop();
-		System.clearProperty(ExtensionInjector.RIENA_EXTENSIONS_DONOTWIRE_SYSTEM_PROPERTY);
+
+		try {
+			ConfigurableWiredThing target = new ConfigurableWiredThing();
+			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+					.andStart(getContext());
+			try {
+				IWireData data = target.getData();
+				assertNotNull(data);
+				// TODO warning suppression. Ignoring three FindBugs problems below
+				// about writing to static field. Since this is used only for testing
+				// manipulation of multiple instances is not an issue.
+				Wireable.wired = false;
+				assertFalse(data.createObjectTypeWithWire().isWired());
+				Wireable.wired = false;
+				assertFalse(data.createObjectTypeWithoutWire().isWired());
+				Wireable.wired = false;
+				IWireable wireable = data.createLazyObjectTypeWithWire();
+				assertFalse(Wireable.wired);
+				assertFalse(wireable.isWired());
+				Wireable.wired = false;
+				wireable = data.createLazyObjectTypeWithoutWire();
+				assertFalse(Wireable.wired);
+				assertFalse(wireable.isWired());
+			} finally {
+				injector.stop();
+			}
+		} finally {
+			removeExtension("core.test.extpoint.id1");
+			removeExtensionPoint("core.test.extpoint");
+			System.clearProperty(ExtensionInjector.RIENA_EXTENSIONS_DONOTWIRE_SYSTEM_PROPERTY);
+		}
 	}
 
 }
