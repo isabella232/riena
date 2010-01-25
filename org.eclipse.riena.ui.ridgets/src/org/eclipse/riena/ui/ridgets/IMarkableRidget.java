@@ -51,6 +51,10 @@ public interface IMarkableRidget extends IBasicMarkableRidget {
 
 	/**
 	 * Indicates whether any MandatoryMarker was added.
+	 * <p>
+	 * To check if the ridget is flagged as mandatory, you'll have to check if
+	 * at least one of the mandatory markers is enabled. See
+	 * {@link #getMarkersOfType(Class)}.
 	 * 
 	 * @return <code>true</code> if mandatory otherwise <code>false</code>.
 	 */
