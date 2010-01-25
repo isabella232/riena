@@ -60,6 +60,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 * The default value is only used, if the current Look&Feel doesn't use
 	 * {@code LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT}.
 	 */
+	// TODO [ev] this breaks API - was public - at a minimum we should document it in the wiki
 	private static final boolean HIDE_DISABLED_RIDGET_CONTENT = Boolean.parseBoolean(System.getProperty(
 			"HIDE_DISABLED_RIDGET_CONTENT", Boolean.FALSE.toString())); //$NON-NLS-1$
 	private static Boolean hideDisabledRidgetContent;
@@ -111,6 +112,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 * {@code false}) or hidden {@code true}.
 	 * 
 	 * @return ({@code false}): visible; {@code true}: hidden
+	 * @since 2.0
 	 */
 	public static boolean isHideDisabledRidgetContent() {
 		if (hideDisabledRidgetContent == null) {
