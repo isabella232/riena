@@ -388,6 +388,17 @@ public class UIControlsFactory {
 		return button;
 	}
 
+	/**
+	 * @wbp.factory.parameter.source text "myButtonCheckText"
+	 * @wbp.factory.parameter.source bindingId "myButtonCheckId"
+	 * @since 2.0
+	 */
+	public static Button createButtonCheck(Composite parent, String text, String bindingId) {
+		Button button = createButtonCheck(parent, bindingId);
+		button.setText(text);
+		return button;
+	}
+
 	public static Button createButtonRadio(Composite parent) {
 		Button button = new Button(parent, SWT.RADIO);
 		button.setBackground(SHARED_BG_COLOR);

@@ -15,7 +15,6 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -49,11 +48,12 @@ public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubM
 	protected void basicCreatePartControl(Composite parent) {
 		colorLightBlue = new Color(parent.getDisplay(), 222, 232, 247);
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
-		layout.marginHeight = 5;
-		layout.marginWidth = 5;
-		parent.setLayout(layout);
-		createMasterDetails(parent);
+		parent.setLayout(new GridLayout());
+
+		Group groupMaster = createMasterDetails(parent);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(groupMaster);
+		Group groupOptions = createOptions(parent);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(groupOptions);
 	}
 
 	@Override
@@ -119,6 +119,16 @@ public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubM
 		Label lblStatus = UIControlsFactory.createLabel(result, "", SWT.CENTER, "lblStatus"); //$NON-NLS-1$ //$NON-NLS-2$
 		lblStatus.setBackground(colorLightBlue);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(lblStatus);
+
+		return result;
+	}
+
+	private Group createOptions(Composite parent) {
+		Group result = UIControlsFactory.createGroup(parent, "Apply Enablement:"); //$NON-NLS-1$
+		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(result);
+
+		UIControlsFactory.createButtonCheck(result, "No &Errors", "chkNoErrors"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonCheck(result, "No &Mandatories", "chkNoMandatories"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return result;
 	}

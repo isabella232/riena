@@ -21,6 +21,7 @@ import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
+import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
@@ -28,6 +29,7 @@ import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
@@ -56,7 +58,6 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 			txtFirst.updateFromModel();
 
 			ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
-			txtLast.setMandatory(true);
 			txtLast.setDirectWriting(true);
 			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
 			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
@@ -141,11 +142,10 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 		String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 
-		IMasterDetailsRidget master2 = getRidget(IMasterDetailsRidget.class, "master2"); //$NON-NLS-1$
+		final IMasterDetailsRidget master2 = getRidget(IMasterDetailsRidget.class, "master2"); //$NON-NLS-1$
 		master2.setDelegate(new PersonDelegate());
 		master2.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
 		master2.updateFromModel();
-		master2.setApplyRequiresNoErrors(true);
 
 		lblStatus = getRidget(ILabelRidget.class, "lblStatus"); //$NON-NLS-1$
 
@@ -159,6 +159,23 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 		IActionRidget actionRemove = master2.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_REMOVE);
 		actionRemove.setText(""); //$NON-NLS-1$
 		actionRemove.setIcon("remove_h.png"); //$NON-NLS-1$
+
+		final IToggleButtonRidget chkNoErrors = getRidget(IToggleButtonRidget.class, "chkNoErrors"); //$NON-NLS-1$
+		chkNoErrors.addListener(new IActionListener() {
+			public void callback() {
+				boolean noErrors = chkNoErrors.isSelected();
+				master2.setApplyRequiresNoErrors(noErrors);
+			}
+		});
+		chkNoErrors.setSelected(true);
+
+		final IToggleButtonRidget chkNoMandatories = getRidget(IToggleButtonRidget.class, "chkNoMandatories"); //$NON-NLS-1$
+		chkNoMandatories.addListener(new IActionListener() {
+			public void callback() {
+				boolean noMandatories = chkNoMandatories.isSelected();
+				master2.setApplyRequiresNoMandatories(noMandatories);
+			}
+		});
 
 		addDefaultAction(master2, actionApply);
 	}

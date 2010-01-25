@@ -80,13 +80,12 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 						|| delegate == null
 						|| editable == null
 						// ignore these events:
-						|| (!applyRequiresNoErrors && IMarkableRidget.PROPERTY_MARKER.equals(propertyName))
-						|| (!applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER.equals(propertyName))
-						|| IRidget.PROPERTY_ENABLED.equals(propertyName)
+						|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER
+								.equals(propertyName)) || IRidget.PROPERTY_ENABLED.equals(propertyName)
 						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)) {
 					return;
 				}
-				// System.out.println(String.format("\tMD: %s %s", evt.getPropertyName(), evt.getSource()));
+				// System.out.println(String.format("prop: %s %s", evt.getPropertyName(), evt.getSource()));
 				updateApplyButton();
 			}
 		});
@@ -257,7 +256,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		if (applyRequiresNoErrors || applyRequiresNoMandatories) {
 			boolean noErrors = applyRequiresNoErrors ? !hasErrors() : true;
 			boolean noMandatories = applyRequiresNoMandatories ? !hasMandatories() : true;
-			getApplyButtonRidget().setEnabled(isChanged && noErrors && noMandatories);
+			boolean isEnabled = isChanged && noErrors && noMandatories;
+			getApplyButtonRidget().setEnabled(isEnabled);
 		} else {
 			getApplyButtonRidget().setEnabled(isChanged);
 		}
