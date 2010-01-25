@@ -23,7 +23,6 @@ import java.util.Random;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
@@ -56,7 +55,7 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleNavigationNodeProvider.class);
 	private static Random random = null;
 
-	private Map<String, INavigationAssembler> assemblyId2AssemblerCache = new HashMap<String, INavigationAssembler>();
+	private final Map<String, INavigationAssembler> assemblyId2AssemblerCache = new HashMap<String, INavigationAssembler>();
 
 	/**
 	 * 
@@ -241,15 +240,8 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	}
 
 	public void registerNavigationAssembler(String id, INavigationAssembler assembler) {
-		try {
-			Assert.isTrue(assemblyId2AssemblerCache.get(id) == null,
-					"There are two assembly extension definitions for '" //$NON-NLS-1$
-							+ id + "'."); //$NON-NLS-1$
-			assemblyId2AssemblerCache.put(id, assembler);
-		} catch (AssertionFailedException exc) {
-			LOGGER.log(LogService.LOG_ERROR, "registerNavigationAssembler(): ", exc); //$NON-NLS-1$
-			throw exc;
-		}
+		Assert.isTrue(assemblyId2AssemblerCache.put(id, assembler) == null,
+				"There are two assembly extension definitions for '" + id + "'."); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public INavigationAssembler getNavigationAssembler(String assemblyId) {
@@ -376,7 +368,7 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#cleanUp()
 	 */
 	public void cleanUp() {
-		// nothing to do
+		assemblyId2AssemblerCache.clear();
 	}
 
 	/**
