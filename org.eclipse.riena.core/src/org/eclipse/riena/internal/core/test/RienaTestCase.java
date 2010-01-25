@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -65,7 +65,7 @@ public abstract class RienaTestCase extends TestCase {
 	/**
 	 * @param name
 	 */
-	public RienaTestCase(String name) {
+	public RienaTestCase(final String name) {
 		super(name);
 	}
 
@@ -90,7 +90,7 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param message
 	 *            A message explaining why nothing is wrong.
 	 */
-	protected void ok(String message) {
+	protected void ok(final String message) {
 		ok();
 	}
 
@@ -109,7 +109,7 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		for (ServiceReference reference : services.values()) {
+		for (final ServiceReference reference : services.values()) {
 			getContext().ungetService(reference);
 		}
 
@@ -128,9 +128,9 @@ public abstract class RienaTestCase extends TestCase {
 	protected BundleContext getContext() {
 		if (context == null) {
 			try {
-				Bundle bundle = FrameworkUtil.getBundle(getClass());
+				final Bundle bundle = FrameworkUtil.getBundle(getClass());
 				context = bundle.getBundleContext();
-			} catch (Throwable t) {
+			} catch (final Throwable t) {
 				Nop.reason("We don´t care. Maybe it is not running as a plugin test."); //$NON-NLS-1$
 			}
 		}
@@ -144,12 +144,12 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param resource
 	 * @return
 	 */
-	protected File getFile(String resource) {
+	protected File getFile(final String resource) {
 		// TODO warning suppression. Ignoring FindBugs problem that
 		// getResource(..) will return a resource relative to a
 		// subclass rather than relative to this class. This is the
 		// intended behavior.
-		URL url = getClass().getResource(resource);
+		final URL url = getClass().getResource(resource);
 		// nested File constructors for OS independence...
 		return new File(new File(new File("").getAbsolutePath(), "src"), url.getFile()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -161,7 +161,7 @@ public abstract class RienaTestCase extends TestCase {
 	 * @Deprecated Has been replaced by Eclipse´s trace facility.
 	 */
 	@Deprecated
-	protected void setPrint(boolean print) {
+	protected void setPrint(final boolean print) {
 	}
 
 	/**
@@ -192,7 +192,7 @@ public abstract class RienaTestCase extends TestCase {
 	 * 
 	 * @param string
 	 */
-	protected void print(String string) {
+	protected void print(final String string) {
 		if (!isTrace()) {
 			return;
 		}
@@ -204,7 +204,7 @@ public abstract class RienaTestCase extends TestCase {
 	 * 
 	 * @param string
 	 */
-	protected void println(String string) {
+	protected void println(final String string) {
 		if (!isTrace()) {
 			return;
 		}
@@ -219,14 +219,14 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param pluginResource
 	 * @throws InterruptedException
 	 */
-	protected void addPluginXml(Class<?> forLoad, String pluginResource) {
-		IExtensionRegistry registry = RegistryFactory.getRegistry();
+	protected void addPluginXml(final Class<?> forLoad, final String pluginResource) {
+		final IExtensionRegistry registry = RegistryFactory.getRegistry();
 		@IgnoreFindBugs(value = "OBL_UNSATISFIED_OBLIGATION", justification = "stream will be closed by getResourceAsStream()")
-		InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
-		IContributor contributor = ContributorFactoryOSGi.createContributor(getContext().getBundle());
-		RegistryEventListener listener = new RegistryEventListener();
+		final InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
+		final IContributor contributor = ContributorFactoryOSGi.createContributor(getContext().getBundle());
+		final RegistryEventListener listener = new RegistryEventListener(forLoad.getName() + " - " + pluginResource); //$NON-NLS-1$
 		registry.addListener(listener);
-		boolean success = registry.addContribution(inputStream, contributor, false, null, null,
+		final boolean success = registry.addContribution(inputStream, contributor, false, pluginResource, null,
 				((ExtensionRegistry) registry).getTemporaryUserToken());
 		listener.waitAdded();
 		registry.removeListener(listener);
@@ -238,13 +238,14 @@ public abstract class RienaTestCase extends TestCase {
 	 * 
 	 * @param extensionId
 	 */
-	protected void removeExtension(String extensionId) {
-		IExtensionRegistry registry = RegistryFactory.getRegistry();
-		IExtension extension = registry.getExtension(extensionId);
+	protected void removeExtension(final String extensionId) {
+		final IExtensionRegistry registry = RegistryFactory.getRegistry();
+		final IExtension extension = registry.getExtension(extensionId);
 		assertNotNull(extension);
-		RegistryEventListener listener = new RegistryEventListener();
+		final RegistryEventListener listener = new RegistryEventListener(extensionId);
 		registry.addListener(listener);
-		boolean success = registry.removeExtension(extension, ((ExtensionRegistry) registry).getTemporaryUserToken());
+		final boolean success = registry.removeExtension(extension, ((ExtensionRegistry) registry)
+				.getTemporaryUserToken());
 		listener.waitExtensionRemoved();
 		registry.removeListener(listener);
 		assertTrue(success);
@@ -255,13 +256,13 @@ public abstract class RienaTestCase extends TestCase {
 	 * 
 	 * @param extensionPointId
 	 */
-	protected void removeExtensionPoint(String extensionPointId) {
-		IExtensionRegistry registry = RegistryFactory.getRegistry();
-		IExtensionPoint extensionPoint = registry.getExtensionPoint(extensionPointId);
+	protected void removeExtensionPoint(final String extensionPointId) {
+		final IExtensionRegistry registry = RegistryFactory.getRegistry();
+		final IExtensionPoint extensionPoint = registry.getExtensionPoint(extensionPointId);
 		assertNotNull(extensionPoint);
-		RegistryEventListener listener = new RegistryEventListener();
+		final RegistryEventListener listener = new RegistryEventListener(extensionPointId);
 		registry.addListener(listener);
-		boolean success = registry.removeExtensionPoint(extensionPoint, ((ExtensionRegistry) registry)
+		final boolean success = registry.removeExtensionPoint(extensionPoint, ((ExtensionRegistry) registry)
 				.getTemporaryUserToken());
 		listener.waitExtensionPointRemoved();
 		registry.removeListener(listener);
@@ -275,12 +276,12 @@ public abstract class RienaTestCase extends TestCase {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	protected <T> T getService(Class<T> serviceClass) {
-		ServiceReference reference = getContext().getServiceReference(serviceClass.getName());
+	protected <T> T getService(final Class<T> serviceClass) {
+		final ServiceReference reference = getContext().getServiceReference(serviceClass.getName());
 		if (reference == null) {
 			return null;
 		}
-		Object service = getContext().getService(reference);
+		final Object service = getContext().getService(reference);
 		if (service == null) {
 			return null;
 		}
@@ -293,8 +294,8 @@ public abstract class RienaTestCase extends TestCase {
 	 * 
 	 * @param service
 	 */
-	protected void ungetService(Object service) {
-		ServiceReference reference = services.get(service);
+	protected void ungetService(final Object service) {
+		final ServiceReference reference = services.get(service);
 		if (reference == null) {
 			return;
 		}
@@ -307,7 +308,7 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param bundleName
 	 * @throws BundleException
 	 */
-	protected void startBundle(String bundleName) throws BundleException {
+	protected void startBundle(final String bundleName) throws BundleException {
 		startBundles(bundleName.replaceAll("\\.", "\\\\."), null); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
@@ -320,12 +321,13 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param excludePattern
 	 * @throws BundleException
 	 */
-	protected void startBundles(String includePattern, String excludePattern) throws BundleException {
+	protected void startBundles(final String includePattern, final String excludePattern) throws BundleException {
 		doWithBundles(includePattern, excludePattern, new IClosure() {
 
-			public void execute(Bundle bundle) throws BundleException {
+			public void execute(final Bundle bundle) throws BundleException {
 				if (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.STARTING /*
-																								 * STARTING==
+																								 * STARTING
+																								 * ==
 																								 * LAZY
 																								 */) {
 					bundle.start();
@@ -346,7 +348,7 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param bundleName
 	 * @throws BundleException
 	 */
-	protected void stopBundle(String bundleName) throws BundleException {
+	protected void stopBundle(final String bundleName) throws BundleException {
 		stopBundles(bundleName.replaceAll("\\.", "\\\\."), null); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
@@ -359,10 +361,10 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param excludePattern
 	 * @throws BundleException
 	 */
-	protected void stopBundles(String includePattern, String excludePattern) throws BundleException {
+	protected void stopBundles(final String includePattern, final String excludePattern) throws BundleException {
 		doWithBundles(includePattern, excludePattern, new IClosure() {
 
-			public void execute(Bundle bundle) throws BundleException {
+			public void execute(final Bundle bundle) throws BundleException {
 				if (bundle.getState() == Bundle.ACTIVE) {
 					bundle.stop();
 				} else {
@@ -386,18 +388,19 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param closure
 	 * @throws BundleException
 	 */
-	protected void doWithBundles(String includePattern, String excludePattern, IClosure closure) throws BundleException {
+	protected void doWithBundles(final String includePattern, String excludePattern, final IClosure closure)
+			throws BundleException {
 		if (includePattern == null) {
 			throw new UnsupportedOperationException("truePattern must be set"); //$NON-NLS-1$
 		}
 		if (excludePattern == null) {
 			excludePattern = ""; //$NON-NLS-1$
 		}
-		Pattern include = Pattern.compile(includePattern);
-		Pattern exclude = Pattern.compile(excludePattern);
+		final Pattern include = Pattern.compile(includePattern);
+		final Pattern exclude = Pattern.compile(excludePattern);
 
-		Bundle[] bundles = getContext().getBundles();
-		for (Bundle bundle : bundles) {
+		final Bundle[] bundles = getContext().getBundles();
+		for (final Bundle bundle : bundles) {
 			if (include.matcher(bundle.getSymbolicName()).matches()
 					&& !(exclude.matcher(bundle.getSymbolicName()).matches())) {
 				closure.execute(bundle);
@@ -409,58 +412,99 @@ public abstract class RienaTestCase extends TestCase {
 		void execute(Bundle bundle) throws BundleException;
 	}
 
-	private static class RegistryEventListener implements IRegistryEventListener {
+	private final class RegistryEventListener implements IRegistryEventListener {
 
-		private CountDownLatch added = new CountDownLatch(1);
-		private CountDownLatch extensionRemoved = new CountDownLatch(1);
-		private CountDownLatch extensionPointRemoved = new CountDownLatch(1);
+		private final CountDownLatch added = new CountDownLatch(1);
+		private final CountDownLatch extensionRemoved = new CountDownLatch(1);
+		private final CountDownLatch extensionPointRemoved = new CountDownLatch(1);
+		private final String ident;
+		private final static int SECONDS_TO_WAIT = 1;
+
+		private RegistryEventListener(final String ident) {
+			this.ident = ident;
+		}
 
 		public void waitAdded() {
+			final String message = "Expected extension/point has not been ´added´ for " + ident + " because "; //$NON-NLS-1$ //$NON-NLS-2$
 			try {
-				added.await(1, TimeUnit.SECONDS);
+				added.await(SECONDS_TO_WAIT, TimeUnit.SECONDS);
 				if (added.getCount() == 1) {
-					System.err.println("Expected extension/point ´added´ has not be called."); //$NON-NLS-1$
+					if (isTrace()) {
+						System.err.println(message + " time-out has been reached. Which might be ok!"); //$NON-NLS-1$
+					}
 				}
-			} catch (InterruptedException e) {
-				TestCase.fail("CountDownLatch failed with. " + e); //$NON-NLS-1$
+			} catch (final InterruptedException e) {
+				TestCase.fail(message + " the CountDownLatch failed with " + e); //$NON-NLS-1$ 
 			}
 		}
 
 		public void waitExtensionRemoved() {
+			final String message = "Expected extension id " + ident + " has not been ´removed´ because "; //$NON-NLS-1$ //$NON-NLS-2$
 			try {
-				extensionRemoved.await(1, TimeUnit.SECONDS);
+				extensionRemoved.await(SECONDS_TO_WAIT, TimeUnit.SECONDS);
 				if (extensionRemoved.getCount() == 1) {
-					System.err.println("Expected extension ´removed´ has not be called."); //$NON-NLS-1$
+					if (isTrace()) {
+						System.err.println(message + " time-out has been reached. Which might be ok!"); //$NON-NLS-1$
+					}
 				}
-			} catch (InterruptedException e) {
-				TestCase.fail("CountDownLatch failed with. " + e); //$NON-NLS-1$
+			} catch (final InterruptedException e) {
+				TestCase.fail(message + " the CountDownLatch failed with " + e); //$NON-NLS-1$ 
 			}
 		}
 
 		public void waitExtensionPointRemoved() {
+			final String message = "Expected extension point id " + ident + " has not been ´removed´ because "; //$NON-NLS-1$ //$NON-NLS-2$
 			try {
-				extensionPointRemoved.await(1, TimeUnit.SECONDS);
+				extensionPointRemoved.await(SECONDS_TO_WAIT, TimeUnit.SECONDS);
 				if (extensionPointRemoved.getCount() == 1) {
-					System.err.println("Expected extension point ´removed´ has not be called."); //$NON-NLS-1$
+					if (isTrace()) {
+						System.err.println(message + " time-out has been reached. Which might be ok!"); //$NON-NLS-1$
+					}
 				}
-			} catch (InterruptedException e) {
-				TestCase.fail("CountDownLatch failed with. " + e); //$NON-NLS-1$
+			} catch (final InterruptedException e) {
+				TestCase.fail(message + " the CountDownLatch failed with " + e); //$NON-NLS-1$ 
 			}
 		}
 
-		public void added(IExtension[] extensions) {
+		public void added(final IExtension[] extensions) {
+			if (isTrace()) {
+				System.out.println("Extensions added: "); //$NON-NLS-1$
+				for (final IExtension extension : extensions) {
+					System.out.println(" - " + extension.getUniqueIdentifier() + ", " //$NON-NLS-1$ //$NON-NLS-2$
+							+ extension.getExtensionPointUniqueIdentifier());
+				}
+			}
 			added.countDown();
 		}
 
-		public void added(IExtensionPoint[] extensionPoints) {
+		public void added(final IExtensionPoint[] extensionPoints) {
+			if (isTrace()) {
+				System.out.println("ExtensionPoints added: "); //$NON-NLS-1$
+				for (final IExtensionPoint extensionPoint : extensionPoints) {
+					System.out.println(" - " + extensionPoint.getUniqueIdentifier()); //$NON-NLS-1$
+				}
+			}
 			added.countDown();
 		}
 
-		public void removed(IExtension[] extensions) {
+		public void removed(final IExtension[] extensions) {
+			if (isTrace()) {
+				System.out.println("Extensions removed: "); //$NON-NLS-1$
+				for (final IExtension extension : extensions) {
+					System.out.println(" - " + extension.getUniqueIdentifier() + ", " //$NON-NLS-1$ //$NON-NLS-2$
+							+ extension.getExtensionPointUniqueIdentifier());
+				}
+			}
 			extensionRemoved.countDown();
 		}
 
-		public void removed(IExtensionPoint[] extensionPoints) {
+		public void removed(final IExtensionPoint[] extensionPoints) {
+			if (isTrace()) {
+				System.out.println("ExtensionPoints removed: "); //$NON-NLS-1$
+				for (final IExtensionPoint extensionPoint : extensionPoints) {
+					System.out.println(" - " + extensionPoint.getUniqueIdentifier()); //$NON-NLS-1$
+				}
+			}
 			extensionPointRemoved.countDown();
 		}
 	};
