@@ -79,8 +79,8 @@ public class SubModuleViewTest extends RienaTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		node.deactivate(null);
-		removeExtension("sub.module.view.test");
+		// node.deactivate(null);
+		// removeExtension("sub.module.view.test");
 		super.tearDown();
 	}
 
