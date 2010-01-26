@@ -25,6 +25,7 @@ import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
+import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
@@ -39,6 +40,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	private String title;
 	private String icon;
 	private ListenerList<IWindowRidgetListener> windowRidgetListeners;
+	private DefaultActionManager actionManager;
 
 	private ShellListener shellListener;
 
@@ -56,9 +58,20 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		setUIControl(shell);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * <b>Implementation note:</b> activation of the
+	 * {@link IDefaultActionManager} must be handled by the Controller &ndash;
+	 * see {@link AbstractWindowController#afterBind()}. Deactivation and
+	 * disposal is handled by this ridget.
+	 */
 	public IDefaultActionManager addDefaultAction(IRidget focusRidget, IActionRidget action) {
-		// TODO [ev] implement
-		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+		if (actionManager == null) {
+			actionManager = new DefaultActionManager(this);
+		}
+		actionManager.addAction(action, focusRidget);
+		return actionManager;
 	}
 
 	public void addWindowRidgetListener(IWindowRidgetListener listener) {
@@ -66,7 +79,14 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	}
 
 	public void dispose() {
-		getUIControl().dispose();
+		Shell control = getUIControl();
+		if (control != null) {
+			control.dispose();
+		}
+		if (actionManager != null) {
+			actionManager.dispose();
+			actionManager = null;
+		}
 	}
 
 	/**

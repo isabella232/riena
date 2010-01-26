@@ -54,10 +54,25 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Make {@code action} the default action while the focus is within {@code
+	 * focusRidget} including it's children.
+	 * <p>
+	 * If a default action is available and enabled, it will be invoked whenever
+	 * the user presses ENTER within the window. The mapping is enabled when the
+	 * navigation node for this controller becomes active. It is disabled when
+	 * the navigation node for this controller becomes inactive.
+	 * <p>
+	 * Note: the algorithm stops at the first match. It will check the most
+	 * specific (innermost) ridget first and check the most general (outremost)
+	 * ridget last.
 	 * 
-	 * @param actionApply
-	 * @param master
+	 * @param focusRidget
+	 *            the ridget that needs to have the focus to activate this rule.
+	 *            Never null.
+	 * @param action
+	 *            this ridget will become the default action, while focusRidget
+	 *            has the focus. Never null.
+	 * 
 	 * @since 2.0
 	 */
 	public void addDefaultAction(IRidget focusRidget, IActionRidget action) {

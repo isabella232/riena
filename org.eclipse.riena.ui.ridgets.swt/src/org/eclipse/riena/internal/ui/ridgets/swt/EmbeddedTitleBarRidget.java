@@ -126,6 +126,12 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * <b>Implementation note:</b> activation, deactivation and disposal of the
+	 * returned {@link IDefaultActionManager} must be handled by the controller.
+	 */
 	public IDefaultActionManager addDefaultAction(IRidget focusRidget, IActionRidget action) {
 		if (actionManager == null) {
 			actionManager = new DefaultActionManager(this);

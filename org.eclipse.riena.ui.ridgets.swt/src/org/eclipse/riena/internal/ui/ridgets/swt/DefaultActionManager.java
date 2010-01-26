@@ -80,11 +80,13 @@ final class DefaultActionManager implements IDefaultActionManager, Listener {
 			display = null;
 		}
 		if (shell != null) {
-			// the setDefaultButton(...) API is strange! The first call
-			// will just reset the saved button to null, the second call will 
-			// make null the default button
-			shell.setDefaultButton(null);
-			shell.setDefaultButton(null);
+			if (!shell.isDisposed()) {
+				// the setDefaultButton(...) API is strange! The first call
+				// will just reset the saved button to null, the second call will 
+				// make null the default button
+				shell.setDefaultButton(null);
+				shell.setDefaultButton(null);
+			}
 			shell = null;
 		}
 		control2button = null;

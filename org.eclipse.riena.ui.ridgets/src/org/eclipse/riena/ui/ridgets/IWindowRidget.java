@@ -22,10 +22,31 @@ import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 public interface IWindowRidget extends IRidget {
 
 	/**
-	 * TODO [ev] docs
+	 * Make {@code action} the default action while the focus is within {@code
+	 * focusRidget} including it's children.
+	 * <p>
+	 * If a default action is available and enabled, it will be invoked whenever
+	 * the user presses ENTER within the window.
+	 * <p>
+	 * Activation / deactivation of the mapping can be changed via the lifecycle
+	 * methods of the returned {@link IDefaultActionManager} instance. The
+	 * caller (typically the controller) may be responsible for activation,
+	 * deactivation and disposal of the returned {@link IDefaultActionManager}
+	 * instance. <b>The exact requirements may vary between implementations</b>.
+	 * Consult the javadoc of the implementation.
+	 * <p>
+	 * Note: the algorithm stops at the first match. It will check the most
+	 * specific (innermost) ridget first and check the most general (outremost)
+	 * ridget last.
 	 * 
 	 * @param focusRidget
+	 *            the ridget that needs to have the focus to activate this rule.
+	 *            Never null.
 	 * @param action
+	 *            this ridget will become the default action, while focusRidget
+	 *            has the focus. Never null.
+	 * @return an {@link IDefaultActionManager} instance; never null.
+	 * 
 	 * @since 2.0
 	 */
 	IDefaultActionManager addDefaultAction(IRidget focusRidget, IActionRidget action);

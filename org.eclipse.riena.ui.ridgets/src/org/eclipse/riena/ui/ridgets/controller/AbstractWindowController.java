@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.riena.ui.core.context.IContext;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
@@ -30,15 +32,17 @@ public abstract class AbstractWindowController implements IController, IContext 
 	public static final String RIDGET_ID_WINDOW = "windowRidget"; //$NON-NLS-1$
 
 	/**
-	 * TODO [ev] docs -- provisional, where is the best location for this?
+	 * Return code to indicate that the window was a OK-ed (value: {@value} ).
 	 * 
+	 * @see #getReturnCode()
 	 * @since 1.2
 	 */
 	public static final int OK = 0;
 
 	/**
-	 * TODO [ev] docs -- provisional, where is the best location for this
+	 * Return code to indicate that the window was cancelled (value: {@value} ).
 	 * 
+	 * @see #getReturnCode()
 	 * @since 1.2
 	 */
 	public static final int CANCEL = 1;
@@ -49,10 +53,36 @@ public abstract class AbstractWindowController implements IController, IContext 
 	private boolean blocked;
 	private int returnCode;
 
+	private IDefaultActionManager actionManager;
+
 	public AbstractWindowController() {
 		super();
 		ridgets = new HashMap<String, IRidget>();
 		context = new HashMap<String, Object>();
+	}
+
+	/**
+	 * Make {@code action} the default action while the focus is within {@code
+	 * focusRidget} including it's children.
+	 * <p>
+	 * If a default action is available and enabled, it will be invoked whenever
+	 * the user presses ENTER within the window.
+	 * <p>
+	 * Note: the algorithm stops at the first match. It will check the most
+	 * specific (innermost) ridget first and check the most general (outremost)
+	 * ridget last.
+	 * 
+	 * @param focusRidget
+	 *            the ridget that needs to have the focus to activate this rule.
+	 *            Never null.
+	 * @param action
+	 *            this ridget will become the default action, while focusRidget
+	 *            has the focus. Never null.
+	 * 
+	 * @since 2.0
+	 */
+	public void addDefaultAction(IRidget focusRidget, IActionRidget action) {
+		actionManager = getWindowRidget().addDefaultAction(focusRidget, action);
 	}
 
 	public void addRidget(String id, IRidget ridget) {
@@ -62,6 +92,9 @@ public abstract class AbstractWindowController implements IController, IContext 
 	public void afterBind() {
 		returnCode = OK;
 		getWindowRidget().updateFromModel();
+		if (actionManager != null) {
+			actionManager.activate();
+		}
 	}
 
 	public void configureRidgets() {
@@ -96,9 +129,13 @@ public abstract class AbstractWindowController implements IController, IContext 
 	}
 
 	/**
+	 * Returns the return code for this window.
+	 * <p>
+	 * These codes are window specific, but two return codes are already
+	 * defined: {@link #OK} and {@link #CANCEL}.
+	 * 
 	 * @since 1.2
 	 */
-	// TODO [ev] javadoc
 	public int getReturnCode() {
 		return returnCode;
 	}
@@ -120,9 +157,13 @@ public abstract class AbstractWindowController implements IController, IContext 
 	}
 
 	/**
+	 * Set the return code for this window.
+	 * <p>
+	 * These codes are window specific, but two return codes are already
+	 * defined: {@link #OK} and {@link #CANCEL}.
+	 * 
 	 * @since 1.2
 	 */
-	// TODO [ev] javadoc
 	public void setReturnCode(int returnCode) {
 		this.returnCode = returnCode;
 	}

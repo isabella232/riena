@@ -23,7 +23,6 @@ import org.eclipse.riena.example.client.controllers.LoginDialogController;
 import org.eclipse.riena.internal.example.client.nls.Messages;
 import org.eclipse.riena.navigation.ui.swt.login.AbstractLoginSplashView;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
-import org.eclipse.riena.ui.swt.DefaultButtonManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -86,9 +85,6 @@ public class LoginSplashView extends AbstractLoginSplashView {
 		okButton.setText(Messages.LoginSplashView_login);
 		okButton.setLayoutData(GD11FILL);
 		addUIControl(okButton, LoginDialogController.RIDGET_ID_OK);
-
-		DefaultButtonManager dbm = new DefaultButtonManager(parent.getShell());
-		dbm.addButton(inputArea, okButton);
 
 		Button cancelButton = UIControlsFactory.createButton(inputArea);
 		cancelButton.setText(Messages.LoginSplashView_cancel);

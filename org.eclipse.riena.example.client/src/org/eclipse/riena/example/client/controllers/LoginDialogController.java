@@ -64,7 +64,6 @@ public class LoginDialogController extends AbstractWindowController {
 
 		IActionRidget okAction = (IActionRidget) getRidget(RIDGET_ID_OK);
 		okAction.addListener(new IActionListener() {
-
 			public void callback() {
 				canLogin = checkLogin();
 				if (canLogin) {
@@ -74,6 +73,8 @@ public class LoginDialogController extends AbstractWindowController {
 				}
 			}
 		});
+		addDefaultAction(getWindowRidget(), okAction);
+
 		IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
 		cancelAction.addListener(new IActionListener() {
 			public void callback() {
