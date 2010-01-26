@@ -49,6 +49,7 @@ public class SubmoduleNodeTest extends RienaTestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
 		applicationNode = new ApplicationNode(new NavigationNodeId(ID_APP));
 		navigationProcessor = new NavigationProcessor();
 		applicationNode.setNavigationProcessor(navigationProcessor);
