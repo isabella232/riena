@@ -12,18 +12,18 @@ package org.eclipse.riena.preferences;
 
 import junit.framework.TestCase;
 
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-
-import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+
+import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
+
 /**
- *
+ * Prints out the complete preference tree.
  */
-@NonUITestCase
+@ManualTestCase
 public class PreferencesTest extends TestCase {
 
 	public void testIt() throws BackingStoreException {
