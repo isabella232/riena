@@ -418,7 +418,7 @@ public abstract class RienaTestCase extends TestCase {
 		private final CountDownLatch extensionRemoved = new CountDownLatch(1);
 		private final CountDownLatch extensionPointRemoved = new CountDownLatch(1);
 		private final String ident;
-		private final static int SECONDS_TO_WAIT = 1;
+		private final static int SECONDS_TO_WAIT = 2;
 
 		private RegistryEventListener(final String ident) {
 			this.ident = ident;
