@@ -79,14 +79,9 @@ public class SubModuleViewTest extends RienaTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
+		node.deactivate(null);
 		removeExtension("sub.module.view.test");
 		super.tearDown();
-	}
-
-	public void testCreateController() throws Exception {
-
-		assertNotNull(subModuleNodeView.getController());
-		assertEquals(node, subModuleNodeView.getController().getNavigationNode());
 	}
 
 	public void testBlocking() {
@@ -100,6 +95,11 @@ public class SubModuleViewTest extends RienaTestCase {
 		assertTrue(contentComposite.isEnabled());
 		Cursor arrowCursor = parentComposite.getDisplay().getSystemCursor(SWT.CURSOR_ARROW);
 		assertSame(arrowCursor, parentComposite.getCursor());
+	}
+
+	public void testCreateController() throws Exception {
+		assertNotNull(subModuleNodeView.getController());
+		assertEquals(node, subModuleNodeView.getController().getNavigationNode());
 	}
 
 	/**

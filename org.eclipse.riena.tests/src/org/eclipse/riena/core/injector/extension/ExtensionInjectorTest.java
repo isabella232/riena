@@ -248,6 +248,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		try {
 			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+			target.setTrace(true);
 			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
 					.andStart(getContext());
 			try {

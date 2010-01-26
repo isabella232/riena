@@ -16,8 +16,10 @@ package org.eclipse.riena.core.injector.extension;
 public class ConfigurableThingMultipleData {
 
 	private IData[] data;
+	private boolean trace;
 
 	public void update(IData[] data) {
+		trace("update", data);
 		// TODO warning suppression: Ignore FindBugs warning about internal
 		// representation being exposed: seems ok for testing
 		this.data = data;
@@ -27,6 +29,26 @@ public class ConfigurableThingMultipleData {
 		// TODO warning suppression: Ignore FindBugs warning about internal
 		// representation being exposed: seems ok for testing
 		return data;
+	}
+
+	public void setTrace(boolean trace) {
+		this.trace = trace;
+	}
+
+	// helping methods
+	//////////////////
+
+	private void trace(String methodName, IData[] data) {
+		if (trace) {
+			if (data == null) {
+				System.out.println(String.format("%s: null", methodName));
+			} else {
+				System.out.println(String.format("%s: %s - length= %d", methodName, data, data.length));
+				for (IData entry : data) {
+					System.out.println("\t" + entry.getText());
+				}
+			}
+		}
 	}
 
 }
