@@ -86,7 +86,6 @@ public class DateTimeSubModuleController extends SubModuleController {
 	private void makeOutputOnly(ITextRidget... ridgets) {
 		for (ITextRidget ridget : ridgets) {
 			ridget.setOutputOnly(true);
-			ridget.setEnabled(false);
 		}
 	}
 }
