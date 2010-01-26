@@ -417,20 +417,20 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return result;
 	}
 
-	private IRidget getTableRidget() {
-		return getRidget(MasterDetailsComposite.BIND_ID_TABLE);
+	private ITableRidget getTableRidget() {
+		return getRidget(ITableRidget.class, MasterDetailsComposite.BIND_ID_TABLE);
 	}
 
 	private IActionRidget getNewButtonRidget() {
-		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_NEW);
+		return getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_NEW);
 	}
 
 	private IActionRidget getRemoveButtonRidget() {
-		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_REMOVE);
+		return getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_REMOVE);
 	}
 
 	private IActionRidget getApplyButtonRidget() {
-		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_APPLY);
+		return getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
 	}
 
 	private boolean hasErrors() {
@@ -611,6 +611,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			return AbstractMasterDetailsRidget.this.getRidget(id);
 		}
 
+		public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+			return AbstractMasterDetailsRidget.this.getRidget(ridgetClazz, id);
+		}
+
 		public Collection<? extends IRidget> getRidgets() {
 			return detailRidgets;
 		}
@@ -624,10 +628,6 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			return result;
 		}
 
-		@SuppressWarnings("unchecked")
-		public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
-			return (R) getRidget(id);
-		}
 	}
 
 }

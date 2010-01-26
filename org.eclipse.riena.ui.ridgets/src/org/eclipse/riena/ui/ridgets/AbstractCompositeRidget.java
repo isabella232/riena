@@ -12,12 +12,16 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.core.runtime.Assert;
+
+import org.eclipse.riena.core.RienaStatus;
 
 /**
  * TODO [ev] javadoc + rename to AbstractComplexRidget?
@@ -66,7 +70,35 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 
 	@SuppressWarnings("unchecked")
 	public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
-		return (R) getRidget(id);
+		R ridget = (R) getRidget(id);
+
+		if (ridget != null) {
+			return ridget;
+		}
+		if (RienaStatus.isTest()) {
+			try {
+				if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
+					Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(ridgetClazz);
+					if (mappedRidgetClazz != null) {
+						ridget = mappedRidgetClazz.newInstance();
+					}
+					Assert
+							.isNotNull(
+									ridget,
+									"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+				} else {
+					ridget = ridgetClazz.newInstance();
+				}
+			} catch (InstantiationException e) {
+				throw new RuntimeException(e);
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
+
+			addRidget(id, ridget);
+		}
+
+		return ridget;
 	}
 
 	public Collection<? extends IRidget> getRidgets() {

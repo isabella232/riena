@@ -40,7 +40,9 @@ public class ModuleTitleBarRidget extends EmbeddedTitleBarRidget {
 	 */
 	@Override
 	public void setCloseable(boolean closeable) {
-		getUIControl().setCloseable(closeable);
+		if (getUIControl() != null) {
+			getUIControl().setCloseable(closeable);
+		}
 	}
 
 }

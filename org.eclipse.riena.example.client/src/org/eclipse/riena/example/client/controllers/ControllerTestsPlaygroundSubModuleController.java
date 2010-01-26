@@ -10,10 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
+import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
@@ -23,21 +28,34 @@ import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
+import org.eclipse.riena.beans.common.TypedBean;
+import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.internal.ui.ridgets.swt.CComboRidget;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
+import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.ILinkRidget;
 import org.eclipse.riena.ui.ridgets.IListRidget;
+import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
+import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
+import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISpinnerRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
+import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
+import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
  * Example Controller with as many ridgets as possible. Used for controller
@@ -49,6 +67,8 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 	private Temperature temperature;
 	private ITraverseRidget celsiusScale;
 	private ISpinnerRidget fahrenheitSpinner;
+	private List<Person> input = PersonFactory.createPersonList();
+	private long now;
 
 	/**
 	 * 
@@ -64,31 +84,104 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		configureComboGroup();
 		configureBrowserGroup();
 		configureTraverseGroup();
-		//		configureMasterDetailsGroup();
+		configureMasterDetailsGroup();
+		configureDateTimeGroup();
 		//TODO work in progress
 	}
 
-	//	private void configureMasterDetailsGroup() {
-	//		String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
-	//		String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
-	//
-	//		IMasterDetailsRidget master = getRidget(IMasterDetailsRidget.class, "master"); //$NON-NLS-1$
-	//		master.setDelegate(new PersonDelegate());
-	//		master.bindToModel(createPersonList(), Person.class, properties, headers);
-	//		master.updateFromModel();
-	//		master.setApplyRequiresNoErrors(true);
-	//
-	//		IActionRidget actionApply = master.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
-	//		actionApply.setIcon("apply_h.png"); //$NON-NLS-1$
-	//
-	//		IActionRidget actionNew = master.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_NEW);
-	//		actionNew.setText(""); //$NON-NLS-1$
-	//		actionNew.setIcon("new_h.png"); //$NON-NLS-1$
-	//
-	//		IActionRidget actionRemove = master.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_REMOVE);
-	//		actionRemove.setText(""); //$NON-NLS-1$
-	//		actionRemove.setIcon("remove_h.png"); //$NON-NLS-1$
-	//	}
+	/**
+	 * 
+	 */
+	private void configureDateTimeGroup() {
+		final IDateTimeRidget dtDate = getRidget(IDateTimeRidget.class, "dtDate"); //$NON-NLS-1$
+		IDateTimeRidget dtTime = getRidget(IDateTimeRidget.class, "dtTime"); //$NON-NLS-1$
+		final IDateTimeRidget dtDateOnly = getRidget(IDateTimeRidget.class, "dtDateOnly"); //$NON-NLS-1$
+		IDateTimeRidget dtTimeOnly = getRidget(IDateTimeRidget.class, "dtTimeOnly"); //$NON-NLS-1$
+		final IDateTimeRidget dtCal = getRidget(IDateTimeRidget.class, "dtCal"); //$NON-NLS-1$
+		ITextRidget txt1 = getRidget(ITextRidget.class, "txt1"); //$NON-NLS-1$
+		ITextRidget txt2 = getRidget(ITextRidget.class, "txt2"); //$NON-NLS-1$
+		ITextRidget txt3 = getRidget(ITextRidget.class, "txt3"); //$NON-NLS-1$
+		ITextRidget txt4 = getRidget(ITextRidget.class, "txt4"); //$NON-NLS-1$
+
+		now = System.currentTimeMillis();
+		TypedBean<Date> date1 = new TypedBean<Date>(new Date(now));
+		TypedBean<Date> date2 = new TypedBean<Date>(new Date(now));
+		TypedBean<Date> date3 = new TypedBean<Date>(new Date(now));
+		TypedBean<Date> date4 = new TypedBean<Date>(new Date(now));
+
+		dtDate.bindToModel(date1, TypedBean.PROP_VALUE);
+		dtDate.updateFromModel();
+		dtTime.bindToModel(date1, TypedBean.PROP_VALUE);
+		dtTime.updateFromModel();
+
+		dtDateOnly.bindToModel(date2, TypedBean.PROP_VALUE);
+		dtDateOnly.updateFromModel();
+
+		dtTimeOnly.bindToModel(date3, TypedBean.PROP_VALUE);
+		dtTimeOnly.updateFromModel();
+
+		dtCal.bindToModel(date4, TypedBean.PROP_VALUE);
+		dtCal.updateFromModel();
+
+		DataBindingContext dbc = new DataBindingContext();
+		dbc.bindValue(BeansObservables.observeValue(txt1, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
+				date1, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt2, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
+				date2, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt3, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
+				date3, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt4, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
+				date4, TypedBean.PROP_VALUE));
+
+		makeOutputOnly(txt1, txt2, txt3, txt4);
+
+		final IDateTextRidget dateTextRidget = getRidget(IDateTextRidget.class, "dateText"); //$NON-NLS-1$
+		dateTextRidget.setText("03.03.2011"); //$NON-NLS-1$
+		IActionRidget dateTimeButton = getRidget(IActionRidget.class, "dateTimeButton"); //$NON-NLS-1$
+		dateTimeButton.setText("apply date"); //$NON-NLS-1$
+		dateTimeButton.addListener(new IActionListener() {
+			public void callback() {
+				DateFormat df = new SimpleDateFormat("dd.MM.yyyy"); //$NON-NLS-1$
+				try {
+					Date newDate = df.parse(dateTextRidget.getText());
+					dtDate.setDate(newDate);
+					dtDateOnly.setDate(newDate);
+					dtCal.setDate(newDate);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	private void configureMasterDetailsGroup() {
+		String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
+		String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+
+		final IMasterDetailsRidget master = getRidget(IMasterDetailsRidget.class, "master"); //$NON-NLS-1$
+		if (master != null) {
+			if (RienaStatus.isTest()) {
+				master.configureRidgets();
+			}
+			master.setDelegate(new PersonDelegate());
+			master.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
+			master.updateFromModel();
+
+			IActionRidget actionApply = master.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
+			addDefaultAction(master, actionApply);
+		}
+
+		IActionRidget enableDisableButton = getRidget(IActionRidget.class, "enableDisable"); //$NON-NLS-1$
+		if (enableDisableButton != null) {
+			enableDisableButton.addListener(new IActionListener() {
+				public void callback() {
+					if (master != null) {
+						master.setEnabled(!master.isEnabled());
+					}
+				}
+			});
+		}
+	}
 
 	private void configureBrowserGroup() {
 		ILinkRidget link1 = getRidget(ILinkRidget.class, "link1"); //$NON-NLS-1$
@@ -133,11 +226,21 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		comboAge.updateFromModel();
 		comboAge.setEmptySelectionItem("<none>"); //$NON-NLS-1$
 		comboAge.setSelection(0);
-		comboAge.addSelectionListener(new ISelectionListener() {
+
+		final IComboRidget cComboAge = getRidget(CComboRidget.class, "ageCCombo"); //$NON-NLS-1$
+		cComboAge.bindToModel(new WritableList(ages, String.class), String.class, null, new WritableValue());
+		cComboAge.updateFromModel();
+		cComboAge.setEmptySelectionItem("<none>"); //$NON-NLS-1$
+		cComboAge.setSelection(0);
+
+		ISelectionListener selectionListener = new ISelectionListener() {
 			public void ridgetSelected(SelectionEvent event) {
 				comboLabel.setText(event.getNewSelection().get(0).toString());
 			}
-		});
+		};
+
+		comboAge.addSelectionListener(selectionListener);
+		cComboAge.addSelectionListener(selectionListener);
 
 		IActionRidget addToComboButton = getRidget(IActionRidget.class, "addToComboButton"); //$NON-NLS-1$
 		addToComboButton.addListener(new IActionListener() {
@@ -149,6 +252,10 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 				comboAge.bindToModel(new WritableList(ages, String.class), String.class, null, new WritableValue());
 				comboAge.updateFromModel();
 				comboAge.setSelection(comboAge.getObservableList().size() - 1);
+				cComboAge.bindToModel(new WritableList(ages, String.class), String.class, null, new WritableValue());
+				cComboAge.updateFromModel();
+				cComboAge.setSelection(comboAge.getObservableList().size() - 1);
+				comboText.setText(""); //$NON-NLS-1$
 			}
 		});
 	}
@@ -197,6 +304,9 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		celsiusScale.updateFromModel();
 		celsiusScale.addListener(listener);
 	}
+
+	// helpers
+	//////////
 
 	private class TemperatureListener implements IActionListener {
 		public void callback() {
@@ -284,82 +394,82 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		return new WritableList(PersonFactory.createPersonList(), Person.class);
 	}
 
-	//	/**
-	//	 * Setup the ridgets for editing a person (text ridgets for name, single
-	//	 * choice ridget for gender, multiple choice ridgets for pets).
-	//	 */
-	//	private static final class PersonDelegate implements IMasterDetailsDelegate {
-	//
-	//		private static final String[] GENDER = { Person.FEMALE, Person.MALE };
-	//
-	//		private final Person workingCopy = createWorkingCopy();
-	//
-	//		public void configureRidgets(IRidgetContainer container) {
-	//			ITextRidget txtFirst = container.getRidget(ITextRidget.class, "first"); //$NON-NLS-1$
-	//			txtFirst.setMandatory(true);
-	//			txtFirst.setDirectWriting(true);
-	//			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
-	//			txtFirst.updateFromModel();
-	//
-	//			ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
-	//			txtLast.setMandatory(true);
-	//			txtLast.setDirectWriting(true);
-	//			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
-	//			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
-	//			txtLast.updateFromModel();
-	//
-	//			ISingleChoiceRidget gender = container.getRidget(ISingleChoiceRidget.class, "gender"); //$NON-NLS-1$
-	//			if (gender != null) {
-	//				gender.bindToModel(Arrays.asList(GENDER), (List<String>) null, workingCopy, Person.PROPERTY_GENDER);
-	//				gender.updateFromModel();
-	//			}
-	//
-	//			IMultipleChoiceRidget pets = container.getRidget(IMultipleChoiceRidget.class, "pets"); //$NON-NLS-1$
-	//			if (pets != null) {
-	//				pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, workingCopy,
-	//						Person.PROPERTY_PETS);
-	//				pets.updateFromModel();
-	//			}
-	//		}
-	//
-	//		public Person createWorkingCopy() {
-	//			return new Person("", ""); //$NON-NLS-1$ //$NON-NLS-2$
-	//		}
-	//
-	//		public Person copyBean(final Object source, final Object target) {
-	//			Person from = source != null ? (Person) source : createWorkingCopy();
-	//			Person to = target != null ? (Person) target : createWorkingCopy();
-	//			to.setFirstname(from.getFirstname());
-	//			to.setLastname(from.getLastname());
-	//			to.setGender(from.getGender());
-	//			to.setPets(from.getPets());
-	//			return to;
-	//		}
-	//
-	//		public Object getWorkingCopy() {
-	//			return workingCopy;
-	//		}
-	//
-	//		public void updateDetails(IRidgetContainer container) {
-	//			for (IRidget ridget : container.getRidgets()) {
-	//				ridget.updateFromModel();
-	//			}
-	//		}
-	//
-	//		public boolean isChanged(Object source, Object target) {
-	//			Person p1 = (Person) source;
-	//			Person p2 = (Person) target;
-	//			boolean equals = p1.getFirstname().equals(p2.getFirstname()) && p1.getLastname().equals(p2.getLastname())
-	//					&& p1.getGender().equals(p2.getGender()) && p1.getPets().equals(p2.getPets());
-	//			return !equals;
-	//		}
-	//
-	//		public String isValid(IRidgetContainer container) {
-	//			ITextRidget txtLast = (ITextRidget) container.getRidget("last"); //$NON-NLS-1$
-	//			if (txtLast.isErrorMarked()) {
-	//				return "'Last Name' is not valid."; //$NON-NLS-1$
-	//			}
-	//			return null;
-	//		}
-	//	}
+	/**
+	 * Setup the ridgets for editing a person (text ridgets for name, single
+	 * choice ridget for gender, multiple choice ridgets for pets).
+	 */
+	private static final class PersonDelegate extends AbstractMasterDetailsDelegate {
+
+		private static final String[] GENDER = { Person.FEMALE, Person.MALE };
+
+		private final Person workingCopy = createWorkingCopy();
+
+		public void configureRidgets(IRidgetContainer container) {
+			ITextRidget txtFirst = container.getRidget(ITextRidget.class, "first"); //$NON-NLS-1$
+			txtFirst.setMandatory(true);
+			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
+			txtFirst.updateFromModel();
+
+			ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
+			txtLast.setMandatory(true);
+			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
+			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
+			txtLast.updateFromModel();
+
+			ISingleChoiceRidget gender = container.getRidget(ISingleChoiceRidget.class, "gender"); //$NON-NLS-1$
+			if (gender != null) {
+				gender.bindToModel(Arrays.asList(GENDER), (List<String>) null, workingCopy, Person.PROPERTY_GENDER);
+				gender.updateFromModel();
+			}
+
+			IMultipleChoiceRidget pets = container.getRidget(IMultipleChoiceRidget.class, "pets"); //$NON-NLS-1$
+			if (pets != null) {
+				pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, workingCopy,
+						Person.PROPERTY_PETS);
+				pets.updateFromModel();
+			}
+		}
+
+		public Person createWorkingCopy() {
+			return new Person("", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		public Person copyBean(final Object source, final Object target) {
+			Person from = source != null ? (Person) source : createWorkingCopy();
+			Person to = target != null ? (Person) target : createWorkingCopy();
+			to.setFirstname(from.getFirstname());
+			to.setLastname(from.getLastname());
+			to.setGender(from.getGender());
+			to.setPets(from.getPets());
+			return to;
+		}
+
+		public Object getWorkingCopy() {
+			return workingCopy;
+		}
+
+		@Override
+		public boolean isChanged(Object source, Object target) {
+			Person p1 = (Person) source;
+			Person p2 = (Person) target;
+			boolean equals = p1.getFirstname().equals(p2.getFirstname()) && p1.getLastname().equals(p2.getLastname())
+					&& p1.getGender().equals(p2.getGender()) && p1.getPets().equals(p2.getPets());
+			return !equals;
+		}
+
+		@Override
+		public String isValid(IRidgetContainer container) {
+			ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
+			if (txtLast.isErrorMarked()) {
+				return "'Last Name' is not valid."; //$NON-NLS-1$
+			}
+			return null;
+		}
+	}
+
+	private void makeOutputOnly(ITextRidget... ridgets) {
+		for (ITextRidget ridget : ridgets) {
+			ridget.setOutputOnly(true);
+		}
+	}
 }

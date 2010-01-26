@@ -14,13 +14,17 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -31,6 +35,10 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.example.client.controllers.ControllerTestsPlaygroundSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.MasterDetailsComposite;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -45,69 +53,105 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView<Contro
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
-		parent.setLayout(new GridLayout(2, false));
+		parent.setLayout(new FillLayout());
 
-		Label label = UIControlsFactory.createLabel(parent,
+		ScrolledComposite scrolledComposite = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		scrolledComposite.setLayout(new FillLayout());
+		scrolledComposite.setExpandHorizontal(true);
+		scrolledComposite.setExpandVertical(true);
+		Composite composite = UIControlsFactory.createComposite(scrolledComposite);
+		composite.setLayout(new GridLayout(2, false));
+
+		Label label = UIControlsFactory.createLabel(composite,
 				"Lots of widgets for lots of ridgets for lots of controller tests.", //$NON-NLS-1$
 				SWT.NONE);
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
-		Group tableGroup = UIControlsFactory.createGroup(parent, "table"); //$NON-NLS-1$
+		Group tableGroup = UIControlsFactory.createGroup(composite, "table"); //$NON-NLS-1$
 		tableGroup.setLayout(new GridLayout(2, false));
 		tableGroup.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
 
 		createTableGroup(tableGroup);
 
-		Group comboGroup = UIControlsFactory.createGroup(parent, "combo"); //$NON-NLS-1$
+		Group comboGroup = UIControlsFactory.createGroup(composite, "combo"); //$NON-NLS-1$
 		comboGroup.setLayout(new GridLayout(2, false));
 		comboGroup.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
 
 		createComboGroup(comboGroup);
 
-		Group browserGroup = UIControlsFactory.createGroup(parent, "browser and link"); //$NON-NLS-1$
+		Group browserGroup = UIControlsFactory.createGroup(composite, "browser and link"); //$NON-NLS-1$
 		browserGroup.setLayout(new GridLayout(2, false));
 		browserGroup.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
 		createBrowserGroup(browserGroup);
 
-		Group spinnerScaleGroup = UIControlsFactory.createGroup(parent, "spinner and scale"); //$NON-NLS-1$
+		Group spinnerScaleGroup = UIControlsFactory.createGroup(composite, "spinner and scale"); //$NON-NLS-1$
 		spinnerScaleGroup.setLayout(new GridLayout(2, false));
 		spinnerScaleGroup.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
 
 		createSpinnerScaleGroup(spinnerScaleGroup);
 
-		//		Group masterDetailsGroup = UIControlsFactory.createGroup(parent, "masterDetails"); //$NON-NLS-1$
-		//		masterDetailsGroup.setLayout(new GridLayout(2, false));
-		//		masterDetailsGroup.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
-		//		createMasterDetails(masterDetailsGroup);
+		Group masterDetailsGroup = UIControlsFactory.createGroup(composite, "masterDetails"); //$NON-NLS-1$
+		masterDetailsGroup.setLayout(new GridLayout(1, false));
+		masterDetailsGroup.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
+		createMasterDetailsGroup(masterDetailsGroup);
+
+		Group dateTimeGroup = UIControlsFactory.createGroup(composite, "dateTime"); //$NON-NLS-1$
+		dateTimeGroup.setLayout(new GridLayout(2, false));
+		dateTimeGroup.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
+		createDateTimeGroup(dateTimeGroup);
+
 		// TODO work in progress
+
+		scrolledComposite.setContent(composite);
+		scrolledComposite.setMinSize(700, 1200);
 	}
 
-	//	private void createMasterDetails(Composite parent) {
-	//
-	//		MasterDetailsComposite mdComposite = UIControlsFactory.createMasterDetails(parent, "master"); //$NON-NLS-1$
-	//		Composite details = mdComposite.getDetails();
-	//		details.setLayout(new GridLayout(2, false));
-	//
-	//		UIControlsFactory.createLabel(details, "First Name:"); //$NON-NLS-1$
-	//		Text txtFirst = UIControlsFactory.createText(details, SWT.BORDER, "first"); //$NON-NLS-1$
-	//		txtFirst.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-	//
-	//		UIControlsFactory.createLabel(details, "Last Name:"); //$NON-NLS-1$
-	//		Text txtLast = UIControlsFactory.createText(details, SWT.BORDER, "last"); //$NON-NLS-1$
-	//		txtLast.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-	//
-	//		UIControlsFactory.createLabel(details, "Gender:"); //$NON-NLS-1$
-	//		ChoiceComposite ccGender = UIControlsFactory.createChoiceComposite(details, SWT.NONE, false);
-	//		ccGender.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
-	//		ccGender.setOrientation(SWT.HORIZONTAL);
-	//		mdComposite.addUIControl(ccGender, "gender"); //$NON-NLS-1$
-	//
-	//		UIControlsFactory.createLabel(details, "Pets:"); //$NON-NLS-1$
-	//		ChoiceComposite ccPets = UIControlsFactory.createChoiceComposite(details, SWT.NONE, true);
-	//		ccPets.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
-	//		ccPets.setOrientation(SWT.HORIZONTAL);
-	//		mdComposite.addUIControl(ccPets, "pets"); //$NON-NLS-1$
-	//	}
+	private void createDateTimeGroup(Composite parent) {
+		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
+		parent.setLayout(new GridLayout(1, false));
+
+		GridDataFactory gdf = GridDataFactory.fillDefaults().grab(true, false);
+		Group group1 = createGroupDT(parent, "dtDate", "dtTime", "txt1", SWT.MEDIUM); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		group1.setText("DateTime #1"); //$NON-NLS-1$
+		gdf.applyTo(group1);
+
+		Group group2 = createGroupDT(parent, "dtDateOnly", null, "txt2", SWT.LONG); //$NON-NLS-1$ //$NON-NLS-2$
+		group2.setText("DateTime #2"); //$NON-NLS-1$
+		gdf.applyTo(group2);
+
+		Group group3 = createGroupDT(parent, null, "dtTimeOnly", "txt3", SWT.SHORT); //$NON-NLS-1$ //$NON-NLS-2$
+		group3.setText("DateTime #3"); //$NON-NLS-1$
+		gdf.applyTo(group3);
+
+		Group group4 = createGroupDT(parent, "dtCal", null, "txt4", SWT.CALENDAR); //$NON-NLS-1$ //$NON-NLS-2$
+		group4.setText("DateTime #4"); //$NON-NLS-1$
+		gdf.applyTo(group4);
+
+		UIControlsFactory.createTextDate(parent, "dateText"); //$NON-NLS-1$
+		UIControlsFactory.createButton(parent, "", "dateTimeButton"); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Text dateTimeText = UIControlsFactory.crea
+	}
+
+	private void createMasterDetailsGroup(Composite parent) {
+
+		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
+
+		parent.setLayout(new GridLayout(1, false));
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridData data = new GridData();
+		data.grabExcessHorizontalSpace = true;
+		data.horizontalAlignment = SWT.FILL;
+		composite.setLayoutData(data);
+
+		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
+		layout.marginHeight = 5;
+		layout.marginWidth = 5;
+		composite.setLayout(layout);
+		createMasterDetails(composite);
+
+		UIControlsFactory.createButton(parent, "enable/disable", "enableDisable"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 
 	/**
 	 * @param parent
@@ -167,6 +211,8 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView<Contro
 
 		Combo combo = UIControlsFactory.createCombo(parent, "ageCombo"); //$NON-NLS-1$
 		combo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		CCombo cCombo = UIControlsFactory.createCCombo(parent, "ageCCombo"); //$NON-NLS-1$
+		cCombo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
 		UIControlsFactory.createText(parent, SWT.BORDER, "comboTextField"); //$NON-NLS-1$
 
@@ -203,5 +249,77 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView<Contro
 		gd_browser.widthHint = 150;
 		gd_browser.heightHint = 50;
 		browser.setLayoutData(gd_browser);
+	}
+
+	// helping methods
+	//////////////////
+
+	private Group createMasterDetails(Composite parent) {
+		Group result = UIControlsFactory.createGroup(parent, "Master/Details:"); //$NON-NLS-1$
+		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
+		layout.marginHeight = 20;
+		layout.marginWidth = 20;
+		result.setLayout(layout);
+
+		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.BOTTOM);
+		Composite details = mdComposite.getDetails();
+		GridLayout layout2 = new GridLayout(2, false);
+		details.setLayout(layout2);
+
+		UIControlsFactory.createLabel(details, "First Name:"); //$NON-NLS-1$
+		Text txtFirst = UIControlsFactory.createText(details, SWT.BORDER, "first"); //$NON-NLS-1$
+		txtFirst.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		UIControlsFactory.createLabel(details, "Last Name:"); //$NON-NLS-1$
+		Text txtLast = UIControlsFactory.createText(details, SWT.BORDER, "last"); //$NON-NLS-1$
+		txtLast.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+		UIControlsFactory.createLabel(details, "Gender:"); //$NON-NLS-1$
+		ChoiceComposite ccGender = new ChoiceComposite(details, SWT.NONE, false);
+		ccGender.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		ccGender.setOrientation(SWT.HORIZONTAL);
+		mdComposite.addUIControl(ccGender, "gender"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(details, "Pets:"); //$NON-NLS-1$
+		ChoiceComposite ccPets = new ChoiceComposite(details, SWT.NONE, true);
+		ccPets.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		ccPets.setOrientation(SWT.HORIZONTAL);
+		mdComposite.addUIControl(ccPets, "pets"); //$NON-NLS-1$
+
+		this.addUIControl(mdComposite, "master"); //$NON-NLS-1$
+
+		//DefaultButtonManager dbm = new DefaultButtonManager(parent.getShell());
+		//dbm.addButton(mdComposite.getButtonApply(), mdComposite);
+
+		return result;
+	}
+
+	private Group createGroupDT(Composite parent, String dateId, String timeId, String textId, int style) {
+		Group group = UIControlsFactory.createGroup(parent, ""); //$NON-NLS-1$
+		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
+		if (dateId != null) {
+			Label label = UIControlsFactory.createLabel(group, "Date:"); //$NON-NLS-1$
+			GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(label);
+			DateTime dtDate;
+			if (style != SWT.CALENDAR) {
+				dtDate = UIControlsFactory.createDate(group, style);
+			} else {
+				dtDate = UIControlsFactory.createCalendar(group);
+			}
+			addUIControl(dtDate, dateId);
+		}
+
+		if (timeId != null) {
+			UIControlsFactory.createLabel(group, "Time:"); //$NON-NLS-1$
+			DateTime dtTime = UIControlsFactory.createTime(group, style);
+			addUIControl(dtTime, timeId);
+		}
+
+		UIControlsFactory.createLabel(group, "Model:"); //$NON-NLS-1$
+		Text text = UIControlsFactory.createText(group);
+		GridDataFactory.fillDefaults().hint(220, SWT.DEFAULT).applyTo(text);
+		addUIControl(text, textId);
+
+		return group;
 	}
 }

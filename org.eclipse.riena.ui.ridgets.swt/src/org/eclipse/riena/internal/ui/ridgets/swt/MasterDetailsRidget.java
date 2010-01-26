@@ -97,7 +97,7 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 	//////////////////
 
 	private ITableRidget getTableRidget() {
-		return (ITableRidget) getRidget(MasterDetailsComposite.BIND_ID_TABLE);
+		return getRidget(ITableRidget.class, MasterDetailsComposite.BIND_ID_TABLE);
 	}
 
 	/**

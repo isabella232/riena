@@ -110,7 +110,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @return the windowRidget
 	 */
 	public IWindowRidget getWindowRidget() {
-		return (IWindowRidget) getRidget(WINDOW_RIDGET);
+		return getRidget(IWindowRidget.class, WINDOW_RIDGET);
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 *            the windowRidget to set
 	 */
 	public void setWindowRidget(IWindowRidget windowRidget) {
-		if (getRidget(WINDOW_RIDGET) != windowRidget) {
+		if (getRidget(IWindowRidget.class, WINDOW_RIDGET) != windowRidget) {
 			addRidget(WINDOW_RIDGET, windowRidget);
 		}
 	}
@@ -235,7 +235,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @since 1.2
 	 */
 	protected void layout() {
-		IWindowRidget ridget = (IWindowRidget) getRidget(WINDOW_RIDGET);
+		IWindowRidget ridget = getRidget(IWindowRidget.class, WINDOW_RIDGET);
 		ridget.layout();
 	}
 
