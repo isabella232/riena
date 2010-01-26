@@ -39,12 +39,6 @@ public final class NavigationNodeProvider {
 		//	utility
 	}
 
-	// TODO [ev] experimental -- remove
-	public static void _reset() {
-		NAVIGATION_NODE_PROVIDER = new NavigationNodeProvider();
-		Wire.instance(NAVIGATION_NODE_PROVIDER).andStart(Activator.getDefault().getContext());
-	}
-
 	/**
 	 * @since 1.2
 	 */
