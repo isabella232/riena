@@ -151,6 +151,8 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertTrue(subApplication.isActivated());
 
 		addPluginXml(NavigationProcessorTest.class, "NavigationProcessorTest.xml");
+		Thread.sleep(1000);
+
 		try {
 			subModule.navigate(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"));
 
@@ -624,13 +626,15 @@ public class NavigationProcessorTest extends RienaTestCase {
 	/**
 	 * Tests the method {@code create}.
 	 */
-	public void testCreate() {
+	public void testCreate() throws Exception {
 
 		INavigationNode<?> targetNode = navigationProcessor.create(module, new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.subModule"), null);
 		assertEquals(subModule, targetNode);
 
 		addPluginXml(NavigationProcessorTest.class, "NavigationProcessorTest.xml");
+		Thread.sleep(1000);
+
 		try {
 			targetNode = navigationProcessor.create(module, new NavigationNodeId(
 					"org.eclipse.riena.navigation.model.test.secondModuleGroup"), null);

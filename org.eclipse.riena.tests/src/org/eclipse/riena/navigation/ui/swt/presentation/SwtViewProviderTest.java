@@ -29,8 +29,9 @@ public class SwtViewProviderTest extends RienaTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		swtPresentationManager = ReflectionUtils.newInstanceHidden(SwtViewProvider.class);
 		addPluginXml(SwtViewProviderTest.class, "SwtViewProviderTest.xml");
+		Thread.sleep(1000);
+		swtPresentationManager = ReflectionUtils.newInstanceHidden(SwtViewProvider.class);
 	}
 
 	@Override
@@ -51,7 +52,6 @@ public class SwtViewProviderTest extends RienaTestCase {
 		SwtViewId swtViewId2 = swtPresentationManager.getSwtViewId(node2);
 		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId2.getId());
 		assertEquals("shared", swtViewId2.getSecondary());
-
 	}
 
 	public void testGetSwtViewIdNotSharedView() throws Exception {
