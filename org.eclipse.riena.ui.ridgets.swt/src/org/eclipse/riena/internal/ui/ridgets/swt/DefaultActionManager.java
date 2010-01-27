@@ -36,7 +36,7 @@ import org.eclipse.riena.ui.ridgets.IWindowRidget;
  * 
  * @since 2.0
  */
-final class DefaultActionManager implements IDefaultActionManager, Listener {
+public final class DefaultActionManager implements IDefaultActionManager, Listener {
 
 	private final IWindowRidget windowRidget;
 	private final Map<IRidget, IActionRidget> ridget2button;
@@ -51,7 +51,7 @@ final class DefaultActionManager implements IDefaultActionManager, Listener {
 	 * @param windowRidget
 	 *            a {@link IWindowRidget}; never null.
 	 */
-	DefaultActionManager(IWindowRidget windowRidget) {
+	public DefaultActionManager(IWindowRidget windowRidget) {
 		Assert.isNotNull(windowRidget);
 		this.windowRidget = windowRidget;
 		ridget2button = new HashMap<IRidget, IActionRidget>(1);
