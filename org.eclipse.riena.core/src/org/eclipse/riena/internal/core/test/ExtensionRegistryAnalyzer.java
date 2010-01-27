@@ -135,7 +135,9 @@ public final class ExtensionRegistryAnalyzer {
 	private static void getConfigurationElementsPaths(final Set<String> result, final String path,
 			final IConfigurationElement[] elements) {
 		if (elements.length == 0) {
-			TestCase.assertFalse("Error in algorithm!", !result.add(path)); //$NON-NLS-1$
+			if (!result.add(path)) {
+				TestCase.fail("Error in algorithm. Adding " + path + "\n to \n" + result + "fails.");//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			}
 			return;
 		}
 		for (final IConfigurationElement element : elements) {
