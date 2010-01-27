@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.MenuItem;
@@ -136,6 +137,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(ChoiceComposite.class, SingleChoiceRidget.class, new SingleChoiceCondition());
 		addMapping(ChoiceComposite.class, MultipleChoiceRidget.class, new MultipleChoiceCondition());
 		addMapping(Composite.class, CompositeRidget.class, new CompositeWithBindingIdCondition());
+		addMapping(Group.class, CompositeRidget.class, new CompositeWithBindingIdCondition());
 		addMapping(Combo.class, ComboRidget.class);
 		addMapping(CCombo.class, CComboRidget.class);
 		addMapping(DateTime.class, DateTimeRidget.class);

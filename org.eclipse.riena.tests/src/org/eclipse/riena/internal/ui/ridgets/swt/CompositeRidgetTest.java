@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
@@ -51,35 +52,48 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 	// testing methods
 	//////////////////
 
-	public void testRidgetMapping() {
+	public void testCompositeToRidgetMapping() {
 		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
-		Composite control = getWidget();
 
-		assertNotNull(control.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
-		assertSame(CompositeRidget.class, mapper.getRidgetClass(control));
+		Composite composite = new Composite(getShell(), SWT.NONE);
+		composite.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "id1");
+
+		assertNotNull(composite.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
+		assertSame(CompositeRidget.class, mapper.getRidgetClass(composite));
 	}
 
-	public void testRidgetMappingWithNoId() {
+	public void testGroupToRidgetMapping() {
 		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
-		Composite control = new Composite(getShell(), SWT.NONE);
 
-		assertEquals(null, control.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
-		try {
-			mapper.getRidgetClass(control);
-			fail();
-		} catch (BindingException bex) {
-			ok("expected");
-		}
+		Group group = new Group(getShell(), SWT.NONE);
+		group.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "id2");
 
-		control.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "");
+		assertNotNull(group.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
+		assertSame(CompositeRidget.class, mapper.getRidgetClass(group));
+	}
 
-		assertEquals("", control.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
-		try {
-			mapper.getRidgetClass(control);
-			fail();
-		} catch (BindingException bex) {
-			ok("expected");
-		}
+	public void testCompositeToRidgetMappingWithNoId() {
+		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+
+		Composite composite = new Composite(getShell(), SWT.NONE);
+
+		assertNullId(mapper, composite);
+
+		composite.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "");
+
+		assertEmptyId(mapper, composite);
+	}
+
+	public void testGroupToRidgetMappingWithNoId() {
+		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+
+		Composite composite = new Composite(getShell(), SWT.NONE);
+
+		assertNullId(mapper, composite);
+
+		composite.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "");
+
+		assertEmptyId(mapper, composite);
 	}
 
 	@Override
@@ -102,6 +116,26 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 
 	// helping methods
 	//////////////////
+
+	private void assertEmptyId(SwtControlRidgetMapper mapper, Composite control) {
+		assertEquals("", control.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
+		try {
+			mapper.getRidgetClass(control);
+			fail();
+		} catch (BindingException bex) {
+			ok("expected");
+		}
+	}
+
+	private void assertNullId(SwtControlRidgetMapper mapper, Composite control) {
+		assertEquals(null, control.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
+		try {
+			mapper.getRidgetClass(control);
+			fail();
+		} catch (BindingException bex) {
+			ok("expected");
+		}
+	}
 
 	/*
 	 * Giving focus assumes there is something in the composite than can receive
