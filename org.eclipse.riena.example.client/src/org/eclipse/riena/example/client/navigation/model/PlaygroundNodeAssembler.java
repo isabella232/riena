@@ -24,6 +24,7 @@ import org.eclipse.riena.example.client.controllers.CompositeTableSubModuleContr
 import org.eclipse.riena.example.client.controllers.ContextMenuSubModuleController;
 import org.eclipse.riena.example.client.controllers.ControllerTestsPlaygroundSubModuleController;
 import org.eclipse.riena.example.client.controllers.DateTimeSubModuleController;
+import org.eclipse.riena.example.client.controllers.DefaultButtonSubModuleController;
 import org.eclipse.riena.example.client.controllers.DetachedSubModuleController;
 import org.eclipse.riena.example.client.controllers.DialogSubModuleController;
 import org.eclipse.riena.example.client.controllers.FocusableSubModuleController;
@@ -55,6 +56,7 @@ import org.eclipse.riena.example.client.views.CompositeTableSubModuleView;
 import org.eclipse.riena.example.client.views.ContextMenuSubModuleView;
 import org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView;
 import org.eclipse.riena.example.client.views.DateTimeSubModuleView;
+import org.eclipse.riena.example.client.views.DefaultButtonSubModuleView;
 import org.eclipse.riena.example.client.views.DetachedSubModuleView;
 import org.eclipse.riena.example.client.views.DialogSubModuleView;
 import org.eclipse.riena.example.client.views.FocusableSubModuleView;
@@ -170,6 +172,12 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(dateTimeSubModule, DateTimeSubModuleController.class, DateTimeSubModuleView.ID,
 				false);
 		playgroundModule.addChild(dateTimeSubModule);
+
+		ISubModuleNode defaultButtonSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.defaultbutton"), "Default Button"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(defaultButtonSubModule, DefaultButtonSubModuleController.class,
+				DefaultButtonSubModuleView.ID, false);
+		playgroundModule.addChild(defaultButtonSubModule);
 
 		ISubModuleNode dialogSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.dialog"), "Dialog"); //$NON-NLS-1$ //$NON-NLS-2$

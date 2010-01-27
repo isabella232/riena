@@ -594,10 +594,21 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source text "myGroupText"
 	 */
 	public static Group createGroup(Composite parent, String text) {
-		Group group = new Group(parent, SWT.NONE);
-		group.setText(text);
-		group.setBackground(SHARED_BG_COLOR);
-		return group;
+		Group result = new Group(parent, SWT.NONE);
+		result.setText(text);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source text "myGroupText"
+	 * @wbp.factory.parameter.source bindingId "myGroupId"
+	 * @since 2.0
+	 */
+	public static Group createGroup(Composite parent, String text, String bindingId) {
+		Group result = createGroup(parent, text);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
 	}
 
 	public static List createList(Composite parent, boolean hScroll, boolean vScroll) {
