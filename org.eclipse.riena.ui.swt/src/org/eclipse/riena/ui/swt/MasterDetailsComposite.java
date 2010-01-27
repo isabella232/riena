@@ -78,8 +78,8 @@ public class MasterDetailsComposite extends AbstractMasterDetailsComposite {
 	 * appropriate number of columns. The automatically created columns will
 	 * share the full width of the table.
 	 */
-	protected Table createTable(Composite compTable, TableColumnLayout layout) {
-		Table table = new Table(compTable, getTableStyle());
+	protected Table createTable(Composite tableComposite, TableColumnLayout layout) {
+		Table table = new Table(tableComposite, getTableStyle());
 		// Check that table does not allow multiple selection
 		Assert.isLegal((table.getStyle() & SWT.MULTI) == 0);
 		// Do not create columns here or change the TableColumnLayout.

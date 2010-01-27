@@ -420,25 +420,30 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	/**
-	 * TODO [ev] update -- does not always return a table + mention GridData +
-	 * include sample code
+	 * Creates a widget for displaying the available rows. This is a table- /
+	 * grid- / matrix-like Control.
+	 * <p>
+	 * Subclasses should override and return an appropriate Control.
 	 * 
-	 * Creates the table used by this control. Subclasses may ovverride.
-	 * 
-	 * @param compTable
-	 *            a parent composite of the table; never null. It already has a
-	 *            TableColumnLayout. Do not change the layout.
+	 * @param tableComposite
+	 *            a parent Composite; never null. It already has a
+	 *            TableColumnLayout, which should be used if you are creating a
+	 *            Table. If you are creating another type of widget you should
+	 *            set an appropriate layout to the {@code tableComposite}.
 	 * @param layout
-	 *            the TableColumnLayout for this table; never null. Add
-	 *            information about the columns as necessary.
-	 * @return a Table; never null; must have SWT.SINGLE enabled. If the
-	 *         returned table has too few or too many columns, the columns will
-	 *         be re-created. If you care about the specific
-	 *         configuration/layout of the table columns, as many columns a
-	 *         needed by the ridget
+	 *            the TableColumnLayout for the widget; never null. Add
+	 *            information about the columns as necessary. Can be ignored, if
+	 *            you are creating a widget of a different type (i.e. other than
+	 *            Table).
+	 * @return a Table-like control; never null; must have the SWT.SINGLE
+	 *         style-bit (i.e. single selection only). If the returned widget is
+	 *         a Table and has too few or too many columns, the columns will be
+	 *         re-created. If you care about the specific configuration/layout
+	 *         of the Table columns, make sure the Table has as many columns a
+	 *         needed by the ridget.
 	 * @see {@code IMasterDetailsRidget#bindToModel(...)}
 	 */
-	abstract protected Control createTable(Composite compTable, TableColumnLayout layout);
+	abstract protected Control createTable(Composite tableComposite, TableColumnLayout layout);
 
 	/**
 	 * Returns the style bits for the 'details' composite. Subclasses may

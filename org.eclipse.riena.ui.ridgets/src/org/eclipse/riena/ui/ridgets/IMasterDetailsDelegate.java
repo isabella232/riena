@@ -16,10 +16,12 @@ package org.eclipse.riena.ui.ridgets;
  * <ul>
  * <li>configuring the ridgets for the details area</li>
  * <li>creating the model driving the details area</li>
- * <li>updating a model value from the details area</li>
  * <li>updating the details area from a model value</li>
+ * <li>updating a model value from the details area</li>
  * <li>deciding if data in the details area has been changed</li>
- * <li>deciding if data in the details area is valid
+ * <li>deciding if data in the details area is valid</li>
+ * <li>optionally &ndash; participating at lifecycle events, such as selection,
+ * creation, apply and removal</li>
  * </ul>
  * <p>
  * It is recommended to extend AbstractMasterDetailsDelegate instead of
@@ -29,7 +31,8 @@ package org.eclipse.riena.ui.ridgets;
  * implementation of this interface to the ridget, by invoking
  * {@link IMasterDetailsRidget#setDelegate(IMasterDetailsDelegate)}.
  * <p>
- * TODO [ev] javadoc update
+ * 
+ * @see AbstractMasterDetailsDelegate
  * */
 public interface IMasterDetailsDelegate {
 
@@ -172,21 +175,24 @@ public interface IMasterDetailsDelegate {
 	void updateDetails(IRidgetContainer container);
 
 	/**
-	 * The method is
+	 * This is the <b>first</b> method called when a row in the master table is
+	 * selected. It will be called before any other methods of the delegate. The
+	 * given <code>newSelection</code> is the selection.
 	 * 
 	 * @param newSelection
+	 *            the selected item behind the master row. <b>May be null</b>,
+	 *            if nothing becomes selected
 	 */
 	void prepareItemSelected(Object newSelection);
 
 	/**
-	 * This method is called when a row in the master table is selected. On
-	 * selection change, this will be called before any other methods of the
+	 * This is the <b>last</b> method called when a row in the master table
+	 * becomes selected. It will be called after any other methods of the
 	 * delegate. The given <code>newSelection</code> is the selection.
-	 * <p>
-	 * TODO [ev] add javadoc about no guarantee that this is still selected?
 	 * 
 	 * @param newSelection
-	 *            the selected item behind the master row. Can never be null.
+	 *            the selected item behind the master row. <b>May be null</b>,
+	 *            if nothing becomes selected
 	 * @since 2.0
 	 */
 	void itemSelected(Object newSelection);

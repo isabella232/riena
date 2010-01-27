@@ -11,7 +11,23 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * TODO [ev] javadoc
+ * Default implementation of the {@link IMasterDetailsDelegate}.
+ * <p>
+ * It is recommended that subclasses extend this class instead of implementing
+ * {@link IMasterDetailsDelegate} directly.
+ * <p>
+ * Subclasses still need to implement the abstract methods listed below. These
+ * are model specific, so it is not possible to provide a usable default
+ * implementation.
+ * <ul>
+ * <li>{@link #configureRidgets(IRidgetContainer)}</li>
+ * <li>{@link #createWorkingCopy()}</li>
+ * <li>{@link #copyBean(Object, Object)}</li>
+ * <li>{@link #getWorkingCopy()}</li>
+ * </ul>
+ * Typically will also want to override {@link #isChanged(Object, Object)}, to
+ * fine tune the "dirty" state of the details area.
+ * <p>
  * 
  * @since 2.0
  */
@@ -21,6 +37,9 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * {@inheritDoc}
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
+	 * <p>
+	 * <b>Note:</b> it is recommended to provide a tailored implementation for
+	 * this method. This will fine tune the "dirty" state of the details area.
 	 */
 	public boolean isChanged(Object source, Object target) {
 		return true;
