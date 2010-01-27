@@ -28,9 +28,11 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
 /**
- * Experimental. May go away.
- * <p>
- * TODO [ev] docs, tests
+ * Manages the default button state for one or more ridgets. See
+ * {@link IDefaultActionManager} for details.
+ * 
+ * @see IWindowRidget#addDefaultAction(IRidget, IActionRidget)
+ * @see IDefaultActionManager
  * 
  * @since 2.0
  */
@@ -43,12 +45,33 @@ final class DefaultActionManager implements IDefaultActionManager, Listener {
 	private Shell shell;
 	private Display display;
 
+	/**
+	 * Create a new {@link DefaultActionManager} instance
+	 * 
+	 * @param windowRidget
+	 *            a {@link IWindowRidget}; never null.
+	 */
 	DefaultActionManager(IWindowRidget windowRidget) {
 		Assert.isNotNull(windowRidget);
 		this.windowRidget = windowRidget;
 		ridget2button = new HashMap<IRidget, IActionRidget>(1);
 	}
 
+	/**
+	 * Callers can add one or more (focusRidget, actionRidget) pairs.
+	 * <p>
+	 * When the focusRidget's control, or one of the controls therein, obtains
+	 * the focus, the matching actionRidget will be set as the default action.
+	 * <p>
+	 * The matching algorithm works "inside-out", i.e. it will start with the
+	 * innermost widget and work upwards. It stops when the first match is
+	 * found.
+	 * 
+	 * @param focusRidget
+	 *            an {@link IRidget}; never null
+	 * @param actionRidget
+	 *            an {@link IActionRidget}; never null
+	 */
 	public void addAction(IRidget focusRidget, IActionRidget actionRidget) {
 		Assert.isNotNull(focusRidget);
 		Assert.isNotNull(actionRidget);
