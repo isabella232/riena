@@ -435,7 +435,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	private IRidget getTableRidget() {
 		// this is not necessarily an ITableRidget, can be any IRidget
-		return getRidget(IRidget.class, MasterDetailsComposite.BIND_ID_TABLE);
+		return (IRidget) getRidget(MasterDetailsComposite.BIND_ID_TABLE);
 	}
 
 	private IActionRidget getNewButtonRidget() {
