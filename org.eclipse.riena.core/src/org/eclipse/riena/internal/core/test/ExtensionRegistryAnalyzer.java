@@ -112,12 +112,19 @@ public final class ExtensionRegistryAnalyzer {
 	/**
 	 * Get the whole extension registry as a set of paths.
 	 * 
+	 * @param extensionPointPrefix
+	 *            considering only extension points that have this prefix or
+	 *            null for all
+	 * 
 	 * @return
 	 */
-	public static Set<String> getRegistryPaths() {
+	public static Set<String> getRegistryPaths(final String extensionPointPrefix) {
 		final Set<String> result = new HashSet<String>();
 		final IExtensionPoint[] extensionPoints = RegistryFactory.getRegistry().getExtensionPoints();
 		for (final IExtensionPoint extensionPoint : extensionPoints) {
+			if (extensionPointPrefix != null && !extensionPoint.getUniqueIdentifier().startsWith(extensionPointPrefix)) {
+				continue;
+			}
 			final String path = extensionPoint.getUniqueIdentifier() + ": "; //$NON-NLS-1$
 			getExtensionsPaths(result, path, extensionPoint.getExtensions());
 		}
@@ -136,7 +143,15 @@ public final class ExtensionRegistryAnalyzer {
 			final IConfigurationElement[] elements) {
 		if (elements.length == 0) {
 			if (!result.add(path)) {
-				TestCase.fail("Error in algorithm. Adding " + path + "\n to \n" + result + "fails.");//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				System.err.println("Error in algorithm. Adding " + path + " to :"); //$NON-NLS-1$ //$NON-NLS-2$ 
+				for (final String str : result) {
+					if (path.equals(str)) {
+						System.err.println(str);
+					} else {
+						System.out.println(str);
+					}
+				}
+				TestCase.fail("Error in algorithm. See console log!");//$NON-NLS-1$ 
 			}
 			return;
 		}
