@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -54,6 +55,8 @@ public abstract class RienaTestCase extends TestCase {
 	private BundleContext context;
 
 	private final boolean trace = Trace.isOn(RienaTestCase.class, getClass(), "debug"); //$NON-NLS-1$
+	private Set<String> before;
+	private Set<String> after;
 
 	/**
 	 * 
@@ -100,8 +103,8 @@ public abstract class RienaTestCase extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-
 		services.clear();
+		before = ExtensionRegistryAnalyzer.getRegistryPaths();
 	}
 
 	/*
@@ -112,10 +115,19 @@ public abstract class RienaTestCase extends TestCase {
 		for (final ServiceReference reference : services.values()) {
 			getContext().ungetService(reference);
 		}
-
 		services.clear();
-
-		super.tearDown();
+		try {
+			assertNotNull("Obviously the super.setUp() method has not been called!", before); //$NON-NLS-1$
+			after = ExtensionRegistryAnalyzer.getRegistryPaths();
+			if (!before.equals(after)) {
+				fail("ExtensionRegistry has changed while running the test " + getName() + ": " //$NON-NLS-1$ //$NON-NLS-2$
+						+ ExtensionRegistryAnalyzer.symmetricDiff(before, after).toString());
+			}
+		} finally {
+			after = null;
+			before = null;
+			super.tearDown();
+		}
 	}
 
 	/**
