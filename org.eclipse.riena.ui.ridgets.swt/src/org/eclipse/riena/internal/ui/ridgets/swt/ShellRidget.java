@@ -66,11 +66,11 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	 * see {@link AbstractWindowController#afterBind()}. Deactivation and
 	 * disposal is handled by this ridget.
 	 */
-	public IDefaultActionManager addDefaultAction(IRidget focusRidget, IActionRidget action) {
+	public IDefaultActionManager addDefaultAction(IRidget focusRidget, IActionRidget actionRidget) {
 		if (actionManager == null) {
 			actionManager = new DefaultActionManager(this);
 		}
-		actionManager.addAction(action, focusRidget);
+		actionManager.addAction(focusRidget, actionRidget);
 		return actionManager;
 	}
 

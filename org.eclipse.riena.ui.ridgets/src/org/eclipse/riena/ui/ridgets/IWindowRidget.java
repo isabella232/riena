@@ -42,14 +42,14 @@ public interface IWindowRidget extends IRidget {
 	 * @param focusRidget
 	 *            the ridget that needs to have the focus to activate this rule.
 	 *            Never null.
-	 * @param action
+	 * @param actionRidget
 	 *            this ridget will become the default action, while focusRidget
 	 *            has the focus. Never null.
 	 * @return an {@link IDefaultActionManager} instance; never null.
 	 * 
 	 * @since 2.0
 	 */
-	IDefaultActionManager addDefaultAction(IRidget focusRidget, IActionRidget action);
+	IDefaultActionManager addDefaultAction(IRidget focusRidget, IActionRidget actionRidget);
 
 	/**
 	 * Adds a {@link IWindowRidgetListener} for receiving window events from

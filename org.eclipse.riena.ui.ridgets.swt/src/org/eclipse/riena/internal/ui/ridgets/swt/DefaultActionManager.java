@@ -49,10 +49,10 @@ final class DefaultActionManager implements IDefaultActionManager, Listener {
 		ridget2button = new HashMap<IRidget, IActionRidget>(1);
 	}
 
-	public void addAction(IActionRidget ridget, IRidget focusRidget) {
-		Assert.isNotNull(ridget);
+	public void addAction(IRidget focusRidget, IActionRidget actionRidget) {
 		Assert.isNotNull(focusRidget);
-		ridget2button.put(focusRidget, ridget);
+		Assert.isNotNull(actionRidget);
+		ridget2button.put(focusRidget, actionRidget);
 	}
 
 	public void activate() {
@@ -70,6 +70,7 @@ final class DefaultActionManager implements IDefaultActionManager, Listener {
 
 				control2button.put(control, button);
 			}
+			updateDefaultButton(display.getFocusControl());
 			display.addFilter(SWT.FocusIn, this);
 		}
 	}
@@ -81,11 +82,7 @@ final class DefaultActionManager implements IDefaultActionManager, Listener {
 		}
 		if (shell != null) {
 			if (!shell.isDisposed()) {
-				// the setDefaultButton(...) API is strange! The first call
-				// will just reset the saved button to null, the second call will 
-				// make null the default button
-				shell.setDefaultButton(null);
-				shell.setDefaultButton(null);
+				clearDefaultButton(shell);
 			}
 			shell = null;
 		}
@@ -102,16 +99,21 @@ final class DefaultActionManager implements IDefaultActionManager, Listener {
 	 */
 	public void handleEvent(Event event) {
 		if (SWT.FocusIn == event.type && event.widget instanceof Control) {
-			Button button = findDefaultButton((Control) event.widget);
-			if (button != null && button != shell.getDefaultButton()) {
-				// System.out.println("Focus on: " + event.widget + ", " + button);
-				shell.setDefaultButton(button);
-			}
+			Control control = (Control) event.widget;
+			updateDefaultButton(control);
 		}
 	}
 
 	// helping methods
 	//////////////////
+
+	private void clearDefaultButton(Shell shell) {
+		// the setDefaultButton(...) API is strange! The first call
+		// will just reset the saved button to null, the second call will 
+		// make null the default button
+		shell.setDefaultButton(null);
+		shell.setDefaultButton(null);
+	}
 
 	private Button findDefaultButton(Control start) {
 		Button result = null;
@@ -121,6 +123,18 @@ final class DefaultActionManager implements IDefaultActionManager, Listener {
 			control = control.getParent();
 		}
 		return result;
+	}
+
+	private void updateDefaultButton(Control control) {
+		Button button = findDefaultButton(control);
+		if (button != shell.getDefaultButton()) {
+			// System.out.println("Focus on: " + event.widget + ", " + button);
+			if (button != null) {
+				shell.setDefaultButton(button);
+			} else {
+				clearDefaultButton(shell);
+			}
+		}
 	}
 
 }
