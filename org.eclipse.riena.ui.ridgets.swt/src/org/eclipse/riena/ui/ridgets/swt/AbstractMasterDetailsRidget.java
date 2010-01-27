@@ -37,6 +37,7 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
@@ -82,6 +83,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 						// ignore these events:
 						|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER
 								.equals(propertyName)) || IRidget.PROPERTY_ENABLED.equals(propertyName)
+						|| ITextRidget.PROPERTY_TEXT.equals(propertyName)
 						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)) {
 					return;
 				}
@@ -159,11 +161,13 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		for (IRidget ridget : detailRidgets.getRidgets()) {
 			ridget.addPropertyChangeListener(new PropertyChangeListener() {
 				public void propertyChange(PropertyChangeEvent evt) {
-					if (isDirectWriting == false || delegate == null
+					if (isDirectWriting == false
+							|| delegate == null
 							|| editable == null
 							// ignore these events:
 							|| IMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName())
 							|| IRidget.PROPERTY_ENABLED.equals(evt.getPropertyName())
+							|| ITextRidget.PROPERTY_TEXT.equals(evt.getPropertyName())
 							|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(evt.getPropertyName())) {
 						return;
 					}
@@ -245,21 +249,27 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	public void suggestNewEntry(Object entry) {
-		editable = entry;
-		delegate.itemSelected(editable);
-		setEnabled(true, true);
-		updateDetails(editable);
+		ignoreChanges = true;
+		try {
+			editable = entry;
+			delegate.prepareItemSelected(editable);
+			setEnabled(true, true);
+			updateDetails(editable);
+			ignoreChanges = true;
+			delegate.itemSelected(editable);
+		} finally {
+			ignoreChanges = false;
+		}
 	}
 
 	public final void updateApplyButton() {
-		boolean isChanged = areDetailsChanged();
 		if (applyRequiresNoErrors || applyRequiresNoMandatories) {
 			boolean noErrors = applyRequiresNoErrors ? !hasErrors() : true;
 			boolean noMandatories = applyRequiresNoMandatories ? !hasMandatories() : true;
-			boolean isEnabled = isChanged && noErrors && noMandatories;
+			boolean isEnabled = noErrors && noMandatories && areDetailsChanged();
 			getApplyButtonRidget().setEnabled(isEnabled);
 		} else {
-			getApplyButtonRidget().setEnabled(isChanged);
+			getApplyButtonRidget().setEnabled(areDetailsChanged());
 		}
 	}
 
@@ -304,14 +314,21 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	protected void handleSelectionChange(Object newSelection) {
-		if (newSelection != null) { // selection changed
-			editable = newSelection;
-			delegate.itemSelected(editable);
-			setEnabled(false, true);
-			updateDetails(editable);
-		} else { // nothing selected
-			clearSelection();
-			setEnabled(false, false);
+		ignoreChanges = true;
+		try {
+			delegate.prepareItemSelected(newSelection);
+			if (newSelection != null) { // selection changed
+				editable = newSelection;
+				setEnabled(false, true);
+				updateDetails(editable);
+			} else { // nothing selected
+				clearSelection();
+				setEnabled(false, false);
+			}
+			ignoreChanges = true;
+			delegate.itemSelected(newSelection);
+		} finally {
+			ignoreChanges = false;
 		}
 	}
 
@@ -376,8 +393,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	private boolean canAdd() {
 		boolean result = true;
-		boolean isChanged = areDetailsChanged();
-		if (isChanged) {
+		if (areDetailsChanged()) {
 			result = getUIControl().confirmDiscardChanges();
 		}
 		return result;

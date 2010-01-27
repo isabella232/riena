@@ -130,7 +130,7 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 
 		@Override
 		public void itemSelected(Object item) {
-			lblStatus.setText("Item selected: " + item); //$NON-NLS-1$
+			lblStatus.setText("Item selected: " + String.valueOf(item)); //$NON-NLS-1$
 		}
 	}
 

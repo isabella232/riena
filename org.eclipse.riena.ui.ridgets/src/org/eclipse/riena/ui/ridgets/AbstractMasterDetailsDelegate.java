@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
-
 /**
  * TODO [ev] javadoc
  * 
@@ -42,6 +41,7 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * Default implementation for this method. Subclasses may override.
 	 */
 	public void itemCreated(Object newItem) {
+		// empty
 	}
 
 	/**
@@ -50,6 +50,7 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * Default implementation for this method. Subclasses may override.
 	 */
 	public void itemApplied(Object changedItem) {
+		// empty
 	}
 
 	/**
@@ -58,6 +59,16 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * Default implementation for this method. Subclasses may override.
 	 */
 	public void itemRemoved(Object oldItem) {
+		// empty
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Default implementation for this method. Subclasses may override.
+	 */
+	public void prepareItemSelected(Object newSelection) {
+		// empty
 	}
 
 	/**
@@ -66,6 +77,7 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * Default implementation for this method. Subclasses may override.
 	 */
 	public void itemSelected(Object newSelection) {
+		// empty
 	}
 
 	/**

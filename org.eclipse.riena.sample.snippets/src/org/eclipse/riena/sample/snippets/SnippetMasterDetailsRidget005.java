@@ -85,7 +85,10 @@ public final class SnippetMasterDetailsRidget005 {
 		}
 
 		@Override
-		public void itemSelected(Object newSelection) {
+		public void prepareItemSelected(Object newSelection) {
+			if (newSelection == null) {
+				return;
+			}
 			Person person = (Person) newSelection;
 			WritableList values = null;
 			if (person.getLastname().startsWith("Jackson")) { //$NON-NLS-1$

@@ -172,6 +172,13 @@ public interface IMasterDetailsDelegate {
 	void updateDetails(IRidgetContainer container);
 
 	/**
+	 * The method is
+	 * 
+	 * @param newSelection
+	 */
+	void prepareItemSelected(Object newSelection);
+
+	/**
 	 * This method is called when a row in the master table is selected. On
 	 * selection change, this will be called before any other methods of the
 	 * delegate. The given <code>newSelection</code> is the selection.

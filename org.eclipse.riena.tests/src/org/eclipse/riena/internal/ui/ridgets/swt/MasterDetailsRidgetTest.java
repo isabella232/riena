@@ -577,12 +577,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		bindToModel(true);
 
 		assertEquals(0, delegate.applyCount);
+		assertEquals(0, delegate.prepareCount);
 		assertEquals(0, delegate.selectionCount);
 
 		MDBean first = input.get(0);
 		ridget.setSelection(first);
 
 		assertEquals(0, delegate.applyCount);
+		assertEquals(1, delegate.prepareCount);
 		assertEquals(1, delegate.selectionCount);
 
 		widget.txtColumn1.setFocus();
@@ -590,18 +592,21 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.handleApply();
 
 		assertEquals(1, delegate.applyCount);
+		assertEquals(1, delegate.prepareCount);
 		assertEquals(1, delegate.selectionCount);
 	}
 
 	public void testDelegateItemSelected() {
 		bindToModel(true);
 
+		assertEquals(0, delegate.prepareCount);
 		assertEquals(0, delegate.selectionCount);
 		assertNull(delegate.lastItem);
 
 		Object first = input.get(0);
 		getRidget().setSelection(first);
 
+		assertEquals(1, delegate.prepareCount);
 		assertEquals(1, delegate.selectionCount);
 		assertEquals(first, delegate.lastItem);
 	}
@@ -611,6 +616,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		MDWidget widget = getWidget();
 		Object first = input.get(0);
 
+		assertEquals(0, delegate.prepareCount);
 		assertEquals(0, delegate.selectionCount);
 		assertNull(delegate.lastItem);
 
@@ -621,6 +627,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		Event event2 = createSelectionEvent(widget, first);
 		table.notifyListeners(SWT.Selection, event2);
 
+		assertEquals(1, delegate.prepareCount);
 		assertEquals(1, delegate.selectionCount);
 		assertEquals(first, delegate.lastItem);
 	}
@@ -914,6 +921,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		int createCount;
 		int removeCount;
 		int applyCount;
+		int prepareCount;
 		int selectionCount;
 		Object lastItem;
 		private ITextRidget txtColumn1;
@@ -980,6 +988,11 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		public void itemRemoved(Object oldItem) {
 			removeCount++;
 			lastItem = oldItem;
+		}
+
+		public void prepareItemSelected(Object newSelection) {
+			prepareCount++;
+			lastItem = newSelection;
 		}
 
 		@Override
