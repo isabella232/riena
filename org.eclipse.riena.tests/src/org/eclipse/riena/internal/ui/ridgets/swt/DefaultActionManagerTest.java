@@ -61,7 +61,6 @@ public class DefaultActionManagerTest extends TestCase {
 	protected void tearDown() throws Exception {
 		actionMan.dispose();
 		shell.dispose();
-		display.dispose();
 	}
 
 	public void testOneDefaultButton() {
