@@ -15,8 +15,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -143,7 +141,7 @@ public final class ExtensionRegistryAnalyzer {
 			final IConfigurationElement[] elements) {
 		if (elements.length == 0) {
 			if (!result.add(path)) {
-				System.err.println("Error in algorithm. Adding " + path + " to :"); //$NON-NLS-1$ //$NON-NLS-2$ 
+				System.err.println("Error while collecting registry paths. Adding " + path + " twice to :"); //$NON-NLS-1$ //$NON-NLS-2$ 
 				for (final String str : result) {
 					if (path.equals(str)) {
 						System.err.println(str);
@@ -151,7 +149,6 @@ public final class ExtensionRegistryAnalyzer {
 						System.out.println(str);
 					}
 				}
-				TestCase.fail("Error in algorithm. See console log!");//$NON-NLS-1$ 
 			}
 			return;
 		}
