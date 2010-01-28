@@ -77,17 +77,20 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		addPropertyChangeListener(null, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				String propertyName = evt.getPropertyName();
-				if (ignoreChanges
+				if (isDirectWriting
+						|| ignoreChanges
 						|| delegate == null
 						|| editable == null
 						// ignore these events:
 						|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER
 								.equals(propertyName)) || IRidget.PROPERTY_ENABLED.equals(propertyName)
 						|| ITextRidget.PROPERTY_TEXT.equals(propertyName)
-						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)) {
+						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)
+						|| IMarkableRidget.PROPERTY_MARKER.equals(propertyName)
+						&& getApplyButtonRidget() == evt.getSource()) {
 					return;
 				}
-				// System.out.println(String.format("prop: %s %s", evt.getPropertyName(), evt.getSource()));
+				// traceEvent(evt);
 				updateApplyButton();
 			}
 		});
@@ -161,22 +164,27 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		for (IRidget ridget : detailRidgets.getRidgets()) {
 			ridget.addPropertyChangeListener(new PropertyChangeListener() {
 				public void propertyChange(PropertyChangeEvent evt) {
-					if (isDirectWriting == false
+					String propertyName = evt.getPropertyName();
+					if (!isDirectWriting
+							|| ignoreChanges
 							|| delegate == null
 							|| editable == null
 							// ignore these events:
-							|| IMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName())
-							|| IRidget.PROPERTY_ENABLED.equals(evt.getPropertyName())
-							|| ITextRidget.PROPERTY_TEXT.equals(evt.getPropertyName())
-							|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(evt.getPropertyName())) {
+							|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER
+									.equals(propertyName)) || IRidget.PROPERTY_ENABLED.equals(propertyName)
+							|| ITextRidget.PROPERTY_TEXT.equals(propertyName)
+							|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)) {
 						return;
 					}
-					// this is only reached when direct writing is on and one of 'interesting' events happens
-					delegate.copyBean(delegate.getWorkingCopy(), editable);
-					getTableRidget().updateFromModel();
-					// we are already editing, so we want to invoke getTR().setSelection(editable) instead
-					// of setSelection(editable). This will just select the editable in the table.
-					setTableSelection(editable);
+					// traceEvent(evt);
+					if (canApplyDirectly()) {
+						// this is only reached when direct writing is on and one of 'interesting' events happens
+						delegate.copyBean(delegate.getWorkingCopy(), editable);
+						getTableRidget().updateFromModel();
+						// we are already editing, so we want to invoke getTR().setSelection(editable) instead
+						// of setSelection(editable). This will just select the editable in the table.
+						setTableSelection(editable);
+					}
 				}
 			});
 		}
@@ -407,6 +415,12 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return reason == null;
 	}
 
+	private boolean canApplyDirectly() {
+		boolean noErrors = applyRequiresNoErrors ? !hasErrors() : true;
+		boolean noMandatories = applyRequiresNoMandatories ? !hasMandatories() : true;
+		return noErrors && noMandatories && (delegate.isValid(detailRidgets) == null);
+	}
+
 	private boolean canRemove() {
 		Object selection = getSelection();
 		Assert.isNotNull(selection);
@@ -526,6 +540,12 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				}
 			});
 		}
+	}
+
+	@SuppressWarnings("unused")
+	private void traceEvent(PropertyChangeEvent evt) {
+		String className = evt.getSource().getClass().getSimpleName();
+		System.out.println(String.format("prop: %s %s", evt.getPropertyName(), className)); //$NON-NLS-1$
 	}
 
 	private void updateDetails(Object bean) {

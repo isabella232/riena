@@ -501,6 +501,81 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("", row4.column2);
 	}
 
+	public void testDirectWritingWithRequiresNoErrors() {
+		MasterDetailsRidget ridget = getRidget();
+		ridget.setApplyRequiresNoErrors(true);
+		ridget.setDirectWriting(true);
+		delegate.txtColumn1.addValidationRule(new MinLength(3), ValidationTime.ON_UI_CONTROL_EDIT);
+		bindToModel(true);
+
+		ridget.handleAdd();
+		MDBean bean = (MDBean) ridget.getSelection();
+
+		assertEquals("", bean.column1);
+		assertEquals("", bean.column2);
+
+		// should not update bean, col1 is not valid
+		delegate.txtColumn2.setText("beta");
+
+		assertEquals("", bean.column1);
+		assertEquals("", bean.column2);
+
+		delegate.txtColumn1.setText("alpha");
+
+		assertEquals("alpha", bean.column1);
+		assertEquals("beta", bean.column2);
+	}
+
+	public void testDirectWritingWithRequiresNoMandatories() {
+		MasterDetailsRidget ridget = getRidget();
+		ridget.setApplyRequiresNoMandatories(true);
+		ridget.setDirectWriting(true);
+		delegate.txtColumn1.setMandatory(true);
+		delegate.txtColumn2.setMandatory(true);
+		bindToModel(true);
+
+		ridget.handleAdd();
+		MDBean bean = (MDBean) ridget.getSelection();
+
+		assertEquals("", bean.column1);
+		assertEquals("", bean.column2);
+
+		delegate.txtColumn1.setText("alpha");
+
+		assertEquals("", bean.column1);
+		assertEquals("", bean.column2);
+
+		delegate.txtColumn2.setText("beta");
+
+		assertEquals("alpha", bean.column1);
+		assertEquals("beta", bean.column2);
+	}
+
+	public void testDirectWritingValidationCheck() {
+		MasterDetailsRidget ridget = getRidget();
+		ridget.setApplyRequiresNoMandatories(true);
+		ridget.setDirectWriting(true);
+		bindToModel(true);
+		delegate.validationResult = "error";
+
+		ridget.handleAdd();
+		MDBean bean = (MDBean) ridget.getSelection();
+
+		assertEquals("", bean.column1);
+		assertEquals("", bean.column2);
+
+		delegate.txtColumn1.setText("alpha");
+
+		assertEquals("", bean.column1);
+		assertEquals("", bean.column2);
+
+		delegate.validationResult = null;
+		delegate.txtColumn2.setText("beta");
+
+		assertEquals("alpha", bean.column1);
+		assertEquals("beta", bean.column2);
+	}
+
 	/**
 	 * As per Bug 293642
 	 */
@@ -924,8 +999,9 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		int prepareCount;
 		int selectionCount;
 		Object lastItem;
-		private ITextRidget txtColumn1;
-		private ITextRidget txtColumn2;
+		ITextRidget txtColumn1;
+		ITextRidget txtColumn2;
+		String validationResult;
 
 		public void configureRidgets(IRidgetContainer container) {
 			checkContainer(container);
@@ -958,7 +1034,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		@Override
 		public String isValid(IRidgetContainer container) {
 			checkContainer(container);
-			return null;
+			return validationResult;
 		}
 
 		@Override
