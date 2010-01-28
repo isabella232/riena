@@ -28,7 +28,7 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
-import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
+import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -79,8 +79,8 @@ public final class SnippetMasterDetailsRidget002 {
 		public void configureRidgets(final IRidgetContainer container) {
 			ITextRidget txtLast = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
 			txtLast.setDirectWriting(true);
+			txtLast.addValidationRule(new MinLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
 			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
-			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
 			txtLast.updateFromModel();
 
 			ITextRidget txtFirst = (ITextRidget) container.getRidget("txtFirst"); //$NON-NLS-1$
@@ -112,15 +112,6 @@ public final class SnippetMasterDetailsRidget002 {
 			boolean equal = p1.getFirstname().equals(p2.getFirstname()) && p1.getLastname().equals(p2.getLastname());
 			return !equal;
 		}
-
-		@Override
-		public String isValid(IRidgetContainer container) {
-			ITextRidget txtLast = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
-			if (txtLast.isErrorMarked()) {
-				return "'Last Name' is not valid."; //$NON-NLS-1$
-			}
-			return null;
-		}
 	}
 
 	public static void main(String[] args) {
@@ -138,6 +129,8 @@ public final class SnippetMasterDetailsRidget002 {
 		String[] headers = { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 		ridget.bindToModel(input, Person.class, properties, headers);
 		ridget.updateFromModel();
+
+		ridget.setApplyRequiresNoErrors(true);
 		ridget.setDirectWriting(true); // <-- enable 'auto apply'
 
 		shell.pack();
