@@ -141,14 +141,15 @@ public final class ExtensionRegistryAnalyzer {
 			final IConfigurationElement[] elements) {
 		if (elements.length == 0) {
 			if (!result.add(path)) {
-				System.err.println("Error while collecting registry paths. Adding " + path + " twice to :"); //$NON-NLS-1$ //$NON-NLS-2$ 
-				for (final String str : result) {
-					if (path.equals(str)) {
-						System.err.println(str);
-					} else {
-						System.out.println(str);
-					}
-				}
+				System.err.println("Error while collecting registry paths. Adding " + path + " twice."); //$NON-NLS-1$ //$NON-NLS-2$
+				// Commented, because that pollutes the log!
+				//				for (final String str : result) {
+				//					if (path.equals(str)) {
+				//						System.err.println(str);
+				//					} else {
+				//						System.out.println(str);
+				//					}
+				//				}
 			}
 			return;
 		}
