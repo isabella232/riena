@@ -13,12 +13,14 @@ package org.eclipse.riena.core.injector.extension;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
+import org.eclipse.riena.internal.core.test.ExtensionRegistryAnalyzer;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.tests.Activator;
@@ -241,8 +243,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 	 * 
 	 * @throws InterruptedException
 	 */
-	// FIXME this fails when tested in the build
-	public void xxx_testTrackingWithKnownTypeAndMultipleData() throws InterruptedException {
+	public void testTrackingWithKnownTypeAndMultipleData() throws InterruptedException {
 		printTestName();
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		try {
@@ -252,7 +253,10 @@ public class ExtensionInjectorTest extends RienaTestCase {
 					.andStart(getContext());
 			try {
 				assertEquals(0, target.getData().length);
+				Set<String> before = ExtensionRegistryAnalyzer.getRegistryPaths(null);
 				addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
+				Set<String> after = ExtensionRegistryAnalyzer.getRegistryPaths(null);
+				System.out.println("SymmetricDiff: " + ExtensionRegistryAnalyzer.symmetricDiff(before, after));
 				try {
 					// this fails here - target.getData().length is 0.
 					// From console.log:
