@@ -18,6 +18,7 @@ import java.util.Set;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
 
 /**
@@ -118,13 +119,17 @@ public final class ExtensionRegistryAnalyzer {
 	 */
 	public static Set<String> getRegistryPaths(final String extensionPointPrefix) {
 		final Set<String> result = new HashSet<String>();
-		final IExtensionPoint[] extensionPoints = RegistryFactory.getRegistry().getExtensionPoints();
-		for (final IExtensionPoint extensionPoint : extensionPoints) {
-			if (extensionPointPrefix != null && !extensionPoint.getUniqueIdentifier().startsWith(extensionPointPrefix)) {
-				continue;
+		IExtensionRegistry registry = RegistryFactory.getRegistry();
+		if (registry != null) { // is null when running without the workbench (plain junit test)
+			final IExtensionPoint[] extensionPoints = registry.getExtensionPoints();
+			for (final IExtensionPoint extensionPoint : extensionPoints) {
+				if (extensionPointPrefix != null
+						&& !extensionPoint.getUniqueIdentifier().startsWith(extensionPointPrefix)) {
+					continue;
+				}
+				final String path = extensionPoint.getUniqueIdentifier() + ": "; //$NON-NLS-1$
+				getExtensionsPaths(result, path, extensionPoint.getExtensions());
 			}
-			final String path = extensionPoint.getUniqueIdentifier() + ": "; //$NON-NLS-1$
-			getExtensionsPaths(result, path, extensionPoint.getExtensions());
 		}
 		return result;
 	}
