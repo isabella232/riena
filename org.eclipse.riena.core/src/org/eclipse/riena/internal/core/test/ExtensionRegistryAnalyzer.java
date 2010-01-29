@@ -56,7 +56,7 @@ public final class ExtensionRegistryAnalyzer {
 		System.out.println("========="); //$NON-NLS-1$
 		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
 		if (extensionRegistry == null) {
-			System.out.println("No extesnion registry available."); //$NON-NLS-1$
+			System.out.println("No extension registry available."); //$NON-NLS-1$
 			return;
 		}
 		final IExtensionPoint[] extensionPoints = RegistryFactory.getRegistry().getExtensionPoints();
