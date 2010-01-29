@@ -17,6 +17,7 @@ import java.beans.PropertyChangeListener;
 import java.util.Date;
 import java.util.Iterator;
 
+import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.SWT;
@@ -41,6 +42,8 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
 import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
+import org.eclipse.riena.ui.ridgets.databinding.StringToLowerCaseConverter;
+import org.eclipse.riena.ui.ridgets.databinding.StringToUpperCaseConverter;
 import org.eclipse.riena.ui.ridgets.marker.TooltipMessageMarkerViewer;
 import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
@@ -1517,6 +1520,63 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.setMandatory(false);
 
 		assertMandatoryMarker(ridget, 0, false);
+	}
+
+	public void testInputToUIControlConverter() {
+		Text control = getWidget();
+		ITextRidget ridget = getRidget();
+		Display display = control.getDisplay();
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+
+		ridget.setInputToUIControlConverter(new StringToUpperCaseConverter());
+		control.setFocus();
+		UITestHelper.sendString(display, "teSt2\r");
+
+		assertEquals("TEST2", control.getText());
+		assertEquals("TEST2", ridget.getText());
+		assertEquals("TEST2", bean.getProperty());
+
+		ridget.setInputToUIControlConverter(new StringToLowerCaseConverter());
+		control.selectAll();
+		UITestHelper.sendString(display, "TEsT2\r");
+
+		assertEquals("test2", control.getText());
+		assertEquals("test2", ridget.getText());
+		assertEquals("test2", bean.getProperty());
+
+		ridget.setInputToUIControlConverter(null);
+		control.selectAll();
+		UITestHelper.sendString(display, "ABcd\r");
+
+		assertEquals("ABcd", control.getText());
+		assertEquals("ABcd", ridget.getText());
+		assertEquals("ABcd", bean.getProperty());
+	}
+
+	public void testInputToUIControlConverterWrongType() {
+		ITextRidget ridget = getRidget();
+
+		try {
+			ridget.setInputToUIControlConverter(new Converter(Integer.class, String.class) {
+				public Object convert(Object fromObject) {
+					return "1";
+				}
+			});
+			fail();
+		} catch (RuntimeException rex) {
+			ok("expected - must have a String.class from-type");
+		}
+
+		try {
+			ridget.setInputToUIControlConverter(new Converter(String.class, Integer.class) {
+				public Object convert(Object fromObject) {
+					return Integer.valueOf(1);
+				}
+			});
+			fail();
+		} catch (RuntimeException rex) {
+			ok("expected - must have a String.class to-type");
+		}
 	}
 
 	// helping methods
