@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
@@ -50,8 +51,10 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	protected final KeyListener crKeyListener;
 	protected final ModifyListener modifyListener;
 	protected final ValidationListener verifyListener;
+
 	private String textValue = EMPTY_STRING;
 	private boolean isDirectWriting;
+	private IConverter inputConverter;
 
 	public TextRidget() {
 		crKeyListener = new CRKeyListener();
@@ -181,6 +184,15 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	public synchronized String getText() {
 		return textValue;
+	}
+
+	public void setInputToUIControlConverter(IConverter converter) {
+		if (converter != null) {
+			Assert.isLegal(converter.getFromType() == String.class,
+					"Invalid from-type. Need a String-to-String converter"); //$NON-NLS-1$
+			Assert.isLegal(converter.getToType() == String.class, "Invalid to-type. Need a String-to-String converter"); //$NON-NLS-1$
+		}
+		this.inputConverter = converter;
 	}
 
 	/**
@@ -355,6 +367,9 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		public synchronized void verifyText(VerifyEvent e) {
 			if (!e.doit) {
 				return;
+			}
+			if (inputConverter != null) {
+				e.text = (String) inputConverter.convert(e.text);
 			}
 			String newText = getText(e);
 			IStatus status = checkOnEditRules(newText, new ValidationCallback(true));

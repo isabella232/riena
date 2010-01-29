@@ -19,6 +19,7 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoObservables;
+import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.DateAndTimeObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
@@ -199,6 +200,11 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 
 	/** Not supported. */
 	public void setDirectWriting(boolean directWriting) {
+		throw new UnsupportedOperationException();
+	}
+
+	/** Not supported. */
+	public void setInputToUIControlConverter(IConverter converter) {
 		throw new UnsupportedOperationException();
 	}
 

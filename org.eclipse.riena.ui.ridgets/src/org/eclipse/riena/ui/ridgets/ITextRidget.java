@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+import org.eclipse.core.databinding.conversion.IConverter;
+
 /**
  * Ridget for a text field.
  */
@@ -33,19 +35,6 @@ public interface ITextRidget extends IEditableRidget, IMarkableRidget {
 	String getText();
 
 	/**
-	 * Sets the text of the text field. Fires a ValueChangeEvent to update the
-	 * model - even if directWriting is set to false. This behavior is different
-	 * from getUIControl().setText(text) which will cause the model to be
-	 * updated depending on the directWriting setting.
-	 * 
-	 * @see #setDirectWriting(boolean)
-	 * @param text
-	 *            The new text value. Passing a null value will 'clear' the text
-	 *            what that means is implementation specific.
-	 */
-	void setText(String text);
-
-	/**
 	 * Indicates when a ValueChangeEvent should be fired to update the model. If
 	 * true an update will be triggered every time a key is typed. If false the
 	 * model will be updated only when the text is submitted by pressing enter
@@ -65,5 +54,34 @@ public interface ITextRidget extends IEditableRidget, IMarkableRidget {
 	 *            The new direct writing setting.
 	 */
 	void setDirectWriting(boolean directWriting);
+
+	/**
+	 * Sets the converter to be used between the user's input and the
+	 * UI-control.
+	 * <p>
+	 * When set, this String-to-String converter will intercept the user's input
+	 * and convert it before it is shown in the UI-control.
+	 * <p>
+	 * The default value is null.
+	 * 
+	 * @param converter
+	 *            a String-to-String converter, or null to stop converting
+	 * 
+	 * @since 2.0
+	 */
+	void setInputToUIControlConverter(IConverter converter);
+
+	/**
+	 * Sets the text of the text field. Fires a ValueChangeEvent to update the
+	 * model - even if directWriting is set to false. This behavior is different
+	 * from getUIControl().setText(text) which will cause the model to be
+	 * updated depending on the directWriting setting.
+	 * 
+	 * @see #setDirectWriting(boolean)
+	 * @param text
+	 *            The new text value. Passing a null value will 'clear' the text
+	 *            what that means is implementation specific.
+	 */
+	void setText(String text);
 
 }
