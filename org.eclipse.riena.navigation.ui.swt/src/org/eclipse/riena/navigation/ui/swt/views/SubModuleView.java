@@ -73,7 +73,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubModuleView.class);
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
-	private final static Map<SubModuleView<? extends SubModuleController>, SubModuleNode> fallbackNodes = new HashMap<SubModuleView<? extends SubModuleController>, SubModuleNode>();
+	private final static Map<SubModuleView<? extends SubModuleController>, SubModuleNode> FALLBACK_NODES = new HashMap<SubModuleView<? extends SubModuleController>, SubModuleNode>();
 
 	private final AbstractViewBindingDelegate binding;
 	private final FocusListener focusListener;
@@ -189,9 +189,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 
 		if (getViewSite() != null) {
-			if (getViewSite().getSecondaryId() != null)
+			if (getViewSite().getSecondaryId() != null) {
 				WidgetIdentificationSupport.setIdentification(contentComposite,
 						"subModuleView", getViewSite().getId(), getViewSite().getSecondaryId()); //$NON-NLS-1$
+			}
 		}
 
 		contentComposite.getDisplay().addFilter(SWT.FocusIn, focusListener);
@@ -231,7 +232,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		if (navigationTreeObserver != null && appNode != null) {
 			navigationTreeObserver.removeListenerFrom(appNode);
 		}
-		fallbackNodes.remove(this);
+		FALLBACK_NODES.remove(this);
 		super.dispose();
 	}
 
@@ -309,7 +310,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 		// consult workarea manager
 		C controller = null;
-		IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(node.getNodeId().getTypeId());
+		IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(node);
 		if (def != null) {
 			try {
 				controller = (C) def.createController();
@@ -347,9 +348,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			}
 			binding.bind(currentController);
 			currentController.afterBind();
-			if (title != null) {
-				title.setWindowActive(currentController.isActivated());
-			}
 		}
 
 		NavigationSourceProvider.activeNodeChanged(getNavigationNode());
@@ -467,6 +465,9 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	private void doBinding() {
 		bind(getNavigationNode());
+		if (title != null) {
+			title.setWindowActive(getNavigationNode().isActivated());
+		}
 	}
 
 	private Cursor getArrowCursor() {
@@ -495,10 +496,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 *         associated with a node in the navigation tree.
 	 */
 	private SubModuleNode getFallbackNavigationNode() {
-		SubModuleNode fallbackNode = fallbackNodes.get(this);
+		SubModuleNode fallbackNode = FALLBACK_NODES.get(this);
 		if (fallbackNode == null) {
-			fallbackNode = new SubModuleNode(new NavigationNodeId(getClass().getName() + fallbackNodes.size()));
-			fallbackNodes.put(this, fallbackNode);
+			fallbackNode = new SubModuleNode(new NavigationNodeId(getClass().getName() + FALLBACK_NODES.size()));
+			FALLBACK_NODES.put(this, fallbackNode);
 		}
 		return fallbackNode;
 	}

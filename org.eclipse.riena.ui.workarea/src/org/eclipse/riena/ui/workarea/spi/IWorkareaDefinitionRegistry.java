@@ -25,7 +25,7 @@ public interface IWorkareaDefinitionRegistry {
 	 * Gets the {@link IWorkareaDefinition} registered with this typeId.
 	 * 
 	 * @param id
-	 *            the typeId
+	 *            the typeId or a navigation node
 	 * @return The registered workarea definition or null, if the associated
 	 *         workarea definition was not found.
 	 */
