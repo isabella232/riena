@@ -54,7 +54,13 @@ public final class ExtensionRegistryAnalyzer {
 	public static void dumpRegistry(final String extensionPointPrefix, final int depth) {
 		System.out.println("Registry:"); //$NON-NLS-1$
 		System.out.println("========="); //$NON-NLS-1$
+		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
+		if (extensionRegistry == null) {
+			System.out.println("No extesnion registry available."); //$NON-NLS-1$
+			return;
+		}
 		final IExtensionPoint[] extensionPoints = RegistryFactory.getRegistry().getExtensionPoints();
+
 		Arrays.sort(extensionPoints, new Comparator<IExtensionPoint>() {
 			public int compare(final IExtensionPoint ep1, final IExtensionPoint ep2) {
 				return ep1.getUniqueIdentifier().compareTo(ep2.getUniqueIdentifier());
@@ -119,9 +125,9 @@ public final class ExtensionRegistryAnalyzer {
 	 */
 	public static Set<String> getRegistryPaths(final String extensionPointPrefix) {
 		final Set<String> result = new HashSet<String>();
-		IExtensionRegistry registry = RegistryFactory.getRegistry();
-		if (registry != null) { // is null when running without the workbench (plain junit test)
-			final IExtensionPoint[] extensionPoints = registry.getExtensionPoints();
+		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
+		if (extensionRegistry != null) { // is null when running without the workbench (plain junit test)
+			final IExtensionPoint[] extensionPoints = extensionRegistry.getExtensionPoints();
 			for (final IExtensionPoint extensionPoint : extensionPoints) {
 				if (extensionPointPrefix != null
 						&& !extensionPoint.getUniqueIdentifier().startsWith(extensionPointPrefix)) {
