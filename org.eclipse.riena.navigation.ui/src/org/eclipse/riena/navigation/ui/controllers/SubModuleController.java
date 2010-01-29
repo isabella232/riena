@@ -169,6 +169,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 				}
 			}
 
+			@Override
 			public void afterDeactivated(ISubModuleNode source) {
 				if (actionManager != null) {
 					actionManager.deactivate();

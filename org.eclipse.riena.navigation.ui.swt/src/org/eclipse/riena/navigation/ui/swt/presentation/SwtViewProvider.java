@@ -162,6 +162,9 @@ public class SwtViewProvider {
 			boolean ignoreSharedState) {
 		for (INavigationNode<?> next : views.keySet()) {
 			SwtViewId nextViewId = views.get(next);
+			if (nextViewId == null) {
+				continue;
+			}
 			if (nextViewId.getId().equals(pId) && //
 					(secondary == null || secondary.equals(nextViewId.getSecondary()))) {
 				if (ignoreSharedState || !isViewShared(pId) || next.isActivated()) {
