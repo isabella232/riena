@@ -247,20 +247,6 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		return isNotEmpty(textValue);
 	}
 
-	public int getAlignment() {
-		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
-	}
-
-	/**
-	 * In SWT the alignment is set when creating the Text widget and cannot be
-	 * changed afterwards.
-	 * 
-	 * @throw {@link UnsupportedOperationException} when called
-	 */
-	public final void setAlignment(int alignment) {
-		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
-	}
-
 	// helping methods
 	// ////////////////
 

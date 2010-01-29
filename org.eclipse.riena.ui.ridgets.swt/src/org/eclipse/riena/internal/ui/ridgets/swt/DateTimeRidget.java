@@ -141,11 +141,6 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		bindToModel(PojoObservables.observeValue(valueHolder, valuePropertyName));
 	}
 
-	/** Not supported. */
-	public int getAlignment() {
-		throw new UnsupportedOperationException();
-	}
-
 	public Date getDate() {
 		return (Date) getRidgetObservable().getValue();
 	}
@@ -171,11 +166,6 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 			getValueBindingSupport().updateFromTarget();
 		}
 		return !isErrorMarked();
-	}
-
-	/** Not supported. */
-	public void setAlignment(int alignment) {
-		throw new UnsupportedOperationException();
 	}
 
 	/**
