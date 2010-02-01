@@ -30,7 +30,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 
 	private ICallMessageContextAccessor mca;
 	private final static ThreadLocal<HttpURLConnection> CONNECTIONS = new ThreadLocal<HttpURLConnection>();
-	private static boolean transferDataChunked = false;
+	private static boolean transferDataChunked = false; // set chunking to FALSE by default overwriting the hessian default
 
 	public RienaHessianProxyFactory() {
 		super();
