@@ -221,4 +221,13 @@ public interface ISimpleNavigationNodeListener {
 	 */
 	void filterRemoved(INavigationNode<?> source, IUIFilter filter);
 
+	/**
+	 * This method is called when the node has been prepared.
+	 * 
+	 * @param source
+	 *            the node which has been prepared
+	 * @since 2.0
+	 */
+	void prepared(INavigationNode<?> source);
+
 }

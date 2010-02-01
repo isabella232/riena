@@ -171,6 +171,20 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		}
 	}
 
+	/**
+	 * Notifies every registered listener that this node is prepared now.
+	 */
+	@SuppressWarnings("unchecked")
+	private void notifyPrepared() {
+		for (L next : getListeners()) {
+			next.prepared((S) this);
+		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.prepared(this);
+		}
+
+	}
+
 	@SuppressWarnings("unchecked")
 	private void notifyActivated() {
 		for (L next : getListeners()) {
@@ -377,6 +391,13 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 */
 	public void activate() {
 		getNavigationProcessor().activate(this);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void prepare() {
+		getNavigationProcessor().prepare(this);
 	}
 
 	/**
@@ -774,7 +795,22 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNode#activate(INavigationContext)
+	 * {@inheritDoc}
+	 * <p>
+	 * Changes the state and notifies listeners.
+	 * 
+	 * @param context
+	 *            is not used; only <b>this</b> node is prepared
+	 * 
+	 * @since 2.0
+	 */
+	public void prepare(INavigationContext context) {
+		setState(State.PREPARED);
+		notifyPrepared();
+	}
+
+	/**
+	 * {@inheritDoc}
 	 */
 	public void activate(INavigationContext context) {
 		setState(State.ACTIVATED);
@@ -796,7 +832,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNode#deactivate(INavigationContext)
+	 * {@inheritDoc}
 	 */
 	public void deactivate(INavigationContext context) {
 		setState(State.DEACTIVATED);
@@ -847,6 +883,10 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 */
 	public boolean isActivated() {
 		return state == State.ACTIVATED;
+	}
+
+	public boolean isPrepared() {
+		return state == State.PREPARED;
 	}
 
 	/**

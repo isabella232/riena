@@ -2,9 +2,9 @@
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.eclipse.riena.navigation" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appinfo>
+      <appInfo>
          <meta.schema plugin="org.eclipse.riena.navigation" id="org.eclipse.riena.navigation.navigationNode" name="navigationNode"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          Defines how to create a node or a subtree in the application model tree.
       </documentation>
@@ -12,9 +12,9 @@
 
    <element name="extension">
       <annotation>
-         <appinfo>
+         <appInfo>
             <meta.element />
-         </appinfo>
+         </appInfo>
       </annotation>
       <complexType>
          <sequence>
@@ -39,9 +39,9 @@
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
@@ -72,9 +72,9 @@
                <documentation>
                   A node builder that creates a node or a subtree for the application model tree.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.navigation.INavigationAssembler"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="parentTypeId" type="string">
@@ -89,9 +89,9 @@
                <documentation>
                   Contains the description of this navigation node that will be used in the plugin-editor.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="autostartsequence" type="string">
@@ -106,9 +106,9 @@
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="identifier" basedOn="org.eclipse.riena.navigation.assemblies/assembly/@id"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
@@ -127,9 +127,9 @@
                <documentation>
                   Contains the description of this navigation node that will be used in the plugin-editor.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="typeId" type="string">
@@ -151,9 +151,9 @@
                <documentation>
                   Text to be displayed in subapplication handle.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="icon" type="string">
@@ -161,9 +161,9 @@
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="view" type="string">
@@ -171,9 +171,9 @@
                <documentation>
                   Must match the ID field of an &quot;org.eclipse.ui.perspectives&quot; extension. The default implementation is org.eclipse.riena.navigation.ui.swt.views.SubApplicationView.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="identifier" basedOn="org.eclipse.ui.perspectives/perspective/@id"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
@@ -192,9 +192,9 @@
                <documentation>
                   Contains the description of this navigation node that will be used in the plugin-editor.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="typeId" type="string">
@@ -227,9 +227,9 @@
                <documentation>
                   Contains the description of this navigation node that will be used in the plugin-editor.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="label" type="string">
@@ -237,9 +237,9 @@
                <documentation>
                   Label to be displayed in the navigation tree.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="typeId" type="string">
@@ -261,9 +261,9 @@
                <documentation>
                   id of icon to be displayed in navigation tree
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="unclosable" type="boolean" use="default" value="false">
@@ -290,9 +290,9 @@
                <documentation>
                   Contains the description of this navigation node that will be used in the plugin-editor.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="label" type="string">
@@ -300,9 +300,9 @@
                <documentation>
                   Label to be displayed in the navigation tree.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="typeId" type="string">
@@ -324,9 +324,9 @@
                <documentation>
                   For the SWT-based Riena UI this is the ID of the view associated with the submodule. Must match the ID field of an &quot;org.eclipse.ui.view&quot; extension.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="identifier" basedOn="org.eclipse.ui.views/view/@id"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="controller" type="string">
@@ -334,9 +334,9 @@
                <documentation>
                   A controller that controlles the UI widgets in the view through ridgets (see org.eclipse.riena.ui.ridgets.IRidget)
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.ridgets.controller.IController"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="shared" type="boolean" use="default" value="false">
@@ -351,15 +351,22 @@
                <documentation>
                   Icon to be displayed in navigation tree.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="selectable" type="boolean" use="default" value="true">
             <annotation>
                <documentation>
                   Indicates whether the view is selectable or not.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="requiresPreparation" type="boolean">
+            <annotation>
+               <documentation>
+                  Indicates whether the navigation node should be prepared after the sub module node is created. Preparation means that the controller is created (among other things).
                </documentation>
             </annotation>
          </attribute>
@@ -389,36 +396,36 @@
    </element>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="since"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter the first release in which this extension point appears.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="examples"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter extension point usage example here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="apiInfo"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter API information here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="implementation"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter information about supplied implementation of this extension point.]
       </documentation>

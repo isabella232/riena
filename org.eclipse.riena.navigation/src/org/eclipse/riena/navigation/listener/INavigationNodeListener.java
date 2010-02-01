@@ -221,4 +221,13 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 	 */
 	void filterRemoved(S source, IUIFilter filter);
 
+	/**
+	 * This method is called when the node has been prepared.
+	 * 
+	 * @param source
+	 *            the node which has been prepared
+	 * @since 2.0
+	 */
+	void prepared(S source);
+
 }

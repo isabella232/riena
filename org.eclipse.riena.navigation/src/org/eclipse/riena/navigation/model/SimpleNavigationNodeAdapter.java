@@ -238,4 +238,10 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	public void filterRemoved(INavigationNode<?> source, IUIFilter filter) {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public void prepared(INavigationNode<?> source) {
+	}
+
 }

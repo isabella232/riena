@@ -37,11 +37,13 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 	}
 
 	private WorkareaDefinitionRegistryFacade() {
-
 		contributedRegistries = new TreeSet<WorkareaDefinitionRegistryWithRank>();
 		registerExplicitDefinitionRegistry();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public IWorkareaDefinition getDefinition(Object id) {
 
 		for (IWorkareaDefinitionRegistry registry : contributedRegistries) {
@@ -64,12 +66,33 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 		return null;
 	}
 
+	/**
+	 * Creates a workarea definition ({@code IWorkareaDefinition}) with the
+	 * given information and registers it with the specified type ID.
+	 * 
+	 * @param id
+	 *            type ID
+	 * @param controllerClass
+	 *            class of the controller to be used with the view representing
+	 *            the working area
+	 * @param viewId
+	 *            the id of this work areas view (viewId as contributed to the
+	 *            <code>org.eclipse.ui.views</code> extension point)
+	 * @param shared
+	 *            <code>true</code> if the view associated with this node should
+	 *            be shared, <code>false</code> otherwise
+	 * @return the registered workarea definition
+	 */
 	public IWorkareaDefinition registerDefinition(Object id, Class<? extends IController> controllerClass,
-			Object viewId, boolean isViewShared) {
-
-		return register(id, new WorkareaDefinition(controllerClass, viewId, isViewShared));
+			Object viewId, boolean shared) {
+		WorkareaDefinition def = new WorkareaDefinition(controllerClass, viewId);
+		def.setViewShared(shared);
+		return register(id, def);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public IWorkareaDefinition register(Object id, IWorkareaDefinition definition) {
 
 		for (IWorkareaDefinitionRegistry registry : contributedRegistries) {
@@ -92,12 +115,8 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 		context.registerService(IWorkareaDefinitionRegistry.class.getName(), registry, props);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.osgi.util.tracker.ServiceTrackerCustomizer#addingService(org.osgi
-	 * .framework.ServiceReference)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Object addingService(ServiceReference reference) {
 
@@ -111,12 +130,8 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 		return registry;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.osgi.util.tracker.ServiceTrackerCustomizer#modifiedService(org.osgi
-	 * .framework.ServiceReference, java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void modifiedService(ServiceReference reference, Object service) {
 
@@ -126,12 +141,8 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 		contributedRegistries.add(entry);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.osgi.util.tracker.ServiceTrackerCustomizer#removedService(org.osgi
-	 * .framework.ServiceReference, java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void removedService(ServiceReference reference, Object service) {
 
@@ -171,15 +182,8 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 		}
 
 		/**
-		 * @seeorg.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry# 
-		 *                                                                    getDefinition
-		 *                                                                    (
-		 *                                                                    java
-		 *                                                                    .
-		 *                                                                    lang
-		 *                                                                    .
-		 *                                                                    Object
-		 *                                                                    )
+		 * @see org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry#
+		 *      getDefinition(Object)
 		 */
 		public IWorkareaDefinition getDefinition(Object id) {
 			return registry.getDefinition(id);
@@ -219,4 +223,5 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 			return registry.hashCode();
 		}
 	}
+
 }

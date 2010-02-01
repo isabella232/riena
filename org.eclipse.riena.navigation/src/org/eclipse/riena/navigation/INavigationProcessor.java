@@ -36,6 +36,16 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	void activate(INavigationNode<?> toActivate);
 
 	/**
+	 * Prepares the given node.
+	 * 
+	 * @param toPrepare
+	 *            the node to prepare
+	 * 
+	 * @see INavigationNode#prepare()
+	 */
+	void prepare(INavigationNode<?> toPrepare);
+
+	/**
 	 * Disposes a node. Checks which other nodes have to be disposed (children
 	 * and maybe parents it the node is their only child) and calls the
 	 * allowsDispose() methods.
@@ -94,9 +104,11 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 * @param argument
 	 *            Contains information passed on to the target node and/or used
 	 *            during its creation.
+	 * @return target node
+	 * 
 	 * @see INavigationAssembler
 	 */
-	void navigate(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
+	INavigationNode<?> navigate(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
 	 * Undoes the last navigate to the specified target node i.e. activates the

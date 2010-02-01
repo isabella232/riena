@@ -87,4 +87,14 @@ public interface ISubModuleNodeExtension extends INodeExtension {
 	 */
 	@DefaultValue("true")
 	boolean isSelectable();
+
+	/**
+	 * Indicates whether the navigation node should be prepared after the sub
+	 * module node is created. Preparation means that the controller is created
+	 * (among other things).
+	 * 
+	 * @return {@code true} should be prepared; otherwise {@code false}
+	 */
+	boolean isRequiresPreparation();
+
 }

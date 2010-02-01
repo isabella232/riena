@@ -100,7 +100,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				// 7. do the activation chain
 				List<INavigationNode<?>> toActivateList = getNodesToActivateOnActivation(toActivate);
 				List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnActivation(toActivate);
-				INavigationContext navigationContext = new NavigationContext(toActivateList, toDeactivateList);
+				INavigationContext navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
 				if (allowsDeactivate(navigationContext)) {
 					if (allowsActivate(navigationContext)) {
 						deactivate(navigationContext);
@@ -109,6 +109,18 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				}
 			}
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void prepare(INavigationNode<?> toPrepare) {
+
+		List<INavigationNode<?>> toPreparedList = new LinkedList<INavigationNode<?>>();
+		toPreparedList.add(toPrepare);
+		INavigationContext navigationContext = new NavigationContext(toPreparedList, null, null);
+		toPrepare.prepare(navigationContext);
+
 	}
 
 	/**
@@ -160,7 +172,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (nodeToDispose != null && !nodeToDispose.isDisposed()) {
 			List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToDispose);
 			List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToDispose);
-			INavigationContext navigationContext = new NavigationContext(toActivateList, toDeactivateList);
+			INavigationContext navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
 			if (allowsDeactivate(navigationContext)) {
 				if (allowsDispose(navigationContext)) {
 					if (allowsActivate(navigationContext)) {
@@ -183,7 +195,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				if (nodeToHide != null) {
 					List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToHide);
 					List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToHide);
-					INavigationContext navigationContext = new NavigationContext(toActivateList, toDeactivateList);
+					INavigationContext navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
 					if (allowsDeactivate(navigationContext) && allowsActivate(navigationContext)) {
 						deactivate(navigationContext);
 						activate(navigationContext);
@@ -198,8 +210,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 			List<INavigationNode<?>> toMarkList = new LinkedList<INavigationNode<?>>();
 			toMarkList.add(node);
-			List<INavigationNode<?>> emptyList = new LinkedList<INavigationNode<?>>();
-			INavigationContext navigationContext = new NavigationContext(toMarkList, emptyList);
+			INavigationContext navigationContext = new NavigationContext(null, toMarkList, null);
 			addMarker(navigationContext, marker);
 		}
 
@@ -258,26 +269,22 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.NavigationNodeId,
-	 *      org.eclipse.riena.navigation.NavigationArgument)
+	 * {@inheritDoc}
 	 */
-	public void navigate(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
+	public INavigationNode<?> navigate(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
 			final NavigationArgument navigation) {
 		// TODO see https://bugs.eclipse.org/bugs/show_bug.cgi?id=261832
 		//		if (navigation != null && navigation.isNavigateAsync()) {
 		//			navigateAsync(sourceNode, targetId, navigation);
 		//		} else {
-		navigateSync(sourceNode, targetId, navigation);
+		return navigateSync(sourceNode, targetId, navigation);
 		//		}
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.NavigationNodeId,
-	 *      org.eclipse.riena.navigation.NavigationArgument)
+	 * {@inheritDoc}
 	 */
-	private void navigateSync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
+	private INavigationNode<?> navigateSync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
 			final NavigationArgument navigation) {
 		INavigationNode<?> targetNode = null;
 		try {
@@ -286,7 +293,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			LOGGER.log(LogService.LOG_ERROR, failure.getMessage());
 		}
 		if (targetNode == null) {
-			return;
+			return null;
 		}
 		INavigationNode<?> activateNode = targetNode.findNode(targetId);
 		INavigationNode<?> node = activateNode;
@@ -300,6 +307,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		} catch (NavigationModelFailure failure) {
 			LOGGER.log(LogService.LOG_ERROR, failure.getMessage());
 		}
+
+		return node;
 	}
 
 	/**
@@ -751,33 +760,64 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
+	/**
+	 * Context with lists of nodes to be prepared, activated and deactivated.
+	 */
 	private static class NavigationContext implements INavigationContext {
+
+		private final static List<INavigationNode<?>> EMPTY_LIST = new LinkedList<INavigationNode<?>>();
 
 		private List<INavigationNode<?>> toDeactivate;
 		private List<INavigationNode<?>> toActivate;
+		private List<INavigationNode<?>> toPrepare;
 
 		/**
-		 * @param toDeactivate
+		 * Creates a context with nodes to be prepared, activated and
+		 * deactivated.
+		 * 
+		 * @param toPrepare
+		 *            nodes to be prepared
 		 * @param toActivate
+		 *            nodes to be activated
+		 * @param toDeactivate
+		 *            nodes to be deactevated
 		 */
-		public NavigationContext(List<INavigationNode<?>> toActivate, List<INavigationNode<?>> toDeactivate) {
+		public NavigationContext(List<INavigationNode<?>> toPrepare, List<INavigationNode<?>> toActivate,
+				List<INavigationNode<?>> toDeactivate) {
 			super();
-			this.toDeactivate = toDeactivate;
+			this.toPrepare = toPrepare;
 			this.toActivate = toActivate;
+			this.toDeactivate = toDeactivate;
+			if (this.toPrepare == null) {
+				this.toPrepare = EMPTY_LIST;
+			}
+			if (this.toActivate == null) {
+				this.toActivate = EMPTY_LIST;
+			}
+			if (this.toDeactivate == null) {
+				this.toDeactivate = EMPTY_LIST;
+			}
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.INavigationContext#getToActivate()
+		 * {@inheritDoc}
 		 */
 		public List<INavigationNode<?>> getToActivate() {
 			return toActivate;
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.INavigationContext#getToDeactivate()
+		 * {@inheritDoc}
 		 */
 		public List<INavigationNode<?>> getToDeactivate() {
 			return toDeactivate;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public List<INavigationNode<?>> getToPrepare() {
+			return toPrepare;
 		}
 
 	}

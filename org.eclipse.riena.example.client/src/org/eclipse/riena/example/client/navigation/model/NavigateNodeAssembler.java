@@ -28,6 +28,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
@@ -52,8 +53,9 @@ public class NavigateNodeAssembler extends AbstractNavigationAssembler {
 
 		ISubModuleNode subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.navigate.form"), "Navigate"); //$NON-NLS-1$ //$NON-NLS-2$
-		WorkareaManager.getInstance().registerDefinition(subModule, NavigateSubModuleController.class,
-				NavigateSubModuleView.ID, false);
+		IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule,
+				NavigateSubModuleController.class, NavigateSubModuleView.ID);
+		def.setRequiredPreparation(true);
 
 		module.addChild(subModule);
 		return moduleGroup;

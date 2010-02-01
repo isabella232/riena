@@ -29,10 +29,17 @@ public interface INavigationContext {
 	List<INavigationNode<?>> getToDeactivate();
 
 	/**
-	 * Returns a list of nodes which have to beeactivated.
+	 * Returns a list of nodes which have to be activated.
 	 * 
 	 * @return ordered list of nodes to activated
 	 */
 	List<INavigationNode<?>> getToActivate();
+
+	/**
+	 * Returns a list of nodes which have to prepared.
+	 * 
+	 * @return ordered list of nodes to prepared
+	 */
+	List<INavigationNode<?>> getToPrepare();
 
 }

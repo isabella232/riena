@@ -1422,6 +1422,21 @@ public class NavigationTreeObserver {
 				next.stateChanged(source, oldState, newState);
 			}
 		}
+
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * Every registered listener will be notified that this node is prepared
+		 * now.
+		 */
+		@Override
+		public void prepared(ISubModuleNode source) {
+			super.prepared(source);
+			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+				next.prepared(source);
+			}
+		}
+
 	}
 
 }

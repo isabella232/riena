@@ -25,9 +25,7 @@ public class SwtExtensionWorkareaDefinitionRegistryTest extends RienaTestCase {
 
 	private static final String TEST_TYPE_ID = "TestTypeId";
 	private static final String OTHER_TEST_TYPE_ID = "OtherTestTypeId";
-	private static final boolean TEST_IS_VIEW_SHARED = true;
 	private static final String TEST_VIEW_ID = "TestViewId";
-	private static final boolean OTHER_TEST_IS_VIEW_SHARED = false;
 	private static final String OTHER_TEST_VIEW_ID = "OtherTestViewId";
 
 	@SuppressWarnings("restriction")
@@ -40,7 +38,7 @@ public class SwtExtensionWorkareaDefinitionRegistryTest extends RienaTestCase {
 		super.setUp();
 
 		workareaDefinitionRegistry = new SwtExtensionWorkareaDefinitionRegistry();
-		workareaDefinition = new WorkareaDefinition(TestSubModuleController.class, TEST_VIEW_ID, TEST_IS_VIEW_SHARED);
+		workareaDefinition = new WorkareaDefinition(TestSubModuleController.class, TEST_VIEW_ID);
 	}
 
 	public void testRegisterDefinition() throws Exception {
@@ -55,7 +53,7 @@ public class SwtExtensionWorkareaDefinitionRegistryTest extends RienaTestCase {
 		workareaDefinitionRegistry.register(TEST_TYPE_ID, workareaDefinition);
 
 		IWorkareaDefinition otherWorkareaDefinition = new WorkareaDefinition(TestSubModuleController.class,
-				TEST_VIEW_ID, TEST_IS_VIEW_SHARED);
+				TEST_VIEW_ID);
 		workareaDefinitionRegistry.register(OTHER_TEST_TYPE_ID, otherWorkareaDefinition);
 
 		assertSame(workareaDefinition, workareaDefinitionRegistry.getDefinition(TEST_TYPE_ID));
@@ -67,7 +65,7 @@ public class SwtExtensionWorkareaDefinitionRegistryTest extends RienaTestCase {
 		workareaDefinitionRegistry.register(TEST_TYPE_ID, workareaDefinition);
 
 		IWorkareaDefinition otherWorkareaDefinition = new WorkareaDefinition(TestSubModuleController.class,
-				TEST_VIEW_ID, TEST_IS_VIEW_SHARED);
+				TEST_VIEW_ID);
 		workareaDefinitionRegistry.register(TEST_TYPE_ID, otherWorkareaDefinition);
 
 		assertSame(workareaDefinition, workareaDefinitionRegistry.getDefinition(TEST_TYPE_ID));
@@ -80,8 +78,7 @@ public class SwtExtensionWorkareaDefinitionRegistryTest extends RienaTestCase {
 
 		IWorkareaDefinition otherWorkareaDefinition = null;
 		try {
-			otherWorkareaDefinition = new WorkareaDefinition(OtherTestSubModuleController.class, TEST_VIEW_ID,
-					TEST_IS_VIEW_SHARED);
+			otherWorkareaDefinition = new WorkareaDefinition(OtherTestSubModuleController.class, TEST_VIEW_ID);
 			workareaDefinitionRegistry.register(TEST_TYPE_ID, otherWorkareaDefinition);
 			fail("ApplicationModelFailure expected");
 		} catch (ApplicationModelFailure expected) {
@@ -89,22 +86,13 @@ public class SwtExtensionWorkareaDefinitionRegistryTest extends RienaTestCase {
 		}
 
 		try {
-			otherWorkareaDefinition = new WorkareaDefinition(TestSubModuleController.class, OTHER_TEST_VIEW_ID,
-					TEST_IS_VIEW_SHARED);
+			otherWorkareaDefinition = new WorkareaDefinition(TestSubModuleController.class, OTHER_TEST_VIEW_ID);
 			workareaDefinitionRegistry.register(TEST_TYPE_ID, otherWorkareaDefinition);
 			fail("ApplicationModelFailure expected");
 		} catch (ApplicationModelFailure expected) {
 			ok("ApplicationModelFailure expected");
 		}
 
-		try {
-			otherWorkareaDefinition = new WorkareaDefinition(TestSubModuleController.class, TEST_VIEW_ID,
-					OTHER_TEST_IS_VIEW_SHARED);
-			workareaDefinitionRegistry.register(TEST_TYPE_ID, otherWorkareaDefinition);
-			fail("ApplicationModelFailure expected");
-		} catch (ApplicationModelFailure expected) {
-			ok("ApplicationModelFailure expected");
-		}
 	}
 
 	private static class TestSubModuleController extends SubModuleController {

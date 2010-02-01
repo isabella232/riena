@@ -113,7 +113,8 @@ public class NavigationNodeListener<S extends INavigationNode<C>, C extends INav
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#markerChanged(org.eclipse.riena.navigation.INavigationNode, IMarker)
+	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#markerChanged(org.eclipse.riena.navigation.INavigationNode,
+	 *      IMarker)
 	 */
 	public void markerChanged(S source, IMarker marker) {
 	}
@@ -152,10 +153,22 @@ public class NavigationNodeListener<S extends INavigationNode<C>, C extends INav
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void filterAdded(S source, IUIFilter filter) {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void filterRemoved(S source, IUIFilter filter) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void prepared(S source) {
 	}
 
 }

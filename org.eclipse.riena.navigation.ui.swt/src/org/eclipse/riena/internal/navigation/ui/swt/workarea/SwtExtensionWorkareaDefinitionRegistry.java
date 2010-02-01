@@ -94,8 +94,10 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	protected void register(ISubModuleNodeExtension submoduleDefinition) {
 
 		// create and register view definition
-		IWorkareaDefinition def = new WorkareaDefinition(submoduleDefinition.getController(), submoduleDefinition
-				.getViewId(), submoduleDefinition.isShared());
+		WorkareaDefinition def = new WorkareaDefinition(submoduleDefinition.getController(), submoduleDefinition
+				.getViewId());
+		def.setViewShared(submoduleDefinition.isShared());
+		def.setRequiredPreparation(submoduleDefinition.isRequiresPreparation());
 		register(submoduleDefinition.getTypeId(), def);
 		// a submodule may contain nested submodules
 		for (ISubModuleNodeExtension nestedSubmoduleDefinition : submoduleDefinition.getSubModuleNodes()) {

@@ -52,7 +52,9 @@ import org.eclipse.riena.internal.navigation.ui.swt.CoolbarUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper;
 import org.eclipse.riena.internal.navigation.ui.swt.RestoreFocusOnEscListener;
 import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.ISubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
@@ -82,6 +84,8 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.TestingSupport;
 import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
+import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
@@ -574,6 +578,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	private class MySubApplicationNodeListener extends SubApplicationNodeListener {
 
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * Shows the specified perspective (sub-application).
+		 */
 		@Override
 		public void activated(ISubApplicationNode source) {
 			if (source != null) {
@@ -583,8 +592,31 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 					titleComposite.setRedraw(false);
 					titleComposite.setRedraw(true);
 				}
+				prepare(source);
 			}
 			super.activated(source);
+		}
+
+		/**
+		 * Prepares every sub-module whose definition requires preparation.
+		 * 
+		 * @param node
+		 *            navigation node
+		 */
+		private void prepare(INavigationNode<?> node) {
+
+			if (node instanceof ISubModuleNode) {
+				ISubModuleNode subModuleNode = (ISubModuleNode) node;
+				IWorkareaDefinition definition = WorkareaManager.getInstance().getDefinition(subModuleNode);
+				if (definition.isRequiredPreparation()) {
+					subModuleNode.prepare();
+				}
+			}
+
+			for (INavigationNode<?> child : node.getChildren()) {
+				prepare(child);
+			}
+
 		}
 
 		private void showPerspective(ISubApplicationNode source) {

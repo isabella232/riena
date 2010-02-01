@@ -604,11 +604,31 @@ public class NavigationNodeTest extends RienaTestCase {
 
 	}
 
+	/**
+	 * Tests the method {@code prepare(INavigationContext)}.
+	 */
+	public void testPrepare() {
+
+		NavigationNodeId id = new NavigationNodeId("0815");
+		NaviNode node = new NaviNode(id);
+		assertTrue(node.isCreated());
+		assertFalse(node.isPrepared());
+		assertFalse(node.isPreparedCalled());
+
+		node.prepare(null);
+		assertTrue(node.isPrepared());
+		assertFalse(node.isCreated());
+		assertFalse(node.isActivated());
+		assertTrue(node.isPreparedCalled());
+
+	}
+
 	private class NaviNode extends SubModuleNode implements ISimpleNavigationNodeListener {
 
 		private boolean markersChangedCalled;
 		private boolean childAddedCalled;
 		private boolean childRemovedCalled;
+		private boolean preparedCalled;
 
 		public NaviNode(NavigationNodeId nodeId) {
 			super(nodeId);
@@ -619,9 +639,17 @@ public class NavigationNodeTest extends RienaTestCase {
 			markersChangedCalled = false;
 			childAddedCalled = false;
 			childRemovedCalled = false;
+			preparedCalled = false;
 		}
 
 		public void activated(INavigationNode<?> source) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void prepared(INavigationNode<?> source) {
+			preparedCalled = true;
 		}
 
 		public void afterActivated(INavigationNode<?> source) {
@@ -707,6 +735,10 @@ public class NavigationNodeTest extends RienaTestCase {
 		@Override
 		public boolean checkChildClass(Class<?> childClass) {
 			return super.checkChildClass(childClass);
+		}
+
+		public boolean isPreparedCalled() {
+			return preparedCalled;
 		}
 
 	}

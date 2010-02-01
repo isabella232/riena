@@ -752,11 +752,12 @@
                   name="logcollector"
                   typeId="logcollectorModule">
                <submodule
-                     typeId="org.eclipse.riena.example.logcollectorlog"
-                     name="logcollectorlog"
+                     controller="org.eclipse.riena.example.client.controllers.LogCollectorSubModuleController"
                      label="Log Collector"
-                     view="org.eclipse.riena.example.client.views.LogCollectorSubModuleView"
-                     controller="org.eclipse.riena.example.client.controllers.LogCollectorSubModuleController"/>
+                     name="logcollectorlog"
+                     requiresPreparation="true"
+                     typeId="org.eclipse.riena.example.logcollectorlog"
+                     view="org.eclipse.riena.example.client.views.LogCollectorSubModuleView"/>
             </module>
          </modulegroup>
       </assembly>
@@ -1002,6 +1003,7 @@
                controller="org.eclipse.riena.example.client.controllers.OnePersonSubModuleController"
                icon="person.gif"
                label="One Person"
+               requiresPreparation="true"
                shared="false"
                typeId="onePersonSubModule"
                view="org.eclipse.riena.example.client.views.OnePersonSubModuleView">

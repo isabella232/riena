@@ -37,7 +37,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * The states of the navigation node.
 	 */
 	public enum State {
-		CREATED, ACTIVATED, DEACTIVATED, DISPOSED
+		CREATED, PREPARED, ACTIVATED, DEACTIVATED, DISPOSED
 	}
 
 	/**
@@ -61,6 +61,12 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * the tree.
 	 */
 	void dispose();
+
+	/**
+	 * Call this method to prepare this node. A prepared node is created but not
+	 * yet activated (or deactivated, or disposed).
+	 */
+	void prepare();
 
 	/**
 	 * Called by a NavigationProcessor to activate the node within an
@@ -142,6 +148,15 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 *            the Context to activate within
 	 */
 	void onAfterDeactivate(INavigationContext pContext);
+
+	/**
+	 * Called by a NavigationProcessor to prepare the node within an
+	 * INavigationContext.
+	 * 
+	 * @param pContext
+	 *            the Context to prepare within
+	 */
+	void prepare(INavigationContext pContext);
 
 	/**
 	 * Called by a NavigationProcessor to check if a node can be activated
@@ -424,6 +439,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 *         {@code false}
 	 */
 	boolean isActivated();
+
+	boolean isPrepared();
 
 	/**
 	 * Returns whether the node is deactivated or not.
