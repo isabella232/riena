@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.workarea.registry;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
@@ -22,6 +23,7 @@ import org.eclipse.riena.ui.workarea.WorkareaDefinition;
 /**
  * Tests of the class {@link WorkareaDefinitionRegistryFacade}.
  */
+@NonUITestCase
 public class WorkareaDefinitionRegistryFacadeTest extends TestCase {
 
 	/**

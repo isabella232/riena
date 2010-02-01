@@ -12,12 +12,14 @@ package org.eclipse.riena.ui.workarea;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
  * Tests of the class {@link WorkareaDefinition}.
  */
+@NonUITestCase
 public class WorkareaDefinitionTest extends TestCase {
 
 	/**
