@@ -519,9 +519,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 			}
 
 			SwtViewId id = getViewId(source);
-			// if (source.isCreated()) {
 			prepareView(id);
-			// }
 			showView(id);
 
 		}
