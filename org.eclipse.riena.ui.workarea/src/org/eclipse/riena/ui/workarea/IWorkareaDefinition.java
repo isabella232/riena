@@ -43,6 +43,7 @@ public interface IWorkareaDefinition {
 	 * things).
 	 * 
 	 * @return {@code true} should be prepared; otherwise {@code false}
+	 * @since 2.0
 	 */
 	boolean isRequiredPreparation();
 
@@ -68,6 +69,7 @@ public interface IWorkareaDefinition {
 	 * @param shared
 	 *            <code>true</code> if the view associated with this node should
 	 *            be shared, <code>false</code> otherwise
+	 * @since 2.0
 	 */
 	void setViewShared(boolean shared);
 
@@ -78,6 +80,7 @@ public interface IWorkareaDefinition {
 	 * 
 	 * @param toBePrepared
 	 *            {@code true} should be prepared; otherwise {@code false}
+	 * @since 2.0
 	 */
 	void setRequiredPreparation(boolean required);
 
