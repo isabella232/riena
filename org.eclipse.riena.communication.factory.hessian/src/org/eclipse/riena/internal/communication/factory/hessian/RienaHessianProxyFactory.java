@@ -30,6 +30,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 
 	private ICallMessageContextAccessor mca;
 	private final static ThreadLocal<HttpURLConnection> CONNECTIONS = new ThreadLocal<HttpURLConnection>();
+	private static boolean transferDataChunked = false;
 
 	public RienaHessianProxyFactory() {
 		super();
@@ -37,6 +38,28 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 		getSerializerFactory().addFactory(new RienaSerializerFactory());
 		setHessian2Request(true);
 		setHessian2Reply(true);
+		setChunkedPost(transferDataChunked);
+	}
+
+	/**
+	 * By default data is transfered NOT chunked. This method tests the current
+	 * setting.
+	 * 
+	 * @return true if chunking for transfer is enabled, (false=DEFAULT)
+	 */
+	public static boolean isTransferDataChunked() {
+		return transferDataChunked;
+	}
+
+	/**
+	 * By default data is transfered NOT chunked, this method can be used to
+	 * enable it.
+	 * 
+	 * @param transferDataChunked
+	 *            true if data just be transfered in chunks (false=DEFAULT)
+	 */
+	public static void setTransferDataChunked(boolean transferDataChunked) {
+		RienaHessianProxyFactory.transferDataChunked = transferDataChunked;
 	}
 
 	@Override
