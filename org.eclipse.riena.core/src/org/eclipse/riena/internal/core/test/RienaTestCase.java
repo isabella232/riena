@@ -105,7 +105,7 @@ public abstract class RienaTestCase extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		services.clear();
-		before = ExtensionRegistryAnalyzer.getRegistryPaths(ORG_ECLIPSE_RIENA_BUNDLE_PREFIX);
+		// before = ExtensionRegistryAnalyzer.getRegistryPaths(ORG_ECLIPSE_RIENA_BUNDLE_PREFIX);
 	}
 
 	/*
@@ -117,18 +117,18 @@ public abstract class RienaTestCase extends TestCase {
 			getContext().ungetService(reference);
 		}
 		services.clear();
-		try {
-			assertNotNull("Obviously the super.setUp() method has not been called!", before); //$NON-NLS-1$
-			after = ExtensionRegistryAnalyzer.getRegistryPaths(ORG_ECLIPSE_RIENA_BUNDLE_PREFIX);
-			if (!before.equals(after)) {
-				fail("ExtensionRegistry has changed while running the test " + getName() + ": " //$NON-NLS-1$ //$NON-NLS-2$
-						+ ExtensionRegistryAnalyzer.symmetricDiff(before, after).toString());
-			}
-		} finally {
-			after = null;
-			before = null;
-			super.tearDown();
-		}
+		//		try {
+		//			assertNotNull("Obviously the super.setUp() method has not been called!", before); //$NON-NLS-1$
+		//			after = ExtensionRegistryAnalyzer.getRegistryPaths(ORG_ECLIPSE_RIENA_BUNDLE_PREFIX);
+		//			if (!before.equals(after)) {
+		//				fail("ExtensionRegistry has changed while running the test " + getName() + ": " //$NON-NLS-1$ //$NON-NLS-2$
+		//						+ ExtensionRegistryAnalyzer.symmetricDiff(before, after).toString());
+		//			}
+		//		} finally {
+		//			after = null;
+		//			before = null;
+		//			super.tearDown();
+		//		}
 	}
 
 	/**
