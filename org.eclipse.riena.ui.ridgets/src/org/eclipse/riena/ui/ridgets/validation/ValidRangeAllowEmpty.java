@@ -17,6 +17,8 @@ import org.eclipse.core.runtime.IStatus;
 /**
  * Implementation of ValidRange that response to empty value with no error.
  * Empty value can be null or empty string.
+ * 
+ * @since 2.0
  */
 public class ValidRangeAllowEmpty extends ValidRange {
 
