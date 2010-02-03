@@ -141,7 +141,8 @@ public class NavigationSubModuleController extends SubModuleController {
 	 */
 	private IModuleGroupNode createModuleGroupNode() {
 
-		IModuleGroupNode newModuleGroupNode = new ModuleGroupNode(null);
+		NavigationNodeId nodeId = new NavigationNodeId("moduleGroup", Integer.toString(++nodeCount)); //$NON-NLS-1$
+		IModuleGroupNode newModuleGroupNode = new ModuleGroupNode(nodeId);
 		newModuleGroupNode.setLabel("ModuleGroup"); //$NON-NLS-1$
 		IModuleNode newModuleNode = createModuleNode();
 		newModuleGroupNode.addChild(newModuleNode);
@@ -156,7 +157,8 @@ public class NavigationSubModuleController extends SubModuleController {
 	 */
 	private IModuleNode createModuleNode() {
 
-		IModuleNode newModuleNode = new ModuleNode(null, "Module"); //$NON-NLS-1$
+		NavigationNodeId nodeId = new NavigationNodeId("module", Integer.toString(++nodeCount)); //$NON-NLS-1$
+		IModuleNode newModuleNode = new ModuleNode(nodeId, "Module"); //$NON-NLS-1$ 
 		ISubModuleNode newSubModuleNode = createSubModuleNode("SubModule"); //$NON-NLS-1$
 		WorkareaManager.getInstance().registerDefinition(newSubModuleNode, NavigationSubModuleController.class,
 				NavigationSubModuleView.ID, false);
@@ -175,7 +177,7 @@ public class NavigationSubModuleController extends SubModuleController {
 	private ISubModuleNode createSubModuleNode(String label) {
 
 		ISubModuleNode newSubModuleNode = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.navigation" + nodeCount), label); //$NON-NLS-1$
+				"org.eclipse.riena.example.navigation", Integer.toString(nodeCount)), label); //$NON-NLS-1$
 		if (!RienaStatus.isTest()) {
 			WorkareaManager.getInstance().registerDefinition(newSubModuleNode, NavigationSubModuleController.class,
 					NavigationSubModuleView.ID, false);

@@ -24,10 +24,17 @@ import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper;
+import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ApplicationNode;
+import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
  * Tests of the class <code>ApplicationViewAdvisor</code>.
@@ -112,4 +119,27 @@ public class ApplicationViewAdvisorTest extends RienaTestCase {
 
 		EasyMock.verify(factory);
 	}
+
+	/**
+	 * Tests the <i>private</i> method {@code prepare(INavigationNode<?>)}.
+	 */
+	public void testPrepare() {
+
+		IModuleNode module = new ModuleNode(new NavigationNodeId("m"));
+		ISubModuleNode subModule1 = new SubModuleNode(new NavigationNodeId("sm1"));
+		module.addChild(subModule1);
+		ISubModuleNode subModule2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		module.addChild(subModule2);
+		IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule1, "dummy1");
+		def.setRequiredPreparation(false);
+		def = WorkareaManager.getInstance().registerDefinition(subModule2, "dummy2");
+		def.setRequiredPreparation(true);
+
+		ReflectionUtils.invokeHidden(advisor, "prepare", module);
+		assertFalse(module.isPrepared());
+		assertFalse(subModule1.isPrepared());
+		assertTrue(subModule2.isPrepared());
+
+	}
+
 }

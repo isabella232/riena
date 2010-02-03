@@ -50,35 +50,35 @@ public class NavigationSubApplicationNodeAssembler extends AbstractNavigationAss
 		WorkareaManager.getInstance().registerDefinition(subApplication, "subapplication.1", false); //$NON-NLS-1$
 		subApplication.setSelected(true);
 
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(null);
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId("moduleGroup", "1.1")); //$NON-NLS-1$ //$NON-NLS-2$
 		moduleGroup.setLabel("ModuleGroup 1.1"); //$NON-NLS-1$
 		subApplication.addChild(moduleGroup);
-		IModuleNode module = new ModuleNode(null, "Module 1.1.1"); //$NON-NLS-1$
+		IModuleNode module = new ModuleNode(new NavigationNodeId("module", "1.1.1"), "Module 1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		module.setIcon(ExampleIcons.ICON_APPLICATION);
 		moduleGroup.addChild(module);
-		ISubModuleNode subModule = new SubModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$
+		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.customerDetail", "1.1.1.1"), "SubModule 1.1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		subModule.setIcon(ExampleIcons.ICON_FILE);
 		WorkareaManager.getInstance().registerDefinition(subModule, CustomerDetailSubModuleController.class,
 				CustomerDetailSubModuleView.ID, false);
 		module.addChild(subModule);
 
-		ISubModuleNode subModule2 = new SubModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$
+		ISubModuleNode subModule2 = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.customerDetail", "1.1.1.1"), "SubModule 1.1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		WorkareaManager.getInstance().registerDefinition(subModule2, CustomerDetailSubModuleController.class,
 				CustomerDetailSubModuleView.ID, false);
 		subModule.addChild(subModule2);
 
 		subModule = new SubModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.1.2"); //$NON-NLS-1$ //$NON-NLS-2$
+				new NavigationNodeId("org.eclipse.riena.example.customerDetail", "1.1.1.2"), "SubModule 1.1.1.2"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		WorkareaManager.getInstance().registerDefinition(subModule, CustomerDetailSubModuleController.class,
 				CustomerDetailSubModuleView.ID, false);
 		module.addChild(subModule);
-		module = new ModuleNode(null, "Module 1.1.2 (closeable)"); //$NON-NLS-1$
+		module = new ModuleNode(new NavigationNodeId("module", "1.1.2"), "Module 1.1.2 (closeable)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		module.setIcon(ExampleIcons.ICON_HOMEFOLDER);
 		moduleGroup.addChild(module);
 		subModule = new SubModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.2.1"); //$NON-NLS-1$ //$NON-NLS-2$
+				new NavigationNodeId("org.eclipse.riena.example.customerDetail", "1.1.2.1"), "SubModule 1.1.2.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		WorkareaManager.getInstance().registerDefinition(subModule, CustomerDetailSubModuleController.class,
 				CustomerDetailSubModuleView.ID, false);
 		module.addChild(subModule);
@@ -88,7 +88,7 @@ public class NavigationSubApplicationNodeAssembler extends AbstractNavigationAss
 				NavigationSubModuleView.ID, false);
 		module.addChild(subModule);
 
-		moduleGroup = new ModuleGroupNode(null);
+		moduleGroup = new ModuleGroupNode(new NavigationNodeId("moduleGroup", "1.2")); //$NON-NLS-1$ //$NON-NLS-2$
 		moduleGroup.setLabel("ModuleGroup 1.2"); //$NON-NLS-1$
 		moduleGroup.setPresentWithSingleModule(false);
 		subApplication.addChild(moduleGroup);

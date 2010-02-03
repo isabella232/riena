@@ -80,8 +80,8 @@ public class ScrollingSupport {
 	}
 
 	/**
-	 * @return the scrolled composite which is placed relative to the
-	 *         navigation main composite
+	 * @return the scrolled composite which is placed relative to the navigation
+	 *         main composite
 	 */
 	public Composite getScrollComposite() {
 		return scrollControlComposite;
@@ -147,6 +147,9 @@ public class ScrollingSupport {
 		boolean result = false;
 		if (module != null) {
 			ModuleView moduleView = navigationComponentProvider.getModuleViewForNode(module);
+			if (moduleView == null) {
+				return result;
+			}
 			boolean isClosed = moduleView.getOpenHeight() == 0;
 			if (isClosed) {
 				result = scrollTo(moduleView.getTitle(), moduleView.getBody());

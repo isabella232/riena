@@ -646,11 +646,112 @@ public class NavigationProcessorTest extends RienaTestCase {
 		}
 	}
 
+	/**
+	 * Tests the method {@code prepare(INavigationNode<?>)}.
+	 */
+	public void testPrepare() {
+
+		TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		navigationProcessor.prepare(node);
+		INavigationContext context = node.getNaviContext();
+		assertNotNull(context);
+		assertNotNull(context.getToPrepare());
+		assertEquals(1, context.getToPrepare().size());
+		assertTrue(context.getToActivate().isEmpty());
+		assertTrue(context.getToDeactivate().isEmpty());
+		assertSame(node, context.getToPrepare().get(0));
+
+	}
+
+	/**
+	 * Tests the method {@code historyBack()}.
+	 */
+	public void testHistoryBack() {
+
+		TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		module.addChild(node);
+		subModule.activate();
+		node.activate();
+		assertFalse(subModule.isActivated());
+		assertTrue(node.isActivated());
+		assertEquals(0, navigationProcessor.getHistoryForwardSize());
+		assertEquals(1, navigationProcessor.getHistoryBackSize());
+
+		navigationProcessor.historyBack();
+		assertTrue(subModule.isActivated());
+		assertFalse(node.isActivated());
+		assertEquals(1, navigationProcessor.getHistoryForwardSize());
+		assertEquals(0, navigationProcessor.getHistoryBackSize());
+
+		navigationProcessor.historyBack();
+		assertTrue(subModule.isActivated());
+		assertFalse(node.isActivated());
+		assertEquals(1, navigationProcessor.getHistoryForwardSize());
+		assertEquals(0, navigationProcessor.getHistoryBackSize());
+
+	}
+
+	/**
+	 * Tests the method {@code historyForeward()}.
+	 */
+	public void testHistoryForeward() {
+
+		TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		module.addChild(node);
+		subModule.activate();
+		node.activate();
+		assertFalse(subModule.isActivated());
+		assertTrue(node.isActivated());
+		assertEquals(0, navigationProcessor.getHistoryForwardSize());
+		assertEquals(1, navigationProcessor.getHistoryBackSize());
+
+		navigationProcessor.historyBack();
+		assertTrue(subModule.isActivated());
+		assertFalse(node.isActivated());
+		assertEquals(1, navigationProcessor.getHistoryForwardSize());
+		assertEquals(0, navigationProcessor.getHistoryBackSize());
+
+		navigationProcessor.historyForward();
+		assertFalse(subModule.isActivated());
+		assertTrue(node.isActivated());
+		assertEquals(0, navigationProcessor.getHistoryForwardSize());
+		assertEquals(1, navigationProcessor.getHistoryBackSize());
+
+		navigationProcessor.historyForward();
+		assertFalse(subModule.isActivated());
+		assertTrue(node.isActivated());
+		assertEquals(0, navigationProcessor.getHistoryForwardSize());
+		assertEquals(1, navigationProcessor.getHistoryBackSize());
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code
+	 * findSelectableChildNode(ISubModuleNode)}
+	 */
+	public void testFindSelectableChildNode() {
+
+		ISubModuleNode selectableChild = ReflectionUtils.invokeHidden(navigationProcessor, "findSelectableChildNode",
+				subModule);
+		assertSame(subModule, selectableChild);
+
+		subModule.setSelectable(false);
+		selectableChild = ReflectionUtils.invokeHidden(navigationProcessor, "findSelectableChildNode", subModule);
+		assertNull(selectableChild);
+
+		TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		subModule.addChild(node);
+		selectableChild = ReflectionUtils.invokeHidden(navigationProcessor, "findSelectableChildNode", subModule);
+		assertSame(node, selectableChild);
+
+	}
+
 	private static class TestSubModuleNode extends SubModuleNode {
 
 		private boolean allowsActivate;
 		private boolean allowsDeactivate;
 		private boolean allowsDispose;
+		private INavigationContext naviContext;
 
 		public TestSubModuleNode(NavigationNodeId nodeId) {
 			super(nodeId);
@@ -686,5 +787,16 @@ public class NavigationProcessorTest extends RienaTestCase {
 			this.allowsDispose = allowsDispose;
 		}
 
+		@Override
+		public void prepare(INavigationContext context) {
+			super.prepare(context);
+			naviContext = context;
+		}
+
+		public INavigationContext getNaviContext() {
+			return naviContext;
+		}
+
 	}
+
 }

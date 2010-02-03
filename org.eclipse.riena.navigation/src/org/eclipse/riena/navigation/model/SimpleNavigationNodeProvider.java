@@ -27,18 +27,15 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IAssemblerProvider;
 import org.eclipse.riena.navigation.IGenericNavigationAssembler;
-import org.eclipse.riena.navigation.IModuleGroupNodeExtension;
-import org.eclipse.riena.navigation.IModuleNodeExtension;
 import org.eclipse.riena.navigation.INavigationAssembler;
 import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
 import org.eclipse.riena.navigation.INodeExtension;
-import org.eclipse.riena.navigation.ISubApplicationNodeExtension;
-import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.StartupNodeInfo;
@@ -80,12 +77,10 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	 * @return The extension point used to contribute navigation assemblies
 	 */
 	public String getNavigationAssemblyExtensionPoint() {
-
 		return INavigationAssemblyExtension.EXTENSIONPOINT;
 	}
 
 	private Class<? extends INavigationAssemblyExtension> getNavigationAssemblyExtensionIFSafe() {
-
 		if (getNavigationAssemblyExtensionIF() != null && getNavigationAssemblyExtensionIF().isInterface()) {
 			return getNavigationAssemblyExtensionIF();
 		} else {
@@ -94,14 +89,11 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	}
 
 	public Class<? extends INavigationAssemblyExtension> getNavigationAssemblyExtensionIF() {
-
 		return INavigationAssemblyExtension.class;
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#createNode(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.NavigationNodeId,
-	 *      org.eclipse.riena.navigation.NavigationArgument)
+	 * {@inheritDoc}
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected INavigationNode<?> provideNodeHook(INavigationNode<?> sourceNode, NavigationNodeId targetId,
@@ -133,9 +125,25 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 		if (argument != null) {
 			// store the NavigationArgument in node context
 			targetNode.setContext(NavigationArgument.CONTEXTKEY_ARGUMENT, argument);
+			if (argument.isPrepareAll()) {
+				prepareAll(targetNode);
+			}
 		}
 
 		return targetNode;
+	}
+
+	/**
+	 * Prepares the given node and all its children.
+	 * 
+	 * @param node
+	 *            navigation node to prepare.
+	 */
+	private void prepareAll(INavigationNode<?> node) {
+		node.prepare();
+		for (INavigationNode<?> child : node.getChildren()) {
+			prepareAll(child);
+		}
 	}
 
 	private NavigationNodeId getParentTypeId(NavigationArgument argument, INavigationAssembler assembler) {
@@ -143,7 +151,7 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 			return argument.getParentNodeId();
 		} else {
 			String parentTypeId = assembler.getAssembly().getParentTypeId();
-			if (parentTypeId == null || parentTypeId.length() == 0) {
+			if (StringUtils.isEmpty(parentTypeId)) {
 				throw new ExtensionPointFailure("parentTypeId cannot be null or blank for assembly ID=" //$NON-NLS-1$
 						+ assembler.getAssembly().getId());
 			}
@@ -156,13 +164,10 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#createNode(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.NavigationNodeId,
-	 *      org.eclipse.riena.navigation.NavigationArgument)
+	 * {@inheritDoc}
 	 */
 	public INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
-
 		return provideNodeHook(sourceNode, targetId, argument);
 	}
 
@@ -323,50 +328,6 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 
 		registerNavigationAssembler(assemblyId, assembler);
 
-		if (assembly.getSubApplicationNode() != null) {
-			register(assembly.getSubApplicationNode(), assembler, assembly);
-		}
-		if (assembly.getModuleGroupNode() != null) {
-			register(assembly.getModuleGroupNode(), assembler, assembly);
-		}
-		if (assembly.getModuleNode() != null) {
-			register(assembly.getModuleNode(), assembler, assembly);
-		}
-		if (assembly.getSubModuleNode() != null) {
-			register(assembly.getSubModuleNode(), assembler, assembly);
-		}
-	}
-
-	public void register(ISubApplicationNodeExtension subapplication, INavigationAssembler assembler,
-			INavigationAssemblyExtension assembly) {
-
-		for (IModuleGroupNodeExtension group : subapplication.getModuleGroupNodes()) {
-			register(group, assembler, assembly);
-		}
-	}
-
-	public void register(IModuleGroupNodeExtension group, INavigationAssembler assembler,
-			INavigationAssemblyExtension assembly) {
-
-		for (IModuleNodeExtension module : group.getModuleNodes()) {
-			register(module, assembler, assembly);
-		}
-	}
-
-	public void register(IModuleNodeExtension module, INavigationAssembler assembler,
-			INavigationAssemblyExtension assembly) {
-
-		for (ISubModuleNodeExtension submodule : module.getSubModuleNodes()) {
-			register(submodule, assembler, assembly);
-		}
-	}
-
-	public void register(ISubModuleNodeExtension submodule, INavigationAssembler assembler,
-			INavigationAssemblyExtension assembly) {
-
-		for (ISubModuleNodeExtension nestedSubmodule : submodule.getSubModuleNodes()) {
-			register(nestedSubmodule, assembler, assembly);
-		}
 	}
 
 	/**
@@ -393,4 +354,5 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 			register(assembly);
 		}
 	}
+
 }

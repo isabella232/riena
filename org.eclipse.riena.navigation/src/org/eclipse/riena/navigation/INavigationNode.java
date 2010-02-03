@@ -65,6 +65,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	/**
 	 * Call this method to prepare this node. A prepared node is created but not
 	 * yet activated (or deactivated, or disposed).
+	 * 
+	 * @since 2.0
 	 */
 	void prepare();
 
@@ -155,6 +157,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * 
 	 * @param pContext
 	 *            the Context to prepare within
+	 * @since 2.0
 	 */
 	void prepare(INavigationContext pContext);
 
@@ -440,6 +443,16 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 */
 	boolean isActivated();
 
+	/**
+	 * Returns whether the node is prepared or not.
+	 * <p>
+	 * <i>Prepare means that the controller (among others) of the node is
+	 * already created but the node was no activated so fare.</i>
+	 * 
+	 * @return {@code true} if this node has the state PREPARED; otherwise
+	 *         {@code false}
+	 * @since 2.0
+	 */
 	boolean isPrepared();
 
 	/**

@@ -52,13 +52,17 @@ import org.eclipse.riena.internal.navigation.ui.swt.CoolbarUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper;
 import org.eclipse.riena.internal.navigation.ui.swt.RestoreFocusOnEscListener;
 import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
-import org.eclipse.riena.navigation.listener.ISubApplicationNodeListener;
+import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
+import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
+import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
@@ -205,10 +209,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	//////////////////
 
 	private void initializeListener() {
-		ISubApplicationNodeListener subApplicationListener = new MySubApplicationNodeListener();
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
-		navigationTreeObserver.addListener(subApplicationListener);
 		navigationTreeObserver.addListener(new MyApplicationNodeListener());
+		navigationTreeObserver.addListener(new MySubApplicationNodeListener());
+		navigationTreeObserver.addListener(new MyModuleGroupNodeListener());
+		navigationTreeObserver.addListener(new MyModuleNodeListener());
+		navigationTreeObserver.addListener(new MySubModuleNodeListener());
 		navigationTreeObserver.addListenerTo(controller.getNavigationNode());
 	}
 
@@ -597,28 +603,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			super.activated(source);
 		}
 
-		/**
-		 * Prepares every sub-module whose definition requires preparation.
-		 * 
-		 * @param node
-		 *            navigation node
-		 */
-		private void prepare(INavigationNode<?> node) {
-
-			if (node instanceof ISubModuleNode) {
-				ISubModuleNode subModuleNode = (ISubModuleNode) node;
-				IWorkareaDefinition definition = WorkareaManager.getInstance().getDefinition(subModuleNode);
-				if (definition.isRequiredPreparation()) {
-					subModuleNode.prepare();
-				}
-			}
-
-			for (INavigationNode<?> child : node.getChildren()) {
-				prepare(child);
-			}
-
-		}
-
 		private void showPerspective(ISubApplicationNode source) {
 			try {
 				PlatformUI.getWorkbench().showPerspective(SwtViewProvider.getInstance().getSwtViewId(source).getId(),
@@ -638,6 +622,73 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			workbench.getActiveWorkbenchWindow().getActivePage().closePerspective(perspDesc, false, false);
 			viewProvider.unregisterSwtViewId(source);
 		}
+	}
+
+	private class MyModuleGroupNodeListener extends ModuleGroupNodeListener {
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * After activation of a module group prepare - if necessary - every
+		 * child (sub module) node.
+		 */
+		@Override
+		public void activated(IModuleGroupNode source) {
+			prepare(source);
+			super.activated(source);
+		}
+	}
+
+	private class MyModuleNodeListener extends ModuleNodeListener {
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * After activation of a module prepare - if necessary - every child
+		 * (sub module) node.
+		 */
+		@Override
+		public void activated(IModuleNode source) {
+			prepare(source);
+			super.activated(source);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * After activation of a module prepare - if necessary - every child node.
+	 */
+	private class MySubModuleNodeListener extends SubModuleNodeListener {
+		@Override
+		public void activated(ISubModuleNode source) {
+			prepare(source);
+			super.activated(source);
+		}
+	}
+
+	/**
+	 * Prepares every sub-module whose definition requires preparation.
+	 * 
+	 * @param node
+	 *            navigation node
+	 */
+	private void prepare(INavigationNode<?> node) {
+
+		if (node == null) {
+			return;
+		}
+
+		if (node instanceof ISubModuleNode) {
+			ISubModuleNode subModuleNode = (ISubModuleNode) node;
+			IWorkareaDefinition definition = WorkareaManager.getInstance().getDefinition(subModuleNode);
+			if (definition.isRequiredPreparation()) {
+				subModuleNode.prepare();
+			}
+		}
+
+		for (INavigationNode<?> child : node.getChildren()) {
+			prepare(child);
+		}
+
 	}
 
 	/**

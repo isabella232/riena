@@ -28,6 +28,7 @@ import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.filter.IUIFilter;
+import org.eclipse.riena.ui.filter.impl.UIFilter;
 
 /**
  * Tests of the class {@code NavigationNode}.
@@ -623,12 +624,94 @@ public class NavigationNodeTest extends RienaTestCase {
 
 	}
 
+	/**
+	 * Tests the method {@code toString()}.
+	 */
+	public void testToString() {
+
+		NaviNode node = new NaviNode(null);
+		assertTrue(node.toString().startsWith(node.getClass().getName()));
+
+		node = new NaviNode(null);
+		node.setLabel("LabelOfNode");
+		assertEquals("LabelOfNode", node.toString());
+
+		node = new NaviNode(new NavigationNodeId("4711"));
+		assertEquals("ID=4711", node.toString());
+
+		node = new NaviNode(new NavigationNodeId("4711", "0815"));
+		assertEquals("ID=4711", node.toString());
+
+		node = new NaviNode(new NavigationNodeId("4711", "0815"));
+		node.setLabel("LabelTwo");
+		assertEquals("LabelTwo", node.toString());
+
+	}
+
+	/**
+	 * Tests the method {@code addFilter(UIFilter)}
+	 */
+	public void testAddFilter() {
+
+		NaviNode node = new NaviNode(null);
+		UIFilter filter1 = new UIFilter("filterOne");
+		node.addFilter(filter1);
+		assertEquals(1, node.getFilters().size());
+		assertSame(filter1, node.getFilters().iterator().next());
+		assertTrue(node.isFilterAddedCalled());
+
+	}
+
+	/**
+	 * Tests the method {@code removeFilter(String)}
+	 */
+	public void testRemoveFilter() {
+
+		NaviNode node = new NaviNode(null);
+		UIFilter filter1 = new UIFilter("filterOne");
+		node.addFilter(filter1);
+		UIFilter filter2 = new UIFilter("filterTwo");
+		node.addFilter(filter2);
+		assertEquals(2, node.getFilters().size());
+
+		node.removeFilter("filterTwo");
+		assertEquals(1, node.getFilters().size());
+		assertSame(filter1, node.getFilters().iterator().next());
+		assertTrue(node.isFilterRemovedCalled());
+
+		node.reset();
+		node.removeFilter("filterOne");
+		assertTrue(node.getFilters().isEmpty());
+		assertTrue(node.isFilterRemovedCalled());
+
+	}
+
+	/**
+	 * Tests the method {@code removeAllFilters()}
+	 */
+	public void testRemoveAllFilters() {
+
+		NaviNode node = new NaviNode(null);
+		UIFilter filter1 = new UIFilter("filterOne");
+		node.addFilter(filter1);
+		UIFilter filter2 = new UIFilter("filterTwo");
+		node.addFilter(filter2);
+		assertEquals(2, node.getFilters().size());
+
+		node.removeAllFilters();
+		assertTrue(node.getFilters().isEmpty());
+		assertTrue(node.isFilterRemovedCalled());
+
+	}
+
 	private class NaviNode extends SubModuleNode implements ISimpleNavigationNodeListener {
 
 		private boolean markersChangedCalled;
 		private boolean childAddedCalled;
 		private boolean childRemovedCalled;
 		private boolean preparedCalled;
+		private boolean filterRemovedCalled;
+		private boolean filterAddedCalled;
 
 		public NaviNode(NavigationNodeId nodeId) {
 			super(nodeId);
@@ -640,6 +723,8 @@ public class NavigationNodeTest extends RienaTestCase {
 			childAddedCalled = false;
 			childRemovedCalled = false;
 			preparedCalled = false;
+			filterRemovedCalled = false;
+			filterAddedCalled = false;
 		}
 
 		public void activated(INavigationNode<?> source) {
@@ -691,9 +776,11 @@ public class NavigationNodeTest extends RienaTestCase {
 		}
 
 		public void filterAdded(INavigationNode<?> source, IUIFilter filter) {
+			filterAddedCalled = true;
 		}
 
 		public void filterRemoved(INavigationNode<?> source, IUIFilter filter) {
+			filterRemovedCalled = true;
 		}
 
 		public void iconChanged(INavigationNode<?> source) {
@@ -739,6 +826,14 @@ public class NavigationNodeTest extends RienaTestCase {
 
 		public boolean isPreparedCalled() {
 			return preparedCalled;
+		}
+
+		public boolean isFilterRemovedCalled() {
+			return filterRemovedCalled;
+		}
+
+		public boolean isFilterAddedCalled() {
+			return filterAddedCalled;
 		}
 
 	}

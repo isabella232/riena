@@ -19,9 +19,9 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
-/*
- * implements
- * IInjectAllRidgets
+/**
+ * Controller of a sub module to demonstrate the navigate method of {@code
+ * INavigationNode}.
  */
 public class NavigateSubModuleController extends SubModuleController {
 
@@ -44,6 +44,10 @@ public class NavigateSubModuleController extends SubModuleController {
 		tableTextAndTree.setText("Table, Text and Tree (SubApplication 2)"); //$NON-NLS-1$
 		tableTextAndTree.addListener(new TableTextAndTreeListener());
 
+		IActionRidget textAssembly = getRidget(IActionRidget.class, "textAssembly"); //$NON-NLS-1$
+		textAssembly.setText("Text Assembly (SubApplication 1)"); //$NON-NLS-1$
+		textAssembly.addListener(new TextAssemblyListener());
+
 		final PersonModificationBean bean = new PersonModificationBean();
 		bean.setPerson(new Person("Doe", "Jane")); //$NON-NLS-1$ //$NON-NLS-2$
 		IActionRidget navigateRidget = getRidget(IActionRidget.class, "btnNavigateToRidget"); //$NON-NLS-1$
@@ -60,10 +64,13 @@ public class NavigateSubModuleController extends SubModuleController {
 	private class ComboAndListListener implements IActionListener {
 
 		/**
-		 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
+		 * {@inheritDoc}
 		 */
 		public void callback() {
-			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList")); //$NON-NLS-1$
+			NavigationArgument naviAgr = new NavigationArgument();
+			naviAgr.setPrepareAll(true);
+			getNavigationNode().navigate(
+					new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList"), naviAgr); //$NON-NLS-1$
 		}
 
 	}
@@ -71,10 +78,21 @@ public class NavigateSubModuleController extends SubModuleController {
 	private class TableTextAndTreeListener implements IActionListener {
 
 		/**
-		 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
+		 * {@inheritDoc}
 		 */
 		public void callback() {
 			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigate.tableTextAndTree")); //$NON-NLS-1$
+		}
+
+	}
+
+	private class TextAssemblyListener implements IActionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void callback() {
+			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.client.textExamplesGroup")); //$NON-NLS-1$
 		}
 
 	}

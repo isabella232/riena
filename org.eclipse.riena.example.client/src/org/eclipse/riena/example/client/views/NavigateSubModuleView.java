@@ -19,11 +19,11 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * SWT {@link IComboRidget} sample.
+ * View of a sub module to demonstrate the navigate method of {@code
+ * INavigationNode}.
  */
 public class NavigateSubModuleView extends SubModuleView<NavigateSubModuleController> {
 
@@ -44,6 +44,10 @@ public class NavigateSubModuleView extends SubModuleView<NavigateSubModuleContro
 		Button tableTextAndTree = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(tableTextAndTree);
 		addUIControl(tableTextAndTree, "tableTextAndTree"); //$NON-NLS-1$
+
+		Button textAssembly = UIControlsFactory.createButton(parent);
+		fillFactory.applyTo(textAssembly);
+		addUIControl(textAssembly, "textAssembly"); //$NON-NLS-1$
 
 		Button btnNavigateToRidget = UIControlsFactory.createButton(parent, "Navigate to First Name", //$NON-NLS-1$
 				"btnNavigateToRidget"); //$NON-NLS-1$

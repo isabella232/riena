@@ -63,14 +63,14 @@ public class SubModuleViewTest extends RienaTestCase {
 		IModuleNode parent = new ModuleNode(null, "TestModuleLabel");
 		mgNode.addChild(parent);
 
-		anotherNode = new SubModuleNode(new NavigationNodeId("testId2"), "TestSubModuleLabel2");
+		anotherNode = new SubModuleNode(new NavigationNodeId("testId2", "2"), "TestSubModuleLabel2");
 		parent.addChild(anotherNode);
-		anotherNodeSameView = new SubModuleNode(new NavigationNodeId("testId"), "TestSubModuleLabel3");
+		anotherNodeSameView = new SubModuleNode(new NavigationNodeId("testId", "1"), "TestSubModuleLabel3");
 		parent.addChild(anotherNodeSameView);
 		nodesBoundToView = new ArrayList<SubModuleNode>();
 
 		subModuleNodeView = new TestView();
-		node = new SubModuleNode(new NavigationNodeId("testId"), "TestSubModuleLabel");
+		node = new SubModuleNode(new NavigationNodeId("testId", "0"), "TestSubModuleLabel");
 		parent.setNavigationNodeController(new ModuleController(parent));
 		parent.addChild(node);
 		subModuleNodeView.createPartControl(new Shell());

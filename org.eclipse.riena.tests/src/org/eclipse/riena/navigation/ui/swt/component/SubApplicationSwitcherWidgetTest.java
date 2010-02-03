@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
@@ -59,14 +60,14 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 	public void testCreate() {
 
 		IApplicationNode node = new ApplicationNode();
-		SubApplicationNode subNode1 = new SubApplicationNode("sub1");
+		SubApplicationNode subNode1 = new SubApplicationNode(new NavigationNodeId("sap", "sub1"), "sub1");
 		subNode1.setIcon("icon1");
 		List<SubApplicationNodeListener> listeners = ReflectionUtils.invokeHidden(subNode1, "getListeners",
 				(Object[]) null);
 		assertNotNull(listeners);
 		assertTrue(listeners.isEmpty());
 		node.addChild(subNode1);
-		SubApplicationNode subNode2 = new SubApplicationNode("sub2");
+		SubApplicationNode subNode2 = new SubApplicationNode(new NavigationNodeId("sap", "sub2"), "sub2");
 		subNode2.setIcon("icon2");
 		node.addChild(subNode2);
 		switcher = new SubApplicationSwitcherWidget(shell, SWT.NONE, node);
@@ -193,10 +194,10 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 	public void testDisposeSubApplication() throws Exception {
 
 		IApplicationNode node = new ApplicationNode();
-		SubApplicationNode subNode1 = new SubApplicationNode("sub1");
+		SubApplicationNode subNode1 = new SubApplicationNode(new NavigationNodeId("sm", "sub1"), "sub1");
 		subNode1.setIcon("icon1");
 		node.addChild(subNode1);
-		SubApplicationNode subNode2 = new SubApplicationNode("sub2");
+		SubApplicationNode subNode2 = new SubApplicationNode(new NavigationNodeId("sm", "sub2"), "sub2");
 		subNode2.setIcon("icon2");
 		node.addChild(subNode2);
 		switcher = new SubApplicationSwitcherWidget(shell, SWT.NONE, node);
@@ -214,10 +215,10 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 	public void testRemoveSubApplication() throws Exception {
 
 		IApplicationNode node = new ApplicationNode();
-		SubApplicationNode subNode1 = new SubApplicationNode("sub1");
+		SubApplicationNode subNode1 = new SubApplicationNode(new NavigationNodeId("sm", "sub1"), "sub1");
 		subNode1.setIcon("icon1");
 		node.addChild(subNode1);
-		SubApplicationNode subNode2 = new SubApplicationNode("sub2");
+		SubApplicationNode subNode2 = new SubApplicationNode(new NavigationNodeId("sm", "sub2"), "sub2");
 		subNode2.setIcon("icon2");
 		node.addChild(subNode2);
 		switcher = new SubApplicationSwitcherWidget(shell, SWT.NONE, node);
@@ -235,10 +236,10 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 	public void testAddSubApplication() throws Exception {
 
 		IApplicationNode node = new ApplicationNode();
-		SubApplicationNode subNode1 = new SubApplicationNode("sub1");
+		SubApplicationNode subNode1 = new SubApplicationNode(new NavigationNodeId("sm", "sub1"), "sub1");
 		subNode1.setIcon("icon1");
 		node.addChild(subNode1);
-		SubApplicationNode subNode2 = new SubApplicationNode("sub2");
+		SubApplicationNode subNode2 = new SubApplicationNode(new NavigationNodeId("sm", "sub2"), "sub2");
 		subNode2.setIcon("icon2");
 		node.addChild(subNode2);
 		switcher = new SubApplicationSwitcherWidget(shell, SWT.NONE, node);

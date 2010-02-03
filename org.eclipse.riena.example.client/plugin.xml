@@ -607,9 +607,10 @@
                name="uiProcesses_group"
                typeId="org.eclipse.riena.example.uiProcesses">
             <module
-                  name="uiProcesses"
+                  icon="ledred.png"
                   label="UIProcess"
-                  icon="ledred.png">
+                  name="uiProcesses"
+                  typeId="uiProcesses">
                <submodule
                      controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"
                      icon="ledlightgreen.png"
@@ -626,9 +627,10 @@
                      controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"/>
             </module>
             <module
-                  name="remoteProgress"
+                  icon="ledred.png"
                   label="service call progress"
-                  icon="ledred.png">
+                  name="remoteProgress"
+                  typeId="remoteProgress">
                <submodule
                      typeId="org.eclipse.riena.example.remoteProgress"
                      name="org.eclipse.riena.example.remoteProgress"
@@ -770,6 +772,50 @@
             id="org.eclipse.riena.example.navigate.tableTextAndTree.assembly"
             assembler="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeAssembler"
             parentTypeId="playground">
+      </assembly>
+      <assembly
+            id="org.eclipse.riena.example.client.textAssembly"
+            parentTypeId="org.eclipse.riena.example.navigation.subapplication">
+         <modulegroup
+               name="textExamplesGroup"
+               typeId="org.eclipse.riena.example.client.textExamplesGroup">
+            <module
+                  label="Text Examples"
+                  name="textExamples"
+                  typeId="org.eclipse.riena.example.client.textExamples"
+                  unclosable="false">
+               <submodule
+                     controller="org.eclipse.riena.example.client.controllers.TextSubModuleController"
+                     label="Text"
+                     name="text"
+                     requiresPreparation="true"
+                     selectable="true"
+                     shared="false"
+                     typeId="textSubModuleView"
+                     view="org.eclipse.riena.example.client.views.TextSubModuleView">
+               </submodule>
+               <submodule
+                     controller="org.eclipse.riena.example.client.controllers.TextNumericSubModuleController"
+                     label="Numeric Text"
+                     name="numericText"
+                     requiresPreparation="true"
+                     selectable="true"
+                     shared="false"
+                     typeId="textNumericSubModuleView"
+                     view="org.eclipse.riena.example.client.views.TextNumericSubModuleView">
+               </submodule>
+               <submodule
+                     controller="org.eclipse.riena.example.client.controllers.TextDateSubModuleController"
+                     label="Date Text"
+                     name="dateText"
+                     requiresPreparation="true"
+                     selectable="true"
+                     shared="false"
+                     typeId=".textDateSubModuleView"
+                     view="org.eclipse.riena.example.client.views.TextDateSubModuleView">
+               </submodule>
+            </module>
+         </modulegroup>
       </assembly>
    </extension>
    <extension
@@ -999,9 +1045,10 @@
              autostartsequence="2"
             id="org.eclipse.riena.example.onecustomer"
             parentTypeId="module121">
-         <submodule
+      <submodule
                controller="org.eclipse.riena.example.client.controllers.OnePersonSubModuleController"
                icon="person.gif"
+               instanceId="1"
                label="One Person"
                requiresPreparation="true"
                shared="false"

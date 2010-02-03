@@ -30,6 +30,7 @@ public class NavigationArgument {
 	private NavigationNodeId parentNodeId;
 	private IUpdateListener updateListener = null;
 	private String ridgetId;
+	private boolean prepareAll;
 
 	/**
 	 */
@@ -142,6 +143,27 @@ public class NavigationArgument {
 	 */
 	public IUpdateListener getUpdateListener() {
 		return updateListener;
+	}
+
+	/**
+	 * Sets whether all nodes should be prepared.
+	 * 
+	 * @param prepareAll
+	 *            {@code true} prepare all nodes; otherwise {@code false}
+	 * @since 2.0
+	 */
+	public void setPrepareAll(boolean prepareAll) {
+		this.prepareAll = prepareAll;
+	}
+
+	/**
+	 * Returns whether all nodes should be prepared.
+	 * 
+	 * @return {@code true} prepare all nodes; otherwise {@code false}
+	 * @since 2.0
+	 */
+	public boolean isPrepareAll() {
+		return prepareAll;
 	}
 
 	/**
