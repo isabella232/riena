@@ -138,6 +138,16 @@ public class ApplicationViewAdvisorTest extends RienaTestCase {
 		ReflectionUtils.invokeHidden(advisor, "prepare", module);
 		assertFalse(module.isPrepared());
 		assertFalse(subModule1.isPrepared());
+		assertFalse(subModule1.isActivated());
+		assertTrue(subModule2.isPrepared());
+
+		def = WorkareaManager.getInstance().registerDefinition(subModule1, "dummy1");
+		def.setRequiredPreparation(true);
+		subModule1.activate();
+		ReflectionUtils.invokeHidden(advisor, "prepare", module);
+		assertFalse(module.isPrepared());
+		assertFalse(subModule1.isPrepared());
+		assertTrue(subModule1.isActivated());
 		assertTrue(subModule2.isPrepared());
 
 	}

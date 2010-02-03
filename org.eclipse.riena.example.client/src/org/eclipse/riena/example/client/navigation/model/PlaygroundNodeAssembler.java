@@ -93,7 +93,6 @@ import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.core.marker.AttentionMarker;
-import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
@@ -141,9 +140,8 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 		ISubModuleNode ccomboSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.ccombo"), "CCombo"); //$NON-NLS-1$ //$NON-NLS-2$
-		IWorkareaDefinition def = workarea.registerDefinition(ccomboSubModule, CComboSubModuleController.class,
-				CComboSubModuleView.ID);
-		def.setRequiredPreparation(true);
+		workarea.registerDefinition(ccomboSubModule, CComboSubModuleController.class, CComboSubModuleView.ID)
+				.setRequiredPreparation(true);
 		playgroundModule.addChild(ccomboSubModule);
 
 		ISubModuleNode comboAndChoiceSubModule = new SubModuleNode(new NavigationNodeId(
@@ -251,9 +249,8 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 		ISubModuleNode messageMarkerSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.messagemarker"), "Message Marker"); //$NON-NLS-1$ //$NON-NLS-2$
-		def = workarea.registerDefinition(messageMarkerSubModule, MessageMarkerSubModuleController.class,
-				MessageMarkerSubModuleView.ID);
-		def.setRequiredPreparation(true);
+		workarea.registerDefinition(messageMarkerSubModule, MessageMarkerSubModuleController.class,
+				MessageMarkerSubModuleView.ID).setRequiredPreparation(true);
 		playgroundModule.addChild(messageMarkerSubModule);
 
 		ISubModuleNode tableSubModule = new SubModuleNode(

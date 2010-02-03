@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleGroupNodeExtension;
@@ -34,6 +35,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 /**
  * Tests of the class {@link SimpleNavigationNodeProvider}.
  */
+@NonUITestCase
 public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 
 	private IApplicationNode applicationNode;

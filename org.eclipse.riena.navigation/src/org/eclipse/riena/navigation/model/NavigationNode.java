@@ -395,6 +395,8 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
 	public void prepare() {
 		getNavigationProcessor().prepare(this);
@@ -805,6 +807,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @since 2.0
 	 */
 	public void prepare(INavigationContext context) {
+		Assert.isTrue(isCreated() || isPrepared());
 		setState(State.PREPARED);
 		notifyPrepared();
 	}
