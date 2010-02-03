@@ -137,22 +137,24 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * 
 	 * @param uiControl
 	 *            control to bind
-	 * @param propertyName
-	 *            name of the property...
+	 * @param bindingId
+	 *            ID for binding
 	 */
-	protected void addUIControl(Object uiControl, String propertyName) {
-		binding.addUIControl(uiControl, propertyName);
+	protected void addUIControl(Object uiControl, String bindingId) {
+		binding.addUIControl(uiControl, bindingId);
 	}
 
 	/**
-	 * Find the navigation node corresponding to the passed id
+	 * Find the navigation node corresponding to the passed ids.
 	 * 
-	 * @param pId
-	 *            the id to the node
+	 * @param nodeId
+	 *            the id of the node
+	 * @param secondaryId
+	 *            the secondary id
 	 * @return the subModule node if found
 	 */
-	protected ISubModuleNode getSubModuleNode(String pId, String pSecondary) {
-		return SwtViewProvider.getInstance().getNavigationNode(pId, pSecondary, ISubModuleNode.class);
+	protected ISubModuleNode getSubModuleNode(String nodeId, String secondaryId) {
+		return SwtViewProvider.getInstance().getNavigationNode(nodeId, secondaryId, ISubModuleNode.class);
 	}
 
 	/**
