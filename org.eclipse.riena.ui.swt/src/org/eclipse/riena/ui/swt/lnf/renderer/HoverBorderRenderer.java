@@ -10,19 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.GC;
 
 /**
  * Renderer of the border that is displayed when the mouse is over the module.
  */
 public class HoverBorderRenderer extends AbstractLnfRenderer {
 
-	private final static int PADDING = 1;
+	private final static int PADDING = 0;
 
 	/**
 	 * @param value
