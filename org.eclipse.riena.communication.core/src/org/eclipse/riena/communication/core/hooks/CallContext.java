@@ -10,12 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.hooks;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 
+/**
+ * CallContext that is avaiable in beforeCall and afterCall to all CallHooks
+ */
+/**
+ *
+ */
 public class CallContext {
 
 	private RemoteServiceDescription rsd;
@@ -29,14 +36,68 @@ public class CallContext {
 		this.messageContext = messageContext;
 	}
 
+	/**
+	 * The name as string of the remote service interface
+	 * 
+	 * @return
+	 */
 	public String getInterfaceName() {
 		return rsd.getServiceInterfaceClassName();
 	}
 
+	/**
+	 * The name as class object of the remote service interface
+	 * 
+	 * @return
+	 */
+	public Class<?> getInterfaceClass() {
+		return rsd.getServiceInterfaceClass();
+	}
+
+	/**
+	 * The method that is called as string.
+	 * 
+	 * @return
+	 */
 	public String getMethodName() {
 		return method;
 	}
 
+	/**
+	 * The method that is called as Method object.
+	 * 
+	 * @return
+	 * @throws UnsupportedOperationException
+	 *             if more than one method with the method name are found. That
+	 *             is currently not supported.
+	 */
+	public Method getMethod() {
+		Class<?> interf = getInterfaceClass();
+		String methodName = getMethodName();
+		Method[] methods = interf.getMethods();
+		Method foundMethod = null;
+		for (Method method : methods) {
+			if (method.getName().equals(methodName)) {
+				if (foundMethod == null) {
+					foundMethod = method;
+				} else {
+					throw new UnsupportedOperationException("More than one method with the same name '" + methodName
+							+ "' found.");
+				}
+			}
+		}
+		return foundMethod;
+	}
+
+	/**
+	 * Arbitrary property that can be associated with this call. Accessible in
+	 * beforeService and afterService
+	 * 
+	 * @param name
+	 *            key
+	 * @param value
+	 *            value for that key
+	 */
 	public void setProperty(String name, String value) {
 		if (properties == null) {
 			properties = new HashMap<String, String>();
@@ -45,6 +106,12 @@ public class CallContext {
 		return;
 	}
 
+	/**
+	 * Getter access to key/value property store in setProperty
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public String getProperty(String name) {
 		if (properties == null) {
 			return null;
@@ -52,15 +119,34 @@ public class CallContext {
 		return properties.get(name);
 	}
 
+	/**
+	 * Access to the ServiceMessageContext that has more lowlevel access to
+	 * properties
+	 * 
+	 * @return
+	 */
 	public ICallMessageContext getMessageContext() {
 		return messageContext;
 	}
 
+	/**
+	 * Sets a new Set-Cookie on the service side, which is sent back to the
+	 * client when the remote service call returns
+	 * 
+	 * @param cookie
+	 */
 	public void setCookie(String name, String value) {
 		messageContext.addRequestHeader("Cookie", name + "=" + value); //$NON-NLS-1$ //$NON-NLS-2$
 		return;
 	}
 
+	/**
+	 * Returns a Map of key, value pairs of Cookies that were set on the server
+	 * in the last remote service call. This only returns interesting
+	 * information in the afterCall method.
+	 * 
+	 * @return
+	 */
 	public Map<String, String> getSetCookies() {
 		Map<String, List<String>> respHeaders = messageContext.listResponseHeaders();
 		if (respHeaders == null) {
