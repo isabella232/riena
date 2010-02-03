@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
@@ -18,6 +19,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 
@@ -34,71 +36,90 @@ public class RidgetsSubModuleView extends SubModuleView<RidgetsSubModuleControll
 
 	public static final String ID = RidgetsSubModuleView.class.getName();
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleView#basicCreatePartControl(org.eclipse.swt.widgets.Composite)
-	 */
+	private Image scaledQuestionImage;
+	private Image scaledWarningImage;
+
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
-
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new FormLayout());
 
-		createButtonGroup(parent);
+		Group buttonGroup = createButtonGroup(parent);
+		buttonGroup.setLayoutData(createFormData(null));
 
+		Group imageButtonGroup = createImageButtonGroup(parent);
+		imageButtonGroup.setLayoutData(createFormData(buttonGroup));
 	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		if (scaledQuestionImage != null) {
+			scaledQuestionImage.dispose();
+			scaledQuestionImage = null;
+		}
+		if (scaledWarningImage != null) {
+			scaledWarningImage.dispose();
+			scaledWarningImage = null;
+		}
+	}
+
+	// helping methods
+	//////////////////
 
 	/**
 	 * Creates a group with different buttons.
 	 * 
 	 * @param parent
 	 *            the parent of the group
+	 * @return the Group; never null.
 	 */
-	private void createButtonGroup(Composite parent) {
-
-		Display display = parent.getDisplay();
-
+	private Group createButtonGroup(Composite parent) {
 		Group buttonGroup = UIControlsFactory.createGroup(parent, "Buttons"); //$NON-NLS-1$
 		buttonGroup.setLayout(new RowLayout(SWT.VERTICAL));
-		FormData fd = new FormData();
-		fd.top = new FormAttachment(0, 5);
-		fd.left = new FormAttachment(0, 5);
-		fd.right = new FormAttachment(100, -5);
-		buttonGroup.setLayoutData(fd);
 
-		Button toggleButton = UIControlsFactory.createButtonToggle(buttonGroup);
-		addUIControl(toggleButton, "toggleOne"); //$NON-NLS-1$
+		UIControlsFactory.createButtonToggle(buttonGroup, "toggleOne"); //$NON-NLS-1$
 
-		Button toggleButtonWithViewImage = UIControlsFactory.createButtonToggle(buttonGroup);
+		Button toggleTwo = UIControlsFactory.createButtonToggle(buttonGroup, "toggleTwo"); //$NON-NLS-1$
+		Display display = parent.getDisplay();
 		Image image = display.getSystemImage(SWT.ICON_QUESTION);
-		image = new Image(display, image.getImageData().scaledTo(16, 16));
-		toggleButtonWithViewImage.setImage(image);
-		addUIControl(toggleButtonWithViewImage, "toggleWithViewImage"); //$NON-NLS-1$
+		Assert.isTrue(scaledQuestionImage == null);
+		scaledQuestionImage = new Image(display, image.getImageData().scaledTo(16, 16));
+		toggleTwo.setImage(scaledQuestionImage);
 
-		Button checkBox = UIControlsFactory.createButtonCheck(buttonGroup);
-		addUIControl(checkBox, "checkOne"); //$NON-NLS-1$
+		UIControlsFactory.createButtonCheck(buttonGroup, "checkOne"); //$NON-NLS-1$
 
-		Button buttonWithImage = UIControlsFactory.createButton(buttonGroup);
-		addUIControl(buttonWithImage, "buttonWithImage"); //$NON-NLS-1$
+		UIControlsFactory.createButton(buttonGroup, "", "buttonOne"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		Button buttonWithViewImage = UIControlsFactory.createButton(buttonGroup);
+		Button buttonTwo = UIControlsFactory.createButton(buttonGroup, "", "buttonTwo"); //$NON-NLS-1$ //$NON-NLS-2$
 		image = display.getSystemImage(SWT.ICON_WARNING);
-		image = new Image(display, image.getImageData().scaledTo(16, 16));
-		buttonWithViewImage.setImage(image);
-		addUIControl(buttonWithViewImage, "buttonWithViewImage"); //$NON-NLS-1$
+		Assert.isTrue(scaledWarningImage == null);
+		scaledWarningImage = new Image(display, image.getImageData().scaledTo(16, 16));
+		buttonTwo.setImage(scaledWarningImage);
 
-		Group rienaButtonGroup = UIControlsFactory.createGroup(parent, "Riena Buttons"); //$NON-NLS-1$
-		rienaButtonGroup.setLayout(new RowLayout(SWT.VERTICAL));
-		fd = new FormData();
-		fd.top = new FormAttachment(buttonGroup, 10);
-		fd.left = new FormAttachment(0, 5);
-		fd.right = new FormAttachment(100, -5);
-		rienaButtonGroup.setLayoutData(fd);
+		return buttonGroup;
+	}
 
-		UIControlsFactory.createImageButton(rienaButtonGroup, SWT.NONE, "imageButton"); //$NON-NLS-1$
+	private Group createImageButtonGroup(Composite parent) {
+		Group imageButtonGroup = UIControlsFactory.createGroup(parent, "Image Buttons"); //$NON-NLS-1$
+		imageButtonGroup.setLayout(new RowLayout(SWT.VERTICAL));
 
-		UIControlsFactory.createImageButton(rienaButtonGroup, SWT.NONE, "arrowButton"); //$NON-NLS-1$
+		UIControlsFactory.createImageButton(imageButtonGroup, SWT.NONE, "imageButton"); //$NON-NLS-1$
+		UIControlsFactory.createImageButton(imageButtonGroup, SWT.NONE, "arrowButton"); //$NON-NLS-1$
+		UIControlsFactory.createImageButton(imageButtonGroup, SWT.HOT, "arrowHotButton"); //$NON-NLS-1$
 
-		UIControlsFactory.createImageButton(rienaButtonGroup, SWT.HOT, "arrowHotButton"); //$NON-NLS-1$
+		return imageButtonGroup;
+	}
 
+	private FormData createFormData(Control topControl) {
+		FormData result = new FormData();
+		if (topControl != null) {
+			result.top = new FormAttachment(topControl, 10);
+		} else {
+			result.top = new FormAttachment(0, 5);
+		}
+		result.left = new FormAttachment(0, 5);
+		result.right = new FormAttachment(100, -5);
+		return result;
 	}
 }
