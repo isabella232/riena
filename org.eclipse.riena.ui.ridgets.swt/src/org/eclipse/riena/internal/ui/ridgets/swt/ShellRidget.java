@@ -14,7 +14,6 @@ import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.util.ListenerList;
@@ -89,13 +88,6 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		}
 	}
 
-	/**
-	 * @deprecated Use {@link #addDefaultAction(IRidget, IActionRidget)}
-	 */
-	public Object getDefaultButton() {
-		return getUIControl().getDefaultButton();
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -158,15 +150,6 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		if (this.closeable != closeable) {
 			this.closeable = closeable;
 			updateCloseable();
-		}
-	}
-
-	/**
-	 * @deprecated Use {@link #addDefaultAction(IRidget, IActionRidget)}
-	 */
-	public void setDefaultButton(Object defaultButton) {
-		if (defaultButton instanceof Button) {
-			getUIControl().setDefaultButton((Button) defaultButton);
 		}
 	}
 

@@ -99,15 +99,6 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * Always returns null.
-	 * 
-	 * @deprecated See {@link #addDefaultAction(IRidget, IActionRidget)}
-	 */
-	public Object getDefaultButton() {
-		return null;
-	}
-
-	/**
 	 * Returns the controller of the parent module.
 	 * 
 	 * @return module controller or {@code null} if not parent module controller
@@ -128,15 +119,6 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		return getRidget(IWindowRidget.class, WINDOW_RIDGET);
 	}
 
-	/**
-	 * Has no effect.
-	 * 
-	 * @deprecated Use {@link #addDefaultAction(IRidget, IActionRidget)}
-	 */
-	public void setDefaultButton(IActionRidget actionRidget) {
-		// unused
-	}
-
 	@Override
 	public void setNavigationNode(ISubModuleNode navigationNode) {
 		super.setNavigationNode(navigationNode);
@@ -148,9 +130,9 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 					super.labelChanged(parent);
 					updateLabel();
 				}
-
 			});
 		}
+		
 		getNavigationNode().addListener(new SubModuleNodeListener() {
 			@Override
 			public void iconChanged(ISubModuleNode source) {

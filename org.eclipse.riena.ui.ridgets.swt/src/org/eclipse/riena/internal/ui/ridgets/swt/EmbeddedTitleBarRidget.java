@@ -153,16 +153,6 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	}
 
 	/**
-	 * Always returns null.
-	 * 
-	 * @deprecated See {@link #addDefaultAction(IRidget, IActionRidget)}
-	 */
-	public Object getDefaultButton() {
-		// unused
-		return null;
-	}
-
-	/**
 	 * Always returns true because mandatory markers do not make sense for this
 	 * ridget.
 	 */
@@ -181,15 +171,6 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 
 	public void removeWindowRidgetListener(IWindowRidgetListener listener) {
 		windowRidgetListeners.remove(listener);
-	}
-
-	/**
-	 * Has no effect.
-	 * 
-	 * @deprecated See {@link #addDefaultAction(IRidget, IActionRidget)}
-	 */
-	public void setDefaultButton(Object defaultButton) {
-		// unused
 	}
 
 	public void setActive(boolean active) {

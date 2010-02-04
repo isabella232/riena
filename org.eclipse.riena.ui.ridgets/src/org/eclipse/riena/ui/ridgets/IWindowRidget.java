@@ -78,14 +78,6 @@ public interface IWindowRidget extends IRidget {
 	void layout();
 
 	/**
-	 * Returns the window's defaultButton or null.
-	 * 
-	 * @deprecated Do not use, see
-	 *             {@link #addDefaultAction(IRidget, IActionRidget)}
-	 */
-	Object getDefaultButton();
-
-	/**
 	 * Removes a listener for receiving window events from this ridget.
 	 * 
 	 * @param listener
@@ -110,15 +102,6 @@ public interface IWindowRidget extends IRidget {
 	 * @param closeable
 	 */
 	void setCloseable(boolean closeable);
-
-	/**
-	 * Sets the default button.
-	 * 
-	 * @param defaultButton
-	 *            default button
-	 * @deprecated -- use {@link #addDefaultAction(IRidget, IActionRidget)}
-	 */
-	void setDefaultButton(Object defaultButton);
 
 	/**
 	 * set the icon.
