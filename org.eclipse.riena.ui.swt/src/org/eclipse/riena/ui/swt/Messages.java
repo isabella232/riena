@@ -34,6 +34,11 @@ public class Messages extends NLS {
 	 */
 	public static String MasterDetailsComposite_dialogTitle_applyFailed;
 
+	/**
+	 * @since 2.0
+	 */
+	public static String StatuslineUIProcess_noActiveProcess;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

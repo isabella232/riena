@@ -559,7 +559,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		noProcessActiveLable = new Label(popupContent, SWT.NONE);
 		noProcessActiveLable.setBackground(LnfManager.getLnf().getColor(
 				LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
-		noProcessActiveLable.setText("No active process"); //$NON-NLS-1$
+		noProcessActiveLable.setText(Messages.StatuslineUIProcess_noActiveProcess);
 		noProcessActiveLable.setLayoutData(formData);
 	}
 
