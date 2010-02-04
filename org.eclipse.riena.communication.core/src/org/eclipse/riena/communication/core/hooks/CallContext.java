@@ -18,21 +18,18 @@ import java.util.Map;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 
 /**
- * CallContext that is avaiable in beforeCall and afterCall to all CallHooks
- */
-/**
- *
+ * CallContext that is available in beforeCall and afterCall to all CallHooks
  */
 public class CallContext {
 
 	private RemoteServiceDescription rsd;
-	private String method;
+	private String methodName;
 	private HashMap<String, String> properties;
 	private ICallMessageContext messageContext;
 
-	public CallContext(RemoteServiceDescription rsd, String method, ICallMessageContext messageContext) {
+	public CallContext(RemoteServiceDescription rsd, String methodName, ICallMessageContext messageContext) {
 		this.rsd = rsd;
-		this.method = method;
+		this.methodName = methodName;
 		this.messageContext = messageContext;
 	}
 
@@ -60,7 +57,7 @@ public class CallContext {
 	 * @return
 	 */
 	public String getMethodName() {
-		return method;
+		return methodName;
 	}
 
 	/**
@@ -73,7 +70,6 @@ public class CallContext {
 	 */
 	public Method getMethod() {
 		Class<?> interf = getInterfaceClass();
-		String methodName = getMethodName();
 		Method[] methods = interf.getMethods();
 		Method foundMethod = null;
 		for (Method method : methods) {
@@ -81,8 +77,8 @@ public class CallContext {
 				if (foundMethod == null) {
 					foundMethod = method;
 				} else {
-					throw new UnsupportedOperationException("More than one method with the same name '" + methodName
-							+ "' found.");
+					throw new UnsupportedOperationException("More than one method with the same name '" + methodName //$NON-NLS-1$
+							+ "' found."); //$NON-NLS-1$
 				}
 			}
 		}
