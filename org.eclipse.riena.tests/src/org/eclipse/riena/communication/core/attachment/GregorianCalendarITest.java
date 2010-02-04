@@ -50,9 +50,9 @@ public final class GregorianCalendarITest extends RienaTestCase {
 	 */
 	@Override
 	public void tearDown() throws Exception {
-		super.tearDown();
 		regCalenderService.unregister();
 		calendarService = null;
+		super.tearDown();
 	}
 
 	public void testDiffGregorian() {

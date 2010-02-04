@@ -71,8 +71,8 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		applicationNode = null;
+		super.tearDown();
 	}
 
 	public void testNavigateToRidget() throws Exception {

@@ -54,9 +54,9 @@ public class ExceptionClientITest extends RienaTestCase {
 	 */
 	@Override
 	public void tearDown() throws Exception {
-		super.tearDown();
 		regExceptionService.unregister();
 		exceptionService = null;
+		super.tearDown();
 	}
 
 	/**

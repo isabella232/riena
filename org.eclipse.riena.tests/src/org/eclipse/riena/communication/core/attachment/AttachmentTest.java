@@ -58,15 +58,6 @@ public class AttachmentTest extends RienaTestCase {
 	}
 
 	/**
-	 * 
-	 * @see junit.framework.TestCase#tearDown()
-	 */
-	@Override
-	public void tearDown() throws Exception {
-		super.tearDown();
-	}
-
-	/**
 	 *
 	 */
 	public void testConstruction() {

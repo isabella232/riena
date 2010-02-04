@@ -63,9 +63,9 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 */
 	@Override
 	public void tearDown() throws Exception {
-		super.tearDown();
 		regAttachmentService.unregister();
 		attachService = null;
+		super.tearDown();
 	}
 
 	/**
