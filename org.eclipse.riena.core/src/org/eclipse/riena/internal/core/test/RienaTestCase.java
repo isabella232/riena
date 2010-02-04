@@ -129,6 +129,7 @@ public abstract class RienaTestCase extends TestCase {
 		//			before = null;
 		//			super.tearDown();
 		//		}
+		super.tearDown();
 	}
 
 	/**
