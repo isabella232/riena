@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.client.controller.test;
 
+import static org.easymock.EasyMock.*;
+
 import java.util.Comparator;
 
 import org.easymock.EasyMock;
@@ -19,16 +21,18 @@ import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.controllers.AbstractSubModuleControllerTest;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
 /**
  * Tests for the NavigateSubModuleController.
  */
-@SuppressWarnings("restriction")
+@SuppressWarnings({ "restriction", "unchecked" })
 @NonUITestCase
 public class NavigateSubModuleControllerTest extends AbstractSubModuleControllerTest<NavigateSubModuleController> {
 
@@ -41,16 +45,19 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 	}
 
 	public void testNavigateCombo() {
-		getMockNavigationProcessor().navigate(EasyMock.eq(getController().getNavigationNode()),
-				EasyMock.eq(new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList")),
-				(NavigationArgument) EasyMock.isNull());
 
-		EasyMock.replay(getMockNavigationProcessor());
+		expect(
+				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
+						eq(new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList")),
+						(NavigationArgument) notNull())).andReturn(
+				getNavigationNode("org.eclipse.riena.example.navigate.comboAndList"));
+
+		replay(getMockNavigationProcessor());
 
 		IActionRidget navigateToComboButton = getController().getRidget(IActionRidget.class, "comboAndList");
 		navigateToComboButton.fireAction();
 
-		EasyMock.verify(getMockNavigationProcessor());
+		verify(getMockNavigationProcessor());
 	}
 
 	/**
@@ -67,26 +74,27 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 		PersonModificationBean bean = new PersonModificationBean();
 		bean.setPerson(new Person("Doe", "Jane"));
 
-		getMockNavigationProcessor().navigate(EasyMock.eq(getController().getNavigationNode()),
-				EasyMock.eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
-				EasyMock.cmp(new NavigationArgument(bean, "textFirst"), new Comparator<NavigationArgument>() {
+		expect(
+				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
+						eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
+						cmp(new NavigationArgument(bean, "textFirst"), new Comparator<NavigationArgument>() {
 
-					public int compare(NavigationArgument o1, NavigationArgument o2) {
-						if (o1.getParameter() instanceof PersonModificationBean
-								&& o2.getParameter() instanceof PersonModificationBean) {
-							return comparePersonModificationBeans((PersonModificationBean) o1.getParameter(),
-									(PersonModificationBean) o2.getParameter());
-						} else {
-							return -1;
-						}
-					}
+							public int compare(NavigationArgument o1, NavigationArgument o2) {
+								if (o1.getParameter() instanceof PersonModificationBean
+										&& o2.getParameter() instanceof PersonModificationBean) {
+									return comparePersonModificationBeans((PersonModificationBean) o1.getParameter(),
+											(PersonModificationBean) o2.getParameter());
+								} else {
+									return -1;
+								}
+							}
 
-				}, LogicalOperator.EQUAL));
+						}, LogicalOperator.EQUAL))).andReturn(getNavigationNode("org.eclipse.riena.example.combo"));
 
-		EasyMock.replay(getMockNavigationProcessor());
+		replay(getMockNavigationProcessor());
 		IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class, "btnNavigateToRidget");
 		navigateToNavigateRidget.fireAction();
-		EasyMock.verify(getMockNavigationProcessor());
+		verify(getMockNavigationProcessor());
 	}
 
 	/**
@@ -98,14 +106,16 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 	 * a parameter that is not null
 	 */
 	public void testNavigateToRidgetWithNotNull() {
-		getMockNavigationProcessor().navigate(EasyMock.eq(getController().getNavigationNode()),
-				EasyMock.eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
-				new NavigationArgument(EasyMock.notNull(), "textFirst"));
+		expect(
+				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
+						eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
+						new NavigationArgument(notNull(), "textFirst"))).andReturn(
+				getNavigationNode("org.eclipse.riena.example.combo"));
 
-		EasyMock.replay(getMockNavigationProcessor());
+		replay(getMockNavigationProcessor());
 		IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class, "btnNavigateToRidget");
 		navigateToNavigateRidget.fireAction();
-		EasyMock.verify(getMockNavigationProcessor());
+		verify(getMockNavigationProcessor());
 	}
 
 	/**
@@ -120,25 +130,29 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 		PersonModificationBean bean = new PersonModificationBean();
 		bean.setPerson(new Person("Doe", "Jane"));
 
-		getMockNavigationProcessor().navigate(EasyMock.eq(getController().getNavigationNode()),
-				EasyMock.eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
-				EasyMock.eq(new NavigationArgument(bean, "textFirst")));
+		expect(
+				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
+						eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
+						eq(new NavigationArgument(bean, "textFirst")))).andReturn(
+				getNavigationNode("org.eclipse.riena.example.combo"));
 
-		EasyMock.replay(getMockNavigationProcessor());
+		replay(getMockNavigationProcessor());
 		IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class, "btnNavigateToRidget");
 		navigateToNavigateRidget.fireAction();
-		EasyMock.verify(getMockNavigationProcessor());
+		verify(getMockNavigationProcessor());
 	}
 
 	public void testNavigateTableTextAndTree() {
-		getMockNavigationProcessor().navigate(EasyMock.eq(getController().getNavigationNode()),
-				EasyMock.eq(new NavigationNodeId("org.eclipse.riena.example.navigate.tableTextAndTree")),
-				(NavigationArgument) EasyMock.isNull());
+		expect(
+				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
+						eq(new NavigationNodeId("org.eclipse.riena.example.navigate.tableTextAndTree")),
+						(NavigationArgument) EasyMock.isNull())).andReturn(
+				getNavigationNode("org.eclipse.riena.example.navigate.tableTextAndTree"));
 
-		EasyMock.replay(getMockNavigationProcessor());
+		replay(getMockNavigationProcessor());
 		IActionRidget navigateToTableTextAndTree = getController().getRidget(IActionRidget.class, "tableTextAndTree");
 		navigateToTableTextAndTree.fireAction();
-		EasyMock.verify(getMockNavigationProcessor());
+		verify(getMockNavigationProcessor());
 	}
 
 	private int comparePersonModificationBeans(PersonModificationBean p1, PersonModificationBean p2) {
@@ -147,5 +161,10 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 		} else {
 			return -1;
 		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	private INavigationNode getNavigationNode(String id) {
+		return (INavigationNode<?>) new SubModuleNode(new NavigationNodeId(id));
 	}
 }
