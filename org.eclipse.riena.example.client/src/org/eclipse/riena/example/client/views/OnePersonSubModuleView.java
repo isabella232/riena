@@ -21,14 +21,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.OnePersonSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 
 /**
  * This view displays the data of one person.
  */
-public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleController> {
+public class OnePersonSubModuleView extends SubModuleView {
 	public OnePersonSubModuleView() {
 	}
 

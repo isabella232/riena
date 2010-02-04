@@ -30,7 +30,7 @@ import org.eclipse.riena.sample.app.client.helloworld.controllers.CustomerSearch
 import org.eclipse.riena.sample.app.common.model.Customer;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
-public class CustomerSearchSubModuleView extends SubModuleView<CustomerSearchSubModuleController> {
+public class CustomerSearchSubModuleView extends SubModuleView {
 
 	public final static String ID = CustomerSearchSubModuleView.class.getName();
 

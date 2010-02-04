@@ -33,7 +33,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * @see IMasterDetailsRidget
  * @see MasterDetailsSubModuleController
  */
-public class MasterDetailsSubModuleView extends SubModuleView<MasterDetailsSubModuleController> {
+public class MasterDetailsSubModuleView extends SubModuleView {
 
 	public static final String ID = MasterDetailsSubModuleView.class.getName();
 

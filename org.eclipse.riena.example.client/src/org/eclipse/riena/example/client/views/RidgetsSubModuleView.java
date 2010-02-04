@@ -23,7 +23,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 
-import org.eclipse.riena.example.client.controllers.RidgetsSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -32,7 +31,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * View of the sub module that shows a set of UI controls.
  */
-public class RidgetsSubModuleView extends SubModuleView<RidgetsSubModuleController> {
+public class RidgetsSubModuleView extends SubModuleView {
 
 	public static final String ID = RidgetsSubModuleView.class.getName();
 

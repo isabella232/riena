@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-import org.eclipse.riena.example.client.controllers.TableSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -32,7 +31,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * SWT {@link ITableRidget} sample.
  */
-public class TableSubModuleView extends SubModuleView<TableSubModuleController> {
+public class TableSubModuleView extends SubModuleView {
 
 	public static final String ID = TableSubModuleView.class.getName();
 

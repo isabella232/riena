@@ -19,13 +19,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.demo.client.controllers.CustomerOverviewController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 
 /**
  *
  */
-public class CustomerOverviewView extends SubModuleView<CustomerOverviewController> {
+public class CustomerOverviewView extends SubModuleView {
 
 	public CustomerOverviewView() {
 	}

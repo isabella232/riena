@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.ValidationSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -27,7 +26,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * Sample for validation rules.
  */
-public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleController> {
+public class ValidationSubModuleView extends SubModuleView {
 
 	public static final String ID = ValidationSubModuleView.class.getName();
 

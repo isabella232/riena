@@ -52,7 +52,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 /**
  * View of a module.
  */
-public class ModuleView implements INavigationNodeView<SWTModuleController, ModuleNode> {
+public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 	private static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
 	private static final LnFUpdater LNF_UPDATER = new LnFUpdater();

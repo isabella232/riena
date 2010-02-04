@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.demo.client.controllers.CustomerContractController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -32,7 +31,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  *
  */
-public class CustomerContractView extends SubModuleView<CustomerContractController> {
+public class CustomerContractView extends SubModuleView {
 	public CustomerContractView() {
 	}
 

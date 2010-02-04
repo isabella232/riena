@@ -11,17 +11,14 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
  * View (UI representation) of a navigation node.
  * 
- * @param <C>
- *            implementation the controller of the navigation node
  * @param <N>
  *            implementation the navigation node
  */
-public interface INavigationNodeView<C extends IController, N extends INavigationNode<?>> {
+public interface INavigationNodeView<N extends INavigationNode<?>> {
 
 	/**
 	 * Binds the navigation node to the view. Creates the widgets and the

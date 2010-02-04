@@ -70,8 +70,7 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 /**
  * View of a sub-application.
  */
-public class SubApplicationView implements INavigationNodeView<SubApplicationController, SubApplicationNode>,
-		IPerspectiveFactory {
+public class SubApplicationView implements INavigationNodeView<SubApplicationNode>, IPerspectiveFactory {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubApplicationView.class);
 
@@ -586,8 +585,8 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 			IViewReference viewRef = getActivePage().findViewReference(id, secondary);
 			if (viewRef != null) {
 				IViewPart view = viewRef.getView(false);
-				if (view instanceof INavigationNodeView<?, ?>) {
-					((INavigationNodeView<?, ?>) view).unbind();
+				if (view instanceof INavigationNodeView<?>) {
+					((INavigationNodeView<?>) view).unbind();
 				}
 				getActivePage().hideView(view);
 			}

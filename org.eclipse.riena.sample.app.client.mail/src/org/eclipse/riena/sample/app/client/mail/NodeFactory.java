@@ -13,6 +13,7 @@ package org.eclipse.riena.sample.app.client.mail;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
@@ -26,14 +27,15 @@ public final class NodeFactory {
 		// prevent instantiation
 	}
 
-	public static IModuleNode createModule(String caption, IModuleGroupNode parent) {
-		IModuleNode result = new ModuleNode(caption);
+	public static IModuleNode createModule(NavigationNodeId nodeId, String caption, IModuleGroupNode parent) {
+		IModuleNode result = new ModuleNode(nodeId, caption);
 		parent.addChild(result);
 		return result;
 	}
 
-	public static ISubModuleNode createSubMobule(String caption, IModuleNode parent, String viewId) {
-		ISubModuleNode result = new SubModuleNode(caption);
+	public static ISubModuleNode createSubMobule(NavigationNodeId nodeId, String caption, IModuleNode parent,
+			String viewId) {
+		ISubModuleNode result = new SubModuleNode(nodeId, caption);
 		// path found via org.eclipse.riena.ui.swt.imagePaths in plugin.xml
 		result.setIcon("generic_element.gif"); //$NON-NLS-1$
 		parent.addChild(result);

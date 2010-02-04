@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.ContextMenuSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -36,7 +35,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * SWT {@link IMenuItemRidget} (context menu) sample.
  */
-public class ContextMenuSubModuleView extends SubModuleView<ContextMenuSubModuleController> {
+public class ContextMenuSubModuleView extends SubModuleView {
 	public ContextMenuSubModuleView() {
 	}
 

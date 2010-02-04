@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.TextNumericSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.INumericTextRidget;
@@ -27,7 +26,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * SWT example for {@link INumericTextRidget} and {@link IDecimalTextRidget}.
  */
-public class TextNumericSubModuleView extends SubModuleView<TextNumericSubModuleController> {
+public class TextNumericSubModuleView extends SubModuleView {
 
 	public static final String ID = TextNumericSubModuleView.class.getName();
 

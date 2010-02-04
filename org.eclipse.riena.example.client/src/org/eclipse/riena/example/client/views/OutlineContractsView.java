@@ -15,10 +15,9 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import org.eclipse.riena.example.client.controllers.OutlineContractsController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 
-public class OutlineContractsView extends SubModuleView<OutlineContractsController> {
+public class OutlineContractsView extends SubModuleView {
 
 	/*
 	 * (non-Javadoc)

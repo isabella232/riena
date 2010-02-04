@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.CompositeTableSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -39,7 +38,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * SWT {@link ITableRidget} sample with complex table rows.
  */
-public class CompositeTableSubModuleView extends SubModuleView<CompositeTableSubModuleController> {
+public class CompositeTableSubModuleView extends SubModuleView {
 
 	public static final String ID = CompositeTableSubModuleView.class.getName();
 

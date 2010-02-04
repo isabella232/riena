@@ -25,7 +25,7 @@ import org.eclipse.riena.sample.app.client.helloworld.controllers.HelloWorldSubM
  * Very simple sub module view, that displays only a label with the text "Hello
  * World!".
  */
-public class HelloWorldSubModuleView extends SubModuleView<HelloWorldSubModuleController> {
+public class HelloWorldSubModuleView extends SubModuleView {
 
 	public static final String ID = HelloWorldSubModuleView.class.getName();
 

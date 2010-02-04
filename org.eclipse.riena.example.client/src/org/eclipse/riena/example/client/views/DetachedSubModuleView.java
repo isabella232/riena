@@ -16,7 +16,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import org.eclipse.riena.example.client.controllers.DetachedSubModuleController;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
@@ -30,7 +29,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * 
  * @see DetachedViewsManager
  */
-public class DetachedSubModuleView extends SubModuleView<DetachedSubModuleController> {
+public class DetachedSubModuleView extends SubModuleView {
 
 	public static final String ID = DetachedSubModuleView.class.getName();
 

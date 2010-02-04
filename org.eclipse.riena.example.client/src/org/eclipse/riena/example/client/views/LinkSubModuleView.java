@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.LinkSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.ILinkRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -28,7 +27,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * {@link ILinkRidget} sample.
  */
-public class LinkSubModuleView extends SubModuleView<LinkSubModuleController> {
+public class LinkSubModuleView extends SubModuleView {
 
 	public static final String ID = LinkSubModuleView.class.getName();
 

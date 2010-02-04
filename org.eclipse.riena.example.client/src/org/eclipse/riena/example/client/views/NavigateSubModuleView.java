@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -25,7 +24,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * View of a sub module to demonstrate the navigate method of {@code
  * INavigationNode}.
  */
-public class NavigateSubModuleView extends SubModuleView<NavigateSubModuleController> {
+public class NavigateSubModuleView extends SubModuleView {
 
 	public static final String ID = NavigateSubModuleView.class.getName();
 

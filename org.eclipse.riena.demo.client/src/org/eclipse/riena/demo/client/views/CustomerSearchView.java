@@ -22,13 +22,12 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.demo.client.controllers.CustomerSearchController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 
 /**
  *
  */
-public class CustomerSearchView extends SubModuleView<CustomerSearchController> {
+public class CustomerSearchView extends SubModuleView {
 	public CustomerSearchView() {
 	}
 

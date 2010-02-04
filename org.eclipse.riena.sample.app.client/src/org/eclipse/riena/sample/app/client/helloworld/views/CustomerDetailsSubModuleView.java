@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.client.helloworld.views;
 
-import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.sample.app.client.helloworld.controllers.CustomerDetailsSubModuleController;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
@@ -26,7 +23,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-public class CustomerDetailsSubModuleView extends SubModuleView<CustomerDetailsSubModuleController> {
+import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.sample.app.client.helloworld.controllers.CustomerDetailsSubModuleController;
+
+public class CustomerDetailsSubModuleView extends SubModuleView {
 
 	public final static String ID = CustomerDetailsSubModuleView.class.getName();
 

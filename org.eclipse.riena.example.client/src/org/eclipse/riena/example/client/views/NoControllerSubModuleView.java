@@ -10,20 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
-import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Example for a view that has no controller. This could make sense for a
  * submodule whose only purpose is to display some static text (like this one)
  * or if the logic behind the UI widgets is really simple.
  */
-public class NoControllerSubModuleView extends SubModuleView<NavigateSubModuleController> {
+public class NoControllerSubModuleView extends SubModuleView {
 
 	public static final String ID = NoControllerSubModuleView.class.getName();
 

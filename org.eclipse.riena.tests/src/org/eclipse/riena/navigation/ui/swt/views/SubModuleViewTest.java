@@ -33,7 +33,6 @@ import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ModuleController;
-import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -43,7 +42,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 @UITestCase
 public class SubModuleViewTest extends RienaTestCase {
 
-	private SubModuleView<SubModuleController> subModuleNodeView;
+	private SubModuleView subModuleNodeView;
 	private SubModuleNode node;
 	private SubModuleNode anotherNode;
 	private SubModuleNode anotherNodeSameView;
@@ -152,7 +151,7 @@ public class SubModuleViewTest extends RienaTestCase {
 		assertSame(node, nodesBoundToView.get(0));
 	}
 
-	private class TestView extends SubModuleView<SubModuleController> {
+	private class TestView extends SubModuleView {
 
 		@Override
 		public void bind(SubModuleNode node) {

@@ -12,10 +12,6 @@ package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.example.client.controllers.FilterNavigationSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.swt.ChoiceComposite;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -25,10 +21,14 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
+
 /**
  * View of the sub module that demonstrates UI filters for navigation nodes.
  */
-public class FilterActionSubModuleView extends SubModuleView<FilterNavigationSubModuleController> {
+public class FilterActionSubModuleView extends SubModuleView {
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {

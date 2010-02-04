@@ -23,13 +23,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
-public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSubModuleController> {
+public class CustomerDetailSubModuleView extends SubModuleView {
 
 	public final static String ID = CustomerDetailSubModuleView.class.getName();
 

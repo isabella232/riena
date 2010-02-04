@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 
-import org.eclipse.riena.example.client.controllers.MarkerSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
@@ -48,7 +47,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * 
  * @see IMarkableRidget
  */
-public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController> {
+public class MarkerSubModuleView extends SubModuleView {
 
 	public static final String ID = MarkerSubModuleView.class.getName();
 

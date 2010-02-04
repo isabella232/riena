@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.client.mail;
 
+import org.osgi.framework.Bundle;
+
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -20,7 +22,6 @@ import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
-import org.osgi.framework.Bundle;
 
 /**
  * This class controls all aspects of the application's execution
@@ -41,14 +42,16 @@ public class Application extends SwtApplication {
 		IModuleGroupNode groupMailboxes = new ModuleGroupNode(new NavigationNodeId(Application.ID_GROUP_MBOXES));
 		subApp.addChild(groupMailboxes);
 
-		IModuleNode moduleAccount1 = NodeFactory.createModule("me@this.com", groupMailboxes); //$NON-NLS-1$
+		IModuleNode moduleAccount1 = NodeFactory.createModule(
+				new NavigationNodeId("account1"), "me@this.com", groupMailboxes); //$NON-NLS-1$ //$NON-NLS-2$
 		moduleAccount1.setClosable(false);
-		NodeFactory.createSubMobule("Inbox", moduleAccount1, View.ID); //$NON-NLS-1$
-		NodeFactory.createSubMobule("Drafts", moduleAccount1, View.ID); //$NON-NLS-1$
-		NodeFactory.createSubMobule("Sent", moduleAccount1, View.ID); //$NON-NLS-1$
+		NodeFactory.createSubMobule(new NavigationNodeId("inbox"), "Inbox", moduleAccount1, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
+		NodeFactory.createSubMobule(new NavigationNodeId("drafts"), "Drafts", moduleAccount1, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
+		NodeFactory.createSubMobule(new NavigationNodeId("sent"), "Sent", moduleAccount1, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
 
-		IModuleNode moduleAccount2 = NodeFactory.createModule("other@aol.com", groupMailboxes); //$NON-NLS-1$
-		NodeFactory.createSubMobule("Inbox", moduleAccount2, View.ID); //$NON-NLS-1$
+		IModuleNode moduleAccount2 = NodeFactory.createModule(
+				new NavigationNodeId("account2"), "other@aol.com", groupMailboxes); //$NON-NLS-1$ //$NON-NLS-2$
+		NodeFactory.createSubMobule(new NavigationNodeId("inbox2"), "Inbox", moduleAccount2, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return app;
 	}

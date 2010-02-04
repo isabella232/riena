@@ -31,7 +31,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * SWT {@link ITreeRidget} sample.
  */
-public class TreeSubModuleView extends SubModuleView<TreeSubModuleController> {
+public class TreeSubModuleView extends SubModuleView {
 
 	public static final String ID = TreeSubModuleView.class.getName();
 

@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 
-import org.eclipse.riena.example.client.controllers.TreeTableSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -32,7 +31,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * SWT {@link ITreeRidget} sample.
  */
-public class TreeTableSubModuleView extends SubModuleView<TreeTableSubModuleController> {
+public class TreeTableSubModuleView extends SubModuleView {
 
 	public static final String ID = TreeTableSubModuleView.class.getName();
 

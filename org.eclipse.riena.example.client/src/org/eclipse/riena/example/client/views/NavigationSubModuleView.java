@@ -17,7 +17,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-import org.eclipse.riena.example.client.controllers.NavigationSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -26,7 +25,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * View of the sub-module to add module-groups, modules etc. dynamically.
  */
-public class NavigationSubModuleView extends SubModuleView<NavigationSubModuleController> {
+public class NavigationSubModuleView extends SubModuleView {
 
 	public static final String ID = NavigationSubModuleView.class.getName();
 

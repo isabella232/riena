@@ -23,13 +23,12 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.demo.client.controllers.AbstractEmailController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 
 /**
  * abstract email view
  */
-public class EmailView extends SubModuleView<AbstractEmailController> {
+public class EmailView extends SubModuleView {
 	private Table table;
 
 	/**

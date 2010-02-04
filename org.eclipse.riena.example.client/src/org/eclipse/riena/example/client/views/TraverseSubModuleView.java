@@ -18,14 +18,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Spinner;
 
-import org.eclipse.riena.example.client.controllers.TraverseSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  *
  */
-public class TraverseSubModuleView extends SubModuleView<TraverseSubModuleController> {
+public class TraverseSubModuleView extends SubModuleView {
 	public TraverseSubModuleView() {
 	}
 

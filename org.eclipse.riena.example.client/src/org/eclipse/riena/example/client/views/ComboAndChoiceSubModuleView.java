@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
-import org.eclipse.riena.example.client.controllers.ComboAndChoiceSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -26,7 +25,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  *
  */
-public class ComboAndChoiceSubModuleView extends SubModuleView<ComboAndChoiceSubModuleController> {
+public class ComboAndChoiceSubModuleView extends SubModuleView {
 
 	public static final String ID = ComboAndChoiceSubModuleView.class.getName();
 

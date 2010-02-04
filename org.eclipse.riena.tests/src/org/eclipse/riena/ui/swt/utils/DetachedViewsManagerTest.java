@@ -412,7 +412,7 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 	/**
 	 * A SubModuleView that returns a controller.
 	 */
-	public static final class FTViewWithController extends SubModuleView<FTViewController> {
+	public static final class FTViewWithController extends SubModuleView {
 		private FTViewController controller = new FTViewController();
 
 		@Override
@@ -429,7 +429,7 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 	/**
 	 * A SubModuleView that does not return a controller.
 	 */
-	public static final class FTViewWithoutController extends SubModuleView<FTViewController> {
+	public static final class FTViewWithoutController extends SubModuleView {
 		@Override
 		protected void basicCreatePartControl(Composite parent) {
 			// unused

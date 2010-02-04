@@ -14,14 +14,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-import org.eclipse.riena.example.client.controllers.ExceptionTestController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * A demo simulating how exceptions are handled.
  */
-public class ExceptionTestView extends SubModuleView<ExceptionTestController> {
+public class ExceptionTestView extends SubModuleView {
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {

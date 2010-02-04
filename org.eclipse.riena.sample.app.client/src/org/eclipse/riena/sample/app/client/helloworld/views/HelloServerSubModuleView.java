@@ -25,7 +25,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.sample.app.client.helloworld.controllers.HelloServerSubModuleController;
 
-public class HelloServerSubModuleView extends SubModuleView<HelloServerSubModuleController> {
+public class HelloServerSubModuleView extends SubModuleView {
 
 	public final static String ID = HelloServerSubModuleView.class.getName();
 

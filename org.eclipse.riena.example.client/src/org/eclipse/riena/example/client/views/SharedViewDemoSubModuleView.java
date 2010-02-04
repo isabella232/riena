@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -30,7 +29,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * Demonstrates shared views (i.e. one view instance, with several distrinct
  * controllers and data).
  */
-public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSubModuleController> {
+public class SharedViewDemoSubModuleView extends SubModuleView {
 
 	public static final String ID = SharedViewDemoSubModuleView.class.getName();
 	private static List<SharedViewDemoSubModuleView> instances = new ArrayList<SharedViewDemoSubModuleView>();

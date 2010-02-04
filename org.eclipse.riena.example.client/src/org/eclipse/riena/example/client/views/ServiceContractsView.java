@@ -15,10 +15,9 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import org.eclipse.riena.example.client.controllers.ServiceContractsController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 
-public class ServiceContractsView extends SubModuleView<ServiceContractsController> {
+public class ServiceContractsView extends SubModuleView {
 
 	/*
 	 * (non-Javadoc)

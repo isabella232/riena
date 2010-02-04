@@ -30,7 +30,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * 
  * @see BlockingSubModuleController
  */
-public class BlockingSubModuleView extends SubModuleView<BlockingSubModuleController> {
+public class BlockingSubModuleView extends SubModuleView {
 
 	public static final String ID = BlockingSubModuleView.class.getName();
 

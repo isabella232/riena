@@ -38,7 +38,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * @see IMasterDetailsRidget
  * @see MasterDetailsSubModuleController2
  */
-public class MasterDetailsSubModuleView2 extends SubModuleView<MasterDetailsSubModuleController2> {
+public class MasterDetailsSubModuleView2 extends SubModuleView {
 
 	private Color colorLightBlue;
 

@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.ControllerTestsPlaygroundSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
@@ -45,7 +44,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * Example view with as many widgets as possible. Used for controller testing.
  */
-public class ControllerTestsPlaygroundSubModuleView extends SubModuleView<ControllerTestsPlaygroundSubModuleController> {
+public class ControllerTestsPlaygroundSubModuleView extends SubModuleView {
 	public ControllerTestsPlaygroundSubModuleView() {
 	}
 

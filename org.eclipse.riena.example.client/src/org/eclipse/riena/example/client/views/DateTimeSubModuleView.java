@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.DateTimeSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -30,7 +29,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * SWT {@link IDateTimeRidget} example.
  */
-public class DateTimeSubModuleView extends SubModuleView<DateTimeSubModuleController> {
+public class DateTimeSubModuleView extends SubModuleView {
 
 	public static final String ID = DateTimeSubModuleView.class.getName();
 

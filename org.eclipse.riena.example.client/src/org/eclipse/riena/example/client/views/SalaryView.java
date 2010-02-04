@@ -15,10 +15,9 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import org.eclipse.riena.example.client.controllers.SalaryController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 
-public class SalaryView extends SubModuleView<SalaryController> {
+public class SalaryView extends SubModuleView {
 
 	/*
 	 * (non-Javadoc)

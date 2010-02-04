@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
-import org.eclipse.riena.example.client.controllers.FilterExampleSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -22,10 +20,12 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+
 /**
  *
  */
-public class FilterExampleSubModuleView extends SubModuleView<FilterExampleSubModuleController> {
+public class FilterExampleSubModuleView extends SubModuleView {
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {

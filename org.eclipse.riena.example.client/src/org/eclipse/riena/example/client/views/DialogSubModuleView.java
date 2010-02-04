@@ -11,19 +11,20 @@
 package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+
 import org.eclipse.riena.example.client.controllers.DialogSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * SWT sample view for a Dialog.
  */
-public class DialogSubModuleView extends SubModuleView<DialogSubModuleController> {
+public class DialogSubModuleView extends SubModuleView {
 
 	public static final String ID = DialogSubModuleView.class.getName();
 

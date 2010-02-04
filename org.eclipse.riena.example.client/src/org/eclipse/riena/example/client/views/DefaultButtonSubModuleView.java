@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.DefaultButtonSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -28,7 +27,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * SWT {@link IDateTimeRidget} example.
  */
-public class DefaultButtonSubModuleView extends SubModuleView<DefaultButtonSubModuleController> {
+public class DefaultButtonSubModuleView extends SubModuleView {
 
 	public static final String ID = DefaultButtonSubModuleView.class.getName();
 

@@ -27,7 +27,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * Shows how to use the {@link #layout()} method to recalculate the layout when
  * the text changes. See {@link LayoutSubModuleController} for details.
  */
-public class LayoutSubModuleView extends SubModuleView<LayoutSubModuleController> {
+public class LayoutSubModuleView extends SubModuleView {
 
 	public static final String ID = LayoutSubModuleView.class.getName();
 

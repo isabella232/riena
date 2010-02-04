@@ -11,18 +11,18 @@
 package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-public class UIProcessDemoSubModuleView extends SubModuleView<UIProcessDemoSubModuleController> {
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
+
+public class UIProcessDemoSubModuleView extends SubModuleView {
 
 	public final static String ID = UIProcessDemoSubModuleView.class.getName();
 

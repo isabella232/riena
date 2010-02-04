@@ -680,7 +680,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		if (node instanceof ISubModuleNode) {
 			ISubModuleNode subModuleNode = (ISubModuleNode) node;
 			IWorkareaDefinition definition = WorkareaManager.getInstance().getDefinition(subModuleNode);
-			if (definition.isRequiredPreparation() && subModuleNode.isCreated()) {
+			if ((definition != null) && definition.isRequiredPreparation() && subModuleNode.isCreated()) {
 				subModuleNode.prepare();
 			}
 		}

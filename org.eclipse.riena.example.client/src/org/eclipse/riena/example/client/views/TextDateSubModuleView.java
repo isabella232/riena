@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.TextDateSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
@@ -29,7 +28,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * SWT example for {@link IDateTextRidget}.
  */
-public class TextDateSubModuleView extends SubModuleView<TextDateSubModuleController> {
+public class TextDateSubModuleView extends SubModuleView {
 
 	public static final String ID = TextDateSubModuleView.class.getName();
 

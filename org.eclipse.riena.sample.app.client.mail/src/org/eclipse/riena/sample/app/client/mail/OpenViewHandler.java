@@ -13,6 +13,7 @@ package org.eclipse.riena.sample.app.client.mail;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.IHandler;
+
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
@@ -30,10 +31,14 @@ public class OpenViewHandler extends AbstractHandler implements IHandler {
 		IApplicationNode node = ApplicationNodeManager.getApplicationNode();
 		IModuleGroupNode group = (IModuleGroupNode) node.findNode(new NavigationNodeId(Application.ID_GROUP_MBOXES));
 		String title = "me@this.com (" + ++count + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-		IModuleNode moduleAccount1 = NodeFactory.createModule(title, group);
-		NodeFactory.createSubMobule("Inbox", moduleAccount1, View.ID); //$NON-NLS-1$
-		NodeFactory.createSubMobule("Drafts", moduleAccount1, View.ID); //$NON-NLS-1$
-		NodeFactory.createSubMobule("Sent", moduleAccount1, View.ID); //$NON-NLS-1$
+		IModuleNode moduleAccount1 = NodeFactory.createModule(new NavigationNodeId("account", Integer.toString(count)), //$NON-NLS-1$
+				title, group);
+		NodeFactory.createSubMobule(
+				new NavigationNodeId("Inbox", Integer.toString(count)), "Inbox", moduleAccount1, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
+		NodeFactory.createSubMobule(
+				new NavigationNodeId("Drafts", Integer.toString(count)), "Drafts", moduleAccount1, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
+		NodeFactory.createSubMobule(
+				new NavigationNodeId("Sent", Integer.toString(count)), "Sent", moduleAccount1, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
 		return null;
 	}
 }

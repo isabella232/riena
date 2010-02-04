@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -27,7 +26,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * SWT {@link IComboRidget} sample.
  */
-public class ComboSubModuleView extends SubModuleView<ComboSubModuleController> {
+public class ComboSubModuleView extends SubModuleView {
 
 	public static final String ID = ComboSubModuleView.class.getName();
 

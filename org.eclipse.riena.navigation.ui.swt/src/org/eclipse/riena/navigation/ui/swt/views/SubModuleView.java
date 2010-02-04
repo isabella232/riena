@@ -68,12 +68,11 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 /**
  * Abstract implementation for a sub module view
  */
-public abstract class SubModuleView<C extends SubModuleController> extends ViewPart implements
-		INavigationNodeView<SWTModuleController, SubModuleNode> {
+public abstract class SubModuleView extends ViewPart implements INavigationNodeView<SubModuleNode> {
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubModuleView.class);
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
-	private final static Map<SubModuleView<? extends SubModuleController>, SubModuleNode> FALLBACK_NODES = new HashMap<SubModuleView<? extends SubModuleController>, SubModuleNode>();
+	private final static Map<SubModuleView, SubModuleNode> FALLBACK_NODES = new HashMap<SubModuleView, SubModuleNode>();
 
 	private final AbstractViewBindingDelegate binding;
 	private final FocusListener focusListener;
@@ -173,7 +172,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		this.parentComposite = parent;
 		if (!Beans.isDesignTime()) {
 			observeRoot();
-			C controller = createController(getNavigationNode());
+			SubModuleController controller = createController(getNavigationNode());
 			if (controller != null) {
 				setPartName(controller.getNavigationNode().getLabel());
 			}
@@ -303,7 +302,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	@SuppressWarnings("unchecked")
-	protected C createController(ISubModuleNode node) {
+	protected SubModuleController createController(ISubModuleNode node) {
 
 		// check node itself for controller definition first
 		Assert.isNotNull(node, "navigation node must not be null"); //$NON-NLS-1$
@@ -311,11 +310,11 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		Assert.isNotNull(node.getNodeId().getTypeId(), "navigation node type id must not be null"); //$NON-NLS-1$
 
 		// consult workarea manager
-		C controller = null;
+		SubModuleController controller = null;
 		IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(node);
 		if (def != null) {
 			try {
-				controller = (C) def.createController();
+				controller = (SubModuleController) def.createController();
 			} catch (Exception ex) {
 				String message = String.format("cannnot create controller for class %s", def.getControllerClass()); //$NON-NLS-1$ 
 				LOGGER.log(LogService.LOG_ERROR, message, ex);

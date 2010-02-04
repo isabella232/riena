@@ -16,7 +16,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.TextSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -26,7 +25,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * SWT {@link ITextRidget} sample.
  */
-public class TextSubModuleView extends SubModuleView<TextSubModuleController> {
+public class TextSubModuleView extends SubModuleView {
 	public TextSubModuleView() {
 	}
 
