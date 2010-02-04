@@ -26,13 +26,13 @@ import org.eclipse.riena.communication.core.RemoteServiceDescription;
 public class ServiceContext {
 
 	private RemoteServiceDescription rsd;
-	private String method;
+	private String methodName;
 	private HashMap<String, Object> properties;
 	private IServiceMessageContext messageContext;
 
-	public ServiceContext(RemoteServiceDescription rsd, String method, IServiceMessageContext messageContext) {
+	public ServiceContext(RemoteServiceDescription rsd, String methodName, IServiceMessageContext messageContext) {
 		this.rsd = rsd;
-		this.method = method;
+		this.methodName = methodName;
 		this.messageContext = messageContext;
 	}
 
@@ -60,7 +60,7 @@ public class ServiceContext {
 	 * @return
 	 */
 	public String getMethodName() {
-		return method;
+		return methodName;
 	}
 
 	/**
@@ -73,7 +73,6 @@ public class ServiceContext {
 	 */
 	public Method getMethod() {
 		Class<?> interf = getInterfaceClass();
-		String methodName = getMethodName();
 		Method[] methods = interf.getMethods();
 		Method foundMethod = null;
 		for (Method method : methods) {
@@ -81,8 +80,8 @@ public class ServiceContext {
 				if (foundMethod == null) {
 					foundMethod = method;
 				} else {
-					throw new UnsupportedOperationException("More than one method with the same name '" + methodName
-							+ "' found.");
+					throw new UnsupportedOperationException("More than one method with the same name '" + methodName //$NON-NLS-1$
+							+ "' found."); //$NON-NLS-1$
 				}
 			}
 		}
