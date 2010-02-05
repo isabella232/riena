@@ -77,8 +77,8 @@ public class ExtensionDescriptor {
 	private final ExtensionPointId extensionPointId;
 	private boolean homogeneous = true;
 	private Class<?> interfaceType;
-	private int minOccurences = 0;
-	private int maxOccurences = UNBOUNDED;
+	private int minOccurrences = 0;
+	private int maxOccurrences = UNBOUNDED;
 
 	public static final int UNBOUNDED = Integer.MAX_VALUE;
 
@@ -156,8 +156,8 @@ public class ExtensionDescriptor {
 		Assert.isLegal(max >= min, "min must not be greater than max."); //$NON-NLS-1$
 		Assert.isLegal(min >= 0, "min must be greater or equal than zero."); //$NON-NLS-1$
 		Assert.isLegal(max > 0, "max must be greater than zero."); //$NON-NLS-1$
-		this.minOccurences = min;
-		this.maxOccurences = max;
+		this.minOccurrences = min;
+		this.maxOccurrences = max;
 		return this;
 	}
 
@@ -189,19 +189,39 @@ public class ExtensionDescriptor {
 	/**
 	 * @return the minOccurences
 	 */
+	@Deprecated
 	public int getMinOccurences() {
-		return minOccurences;
+		return minOccurrences;
 	}
 
 	/**
 	 * @return the maxOccurences
 	 */
+	@Deprecated
 	public int getMaxOccurences() {
-		return maxOccurences;
+		return maxOccurrences;
+	}
+
+	/**
+	 * @return the minOccurrences
+	 */
+	int getMinOccurrences() {
+		return minOccurrences;
+	}
+
+	/**
+	 * @return the maxOccurrences
+	 * 
+	 * @since 2.0
+	 */
+	int getMaxOccurrences() {
+		return maxOccurrences;
 	}
 
 	/**
 	 * @return the form
+	 * 
+	 * @since 2.0
 	 */
 	public boolean isHomogeneous() {
 		return homogeneous;
@@ -211,6 +231,6 @@ public class ExtensionDescriptor {
 	 * @return
 	 */
 	public boolean requiresArrayUpdateMethod() {
-		return minOccurences > 1 || maxOccurences > 1;
+		return minOccurrences > 1 || maxOccurrences > 1;
 	}
 }

@@ -313,7 +313,7 @@ public class ExtensionInjector implements IStoppable {
 	}
 
 	private boolean matchesExtensionPointConstraint(final int occurence) {
-		return occurence >= extensionDesc.getMinOccurences() && occurence <= extensionDesc.getMaxOccurences();
+		return occurence >= extensionDesc.getMinOccurrences() && occurence <= extensionDesc.getMaxOccurrences();
 	}
 
 	/**
