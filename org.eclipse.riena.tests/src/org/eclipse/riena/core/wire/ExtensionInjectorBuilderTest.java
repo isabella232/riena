@@ -183,12 +183,12 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 
 	private int getMin(ExtensionInjector injector) {
 		Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
-		return ReflectionUtils.getHidden(extensionDescriptor, "minOccurences");
+		return ReflectionUtils.getHidden(extensionDescriptor, "minOccurrences");
 	}
 
 	private int getMax(ExtensionInjector injector) {
 		Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
-		return ReflectionUtils.getHidden(extensionDescriptor, "maxOccurences");
+		return ReflectionUtils.getHidden(extensionDescriptor, "maxOccurrences");
 	}
 
 	private boolean getHomogenious(ExtensionInjector injector) {
