@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -185,7 +186,6 @@ public class RienaDefaultLnf {
 	 * @since 2.0
 	 */
 	public AbstractMarkerSupport getMarkerSupport(Class<? extends IRidget> ridgetClass) {
-
 		String markerSupportID = getStringSetting(LnfKeyConstants.MARKER_SUPPORT_ID);
 
 		for (ILnfMarkerSupportExtension lnfMarkerSupportExtension : markerSupportList) {
@@ -197,10 +197,12 @@ public class RienaDefaultLnf {
 			}
 		}
 
-		LOGGER.log(LogService.LOG_INFO, "No MarkerSupport with the ID \"" + markerSupportID + "\" exists."); //$NON-NLS-1$ //$NON-NLS-2$
+		// only log this when running in an bundle environment
+		if (Platform.getBundle("org.eclipse.swt") != null) { //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_INFO, "No MarkerSupport with the ID \"" + markerSupportID + "\" exists."); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 
 		return null;
-
 	}
 
 	/**
