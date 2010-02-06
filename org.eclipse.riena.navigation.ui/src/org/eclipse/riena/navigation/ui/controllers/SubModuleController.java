@@ -102,7 +102,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * Returns the controller of the parent module.
 	 * 
 	 * @return module controller or {@code null} if not parent module controller
-	 *         exits.
+	 *         exists.
 	 */
 	public ModuleController getModuleController() {
 		IModuleNode moduleNode = getNavigationNode().getParentOfType(IModuleNode.class);
@@ -132,7 +132,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 				}
 			});
 		}
-		
+
 		getNavigationNode().addListener(new SubModuleNodeListener() {
 			@Override
 			public void iconChanged(ISubModuleNode source) {
@@ -201,10 +201,12 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * Returns the full title of this sub-module. The title exits of the label
-	 * of parent module node and all parent sub-module nodes. One exception
-	 * exits: If the module has one one sub-module (and this is not visible in
-	 * the tree), the label of the module is returned.
+	 * Returns the full title of this sub-module.
+	 * <p>
+	 * The title is made up from the label of parent module node and all parent
+	 * sub-module nodes. One exception exists: If the module has one sub-module
+	 * (and this is not visible in the tree), then only the label of the module
+	 * is returned.
 	 * 
 	 * @return full title of the sub-module
 	 */

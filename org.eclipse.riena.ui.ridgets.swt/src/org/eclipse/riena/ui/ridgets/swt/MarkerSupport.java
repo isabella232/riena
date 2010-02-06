@@ -55,7 +55,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 * can be overridden by setting the system property {@code 
 	 * 'HIDE_DISABLED_RIDGET_CONTENT'} to {@code true}.
 	 * <p>
-	 * Note: A Look&Feel constants exits to define whether disabled ridgets do
+	 * Note: A Look&Feel constants exists to define whether disabled ridgets do
 	 * hide their content: {@code LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT}.
 	 * The default value is only used, if the current Look&Feel doesn't use
 	 * {@code LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT}.
