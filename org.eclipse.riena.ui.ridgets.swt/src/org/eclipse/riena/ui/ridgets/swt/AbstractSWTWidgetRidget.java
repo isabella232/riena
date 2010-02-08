@@ -14,11 +14,8 @@ import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.osgi.service.log.LogService;
-
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -27,9 +24,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.internal.ui.ridgets.swt.Activator;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
@@ -48,8 +43,6 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
  * Ridget for an SWT widget.
  */
 public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements IBasicMarkableRidget {
-
-	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), AbstractSWTWidgetRidget.class);
 
 	private Widget uiControl;
 	private String toolTip = null;
@@ -349,7 +342,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			lnfMarkerSupport = LnfManager.getLnf().getMarkerSupport(this.getClass());
 		}
 		if (lnfMarkerSupport == null) {
-			LOGGER.log(LogService.LOG_WARNING, "No MarkerSupport exits. Default MarkerSupport is used."); //$NON-NLS-1$
+			// No MarkerSupport exits. Default MarkerSupport is used.
 			lnfMarkerSupport = new MarkerSupport();
 		}
 		lnfMarkerSupport.init(this, propertyChangeSupport);
