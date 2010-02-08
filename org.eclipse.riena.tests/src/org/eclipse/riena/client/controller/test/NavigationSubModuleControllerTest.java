@@ -42,8 +42,7 @@ public class NavigationSubModuleControllerTest extends AbstractSubModuleControll
 	 */
 	public void testAddSubModules() throws Exception {
 		ISubModuleNode newSubModuleNode = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.navigation1"), "Node 0"); //$NON-NLS-1$
-
+				"org.eclipse.riena.example.navigation", Integer.toString(1)), "Node 0"); //$NON-NLS-1$
 		getMockNavigationProcessor().activate(EasyMock.eq(newSubModuleNode));
 
 		EasyMock.replay(getMockNavigationProcessor());
