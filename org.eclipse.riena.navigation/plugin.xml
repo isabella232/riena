@@ -7,6 +7,10 @@
        name="Navigation assemblies" 
        schema="schema/assemblies.exsd"/>
    <extension-point 
+       id="assemblies2" 
+       name="Navigation assemblies2" 
+       schema="schema/assemblies2.exsd"/>
+   <extension-point 
        id="navigationNodeProvider" 
        name="Navigation node provider" 
        schema="schema/navigationNodeProvider.exsd"/>
