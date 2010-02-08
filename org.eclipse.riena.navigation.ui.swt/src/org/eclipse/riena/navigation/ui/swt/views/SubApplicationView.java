@@ -529,6 +529,8 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			if (source.isSelectable()) {
 				SwtViewId id = getViewId(source);
 				hideView(id);
+				SwtViewProvider viewProvider = SwtViewProvider.getInstance();
+				viewProvider.unregisterSwtViewId(source);
 			}
 		}
 
