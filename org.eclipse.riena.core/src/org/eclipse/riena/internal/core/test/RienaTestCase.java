@@ -234,6 +234,21 @@ public abstract class RienaTestCase extends TestCase {
 	 * @throws InterruptedException
 	 */
 	protected void addPluginXml(final Class<?> forLoad, final String pluginResource) {
+		addPluginXml(forLoad, pluginResource, -1);
+	}
+
+	/**
+	 * Add an extension/extension point defined within the ´plugin.xml´ given
+	 * with the <code>pluginResource</code> to the extension registry.
+	 * Additionally it is possible to perform a sleep interval after the
+	 * ´plugin.xml´ has been added.
+	 * 
+	 * @param forLoad
+	 * @param pluginResource
+	 * @param sleepInMs
+	 * @throws InterruptedException
+	 */
+	protected void addPluginXml(final Class<?> forLoad, final String pluginResource, final int sleepInMs) {
 		final IExtensionRegistry registry = RegistryFactory.getRegistry();
 		@IgnoreFindBugs(value = "OBL_UNSATISFIED_OBLIGATION", justification = "stream will be closed by getResourceAsStream()")
 		final InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
@@ -245,6 +260,13 @@ public abstract class RienaTestCase extends TestCase {
 		listener.waitAdded();
 		registry.removeListener(listener);
 		assertTrue(success);
+		if (sleepInMs > 0) {
+			try {
+				Thread.sleep(sleepInMs);
+			} catch (final InterruptedException e) {
+				println("Sleeping in addPluginXml failed!"); //$NON-NLS-1$
+			}
+		}
 	}
 
 	/**
@@ -253,6 +275,18 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param extensionId
 	 */
 	protected void removeExtension(final String extensionId) {
+		removeExtension(extensionId, -1);
+	}
+
+	/**
+	 * Remove the given extension from the extension registry. Additionally it
+	 * is possible to perform a sleep interval after the extension has been
+	 * removed.
+	 * 
+	 * @param extensionId
+	 * @param sleepInMs
+	 */
+	protected void removeExtension(final String extensionId, final int sleepInMs) {
 		final IExtensionRegistry registry = RegistryFactory.getRegistry();
 		final IExtension extension = registry.getExtension(extensionId);
 		assertNotNull(extension);
@@ -263,6 +297,13 @@ public abstract class RienaTestCase extends TestCase {
 		listener.waitExtensionRemoved();
 		registry.removeListener(listener);
 		assertTrue(success);
+		if (sleepInMs > 0) {
+			try {
+				Thread.sleep(sleepInMs);
+			} catch (final InterruptedException e) {
+				println("Sleeping in removeExtension failed!"); //$NON-NLS-1$
+			}
+		}
 	}
 
 	/**
@@ -271,6 +312,18 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param extensionPointId
 	 */
 	protected void removeExtensionPoint(final String extensionPointId) {
+		removeExtensionPoint(extensionPointId, -1);
+	}
+
+	/**
+	 * Remove the given extension from the extension registry.Additionally it is
+	 * possible to perform a sleep interval after the extension point has been
+	 * removed.
+	 * 
+	 * @param extensionPointId
+	 * @param sleepInMs
+	 */
+	protected void removeExtensionPoint(final String extensionPointId, final int sleepInMs) {
 		final IExtensionRegistry registry = RegistryFactory.getRegistry();
 		final IExtensionPoint extensionPoint = registry.getExtensionPoint(extensionPointId);
 		assertNotNull(extensionPoint);
@@ -281,6 +334,13 @@ public abstract class RienaTestCase extends TestCase {
 		listener.waitExtensionPointRemoved();
 		registry.removeListener(listener);
 		assertTrue(success);
+		if (sleepInMs > 0) {
+			try {
+				Thread.sleep(sleepInMs);
+			} catch (final InterruptedException e) {
+				println("Sleeping in removeExtensionPoint failed!"); //$NON-NLS-1$
+			}
+		}
 	}
 
 	/**
@@ -383,8 +443,7 @@ public abstract class RienaTestCase extends TestCase {
 					bundle.stop();
 				} else {
 					if (bundle.getState() != Bundle.UNINSTALLED) {
-						Nop
-								.reason("testcase tried to stop this bundle which did not run, but we can ignore this ==> bundle is stopped already"); //$NON-NLS-1$
+						Nop.reason("testcase tried to stop this bundle which did not run, but we can ignore this ==> bundle is stopped already"); //$NON-NLS-1$
 					}
 				}
 			}
