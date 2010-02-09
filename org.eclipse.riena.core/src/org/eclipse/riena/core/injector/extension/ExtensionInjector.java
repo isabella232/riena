@@ -14,14 +14,12 @@ import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -34,7 +32,6 @@ import org.eclipse.riena.core.injector.IStoppable;
 import org.eclipse.riena.core.injector.InjectionFailure;
 import org.eclipse.riena.internal.core.Activator;
 import org.eclipse.riena.internal.core.injector.extension.ExtensionMapper;
-import org.eclipse.riena.internal.core.test.ExtensionRegistryAnalyzer;
 
 /**
  * This is the extension injector.<br>
@@ -330,15 +327,15 @@ public class ExtensionInjector implements IStoppable {
 		 * .core. runtime.IExtension[])
 		 */
 		public void added(final IExtension[] extensions) {
-			System.out.println("InjectorListener.added()");
-			ExtensionRegistryAnalyzer.dumpRegistry(extensions[0].getExtensionPointUniqueIdentifier());
-			System.out.println("Added [" + Thread.currentThread().getName() + "] length:" + extensions.length + ":");
-			for (final IExtension extension : extensions) {
-				System.out.println("Extensions for " + extension.getExtensionPointUniqueIdentifier());
-				for (final IConfigurationElement element : extension.getConfigurationElements()) {
-					System.out.println("conf: " + Arrays.toString(element.getAttributeNames()));
-				}
-			}
+			//			System.out.println("InjectorListener.added()");
+			//			ExtensionRegistryAnalyzer.dumpRegistry(extensions[0].getExtensionPointUniqueIdentifier());
+			//			System.out.println("Added [" + Thread.currentThread().getName() + "] length:" + extensions.length + ":");
+			//			for (final IExtension extension : extensions) {
+			//				System.out.println("Extensions for " + extension.getExtensionPointUniqueIdentifier());
+			//				for (final IConfigurationElement element : extension.getConfigurationElements()) {
+			//					System.out.println("conf: " + Arrays.toString(element.getAttributeNames()));
+			//				}
+			//			}
 			populateInterfaceBeans(false);
 		}
 
