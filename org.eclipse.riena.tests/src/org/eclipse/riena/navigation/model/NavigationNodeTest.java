@@ -20,6 +20,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
+import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -401,9 +402,12 @@ public class NavigationNodeTest extends RienaTestCase {
 		assertSame(node2, node.getChildren().get(0));
 		assertSame(node, node2.getParent());
 		assertTrue(node.isChildAddedCalled());
+		assertTrue(node2.isParentChangedCalled());
+		assertTrue(node.isParentChangedCalledAfterChildAddedCalled());
 
 		// add same node again
 		node.reset();
+		node2.reset();
 		try {
 			node.addChild(node2);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
@@ -414,6 +418,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		assertSame(node2, node.getChildren().get(0));
 		assertSame(node, node2.getParent());
 		assertFalse(node.isChildAddedCalled());
+		assertFalse(node2.isParentChangedCalled());
 
 		// add disposed node
 		NavigationNodeId id3 = new NavigationNodeId("3");
@@ -431,6 +436,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		assertSame(node2, node.getChildren().get(0));
 		assertNull(node3.getParent());
 		assertFalse(node.isChildAddedCalled());
+		assertFalse(node3.isParentChangedCalled());
 
 		// add node to itself
 		try {
@@ -449,13 +455,13 @@ public class NavigationNodeTest extends RienaTestCase {
 		}
 
 		// add correct kind of node 
-		INavigationNode module = getParentNode(ModuleNode.class);
+		IModuleNode module = (IModuleNode) getParentNode(ModuleNode.class);
 		module.addChild(node);
 		assertSame(node, module.getChild(module.getChildren().size() - 1));
 
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private INavigationNode getParentNode(Class<? extends INavigationNode> clazz) throws InstantiationException,
 			IllegalAccessException {
 		return clazz.newInstance();
@@ -712,6 +718,8 @@ public class NavigationNodeTest extends RienaTestCase {
 		private boolean preparedCalled;
 		private boolean filterRemovedCalled;
 		private boolean filterAddedCalled;
+		private boolean parentChangedCalled;
+		private boolean parentChangedCalledAfterChildAddedCalled;
 
 		public NaviNode(NavigationNodeId nodeId) {
 			super(nodeId);
@@ -725,6 +733,8 @@ public class NavigationNodeTest extends RienaTestCase {
 			preparedCalled = false;
 			filterRemovedCalled = false;
 			filterAddedCalled = false;
+			parentChangedCalled = false;
+			parentChangedCalledAfterChildAddedCalled = false;
 		}
 
 		public void activated(INavigationNode<?> source) {
@@ -760,6 +770,10 @@ public class NavigationNodeTest extends RienaTestCase {
 
 		public void childAdded(INavigationNode<?> source, INavigationNode<?> childAdded) {
 			childAddedCalled = true;
+			if (childAdded instanceof NaviNode) {
+				NaviNode child = (NaviNode) childAdded;
+				parentChangedCalledAfterChildAddedCalled = !child.isParentChangedCalled();
+			}
 		}
 
 		public void childRemoved(INavigationNode<?> source, INavigationNode<?> childRemoved) {
@@ -794,6 +808,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		}
 
 		public void parentChanged(INavigationNode<?> source) {
+			parentChangedCalled = true;
 		}
 
 		public void presentationChanged(INavigationNode<?> source) {
@@ -834,6 +849,14 @@ public class NavigationNodeTest extends RienaTestCase {
 
 		public boolean isFilterAddedCalled() {
 			return filterAddedCalled;
+		}
+
+		public boolean isParentChangedCalled() {
+			return parentChangedCalled;
+		}
+
+		public boolean isParentChangedCalledAfterChildAddedCalled() {
+			return parentChangedCalledAfterChildAddedCalled;
 		}
 
 	}

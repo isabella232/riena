@@ -17,7 +17,11 @@ import java.util.List;
 import java.util.Locale;
 
 import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
@@ -29,6 +33,7 @@ import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
  * This controller displays the data of one person.
@@ -36,6 +41,7 @@ import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 public class OnePersonSubModuleController extends SubModuleController {
 
 	private static List<String> countries;
+	private static int personCounter;
 	private Person person;
 	private INumericTextRidget customerNumber;
 	private ITextRidget lastName;
@@ -63,7 +69,7 @@ public class OnePersonSubModuleController extends SubModuleController {
 	 */
 	private void createPerson() {
 		person = new Person("Mustermann", "Erika"); //$NON-NLS-1$ //$NON-NLS-2$
-		person.setNumber(4711);
+		person.setNumber(personCounter);
 		person.setBirthday("12.08.1964"); //$NON-NLS-1$
 		person.setBirthplace("Berlin"); //$NON-NLS-1$
 		person.setGender(Person.FEMALE);
@@ -110,7 +116,11 @@ public class OnePersonSubModuleController extends SubModuleController {
 	}
 
 	private void updateTitle() {
-		getNavigationNode().setLabel(person.toString());
+		String label = person.toString();
+		if (person.getNumber() > 0) {
+			label = "#" + person.getNumber() + " " + label; //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		getNavigationNode().setLabel(label);
 	}
 
 	/**
@@ -137,6 +147,7 @@ public class OnePersonSubModuleController extends SubModuleController {
 		postalcode.addValidationRule(new MaxLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
 		town = (ITextRidget) getRidget("town"); //$NON-NLS-1$
 		IActionRidget show = (IActionRidget) getRidget("show"); //$NON-NLS-1$
+		IActionRidget next = (IActionRidget) getRidget("next"); //$NON-NLS-1$
 
 		createPerson();
 		person.addPropertyChangeListener(new NameChangeListener());
@@ -155,6 +166,7 @@ public class OnePersonSubModuleController extends SubModuleController {
 		postalcode.bindToModel(person.getAddress(), "postalCode"); //$NON-NLS-1$
 		town.bindToModel(person.getAddress(), "town"); //$NON-NLS-1$
 		show.addListener(new ShowActionListener());
+		next.addListener(new NextActionListener());
 
 	}
 
@@ -179,6 +191,21 @@ public class OnePersonSubModuleController extends SubModuleController {
 
 	}
 
+	/**
+	 * Adds another sub module for new person
+	 */
+	private class NextActionListener implements IActionListener {
+
+		public void callback() {
+
+			ISubModuleNode nextSubModuleNode = (ISubModuleNode) createNextPersonSubModule();
+			IModuleNode parent = (IModuleNode) getNavigationNode().getParent();
+			parent.addChild(nextSubModuleNode);
+
+		}
+
+	}
+
 	private class NameChangeListener implements PropertyChangeListener {
 
 		public void propertyChange(PropertyChangeEvent evt) {
@@ -188,6 +215,15 @@ public class OnePersonSubModuleController extends SubModuleController {
 			}
 		}
 
+	}
+
+	protected INavigationNode<?> createNextPersonSubModule() {
+		ISubModuleNode nextSubModuleNode = new SubModuleNode(new NavigationNodeId("onePerson", Integer //$NON-NLS-1$
+				.toString(personCounter++)), "nextPersonLabel"); //$NON-NLS-1$
+		nextSubModuleNode.setIcon("person.gif"); //$NON-NLS-1$
+		WorkareaManager.getInstance().registerDefinition(nextSubModuleNode, OnePersonSubModuleController.class,
+				"org.eclipse.riena.example.client.views.OnePersonSubModuleView").setRequiredPreparation(true); //$NON-NLS-1$
+		return nextSubModuleNode;
 	}
 
 }

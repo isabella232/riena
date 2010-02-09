@@ -197,17 +197,22 @@ public class OnePersonSubModuleView extends SubModuleView {
 
 		final Label label = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 7, 1));
-		new Label(parent, SWT.NONE);
+
+		final Button showButton = new Button(parent, SWT.NONE);
+		showButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		showButton.setData("binding_property", "show"); //$NON-NLS-1$ //$NON-NLS-2$
+		showButton.setText("Show"); //$NON-NLS-1$
+
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 
-		final Button showButton = new Button(parent, SWT.NONE);
-		showButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		showButton.setData("binding_property", "show"); //$NON-NLS-1$ //$NON-NLS-2$
-		showButton.setText("Show"); //$NON-NLS-1$
+		final Button nextButton = new Button(parent, SWT.NONE);
+		nextButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		nextButton.setData("binding_property", "next"); //$NON-NLS-1$ //$NON-NLS-2$
+		nextButton.setText("Next Person"); //$NON-NLS-1$
 	}
 
 }

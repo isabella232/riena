@@ -624,7 +624,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 	}
 
+	/**
+	 * This listener of a module group ensures the preparation of nodes (if
+	 * necessary).
+	 */
 	private class MyModuleGroupNodeListener extends ModuleGroupNodeListener {
+
 		/**
 		 * {@inheritDoc}
 		 * <p>
@@ -636,9 +641,27 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			prepare(source);
 			super.activated(source);
 		}
+
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * After the parent of a module group changed prepare - if necessary -
+		 * every child node.
+		 */
+		@Override
+		public void parentChanged(IModuleGroupNode source) {
+			super.parentChanged(source);
+			prepare(source);
+		}
+
 	}
 
+	/**
+	 * This listener of a module ensures the preparation of nodes (if
+	 * necessary).
+	 */
 	private class MyModuleNodeListener extends ModuleNodeListener {
+
 		/**
 		 * {@inheritDoc}
 		 * <p>
@@ -650,19 +673,51 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			prepare(source);
 			super.activated(source);
 		}
+
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * After the parent of a module changed prepare - if necessary - every
+		 * child node.
+		 */
+		@Override
+		public void parentChanged(IModuleNode source) {
+			super.parentChanged(source);
+			prepare(source);
+		}
+
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * After activation of a module prepare - if necessary - every child node.
+	 * This listener of a sub module ensures the preparation of nodes (if
+	 * necessary).
 	 */
 	private class MySubModuleNodeListener extends SubModuleNodeListener {
+
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * After activation of a sub module prepare - if necessary - every child
+		 * node.
+		 */
 		@Override
 		public void activated(ISubModuleNode source) {
 			prepare(source);
 			super.activated(source);
 		}
+
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * After the parent of a sub module changed prepare - if necessary -
+		 * every child node.
+		 */
+		@Override
+		public void parentChanged(ISubModuleNode source) {
+			super.parentChanged(source);
+			prepare(source);
+		}
+
 	}
 
 	/**
@@ -673,7 +728,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private void prepare(INavigationNode<?> node) {
 
-		if (node == null) {
+		if ((node == null) || (node.getParent() == null)) {
 			return;
 		}
 

@@ -293,6 +293,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void addChild(C pChild) {
 
 		if (pChild == null) {
@@ -315,10 +318,12 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 		List<C> oldList = new ArrayList<C>(children);
 		children.add(pChild);
-		addChildParent(pChild);
 
 		propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_CHILDREN, oldList, children);
 		notifyChildAdded(pChild);
+
+		// Adds the parent to the child after all listeners are notified that the child was added to the parent!
+		addChildParent(pChild);
 
 	}
 
