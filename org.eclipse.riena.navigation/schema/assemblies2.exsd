@@ -58,10 +58,10 @@
       </annotation>
       <complexType>
          <choice minOccurs="0" maxOccurs="1">
-            <element ref="subapplication"/>
-            <element ref="modulegroup"/>
+            <element ref="subApplication"/>
+            <element ref="moduleGroup"/>
             <element ref="module"/>
-            <element ref="submodule"/>
+            <element ref="subModule"/>
             <element ref="custom"/>
          </choice>
          <attribute name="id" type="string" use="required">
@@ -98,7 +98,7 @@
                </appInfo>
             </annotation>
          </attribute>
-         <attribute name="autostartsequence" type="string">
+         <attribute name="startOrder" type="string">
             <annotation>
                <documentation>
                   Indicates if the nodes described by this assembly should be automatically created upon startup. The assembly with the lowest autostartsequence will be started first.
@@ -108,12 +108,10 @@
       </complexType>
    </element>
 
-   <element name="subapplication">
+   <element name="subApplication">
       <complexType>
          <sequence minOccurs="0" maxOccurs="unbounded">
-            <choice>
-               <element ref="modulegroup"/>
-            </choice>
+            <element ref="moduleGroup"/>
          </sequence>
          <attribute name="name" type="string">
             <annotation>
@@ -155,12 +153,10 @@
       </complexType>
    </element>
 
-   <element name="modulegroup">
+   <element name="moduleGroup">
       <complexType>
          <sequence minOccurs="0" maxOccurs="unbounded">
-            <choice>
-               <element ref="module"/>
-            </choice>
+            <element ref="module"/>
          </sequence>
          <attribute name="name" type="string">
             <annotation>
@@ -185,10 +181,7 @@
    <element name="module">
       <complexType>
          <sequence minOccurs="0" maxOccurs="unbounded">
-            <choice>
-               <element ref="submodule"/>
-               <element ref="assembly2"/>
-            </choice>
+            <element ref="subModule"/>
          </sequence>
          <attribute name="name" type="string">
             <annotation>
@@ -227,10 +220,10 @@
       </complexType>
    </element>
 
-   <element name="submodule">
+   <element name="subModule">
       <complexType>
          <sequence minOccurs="0" maxOccurs="unbounded">
-            <element ref="submodule"/>
+            <element ref="subModule"/>
          </sequence>
          <attribute name="name" type="string">
             <annotation>
