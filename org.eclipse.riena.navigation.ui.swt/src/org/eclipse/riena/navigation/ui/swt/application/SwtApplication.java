@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.application;
 
-import org.osgi.framework.Bundle;
-
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -50,7 +48,7 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
  * Creates and starts an empty swt application Subclass to create own model or
  * controller.
  */
-public abstract class SwtApplication extends AbstractApplication {
+public class SwtApplication extends AbstractApplication {
 
 	protected ILoginSplashViewExtension loginSplashViewExtension;
 	private LoginNonActivityTimer loginNonActivityTimer;
@@ -146,8 +144,6 @@ public abstract class SwtApplication extends AbstractApplication {
 	protected ApplicationController createApplicationController(IApplicationNode pModel) {
 		return new ApplicationController(pModel);
 	}
-
-	protected abstract Bundle getBundle();
 
 	protected void prePerformLogin(IApplicationContext context) {
 		if (RcpUtilities.getWorkbenchShell() != null) {

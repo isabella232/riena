@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.client.helloworld.applications;
 
-import org.osgi.framework.Bundle;
-
-import org.eclipse.riena.internal.sample.app.client.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -92,8 +89,4 @@ public class HelloWorldApplication extends SwtApplication {
 
 	}
 
-	@Override
-	protected Bundle getBundle() {
-		return Activator.getDefault().getBundle();
-	}
 }

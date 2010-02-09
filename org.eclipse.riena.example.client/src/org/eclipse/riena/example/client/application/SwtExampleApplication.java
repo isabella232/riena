@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.application;
 
-import org.osgi.framework.Bundle;
-
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
@@ -88,11 +86,6 @@ public class SwtExampleApplication extends SwtApplication {
 		navigationTreeObserver.addListener(new SubModuleListener());
 		navigationTreeObserver.addListenerTo(applicationNode);
 		return applicationNode;
-	}
-
-	@Override
-	protected Bundle getBundle() {
-		return Activator.getDefault().getBundle();
 	}
 
 	@Override

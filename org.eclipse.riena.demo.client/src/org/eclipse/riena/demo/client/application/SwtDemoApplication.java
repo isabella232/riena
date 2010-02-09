@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.demo.client.application;
 
-import org.osgi.framework.Bundle;
-
 import org.eclipse.riena.internal.demo.client.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -42,8 +40,4 @@ public class SwtDemoApplication extends SwtApplication {
 		return applicationNode;
 	}
 
-	@Override
-	protected Bundle getBundle() {
-		return Activator.getDefault().getBundle();
-	}
 }

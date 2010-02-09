@@ -56,8 +56,4 @@ public class Application extends SwtApplication {
 		return app;
 	}
 
-	@Override
-	protected Bundle getBundle() {
-		return Activator.getDefault().getBundle();
-	}
 }
