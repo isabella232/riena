@@ -20,36 +20,43 @@ public final class StringUtils {
 	}
 
 	/**
-	 * Tests ´simple´ emptiness. A character sequence is empty either if it is
-	 * null or it has a zero length.
+	 * Return the input string with the first character converted to upper case.
 	 * 
-	 * @param sequence
-	 * @return
+	 * @param input
+	 *            the input; may be null or empty
+	 * @return the input with the first charcacter converted to upper case, or
+	 *         null (if input is null), or "" if input is ""
+	 * 
 	 */
-	public static boolean isEmpty(final CharSequence sequence) {
-		return sequence == null || sequence.length() == 0;
+	public static String capitalize(String input) {
+		String result = input;
+		if (input != null && input.length() > 0) {
+			result = input.substring(0, 1).toUpperCase();
+			if (input.length() > 1) {
+				result += input.substring(1);
+			}
+		}
+		return result;
 	}
 
 	/**
-	 * Tests whether the char sequence has content. A character sequence is
-	 * given either if it is not null and it has a none zero length.
-	 * 
-	 * @param sequence
-	 * @return
-	 */
-	public static boolean isGiven(final CharSequence sequence) {
-		return sequence != null && sequence.length() != 0;
-	}
-
-	/**
-	 * Tests ´deep´ emptiness. A string is empty if it is either null or its
-	 * trimmed version has a zero length.
+	 * Returns the number of occurences of ch in string.
 	 * 
 	 * @param string
-	 * @return
+	 *            the string to process; may be null
+	 * @param ch
+	 *            the character to look for
 	 */
-	public static boolean isDeepEmpty(final String string) {
-		return string == null || string.trim().length() == 0;
+	public static int count(final String string, char ch) {
+		int result = 0;
+		if (string != null) {
+			for (int i = 0; i < string.length(); i++) {
+				if (string.charAt(i) == ch) {
+					result++;
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -72,23 +79,36 @@ public final class StringUtils {
 	}
 
 	/**
-	 * Returns the number of occurences of ch in string.
+	 * Tests ´deep´ emptiness. A string is empty if it is either null or its
+	 * trimmed version has a zero length.
 	 * 
 	 * @param string
-	 *            the string to process; may be null
-	 * @param ch
-	 *            the character to look for
+	 * @return
 	 */
-	public static int count(final String string, char ch) {
-		int result = 0;
-		if (string != null) {
-			for (int i = 0; i < string.length(); i++) {
-				if (string.charAt(i) == ch) {
-					result++;
-				}
-			}
-		}
-		return result;
+	public static boolean isDeepEmpty(final String string) {
+		return string == null || string.trim().length() == 0;
+	}
+
+	/**
+	 * Tests ´simple´ emptiness. A character sequence is empty either if it is
+	 * null or it has a zero length.
+	 * 
+	 * @param sequence
+	 * @return
+	 */
+	public static boolean isEmpty(final CharSequence sequence) {
+		return sequence == null || sequence.length() == 0;
+	}
+
+	/**
+	 * Tests whether the char sequence has content. A character sequence is
+	 * given either if it is not null and it has a none zero length.
+	 * 
+	 * @param sequence
+	 * @return
+	 */
+	public static boolean isGiven(final CharSequence sequence) {
+		return sequence != null && sequence.length() != 0;
 	}
 
 }

@@ -85,4 +85,17 @@ public class StringUtilsTest extends TestCase {
 		assertEquals(0, StringUtils.count(null, 'a'));
 		assertEquals(0, StringUtils.count("bcd", 'a'));
 	}
+
+	/**
+	 * In experior veritas!
+	 */
+	public void testCapitalize() {
+		assertEquals(null, StringUtils.capitalize(null));
+		assertEquals("", StringUtils.capitalize(""));
+		assertEquals("!a", StringUtils.capitalize("!a"));
+
+		assertEquals("A", StringUtils.capitalize("A"));
+		assertEquals("A", StringUtils.capitalize("a"));
+		assertEquals("Veritas", StringUtils.capitalize("veritas"));
+	}
 }
