@@ -24,10 +24,12 @@ import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper;
+import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ApplicationNode;
+import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
@@ -125,7 +127,9 @@ public class ApplicationViewAdvisorTest extends RienaTestCase {
 	 */
 	public void testPrepare() {
 
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId("mg"));
 		IModuleNode module = new ModuleNode(new NavigationNodeId("m"));
+		moduleGroup.addChild(module);
 		ISubModuleNode subModule1 = new SubModuleNode(new NavigationNodeId("sm1"));
 		module.addChild(subModule1);
 		ISubModuleNode subModule2 = new SubModuleNode(new NavigationNodeId("sm2"));
