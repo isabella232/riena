@@ -13,14 +13,12 @@ package org.eclipse.riena.core.injector.extension;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
-import org.eclipse.riena.internal.core.test.ExtensionRegistryAnalyzer;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.tests.Activator;
@@ -245,7 +243,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 	 */
 	public void testTrackingWithKnownTypeAndMultipleData() throws InterruptedException {
 		printTestName();
-		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		final int sleepInMs = 500;
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml", sleepInMs);
 		try {
 			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
 			target.setTrace(true);
@@ -253,32 +252,35 @@ public class ExtensionInjectorTest extends RienaTestCase {
 					.andStart(getContext());
 			try {
 				assertEquals(0, target.getData().length);
-				Set<String> before = ExtensionRegistryAnalyzer.getRegistryPaths(null);
-				addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
-				Set<String> after = ExtensionRegistryAnalyzer.getRegistryPaths(null);
-				System.out.println("SymmetricDiff: " + ExtensionRegistryAnalyzer.symmetricDiff(before, after));
+				//				Set<String> before = ExtensionRegistryAnalyzer.getRegistryPaths(null);
+				addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml", sleepInMs);
+				//				Set<String> after = ExtensionRegistryAnalyzer.getRegistryPaths(null);
+				//				System.out.println("SymmetricDiff: " + ExtensionRegistryAnalyzer.symmetricDiff(before, after));
+				// SymmetricDiff: [core.test.extpoint: uid=core.test.extpoint.id1 bundle=org.eclipse.riena.tests <test required=true objectType=java.lang.String text=test1/>]
+				// update: [Lorg.eclipse.riena.core.injector.extension.IData;@1531a15 - length= 0
+
 				try {
 					// this fails here - target.getData().length is 0.
 					// From console.log:
 					// update: [Lorg.eclipse.riena.core.injector.extension.IData;@1892bd8 - length= 0
 					// update: [Lorg.eclipse.riena.core.injector.extension.IData;@5b784b - length= 0
 					assertEquals(1, target.getData().length);
-					addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
+					addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml", sleepInMs);
 					try {
 						assertEquals(2, target.getData().length);
-						addPluginXml(ExtensionInjectorTest.class, "plugin_ext3.xml");
+						addPluginXml(ExtensionInjectorTest.class, "plugin_ext3.xml", sleepInMs);
 						try {
 							assertEquals(3, target.getData().length);
 						} finally {
-							removeExtension("core.test.extpoint.id3");
+							removeExtension("core.test.extpoint.id3", sleepInMs);
 						}
 						assertEquals(2, target.getData().length);
 					} finally {
-						removeExtension("core.test.extpoint.id2");
+						removeExtension("core.test.extpoint.id2", sleepInMs);
 					}
 					assertEquals(1, target.getData().length);
 				} finally {
-					removeExtension("core.test.extpoint.id1");
+					removeExtension("core.test.extpoint.id1", sleepInMs);
 				}
 				assertEquals(0, target.getData().length);
 			} finally {
