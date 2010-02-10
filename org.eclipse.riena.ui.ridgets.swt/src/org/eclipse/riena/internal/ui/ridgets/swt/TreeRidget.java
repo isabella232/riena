@@ -76,6 +76,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
@@ -209,9 +210,11 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	@Override
 	protected final List<?> getRowObservables() {
 		List<?> result = null;
-		if (viewer != null) {
+		if (viewer != null) { // have roots and control
 			ObservableListTreeContentProvider cp = (ObservableListTreeContentProvider) viewer.getContentProvider();
 			result = new ArrayList<Object>(cp.getKnownElements());
+		} else if (treeRoots != null) { // have roots only
+			result = collectAllElements();
 		}
 		return result;
 	}
@@ -455,8 +458,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	public void updateFromModel() {
 		treeRoots = new Object[model.length];
 		System.arraycopy(model, 0, treeRoots, 0, treeRoots.length);
+		List<Object> selection = getSelection();
 		if (viewer != null) {
-			List<Object> selection = getSelection();
 			Object[] expandedElements = viewer.getExpandedElements();
 			viewer.getControl().setRedraw(false);
 			try {
@@ -479,6 +482,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			} finally {
 				viewer.getControl().setRedraw(true);
 			}
+		} else {
+			setSelection(selection);
 		}
 	}
 
@@ -527,43 +532,22 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 */
 	private void bindToViewer(final Tree control) {
 		viewer = new TreeViewer(control);
-		// content
-		final Realm realm = SWTObservables.getRealm(Display.getDefault());
-		// how to obtain an observable list of children from a given object (expansion)
-		IObservableFactory listFactory = new IObservableFactory() {
-			public IObservable createObservable(Object target) {
-				if (target instanceof Object[]) {
-					return Observables.staticObservableList(realm, Arrays.asList((Object[]) target));
-				}
-				Object value;
-				if (target instanceof FakeRoot) {
-					value = ((FakeRoot) target).getRoot();
-				} else {
-					value = target;
-				}
-				if (AbstractSWTWidgetRidget.isBean(treeElementClass)) {
-					return BeansObservables.observeList(realm, value, childrenAccessor, treeElementClass);
-				} else {
-					return PojoObservables.observeList(realm, value, childrenAccessor, treeElementClass);
-				}
-			}
-		};
-		// how to get the parent from a given object
-		TreeStructureAdvisor structureAdvisor = new GenericTreeStructureAdvisor(parentAccessor, treeElementClass);
 
 		// how to create the content/structure for the tree
-		ObservableListTreeContentProvider viewerCP = new ObservableListTreeContentProvider(listFactory,
-				structureAdvisor);
+		TreeStructureAdvisor structureAdvisor = createStructureAdvisor();
+		ObservableListTreeContentProvider viewerCP = createContentProvider(structureAdvisor); // one instance per viewer instance
 
 		// refresh icons on addition / removal
 		viewer.setContentProvider(viewerCP);
 		viewerCP.getKnownElements().addSetChangeListener(new TreeContentChangeListener(viewer, structureAdvisor));
+
 		// labels
 		IColumnFormatter[] formatters = getColumnFormatters(valueAccessors.length);
 		ILabelProvider viewerLP = TreeRidgetLabelProvider.createLabelProvider(viewer, treeElementClass, viewerCP
 				.getKnownElements(), valueAccessors, enablementAccessor, imageAccessor, openNodeImageAccessor,
 				formatters);
 		viewer.setLabelProvider(viewerLP);
+
 		// input
 		if (showRoots) {
 			viewer.setInput(treeRoots);
@@ -595,6 +579,55 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		saveSelection();
 	}
 
+	private List<?> collectAllElements() {
+		Set<Object> allElements = new HashSet<Object>();
+		for (Object root : treeRoots) {
+			if (root != null) {
+				if (showRoots) {
+					allElements.add(root);
+				}
+				collectChildren(root, allElements);
+			}
+		}
+		return new ArrayList<Object>(allElements);
+	}
+
+	private void collectChildren(Object parent, Set<Object> result) {
+		String methodName = "get" + StringUtils.capitalize(childrenAccessor); //$NON-NLS-1$
+		List<?> children = ReflectionUtils.invoke(parent, methodName);
+		for (Object child : children) {
+			if (child != null && result.add(child)) {
+				collectChildren(child, result);
+			}
+		}
+	}
+
+	private ObservableListTreeContentProvider createContentProvider(TreeStructureAdvisor structureAdvisor) {
+		final Realm realm = SWTObservables.getRealm(Display.getDefault());
+		// how to obtain an observable list of children from a given object (expansion)
+		IObservableFactory listFactory = new IObservableFactory() {
+			public IObservable createObservable(Object target) {
+				if (target instanceof Object[]) {
+					return Observables.staticObservableList(realm, Arrays.asList((Object[]) target));
+				}
+				Object value;
+				if (target instanceof FakeRoot) {
+					value = ((FakeRoot) target).getRoot();
+				} else {
+					value = target;
+				}
+				if (AbstractSWTWidgetRidget.isBean(treeElementClass)) {
+					return BeansObservables.observeList(realm, value, childrenAccessor, treeElementClass);
+				} else {
+					return PojoObservables.observeList(realm, value, childrenAccessor, treeElementClass);
+				}
+			}
+		};
+
+		// how to create the content/structure for the tree
+		return new ObservableListTreeContentProvider(listFactory, structureAdvisor);
+	}
+
 	private void createMultipleSelectionBinding() {
 		if (viewerMSB == null && dbc != null && viewer != null) {
 			StructuredSelection currentSelection = new StructuredSelection(getSelection());
@@ -615,6 +648,11 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			}
 		}
 		return result;
+	}
+
+	private TreeStructureAdvisor createStructureAdvisor() {
+		// how to get the parent from a given object
+		return new GenericTreeStructureAdvisor(parentAccessor, treeElementClass);
 	}
 
 	private void disposeMultipleSelectionBinding() {
@@ -928,21 +966,13 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			Assert.isNotNull(root0);
 			Assert.isNotNull(childrenAccessor);
 			this.root0 = root0;
-			this.accessor = "get" + capitalize(childrenAccessor); //$NON-NLS-1$
+			this.accessor = "get" + StringUtils.capitalize(childrenAccessor); //$NON-NLS-1$
 			clear();
 			addAll(ReflectionUtils.<List<Object>> invoke(root0, accessor));
 		}
 
 		Object getRoot() {
 			return root0;
-		}
-
-		private String capitalize(String name) {
-			String result = name.substring(0, 1).toUpperCase();
-			if (name.length() > 1) {
-				result += name.substring(1);
-			}
-			return result;
 		}
 	}
 
@@ -971,7 +1001,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			Assert.isLegal(propertyName.trim().length() > 0, errorMsg);
 			Assert.isNotNull(elementClass);
 
-			String readMethodName = "get" + capitalize(propertyName); //$NON-NLS-1$
+			String readMethodName = "get" + StringUtils.capitalize(propertyName); //$NON-NLS-1$
 			try {
 				descriptor = new PropertyDescriptor(propertyName, elementClass, readMethodName, null);
 			} catch (IntrospectionException exc) {
@@ -996,14 +1026,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				} catch (IllegalAccessException exc) {
 					log("Error invoking.", exc); //$NON-NLS-1$
 				}
-			}
-			return result;
-		}
-
-		private String capitalize(String name) {
-			String result = name.substring(0, 1).toUpperCase();
-			if (name.length() > 1) {
-				result += name.substring(1);
 			}
 			return result;
 		}

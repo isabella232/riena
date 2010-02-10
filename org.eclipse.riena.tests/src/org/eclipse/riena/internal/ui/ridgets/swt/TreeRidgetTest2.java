@@ -1025,6 +1025,108 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(0, ridget.getSelection().size());
 	}
 
+	/**
+	 * As per Bug 296639
+	 */
+	public void testSetSelectionWithNoBoundControl() {
+		ITreeRidget ridget = getRidget();
+
+		ridget.setSelection(rootChild1);
+
+		assertNotNull(ridget.getUIControl());
+		assertEquals(rootChild1, ridget.getSelection().get(0));
+
+		ridget.setUIControl(null);
+		ridget.setSelection(rootChild2);
+
+		assertNull(ridget.getUIControl());
+		assertEquals(rootChild2, ridget.getSelection().get(0));
+	}
+
+	/**
+	 * As per Bug 298033 comment #1
+	 */
+	public void testUpdateSingleSelectionFromModelWithNoBoundControl() {
+		ITreeRidget ridget = getRidget();
+
+		ridget.setSelectionType(SelectionType.SINGLE);
+		ridget.setSelection(rootChild1);
+
+		assertEquals(rootChild1, ridget.getSelection().get(0));
+
+		// remove selected element while not bound to a control
+		ridget.setUIControl(null);
+		removeNode(root, rootChild1);
+		ridget.updateFromModel();
+
+		assertNull(ridget.getUIControl());
+		assertTrue(ridget.getSelection().isEmpty());
+	}
+
+	/**
+	 * As per Bug 298033 comment #1
+	 */
+	public void testUpdateMultiSelectionFromModelWithNoBoundControl() {
+		ITreeRidget ridget = getRidget();
+
+		ridget.setSelectionType(SelectionType.MULTI);
+		ridget.setSelection(Arrays.asList(rootChild1, rootChild2));
+
+		assertEquals(2, ridget.getSelection().size());
+		assertEquals(rootChild1, ridget.getSelection().get(0));
+		assertEquals(rootChild2, ridget.getSelection().get(1));
+
+		// remove selected element while not bound to a control
+		ridget.setUIControl(null);
+		removeNode(root, rootChild1);
+		ridget.updateFromModel();
+
+		assertNull(ridget.getUIControl());
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(rootChild2, ridget.getSelection().get(0));
+	}
+
+	/**
+	 * As per Bug 298033
+	 */
+	public void testUpdateSingleSelectionFromModelWithBoundControl() {
+		ITreeRidget ridget = getRidget();
+
+		ridget.setSelectionType(SelectionType.SINGLE);
+		ridget.setSelection(rootChild1);
+
+		assertEquals(rootChild1, ridget.getSelection().get(0));
+
+		// remove selected element while bound to a control
+		removeNode(root, rootChild1);
+		ridget.updateFromModel();
+
+		assertNotNull(ridget.getUIControl());
+		assertTrue(ridget.getSelection().isEmpty());
+	}
+
+	/**
+	 * As per Bug 298033
+	 */
+	public void testUpdateMultiSelectionFromModelWithBoundControl() {
+		ITreeRidget ridget = getRidget();
+
+		ridget.setSelectionType(SelectionType.MULTI);
+		ridget.setSelection(Arrays.asList(rootChild1, rootChild2));
+
+		assertEquals(2, ridget.getSelection().size());
+		assertEquals(rootChild1, ridget.getSelection().get(0));
+		assertEquals(rootChild2, ridget.getSelection().get(1));
+
+		// remove selected element while bound to a control
+		removeNode(root, rootChild1);
+		ridget.updateFromModel();
+
+		assertNotNull(ridget.getUIControl());
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(rootChild2, ridget.getSelection().get(0));
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -1139,28 +1241,6 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Select one or more TreeItems based on a mock "index" scheme (0: item for
-	 * node1, 1: item for node2, 2: item for node3).
-	 * 
-	 * @param start
-	 *            the start index (>=0)
-	 * @param end
-	 *            the end index (>= start index; and < 3)
-	 */
-	private void setUIControlRowSelectionInterval(int start, int end) {
-		Assert.isLegal(0 <= start);
-		Assert.isLegal(start <= end);
-		Tree control = getWidget();
-		int length = (end - start) + 1;
-		TreeItem[] items = new TreeItem[length];
-		for (int i = 0; i < items.length; i++) {
-			items[i] = getUIControlItem(i + start);
-		}
-		control.setSelection(items);
-		fireSelectionEvent();
-	}
-
-	/**
 	 * Return the TreeItem corresponding to the following mock "index" scheme:
 	 * 0: item for node1, 1: item for node2, 2: item for node3.
 	 * <p>
@@ -1199,6 +1279,35 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		default:
 			throw new IndexOutOfBoundsException("index= " + index);
 		}
+	}
+
+	private void removeNode(ITreeNode parent, ITreeNode toRemove) {
+		List<ITreeNode> children = parent.getChildren();
+		boolean removed = children.remove(toRemove);
+		assertTrue("failed to remove " + toRemove, removed);
+		parent.setChildren(children);
+	}
+
+	/**
+	 * Select one or more TreeItems based on a mock "index" scheme (0: item for
+	 * node1, 1: item for node2, 2: item for node3).
+	 * 
+	 * @param start
+	 *            the start index (>=0)
+	 * @param end
+	 *            the end index (>= start index; and < 3)
+	 */
+	private void setUIControlRowSelectionInterval(int start, int end) {
+		Assert.isLegal(0 <= start);
+		Assert.isLegal(start <= end);
+		Tree control = getWidget();
+		int length = (end - start) + 1;
+		TreeItem[] items = new TreeItem[length];
+		for (int i = 0; i < items.length; i++) {
+			items[i] = getUIControlItem(i + start);
+		}
+		control.setSelection(items);
+		fireSelectionEvent();
 	}
 
 }

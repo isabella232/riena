@@ -11,7 +11,9 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.ColumnPixelData;
@@ -32,11 +34,13 @@ import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
+import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 
 /**
@@ -841,6 +845,108 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		}
 	}
 
+	/**
+	 * As per Bug 296639
+	 */
+	public void testSetSelectionWithNoBoundControl() {
+		ITreeRidget ridget = getRidget();
+
+		ridget.setSelection(node2);
+
+		assertNotNull(ridget.getUIControl());
+		assertEquals(node2, ridget.getSelection().get(0));
+
+		ridget.setUIControl(null);
+		ridget.setSelection(node4);
+
+		assertNull(ridget.getUIControl());
+		assertEquals(node4, ridget.getSelection().get(0));
+	}
+
+	/**
+	 * As per Bug 298033 comment #1
+	 */
+	public void testUpdateSingleSelectionFromModelWithNoBoundControl() {
+		ITreeRidget ridget = getRidget();
+
+		ridget.setSelectionType(SelectionType.SINGLE);
+		ridget.setSelection(node2);
+
+		assertEquals(node2, ridget.getSelection().get(0));
+
+		// remove selected element while not bound to a control
+		ridget.setUIControl(null);
+		removeNode(node1, node2);
+		ridget.updateFromModel();
+
+		assertNull(ridget.getUIControl());
+		assertTrue(ridget.getSelection().isEmpty());
+	}
+
+	/**
+	 * As per Bug 298033 comment #1
+	 */
+	public void testUpdateMultiSelectionFromModelWithNoBoundControl() {
+		ITreeRidget ridget = getRidget();
+
+		ridget.setSelectionType(SelectionType.MULTI);
+		ridget.setSelection(Arrays.asList(node2, node4));
+
+		assertEquals(2, ridget.getSelection().size());
+		assertEquals(node2, ridget.getSelection().get(0));
+		assertEquals(node4, ridget.getSelection().get(1));
+
+		// remove selected element while not bound to a control
+		ridget.setUIControl(null);
+		removeNode(node1, node2);
+		ridget.updateFromModel();
+
+		assertNull(ridget.getUIControl());
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(node4, ridget.getSelection().get(0));
+	}
+
+	/**
+	 * As per Bug 298033
+	 */
+	public void testUpdateSingleSelectionFromModelWithBoundControl() {
+		ITreeRidget ridget = getRidget();
+
+		ridget.setSelectionType(SelectionType.SINGLE);
+		ridget.setSelection(node2);
+
+		assertEquals(node2, ridget.getSelection().get(0));
+
+		// remove selected element while bound to a control
+		removeNode(node1, node2);
+		ridget.updateFromModel();
+
+		assertNotNull(ridget.getUIControl());
+		assertTrue(ridget.getSelection().isEmpty());
+	}
+
+	/**
+	 * As per Bug 298033
+	 */
+	public void testUpdateMultiSelectionFromModelWithBoundControl() {
+		ITreeRidget ridget = getRidget();
+
+		ridget.setSelectionType(SelectionType.MULTI);
+		ridget.setSelection(Arrays.asList(node2, node4));
+
+		assertEquals(2, ridget.getSelection().size());
+		assertEquals(node2, ridget.getSelection().get(0));
+		assertEquals(node4, ridget.getSelection().get(1));
+
+		// remove selected element while bound to a control
+		removeNode(node1, node2);
+		ridget.updateFromModel();
+
+		assertNotNull(ridget.getUIControl());
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(node4, ridget.getSelection().get(0));
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -885,6 +991,13 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		default:
 			throw new IndexOutOfBoundsException("index= " + index);
 		}
+	}
+
+	private void removeNode(ITreeNode parent, ITreeNode toRemove) {
+		List<ITreeNode> children = parent.getChildren();
+		boolean removed = children.remove(toRemove);
+		assertTrue("failed to remove " + toRemove, removed);
+		parent.setChildren(children);
 	}
 
 	// helping classes

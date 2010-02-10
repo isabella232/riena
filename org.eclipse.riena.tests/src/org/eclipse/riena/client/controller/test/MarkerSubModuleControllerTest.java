@@ -40,8 +40,6 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
-import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
-import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 import org.eclipse.riena.ui.tests.base.TestSingleSelectionBean;
 
 /**
@@ -132,28 +130,7 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		assertFalse(buttonCheck.isSelected());
 	}
 
-	private List<IMarkableRidget> getAllMarkableRidgets() {
-		List<IMarkableRidget> markableRidgets = new ArrayList<IMarkableRidget>();
-
-		markableRidgets.add(getController().getRidget(ITextRidget.class, "textName"));
-		markableRidgets.add(getController().getRidget(IDecimalTextRidget.class, "textPrice"));
-		markableRidgets.add(getController().getRidget(INumericTextRidget.class, "textAmount"));
-		markableRidgets.add(getController().getRidget(IDateTextRidget.class, "textDate"));
-		markableRidgets.add(getController().getRidget(IDateTimeRidget.class, "dtDate"));
-		markableRidgets.add(getController().getRidget(IComboRidget.class, "comboAge"));
-		markableRidgets.add(getController().getRidget(ISingleChoiceRidget.class, "choiceType"));
-		markableRidgets.add(getController().getRidget(IMultipleChoiceRidget.class, "choiceFlavor"));
-		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonToggle"));
-		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonRadioA"));
-		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonRadioB"));
-		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonCheck"));
-
-		return markableRidgets;
-	}
-
-	// TODO [ev] not working because assertIsBoundToModel() in AbstractSelectableRidget throws an exception when calling setSelection on ITreeRidget.
-	// See 296639: Make getRowObservables() independent of the uiControl https://bugs.eclipse.org/bugs/show_bug.cgi?id=296639
-	public void te_xx_stMandatoryMarkerOptions() {
+	public void testMandatoryMarkerOptions() {
 		ITreeRidget treePersons = getController().getRidget(ITreeRidget.class, "treePersons"); //$NON-NLS-1$
 		treePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		TestSingleSelectionBean singleSelectionBean = new TestSingleSelectionBean();
@@ -171,19 +148,6 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		for (IMarkableRidget ridget : getAllMarkableRidgets()) {
 			assertTrue(ridget.isMandatory());
 		}
-	}
-
-	public ITreeNode[] getTreeRoots() {
-
-		ITreeNode rootA = new TreeNode("A"); //$NON-NLS-1$
-		new TreeNode(rootA, new Person("Albinus", "Albert")); //$NON-NLS-1$ //$NON-NLS-2$
-		new TreeNode(rootA, new Person("Aurelius", "Mark")); //$NON-NLS-1$ //$NON-NLS-2$
-		ITreeNode rootB = new TreeNode("B"); //$NON-NLS-1$
-		new TreeNode(rootB, new Person("Barker", "Clyve")); //$NON-NLS-1$ //$NON-NLS-2$
-		new TreeNode(rootB, new Person("Barclay", "Bob")); //$NON-NLS-1$ //$NON-NLS-2$
-		ITreeNode[] treeRoots = new ITreeNode[] { rootA, rootB };
-
-		return treeRoots;
 	}
 
 	public void testErrorMarkerOptions() {
@@ -338,6 +302,9 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		basicTestMarkers(getController().getRidget(IMultipleChoiceRidget.class, "choiceFlavor")); //$NON-NLS-1$
 	}
 
+	// helping methods
+	//////////////////
+
 	private void basicTestMarkers(ITextRidget textRidget, String value) {
 		basicTestMarkers(textRidget);
 		textRidget.setText(null);
@@ -420,5 +387,24 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		assertFalse(ridget.isVisible());
 		ridget.setVisible(true);
 		assertTrue(ridget.isVisible());
+	}
+
+	private List<IMarkableRidget> getAllMarkableRidgets() {
+		List<IMarkableRidget> markableRidgets = new ArrayList<IMarkableRidget>();
+
+		markableRidgets.add(getController().getRidget(ITextRidget.class, "textName"));
+		markableRidgets.add(getController().getRidget(IDecimalTextRidget.class, "textPrice"));
+		markableRidgets.add(getController().getRidget(INumericTextRidget.class, "textAmount"));
+		markableRidgets.add(getController().getRidget(IDateTextRidget.class, "textDate"));
+		markableRidgets.add(getController().getRidget(IDateTimeRidget.class, "dtDate"));
+		markableRidgets.add(getController().getRidget(IComboRidget.class, "comboAge"));
+		markableRidgets.add(getController().getRidget(ISingleChoiceRidget.class, "choiceType"));
+		markableRidgets.add(getController().getRidget(IMultipleChoiceRidget.class, "choiceFlavor"));
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonToggle"));
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonRadioA"));
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonRadioB"));
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonCheck"));
+
+		return markableRidgets;
 	}
 }
