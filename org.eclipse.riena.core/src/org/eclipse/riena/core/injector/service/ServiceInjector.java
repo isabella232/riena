@@ -324,7 +324,7 @@ public abstract class ServiceInjector implements IStoppable {
 	}
 
 	private void invokeMethod(final List<Method> methods, final Object service) {
-		assert service != null;
+		Assert.isNotNull(service);
 
 		final Method method = findMatchingMethod(methods, service);
 		if (method == null) {
@@ -334,8 +334,8 @@ public abstract class ServiceInjector implements IStoppable {
 	}
 
 	private Method findMatchingMethod(final List<Method> methods, final Object service) {
-		assert methods != null;
-		assert service != null;
+		Assert.isNotNull(methods);
+		Assert.isNotNull(service);
 
 		final Class<?> parameterType = service.getClass();
 		final List<Method> targetedMethods = new ArrayList<Method>(1);
@@ -374,8 +374,8 @@ public abstract class ServiceInjector implements IStoppable {
 	 * @param service
 	 */
 	private void invoke(final Method method, final Object service) {
-		assert method != null;
-		assert service != null;
+		Assert.isNotNull(method);
+		Assert.isNotNull(service);
 		Throwable t = null;
 		String cause = null;
 

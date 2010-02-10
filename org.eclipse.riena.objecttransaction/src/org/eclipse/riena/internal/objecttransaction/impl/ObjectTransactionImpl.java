@@ -784,7 +784,7 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		return newList;
 	}
 
-	@SuppressWarnings( { "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	// TODO SuppressWarnings: Collection<T> is not Type safety
 	private <T> void fillReference(ITransactedObject object, String referenceName, Collection<T> initialCollection) {
 
@@ -863,7 +863,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	}
 
 	private void changeObjectId(IObjectId oldObjectId, IObjectId newObjectId) {
-		assert oldObjectId != null && newObjectId != null : "oldObjectId and newObjectId must not be null"; //$NON-NLS-1$
+		Assert.isNotNull(oldObjectId, "oldObjectId must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(newObjectId, "newObjectId must not be null"); //$NON-NLS-1$
 		ITransactedObject transObject = lookupObjectById(oldObjectId);
 		if (transObject == null) {
 			throw new ObjectTransactionFailure("oldObjectId is not registered"); //$NON-NLS-1$

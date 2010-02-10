@@ -102,7 +102,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 		if (!validDecimalStatus.isOK()) {
 			return validDecimalStatus;
 		}
-		assert value == null || value instanceof String;
+		Assert.isLegal(value == null || value instanceof String);
 		BigDecimal currentValue = BigDecimal.ZERO;
 		if (value != null) {
 			final String string = Utils.removeWhitespace((String) value);

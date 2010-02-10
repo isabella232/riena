@@ -475,7 +475,7 @@ public final class ReflectionUtils {
 
 	@SuppressWarnings("unchecked")
 	private static <T> Constructor<T> findMatchingConstructor(boolean open, Class<T> clazz, Class<?>[] clazzes) {
-		assert clazz != null;
+		Assert.isNotNull(clazz);
 
 		try {
 			if (clazzes == null) {
@@ -504,8 +504,8 @@ public final class ReflectionUtils {
 	}
 
 	private static Method findMatchingMethod(boolean open, Class<?> clazz, String name, Class<?>[] clazzes) {
-		assert clazz != null;
-		assert name != null;
+		Assert.isNotNull(clazz);
+		Assert.isNotNull(name);
 
 		try {
 			if (clazzes == null) {
@@ -579,14 +579,14 @@ public final class ReflectionUtils {
 	}
 
 	private static Class<?> getClass(Object instance) {
-		assert instance != null;
+		Assert.isNotNull(instance);
 
 		return (instance instanceof Class<?>) ? (Class<?>) instance : instance.getClass();
 	}
 
 	private static Field getDeepField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
-		assert clazz != null;
-		assert fieldName != null;
+		Assert.isNotNull(clazz);
+		Assert.isNotNull(fieldName);
 
 		Class<?> lookIn = clazz;
 		while (lookIn != null) {

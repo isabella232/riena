@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.eclipse.core.runtime.Assert;
+
 /**
  * The {@code Range} class implements a simple solution to specify ranges of
  * integers. A range may consist of several intervals and single values.
@@ -24,7 +26,7 @@ import java.util.StringTokenizer;
  * <li>1..3, 5..8 -> 1,2,3,5,6,7 and 8 are within the range</li>
  * <li>1..3, 9 -> 1,2,3 and 9 are within the range</li>
  * <li>etc.</li>
- *</ul>
+ * </ul>
  */
 public class Range {
 
@@ -99,7 +101,7 @@ public class Range {
 
 		public Interval(String token) {
 			int dotdot = token.indexOf(TILL);
-			assert dotdot > 0;
+			Assert.isLegal(dotdot > 0);
 			lower = Integer.valueOf(token.substring(0, dotdot).trim());
 			upper = Integer.valueOf(token.substring(dotdot + TILL.length()).trim());
 		}

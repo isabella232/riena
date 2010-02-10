@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.core.wire.InjectExtension;
@@ -229,7 +230,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		public void saveProgress(IProgressVisualizer visualizer, int progress) {
 			// anybody there?
 			ProcessDetail pDetail = detailForVisualizer(visualizer);
-			assert pDetail != null : "no ProcessDetail for visualizer " + visualizer; //$NON-NLS-1$
+			Assert.isNotNull(pDetail, "no ProcessDetail for visualizer " + String.valueOf(visualizer)); //$NON-NLS-1$
 			// pending?
 			if (pDetail.isPending()) {
 				// no more!

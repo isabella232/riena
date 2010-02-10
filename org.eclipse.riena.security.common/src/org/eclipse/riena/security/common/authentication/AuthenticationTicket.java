@@ -15,6 +15,8 @@ import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.security.common.session.Session;
 
 /**
@@ -48,7 +50,7 @@ public class AuthenticationTicket implements Serializable {
 	 */
 	public AuthenticationTicket(Session session) {
 		super();
-		assert session != null : "Missing session"; //$NON-NLS-1$
+		Assert.isNotNull(session, "Missing session"); //$NON-NLS-1$
 		this.session = session;
 		this.principals = new HashSet<Principal>();
 	}

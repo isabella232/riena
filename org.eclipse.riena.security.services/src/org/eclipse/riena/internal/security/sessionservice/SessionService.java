@@ -12,6 +12,8 @@ package org.eclipse.riena.internal.security.sessionservice;
 
 import java.security.Principal;
 
+import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.security.server.session.SessionFailure;
@@ -76,7 +78,7 @@ public class SessionService implements ISessionService {
 	 */
 	public Session generateSession(Principal[] principals) {
 		// Assert.isNotNull( principal.getName(),"userid must not be null" );
-		assert store != null : "store instance is null"; //$NON-NLS-1$
+		Assert.isNotNull(store, "store instance is null"); //$NON-NLS-1$
 
 		Session session = sessionProvider.createSession(principals);
 

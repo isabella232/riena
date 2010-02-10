@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 
@@ -50,8 +51,7 @@ public class FontDescriptor implements ILnfFontDescriptor {
 	 *            the height to create the font. See also
 	 *            {@link #setHeight(int)}.
 	 * @param style
-	 *            the style to create the font. See also
-	 *            {@link #setStyle(int)}.
+	 *            the style to create the font. See also {@link #setStyle(int)}.
 	 * @param lnf
 	 *            the {@link RienaDefaultLnf} which is used to access the
 	 *            fontStore.
@@ -87,7 +87,7 @@ public class FontDescriptor implements ILnfFontDescriptor {
 		}
 		this.height = height;
 
-		assert (this.height >= 0);
+		Assert.isLegal(this.height >= 0);
 	}
 
 	/**

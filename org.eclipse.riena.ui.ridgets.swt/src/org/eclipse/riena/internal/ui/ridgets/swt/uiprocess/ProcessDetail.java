@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt.uiprocess;
 
+import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.swt.uiprocess.ProcessState;
@@ -70,7 +72,7 @@ public class ProcessDetail {
 	 * called by timer when {@link #isPending()} == true
 	 */
 	public void triggerPending() {
-		assert isPending() : ":-( triggerPending called in working state"; //$NON-NLS-1$
+		Assert.isTrue(isPending(), ":-( triggerPending called in working state"); //$NON-NLS-1$
 		if (pendingProgress <= PENDING_MAXWORK) {
 			// go on
 			pendingProgress += PENDING_STEP;

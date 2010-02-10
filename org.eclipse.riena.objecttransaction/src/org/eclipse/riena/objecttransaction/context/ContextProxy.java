@@ -15,6 +15,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.eclipse.core.runtime.Assert;
+
 /**
  * A Proxy for the management of a Context on the contained Object. All public
  * methods will be encapsulated by activating and passivating the corresponding
@@ -76,10 +78,10 @@ public final class ContextProxy implements InvocationHandler {
 	 *            the context to work on with this proxy
 	 * @return the Proxy
 	 */
-	@SuppressWarnings( { "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public static <T> T cover(T pObject, IContextProvider pContextProvider) {
-		assert pObject != null : "The object to proxy must not be null"; //$NON-NLS-1$
-		assert pContextProvider != null : "The context carrier must not be null"; //$NON-NLS-1$
+		Assert.isNotNull(pObject, "The object to proxy must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(pContextProvider, "The context carrier must not be null"); //$NON-NLS-1$
 		return (T) Proxy.newProxyInstance(pObject.getClass().getClassLoader(), getInterfaces(pObject.getClass()),
 				new ContextProxy(pObject, pContextProvider));
 	}
@@ -97,9 +99,9 @@ public final class ContextProxy implements InvocationHandler {
 	 *            the context to work on with this proxy
 	 * @return the Proxy
 	 */
-	@SuppressWarnings( { "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public static <T extends IContextProvider> T cover(T pContextProvider) {
-		assert pContextProvider != null : "The context carrier must not be null"; //$NON-NLS-1$
+		Assert.isNotNull(pContextProvider, "The context carrier must not be null"); //$NON-NLS-1$
 		return (T) Proxy.newProxyInstance(pContextProvider.getClass().getClassLoader(), getInterfaces(pContextProvider
 				.getClass()), new ContextProxy(pContextProvider, pContextProvider));
 	}

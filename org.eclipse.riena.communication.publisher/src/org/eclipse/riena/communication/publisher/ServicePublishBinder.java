@@ -16,16 +16,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.framework.Constants;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.log.LogService;
+
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.communication.publisher.Activator;
 import org.eclipse.riena.internal.communication.publisher.ServiceHooksProxy;
-import org.osgi.framework.Constants;
-import org.osgi.framework.ServiceReference;
-import org.osgi.service.log.LogService;
 
 /**
  * The class publishes all services that are existing as life services in the
@@ -105,7 +108,7 @@ public class ServicePublishBinder implements IServicePublishBinder {
 	 */
 	public void publish(ServiceReference ref, String url, String protocol) {
 		String[] interfaces = (String[]) ref.getProperty(Constants.OBJECTCLASS);
-		assert interfaces.length == 1 : "OSGi service registrations only with one interface supported"; //$NON-NLS-1$
+		Assert.isLegal(interfaces.length == 1, "OSGi service registrations only with one interface supported"); //$NON-NLS-1$
 		String interfaceName = interfaces[0];
 		publish(interfaceName, ref, url, protocol);
 	}

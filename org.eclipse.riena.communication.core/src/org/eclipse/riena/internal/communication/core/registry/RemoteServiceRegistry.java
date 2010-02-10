@@ -24,6 +24,7 @@ import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
@@ -121,7 +122,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	 * (org.eclipse.riena.communication.core.IRemoteServiceReference)
 	 */
 	public void unregisterService(IRemoteServiceReference reference) {
-		assert reference != null : "RemoteServiceReference must not be null"; //$NON-NLS-1$
+		Assert.isNotNull(reference, "RemoteServiceReference must not be null"); //$NON-NLS-1$
 		synchronized (registeredServices) {
 			// we have commented out the following lines
 			// because the service gets unregistered automatically when the bundle, that created it, is

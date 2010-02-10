@@ -16,6 +16,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.eclipse.core.runtime.Assert;
+
 /**
  * HttpURLDataSource that is used if URLs are read into an attachment since the
  * implementation from JAF is broken in the sense that it re-issues HTTP-calls
@@ -36,7 +38,7 @@ public class HttpURLDataSource implements IDataSource {
 	 */
 	public HttpURLDataSource(URL url) throws IOException {
 		HttpURLConnection myHttpUrlConnection = (HttpURLConnection) url.openConnection();
-		assert myHttpUrlConnection != null;
+		Assert.isNotNull(myHttpUrlConnection);
 		this.httpUrlConnection = myHttpUrlConnection;
 	}
 
