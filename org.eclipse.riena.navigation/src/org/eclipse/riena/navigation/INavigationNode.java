@@ -224,7 +224,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 *            the index of the child node
 	 * @param pChild
 	 *            the child node to add
-	 * 
+	 * @since 2.0
 	 */
 	void addChild(int index, C pChild);
 
