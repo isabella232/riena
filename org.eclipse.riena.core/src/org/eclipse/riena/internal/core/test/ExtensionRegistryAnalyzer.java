@@ -21,6 +21,8 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
+
 /**
  * Helper class for analyzing the current state of the {@code
  * IExtensionRegistry}.
@@ -52,14 +54,21 @@ public final class ExtensionRegistryAnalyzer {
 	 *            nesting depth
 	 */
 	public static void dumpRegistry(final String extensionPointPrefix, final int depth) {
-		System.out.println("Registry:"); //$NON-NLS-1$
-		System.out.println("========="); //$NON-NLS-1$
 		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
 		if (extensionRegistry == null) {
 			System.out.println("No extension registry available."); //$NON-NLS-1$
 			return;
 		}
-		final IExtensionPoint[] extensionPoints = RegistryFactory.getRegistry().getExtensionPoints();
+		final Object strategy = ReflectionUtils.getHidden(extensionRegistry, "strategy"); //$NON-NLS-1$
+		final String header = "Registry (with strategy " + strategy.getClass().getSimpleName() + "):"; //$NON-NLS-1$ //$NON-NLS-2$
+		System.out.println(header);
+		final StringBuilder bob = new StringBuilder();
+		for (int i = 0; i < header.length(); i++) {
+			bob.append('-');
+		}
+		System.out.println(bob.toString());
+
+		final IExtensionPoint[] extensionPoints = extensionRegistry.getExtensionPoints();
 
 		Arrays.sort(extensionPoints, new Comparator<IExtensionPoint>() {
 			public int compare(final IExtensionPoint ep1, final IExtensionPoint ep2) {
