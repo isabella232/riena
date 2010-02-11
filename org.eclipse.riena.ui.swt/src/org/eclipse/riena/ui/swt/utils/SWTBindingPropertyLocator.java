@@ -52,13 +52,26 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	 * 
 	 * @param composite
 	 *            a Composite instance; never null
-	 * @return a list of bounds Controls; never null; may be empty
+	 * @return a List of bounds Controls (exluding composite); never null; may
+	 *         be empty. Will not continue into {@link IComplexComponent}s - as
+	 *         they are repsonsible for they own children.
 	 * @since 1.2
 	 */
 	public static List<Object> getControlsWithBindingProperty(Composite composite) {
-		Map<String, Control> map = new HashMap<String, Control>();
-		collectControlsWithBindingProperty(composite, map);
-		return new ArrayList<Object>(map.values());
+		final Map<String, Object> id2control = new HashMap<String, Object>();
+		SWTControlFinder finder = new SWTControlFinder(composite) {
+			@Override
+			public void handleBoundControl(Control control, String bindingProperty) {
+				if (id2control.containsKey(bindingProperty)) {
+					String format = "conflict: control with id '%s' already defined: %s, %s"; //$NON-NLS-1$
+					String msg = String.format(format, bindingProperty, id2control.get(bindingProperty), control);
+					throw new RuntimeException(msg);
+				}
+				id2control.put(bindingProperty, control);
+			}
+		};
+		finder.run();
+		return new ArrayList<Object>(id2control.values());
 	}
 
 	/**
@@ -75,81 +88,28 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	}
 
 	public String locateBindingProperty(Object uiControl) {
+		String result = null;
 		if (uiControl instanceof Widget) {
 			Widget widget = (Widget) uiControl;
-			if (widget.isDisposed()) {
-				return null;
+			if (!widget.isDisposed()) {
+				result = (String) widget.getData(BINDING_PROPERTY);
 			}
-			return locateBindingProperty(widget);
+		} else if (uiControl instanceof IPropertyNameProvider) {
+			result = ((IPropertyNameProvider) uiControl).getPropertyName();
 		}
-
-		if (uiControl instanceof IPropertyNameProvider) {
-			return ((IPropertyNameProvider) uiControl).getPropertyName();
-		}
-
-		return null;
+		return result;
 	}
 
 	public void setBindingProperty(Object uiControl, String id) {
 		if (uiControl instanceof Widget) {
-			Widget control = (Widget) uiControl;
-			if (control.isDisposed()) {
+			Widget widget = (Widget) uiControl;
+			if (widget.isDisposed()) {
 				return;
 			}
-			control.setData(BINDING_PROPERTY, id);
+			widget.setData(BINDING_PROPERTY, id);
 		} else if (uiControl instanceof IPropertyNameProvider) {
 			((IPropertyNameProvider) uiControl).setPropertyName(id);
 		}
 	}
 
-	// helping methods
-	//////////////////
-
-	private static void collectControlsWithBindingProperty(Composite parent, Map<String, Control> result) {
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		for (Control control : parent.getChildren()) {
-			String bindingProperty = locator.locateBindingProperty(control);
-			if (StringUtils.isGiven(bindingProperty)) {
-				if (result.containsKey(bindingProperty)) {
-					Control firstControl = result.get(bindingProperty);
-					String msg = String.format("Binding property '%s' used by several widgets: %s and %s", //$NON-NLS-1$
-							bindingProperty, firstControl, control);
-					throw new RuntimeException(msg);
-				} else {
-					result.put(bindingProperty, control);
-				}
-			}
-			if (control instanceof Composite) {
-				collectControlsWithBindingProperty((Composite) control, result);
-			}
-		}
-	}
-
-	/**
-	 * Returns the binding property of the given UI control. This method pays
-	 * attention, if the widget is a child of a complex element. In this case
-	 * the binding property of the complex element is added to the binding
-	 * property (full property).
-	 * 
-	 * @param widget
-	 *            UI control
-	 * @return full binding property
-	 */
-	private String locateBindingProperty(Widget widget) {
-		String fullProperty = (String) widget.getData(BINDING_PROPERTY);
-		if (StringUtils.isEmpty(fullProperty)) {
-			fullProperty = ""; //$NON-NLS-1$
-		} else {
-			if (widget instanceof Control) {
-				Composite parent = ((Control) widget).getParent();
-				if (parent != null) {
-					String parentProperty = locateBindingProperty(parent);
-					if (!StringUtils.isEmpty(parentProperty) && (parent instanceof IComplexComponent)) {
-						fullProperty = parentProperty + SEPARATOR + fullProperty;
-					}
-				}
-			}
-		}
-		return fullProperty;
-	}
 }

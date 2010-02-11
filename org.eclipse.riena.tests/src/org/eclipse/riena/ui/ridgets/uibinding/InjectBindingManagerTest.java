@@ -105,28 +105,8 @@ public class InjectBindingManagerTest extends TestCase {
 
 	}
 
-	/**
-	 * Tests the <i>private</i> method {@code createMethodeNameProperty(String)}
-	 * .
-	 */
-	public void testCreateMethodeNameProperty() {
-
-		String prop = ReflectionUtils.invokeHidden(manager, "createMethodeNameProperty", "");
-		assertEquals("", prop);
-
-		prop = ReflectionUtils.invokeHidden(manager, "createMethodeNameProperty", "hello");
-		assertEquals("hello", prop);
-
-		prop = ReflectionUtils.invokeHidden(manager, "createMethodeNameProperty", "hello.world");
-		assertEquals("helloWorld", prop);
-
-		prop = ReflectionUtils.invokeHidden(manager, "createMethodeNameProperty", "ab.cd.ef.");
-		assertEquals("abCdEf", prop);
-
-		prop = ReflectionUtils.invokeHidden(manager, "createMethodeNameProperty", ".ab.cd.ef.");
-		assertEquals("AbCdEf", prop);
-
-	}
+	// helping classes
+	//////////////////
 
 	private static final class BindingPropertyLocator implements IBindingPropertyLocator {
 

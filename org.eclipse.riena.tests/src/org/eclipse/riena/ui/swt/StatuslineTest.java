@@ -114,7 +114,8 @@ public class StatuslineTest extends TestCase {
 				}
 				number = true;
 				StatuslineNumber statuslineNumber = (StatuslineNumber) uiControl;
-				assertEquals("numberRidget", statuslineNumber.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
+				assertEquals("statuslineNumberRidget", statuslineNumber
+						.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
 			}
 		}
 		assertTrue(number);

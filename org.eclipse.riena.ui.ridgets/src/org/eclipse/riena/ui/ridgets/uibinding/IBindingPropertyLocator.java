@@ -16,12 +16,6 @@ package org.eclipse.riena.ui.ridgets.uibinding;
 public interface IBindingPropertyLocator {
 
 	/**
-	 * Value ({@value} ) used to separate compound id's. Example:
-	 * &quot;parent.child&quot;.
-	 */
-	String SEPARATOR = "."; //$NON-NLS-1$
-
-	/**
 	 * Returns the ID of the given UI control.
 	 * 
 	 * @param uiControl

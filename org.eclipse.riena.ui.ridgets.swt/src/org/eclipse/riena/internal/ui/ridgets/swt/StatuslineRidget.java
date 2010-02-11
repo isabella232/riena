@@ -96,11 +96,11 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 	 */
 	public void setStatuslineNumberRidget(IStatuslineNumberRidget statuslineNumberRidget) {
 		this.statuslineNumberRidget = statuslineNumberRidget;
-		addRidget("numberRidget", statuslineNumberRidget); //$NON-NLS-1$
+		addRidget(Statusline.SL_NUMBER_RIDGET_ID, statuslineNumberRidget);
 	}
 
 	public void setStatuslineUIProcessRidget(IStatuslineUIProcessRidget statuslineUIProcessRidget) {
-		addRidget("UIProcessRidget", statuslineUIProcessRidget); //$NON-NLS-1$
+		addRidget(Statusline.SL_UIPROCES_RIDGET_ID, statuslineUIProcessRidget);
 		this.statuslineUIProcessRidget = statuslineUIProcessRidget;
 	}
 
