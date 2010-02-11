@@ -17,7 +17,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.NodePositioner;
 
 /**
- * Test the {@link NodePositioner}
+ * Tests the {@link NodePositioner}
  */
 @NonUITestCase
 public class NodePositionerTest extends TestCase {
