@@ -231,6 +231,13 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		return isSortedAscending;
 	}
 
+	public void refresh(Object node) {
+		AbstractListViewer viewer = getViewer();
+		if (viewer != null) {
+			viewer.refresh(node, true);
+		}
+	}
+
 	public void removeDoubleClickListener(IActionListener listener) {
 		if (doubleClickListeners != null) {
 			doubleClickListeners.remove(listener);

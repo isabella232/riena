@@ -19,6 +19,7 @@ import java.util.List;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.TableLayout;
@@ -31,6 +32,7 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
+import org.eclipse.riena.beans.common.StringPojo;
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
@@ -49,7 +51,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
-	protected Control createWidget(Composite parent) {
+	protected Table createWidget(Composite parent) {
 		Table table = new Table(parent, SWT.MULTI);
 		table.setHeaderVisible(true);
 		new TableColumn(table, SWT.NONE);
@@ -891,9 +893,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 			assertTrue(rex.getMessage().contains("Object"));
 		}
 
-		ridget
-				.setColumnWidths(new Object[] { new ColumnPixelData(20), new ColumnPixelData(40),
-						new ColumnPixelData(60) });
+		ridget.setColumnWidths(new Object[] { new ColumnPixelData(20), new ColumnPixelData(40), new ColumnPixelData(60) });
 		String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
 		ridget.bindToModel(manager, "persons", Person.class, columns3, null);
 
@@ -927,6 +927,66 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 			String msg = String.format("col #%d, exp:%d, act:%d", i, widths[i], actual);
 			assertEquals(msg, widths[i], actual);
 		}
+	}
+
+	/**
+	 * As per bug 301182
+	 */
+	public void testRefreshNull() {
+		ITableRidget ridget = createRidget();
+		Table control = createWidget(getShell());
+		ridget.setUIControl(control);
+
+		StringPojo word1 = new StringPojo("eclipse");
+		StringPojo word2 = new StringPojo("riena");
+		WritableList values = new WritableList(Arrays.asList(word1, word2), StringPojo.class);
+		String[] columns = { "value" };
+		ridget.bindToModel(values, StringPojo.class, columns, null);
+		ridget.updateFromModel();
+
+		assertEquals("eclipse", control.getItem(0).getText());
+		assertEquals("riena", control.getItem(1).getText());
+
+		word1.setValue("alpha");
+		word2.setValue("beta");
+
+		assertEquals("eclipse", control.getItem(0).getText());
+		assertEquals("riena", control.getItem(1).getText());
+
+		ridget.refresh(null);
+
+		assertEquals("alpha", control.getItem(0).getText());
+		assertEquals("beta", control.getItem(1).getText());
+	}
+
+	/**
+	 * As per bug 301182
+	 */
+	public void testRefresh() {
+		ITableRidget ridget = createRidget();
+		Table control = createWidget(getShell());
+		ridget.setUIControl(control);
+
+		StringPojo word1 = new StringPojo("eclipse");
+		StringPojo word2 = new StringPojo("riena");
+		WritableList values = new WritableList(Arrays.asList(word1, word2), StringPojo.class);
+		String[] columns = { "value" };
+		ridget.bindToModel(values, StringPojo.class, columns, null);
+		ridget.updateFromModel();
+
+		assertEquals("eclipse", control.getItem(0).getText());
+		assertEquals("riena", control.getItem(1).getText());
+
+		word1.setValue("alpha");
+		word2.setValue("beta");
+
+		assertEquals("eclipse", control.getItem(0).getText());
+		assertEquals("riena", control.getItem(1).getText());
+
+		ridget.refresh(word1);
+
+		assertEquals("alpha", control.getItem(0).getText());
+		assertEquals("riena", control.getItem(1).getText());
 	}
 
 	// helping methods

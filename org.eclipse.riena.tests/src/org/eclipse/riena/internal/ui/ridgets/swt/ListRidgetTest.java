@@ -16,20 +16,20 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.List;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
+import org.eclipse.riena.beans.common.StringPojo;
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IListRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
@@ -43,12 +43,12 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 public class ListRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
-	protected Control createWidget(Composite parent) {
+	protected List createWidget(Composite parent) {
 		return new List(parent, SWT.MULTI);
 	}
 
 	@Override
-	protected IRidget createRidget() {
+	protected IListRidget createRidget() {
 		return new ListRidget();
 	}
 
@@ -744,6 +744,66 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(SimplifiedModel.NAME_ONE, control.getItem(0));
 		assertEquals(SimplifiedModel.NAME_TWO, control.getItem(1));
 		assertEquals(SimplifiedModel.NAME_THREE, control.getItem(2));
+	}
+
+	/**
+	 * As per bug 301182
+	 */
+	public void testRefreshNull() {
+		IListRidget ridget = createRidget();
+		List control = createWidget(getShell());
+		ridget.setUIControl(control);
+
+		StringPojo word1 = new StringPojo("eclipse");
+		StringPojo word2 = new StringPojo("riena");
+		WritableList values = new WritableList(Arrays.asList(word1, word2), StringPojo.class);
+		String[] columns = { "value" };
+		ridget.bindToModel(values, StringPojo.class, columns, null);
+		ridget.updateFromModel();
+
+		assertEquals("eclipse", control.getItem(0));
+		assertEquals("riena", control.getItem(1));
+
+		word1.setValue("alpha");
+		word2.setValue("beta");
+
+		assertEquals("eclipse", control.getItem(0));
+		assertEquals("riena", control.getItem(1));
+
+		ridget.refresh(null);
+
+		assertEquals("alpha", control.getItem(0));
+		assertEquals("beta", control.getItem(1));
+	}
+
+	/**
+	 * As per bug 301182
+	 */
+	public void testRefresh() {
+		IListRidget ridget = createRidget();
+		List control = createWidget(getShell());
+		ridget.setUIControl(control);
+
+		StringPojo word1 = new StringPojo("eclipse");
+		StringPojo word2 = new StringPojo("riena");
+		WritableList values = new WritableList(Arrays.asList(word1, word2), StringPojo.class);
+		String[] columns = { "value" };
+		ridget.bindToModel(values, StringPojo.class, columns, null);
+		ridget.updateFromModel();
+
+		assertEquals("eclipse", control.getItem(0));
+		assertEquals("riena", control.getItem(1));
+
+		word1.setValue("alpha");
+		word2.setValue("beta");
+
+		assertEquals("eclipse", control.getItem(0));
+		assertEquals("riena", control.getItem(1));
+
+		ridget.refresh(word1);
+
+		assertEquals("alpha", control.getItem(0));
+		assertEquals("riena", control.getItem(1));
 	}
 
 	// helping methods

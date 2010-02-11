@@ -102,6 +102,21 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	boolean hasMoveableColumns();
 
 	/**
+	 * Refresh the given row or rows in the control.
+	 * <p>
+	 * This is useful when the values shown by the ridget do not fire property
+	 * change notifications when they are changed (pojos).
+	 * <p>
+	 * Does not have an effect when no control is bound.
+	 * 
+	 * @param node
+	 *            the row value that should be refreshed or null to refresh all
+	 *            rows
+	 * @since 2.0
+	 */
+	void refresh(Object node);
+
+	/**
 	 * Removes the listener from the collection of listeners who will be
 	 * notified when the bound control is double-clicked.
 	 * 
