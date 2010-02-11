@@ -105,7 +105,15 @@ public final class ExtensionMapper {
 		final List<Object> list = new ArrayList<Object>();
 		boolean atLeastOneExtensionPointExists = false;
 		for (final String extensionPointId : extensionDesc.getExtensionPointId().compatibleIds()) {
-			final IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(extensionPointId);
+			// 
+			final int lastDot = extensionPointId.lastIndexOf('.');
+			if (lastDot < 1) {
+				throw new IllegalStateException("ExtensionPointId has no namespace!"); //$NON-NLS-1$
+			}
+			final String namespace = extensionPointId.substring(0, lastDot);
+			final String extensionPointName = extensionPointId.substring(lastDot + 1);
+			final IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(namespace, extensionPointName);
+			//			final IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(extensionPointId);
 			if (extensionPoint == null) {
 				continue;
 			} else {
