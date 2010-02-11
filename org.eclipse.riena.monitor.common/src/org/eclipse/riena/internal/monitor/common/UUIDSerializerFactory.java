@@ -24,7 +24,7 @@ import org.eclipse.riena.internal.communication.factory.hessian.AbstractRienaSer
  */
 public class UUIDSerializerFactory extends AbstractRienaSerializerFactory {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
 		if (cl != UUID.class) {
@@ -38,7 +38,7 @@ public class UUIDSerializerFactory extends AbstractRienaSerializerFactory {
 		};
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Serializer getSerializer(Class cl) throws HessianProtocolException {
 		return null;

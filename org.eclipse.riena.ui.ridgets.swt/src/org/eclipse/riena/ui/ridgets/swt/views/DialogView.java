@@ -101,6 +101,7 @@ public abstract class DialogView extends RienaDialog {
 	/**
 	 * @since 2.0
 	 */
+	@Override
 	protected Shell getParentShell() {
 		return parentShell;
 	}

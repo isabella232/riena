@@ -92,7 +92,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * @param navigationNode
 	 *            the navigationNode to set
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setNavigationNode(N navigationNode) {
 		if (getNavigationNode() instanceof INavigationNodeListenerable) {
 			((INavigationNodeListenerable) getNavigationNode()).removeListener(nodeListener);

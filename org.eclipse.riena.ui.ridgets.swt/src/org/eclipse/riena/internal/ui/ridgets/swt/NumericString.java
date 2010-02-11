@@ -234,16 +234,18 @@ public class NumericString {
 				start = next;
 			}
 			if (cursorAfterMe) {
-				if (next != null)
+				if (next != null) {
 					next.setCursorBefore();
-				else if (prev != null)
+				} else if (prev != null) {
 					prev.setCursorAfter();
+				}
 			}
 			if (cursorBeforeMe) {
-				if (prev != null)
+				if (prev != null) {
 					prev.setCursorAfter();
-				else if (next != null)
+				} else if (next != null) {
 					next.setCursorBefore();
+				}
 			}
 		}
 

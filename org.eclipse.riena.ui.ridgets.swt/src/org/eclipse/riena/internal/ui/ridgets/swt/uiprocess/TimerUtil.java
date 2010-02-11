@@ -17,14 +17,21 @@ import java.util.TimerTask;
  * Utility class for sharing of a common timer. We don´t want to have a big
  * number of worker threads.
  */
-public class TimerUtil {
+public final class TimerUtil {
+
+	/**
+	 * No public constructor for this utility class.
+	 */
+	private TimerUtil() {
+		super();
+	}
 
 	// the common timer instance
-	private final static Timer timer = new Timer();
+	private final static Timer TIMER = new Timer();
 
 	public static void schedule(TimerTask task, int delay, int period) {
 		// the actual task of work
-		timer.schedule(task, delay, period);
+		TIMER.schedule(task, delay, period);
 	}
 
 	public static void stop(TimerTask task) {

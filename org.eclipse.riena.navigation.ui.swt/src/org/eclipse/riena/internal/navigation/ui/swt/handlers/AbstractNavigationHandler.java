@@ -38,7 +38,7 @@ abstract class AbstractNavigationHandler extends AbstractHandler {
 	 *            a non-null IApplicationNode
 	 * @return an array of {@link IModuleNode}s; never null; may be empty.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected final IModuleNode[] collectModules(IApplicationNode application) {
 		List<IModuleNode> modules = new ArrayList<IModuleNode>();
 		INavigationNode<?> subApplication = findActive((List) application.getChildren());
@@ -78,7 +78,7 @@ abstract class AbstractNavigationHandler extends AbstractHandler {
 	 * IApplicationNode and return the first 'active' IModuleGroupNode; or null
 	 * if none found.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public final IModuleGroupNode findModuleGroup(IApplicationNode application) {
 		IModuleGroupNode result = null;
 		INavigationNode<?> subApplication = findActive((List) application.getChildren());

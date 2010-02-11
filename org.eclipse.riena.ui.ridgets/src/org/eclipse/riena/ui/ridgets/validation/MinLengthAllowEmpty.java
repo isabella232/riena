@@ -51,7 +51,7 @@ public class MinLengthAllowEmpty extends MinLength {
 
 	@Override
 	public String toString() {
-		return super.toString() + "<allowEmpty";
+		return super.toString() + "<allowEmpty"; //$NON-NLS-1$
 	}
 
 }

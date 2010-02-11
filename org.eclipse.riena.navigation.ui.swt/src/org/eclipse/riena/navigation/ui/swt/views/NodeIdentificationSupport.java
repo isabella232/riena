@@ -65,7 +65,7 @@ public final class NodeIdentificationSupport {
 	 * @param Node
 	 */
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static void setIdentification(Widget aWidget, String aWidgetId, INavigationNode aNode) {
 		if (aNode.getNodeId() != null) {
 			setIdentification(aWidget, aWidgetId, aNode.getNodeId());

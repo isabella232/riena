@@ -58,6 +58,7 @@ public class ValueBindingSupport {
 			return isOk ? Status.OK_STATUS : Status.CANCEL_STATUS;
 		}
 
+		@Override
 		public String toString() {
 			return "NO_ERRORS_RULE"; //$NON-NLS-1$
 		}
@@ -417,7 +418,7 @@ public class ValueBindingSupport {
 			errorMarker = new ErrorMessageMarker(status.getMessage());
 			rule2error.put(validationRule, errorMarker);
 		} else {
-			((ErrorMessageMarker) errorMarker).setMessage(status.getMessage());
+			errorMarker.setMessage(status.getMessage());
 		}
 		markable.addMarker(errorMarker);
 		// trace("+EM " + errorMarker + " " + markable.getMarkers().size());

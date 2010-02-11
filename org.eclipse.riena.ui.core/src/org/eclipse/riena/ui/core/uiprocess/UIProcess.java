@@ -216,7 +216,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		Object adapted = super.getAdapter(adapter);
 		if (adapted == null) {

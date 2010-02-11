@@ -181,12 +181,12 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	}
 
 	public synchronized boolean revalidate() {
-		int value = 0;
+		int val = 0;
 		if (getUIControl() != null) {
-			value = getValue();
+			val = getValue();
 		}
 		disableMandatoryMarkers(true);
-		IStatus status = checkAllRules(value, new ValidationCallback(false));
+		IStatus status = checkAllRules(val, new ValidationCallback(false));
 		if (status.isOK()) {
 			getValueBindingSupport().updateFromTarget();
 		}
@@ -298,6 +298,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	/**
 	 * @return The observable value of the ridget.
 	 */
+	@Override
 	protected IObservableValue getRidgetObservable() {
 		return BeansObservables.observeValue(this, ITraverseRidget.PROPERTY_VALUE);
 	}
@@ -559,10 +560,10 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	private final class ActionListener implements IActionListener {
 		public void callback() {
 			if (getUIControl() != null) {
-			int selection = getValue(getUIControl());
-			setValue(selection);
+				int selection = getValue(getUIControl());
+				setValue(selection);
+			}
 		}
-	}
 	}
 
 	/**

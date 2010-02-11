@@ -56,9 +56,8 @@ public interface IBindingManager {
 	 * 
 	 * @param control
 	 *            UI-control
-	 * @return ridget
 	 * @throws ReflectionFailure
 	 */
-	IRidget createRidget(Object control) throws ReflectionFailure;
+	IRidget createRidget(Object control);
 
 }

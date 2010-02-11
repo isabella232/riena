@@ -199,7 +199,7 @@ public class DatePickerComposite extends Composite {
 				 * needed until we can close the widget (i.e. last zoom in
 				 * level). See Bug 288354, comment #4, point #3.
 				 */
-				int win32clicks = init();
+				private int win32clicks = init();
 
 				@Override
 				public void mouseUp(MouseEvent e) {

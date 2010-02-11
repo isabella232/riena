@@ -35,7 +35,7 @@ public class CloseModuleGroup extends AbstractNavigationHandler {
 			if (previous != null) {
 				previous.activate();
 			}
-			((IModuleGroupNode) moduleGroup).dispose();
+			moduleGroup.dispose();
 		}
 		return null;
 	}
@@ -45,9 +45,8 @@ public class CloseModuleGroup extends AbstractNavigationHandler {
 
 	private INavigationNode<?> findPreviousModuleGroup(IModuleGroupNode moduleGroup) {
 		List<?> moduleGroups = moduleGroup.getParent().getChildren();
-		INavigationNode<?>[] nodes = (INavigationNode<?>[]) moduleGroups.toArray(new INavigationNode<?>[moduleGroups
-				.size()]);
-		return (INavigationNode<?>) findPreviousNode(nodes, false);
+		INavigationNode<?>[] nodes = moduleGroups.toArray(new INavigationNode<?>[moduleGroups.size()]);
+		return findPreviousNode(nodes, false);
 	}
 
 	private boolean isCloseable(IModuleGroupNode moduleGroup) {

@@ -60,6 +60,7 @@ public class MasterDetailsComposite extends AbstractMasterDetailsComposite {
 	 * 
 	 * @return a Table; never null
 	 */
+	@Override
 	public final Table getTable() {
 		return (Table) super.getTable();
 	}
@@ -78,6 +79,7 @@ public class MasterDetailsComposite extends AbstractMasterDetailsComposite {
 	 * appropriate number of columns. The automatically created columns will
 	 * share the full width of the table.
 	 */
+	@Override
 	protected Table createTable(Composite tableComposite, TableColumnLayout layout) {
 		Table table = new Table(tableComposite, getTableStyle());
 		// Check that table does not allow multiple selection

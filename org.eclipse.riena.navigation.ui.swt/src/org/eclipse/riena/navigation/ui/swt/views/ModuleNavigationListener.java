@@ -68,6 +68,7 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener {
 		moduleTree.addSelectionListener(this);
 	}
 
+	@Override
 	public void widgetSelected(SelectionEvent event) {
 		// System.out.println("widgetSelected() " + getSelection(event));
 		cancelSwitch();

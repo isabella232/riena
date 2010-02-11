@@ -131,7 +131,7 @@ public class DialogViewTest extends RienaTestCase {
 		}
 	}
 
-	private class AbstractWindowControllerStub extends AbstractWindowController {
+	private final class AbstractWindowControllerStub extends AbstractWindowController {
 
 		private Person person;
 

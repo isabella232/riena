@@ -295,12 +295,14 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 
 	private final class RidgetShellListener extends ShellAdapter {
 
+		@Override
 		public void shellActivated(ShellEvent e) {
 			for (IWindowRidgetListener l : windowRidgetListeners.getListeners()) {
 				l.activated();
 			}
 		}
 
+		@Override
 		public void shellClosed(ShellEvent e) {
 			for (IWindowRidgetListener l : windowRidgetListeners.getListeners()) {
 				l.closed();

@@ -74,6 +74,7 @@ public final class SnippetMasterDetailsRidget003 {
 		 * This method creates a confirmation dialog, to be shown on before
 		 * removing. Return {@code false} to veto removal.
 		 */
+		@Override
 		public boolean confirmRemove(Object item) {
 			String title = "Confirm Remove"; //$NON-NLS-1$
 			String message = String.format("Delete '%s' ?", item.toString()); //$NON-NLS-1$

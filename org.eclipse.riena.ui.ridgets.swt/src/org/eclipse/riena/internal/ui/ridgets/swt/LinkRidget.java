@@ -97,6 +97,7 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 	 * Always returns true because mandatory markers do not make sense for this
 	 * ridget.
 	 */
+	@Override
 	public boolean isDisableMandatoryMarker() {
 		return false;
 	}
@@ -169,6 +170,7 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 			return new ListenerList<ISelectionListener>(ISelectionListener.class);
 		}
 
+		@Override
 		protected void fireAction(SelectionEvent evt) {
 			ListenerList<ISelectionListener> listeners = getListeners();
 			if (listeners != null) {

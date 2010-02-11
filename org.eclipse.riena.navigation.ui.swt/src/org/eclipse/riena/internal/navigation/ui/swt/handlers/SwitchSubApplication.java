@@ -70,6 +70,7 @@ public class SwitchSubApplication extends AbstractNavigationHandler implements I
 	/**
 	 * Returns true if this node is selected.
 	 */
+	@Override
 	protected boolean isSelected(INavigationNode<?> node) {
 		return node.isSelected();
 	}

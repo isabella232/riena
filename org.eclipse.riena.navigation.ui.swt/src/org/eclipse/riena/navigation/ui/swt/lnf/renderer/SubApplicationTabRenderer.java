@@ -34,7 +34,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
-	private static Color DEFAULT_COLOR = null;
+	private static Color defaultColor = null;
 
 	public final static int ACTIVE_Y_OFFSET = 2;
 	private final static int BORDER_TOP_WIDTH = 3;
@@ -87,32 +87,13 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		}
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		int leftInset = 0;
-		if (isActive()) {
-			leftInset = ACTIVE_LEFT_INSET;
-		}
-		int rightInset = 0;
-		if (isActive()) {
-			rightInset = ACTIVE_RIGHT_INSET;
-		}
 		Font font = getTabFont();
 		gc.setFont(font);
 
-		// Background
-		Color backgroundStartColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR,
-				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR, null,
-				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_START_COLOR);
-		gc.setForeground(backgroundStartColor);
-		Color backgroundEndColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR,
-				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, null,
-				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_END_COLOR);
-		gc.setBackground(backgroundEndColor);
-		int x = getBounds().x + BORDER_LEFT_WIDTH - 1 - leftInset;
-		int y = getBounds().y + 1;
-		int w = getWidth() - BORDER_LEFT_WIDTH - BORDER_RIGHT_WIDTH + 3 + leftInset + rightInset;
-		int h = getHeight() - 1;
-		gc.fillGradientRectangle(x, y, w, h, true);
+		paintBackground(gc);
 
+		int leftInset = getLeftInset();
+		int rightInset = getRightInset();
 		Color borderTopRightColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_COLOR);
 		Color borderBottomLeftColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR);
 		if (!isEnabled()) {
@@ -124,22 +105,13 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		// Border
 		// - left
 		gc.setForeground(borderBottomLeftColor);
-		x = getBounds().x - leftInset;
-		y = getBounds().y + BORDER_TOP_WIDTH;
+		int x = getBounds().x - leftInset;
+		int y = getBounds().y + BORDER_TOP_WIDTH;
 		int x2 = x;
 		int y2 = getBounds().y + getHeight() - 1;
 		gc.drawLine(x, y, x2, y2);
-		Color innerBorderColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR);
 
-		if (!isEnabled()) {
-			innerBorderColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR);
-		}
-
-		if (isProcessFinishedInBackground()) {
-			innerBorderColor = lnf
-					.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR);
-		}
-
+		Color innerBorderColor = getInnerBorderColor(lnf);
 		if (!isActive()) {
 			gc.setForeground(innerBorderColor);
 			x += 1;
@@ -191,6 +163,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		}
 		// - bottom
 		if (isActive()) {
+			Color backgroundEndColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR,
+					LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, null,
+					LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_END_COLOR);
 			gc.setForeground(backgroundEndColor);
 		} else {
 			gc.setForeground(borderBottomLeftColor);
@@ -227,32 +202,98 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		// Selection
 		if (isActive() || flasherSupport.isProcessMarkerVisible()) {
-			Color selColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
-			gc.setForeground(selColor);
-			gc.setBackground(selColor);
-			x = getBounds().x - leftInset;
-			y = getBounds().y;
-			w = 2;
-			h = 2;
-			gc.fillRectangle(x, y, w, h);
-			gc.drawPoint(x + 1, y - 1);
-
-			x = getBounds().x + getWidth() - 1 + rightInset;
-			y = getBounds().y;
-			gc.fillRectangle(x, y, w, h);
-			gc.drawPoint(x, y - 1);
-
-			gc.setForeground(getSelectionStartColor());
-			gc.setBackground(getSelectionEndColor());
-			x = getBounds().x + BORDER_LEFT_WIDTH - leftInset;
-			y = getBounds().y - ACTIVE_Y_OFFSET;
-			w = getWidth() - BORDER_LEFT_WIDTH - BORDER_RIGHT_WIDTH + 1 + rightInset + leftInset;
-			h = 4;
-			gc.fillGradientRectangle(x, y, w, h, true);
+			paintSelection(gc);
 		}
 
 		flasherSupport.startFlasher();
 
+	}
+
+	private void paintSelection(GC gc) {
+
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		Color selColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
+		gc.setForeground(selColor);
+		gc.setBackground(selColor);
+
+		int x = getBounds().x - getLeftInset();
+		int y = getBounds().y;
+		int w = 2;
+		int h = 2;
+		gc.fillRectangle(x, y, w, h);
+		gc.drawPoint(x + 1, y - 1);
+
+		x = getBounds().x + getWidth() - 1 + getRightInset();
+		y = getBounds().y;
+		gc.fillRectangle(x, y, w, h);
+		gc.drawPoint(x, y - 1);
+
+		gc.setForeground(getSelectionStartColor());
+		gc.setBackground(getSelectionEndColor());
+		x = getBounds().x + BORDER_LEFT_WIDTH - getLeftInset();
+		y = getBounds().y - ACTIVE_Y_OFFSET;
+		w = getWidth() - BORDER_LEFT_WIDTH - BORDER_RIGHT_WIDTH + 1 + getRightInset() + getLeftInset();
+		h = 4;
+		gc.fillGradientRectangle(x, y, w, h, true);
+
+	}
+
+	private Color getInnerBorderColor(RienaDefaultLnf lnf) {
+
+		Color innerBorderColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR);
+
+		if (!isEnabled()) {
+			innerBorderColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR);
+		}
+
+		if (isProcessFinishedInBackground()) {
+			innerBorderColor = lnf
+					.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR);
+		}
+
+		return innerBorderColor;
+
+	}
+
+	/**
+	 * Paints the background of one tab.
+	 * 
+	 * @param gc
+	 *            Graphic Context
+	 */
+	private void paintBackground(GC gc) {
+
+		Color backgroundStartColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR,
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR, null,
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_START_COLOR);
+		gc.setForeground(backgroundStartColor);
+		Color backgroundEndColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR,
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, null,
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_END_COLOR);
+		gc.setBackground(backgroundEndColor);
+
+		int x = getBounds().x + BORDER_LEFT_WIDTH - 1 - getLeftInset();
+		int y = getBounds().y + 1;
+		int w = getWidth() - BORDER_LEFT_WIDTH - BORDER_RIGHT_WIDTH + 3 + getLeftInset() + getRightInset();
+		int h = getHeight() - 1;
+		gc.fillGradientRectangle(x, y, w, h, true);
+
+	}
+
+	private int getLeftInset() {
+		if (isActive()) {
+			return ACTIVE_LEFT_INSET;
+		} else {
+			return 0;
+		}
+	}
+
+	private int getRightInset() {
+		if (isActive()) {
+			return ACTIVE_RIGHT_INSET;
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -489,10 +530,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 	private Color getDefaultColor() {
 		// this was added so that the class loading no longer accesses the UIThread
-		if (DEFAULT_COLOR == null) {
-			DEFAULT_COLOR = LnfManager.getLnf().getColor("black"); //$NON-NLS-1$
+		if (defaultColor == null) {
+			defaultColor = LnfManager.getLnf().getColor("black"); //$NON-NLS-1$
 		}
-		return DEFAULT_COLOR;
+		return defaultColor;
 	}
 
 	/**

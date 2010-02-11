@@ -214,7 +214,7 @@ public class IterTest extends RienaTestCase {
 		 * 
 		 * @return
 		 */
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public Iterator getIterator() {
 			return new Iterator() {
 				private int i = 0;

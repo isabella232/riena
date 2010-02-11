@@ -165,6 +165,6 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 
 	@SuppressWarnings("rawtypes")
 	private INavigationNode getNavigationNode(String id) {
-		return (INavigationNode<?>) new SubModuleNode(new NavigationNodeId(id));
+		return new SubModuleNode(new NavigationNodeId(id));
 	}
 }

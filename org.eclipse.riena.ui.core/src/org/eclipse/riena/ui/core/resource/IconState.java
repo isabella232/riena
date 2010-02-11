@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.core.resource;
 /**
  * Constants for icon states.
  */
-public class IconState {
+public final class IconState {
 
 	/** Icon state NORMAL. */
 	public static final IconState NORMAL = new IconState(""); //$NON-NLS-1$

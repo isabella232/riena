@@ -58,7 +58,7 @@ public class DetachedViewsManager {
 	/**
 	 * The main shell; detached windows use it as their parent shell.
 	 */
-	private final Shell shell;
+	private final Shell mainShell;
 
 	/**
 	 * Create a new DetachedViewsManager instance.
@@ -84,7 +84,7 @@ public class DetachedViewsManager {
 	public DetachedViewsManager(Shell shell) {
 		Assert.isNotNull(shell);
 		id2shell = new HashMap<String, Shell>();
-		this.shell = shell;
+		this.mainShell = shell;
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class DetachedViewsManager {
 			int x;
 			int y;
 			Rectangle bounds;
-			Rectangle viewBounds = this.shell.getBounds();
+			Rectangle viewBounds = this.mainShell.getBounds();
 			switch (position) {
 			case SWT.RIGHT:
 				x = viewBounds.x + viewBounds.width;
@@ -256,7 +256,7 @@ public class DetachedViewsManager {
 	private Shell openShell(Class<? extends ViewPart> viewClazz, Rectangle bounds) {
 		Shell result = null;
 
-		result = new Shell(this.shell, getShellStyle());
+		result = new Shell(this.mainShell, getShellStyle());
 		result.addShellListener(new ShellAdapter() {
 			@Override
 			public void shellClosed(ShellEvent e) {
@@ -264,7 +264,7 @@ public class DetachedViewsManager {
 			}
 		});
 		try {
-			final IViewPart viewPart = (IViewPart) ReflectionUtils.newInstance(viewClazz, (Object[]) null);
+			final IViewPart viewPart = ReflectionUtils.newInstance(viewClazz, (Object[]) null);
 			viewPart.createPartControl(result);
 			result.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
@@ -292,7 +292,7 @@ public class DetachedViewsManager {
 	 * 
 	 * @return true if the check passed; false otherwise.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	boolean checkController(IViewPart viewPart) {
 		boolean result = true;
 		Class clazz = viewPart.getClass();

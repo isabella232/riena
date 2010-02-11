@@ -21,7 +21,7 @@ import org.eclipse.riena.internal.ui.core.Activator;
  * This class provides an {@link IIconManager}. The icon manager with the
  * highest order will be returned.
  */
-public class IconManagerProvider {
+public final class IconManagerProvider {
 
 	private static IconManagerProvider iconManagerProvider = new IconManagerProvider();
 	private IIconManager iconManager;

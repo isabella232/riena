@@ -189,8 +189,9 @@ public class SWTModuleController extends ModuleController {
 		@Override
 		public void childRemoved(ISubModuleNode source, ISubModuleNode childRemoved) {
 			super.childRemoved(source, childRemoved);
-			if (source.getChildren().size() == 0)
+			if (source.getChildren().size() == 0) {
 				tree.collapse(source);
+			}
 		}
 	}
 

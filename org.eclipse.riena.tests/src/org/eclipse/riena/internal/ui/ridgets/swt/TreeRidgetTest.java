@@ -487,6 +487,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 			private Object myvalue;
 
 			// hack to create an implementation that does not fire an event[[[
+			@Override
 			public void setValue(Object value) {
 				myvalue = value;
 			}
@@ -524,6 +525,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 			private Object myvalue;
 
 			// hack to create an implementation that does not fire an event[[[
+			@Override
 			public void setValue(Object value) {
 				myvalue = value;
 			}

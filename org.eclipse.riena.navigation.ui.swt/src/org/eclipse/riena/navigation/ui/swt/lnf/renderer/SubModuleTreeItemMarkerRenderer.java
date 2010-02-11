@@ -91,7 +91,7 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 		if (isPaintMarkersHierarchically() && sortedMarkers.size() > 0) {
 			MarkerPosition position = (MarkerPosition) LnfManager.getLnf().getSetting(
 					LnfKeyConstants.SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION);
-			paintMarkerImage(gc, sortedMarkers.get(sortedMarkers.size() - 1), (MarkerPosition) position, item);
+			paintMarkerImage(gc, sortedMarkers.get(sortedMarkers.size() - 1), position, item);
 		} else {
 			for (IIconizableMarker iconizableMarker : sortedMarkers) {
 				paintMarkerImage(gc, iconizableMarker, iconizableMarker.getPositionOfMarker(), item);

@@ -33,7 +33,7 @@ public abstract class AbstractSubModuleControllerTest<C extends SubModuleControl
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		System.getProperties().put(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "true");
+		System.getProperties().put(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "true"); //$NON-NLS-1$
 
 		// only used to get the initial mappings
 		SwtControlRidgetMapper.getInstance();
@@ -41,7 +41,7 @@ public abstract class AbstractSubModuleControllerTest<C extends SubModuleControl
 		Display display = Display.getDefault();
 		Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
-		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
+		ReflectionUtils.invokeHidden(realm, "setDefault", realm); //$NON-NLS-1$
 
 		ModuleNode module = new ModuleNode();
 		SubModuleNode node = new SubModuleNode();

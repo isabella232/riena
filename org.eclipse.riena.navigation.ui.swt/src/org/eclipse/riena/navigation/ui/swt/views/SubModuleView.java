@@ -51,7 +51,6 @@ import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
-import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
@@ -301,7 +300,6 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	protected SubModuleController createController(ISubModuleNode node) {
 
 		// check node itself for controller definition first
@@ -534,16 +532,6 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	private Cursor getWaitCursor() {
 		return contentComposite.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
-	}
-
-	private boolean isChildOfComplexComponent(Control uiControl) {
-		if (uiControl.getParent() == null) {
-			return false;
-		}
-		if (uiControl.getParent() instanceof IComplexComponent) {
-			return true;
-		}
-		return isChildOfComplexComponent(uiControl.getParent());
 	}
 
 	/**

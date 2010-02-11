@@ -31,6 +31,7 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 
 	private Shell shell;
 
+	@Override
 	protected void setUp() {
 		shell = new Shell();
 	}

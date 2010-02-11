@@ -586,9 +586,9 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(0, table.getColumnCount());
 
 		WritableList list = new WritableList(input, MDBean.class);
-		String[] columnProperties = { "column1" };
-		String[] columnHeaders = { "The Header" };
-		getRidget().bindToModel(list, MDBean.class, columnProperties, columnHeaders);
+		String[] colProps = { "column1" };
+		String[] colHeaders = { "The Header" };
+		getRidget().bindToModel(list, MDBean.class, colProps, colHeaders);
 
 		assertEquals(1, table.getColumnCount());
 		assertEquals("The Header", table.getColumn(0).getText());
@@ -993,15 +993,15 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		private final MDBean workingCopy = createWorkingCopy();
 		private boolean isTxtColumn1IsEnabled = true;
 
-		int createCount;
-		int removeCount;
-		int applyCount;
-		int prepareCount;
-		int selectionCount;
-		Object lastItem;
-		ITextRidget txtColumn1;
-		ITextRidget txtColumn2;
-		String validationResult;
+		private int createCount;
+		private int removeCount;
+		private int applyCount;
+		private int prepareCount;
+		private int selectionCount;
+		private Object lastItem;
+		private ITextRidget txtColumn1;
+		private ITextRidget txtColumn2;
+		private String validationResult;
 
 		public void configureRidgets(IRidgetContainer container) {
 			checkContainer(container);
@@ -1066,6 +1066,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			lastItem = oldItem;
 		}
 
+		@Override
 		public void prepareItemSelected(Object newSelection) {
 			prepareCount++;
 			lastItem = newSelection;

@@ -24,7 +24,7 @@ import com.caucho.hessian.io.Serializer;
  */
 public class GregorianCalendarSerializerFactory extends AbstractRienaSerializerFactory {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
 		if (cl == CalendarHandle.class) {
@@ -44,7 +44,7 @@ public class GregorianCalendarSerializerFactory extends AbstractRienaSerializerF
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Serializer getSerializer(Class cl) throws HessianProtocolException {
 		return null;

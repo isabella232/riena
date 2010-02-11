@@ -108,6 +108,7 @@ public class MasterDetailsCompositeTest extends TestCase {
 
 	public void testSkipIComplexComponent() {
 		MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE) {
+			@Override
 			protected void createDetails(Composite details) {
 				IComplexComponent complex = new TestComplexComponent(details, SWT.NONE);
 				addUIControl(complex, "complex");

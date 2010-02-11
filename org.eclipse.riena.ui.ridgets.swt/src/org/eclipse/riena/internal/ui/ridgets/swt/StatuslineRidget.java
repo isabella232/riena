@@ -58,6 +58,7 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		bindUIControl();
 	}
 
+	@Override
 	protected void bindUIControl() {
 		updateUIIcon();
 	}
@@ -132,6 +133,7 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		setMessage(message);
 	}
 
+	@Override
 	public String getID() {
 		IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		return locator.locateBindingProperty(getUIControl());

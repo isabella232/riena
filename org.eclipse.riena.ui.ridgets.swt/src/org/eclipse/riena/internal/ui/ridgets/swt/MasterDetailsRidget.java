@@ -63,31 +63,38 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 		}
 	}
 
+	@Override
 	protected final void bindTableToModel(IObservableList rowObservables, Class<? extends Object> rowClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
 		getTableRidget().bindToModel(rowObservables, rowClass, columnPropertyNames, columnHeaders);
 	}
 
+	@Override
 	protected void configureTableRidget() {
 		// unused
 	}
 
+	@Override
 	protected final void setTableSelection(Object value) {
 		getTableRidget().setSelection(value);
 	}
 
+	@Override
 	protected final Object getTableSelection() {
 		return getTableRidget().getSelection();
 	}
 
+	@Override
 	protected final IObservableValue getSelectionObservable() {
 		return getTableRidget().getSingleSelectionObservable();
 	}
 
+	@Override
 	protected final void revealTableSelection() {
 		getUIControl().getTable().showSelection();
 	}
 
+	@Override
 	protected final void clearTableSelection() {
 		dirtyDetailsChecker.clearSavedSelection();
 		getTableRidget().clearSelection();

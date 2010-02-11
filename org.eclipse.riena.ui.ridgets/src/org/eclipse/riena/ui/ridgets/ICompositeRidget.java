@@ -20,6 +20,6 @@ public interface ICompositeRidget extends IComplexRidget {
 	/**
 	 * Triggers a re-layout of all the contents of this ridget.
 	 */
-	public void layout();
+	void layout();
 
 }

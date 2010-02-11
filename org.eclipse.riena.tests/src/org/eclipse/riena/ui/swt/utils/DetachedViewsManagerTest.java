@@ -45,7 +45,7 @@ import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 @UITestCase
 public class DetachedViewsManagerTest extends RienaTestCase {
 
-	private static int COUNT = 0;
+	private static int count = 0;
 
 	private Display display;
 	private Shell shell;
@@ -55,30 +55,31 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() {
-		COUNT = 0;
+		count = 0;
 		display = Display.getDefault();
 		shell = new Shell(display);
 		site = new Site(shell);
 		manager = new DetachedViewsManager(site);
 	}
 
+	@Override
 	protected void tearDown() {
 		shell.dispose();
 		manager.dispose();
 	}
 
 	public void testShowView() {
-		assertEquals(0, COUNT);
+		assertEquals(0, count);
 
 		manager.showView("viewOne", FTViewPart.class, SWT.TOP);
 		// already showing - don't create another
 		manager.showView("viewOne", FTViewPart.class, SWT.TOP);
 
-		assertEquals(1, COUNT);
+		assertEquals(1, count);
 
 		manager.showView("viewTwo", FTViewPart.class, SWT.BOTTOM);
 
-		assertEquals(2, COUNT);
+		assertEquals(2, count);
 
 		try {
 			manager.showView("  ", FTViewPart.class, 1);
@@ -118,8 +119,8 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 
 	public void testShowViewWithBounds() {
 		manager.showView("viewOne", FTViewPart.class, new Rectangle(20, 30, 400, 500));
-		Shell shell = manager.getShell("viewOne");
-		Rectangle shellBounds = shell.getBounds();
+		Shell shellOne = manager.getShell("viewOne");
+		Rectangle shellBounds = shellOne.getBounds();
 
 		assertEquals(20, shellBounds.x);
 		assertEquals(30, shellBounds.y);
@@ -131,18 +132,18 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 		manager.showView("viewOne", FTViewPart.class, SWT.TOP);
 		Shell viewOne = manager.getShell("viewOne");
 
-		assertEquals(1, COUNT);
+		assertEquals(1, count);
 		assertTrue(viewOne.isVisible());
 
 		manager.hideView("viewOne");
 
-		assertEquals(1, COUNT);
+		assertEquals(1, count);
 		assertFalse(viewOne.isVisible());
 		assertFalse(shell.isDisposed());
 
 		manager.showView("viewOne", FTViewPart.class, SWT.TOP);
 
-		assertEquals(1, COUNT);
+		assertEquals(1, count);
 		assertTrue(viewOne.isVisible());
 		assertFalse(shell.isDisposed());
 
@@ -160,7 +161,7 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 		Shell viewOne = manager.getShell("viewOne");
 		Shell viewTwo = manager.getShell("viewTwo");
 
-		assertEquals(2, COUNT);
+		assertEquals(2, count);
 		assertTrue(viewOne.isVisible());
 		assertTrue(viewTwo.isVisible());
 		assertFalse(viewOne.isDisposed());
@@ -168,14 +169,14 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 
 		manager.closeView("viewTwo");
 
-		assertEquals(1, COUNT);
+		assertEquals(1, count);
 		assertTrue(viewOne.isVisible());
 		assertFalse(viewOne.isDisposed());
 		assertTrue(viewTwo.isDisposed());
 
 		manager.closeView("viewOne");
 
-		assertEquals(0, COUNT);
+		assertEquals(0, count);
 		assertTrue(viewOne.isDisposed());
 		assertTrue(viewTwo.isDisposed());
 
@@ -192,11 +193,11 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 		manager.showView("viewOne", FTViewPart.class, SWT.TOP);
 		manager.showView("viewTwo", FTViewPart.class, SWT.BOTTOM);
 
-		assertEquals(2, COUNT);
+		assertEquals(2, count);
 
 		manager.dispose();
 
-		assertEquals(0, COUNT);
+		assertEquals(0, count);
 	}
 
 	public void testGetShell() {
@@ -204,12 +205,12 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 
 		manager.showView("viewOne", FTViewPart.class, SWT.TOP);
 
-		Shell shell = manager.getShell("viewOne");
-		assertNotNull(shell);
+		Shell shellOne = manager.getShell("viewOne");
+		assertNotNull(shellOne);
 
 		manager.hideView("viewOne");
 
-		assertSame(shell, manager.getShell("viewOne"));
+		assertSame(shellOne, manager.getShell("viewOne"));
 
 		manager.closeView("viewOne");
 
@@ -275,17 +276,17 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 			// unused
 		}
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public Object getAdapter(Class adapter) {
 			return null;
 		}
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public Object getService(Class api) {
 			return null;
 		}
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public boolean hasService(Class api) {
 			return false;
 		}
@@ -367,12 +368,12 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 		public void removePerspectiveListener(IPerspectiveListener listener) {
 		}
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public Object getService(Class api) {
 			return null;
 		}
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public boolean hasService(Class api) {
 			return false;
 		}
@@ -388,12 +389,12 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 	public static final class FTViewPart extends ViewPart {
 		@Override
 		public void createPartControl(Composite parent) {
-			COUNT++;
+			count++;
 		}
 
 		@Override
 		public void dispose() {
-			COUNT--;
+			count--;
 			super.dispose();
 		}
 

@@ -54,11 +54,13 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		assertSame(BrowserRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
+	@Override
 	public void testSetFocusable() {
 		// skipping super.testSetFocusable() because of Bug 84532
 		ok();
 	}
 
+	@Override
 	public void testRequestFocus() {
 		// skipping testRequestFocus() because of Bug 84532
 		ok();

@@ -67,7 +67,7 @@ public final class SwtRidgetFactory {
 
 	private static final class DummyBindingPropertyLocator implements IBindingPropertyLocator {
 
-		private static final SWTBindingPropertyLocator delegate = SWTBindingPropertyLocator.getInstance();
+		private static final SWTBindingPropertyLocator DELEGATE = SWTBindingPropertyLocator.getInstance();
 
 		/*
 		 * Find the binding property in the uiControl. If none is available
@@ -75,7 +75,7 @@ public final class SwtRidgetFactory {
 		 * does not need an id (see DummyContainer#getRidget(...)).
 		 */
 		public String locateBindingProperty(Object uiControl) {
-			String bindingProp = delegate.locateBindingProperty(uiControl);
+			String bindingProp = DELEGATE.locateBindingProperty(uiControl);
 			return bindingProp != null ? bindingProp : "dummy"; //$NON-NLS-1$
 		}
 	}

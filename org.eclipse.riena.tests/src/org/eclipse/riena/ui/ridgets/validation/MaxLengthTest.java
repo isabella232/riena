@@ -15,8 +15,6 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.IStatus;
 
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-import org.eclipse.riena.ui.ridgets.validation.MaxLength;
-import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 
 /**
  * Tests for the {@link MaxLength} rule.

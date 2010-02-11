@@ -173,7 +173,8 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 	private String firstNormalizedId(ExtensionInjector injector) {
 		Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
 		Object extensionPointId = ReflectionUtils.getHidden(extensionDescriptor, "extensionPointId");
-		return ((List<String>) ReflectionUtils.getHidden(extensionPointId, "normalizedIds")).get(0);
+		List<String> ids = ReflectionUtils.getHidden(extensionPointId, "normalizedIds");
+		return ids.get(0);
 	}
 
 	private Object useType(ExtensionInjector injector) {

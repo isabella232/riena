@@ -45,7 +45,7 @@ public class CloseModule extends AbstractNavigationHandler {
 
 	private INavigationNode<?> findPreviousModule(IApplicationNode application) {
 		IModuleNode[] modules = collectModules(application);
-		return (INavigationNode<?>) findPreviousNode(modules, false);
+		return findPreviousNode(modules, false);
 	}
 
 	/**

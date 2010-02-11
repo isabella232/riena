@@ -21,7 +21,6 @@ import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 import org.eclipse.riena.ui.ridgets.IContextUpdateListener;
 import org.eclipse.riena.ui.ridgets.IVisualContextManager;
 
-@SuppressWarnings("unchecked")
 public class NodeEventDelegation extends SimpleNavigationNodeAdapter implements IVisualContextManager {
 
 	public NodeEventDelegation() {
@@ -31,23 +30,23 @@ public class NodeEventDelegation extends SimpleNavigationNodeAdapter implements 
 	private Map<Object, List<IContextUpdateListener>> context2Observers = new HashMap<Object, List<IContextUpdateListener>>();
 
 	@Override
-	public void activated(INavigationNode source) {
+	public void activated(INavigationNode<?> source) {
 		contextUpdated(source);
 	}
 
 	@Override
-	public void beforeDeactivated(INavigationNode source) {
+	public void beforeDeactivated(INavigationNode<?> source) {
 		for (IContextUpdateListener listener : listeners) {
 			listener.beforeContextUpdate(source);
 		}
 	}
 
 	@Override
-	public void deactivated(INavigationNode source) {
+	public void deactivated(INavigationNode<?> source) {
 		contextUpdated(source);
 	}
 
-	private void contextUpdated(INavigationNode source) {
+	private void contextUpdated(INavigationNode<?> source) {
 		List<IContextUpdateListener> toDelete = new ArrayList<IContextUpdateListener>();
 		for (IContextUpdateListener listener : listeners) {
 			if (listener.contextUpdated(source)) {
@@ -58,10 +57,10 @@ public class NodeEventDelegation extends SimpleNavigationNodeAdapter implements 
 	}
 
 	public List<Object> getActiveContexts(List<Object> contexts) {
-		List nodes = new ArrayList();
+		List<Object> nodes = new ArrayList<Object>();
 		for (Object object : contexts) {
-			if (object instanceof INavigationNode) {
-				INavigationNode<?> node = (INavigationNode) object;
+			if (object instanceof INavigationNode<?>) {
+				INavigationNode<?> node = (INavigationNode<?>) object;
 				if (node.isActivated()) {
 					nodes.add(node);
 				}
