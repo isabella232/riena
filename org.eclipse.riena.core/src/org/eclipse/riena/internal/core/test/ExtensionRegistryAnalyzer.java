@@ -60,13 +60,12 @@ public final class ExtensionRegistryAnalyzer {
 			return;
 		}
 		final Object strategy = ReflectionUtils.getHidden(extensionRegistry, "strategy"); //$NON-NLS-1$
-		final String header = "Registry (with strategy " + strategy.getClass().getSimpleName() + "):"; //$NON-NLS-1$ //$NON-NLS-2$
-		System.out.println(header);
-		final StringBuilder bob = new StringBuilder();
-		for (int i = 0; i < header.length(); i++) {
-			bob.append('-');
+		final StringBuilder bob = new StringBuilder("<< Registry"); //$NON-NLS-1$
+		if (extensionPointPrefix != null) {
+			bob.append(" for prefix ").append(extensionPointPrefix); //$NON-NLS-1$
 		}
-		System.out.println(bob.toString());
+		bob.append(" with strategy ").append(strategy.getClass().getSimpleName()).append(":"); //$NON-NLS-1$ //$NON-NLS-2$
+		System.out.println(bob);
 
 		final IExtensionPoint[] extensionPoints = extensionRegistry.getExtensionPoints();
 
@@ -82,6 +81,7 @@ public final class ExtensionRegistryAnalyzer {
 			System.out.println(extensionPoint.getUniqueIdentifier() + ":"); //$NON-NLS-1$
 			dumpExtensions(extensionPoint.getExtensions(), depth);
 		}
+		System.out.println(">>"); //$NON-NLS-1$
 	}
 
 	private static void dumpExtensions(final IExtension[] extensions, final int depth) {
