@@ -154,7 +154,7 @@ public final class ColumnUtils {
 				.getChildren().length == 1)
 				|| parent.getLayout() instanceof TreeColumnLayout) {
 			// TreeColumnLayout: use columnData instance for each column, apply to parent
-			TreeColumnLayout layout = new TreeColumnLayout();
+			TreeColumnLayout layout = getOrCreateTreeColumnLayout(parent);
 			for (int index = 0; index < expectedCols; index++) {
 				Widget column = getColumn(control, index);
 				layout.setColumnData(column, columnData[index]);
@@ -167,7 +167,7 @@ public final class ColumnUtils {
 				.getChildren().length == 1)
 				|| parent.getLayout() instanceof TableColumnLayout) {
 			// TableColumnLayout: use columnData instance for each column, apply to parent
-			TableColumnLayout layout = new TableColumnLayout();
+			TableColumnLayout layout = getOrCreateTableColumnLayout(parent);
 			for (int index = 0; index < expectedCols; index++) {
 				Widget column = getColumn(control, index);
 				layout.setColumnData(column, columnData[index]);
@@ -236,6 +236,32 @@ public final class ColumnUtils {
 			result = 4;
 		} else if (Util.isMac()) {
 			result = 24;
+		}
+		return result;
+	}
+
+	/*
+	 * Workaround for Bug 295404 - reusing existing TableColumnLayout
+	 */
+	private static TableColumnLayout getOrCreateTableColumnLayout(Composite parent) {
+		TableColumnLayout result;
+		if (parent.getLayout() instanceof TableColumnLayout) {
+			result = (TableColumnLayout) parent.getLayout();
+		} else {
+			result = new TableColumnLayout();
+		}
+		return result;
+	}
+
+	/*
+	 * Workaround for Bug 295404 - reusing existing TreeColumnLayout
+	 */
+	private static TreeColumnLayout getOrCreateTreeColumnLayout(Composite parent) {
+		TreeColumnLayout result;
+		if (parent.getLayout() instanceof TreeColumnLayout) {
+			result = (TreeColumnLayout) parent.getLayout();
+		} else {
+			result = new TreeColumnLayout();
 		}
 		return result;
 	}
