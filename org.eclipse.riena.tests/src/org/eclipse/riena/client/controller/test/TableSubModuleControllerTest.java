@@ -29,26 +29,20 @@ public class TableSubModuleControllerTest extends AbstractSubModuleControllerTes
 	}
 
 	public void testButtonDelete() {
-
 		ITableRidget table = getController().getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
 		int count = table.getOptionCount();
 
 		IActionRidget buttonDelete = getController().getRidget(IActionRidget.class, "buttonDelete"); //$NON-NLS-1$
 		// select and delete one item
-		table.setSelection(0);
+		table.setSelection(table.getOption(0));
 
-		// FIXME wait for 
-		// 298033: Make row selection in TableRidget independent of the UIControl https://bugs.eclipse.org/bugs/show_bug.cgi?id=298033
-		// assertEquals(0, table.getSelectionIndex());
 		assertEquals("[Adventure]", table.getSelection().toString());
 
 		buttonDelete.fireAction();
 		assertEquals(count - 1, table.getOptionCount());
 
-		// FIXME wait for 
-		// 298033: Make row selection in TableRidget independent of the UIControl https://bugs.eclipse.org/bugs/show_bug.cgi?id=298033
-		//assertTrue(table.getSelection().isEmpty());
-		//assertFalse(buttonDelete.isEnabled());
+		assertTrue(table.getSelection().isEmpty());
+		assertFalse(buttonDelete.isEnabled());
 
 		table.setSelection(0);
 
