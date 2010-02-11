@@ -31,11 +31,13 @@ public class NavigationArgument {
 	private IUpdateListener updateListener = null;
 	private String ridgetId;
 	private boolean prepareAll;
+	private NodePositioner nodePositioner;
 
 	/**
 	 */
 	public NavigationArgument() {
 		super();
+		nodePositioner = NodePositioner.ADD_END;
 	}
 
 	/**
@@ -43,7 +45,7 @@ public class NavigationArgument {
 	 *            parameter object that is passed to the opened node.
 	 */
 	public NavigationArgument(Object parameter) {
-		super();
+		this();
 		this.parameter = parameter;
 	}
 
@@ -69,8 +71,7 @@ public class NavigationArgument {
 	 *            to be identical to the type of the original node.
 	 */
 	public NavigationArgument(Object parameter, NavigationNodeId parentNodeId) {
-		super();
-		this.parameter = parameter;
+		this(parameter);
 		this.parentNodeId = parentNodeId;
 	}
 
@@ -87,9 +88,7 @@ public class NavigationArgument {
 	 * @since 1.2
 	 */
 	public NavigationArgument(Object parameter, NavigationNodeId parentNodeId, String ridgetId) {
-		super();
-		this.parameter = parameter;
-		this.parentNodeId = parentNodeId;
+		this(parameter, parentNodeId);
 		this.ridgetId = ridgetId;
 	}
 
@@ -107,9 +106,7 @@ public class NavigationArgument {
 	 *            to be identical to the type of the original node.
 	 */
 	public NavigationArgument(Object parameter, IUpdateListener updateListener, NavigationNodeId parentNodeId) {
-		super();
-		this.parameter = parameter;
-		this.parentNodeId = parentNodeId;
+		this(parameter, parentNodeId);
 		this.updateListener = updateListener;
 	}
 
@@ -164,6 +161,21 @@ public class NavigationArgument {
 	 */
 	public boolean isPrepareAll() {
 		return prepareAll;
+	}
+
+	/**
+	 * @return the nodePositioner
+	 */
+	public NodePositioner getNodePositioner() {
+		return nodePositioner;
+	}
+
+	/**
+	 * @param nodePositioner
+	 *            the nodePositioner to set
+	 */
+	public void setNodePositioner(NodePositioner nodePositioner) {
+		this.nodePositioner = nodePositioner;
 	}
 
 	/**

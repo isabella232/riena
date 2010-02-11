@@ -297,7 +297,32 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * {@inheritDoc}
 	 */
 	public void addChild(C pChild) {
+		checkChild(pChild);
+		List<C> oldList = new ArrayList<C>(children);
+		children.add(pChild);
+		fireChildAdded(pChild, oldList);
+		// Adds the parent to the child after all listeners are notified that the child was added to the parent!
+		addChildParent(pChild);
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public void addChild(int index, C pChild) {
+		checkChild(pChild);
+		List<C> oldList = new ArrayList<C>(children);
+		children.add(index, pChild);
+		fireChildAdded(pChild, oldList);
+		// Adds the parent to the child after all listeners are notified that the child was added to the parent!
+		addChildParent(pChild);
+	}
+
+	private void fireChildAdded(C pChild, List<C> oldList) {
+		propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_CHILDREN, oldList, children);
+		notifyChildAdded(pChild);
+	}
+
+	private void checkChild(C pChild) {
 		if (pChild == null) {
 			throw new NavigationModelFailure("Cannot add null!"); //$NON-NLS-1$
 		}
@@ -315,16 +340,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 			msg += " Because node isn't instance of " + getValidChildType().toString() + "."; //$NON-NLS-1$ //$NON-NLS-2$
 			throw new NavigationModelFailure(msg);
 		}
-
-		List<C> oldList = new ArrayList<C>(children);
-		children.add(pChild);
-
-		propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_CHILDREN, oldList, children);
-		notifyChildAdded(pChild);
-
-		// Adds the parent to the child after all listeners are notified that the child was added to the parent!
-		addChildParent(pChild);
-
 	}
 
 	protected boolean hasChild(INavigationNode<?> pChild) {

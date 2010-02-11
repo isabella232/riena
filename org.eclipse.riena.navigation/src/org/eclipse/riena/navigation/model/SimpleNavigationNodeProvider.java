@@ -38,6 +38,7 @@ import org.eclipse.riena.navigation.INavigationNodeProvider;
 import org.eclipse.riena.navigation.INodeExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.NodePositioner;
 import org.eclipse.riena.navigation.StartupNodeInfo;
 import org.eclipse.riena.navigation.StartupNodeInfo.Level;
 
@@ -95,7 +96,7 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings( { "unchecked", "rawtypes" })
 	protected INavigationNode<?> provideNodeHook(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
 
@@ -117,7 +118,11 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 				if (targetNode.getNodeId() == null && assembler.getAssembly().getId().equals(targetId.getTypeId())) {
 					targetNode.setNodeId(targetId);
 				}
-				parentNode.addChild(targetNode);
+
+				NodePositioner nodePositioner = argument != null ? argument.getNodePositioner()
+						: NodePositioner.ADD_END;
+				nodePositioner.addChildToParent(parentNode, targetNode);
+
 			} else {
 				throw new ExtensionPointFailure("No assembler found for ID=" + targetId.getTypeId()); //$NON-NLS-1$
 			}

@@ -218,6 +218,17 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void addChild(C pChild);
 
 	/**
+	 * Adds the passed child to the list of child nodes at the specified index
+	 * 
+	 * @param index
+	 *            the index of the child node
+	 * @param pChild
+	 *            the child node to add
+	 * 
+	 */
+	void addChild(int index, C pChild);
+
+	/**
 	 * Gets the child at the specified index.
 	 * 
 	 * @param pIndex
