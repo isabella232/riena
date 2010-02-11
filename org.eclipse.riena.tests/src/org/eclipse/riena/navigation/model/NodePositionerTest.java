@@ -48,6 +48,17 @@ public class NodePositionerTest extends TestCase {
 		NodePositioner.indexed(fixedIndex).addChildToParent(parent, childToAdd);
 
 		assertEquals(childToAdd, parent.getChild(fixedIndex));
+
+		parent.removeChild(childToAdd);
+
+		boolean failureOccured = false;
+		try {
+			NodePositioner.indexed(-1).addChildToParent(parent, childToAdd);
+		} catch (NavigationModelFailure e) {
+			failureOccured = true;
+		}
+		assertTrue(failureOccured);
+
 	}
 
 }
