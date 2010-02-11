@@ -22,13 +22,17 @@ import org.eclipse.riena.ui.common.ISortableByColumn;
 public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColumn {
 
 	/**
-	 * Return an observable list of objects which can be selected through this
-	 * ridget.
+	 * Adds the listener to the collection of listeners who will be notified
+	 * when the bound control is double-clicked.
+	 * <p>
+	 * Adding the same listener several times has no effect.
 	 * 
-	 * @return an IObservableList instance or null, if the ridget has not been
-	 *         bound to a model
+	 * @param listener
+	 *            a non-null {@link IActionListener} instance
+	 * @throws RuntimeException
+	 *             if listener is null
 	 */
-	IObservableList getObservableList();
+	void addDoubleClickListener(IActionListener listener);
 
 	/**
 	 * Binds the table to the model data.
@@ -83,17 +87,19 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 			String[] columnPropertyNames, String[] columnHeaders);
 
 	/**
-	 * Adds the listener to the collection of listeners who will be notified
-	 * when the bound control is double-clicked.
-	 * <p>
-	 * Adding the same listener several times has no effect.
+	 * Return an observable list of objects which can be selected through this
+	 * ridget.
 	 * 
-	 * @param listener
-	 *            a non-null {@link IActionListener} instance
-	 * @throws RuntimeException
-	 *             if listener is null
+	 * @return an IObservableList instance or null, if the ridget has not been
+	 *         bound to a model
 	 */
-	void addDoubleClickListener(IActionListener listener);
+	IObservableList getObservableList();
+
+	/**
+	 * Return true, if this table allows columns to be re-arranged by the user.
+	 * The default value is false.
+	 */
+	boolean hasMoveableColumns();
 
 	/**
 	 * Removes the listener from the collection of listeners who will be
@@ -105,19 +111,6 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 *             if listener is null
 	 */
 	void removeDoubleClickListener(IActionListener listener);
-
-	/**
-	 * Set the {@link Comparator} to be used when sorting column at columnIndex.
-	 * 
-	 * @param columnIndex
-	 *            a columnIndex in the allowed range: ( 0 &lt;= columnIndex &lt;
-	 *            numColumns )
-	 * @param comparator
-	 *            a Comparator instance; may be null
-	 * @throws RuntimeException
-	 *             if columnIndex is out of range
-	 */
-	void setComparator(int columnIndex, Comparator<Object> comparator);
 
 	/**
 	 * Set the {@link ColumnFormatter} to be used for the column at columnIndex.
@@ -153,10 +146,17 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	void setColumnWidths(Object[] widths);
 
 	/**
-	 * Return true, if this table allows columns to be re-arranged by the user.
-	 * The default value is false.
+	 * Set the {@link Comparator} to be used when sorting column at columnIndex.
+	 * 
+	 * @param columnIndex
+	 *            a columnIndex in the allowed range: ( 0 &lt;= columnIndex &lt;
+	 *            numColumns )
+	 * @param comparator
+	 *            a Comparator instance; may be null
+	 * @throws RuntimeException
+	 *             if columnIndex is out of range
 	 */
-	boolean hasMoveableColumns();
+	void setComparator(int columnIndex, Comparator<Object> comparator);
 
 	/**
 	 * Set to true, if this table should allow columns to be re-arranged by the
