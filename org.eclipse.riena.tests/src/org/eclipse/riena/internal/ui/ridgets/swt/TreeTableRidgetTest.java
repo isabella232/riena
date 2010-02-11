@@ -702,7 +702,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * As per Bug 285305
+	 * As per Bug 295305
 	 */
 	public void testAutoCreateTableColumn() {
 		ITreeTableRidget ridget = createRidget();
@@ -723,7 +723,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * As per Bug 285305
+	 * As per Bug 295305
 	 */
 	public void testAutoCreateColumnsWithNoLayout() {
 		ITreeTableRidget ridget = createRidget();
@@ -743,7 +743,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * As per Bug 285305
+	 * As per Bug 295305
 	 */
 	public void testAutoCreateColumnsWithTableLayout() {
 		ITreeTableRidget ridget = createRidget();
@@ -761,7 +761,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * As per Bug 285305
+	 * As per Bug 295305
 	 */
 	public void testAutoCreateColumnsWithTreeColumnLayout() {
 		ITreeTableRidget ridget = createRidget();
@@ -786,7 +786,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * As per Bug 285305
+	 * As per Bug 295305
 	 */
 	public void testSetColumnWidths() {
 		ITreeTableRidget ridget = createRidget();
@@ -822,7 +822,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * As per Bug 285305
+	 * As per Bug 295305
 	 */
 	public void testPreserveColumnWidths() {
 		int[] widths = { 50, 100, 150 };

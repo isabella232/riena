@@ -786,7 +786,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	/**
-	 * As per Bug 285305
+	 * As per Bug 295305
 	 */
 	public void testAutoCreateTableColumns() {
 		ITableRidget ridget = createRidget();
@@ -807,7 +807,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	/**
-	 * As per Bug 285305
+	 * As per Bug 295305
 	 */
 	public void testAutoCreateColumnsWithNoLayout() {
 		ITableRidget ridget = createRidget();
@@ -826,7 +826,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	/**
-	 * As per Bug 285305
+	 * As per Bug 295305
 	 */
 	public void testAutoCreateColumnsWithTableLayout() {
 		ITableRidget ridget = createRidget();
@@ -849,7 +849,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	/**
-	 * As per Bug 285305
+	 * As per Bug 295305
 	 */
 	public void testAutoCreateColumnsWithTableColumnLayout() {
 		ITableRidget ridget = createRidget();
@@ -870,7 +870,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	/**
-	 * As per Bug 285305
+	 * As per Bug 295305
 	 */
 	public void testSetColumnWidths() {
 		ITableRidget ridget = createRidget();
@@ -906,7 +906,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	/**
-	 * As per Bug 285305
+	 * As per Bug 295305
 	 */
 	public void testPreserveColumnWidths() {
 		int[] widths = { 50, 100, 150 };
