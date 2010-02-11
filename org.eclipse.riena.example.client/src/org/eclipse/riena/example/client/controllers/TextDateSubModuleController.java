@@ -123,6 +123,7 @@ public class TextDateSubModuleController extends SubModuleController {
 
 	@Override
 	public void afterBind() {
+		super.afterBind();
 		// dispose fontManager when the text control is disposed
 		((Control) justEights.getUIControl()).addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {

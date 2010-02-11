@@ -78,6 +78,7 @@ public class LayoutSubModuleController extends SubModuleController {
 
 	@Override
 	public void afterBind() {
+		super.afterBind();
 		ridgets = new String[] { "lblFirst", "lblLast", "lblGender", "lblPets" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		captions = getCaptions(ridgets);
 	}
