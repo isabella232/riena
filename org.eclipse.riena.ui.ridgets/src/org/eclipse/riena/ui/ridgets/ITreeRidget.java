@@ -384,10 +384,12 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	boolean getRootsVisible();
 
 	/**
-	 * Refresh the given row or rows.
+	 * Refresh the given row or rows in the control.
 	 * <p>
-	 * This may be useful when the values shown by the ridget do not fire
-	 * property change notifications when they are changed (pojos).
+	 * This is useful when the values shown by the ridget do not fire property
+	 * change notifications when they are changed (pojos).
+	 * <p>
+	 * Does not have an effect when no control is present.
 	 * 
 	 * @param node
 	 *            the row value that should be refreshed or null to refresh all

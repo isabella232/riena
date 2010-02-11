@@ -486,7 +486,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		TreeNode root = new TreeNode(null) {
 			private Object myvalue;
 
-			// hack to create an implementation that does not fire an event[[[
+			// hack to create an implementation that does not fire an event
 			@Override
 			public void setValue(Object value) {
 				myvalue = value;
@@ -524,7 +524,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		TreeNode root = new TreeNode(null) {
 			private Object myvalue;
 
-			// hack to create an implementation that does not fire an event[[[
+			// hack to create an implementation that does not fire an event
 			@Override
 			public void setValue(Object value) {
 				myvalue = value;
