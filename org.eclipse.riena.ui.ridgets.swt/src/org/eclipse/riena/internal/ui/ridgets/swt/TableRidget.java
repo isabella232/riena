@@ -194,11 +194,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return viewerObservables;
 	}
 
-	@Override
-	public Table getUIControl() {
-		return (Table) super.getUIControl();
-	}
-
 	public void addDoubleClickListener(IActionListener listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (doubleClickListeners == null) {
@@ -242,52 +237,49 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		bindToModel(rowValues, rowClass, columnPropertyNames, columnHeaders);
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void updateFromModel() {
-		super.updateFromModel();
-		if (modelObservables != null) {
-			List<Object> copy = new ArrayList<Object>(modelObservables);
-			viewerObservables = new WritableList(copy, rowClass);
-		}
-		if (viewer != null) {
-			if (!isViewerConfigured()) {
-				configureControl(viewer.getTable());
-				configureViewer(viewer);
-			} else {
-				refreshViewer(viewer);
-			}
-		} else {
-			refreshSelection();
-		}
-	}
-
 	public IObservableList getObservableList() {
 		return viewerObservables;
 	}
 
-	public void removeDoubleClickListener(IActionListener listener) {
-		if (doubleClickListeners != null) {
-			doubleClickListeners.remove(listener);
-		}
+	@Override
+	public int getSelectionIndex() {
+		Table control = getUIControl();
+		return control == null ? -1 : control.getSelectionIndex();
 	}
 
-	public void setComparator(int columnIndex, Comparator<Object> compi) {
-		checkColumnRange(columnIndex);
-		Integer key = Integer.valueOf(columnIndex);
-		if (compi != null) {
-			comparatorMap.put(key, compi);
-		} else {
-			comparatorMap.remove(key);
-		}
-		if (columnIndex == sortedColumn) {
-			applyComparator();
-		}
+	@Override
+	public int[] getSelectionIndices() {
+		Table control = getUIControl();
+		return control == null ? new int[0] : control.getSelectionIndices();
 	}
 
 	public int getSortedColumn() {
 		boolean isSorted = sortedColumn != -1 && isColumnSortable(sortedColumn);
 		return isSorted ? sortedColumn : -1;
+	}
+
+	@Override
+	public Table getUIControl() {
+		return (Table) super.getUIControl();
+	}
+
+	public boolean hasMoveableColumns() {
+		return moveableColumns;
+	}
+
+	@Override
+	public int indexOfOption(Object option) {
+		Table control = getUIControl();
+		if (control != null) {
+			// implies viewer != null
+			int optionCount = control.getItemCount();
+			for (int i = 0; i < optionCount; i++) {
+				if (viewer.getElementAt(i).equals(option)) {
+					return i;
+				}
+			}
+		}
+		return -1;
 	}
 
 	public boolean isColumnSortable(int columnIndex) {
@@ -301,8 +293,32 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return result;
 	}
 
+	/**
+	 * Always returns true because mandatory markers do not make sense for this
+	 * ridget.
+	 */
+	@Override
+	public boolean isDisableMandatoryMarker() {
+		return true;
+	}
+
 	public boolean isSortedAscending() {
 		return getSortedColumn() != -1 && isSortedAscending;
+	}
+
+	public void removeDoubleClickListener(IActionListener listener) {
+		if (doubleClickListeners != null) {
+			doubleClickListeners.remove(listener);
+		}
+	}
+
+	public void setColumnFormatter(int columnIndex, IColumnFormatter formatter) {
+		checkColumnRange(columnIndex);
+		if (formatter != null) {
+			Assert.isLegal(formatter instanceof ColumnFormatter, "formatter must sublass ColumnFormatter"); //$NON-NLS-1$
+		}
+		Integer key = Integer.valueOf(columnIndex);
+		formatterMap.put(key, formatter);
 	}
 
 	public void setColumnSortable(int columnIndex, boolean sortable) {
@@ -335,6 +351,29 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
+	public void setComparator(int columnIndex, Comparator<Object> compi) {
+		checkColumnRange(columnIndex);
+		Integer key = Integer.valueOf(columnIndex);
+		if (compi != null) {
+			comparatorMap.put(key, compi);
+		} else {
+			comparatorMap.remove(key);
+		}
+		if (columnIndex == sortedColumn) {
+			applyComparator();
+		}
+	}
+
+	public void setMoveableColumns(boolean moveableColumns) {
+		if (this.moveableColumns != moveableColumns) {
+			this.moveableColumns = moveableColumns;
+			Table control = getUIControl();
+			if (control != null) {
+				applyColumnsMoveable(control);
+			}
+		}
+	}
+
 	public void setSortedAscending(boolean ascending) {
 		if (isSortedAscending != ascending) {
 			boolean oldSortedAscending = isSortedAscending;
@@ -356,67 +395,25 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public int getSelectionIndex() {
-		Table control = getUIControl();
-		return control == null ? -1 : control.getSelectionIndex();
-	}
-
-	@Override
-	public int[] getSelectionIndices() {
-		Table control = getUIControl();
-		return control == null ? new int[0] : control.getSelectionIndices();
-	}
-
-	@Override
-	public int indexOfOption(Object option) {
-		Table control = getUIControl();
-		if (control != null) {
-			// implies viewer != null
-			int optionCount = control.getItemCount();
-			for (int i = 0; i < optionCount; i++) {
-				if (viewer.getElementAt(i).equals(option)) {
-					return i;
-				}
+	public void updateFromModel() {
+		super.updateFromModel();
+		if (modelObservables != null) {
+			List<Object> copy = new ArrayList<Object>(modelObservables);
+			viewerObservables = new WritableList(copy, rowClass);
+		}
+		if (viewer != null) {
+			if (!isViewerConfigured()) {
+				configureControl(viewer.getTable());
+				configureViewer(viewer);
+			} else {
+				refreshViewer(viewer);
 			}
-		}
-		return -1;
-	}
-
-	public boolean hasMoveableColumns() {
-		return moveableColumns;
-	}
-
-	public void setMoveableColumns(boolean moveableColumns) {
-		if (this.moveableColumns != moveableColumns) {
-			this.moveableColumns = moveableColumns;
-			Table control = getUIControl();
-			if (control != null) {
-				applyColumnsMoveable(control);
-			}
+		} else {
+			refreshSelection();
 		}
 	}
-
-	/**
-	 * Always returns true because mandatory markers do not make sense for this
-	 * ridget.
-	 */
-	@Override
-	public boolean isDisableMandatoryMarker() {
-		return true;
-	}
-
-	public void setColumnFormatter(int columnIndex, IColumnFormatter formatter) {
-		checkColumnRange(columnIndex);
-		if (formatter != null) {
-			Assert.isLegal(formatter instanceof ColumnFormatter, "formatter must sublass ColumnFormatter"); //$NON-NLS-1$
-		}
-		Integer key = Integer.valueOf(columnIndex);
-		formatterMap.put(key, formatter);
-	}
-
-	// helping methods
-	// ////////////////
 
 	private void applyColumns(Table control) {
 		final int expectedCols = renderingMethods.length;

@@ -117,26 +117,6 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		});
 	}
 
-	protected abstract void updateEnabled(boolean isEnabled);
-
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget#unbindUIControl()
-	 */
-	@Override
-	protected void unbindUIControl() {
-		super.unbindUIControl();
-		if (dbc != null) {
-			disposeSelectionBindings();
-			dbc.dispose();
-			dbc = null;
-		}
-	}
-
-	@Override
-	protected java.util.List<?> getRowObservables() {
-		return viewerObservables;
-	}
-
 	public void addDoubleClickListener(IActionListener listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (doubleClickListeners == null) {
@@ -202,6 +182,134 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		bindToModel(rowValues, rowClass, columnPropertyNames, columnHeaders);
 	}
 
+	public IObservableList getObservableList() {
+		return viewerObservables;
+	}
+
+	@Override
+	public int getSelectionIndex() {
+		return getUIControl() == null ? -1 : getUIControlSelectionIndex();
+	}
+
+	@Override
+	public int[] getSelectionIndices() {
+		return getUIControl() == null ? new int[0] : getUIControlSelectionIndices();
+	}
+
+	public int getSortedColumn() {
+		return comparator != null && sortedColumn == 0 ? 0 : -1;
+	}
+
+	public final boolean hasMoveableColumns() {
+		return false;
+	}
+
+	@Override
+	public int indexOfOption(Object option) {
+		if (getUIControl() != null) {
+			int optionCount = getUIControlItemCount();
+			for (int i = 0; i < optionCount; i++) {
+				if (getViewer().getElementAt(i).equals(option)) {
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+
+	public boolean isColumnSortable(int columnIndex) {
+		Assert.isLegal(columnIndex == 0, "columnIndex out of bounds (must be 0)"); //$NON-NLS-1$
+		return comparator != null;
+	}
+
+	@Override
+	public boolean isDisableMandatoryMarker() {
+		return hasInput();
+	}
+
+	public boolean isSortedAscending() {
+		return isSortedAscending;
+	}
+
+	public void removeDoubleClickListener(IActionListener listener) {
+		if (doubleClickListeners != null) {
+			doubleClickListeners.remove(listener);
+		}
+	}
+
+	/**
+	 * This method is not supported by this ridget.
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             this is not supported by this ridget
+	 */
+	public void setColumnFormatter(int columnIndex, IColumnFormatter formatter) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * This method is not supported by this ridget.
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             this is not supported by this ridget
+	 */
+	public final void setColumnSortable(int columnIndex, boolean sortable) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * This method is not supported by this ridget.
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             this is not supported by this ridget
+	 */
+	public final void setColumnWidths(Object[] widths) {
+		throw new UnsupportedOperationException();
+	}
+
+	public void setComparator(int columnIndex, Comparator<Object> comparator) {
+		Assert.isLegal(columnIndex == 0, "columnIndex out of bounds (must be 0)"); //$NON-NLS-1$
+		if (comparator != null) {
+			SortableComparator sortableComparator = new SortableComparator(this, comparator);
+			this.comparator = new ViewerComparator(sortableComparator);
+		} else {
+			this.comparator = null;
+		}
+		updateComparator();
+	}
+
+	/**
+	 * This method is not supported by this ridget.
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             this is not supported by this ridget
+	 */
+	public final void setMoveableColumns(boolean moveableColumns) {
+		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+	}
+
+	public void setSortedAscending(boolean ascending) {
+		if (ascending != isSortedAscending) {
+			boolean oldSortedAscending = isSortedAscending;
+			isSortedAscending = ascending;
+			if (hasViewer()) {
+				refreshViewer();
+			}
+			firePropertyChange(ISortableByColumn.PROPERTY_SORT_ASCENDING, oldSortedAscending, isSortedAscending);
+		}
+	}
+
+	public final void setSortedColumn(int columnIndex) {
+		String msg = "columnIndex out of range (-1 - 0): " + columnIndex; //$NON-NLS-1$
+		Assert.isLegal(columnIndex >= -1 && columnIndex <= 0, msg);
+		if (sortedColumn != columnIndex) {
+			int oldSortedColumn = sortedColumn;
+			sortedColumn = columnIndex;
+			updateComparator();
+			firePropertyChange(ISortableByColumn.PROPERTY_SORTED_COLUMN, oldSortedColumn, sortedColumn);
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void updateFromModel() {
@@ -247,175 +355,6 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		viewer.setInput(viewerObservables);
 	}
 
-	public IObservableList getObservableList() {
-		return viewerObservables;
-	}
-
-	public void removeDoubleClickListener(IActionListener listener) {
-		if (doubleClickListeners != null) {
-			doubleClickListeners.remove(listener);
-		}
-	}
-
-	public void setComparator(int columnIndex, Comparator<Object> comparator) {
-		Assert.isLegal(columnIndex == 0, "columnIndex out of bounds (must be 0)"); //$NON-NLS-1$
-		if (comparator != null) {
-			SortableComparator sortableComparator = new SortableComparator(this, comparator);
-			this.comparator = new ViewerComparator(sortableComparator);
-		} else {
-			this.comparator = null;
-		}
-		updateComparator();
-	}
-
-	public int getSortedColumn() {
-		return comparator != null && sortedColumn == 0 ? 0 : -1;
-	}
-
-	public boolean isColumnSortable(int columnIndex) {
-		Assert.isLegal(columnIndex == 0, "columnIndex out of bounds (must be 0)"); //$NON-NLS-1$
-		return comparator != null;
-	}
-
-	@Override
-	public boolean isDisableMandatoryMarker() {
-		return hasInput();
-	}
-
-	public boolean isSortedAscending() {
-		return isSortedAscending;
-	}
-
-	/**
-	 * This method is not supported by this ridget.
-	 * 
-	 * @throws UnsupportedOperationException
-	 *             this is not supported by this ridget
-	 */
-	public final void setColumnSortable(int columnIndex, boolean sortable) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * This method is not supported by this ridget.
-	 * 
-	 * @throws UnsupportedOperationException
-	 *             this is not supported by this ridget
-	 */
-	public final void setColumnWidths(Object[] widths) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setSortedAscending(boolean ascending) {
-		if (ascending != isSortedAscending) {
-			boolean oldSortedAscending = isSortedAscending;
-			isSortedAscending = ascending;
-			if (hasViewer()) {
-				refreshViewer();
-			}
-			firePropertyChange(ISortableByColumn.PROPERTY_SORT_ASCENDING, oldSortedAscending, isSortedAscending);
-		}
-	}
-
-	protected boolean hasViewer() {
-		return getViewer() != null;
-	}
-
-	protected boolean hasViewerModel() {
-		return viewerObservables != null;
-	}
-
-	protected void refreshViewer() {
-		getViewer().refresh();
-	}
-
-	public final void setSortedColumn(int columnIndex) {
-		String msg = "columnIndex out of range (-1 - 0): " + columnIndex; //$NON-NLS-1$
-		Assert.isLegal(columnIndex >= -1 && columnIndex <= 0, msg);
-		if (sortedColumn != columnIndex) {
-			int oldSortedColumn = sortedColumn;
-			sortedColumn = columnIndex;
-			updateComparator();
-			firePropertyChange(ISortableByColumn.PROPERTY_SORTED_COLUMN, oldSortedColumn, sortedColumn);
-		}
-	}
-
-	@Override
-	public int getSelectionIndex() {
-		return getUIControl() == null ? -1 : getUIControlSelectionIndex();
-	}
-
-	protected abstract int getUIControlSelectionIndex();
-
-	@Override
-	public int[] getSelectionIndices() {
-		return getUIControl() == null ? new int[0] : getUIControlSelectionIndices();
-	}
-
-	protected abstract int[] getUIControlSelectionIndices();
-
-	@Override
-	public int indexOfOption(Object option) {
-		if (getUIControl() != null) {
-			int optionCount = getUIControlItemCount();
-			for (int i = 0; i < optionCount; i++) {
-				if (getViewer().getElementAt(i).equals(option)) {
-					return i;
-				}
-			}
-		}
-		return -1;
-	}
-
-	protected abstract int getUIControlItemCount();
-
-	public final boolean hasMoveableColumns() {
-		return false;
-	}
-
-	/**
-	 * This method is not supported by this ridget.
-	 * 
-	 * @throws UnsupportedOperationException
-	 *             this is not supported by this ridget
-	 */
-	public final void setMoveableColumns(boolean moveableColumns) {
-		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
-	}
-
-	/**
-	 * This method is not supported by this ridget.
-	 * 
-	 * @throws UnsupportedOperationException
-	 *             this is not supported by this ridget
-	 */
-	public void setColumnFormatter(int columnIndex, IColumnFormatter formatter) {
-		throw new UnsupportedOperationException();
-	}
-
-	// helping methods
-	// ////////////////
-
-	private void createMultipleSelectionBinding() {
-		if (viewerMSB == null && dbc != null && hasViewer()) {
-			StructuredSelection currentSelection = new StructuredSelection(getSelection());
-			IViewerObservableList viewerSelections = ViewersObservables.observeMultiSelection(getViewer());
-			viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
-					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
-			getViewer().setSelection(currentSelection);
-		}
-	}
-
-	protected abstract AbstractListViewer getViewer();
-
-	private void disposeMultipleSelectionBinding() {
-		if (viewerMSB != null) { // implies dbc != null
-			viewerMSB.dispose();
-			dbc.removeBinding(viewerMSB);
-			viewerMSB = null;
-		}
-	}
-
 	protected void createSelectionBindings() {
 		dbc = new DataBindingContext();
 		// viewer to single selection binding
@@ -430,6 +369,22 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		}
 	}
 
+	@Override
+	protected java.util.List<?> getRowObservables() {
+		return viewerObservables;
+	}
+
+	protected abstract int getUIControlItemCount();
+
+	protected abstract int getUIControlSelectionIndex();
+
+	protected abstract int[] getUIControlSelectionIndices();
+
+	// helping methods
+	// ////////////////
+
+	protected abstract AbstractListViewer getViewer();
+
 	protected void disposeSelectionBindings() {
 		if (viewerSSB != null && !viewerSSB.isDisposed()) {
 			viewerSSB.dispose();
@@ -437,8 +392,29 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		disposeMultipleSelectionBinding();
 	}
 
-	private boolean hasInput() {
-		return !getSelection().isEmpty();
+	protected boolean hasViewer() {
+		return getViewer() != null;
+	}
+
+	protected boolean hasViewerModel() {
+		return viewerObservables != null;
+	}
+
+	protected void refreshViewer() {
+		getViewer().refresh();
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget#unbindUIControl()
+	 */
+	@Override
+	protected void unbindUIControl() {
+		super.unbindUIControl();
+		if (dbc != null) {
+			disposeSelectionBindings();
+			dbc.dispose();
+			dbc = null;
+		}
 	}
 
 	protected void updateComparator() {
@@ -449,6 +425,33 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 				getViewer().setComparator(null);
 			}
 		}
+	}
+
+	protected abstract void updateEnabled(boolean isEnabled);
+
+	// helping methods
+	// ////////////////
+
+	private void createMultipleSelectionBinding() {
+		if (viewerMSB == null && dbc != null && hasViewer()) {
+			StructuredSelection currentSelection = new StructuredSelection(getSelection());
+			IViewerObservableList viewerSelections = ViewersObservables.observeMultiSelection(getViewer());
+			viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
+					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
+			getViewer().setSelection(currentSelection);
+		}
+	}
+
+	private void disposeMultipleSelectionBinding() {
+		if (viewerMSB != null) { // implies dbc != null
+			viewerMSB.dispose();
+			dbc.removeBinding(viewerMSB);
+			viewerMSB = null;
+		}
+	}
+
+	private boolean hasInput() {
+		return !getSelection().isEmpty();
 	}
 
 	// helping classes
