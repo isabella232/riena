@@ -96,7 +96,7 @@ public class SimpleNavigationNodeProvider implements INavigationNodeProvider, IA
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings( { "unchecked", "rawtypes" })
+	@SuppressWarnings("rawtypes")
 	protected INavigationNode<?> provideNodeHook(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
 

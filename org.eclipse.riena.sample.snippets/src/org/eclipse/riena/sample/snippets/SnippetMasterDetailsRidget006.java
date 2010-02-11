@@ -119,8 +119,8 @@ public final class SnippetMasterDetailsRidget006 {
 
 		@Override
 		public String isValid(IRidgetContainer container) {
-			ITextRidget txtLast = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
-			if (txtLast.isErrorMarked()) {
+			ITextRidget txtLastRidget = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
+			if (txtLastRidget.isErrorMarked()) {
 				return "'Last Name' is not valid."; //$NON-NLS-1$
 			}
 			return null;

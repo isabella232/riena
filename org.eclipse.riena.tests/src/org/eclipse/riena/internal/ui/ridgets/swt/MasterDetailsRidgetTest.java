@@ -1041,8 +1041,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		public void updateDetails(IRidgetContainer container) {
 			checkContainer(container);
 
-			ITextRidget txtColumn1 = (ITextRidget) container.getRidget("txtColumn1");
-			txtColumn1.setEnabled(isTxtColumn1IsEnabled);
+			ITextRidget txtCol1 = (ITextRidget) container.getRidget("txtColumn1");
+			txtCol1.setEnabled(isTxtColumn1IsEnabled);
 			for (IRidget ridget : container.getRidgets()) {
 				ridget.updateFromModel();
 			}

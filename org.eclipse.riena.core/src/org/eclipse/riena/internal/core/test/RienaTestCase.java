@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -49,15 +48,16 @@ import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 @SuppressWarnings("restriction")
 public abstract class RienaTestCase extends TestCase {
 
-	private static final String ORG_ECLIPSE_RIENA_BUNDLE_PREFIX = null;//"org.eclipse.riena"; 
+	// private static final String ORG_ECLIPSE_RIENA_BUNDLE_PREFIX = null;//"org.eclipse.riena"; 
 	// Keep track of services and corresponding service references.
 	private final Map<Object, ServiceReference> services = new HashMap<Object, ServiceReference>();
 	// Do not access this field directly! Use the getter getContext() because this does a lazy initialization.
 	private BundleContext context;
 
 	private final boolean trace = Trace.isOn(RienaTestCase.class, getClass(), "debug"); //$NON-NLS-1$
-	private Set<String> before;
-	private Set<String> after;
+
+	//private Set<String> before;
+	//private Set<String> after;
 
 	/**
 	 * 
@@ -443,7 +443,8 @@ public abstract class RienaTestCase extends TestCase {
 					bundle.stop();
 				} else {
 					if (bundle.getState() != Bundle.UNINSTALLED) {
-						Nop.reason("testcase tried to stop this bundle which did not run, but we can ignore this ==> bundle is stopped already"); //$NON-NLS-1$
+						Nop
+								.reason("testcase tried to stop this bundle which did not run, but we can ignore this ==> bundle is stopped already"); //$NON-NLS-1$
 					}
 				}
 			}

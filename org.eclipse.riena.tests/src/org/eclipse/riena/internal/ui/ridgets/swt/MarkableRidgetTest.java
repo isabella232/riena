@@ -133,7 +133,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(ridget.isOutputOnly());
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testAddMarker() throws Exception {
 		IMarkableRidget ridget = getRidget();
 		IMarker marker1 = new ErrorMarker();

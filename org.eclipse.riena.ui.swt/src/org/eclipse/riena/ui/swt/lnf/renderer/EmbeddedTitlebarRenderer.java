@@ -34,7 +34,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
-	private static Color DEFAULT_COLOR = null;
+	private static Color defaultColor = null;
 	private final static int TITLEBAR_LABEL_PADDING_LEFT = 5;
 	private final static int TITLEBAR_LABEL_PADDING = 4;
 	private final static int TITLEBAR_ICON_TEXT_GAP = 4;
@@ -503,10 +503,10 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 	private Color getDefaultColor() {
 		// this was added so that the class loading no longer accesses the UIThread
-		if (DEFAULT_COLOR == null) {
-			DEFAULT_COLOR = LnfManager.getLnf().getColor("black"); //$NON-NLS-1$
+		if (defaultColor == null) {
+			defaultColor = LnfManager.getLnf().getColor("black"); //$NON-NLS-1$
 		}
-		return DEFAULT_COLOR;
+		return defaultColor;
 	}
 
 	/**

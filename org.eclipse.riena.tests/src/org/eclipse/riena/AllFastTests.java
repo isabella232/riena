@@ -35,29 +35,29 @@ import org.eclipse.riena.internal.tests.Activator;
 @NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllFastTests extends TestCase {
 
-	private static Set<String> LONG_TESTS;
+	private static Set<String> longTests;
 
 	static {
-		LONG_TESTS = new HashSet<String>();
-		LONG_TESTS.add("DateTextRidgetTest");
-		LONG_TESTS.add("DecimalTextRidgetTest");
-		LONG_TESTS.add("NumericTextRidgetTest");
-		LONG_TESTS.add("TextRidgetTest2");
-		LONG_TESTS.add("DateTimeRidgetTest");
-		// LONG_TESTS.add("TreeRidgetTest2");
-		// LONG_TESTS.add("TreeTableRidgetTest");
-		LONG_TESTS.add("CheckTestConstraintsTest");
+		longTests = new HashSet<String>();
+		longTests.add("DateTextRidgetTest");
+		longTests.add("DecimalTextRidgetTest");
+		longTests.add("NumericTextRidgetTest");
+		longTests.add("TextRidgetTest2");
+		longTests.add("DateTimeRidgetTest");
+		// longTests.add("TreeRidgetTest2");
+		// longTests.add("TreeTableRidgetTest");
+		longTests.add("CheckTestConstraintsTest");
 	};
 
 	@SuppressWarnings("unchecked")
 	public static Test suite() {
 		TestSuite collected = TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), null,
 				UITestCase.class, NonUITestCase.class);
-		Enumeration tests = collected.tests();
+		Enumeration<Test> tests = collected.tests();
 		TestSuite result = new TestSuite();
 		while (tests.hasMoreElements()) {
-			Test test = (Test) tests.nextElement();
-			if (!LONG_TESTS.contains(getTestName(test))) {
+			Test test = tests.nextElement();
+			if (!longTests.contains(getTestName(test))) {
 				result.addTest(test);
 			} else {
 				System.err.println("...skipping long test: " + test.toString());

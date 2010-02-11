@@ -23,11 +23,11 @@ import org.eclipse.riena.navigation.INavigationNodeProvider;
  */
 public final class NavigationNodeProvider {
 
-	private static NavigationNodeProvider NAVIGATION_NODE_PROVIDER;
+	private static NavigationNodeProvider navigationNodeProvider;
 
 	static {
-		NAVIGATION_NODE_PROVIDER = new NavigationNodeProvider();
-		Wire.instance(NAVIGATION_NODE_PROVIDER).andStart(Activator.getDefault().getContext());
+		navigationNodeProvider = new NavigationNodeProvider();
+		Wire.instance(navigationNodeProvider).andStart(Activator.getDefault().getContext());
 	}
 
 	private INavigationNodeProvider provider;
@@ -43,7 +43,7 @@ public final class NavigationNodeProvider {
 	 * @since 1.2
 	 */
 	public static INavigationNodeProvider getInstance() {
-		return NAVIGATION_NODE_PROVIDER.getProvider();
+		return navigationNodeProvider.getProvider();
 	}
 
 	private INavigationNodeProvider getProvider() {
