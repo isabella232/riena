@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
+import org.eclipse.riena.internal.core.test.ExtensionRegistryAnalyzer;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.tests.Activator;
@@ -242,9 +243,12 @@ public class ExtensionInjectorTest extends RienaTestCase {
 	 * @throws InterruptedException
 	 */
 	public void testTrackingWithKnownTypeAndMultipleData() throws InterruptedException {
+		System.out.println("ExtensionInjectorTest.testTrackingWithKnownTypeAndMultipleData()");
 		printTestName();
 		final int sleepInMs = 500;
+		ExtensionRegistryAnalyzer.dumpRegistry("core.test.extpoint");
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml", sleepInMs);
+		ExtensionRegistryAnalyzer.dumpRegistry("core.test.extpoint");
 		try {
 			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
 			target.setTrace(true);
@@ -254,6 +258,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 				assertEquals(0, target.getData().length);
 				//				Set<String> before = ExtensionRegistryAnalyzer.getRegistryPaths(null);
 				addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml", sleepInMs);
+				ExtensionRegistryAnalyzer.dumpRegistry("core.test.extpoint");
 				//				Set<String> after = ExtensionRegistryAnalyzer.getRegistryPaths(null);
 				//				System.out.println("SymmetricDiff: " + ExtensionRegistryAnalyzer.symmetricDiff(before, after));
 				// SymmetricDiff: [core.test.extpoint: uid=core.test.extpoint.id1 bundle=org.eclipse.riena.tests <test required=true objectType=java.lang.String text=test1/>]
@@ -266,9 +271,11 @@ public class ExtensionInjectorTest extends RienaTestCase {
 					// update: [Lorg.eclipse.riena.core.injector.extension.IData;@5b784b - length= 0
 					assertEquals(1, target.getData().length);
 					addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml", sleepInMs);
+					ExtensionRegistryAnalyzer.dumpRegistry("core.test.extpoint");
 					try {
 						assertEquals(2, target.getData().length);
 						addPluginXml(ExtensionInjectorTest.class, "plugin_ext3.xml", sleepInMs);
+						ExtensionRegistryAnalyzer.dumpRegistry("core.test.extpoint");
 						try {
 							assertEquals(3, target.getData().length);
 						} finally {
@@ -288,6 +295,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 			}
 		} finally {
 			removeExtensionPoint("core.test.extpoint");
+			ExtensionRegistryAnalyzer.dumpRegistry("core.test.extpoint");
 		}
 	}
 
