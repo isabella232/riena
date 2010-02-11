@@ -14,7 +14,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.eclipse.core.runtime.AssertionFailedException;
+import org.eclipse.core.runtime.Assert;
 
 /**
  * Utility class for getting and setting properties according to the
@@ -37,9 +37,7 @@ public final class BeanPropertyUtils {
 	 * @return
 	 */
 	public static Object getPropertyValue(Object bean, PropertyDescriptor descriptor) {
-		if (descriptor == null) {
-			throw new AssertionFailedException("descriptor cannot be null"); //$NON-NLS-1$
-		}
+		Assert.isNotNull(descriptor, "descriptor cannot be null"); //$NON-NLS-1$
 		Method readMethod = descriptor.getReadMethod();
 		if (readMethod == null) {
 			throw new UnsupportedOperationException("Property '" + descriptor.getName() + "' has no getter method"); //$NON-NLS-1$ //$NON-NLS-2$
