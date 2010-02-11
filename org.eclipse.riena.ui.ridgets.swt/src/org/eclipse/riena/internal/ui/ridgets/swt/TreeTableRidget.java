@@ -143,19 +143,6 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 		return isSorted ? sortedColumn : -1;
 	}
 
-	// TODO [ev] remove after closing 298033 ?
-	//	public int getSortedColumn() {
-	//		int result = -1;
-	//		Tree tree = getUIControl();
-	//		if (tree != null) {
-	//			TreeColumn column = tree.getSortColumn();
-	//			if (column != null) {
-	//				result = tree.indexOf(column);
-	//			}
-	//		}
-	//		return result;
-	//	}
-
 	public boolean isColumnSortable(int columnIndex) {
 		checkColumnRange(columnIndex);
 		boolean result = false;
@@ -170,17 +157,6 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	public boolean isSortedAscending() {
 		return getSortedColumn() != -1 && isSortedAscending;
 	}
-
-	// TODO [ev] remove after closing 298033 ?
-	//	public boolean isSortedAscending() {
-	//		boolean result = false;
-	//		Tree tree = getUIControl();
-	//		if (tree != null) {
-	//			int sortDirection = tree.getSortDirection();
-	//			result = (sortDirection == SWT.UP);
-	//		}
-	//		return result;
-	//	}
 
 	public void setColumnSortable(int columnIndex, boolean sortable) {
 		checkColumnRange(columnIndex);

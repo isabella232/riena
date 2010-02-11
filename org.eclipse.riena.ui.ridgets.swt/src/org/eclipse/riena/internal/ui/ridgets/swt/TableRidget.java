@@ -290,19 +290,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return isSorted ? sortedColumn : -1;
 	}
 
-	// TODO [ev] remove after closing 298033 ?
-	//	public int getSortedColumn() {
-	//		int result = -1;
-	//		Table table = getUIControl();
-	//		if (table != null) {
-	//			TableColumn column = table.getSortColumn();
-	//			if (column != null) {
-	//				result = table.indexOf(column);
-	//			}
-	//		}
-	//		return result;
-	//	}
-
 	public boolean isColumnSortable(int columnIndex) {
 		checkColumnRange(columnIndex);
 		boolean result = false;
@@ -317,17 +304,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	public boolean isSortedAscending() {
 		return getSortedColumn() != -1 && isSortedAscending;
 	}
-
-	// TODO [ev] remove after closing 298033 ?
-	//	public boolean isSortedAscending() {
-	//		boolean result = false;
-	//		Table table = getUIControl();
-	//		if (table != null) {
-	//			int sortDirection = table.getSortDirection();
-	//			result = (sortDirection == SWT.UP);
-	//		}
-	//		return result;
-	//	}
 
 	public void setColumnSortable(int columnIndex, boolean sortable) {
 		checkColumnRange(columnIndex);
