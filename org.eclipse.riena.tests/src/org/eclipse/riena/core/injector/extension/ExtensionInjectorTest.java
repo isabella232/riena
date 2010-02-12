@@ -252,13 +252,16 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		try {
 			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
 			target.setTrace(true);
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
-					.andStart(getContext());
+			//			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
+			//					.andStart(getContext());
+			ExtensionInjector injector = null;
 			try {
-				assertEquals(0, target.getData().length);
+				//				assertEquals(0, target.getData().length);
 				//				Set<String> before = ExtensionRegistryAnalyzer.getRegistryPaths(null);
 				addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml", sleepInMs);
 				ExtensionRegistryAnalyzer.dumpRegistry("core.test.extpoint");
+				injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target).andStart(
+						getContext());
 				//				Set<String> after = ExtensionRegistryAnalyzer.getRegistryPaths(null);
 				//				System.out.println("SymmetricDiff: " + ExtensionRegistryAnalyzer.symmetricDiff(before, after));
 				// SymmetricDiff: [core.test.extpoint: uid=core.test.extpoint.id1 bundle=org.eclipse.riena.tests <test required=true objectType=java.lang.String text=test1/>]
