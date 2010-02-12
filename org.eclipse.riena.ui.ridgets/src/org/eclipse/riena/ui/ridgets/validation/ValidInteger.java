@@ -17,6 +17,7 @@ import java.util.Locale;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.ArraysUtil;
 import org.eclipse.riena.core.util.PropertiesUtils;
@@ -94,18 +95,21 @@ public class ValidInteger extends ValidDecimal {
 			if (string.length() > 0) {
 				final ScanResult scanned = scan(string);
 				if (scanned.decimalSeperatorIndex >= 0) {
-					return ValidationRuleStatus.error(true, "no integer: decimal separator '" //$NON-NLS-1$
-							+ getSymbols().getDecimalSeparator() + "' in String '" + string + '\''); //$NON-NLS-1$
+					Character decSep = Character.valueOf(getSymbols().getDecimalSeparator());
+					String message = NLS.bind(Messages.ValidInteger_error_hasDecSep, decSep, string);
+					return ValidationRuleStatus.error(true, message);
 				}
 				// test if sign present
 				if (!signed && scanned.minusSignIndex > -1) {
-					return ValidationRuleStatus.error(true, "minus sign present at position '" + scanned.minusSignIndex //$NON-NLS-1$
-							+ "' in string '" + string + "' where an unsigned integer was expected."); //$NON-NLS-1$ //$NON-NLS-2$
+					String message = NLS.bind(Messages.ValidInteger_error_hasMinus, Integer
+							.valueOf(scanned.minusSignIndex), string);
+					return ValidationRuleStatus.error(true, message);
 				}
 				// test if alien character present:
 				if (scanned.lastAlienCharIndex > -1) {
-					return ValidationRuleStatus.error(true, "unrecognized character '" + scanned.lastAlienCharacter //$NON-NLS-1$
-							+ "' in string '" + string + '\''); //$NON-NLS-1$
+					String message = NLS.bind(Messages.ValidInteger_error_alienChar, Character
+							.valueOf(scanned.lastAlienCharacter), string);
+					return ValidationRuleStatus.error(true, message);
 				}
 				try {
 					final DecimalFormat format = getFormat();
@@ -113,7 +117,8 @@ public class ValidInteger extends ValidDecimal {
 						format.parse(string);
 					}
 				} catch (final ParseException e) {
-					return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number."); //$NON-NLS-1$ //$NON-NLS-2$
+					String message = NLS.bind(Messages.ValidInteger_error_cannotParse, string);
+					return ValidationRuleStatus.error(true, message);
 				}
 			}
 		}

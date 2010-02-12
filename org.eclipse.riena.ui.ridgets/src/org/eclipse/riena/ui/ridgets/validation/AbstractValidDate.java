@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
@@ -86,7 +87,8 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 			}
 
 			if (string.length() > 0 && !isDateValid(string, pattern)) {
-				return ValidationRuleStatus.error(false, "Invalid date (must match the pattern " + pattern + ")."); //$NON-NLS-1$ //$NON-NLS-2$
+				String message = NLS.bind(Messages.AbstractValidDate_error_invalidDate, pattern);
+				return ValidationRuleStatus.error(false, message);
 			}
 		}
 		return ValidationRuleStatus.ok();

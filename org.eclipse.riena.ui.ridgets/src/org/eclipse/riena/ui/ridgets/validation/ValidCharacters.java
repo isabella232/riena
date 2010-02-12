@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.PropertiesUtils;
 
@@ -69,8 +70,9 @@ public class ValidCharacters implements IValidator, IExecutableExtension {
 				for (int t = 0; t < string.length(); ++t) {
 					final char currentChar = string.charAt(t);
 					if (Arrays.binarySearch(allowedCharsSorted, currentChar) < 0) {
-						return ValidationRuleStatus.error(true, "Character '" + currentChar + "' in text '" + value //$NON-NLS-1$ //$NON-NLS-2$
-								+ "' is not allowed."); //$NON-NLS-1$
+						String message = NLS.bind(Messages.ValidCharacters_error_invalidChar, Character
+								.valueOf(currentChar), string);
+						return ValidationRuleStatus.error(true, message);
 					}
 				}
 			}

@@ -19,6 +19,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.marker.StatuslineMessageMarkerViewer;
@@ -77,6 +78,7 @@ public class ValidationSubModuleController extends SubModuleController {
 		final ITextRidget lblLength5to10 = (ITextRidget) getRidget("lblLength5to10"); //$NON-NLS-1$
 		final ITextRidget lblDate = (ITextRidget) getRidget("lblDate"); //$NON-NLS-1$
 		final ITextRidget lblEmail = (ITextRidget) getRidget("lblEmail"); //$NON-NLS-1$
+
 		makeOutputOnly(lblNumbersOnly, lblNumbersOnlyDW, lblCharactersOnly, lblExpression, lblLengthLessThan5,
 				lblRequiredLowercase, lblRange18to80, lblLength5to10, lblDate, lblEmail);
 
@@ -134,19 +136,19 @@ public class ValidationSubModuleController extends SubModuleController {
 		txtEmail.bindToModel(getTextValue(lblEmail));
 		txtEmail.setText("elmer@foo.bar"); //$NON-NLS-1$
 
+		// show validation messages in statusline and tooltip
+
 		IStatuslineRidget statuslineRidget = getApplicationController().getStatusline();
 		StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(
 				statuslineRidget);
-		statuslineMessageMarkerViewer.addRidget(txtNumbersOnly);
-		statuslineMessageMarkerViewer.addRidget(txtNumbersOnlyDW);
-		statuslineMessageMarkerViewer.addRidget(txtCharactersOnly);
-		statuslineMessageMarkerViewer.addRidget(txtExpression);
-		statuslineMessageMarkerViewer.addRidget(txtLengthLessThan5);
-		statuslineMessageMarkerViewer.addRidget(txtRequiredLowercase);
-
 		TooltipMessageMarkerViewer tooltipMessageMarkerViewer = new TooltipMessageMarkerViewer();
-		tooltipMessageMarkerViewer.addRidget(txtNumbersOnly);
 
+		IBasicMarkableRidget[] ridgets = { txtNumbersOnly, txtNumbersOnlyDW, txtCharactersOnly, txtExpression,
+				txtLengthLessThan5, txtRequiredLowercase, txtRange18to80, txtLength5to10, txtDate, txtEmail };
+		for (IBasicMarkableRidget ridget : ridgets) {
+			statuslineMessageMarkerViewer.addRidget(ridget);
+			tooltipMessageMarkerViewer.addRidget(ridget);
+		}
 	}
 
 	// helping methods

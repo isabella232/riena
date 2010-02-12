@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.PropertiesUtils;
 
@@ -38,8 +39,8 @@ public class MinLength implements IValidator, IExecutableExtension {
 	public IStatus validate(final Object value) {
 		if (value == null) {
 			if (minLength > 0) {
-				return ValidationRuleStatus.error(false, "rule treats null as a blank string, which is shorter than " //$NON-NLS-1$
-						+ minLength + " characters."); //$NON-NLS-1$
+				String message = NLS.bind(Messages.MinLength_error_nullValue, Integer.valueOf(minLength));
+				return ValidationRuleStatus.error(false, message);
 			}
 			return ValidationRuleStatus.ok();
 		}
@@ -48,8 +49,8 @@ public class MinLength implements IValidator, IExecutableExtension {
 			if (string.length() >= minLength) {
 				return ValidationRuleStatus.ok();
 			}
-			return ValidationRuleStatus.error(false, "String '" + string + "' is less than " + minLength //$NON-NLS-1$ //$NON-NLS-2$
-					+ " characters long."); //$NON-NLS-1$
+			String message = NLS.bind(Messages.MinLength_error_tooShort, string, Integer.valueOf(minLength));
+			return ValidationRuleStatus.error(false, message);
 		}
 		throw new ValidationFailure(getClass().getName() + " can only validate objects of type " //$NON-NLS-1$
 				+ String.class.getName());

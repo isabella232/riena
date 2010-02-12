@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.ArraysUtil;
 import org.eclipse.riena.core.util.PropertiesUtils;
@@ -120,30 +121,32 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 				final ScanResult scanned = scan(string);
 				if (!partialCheckSupported) {
 					if (scanned.decimalSeperatorIndex < 0) {
-						return ValidationRuleStatus.error(true, "no decimal separator '" //$NON-NLS-1$
-								+ getSymbols().getDecimalSeparator() + "' in String '" + string + '\''); //$NON-NLS-1$
+						Character decSep = Character.valueOf(getSymbols().getDecimalSeparator());
+						String message = NLS.bind(Messages.ValidDecimal_error_noDecSep, decSep, string);
+						return ValidationRuleStatus.error(true, message);
 					}
 					// test if grouping character is behind decimal separator:
 					if (scanned.groupingSeparatorIndex > scanned.decimalSeperatorIndex) {
-						return ValidationRuleStatus
-								.error(
-										true,
-										"grouping-separator '" + getSymbols().getGroupingSeparator() //$NON-NLS-1$
-												+ "' behind decimal-seperator '" + getSymbols().getDecimalSeparator() + "' in string '" //$NON-NLS-1$ //$NON-NLS-2$
-												+ string + '\'');
+						Character groupSep = Character.valueOf(getSymbols().getGroupingSeparator());
+						Character decSep = Character.valueOf(getSymbols().getDecimalSeparator());
+						String message = NLS.bind(Messages.ValidDecimal_error_trailingGroupSep, new Object[] {
+								groupSep, decSep, string });
+						return ValidationRuleStatus.error(true, message);
 					}
 				}
 				// test if alien character present:
 				if (scanned.lastAlienCharIndex > -1) {
-					return ValidationRuleStatus.error(true, "unrecognized character '" + scanned.lastAlienCharacter //$NON-NLS-1$
-							+ "' in string '" + string + '\''); //$NON-NLS-1$
+					String message = NLS.bind(Messages.ValidDecimal_error_alienChar, Character
+							.valueOf(scanned.lastAlienCharacter), string);
+					return ValidationRuleStatus.error(true, message);
 				}
 				try {
 					synchronized (getFormat()) {// NumberFormat not threadsafe!
 						getFormat().parse(string);
 					}
 				} catch (final ParseException e) {
-					return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number."); //$NON-NLS-1$ //$NON-NLS-2$
+					String message = NLS.bind(Messages.ValidDecimal_error_cannotParse, string);
+					return ValidationRuleStatus.error(true, message);
 				}
 			}
 		}

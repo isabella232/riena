@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.ArraysUtil;
 import org.eclipse.riena.core.util.PropertiesUtils;
@@ -115,14 +116,15 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 					} catch (final ParseException e) {
 						// should never occur, as super.validate(Object) will
 						// make this method return earlier
-						return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number."); //$NON-NLS-1$ //$NON-NLS-2$
+						String message = NLS.bind(Messages.ValidRange_error_cannotParse, string);
+						return ValidationRuleStatus.error(true, message);
 					}
 				}
 			}
 		}
 		if (currentValue.compareTo(min) < 0 || currentValue.compareTo(max) > 0) {
-			return ValidationRuleStatus.error(true, "value " + currentValue + "' out of range: [" + min + ".." + max //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					+ "]."); //$NON-NLS-1$
+			String message = NLS.bind(Messages.ValidRange_error_outOfRange, new Object[] { currentValue, min, max });
+			return ValidationRuleStatus.error(true, message);
 		}
 		return ValidationRuleStatus.ok();
 	}

@@ -59,7 +59,7 @@ public class RequiredField implements IValidator {
 	 */
 	public IStatus validate(final Object value) {
 		if (value == null) {
-			return ValidationRuleStatus.error(true, "Value is null."); //$NON-NLS-1$
+			return ValidationRuleStatus.error(true, Messages.RequiredField_error_nullValue);
 		}
 		if (!(value instanceof String)) {
 			throw new ValidationFailure(getClass().getSimpleName() + " can only validate objects of type " //$NON-NLS-1$
@@ -73,6 +73,6 @@ public class RequiredField implements IValidator {
 				return ValidationRuleStatus.ok();
 			}
 		}
-		return ValidationRuleStatus.error(false, "Input must not be blank."); //$NON-NLS-1$
+		return ValidationRuleStatus.error(false, Messages.RequiredField_error_blankValue);
 	}
 }

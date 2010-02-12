@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.PropertiesUtils;
 
@@ -125,7 +126,8 @@ public class ValidExpression implements IValidator, IExecutableExtension {
 		if (matcher.match("/" + pattern + "/" + options, string)) { //$NON-NLS-1$//$NON-NLS-2$
 			return ValidationRuleStatus.ok();
 		}
-		return ValidationRuleStatus.error(false, "'String '" + string + "' does not match regex '" + pattern + "'."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String message = NLS.bind(Messages.ValidExpression_error_noMatch, string, pattern);
+		return ValidationRuleStatus.error(false, message);
 	}
 
 	/**

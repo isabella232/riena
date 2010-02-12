@@ -14,6 +14,7 @@ import org.apache.commons.validator.GenericValidator;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.osgi.util.NLS;
 
 /**
  * Implementation for a email address validation. This rule accepts any String
@@ -38,7 +39,8 @@ public class ValidEmailAddress implements IValidator {
 		if (toBeChecked.length() == 0 || GenericValidator.isEmail(toBeChecked)) {
 			return ValidationRuleStatus.ok();
 		}
-		return ValidationRuleStatus.error(false, "String '" + toBeChecked + "' is no valid email address"); //$NON-NLS-1$ //$NON-NLS-2$
+		String message = NLS.bind(Messages.ValidEmailAddress_error_notValid, toBeChecked);
+		return ValidationRuleStatus.error(false, message);
 	}
 
 	@Override

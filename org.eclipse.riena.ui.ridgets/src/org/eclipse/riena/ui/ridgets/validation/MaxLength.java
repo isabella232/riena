@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.PropertiesUtils;
 
@@ -61,8 +62,8 @@ public class MaxLength implements IValidator, IExecutableExtension {
 			int length = string.length();
 
 			if (length > maxLength) {
-				return ValidationRuleStatus.error(isBlocking, "'" + string + "' must not be longer than " + maxLength //$NON-NLS-1$ //$NON-NLS-2$
-						+ " characters."); //$NON-NLS-1$
+				String message = NLS.bind(Messages.MaxLength_error_tooLong, string, Integer.valueOf(maxLength));
+				return ValidationRuleStatus.error(isBlocking, message);
 			}
 			return ValidationRuleStatus.ok();
 		} else {

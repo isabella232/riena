@@ -23,7 +23,7 @@ public class NotEmpty implements IValidator {
 		if (value instanceof String && !Utils.isEmpty((String) value)) {
 			return ValidationRuleStatus.ok();
 		}
-		return ValidationRuleStatus.error(false, "Value cannot be empty"); //$NON-NLS-1$
+		return ValidationRuleStatus.error(false, Messages.NotEmpty_error_empty);
 	}
 
 }
