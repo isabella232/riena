@@ -38,17 +38,16 @@ import org.eclipse.riena.internal.communication.core.proxyselector.ProxySelector
  * optional required bundle org.eclipse.core.net and the accompanying
  * os-specific fragment bundle.
  */
+@SuppressWarnings("restriction")
 public class CoreNetProxySelector extends ProxySelector {
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), CoreNetProxySelector.class);
 
-	@SuppressWarnings("restriction")
 	public CoreNetProxySelector() {
 		ProxyManager.getProxyManager().setProxiesEnabled(true);
 		ProxyManager.getProxyManager().setSystemProxiesEnabled(true);
 	}
 
-	@SuppressWarnings("restriction")
 	@Override
 	public List<Proxy> select(URI uri) {
 		Assert.isLegal(uri != null, "uri must not be null."); //$NON-NLS-1$
