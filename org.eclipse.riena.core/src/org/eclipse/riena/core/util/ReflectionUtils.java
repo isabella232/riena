@@ -52,12 +52,12 @@ public final class ReflectionUtils {
 	 * @pre className != null
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T newInstance(String className, Object... args) {
+	public static <T> T newInstance(final String className, final Object... args) {
 		Assert.isNotNull(className, "className must be given!"); //$NON-NLS-1$
 
 		try {
 			return (T) newInstance(false, loadClass(className), args);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new ReflectionFailure("Error creating instance for " + className + " with parameters " //$NON-NLS-1$ //$NON-NLS-2$
 					+ Arrays.asList(args) + "!", e); //$NON-NLS-1$
 		}
@@ -75,12 +75,12 @@ public final class ReflectionUtils {
 	 * @pre className != null
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T newInstanceHidden(String className, Object... args) {
+	public static <T> T newInstanceHidden(final String className, final Object... args) {
 		Assert.isNotNull(className, "className must be given!"); //$NON-NLS-1$
 
 		try {
 			return (T) newInstance(true, loadClass(className), args);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new ReflectionFailure("Error creating instance for " + className + " with parameters " //$NON-NLS-1$ //$NON-NLS-2$
 					+ Arrays.asList(args) + "!", e); //$NON-NLS-1$
 		}
@@ -97,7 +97,7 @@ public final class ReflectionUtils {
 	 * @return the new instance.
 	 * @pre clazz != null
 	 */
-	public static <T> T newInstance(Class<T> clazz, Object... args) {
+	public static <T> T newInstance(final Class<T> clazz, final Object... args) {
 		return newInstance(false, clazz, args);
 	}
 
@@ -112,7 +112,7 @@ public final class ReflectionUtils {
 	 * @return the new instance.
 	 * @pre clazz != null
 	 */
-	public static <T> T newInstanceHidden(Class<T> clazz, Object... args) {
+	public static <T> T newInstanceHidden(final Class<T> clazz, final Object... args) {
 		return newInstance(true, clazz, args);
 	}
 
@@ -129,7 +129,7 @@ public final class ReflectionUtils {
 	 * @return the new instance.
 	 * @pre clazz != null
 	 */
-	private static <T> T newInstance(boolean open, Class<T> clazz, Object... args) {
+	private static <T> T newInstance(final boolean open, final Class<T> clazz, final Object... args) {
 		Assert.isNotNull(clazz, "clazz must be given!"); //$NON-NLS-1$
 
 		try {
@@ -143,7 +143,7 @@ public final class ReflectionUtils {
 				constructor.setAccessible(true);
 			}
 			return constructor.newInstance(args);
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			throw new ReflectionFailure("Error creating instance for " + clazz.getName() + " with parameters " //$NON-NLS-1$ //$NON-NLS-2$
 					+ Arrays.asList(args) + "!", t); //$NON-NLS-1$
 		}
@@ -161,12 +161,12 @@ public final class ReflectionUtils {
 	 * @pre invocationHandler != null
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T newInstance(String interfaceName, InvocationHandler invocationHandler) {
+	public static <T> T newInstance(final String interfaceName, final InvocationHandler invocationHandler) {
 		Assert.isNotNull(interfaceName, "interfaceName must be given!"); //$NON-NLS-1$
 		Assert.isNotNull(invocationHandler, "invocationHandler must be given!"); //$NON-NLS-1$
 		try {
 			return (T) newInstance(Class.forName(interfaceName), invocationHandler);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new ReflectionFailure("Error creating proxy instance for " + interfaceName + " !", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
@@ -183,16 +183,17 @@ public final class ReflectionUtils {
 	 * @pre invocationHandler != null
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T newInstance(Class<T> interfaze, InvocationHandler invocationHandler) {
+	public static <T> T newInstance(final Class<T> interfaze, final InvocationHandler invocationHandler) {
 		Assert.isNotNull(interfaze, "interfaceName must be given"); //$NON-NLS-1$
 		Assert.isNotNull(invocationHandler, "invocationHandler must be given"); //$NON-NLS-1$
 
-		Class proxyClass = Proxy.getProxyClass(interfaze.getClassLoader(), new Class<?>[] { interfaze });
+		final Class<?> proxyClass = Proxy.getProxyClass(interfaze.getClassLoader(), new Class<?>[] { interfaze });
 		try {
-			Constructor<T> constructor = proxyClass.getConstructor(new Class[] { InvocationHandler.class });
-			T object = constructor.newInstance(new Object[] { invocationHandler });
+			final Constructor<T> constructor = (Constructor<T>) proxyClass
+					.getConstructor(new Class[] { InvocationHandler.class });
+			final T object = constructor.newInstance(new Object[] { invocationHandler });
 			return object;
-		} catch (Throwable throwable) {
+		} catch (final Throwable throwable) {
 			throw new ReflectionFailure("Error creating proxy instance for " + interfaze.getName() + " !", throwable); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
@@ -211,7 +212,7 @@ public final class ReflectionUtils {
 	 * @pre instance != null
 	 * @pre methodName != null
 	 */
-	public static <T> T invoke(Object instance, String methodName, Object... args) {
+	public static <T> T invoke(final Object instance, final String methodName, final Object... args) {
 		return invoke(false, instance, methodName, args);
 	}
 
@@ -231,7 +232,7 @@ public final class ReflectionUtils {
 	 * @pre instance != null
 	 * @pre methodName != null
 	 */
-	public static <T> T invokeHidden(Object instance, String methodName, Object... args) {
+	public static <T> T invokeHidden(final Object instance, final String methodName, final Object... args) {
 		return invoke(true, instance, methodName, args);
 	}
 
@@ -253,13 +254,13 @@ public final class ReflectionUtils {
 	 * @pre expectedException != null
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends Throwable> Object invoke(Object instance, String methodName, Class<T> expectedException,
-			Object... args) throws T {
+	public static <T extends Throwable> Object invoke(final Object instance, final String methodName,
+			final Class<T> expectedException, final Object... args) throws T {
 		Assert.isNotNull(expectedException, "expectedException should not be null!"); //$NON-NLS-1$
 
 		try {
 			return invoke(instance, methodName, args);
-		} catch (InvocationTargetFailure e) {
+		} catch (final InvocationTargetFailure e) {
 			if (expectedException.isAssignableFrom(e.getCause().getClass())) {
 				throw (T) e.getCause();
 			}
@@ -285,13 +286,13 @@ public final class ReflectionUtils {
 	 * @pre expectedException != null
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends Throwable> Object invokeHidden(Object instance, String methodName,
-			Class<T> expectedException, Object... args) throws T {
+	public static <T extends Throwable> Object invokeHidden(final Object instance, final String methodName,
+			final Class<T> expectedException, final Object... args) throws T {
 		Assert.isNotNull(expectedException, "expectedException should not be null!"); //$NON-NLS-1$
 
 		try {
 			return invokeHidden(instance, methodName, args);
-		} catch (InvocationTargetFailure e) {
+		} catch (final InvocationTargetFailure e) {
 			if (expectedException.isAssignableFrom(e.getCause().getClass())) {
 				throw (T) e.getCause();
 			}
@@ -317,7 +318,8 @@ public final class ReflectionUtils {
 	 * @pre methodName != null
 	 */
 	@SuppressWarnings("unchecked")
-	private static <T> T invoke(boolean open, Object instance, String methodName, Object... args) {
+	private static <T> T invoke(final boolean open, final Object instance, final String methodName,
+			final Object... args) {
 		Assert.isNotNull(instance, "instance must be given!"); //$NON-NLS-1$
 		Assert.isNotNull(methodName, "methodName must be given!"); //$NON-NLS-1$
 
@@ -335,12 +337,12 @@ public final class ReflectionUtils {
 				}
 				try {
 					return (T) method.invoke(instance, args);
-				} catch (InvocationTargetException ite) {
+				} catch (final InvocationTargetException ite) {
 					throw new InvocationTargetFailure("Calling #" + methodName + " on " + instance + " failed.", ite //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							.getTargetException());
-				} catch (IllegalArgumentException e) {
+				} catch (final IllegalArgumentException e) {
 					throw new ReflectionFailure("Calling #" + methodName + " on " + instance + " failed.", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				} catch (IllegalAccessException e) {
+				} catch (final IllegalAccessException e) {
 					throw new ReflectionFailure("Calling #" + methodName + " on " + instance + " failed.", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 			}
@@ -368,16 +370,16 @@ public final class ReflectionUtils {
 	 * @pre value != null
 	 */
 	@IgnoreFindBugs(value = "DP_DO_INSIDE_DO_PRIVILEGED", justification = "only intended for unit tests")
-	public static void setHidden(Object instance, String fieldName, Object value) {
+	public static void setHidden(final Object instance, final String fieldName, final Object value) {
 		Assert.isNotNull(instance, "instance must be given!"); //$NON-NLS-1$
 		Assert.isNotNull(fieldName, "fieldName must be given!"); //$NON-NLS-1$
 
-		Class<?> clazz = getClass(instance);
+		final Class<?> clazz = getClass(instance);
 		try {
-			Field field = getDeepField(clazz, fieldName);
+			final Field field = getDeepField(clazz, fieldName);
 			field.setAccessible(true);
 			field.set(instance, value);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new ReflectionFailure("Could not set hidden field " + fieldName + " on " + clazz.getName() + "!", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
@@ -397,16 +399,16 @@ public final class ReflectionUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	@IgnoreFindBugs(value = "DP_DO_INSIDE_DO_PRIVILEGED", justification = "only intended for unit tests")
-	public static <T> T getHidden(Object instance, String fieldName) {
+	public static <T> T getHidden(final Object instance, final String fieldName) {
 		Assert.isNotNull(instance, "instance must be given!"); //$NON-NLS-1$
 		Assert.isNotNull(fieldName, "fieldName must be given!"); //$NON-NLS-1$
 
-		Class<?> clazz = getClass(instance);
+		final Class<?> clazz = getClass(instance);
 		try {
-			Field field = getDeepField(clazz, fieldName);
+			final Field field = getDeepField(clazz, fieldName);
 			field.setAccessible(true);
 			return (T) field.get(instance);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new ReflectionFailure("Could not get hidden field " + fieldName + " on " + clazz.getName() + "!", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
@@ -418,7 +420,7 @@ public final class ReflectionUtils {
 	 * @param args
 	 * @return
 	 */
-	public static <T> T newLazyInstance(Class<T> interfaze, Class<? extends T> clazz, Object... args) {
+	public static <T> T newLazyInstance(final Class<T> interfaze, final Class<? extends T> clazz, final Object... args) {
 		return newInstance(interfaze, new LazyInstantiationHandler(clazz, args));
 	}
 
@@ -429,7 +431,7 @@ public final class ReflectionUtils {
 	 * @param args
 	 * @return
 	 */
-	public static <T> T newLazyInstance(Class<T> interfaze, String clazz, Object... args) {
+	public static <T> T newLazyInstance(final Class<T> interfaze, final String clazz, final Object... args) {
 		return newInstance(interfaze, new LazyInstantiationHandler(clazz, args));
 	}
 
@@ -438,13 +440,13 @@ public final class ReflectionUtils {
 		private Object instance;
 		private Class<?> clazz;
 		private String clazzName;
-		private Object[] params;
+		private final Object[] params;
 
 		/**
 		 * @param clazz
 		 * @param args
 		 */
-		public LazyInstantiationHandler(Class<?> clazz, Object[] args) {
+		public LazyInstantiationHandler(final Class<?> clazz, final Object[] args) {
 			this.clazz = clazz;
 			this.params = args;
 		}
@@ -453,12 +455,12 @@ public final class ReflectionUtils {
 		 * @param clazz
 		 * @param args
 		 */
-		public LazyInstantiationHandler(String clazz, Object[] args) {
+		public LazyInstantiationHandler(final String clazz, final Object[] args) {
 			this.clazzName = clazz;
 			this.params = args;
 		}
 
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 			if (instance == null) {
 				instance = clazz != null ? newInstance(clazz, params) : newInstance(clazzName, params);
 			}
@@ -474,7 +476,8 @@ public final class ReflectionUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T> Constructor<T> findMatchingConstructor(boolean open, Class<T> clazz, Class<?>[] clazzes) {
+	private static <T> Constructor<T> findMatchingConstructor(final boolean open, final Class<T> clazz,
+			final Class<?>[] clazzes) {
 		Assert.isNotNull(clazz);
 
 		try {
@@ -482,9 +485,9 @@ public final class ReflectionUtils {
 				return open ? clazz.getDeclaredConstructor() : clazz.getConstructor();
 			}
 
-			Constructor[] constructors = open ? clazz.getDeclaredConstructors() : clazz.getConstructors();
-			for (Constructor constructor : constructors) {
-				Class<?>[] expectedParameterTypes = constructor.getParameterTypes();
+			final Constructor<T>[] constructors = open ? clazz.getDeclaredConstructors() : clazz.getConstructors();
+			for (final Constructor<T> constructor : constructors) {
+				final Class<?>[] expectedParameterTypes = constructor.getParameterTypes();
 				if (expectedParameterTypes.length == clazzes.length) {
 					boolean stop = false;
 					for (int j = 0; j < expectedParameterTypes.length && !stop; j++) {
@@ -498,12 +501,13 @@ public final class ReflectionUtils {
 				}
 			}
 			throw new ReflectionFailure("Could not find a matching constructor for " + clazz.getName()); //$NON-NLS-1$
-		} catch (NoSuchMethodException nsme) {
+		} catch (final NoSuchMethodException nsme) {
 			throw new ReflectionFailure("Could not find a matching constructor for " + clazz.getName(), nsme); //$NON-NLS-1$
 		}
 	}
 
-	private static Method findMatchingMethod(boolean open, Class<?> clazz, String name, Class<?>[] clazzes) {
+	private static Method findMatchingMethod(final boolean open, final Class<?> clazz, final String name,
+			final Class<?>[] clazzes) {
 		Assert.isNotNull(clazz);
 		Assert.isNotNull(name);
 
@@ -512,10 +516,10 @@ public final class ReflectionUtils {
 				return clazz.getDeclaredMethod(name);
 			}
 
-			Method[] methods = open ? clazz.getDeclaredMethods() : clazz.getMethods();
-			for (Method method : methods) {
+			final Method[] methods = open ? clazz.getDeclaredMethods() : clazz.getMethods();
+			for (final Method method : methods) {
 				if (method.getName().equals(name)) {
-					Class<?>[] expectedParameterTypes = method.getParameterTypes();
+					final Class<?>[] expectedParameterTypes = method.getParameterTypes();
 					if (expectedParameterTypes.length == clazzes.length) {
 						boolean stop = false;
 						for (int j = 0; j < expectedParameterTypes.length && !stop; j++) {
@@ -530,16 +534,16 @@ public final class ReflectionUtils {
 				}
 			}
 			return null;
-		} catch (NoSuchMethodException nsme) {
+		} catch (final NoSuchMethodException nsme) {
 			return null;
 		}
 	}
 
-	private static Class<? extends Object>[] classesPrimitiveFromObjects(Object[] objects) {
+	private static Class<? extends Object>[] classesPrimitiveFromObjects(final Object[] objects) {
 		if (objects == null) {
 			return null;
 		}
-		Class<?>[] clazzes = new Class<?>[objects.length];
+		final Class<?>[] clazzes = new Class<?>[objects.length];
 		for (int i = 0; i < objects.length; i++) {
 			Class<?> argClass = Object.class;
 			if (objects[i] != null) {
@@ -567,24 +571,24 @@ public final class ReflectionUtils {
 		return clazzes;
 	}
 
-	private static Class<? extends Object>[] classesFromObjects(Object[] objects) {
+	private static Class<? extends Object>[] classesFromObjects(final Object[] objects) {
 		if (objects == null) {
 			return null;
 		}
-		Class<?>[] clazzes = new Class<?>[objects.length];
+		final Class<?>[] clazzes = new Class<?>[objects.length];
 		for (int i = 0; i < objects.length; i++) {
 			clazzes[i] = objects[i] == null ? Object.class : objects[i].getClass();
 		}
 		return clazzes;
 	}
 
-	private static Class<?> getClass(Object instance) {
+	private static Class<?> getClass(final Object instance) {
 		Assert.isNotNull(instance);
 
 		return (instance instanceof Class<?>) ? (Class<?>) instance : instance.getClass();
 	}
 
-	private static Field getDeepField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
+	private static Field getDeepField(final Class<?> clazz, final String fieldName) throws NoSuchFieldException {
 		Assert.isNotNull(clazz);
 		Assert.isNotNull(fieldName);
 
@@ -592,7 +596,7 @@ public final class ReflectionUtils {
 		while (lookIn != null) {
 			try {
 				return lookIn.getDeclaredField(fieldName);
-			} catch (NoSuchFieldException nsfe) {
+			} catch (final NoSuchFieldException nsfe) {
 				lookIn = lookIn.getSuperclass();
 			}
 		}
@@ -600,17 +604,17 @@ public final class ReflectionUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T> Class<T> loadClass(String className) {
+	private static <T> Class<T> loadClass(final String className) {
 		ClassNotFoundException cnfe = null;
 		try {
 			return (Class<T>) Class.forName(className);
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			cnfe = e;
 		}
 		// ok, do it the hard way!!
-		Bundle[] bundles = Activator.getDefault().getContext().getBundles();
+		final Bundle[] bundles = Activator.getDefault().getContext().getBundles();
 		Class<T> foundClass = null;
-		for (Bundle bundle : bundles) {
+		for (final Bundle bundle : bundles) {
 			try {
 				if (foundClass != null) {
 					throw new ReflectionFailure(
@@ -619,7 +623,7 @@ public final class ReflectionUtils {
 				cnfe = null;
 				foundClass = bundle.loadClass(className);
 				return bundle.loadClass(className);
-			} catch (ClassNotFoundException e) {
+			} catch (final ClassNotFoundException e) {
 				cnfe = e;
 			}
 		}
