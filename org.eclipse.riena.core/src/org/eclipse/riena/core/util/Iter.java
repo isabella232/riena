@@ -42,7 +42,7 @@ public final class Iter {
 	 * 
 	 * @return the Iterable
 	 */
-	public static <T> Iterable<T> able(Iterator<T> iterator) {
+	public static <T> Iterable<T> able(final Iterator<T> iterator) {
 		if (iterator == null) {
 			return Collections.emptyList();
 		}
@@ -59,7 +59,7 @@ public final class Iter {
 	 * 
 	 * @return the Iterable
 	 */
-	public static <T> Iterable<T> able(Enumeration<T> enumeration) {
+	public static <T> Iterable<T> able(final Enumeration<T> enumeration) {
 		if (enumeration == null) {
 			return Collections.emptyList();
 		}
@@ -76,7 +76,7 @@ public final class Iter {
 	 * 
 	 * @return the collection
 	 */
-	public static <T> Iterable<T> able(Collection<T> collection) {
+	public static <T> Iterable<T> able(final Collection<T> collection) {
 		if (collection == null) {
 			return Collections.emptyList();
 		}
@@ -91,7 +91,7 @@ public final class Iter {
 	 *            the list that should be iterated over in reverse order
 	 * @return the iterable
 	 */
-	public static <T> Iterable<T> ableReverse(List<T> list) {
+	public static <T> Iterable<T> ableReverse(final List<T> list) {
 		if (list == null) {
 			return Collections.emptyList();
 		}
@@ -108,7 +108,7 @@ public final class Iter {
 	 * 
 	 * @return the Iterable
 	 */
-	public static <T> Iterable<T> able(T... array) {
+	public static <T> Iterable<T> able(final T... array) {
 		if (array == null) {
 			return Collections.emptyList();
 		}
@@ -128,8 +128,8 @@ public final class Iter {
 	 * 
 	 * @return the Iterable
 	 */
-	@SuppressWarnings("unchecked")
-	public static <T> Iterable<T> able(Iterator iterator, Class<T> t) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <T> Iterable<T> able(final Iterator iterator, final Class<T> t) {
 		return able(iterator);
 	}
 
@@ -146,16 +146,16 @@ public final class Iter {
 	 * 
 	 * @return the Iterable
 	 */
-	@SuppressWarnings("unchecked")
-	public static <T> Iterable<T> able(Enumeration enumeration, Class<T> t) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <T> Iterable<T> able(final Enumeration enumeration, final Class<T> t) {
 		return able(enumeration);
 	}
 
 	private static final class IteratorIterable<T> implements Iterable<T> {
 
-		private Iterator<T> iterator;
+		private final Iterator<T> iterator;
 
-		private IteratorIterable(Iterator<T> iterator) {
+		private IteratorIterable(final Iterator<T> iterator) {
 			this.iterator = iterator;
 		}
 
@@ -167,9 +167,9 @@ public final class Iter {
 
 	private static final class EnumerationIterator<T> implements Iterator<T> {
 
-		private Enumeration<T> enumeration;
+		private final Enumeration<T> enumeration;
 
-		private EnumerationIterator(Enumeration<T> enumeration) {
+		private EnumerationIterator(final Enumeration<T> enumeration) {
 			this.enumeration = enumeration;
 		}
 
@@ -195,7 +195,7 @@ public final class Iter {
 			reversed = new Iterator<T>() {
 
 				public boolean hasNext() {
-					boolean has = iterator.hasPrevious();
+					final boolean has = iterator.hasPrevious();
 					return has;
 				}
 
