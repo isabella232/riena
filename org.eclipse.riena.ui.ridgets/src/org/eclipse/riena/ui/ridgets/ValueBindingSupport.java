@@ -52,7 +52,7 @@ public class ValueBindingSupport {
 	/**
 	 * This rule fails if the ridget is marked with an error marker
 	 */
-	private final IValidator NO_ERRORS_RULE = new IValidator() {
+	private final IValidator noErrorsRule = new IValidator() {
 		public IStatus validate(Object value) {
 			boolean isOk = markable.getMarkersOfType(ErrorMarker.class).isEmpty();
 			return isOk ? Status.OK_STATUS : Status.CANCEL_STATUS;
@@ -270,7 +270,7 @@ public class ValueBindingSupport {
 			private void updateValidationMessages(IStatus newStatus) {
 				if (targetOV != null) {
 					Object value = targetOV.getValue();
-					updateValidationStatus(NO_ERRORS_RULE, newStatus);
+					updateValidationStatus(noErrorsRule, newStatus);
 					for (IValidator rule : getAfterGetValidators()) {
 						updateValidationStatus(rule, rule.validate(value));
 					}
@@ -311,11 +311,11 @@ public class ValueBindingSupport {
 	}
 
 	public void addValidationMessage(String message) {
-		addValidationMessage(message, NO_ERRORS_RULE);
+		addValidationMessage(message, noErrorsRule);
 	}
 
 	public void addValidationMessage(IMessageMarker messageMarker) {
-		addValidationMessage(messageMarker, NO_ERRORS_RULE);
+		addValidationMessage(messageMarker, noErrorsRule);
 	}
 
 	public void addValidationMessage(String message, IValidator validationRule) {
@@ -339,11 +339,11 @@ public class ValueBindingSupport {
 	}
 
 	public void removeValidationMessage(String message) {
-		removeValidationMessage(message, NO_ERRORS_RULE);
+		removeValidationMessage(message, noErrorsRule);
 	}
 
 	public void removeValidationMessage(IMessageMarker messageMarker) {
-		removeValidationMessage(messageMarker, NO_ERRORS_RULE);
+		removeValidationMessage(messageMarker, noErrorsRule);
 	}
 
 	public void removeValidationMessage(String message, IValidator validationRule) {
@@ -376,7 +376,7 @@ public class ValueBindingSupport {
 	 * @since 1.2
 	 */
 	public void updateValidationStatus(IStatus status) {
-		updateValidationStatus(NO_ERRORS_RULE, status);
+		updateValidationStatus(noErrorsRule, status);
 	}
 
 	/**
@@ -407,7 +407,7 @@ public class ValueBindingSupport {
 	//////////////////
 
 	private void addErrorMarker(IValidator validationRule, IStatus status) {
-		if (isBlocked(validationRule, status) || validationRule == NO_ERRORS_RULE) {
+		if (isBlocked(validationRule, status) || validationRule == noErrorsRule) {
 			return;
 		}
 		if (rule2error == null) {
