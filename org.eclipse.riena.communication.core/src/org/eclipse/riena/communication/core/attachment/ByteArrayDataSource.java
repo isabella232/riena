@@ -20,7 +20,6 @@ import java.io.OutputStream;
  */
 public class ByteArrayDataSource implements IDataSource {
 
-	private byte[] internalBuffer;
 	private String name;
 	private InputStream input;
 
@@ -39,9 +38,7 @@ public class ByteArrayDataSource implements IDataSource {
 	 */
 	public ByteArrayDataSource(IDataSource source) {
 		super();
-		if (source == null) {
-			internalBuffer = new byte[0];
-		} else {
+		if (source != null) {
 			name = source.getName();
 			try {
 				input = source.getInputStream();
@@ -55,7 +52,6 @@ public class ByteArrayDataSource implements IDataSource {
 	 * @see javax.IDataSource.DataSource#getInputStream()
 	 */
 	public InputStream getInputStream() throws IOException {
-		// return new ByteArrayInputStream( internalBuffer );
 		if (input == null) {
 			return null;
 		}
