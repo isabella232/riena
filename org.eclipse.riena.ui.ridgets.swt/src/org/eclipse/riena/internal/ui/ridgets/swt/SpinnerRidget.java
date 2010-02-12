@@ -155,11 +155,11 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 
 	@Override
 	protected String replaceToolTipPattern(String toolTipTemplate) {
-		int digits = getDigits();
+		int tempDigits = getDigits();
 
-		if (digits > 0) {
+		if (tempDigits > 0) {
 			int intSelection = getValue();
-			double value = intSelection / Math.pow(10, digits);
+			double value = intSelection / Math.pow(10, tempDigits);
 			return toolTipTemplate.replace(ITraverseRidget.VALUE_PATTERN, Double.toString(value));
 		} else {
 			return super.replaceToolTipPattern(toolTipTemplate);
