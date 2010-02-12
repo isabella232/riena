@@ -20,6 +20,7 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -30,6 +31,7 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.DateColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Demonstrates using a custom {@link ColumnFormatter} to provide
@@ -37,7 +39,7 @@ import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
  */
 public class SnippetTableRidget003 {
 
-	public SnippetTableRidget003(Shell shell) {
+	public SnippetTableRidget003(final Shell shell) {
 		Table table = new Table(shell, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
@@ -60,6 +62,11 @@ public class SnippetTableRidget003 {
 					protected Date getDate(Object element) {
 						return ((Holiday) element).getDate();
 					}
+
+					@Override
+					public Color getForeground(Object element) {
+						return shell.getDisplay().getSystemColor(SWT.COLOR_RED);
+					}
 				});
 		tableRidget.bindToModel(new WritableList(input, Holiday.class), Holiday.class, columnPropertyNames,
 				columnHeaders);
@@ -72,7 +79,8 @@ public class SnippetTableRidget003 {
 	public static void main(String[] args) {
 		Display display = Display.getDefault();
 		try {
-			final Shell shell = new Shell();
+			Shell shell = UIControlsFactory.createShell(display);
+			shell.setText(SnippetTableRidget003.class.getSimpleName());
 			new SnippetTableRidget003(shell);
 			shell.pack();
 			shell.open();
