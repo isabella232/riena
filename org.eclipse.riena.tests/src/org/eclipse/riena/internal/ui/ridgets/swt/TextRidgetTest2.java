@@ -978,25 +978,25 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 		ridget.updateFromModel();
 
-		assertMessage(ridget, ErrorMessageMarker.class, "String 'a' is less than 3 characters long.");
-		assertMessage(ridget, ErrorMessageMarker.class, "String 'a' is less than 5 characters long.");
+		assertMessage(ridget, ErrorMessageMarker.class, "'a' is less than 3 characters long.");
+		assertMessage(ridget, ErrorMessageMarker.class, "'a' is less than 5 characters long.");
 		assertMessageCount(ridget, ErrorMessageMarker.class, 2);
 
 		control.setSelection(1, 1);
 		UITestHelper.sendString(control.getDisplay(), "b");
 
-		assertMessage(ridget, ErrorMessageMarker.class, "String 'ab' is less than 3 characters long.");
-		assertMessage(ridget, ErrorMessageMarker.class, "String 'a' is less than 5 characters long.");
+		assertMessage(ridget, ErrorMessageMarker.class, "'ab' is less than 3 characters long.");
+		assertMessage(ridget, ErrorMessageMarker.class, "'a' is less than 5 characters long.");
 		assertMessageCount(ridget, ErrorMessageMarker.class, 2);
 
 		UITestHelper.sendString(control.getDisplay(), "c");
 
-		assertMessage(ridget, ErrorMessageMarker.class, "String 'a' is less than 5 characters long.");
+		assertMessage(ridget, ErrorMessageMarker.class, "'a' is less than 5 characters long.");
 		assertMessageCount(ridget, ErrorMessageMarker.class, 1);
 
 		UITestHelper.sendString(control.getDisplay(), "de");
 
-		assertMessage(ridget, ErrorMessageMarker.class, "String 'a' is less than 5 characters long.");
+		assertMessage(ridget, ErrorMessageMarker.class, "'a' is less than 5 characters long.");
 		assertMessageCount(ridget, ErrorMessageMarker.class, 1);
 
 		UITestHelper.sendString(control.getDisplay(), "\r");
