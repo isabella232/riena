@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
@@ -66,7 +67,10 @@ public class DateTextRidgetWithDatePickerCompositeTest extends AbstractSWTRidget
 		DateTextRidget ridget = getRidget();
 
 		assertTrue(ridget.getUIControl() instanceof DatePickerComposite);
-		assertTrue(ridget.getTextWidget() instanceof Text);
+
+		Object textWidget = ReflectionUtils.invokeHidden(ridget, "getTextWidget", (Object[]) null);
+
+		assertTrue(textWidget instanceof Text);
 	}
 
 	/**
@@ -76,7 +80,7 @@ public class DateTextRidgetWithDatePickerCompositeTest extends AbstractSWTRidget
 	 */
 	public void testVisibility() {
 		DateTextRidget ridget = getRidget();
-		Text text = ridget.getTextWidget();
+		Text text = (Text) ReflectionUtils.invokeHidden(ridget, "getTextWidget", (Object[]) null);
 
 		assertTrue(text.isVisible());
 
