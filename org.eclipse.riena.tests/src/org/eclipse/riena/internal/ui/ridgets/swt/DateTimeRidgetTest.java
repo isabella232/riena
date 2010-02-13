@@ -392,13 +392,13 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
 
 		int count = validator.count;
-		assertEquals(false, ridget.isErrorMarked());
+		assertFalse(ridget.isErrorMarked());
 
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), input);
 
 		assertTrue(count < validator.count);
-		assertEquals(true, ridget.isErrorMarked());
+		assertTrue(ridget.isErrorMarked());
 	}
 
 	// helping classes

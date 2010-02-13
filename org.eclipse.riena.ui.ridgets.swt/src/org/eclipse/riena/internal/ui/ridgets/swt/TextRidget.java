@@ -108,7 +108,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	@Override
 	protected final synchronized void bindUIControl() {
-		Control control = getUIControl();
+		Text control = getTextWidget();
 		if (control != null) {
 			setUIText(getTextBasedOnEnablement(textValue));
 			updateEditable();
@@ -119,7 +119,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	@Override
 	protected final synchronized void unbindUIControl() {
 		super.unbindUIControl();
-		Control control = getUIControl();
+		Text control = getTextWidget();
 		if (control != null) {
 			removeListeners(control);
 		}
@@ -132,12 +132,11 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 * @param control
 	 *            a Text instance (never null)
 	 */
-	protected synchronized void addListeners(Control control) {
-		Text text = (Text) control;
-		text.addKeyListener(crKeyListener);
-		text.addFocusListener(focusListener);
-		text.addModifyListener(modifyListener);
-		text.addVerifyListener(verifyListener);
+	protected synchronized void addListeners(Text control) {
+		control.addKeyListener(crKeyListener);
+		control.addFocusListener(focusListener);
+		control.addModifyListener(modifyListener);
+		control.addVerifyListener(verifyListener);
 	}
 
 	/**
@@ -147,17 +146,30 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 * @param control
 	 *            a Text instance (never null)
 	 */
-	protected synchronized void removeListeners(Control control) {
-		Text text = (Text) control;
-		text.removeKeyListener(crKeyListener);
-		text.removeFocusListener(focusListener);
-		text.removeModifyListener(modifyListener);
-		text.removeVerifyListener(verifyListener);
+	protected synchronized void removeListeners(Text control) {
+		control.removeKeyListener(crKeyListener);
+		control.removeFocusListener(focusListener);
+		control.removeModifyListener(modifyListener);
+		control.removeVerifyListener(verifyListener);
+	}
+
+	/**
+	 * Returns the underlying Text control.
+	 * <p>
+	 * Ridgets that wrap a Text widget into other UI elements, may override this
+	 * method to provide access to the text widget.
+	 * 
+	 * @return the Text control to be used by this ridget; may be null
+	 * @since 2.0
+	 */
+	protected Text getTextWidget() {
+		return (Text) getUIControl();
 	}
 
 	protected String getUIText() {
-		// getTextWidget() may return null
-		return getTextWidget().getText();
+		Text control = getTextWidget();
+		Assert.isNotNull(control);
+		return control.getText();
 	}
 
 	protected void updateEditable() {
@@ -168,16 +180,17 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	protected void setUIText(String text) {
-		// getTextWidget() may return null
-		getTextWidget().setText(text);
-		getTextWidget().setSelection(0, 0);
+		Text control = getTextWidget();
+		if (control != null) {
+			control.setText(text);
+			control.setSelection(0, 0);
+		}
 	}
 
 	protected void selectAll() {
-		// getTextWidget() may return null
 		Text text = getTextWidget();
 		// if not multi line text field
-		if ((text.getStyle() & SWT.MULTI) == 0) {
+		if (text != null && (text.getStyle() & SWT.MULTI) == 0) {
 			text.selectAll();
 		}
 	}
@@ -283,10 +296,6 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	private synchronized String getTextInternal() {
 		return textValue;
-	}
-
-	private Text getTextWidget() {
-		return (Text) getUIControl();
 	}
 
 	private synchronized void updateTextValue() {

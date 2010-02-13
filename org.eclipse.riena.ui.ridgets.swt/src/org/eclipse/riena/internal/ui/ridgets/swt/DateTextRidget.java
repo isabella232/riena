@@ -75,16 +75,6 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	@Override
-	public Control getUIControl() {
-		Control control = super.getUIControl();
-
-		if (control instanceof DatePickerComposite) {
-			return ((DatePickerComposite) control).getTextfield();
-		}
-		return control;
-	}
-
-	@Override
 	protected void checkUIControl(Object uiControl) {
 		if (null == uiControl) {
 			return;
@@ -105,22 +95,38 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	@Override
-	protected final synchronized void addListeners(Control control) {
-		Text text = (Text) control;
-		text.addVerifyListener(verifyListener);
+	protected final synchronized void addListeners(Text control) {
+		control.addVerifyListener(verifyListener);
 		control.addKeyListener(keyListener);
 		control.addFocusListener(focusListener);
 		// control.addPaintListener(paintListener);
 		super.addListeners(control);
 	}
 
+	/**
+	 * This ridget is bound to Text or DatePickerComposite controls. In the
+	 * second case this method will return the Text component of the
+	 * DatePickerComposite.
+	 * 
+	 * @return a Text widget or null
+	 */
+	protected Text getTextWidget() {
+		Text result;
+		Control control = super.getUIControl();
+		if (control instanceof DatePickerComposite) {
+			result = ((DatePickerComposite) control).getTextfield();
+		} else {
+			result = (Text) control;
+		}
+		return result;
+	}
+
 	@Override
-	protected final synchronized void removeListeners(Control control) {
-		Text text = (Text) control;
+	protected final synchronized void removeListeners(Text control) {
 		// control.removePaintListener(paintListener);
 		control.removeFocusListener(focusListener);
 		control.removeKeyListener(keyListener);
-		text.removeVerifyListener(verifyListener);
+		control.removeVerifyListener(verifyListener);
 		super.removeListeners(control);
 	}
 

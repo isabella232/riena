@@ -29,7 +29,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
@@ -238,12 +237,11 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	@Override
-	protected final synchronized void addListeners(Control control) {
-		Text text = (Text) control;
-		text.addModifyListener(modifyListener);
-		text.addVerifyListener(verifyListener);
-		text.addKeyListener(keyListener);
-		text.addFocusListener(focusListener);
+	protected final synchronized void addListeners(Text control) {
+		control.addModifyListener(modifyListener);
+		control.addVerifyListener(verifyListener);
+		control.addKeyListener(keyListener);
+		control.addFocusListener(focusListener);
 		super.addListeners(control);
 	}
 
@@ -261,12 +259,11 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	@Override
-	protected final synchronized void removeListeners(Control control) {
-		Text text = (Text) control;
-		text.removeModifyListener(modifyListener);
-		text.removeVerifyListener(verifyListener);
-		text.removeFocusListener(focusListener);
-		text.removeKeyListener(keyListener);
+	protected final synchronized void removeListeners(Text control) {
+		control.removeModifyListener(modifyListener);
+		control.removeVerifyListener(verifyListener);
+		control.removeFocusListener(focusListener);
+		control.removeKeyListener(keyListener);
 		super.removeListeners(control);
 	}
 
