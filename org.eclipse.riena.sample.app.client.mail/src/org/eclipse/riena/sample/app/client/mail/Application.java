@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.client.mail;
 
-import org.osgi.framework.Bundle;
-
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
