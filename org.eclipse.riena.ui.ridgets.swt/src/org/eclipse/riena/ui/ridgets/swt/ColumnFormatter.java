@@ -57,8 +57,8 @@ public class ColumnFormatter implements IColumnFormatter {
 		return SWT.DEFAULT;
 	}
 
-	public boolean getLeftPadding(Object element) {
-		return false;
+	public int getLeftIndent(Object element) {
+		return 0;
 	}
 
 }

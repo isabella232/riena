@@ -92,17 +92,21 @@ public interface IColumnFormatter {
 	int getHorizontalAlignment(Object element);
 
 	/**
-	 * Returns whether the cell for a column's row has an additional padding or
-	 * not.
+	 * Returns the number of indents that should be added before the content of
+	 * a cell.
+	 * <p>
+	 * The number of indents is multiplied with a setting of the Riena (SCP)
+	 * Look&Feel ({@code SCPLnfKeyConstants.MATRIX_ADDTIONAL_PADDING_LEFT}). So
+	 * the pixels for left padding is computed.
 	 * <p>
 	 * <i>Currently not used for {@link ITableRidget} and
 	 * {@link ITreeTableRidget}!</i>
 	 * 
 	 * @param element
 	 *            the row element
-	 * @return {@code true} for additional left padding; otherwise {@code false}
-	 * @since 1.2
+	 * @return number of indents
+	 * @since 2.0
 	 */
-	boolean getLeftPadding(Object element);
+	int getLeftIndent(Object element);
 
 }
