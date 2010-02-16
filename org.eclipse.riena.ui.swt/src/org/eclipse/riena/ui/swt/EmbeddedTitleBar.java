@@ -12,13 +12,6 @@ package org.eclipse.riena.ui.swt;
 
 import java.util.Collection;
 
-import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.core.marker.Markable;
-import org.eclipse.riena.core.util.ListenerList;
-import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -28,6 +21,14 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+
+import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.marker.Markable;
+import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
 
 /**
  * Title bar of an embedded window (e.g. view of the current sub-module).
@@ -97,7 +98,7 @@ public class EmbeddedTitleBar extends Canvas {
 		getLnfTitlebarRenderer().setTitle(getTitle());
 		getLnfTitlebarRenderer().setMarkers(getMarkers());
 		Point titlebarSize = getLnfTitlebarRenderer().computeSize(gc, getBounds().width, 0);
-		Rectangle titlebarBounds = new Rectangle(getBounds().x, 0, titlebarSize.x, titlebarSize.y);
+		Rectangle titlebarBounds = new Rectangle(0, 0, titlebarSize.x, titlebarSize.y);
 		getLnfTitlebarRenderer().setBounds(titlebarBounds);
 		getLnfTitlebarRenderer().paint(gc, this);
 

@@ -10,13 +10,17 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
+
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
 
 /**
  * Title bar of a module (view).
@@ -70,6 +74,13 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		for (IEmbeddedTitleBarListener listener : titleBarListeners.getListeners()) {
 			listener.windowClosed(event);
 		}
+	}
+
+	@Override
+	protected EmbeddedTitlebarRenderer getLnfTitlebarRenderer() {
+		final EmbeddedTitlebarRenderer r = (EmbeddedTitlebarRenderer) LnfManager.getLnf().getRenderer(
+				LnfKeyConstants.MODULE_VIEW_TITLEBAR_RENDERER);
+		return r != null ? r : super.getLnfTitlebarRenderer();
 	}
 
 	/**

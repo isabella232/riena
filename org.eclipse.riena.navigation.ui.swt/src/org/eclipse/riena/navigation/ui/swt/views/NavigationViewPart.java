@@ -295,6 +295,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 		moduleGroupView.setLayout(new FormLayout());
 		Composite moduleGroupBody = new Composite(moduleGroupView, SWT.NONE);
+		moduleGroupBody.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND));
 		FormData formData = new FormData();
 		int padding = getModuleGroupPadding();
 		formData.top = new FormAttachment(0, padding);

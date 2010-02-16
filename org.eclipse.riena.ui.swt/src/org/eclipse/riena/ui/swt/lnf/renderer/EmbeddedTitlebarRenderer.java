@@ -109,6 +109,36 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
+	 * Draws the background in the specified region with the specified
+	 * {@link GC}.
+	 */
+	protected void drawBackground(GC gc, int x, int y, int w, int h) {
+
+		final Color startColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR,
+				LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, null);
+		final Color endColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR,
+				LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, null);
+
+		gc.setForeground(startColor);
+		gc.setBackground(endColor);
+
+		if (isPressed() && !isActive() && !isCloseButtonPressed()) {
+			gc.fillRectangle(x, y, w, h);
+		} else {
+			gc.fillGradientRectangle(x, y, w, h, true);
+		}
+	}
+
+	/**
+	 * Draws the border of the title bar with the specified {@link GC}.
+	 */
+	protected void drawBorder(GC gc) {
+		gc.setForeground(getBorderColor());
+		final Rectangle b = getBounds();
+		gc.drawRectangle(b.x, b.y, b.width - 1, b.height - 1);
+	}
+
+	/**
 	 * @param value
 	 *            title text
 	 * 
@@ -133,44 +163,14 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		Font font = getTitlebarFont();
 		gc.setFont(font);
 
-		// Background
-		Color startColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR,
-				LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, null);
-		Color endColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR,
-				LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, null);
-		gc.setForeground(startColor);
-		gc.setBackground(endColor);
 		int x = getBounds().x;
 		int y = getBounds().y;
 		int w = getBounds().width;
 		int h = getBounds().height;
-		if (isPressed() && !isActive() && !isCloseButtonPressed()) {
-			gc.fillRectangle(x, y, w, h);
-		} else {
-			gc.fillGradientRectangle(x, y, w, h, true);
-		}
 
-		// Border
-		Color borderColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR,
-				LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR,
-				LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
-		gc.setForeground(borderColor);
-		// - top
-		x = getBounds().x;
-		y = getBounds().y;
-		w = getWidth();
-		gc.drawLine(x, y, x + w, y);
-		// - bottom
-		y = getBounds().y + getHeight();
-		gc.drawLine(x, y, x + w, y);
-		// - left
-		x = getBounds().x;
-		y = getBounds().y;
-		h = getHeight();
-		gc.drawLine(x, y, x, y + h);
-		// - right
-		x = getBounds().x + getWidth();
-		gc.drawLine(x, y, x, y + h);
+		// Background + border
+		drawBackground(gc, x, y, w, h);
+		drawBorder(gc);
 
 		//		// Edges
 		//		if ((edgeColor == null) || (edgeColor.isDisposed())) {
@@ -471,6 +471,12 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 	}
 
+	protected Color getBorderColor() {
+		return getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR,
+				LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR,
+				LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
+	}
+
 	/**
 	 * Returns according to the states of the title bar the color of one of the
 	 * given key.<br>
@@ -482,7 +488,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @return color
 	 * @TODO same code in SubApplicationTabRenderer Returns according to the
 	 */
-	private Color getColor(String activeColorKey, String passiveColorKey, String disabeldColorKey) {
+	protected Color getColor(String activeColorKey, String passiveColorKey, String disabeldColorKey) {
 
 		Color color = null;
 

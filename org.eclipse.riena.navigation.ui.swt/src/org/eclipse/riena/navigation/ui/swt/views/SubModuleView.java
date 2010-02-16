@@ -441,8 +441,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			// don't show the top border of the title, but show the bottom
 			// border => -1
 			formData.bottom = new FormAttachment(0, title.getSize().y - 1);
-			// don't show the right (and left) border of the title => 2
-			formData.right = new FormAttachment(100, 2);
+			// don't show the right border of the title => 1
+			formData.right = new FormAttachment(100, 1);
 			title.setLayoutData(formData);
 		}
 
