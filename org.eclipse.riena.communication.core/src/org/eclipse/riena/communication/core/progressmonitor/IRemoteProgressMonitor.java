@@ -17,12 +17,12 @@ package org.eclipse.riena.communication.core.progressmonitor;
 public interface IRemoteProgressMonitor {
 
 	/**
-	 * called before the first byte is send on the line
+	 * Called before the first byte is send on the line
 	 */
 	void start();
 
 	/**
-	 * called after the webservice call is over
+	 * Called after the webservice call is over
 	 */
 	void end();
 
@@ -39,8 +39,8 @@ public interface IRemoteProgressMonitor {
 
 	/**
 	 * Called in arbitrary (currently not configurable intervals) when data
-	 * chunks are received from the line. the last call for a sucessful response
-	 * will always have bytes == totalBytes
+	 * chunks are received from the line. the last call for a successful
+	 * response will always have bytes == totalBytes
 	 * 
 	 * @param event
 	 *            ProgressMonitorEvent object with information about the
