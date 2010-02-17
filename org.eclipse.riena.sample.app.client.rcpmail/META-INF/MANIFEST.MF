@@ -5,9 +5,7 @@ Bundle-SymbolicName: org.eclipse.riena.sample.app.client.rcpmail; singleton:=tru
 Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: org.eclipse.riena.sample.app.client.rcpmail.Activator
 Bundle-Vendor: Eclipse.org
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.ui,
- org.eclipse.riena.client;bundle-version="1.0.0"
+Require-Bundle: org.eclipse.riena.client
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.sample.app.client.rcpmail

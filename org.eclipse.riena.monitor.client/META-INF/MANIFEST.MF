@@ -5,9 +5,7 @@ Bundle-SymbolicName: org.eclipse.riena.monitor.client;singleton:=true
 Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.monitor.client.Activator
 Eclipse-BuddyPolicy: registered
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.riena.core,
- org.eclipse.equinox.log;bundle-version="1.1.0",
+Require-Bundle: org.eclipse.riena.core,
  org.eclipse.riena.monitor.common
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
