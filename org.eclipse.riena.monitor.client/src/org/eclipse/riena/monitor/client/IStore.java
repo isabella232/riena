@@ -43,6 +43,7 @@ public interface IStore {
 	 * Make the given collectible persistent.
 	 * 
 	 * @param collectible
+	 *            the collectible
 	 * @return true on success
 	 */
 	boolean collect(final Collectible<?> collectible);
@@ -52,6 +53,7 @@ public interface IStore {
 	 * transfer.
 	 * 
 	 * @param category
+	 *            the category
 	 */
 	void prepareTransferables(String category);
 
@@ -71,6 +73,7 @@ public interface IStore {
 	 * in case of a successful transfer.
 	 * 
 	 * @param collectibles
+	 *            the collectibles
 	 */
 	void commitTransferred(List<Collectible<?>> collectibles);
 

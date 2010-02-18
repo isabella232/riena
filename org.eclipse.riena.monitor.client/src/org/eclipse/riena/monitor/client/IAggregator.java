@@ -35,6 +35,7 @@ public interface IAggregator {
 	 * Trigger transfer of {@code Collectible}s for the given category.
 	 * 
 	 * @param category
+	 *            the category.
 	 */
 	void triggerTransfer(String category);
 
@@ -44,6 +45,7 @@ public interface IAggregator {
 	 * s.
 	 * 
 	 * @param collectible
+	 *            the collectible
 	 */
 	void collect(final Collectible<?> collectible);
 }

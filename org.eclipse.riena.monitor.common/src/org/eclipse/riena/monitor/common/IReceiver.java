@@ -13,7 +13,7 @@ package org.eclipse.riena.monitor.common;
 import java.util.List;
 
 /**
- * Pass collectibles to a receiver.
+ * The receiver of collectibles.
  */
 public interface IReceiver {
 

@@ -35,7 +35,7 @@ public interface ICollector {
 	/**
 	 * Get the category of this collector
 	 * 
-	 * @return
+	 * @return the category
 	 */
 	Category getCategory();
 }
