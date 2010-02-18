@@ -11,8 +11,6 @@
 package org.eclipse.riena.ui.swt;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -24,7 +22,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class StatuslineNumber extends AbstractStatuslineComposite {
 
-	private CLabel numberLabel;
+	private NumberLabel numberLabel;
 
 	/**
 	 * Creates a new instance of <code>StatuslineNumber</code>.
@@ -45,17 +43,8 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	@Override
 	protected void createContents() {
 
-		numberLabel = new CLabel(this, SWT.LEFT) {
-
-			@Override
-			public Point computeSize(int wHint, int hHint, boolean changed) {
-				Point size = super.computeSize(wHint, hHint, changed);
-				if (getFixWidth() != SWT.NONE) {
-					size.x = getFixWidth();
-				}
-				return size;
-			}
-		};
+		numberLabel = new NumberLabel(this, SWT.LEFT);
+		numberLabel.setFixWidth(getFixWidthLabel());
 		numberLabel.setText("0000000"); //$NON-NLS-1$
 		numberLabel.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 	}
@@ -66,7 +55,7 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	 * @return the fixed with
 	 * @since 1.2
 	 */
-	protected int getFixWidth() {
+	protected int getFixWidthLabel() {
 		return SWT.NONE;
 	}
 

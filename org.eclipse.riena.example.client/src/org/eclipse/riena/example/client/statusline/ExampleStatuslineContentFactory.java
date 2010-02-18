@@ -27,8 +27,8 @@ public class ExampleStatuslineContentFactory extends DefaultStatuslineContentFac
 		return new StatuslineNumber(statusline, SWT.NONE) {
 
 			@Override
-			protected int getFixWidth() {
-				return 100;
+			protected int getFixWidthLabel() {
+				return 115;
 			}
 		};
 	}

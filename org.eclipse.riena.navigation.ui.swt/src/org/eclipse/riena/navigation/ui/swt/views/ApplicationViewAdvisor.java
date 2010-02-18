@@ -82,6 +82,7 @@ import org.eclipse.riena.ui.swt.IStatusLineContentFactory;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineSpacer;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -168,6 +169,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		RestoreFocusOnEscListener focusListener = new RestoreFocusOnEscListener(shell);
 		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(menuBarComposite));
 		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(coolBarComposite));
+
 	}
 
 	@Override
@@ -273,9 +275,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	private void createStatusLine(Composite shell, Composite grabCorner) {
-		Statusline statusLine = new Statusline(shell, SWT.None, StatuslineSpacer.class,
-				getStatuslineContentFactory() != null ? getStatuslineContentFactory()
-						: new DefaultStatuslineContentFactory());
+		IStatusLineContentFactory statusLineFactory = getStatuslineContentFactory();
+		if (statusLineFactory == null) {
+			statusLineFactory = new DefaultStatuslineContentFactory();
+		}
+		Statusline statusLine = new Statusline(shell, SWT.None, StatuslineSpacer.class, statusLineFactory);
 		FormData fd = new FormData();
 		fd.height = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
 		Rectangle navigationBounds = TitlelessStackPresentation.calcNavigationBounds(shell);
@@ -283,11 +287,14 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		if (grabCorner != null) {
 			fd.right = new FormAttachment(grabCorner, 0);
 		} else {
-			fd.right = new FormAttachment(100, 0);
+			int padding = getShellPadding();
+			fd.right = new FormAttachment(100, -padding);
 		}
 		fd.bottom = new FormAttachment(100, -5);
 		statusLine.setLayoutData(fd);
 		addUIControl(statusLine, "statusline"); //$NON-NLS-1$
+
+		new LnFUpdater().updateUIControls(statusLine);
 	}
 
 	/**

@@ -485,8 +485,7 @@ public final class ReflectionUtils {
 				return open ? clazz.getDeclaredConstructor() : clazz.getConstructor();
 			}
 
-			final Constructor<T>[] constructors = (Constructor<T>[]) (open ? clazz.getDeclaredConstructors() : clazz
-					.getConstructors());
+			final Constructor<T>[] constructors = open ? clazz.getDeclaredConstructors() : clazz.getConstructors();
 			for (final Constructor<T> constructor : constructors) {
 				final Class<?>[] expectedParameterTypes = constructor.getParameterTypes();
 				if (expectedParameterTypes.length == clazzes.length) {

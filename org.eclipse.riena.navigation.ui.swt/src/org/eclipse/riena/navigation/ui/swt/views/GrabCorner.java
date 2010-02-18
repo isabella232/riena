@@ -90,7 +90,7 @@ public class GrabCorner extends Composite {
 	 * @return true if shell is resizeable; otherwise false
 	 */
 	public static boolean isResizeable() {
-		return LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_RESIZEABLE);
+		return LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_RESIZEABLE, true);
 	}
 
 	/**

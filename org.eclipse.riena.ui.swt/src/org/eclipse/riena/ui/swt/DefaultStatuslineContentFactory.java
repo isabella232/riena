@@ -120,22 +120,24 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 		formData.right = new FormAttachment(lastControl, 0);
 		message.setLayoutData(formData);
 		lastControl = message;
+
 	}
 
 	protected StatuslineNumber createStatuslineNumber(Statusline statusline) {
 		return new StatuslineNumber(statusline, SWT.NONE);
 	}
 
-	protected Control layoutStatuslineNumber(Control lastControl, StatuslineNumber number) {
-		FormData formData;
-		formData = new FormData();
-		formData.top = new FormAttachment(0, 0);
-		formData.bottom = new FormAttachment(100, 0);
-		formData.right = new FormAttachment(lastControl, 0);
-		number.setLayoutData(formData);
-		lastControl = number;
-		return lastControl;
-	}
+	//
+	//	protected Control layoutStatuslineNumber(Control lastControl, StatuslineNumber number) {
+	//		FormData formData;
+	//		formData = new FormData();
+	//		formData.top = new FormAttachment(0, 0);
+	//		formData.bottom = new FormAttachment(100, 0);
+	//		formData.right = new FormAttachment(lastControl, 0);
+	//		number.setLayoutData(formData);
+	//		lastControl = number;
+	//		return lastControl;
+	//	}
 
 	/**
 	 * Creates a spacer.

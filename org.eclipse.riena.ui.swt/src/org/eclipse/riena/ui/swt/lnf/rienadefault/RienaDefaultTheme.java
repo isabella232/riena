@@ -176,6 +176,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put("Button.background", getPrimaryBackground()); //$NON-NLS-1$
 		table.put("Button.foreground", getPrimaryForeground()); // Windows: no effect //$NON-NLS-1$
 
+		table.put("CLabel.background", getPrimaryBackground()); //$NON-NLS-1$
+		table.put("CLabel.foreground", getPrimaryForeground()); //$NON-NLS-1$
+
 		table.put("Combo.background", getPrimaryBackground()); //$NON-NLS-1$
 		table.put("Combo.foreground", getPrimaryForeground()); //$NON-NLS-1$
 
@@ -242,6 +245,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		// Standard SWT controls
 		table.put("Button.font", getPrimaryFont()); //$NON-NLS-1$
+
+		table.put("CLabel.font", getPrimaryFont()); //$NON-NLS-1$
 
 		table.put("Combo.font", getPrimaryFont()); //$NON-NLS-1$
 
@@ -364,7 +369,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE, true);
 		table.put(LnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, true);
 		table.put(LnfKeyConstants.TITLELESS_SHELL_SHOW_MIN, true);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_RESIZEABLE, true);
+		table.put(LnfKeyConstants.TITLELESS_SHELL_RESIZEABLE, false);
 
 		//		table.put(LnfKeyConstants.SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION,
 		//				IIconizableMarker.MarkerPosition.BOTTOM_RIGHT);
@@ -373,7 +378,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		table.put(LnfKeyConstants.NAVIGATION_WIDTH, 165);
 
-		table.put(LnfKeyConstants.STATUSLINE_HEIGHT, 22);
+		table.put(LnfKeyConstants.STATUSLINE_HEIGHT, 24);
 
 		table.put(LnfKeyConstants.DIALOG_HIDE_OS_BORDER, hideOsBorder());
 

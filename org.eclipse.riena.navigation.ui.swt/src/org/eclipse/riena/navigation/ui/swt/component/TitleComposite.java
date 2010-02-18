@@ -187,9 +187,11 @@ public class TitleComposite extends Composite {
 				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellRenderer.getHeight());
 				shellRenderer.setBounds(bounds);
 				RienaDefaultLnf lnf = LnfManager.getLnf();
-				shellRenderer.setCloseable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE));
-				shellRenderer.setMaximizable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_MAX));
-				shellRenderer.setMinimizable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_MIN));
+				shellRenderer.setCloseable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE, true));
+				Boolean maximizable = lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, true);
+				maximizable = maximizable && lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_RESIZEABLE, true);
+				shellRenderer.setMaximizable(maximizable);
+				shellRenderer.setMinimizable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_MIN, true));
 				shellRenderer.paint(e.gc, shell);
 
 				// idea: set background image here !?!

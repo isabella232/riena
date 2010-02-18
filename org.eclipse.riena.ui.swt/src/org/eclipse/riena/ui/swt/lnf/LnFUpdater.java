@@ -178,6 +178,10 @@ public class LnFUpdater {
 		if (!checkLnfKeys(control)) {
 			return;
 		}
+		int classModifiers = control.getClass().getModifiers();
+		if (!Modifier.isPublic(classModifiers)) {
+			return;
+		}
 		PropertyDescriptor[] properties = getProperties(control);
 		for (PropertyDescriptor property : properties) {
 			Object newValue = getLnfValue(control, property);
@@ -188,8 +192,8 @@ public class LnFUpdater {
 			if (setter == null) {
 				continue;
 			}
-			int modifiers = setter.getModifiers();
-			if (!Modifier.isPublic(modifiers)) {
+			int setterModifiers = setter.getModifiers();
+			if (!Modifier.isPublic(setterModifiers)) {
 				continue;
 			}
 			if (hasNoDefaultValue(control, property)) {
@@ -209,18 +213,49 @@ public class LnFUpdater {
 	}
 
 	/**
-	 * Checks if some key for the given control class exists in the current
+	 * Checks if a key for the given control exists in the current Look&Feel. If
+	 * no key for the control exits, checks keys for the (optional) style exits.
+	 * 
+	 * @param control
+	 *            UI control
+	 * @return {@code true} if latest one key exists; otherwise {@code false}
+	 */
+	private boolean checkLnfKeys(Control control) {
+
+		Class<? extends Control> controlClass = control.getClass();
+		if (checkLnfClassKeys(controlClass)) {
+			return true;
+		}
+
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		String style = (String) control.getData(UIControlsFactory.KEY_LNF_STYLE);
+		if (!StringUtils.isEmpty(style)) {
+			style += "."; //$NON-NLS-1$
+			Set<String> keys = lnf.getResourceTable().keySet();
+			for (String key : keys) {
+				if (key.startsWith(style)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Checks if a key for the given control class exists in the current
 	 * Look&Feel.
 	 * 
 	 * @param controlClass
 	 *            class of the UI control
 	 * @return {@code true} if latest one key exists; otherwise {@code false}
 	 */
-	private boolean checkLnfKeys(Control control) {
+	@SuppressWarnings("unchecked")
+	private boolean checkLnfClassKeys(Class<? extends Control> controlClass) {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 
-		Class<? extends Control> controlClass = control.getClass();
 		String className = getSimpleClassName(controlClass);
 		if (!StringUtils.isEmpty(className)) {
 			className += "."; //$NON-NLS-1$
@@ -232,15 +267,8 @@ public class LnFUpdater {
 			}
 		}
 
-		String style = (String) control.getData(UIControlsFactory.KEY_LNF_STYLE);
-		if (!StringUtils.isEmpty(style)) {
-			style += "."; //$NON-NLS-1$
-			Set<String> keys = lnf.getResourceTable().keySet();
-			for (String key : keys) {
-				if (key.startsWith(style)) {
-					return true;
-				}
-			}
+		if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
+			return checkLnfClassKeys((Class<? extends Control>) controlClass.getSuperclass());
 		}
 
 		return false;
@@ -430,20 +458,64 @@ public class LnFUpdater {
 	 * @param control
 	 *            the control
 	 * @param property
-	 *            property
-	 * @return value of Lnf
+	 *            description of one property
+	 * @return value of LnF
 	 */
 	private Object getLnfValue(Control control, PropertyDescriptor property) {
 
 		Object lnfValue = getLnfStyleValue(control, property);
 		if (lnfValue == null) {
 			Class<? extends Control> controlClass = control.getClass();
-			RienaDefaultLnf lnf = LnfManager.getLnf();
-			String controlName = getSimpleClassName(controlClass);
-			String lnfKey = controlName + "." + property.getName(); //$NON-NLS-1$
-			lnfValue = lnf.getResource(lnfKey);
+			lnfValue = getLnfValue(controlClass, property);
 		}
 		return lnfValue;
+
+	}
+
+	/**
+	 * Returns for th given control class and the given property the
+	 * corresponding value of the LnF.
+	 * 
+	 * @param controlClass
+	 *            class of the control
+	 * @param property
+	 *            description of one property
+	 * @return value of LnF
+	 */
+	@SuppressWarnings("unchecked")
+	private Object getLnfValue(Class<? extends Control> controlClass, PropertyDescriptor property) {
+
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		String lnfKey = generateLnfKey(controlClass, property);
+		Object lnfValue = lnf.getResource(lnfKey.toString());
+
+		if (lnfValue == null) {
+			if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
+				lnfValue = getLnfValue((Class<? extends Control>) controlClass.getSuperclass(), property);
+			}
+		}
+
+		return lnfValue;
+
+	}
+
+	/**
+	 * Generates the LnF key with the given parameters.
+	 * 
+	 * @param controlClass
+	 *            class of the control
+	 * @param property
+	 *            description of one property
+	 * @return LnF key
+	 */
+	private String generateLnfKey(Class<? extends Control> controlClass, PropertyDescriptor property) {
+
+		String controlName = getSimpleClassName(controlClass);
+		StringBuilder lnfKey = new StringBuilder(controlName);
+		lnfKey.append("."); //$NON-NLS-1$
+		lnfKey.append(property.getName());
+
+		return lnfKey.toString();
 
 	}
 
