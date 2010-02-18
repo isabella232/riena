@@ -196,7 +196,7 @@ public final class ImageStore {
 
 		for (IImagePathExtension iconPath : iconPathes) {
 			String fullPath = iconPath.getPath() + '/' + fullName;
-			URL url = iconPath.getContributingBundle().getResource(fullPath);
+			URL url = iconPath.getContributingBundle().getEntry(fullPath);
 			if (url != null) {
 				return ImageDescriptor.createFromURL(url);
 			}
