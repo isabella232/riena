@@ -369,7 +369,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE, true);
 		table.put(LnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, true);
 		table.put(LnfKeyConstants.TITLELESS_SHELL_SHOW_MIN, true);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_RESIZEABLE, false);
+		table.put(LnfKeyConstants.TITLELESS_SHELL_RESIZEABLE, true);
 
 		//		table.put(LnfKeyConstants.SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION,
 		//				IIconizableMarker.MarkerPosition.BOTTOM_RIGHT);
@@ -378,7 +378,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		table.put(LnfKeyConstants.NAVIGATION_WIDTH, 165);
 
-		table.put(LnfKeyConstants.STATUSLINE_HEIGHT, 24);
+		table.put(LnfKeyConstants.STATUSLINE_HEIGHT, 20);
 
 		table.put(LnfKeyConstants.DIALOG_HIDE_OS_BORDER, hideOsBorder());
 
