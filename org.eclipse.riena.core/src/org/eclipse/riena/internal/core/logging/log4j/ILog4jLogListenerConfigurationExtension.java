@@ -22,12 +22,15 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 public interface ILog4jLogListenerConfigurationExtension {
 
 	/**
-	 * @return the configuration element on whose behalf this instance was
-	 *         created
+	 * Get the configuration element this instance is wrapping.
+	 * 
+	 * @return this instance is wrapping
 	 */
 	IConfigurationElement getConfigurationElement();
 
 	/**
+	 * Get the location of the log4j configuration.
+	 * 
 	 * @return the string identifying the configuration
 	 */
 	String getLocation();
