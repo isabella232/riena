@@ -80,7 +80,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private DataBindingContext dbc;
 	/*
 	 * Binds the viewer's multiple selection to the multiple selection
-	 * observable. This binding hsa to be disposed when the ridget is set to
+	 * observable. This binding has to be disposed when the ridget is set to
 	 * output-only, to avoid updating the model. It has to be recreated when the
 	 * ridget is set to not-output-only.
 	 */
@@ -155,7 +155,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
 					UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
 					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-			// viewer to to multi selection binding
+			// viewer to to multi-selection binding
 			viewerMSB = null;
 			if (!isOutputOnly()) {
 				createMultipleSelectionBinding();
@@ -626,7 +626,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 * Erase listener to paint all cells empty when this ridget is disabled.
 	 * <p>
 	 * Implementation note: this works by registering this class an an
-	 * EraseEListener and indicating we will be repsonsible from drawing the
+	 * EraseEListener and indicating we will be responsible from drawing the
 	 * cells content. We do not register a PaintListener, meaning that we do NOT
 	 * paint anything.
 	 * 

@@ -89,7 +89,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	private Object[] rowValues;
 	/**
 	 * A copy of the <b>unsorted</b> rowValues. It provides the ability to
-	 * restore the unnsorted state of rowValues. This array is null if rowValues
+	 * restore the unsorted state of rowValues. This array is null if rowValues
 	 * is unsorted.
 	 */
 	private Object[] rowValuesUnsorted;
@@ -438,7 +438,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	 * have to fully process the event-queue before, to avoid pending events
 	 * adding selection changes after our call, via asyncexec(op)). - we have to
 	 * fully process the event-queue afterwards, to make sure the selection is
-	 * appliied to the widget.
+	 * applied to the widget.
 	 * <p>
 	 * Typically this method will be called before AND after
 	 * ct.setSelection(x,y);
@@ -474,7 +474,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			// Updates the color of contentPane (=composite that holds the rows). 
 			//
 			// This is a clever trick: MarkerSupport manipulates
-			// the bgColor of the CompositeTable, we manipualte the bgColor
+			// the bgColor of the CompositeTable, we manipulate the bgColor
 			// of the internal contentPane - this way we don't get in each
 			// other's way. By using the color for table when enabled we make
 			// sure that we apply the 'right' color from MarkerSupport. 

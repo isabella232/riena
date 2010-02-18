@@ -147,7 +147,7 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * Adjust the column widths of the ridget's table control according to the
 	 * information in the {@code widths} array.
 	 * <p>
-	 * When running on SWT: {@code widths} may only contain sublasses of
+	 * When running on SWT: {@code widths} may only contain subclasses of
 	 * ColumnLayoutData. The following layout managers are supported:
 	 * TableLayout, TableColumnLayout, other. See ColumnUtils for implementation
 	 * details.
@@ -178,7 +178,7 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * user.
 	 * 
 	 * @param moveableColumns
-	 *            true, if column should be re-arrangable by the user; false
+	 *            true, if column should be rearrangeable by the user; false
 	 *            otherwise.
 	 */
 	void setMoveableColumns(boolean moveableColumns);

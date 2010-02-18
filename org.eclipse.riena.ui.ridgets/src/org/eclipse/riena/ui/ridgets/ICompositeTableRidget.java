@@ -31,8 +31,8 @@ public interface ICompositeTableRidget extends ISelectableIndexedRidget, ISortab
 	 *            The class of the objects in the list.
 	 * @param rowRidgetClass
 	 *            A class which will be instantiated for each row.<br>
-	 *            If targetting SWT, this class must extend {@code Composite}
-	 *            and must provide a public constructor with these parameters:
+	 *            If targeting SWT, this class must extend {@code Composite} and
+	 *            must provide a public constructor with these parameters:
 	 *            {@code Composite parent, int style}.
 	 */
 	void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass,
@@ -50,8 +50,8 @@ public interface ICompositeTableRidget extends ISelectableIndexedRidget, ISortab
 	 *            The class of the objects in the list.
 	 * @param rowRidgetClass
 	 *            A class which will be instantiated for each row.<br>
-	 *            If targetting SWT, this class must extend {@code Composite}
-	 *            and must provide a public constructor with these parameters:
+	 *            If targeting SWT, this class must extend {@code Composite} and
+	 *            must provide a public constructor with these parameters:
 	 *            {@code Composite parent, int style}.
 	 */
 	void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
