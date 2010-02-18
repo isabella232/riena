@@ -177,8 +177,15 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	 */
 	protected abstract void setUIControlImage(Image image);
 
+	/**
+	 * Fires the same event that would be fired if the UIControl was klicked.
+	 * Does nothing if the Ridget is disabled or invisible. <br>
+	 * Should only be used in controller tests.
+	 */
 	public void fireAction() {
-		actionObserver.widgetSelected(null);
+		if (isVisible() && isEnabled()) {
+			actionObserver.widgetSelected(null);
+		}
 	}
 
 }
