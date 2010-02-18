@@ -31,7 +31,12 @@ public final class IconManagerProvider {
 	 * Creates a new instance of this provider and wires the extensions.
 	 */
 	private IconManagerProvider() {
-		Wire.instance(this).andStart(Activator.getDefault().getContext());
+		if (Activator.getDefault() != null) {
+			Wire.instance(this).andStart(Activator.getDefault().getContext());
+		} else {
+			defaultIconManager = new IconManager();
+			iconManager = defaultIconManager;
+		}
 	}
 
 	/**
