@@ -23,14 +23,32 @@ import org.eclipse.riena.core.injector.extension.MapName;
 @ExtensionInterface(id = "exceptionHandlers,org.eclipse.riena.core.exception.handlers")
 public interface IExceptionHandlerExtension {
 
+	/**
+	 * Get the descriptive name of the exception handler. This name will be used
+	 * for sorting the exception handlers.
+	 * 
+	 * @see getBefore
+	 * @return the name
+	 */
 	String getName();
 
+	/**
+	 * Create an instance of the exception handler.
+	 * 
+	 * @return the exception handler
+	 */
 	@MapName("class")
 	IExceptionHandler createExceptionHandler();
 
 	@MapName("class")
 	String getExceptionHandler();
 
+	/**
+	 * Get the exception handler name that is called afterwards this exception
+	 * handler.
+	 * 
+	 * @return the before exception handler
+	 */
 	@DefaultValue("*")
 	String getBefore();
 
