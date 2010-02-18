@@ -22,16 +22,41 @@ import org.eclipse.riena.core.injector.extension.MapName;
 @ExtensionInterface(id = "startups")
 public interface IRienaStartupExtension {
 
+	/**
+	 * Get the contributing bundle.
+	 * 
+	 * @return the contributing bundle
+	 */
 	Bundle getContributingBundle();
 
+	/**
+	 * Get the name of a {@code Runnable} that shall be executed.
+	 * 
+	 * @return the name of the class
+	 */
 	@MapName("runClass")
 	String getRunClassName();
 
+	/**
+	 * Create an instance of the {@code Runnable} that shall be executed.
+	 * 
+	 * @return the {@code Runnable}
+	 */
 	@MapName("runClass")
 	Runnable createRunner();
 
+	/**
+	 * Return a comma separated list of bundle names that shall be activated.
+	 * 
+	 * @return the list og bundle names
+	 */
 	String getRequiredBundles();
 
+	/**
+	 * Activate the contributing bundle if {@code true} otherwise not.
+	 * 
+	 * @return true for self activation
+	 */
 	boolean isActivateSelf();
 
 }

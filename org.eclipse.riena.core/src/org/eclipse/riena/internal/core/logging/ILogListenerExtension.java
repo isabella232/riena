@@ -19,21 +19,42 @@ import org.eclipse.riena.core.injector.extension.MapName;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
- *
+ * Define a n{@code ILogListener}.
  */
 @ExtensionInterface
 public interface ILogListenerExtension {
 
 	String ID = Activator.PLUGIN_ID + ".logging.listeners,logListeners"; //$NON-NLS-1$
 
+	/**
+	 * The descriptive name of the {@code ILogListener}
+	 * 
+	 * @return the descriptive name of the {@code ILogListener}
+	 */
 	String getName();
 
+	/**
+	 * Create an instance of the {@code LogListener}.
+	 * 
+	 * @return the {@code ILogListener}
+	 */
 	@MapName("listener-class")
 	LogListener createLogListener();
 
+	/**
+	 * Create an instance of the {@code LogFilter}
+	 * 
+	 * @return the {@code LogFilter}
+	 */
 	@MapName("filter-class")
 	LogFilter createLogFilter();
 
+	/**
+	 * Defines whether logging on the defined {@code LogListener} shall by
+	 * synchronous or asynchronous.
+	 * 
+	 * @return true for synchronous otherwise asynchronous
+	 */
 	@MapName("sync")
 	boolean isSynchronous();
 }

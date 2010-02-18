@@ -16,15 +16,25 @@ import org.eclipse.riena.core.logging.ILogCatcher;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
- *
+ * Defines an a {@code ILogCatcher}.
  */
 @ExtensionInterface
 public interface ILogCatcherExtension {
 
 	String ID = Activator.PLUGIN_ID + ".logging.catchers,logCatchers"; //$NON-NLS-1$
 
+	/**
+	 * The descriptive name of the {@code ILogCatcher}
+	 * 
+	 * @return the descriptive name if the {@code ILogCatcher}
+	 */
 	String getName();
 
+	/**
+	 * Create an instance of the {@code ILogCatcher}
+	 * 
+	 * @return the {@code ILogCatcher}
+	 */
 	@MapName("class")
 	ILogCatcher createLogCatcher();
 
