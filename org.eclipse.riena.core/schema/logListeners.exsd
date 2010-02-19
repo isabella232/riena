@@ -2,19 +2,21 @@
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.eclipse.riena.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appinfo>
-         <meta.schema plugin="org.eclipse.riena.core" id="org.eclipse.riena.core.logging.listeners" name="org.eclipse.riena.core.logging.listeners"/>
-      </appinfo>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.riena.core" id="logListeners" name="Log listeners"/>
+      </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         With this extension point it is possible to define LogListeners that will be registered with the Log Reader Service. LogListeners get called  for each log event.
+
+
       </documentation>
    </annotation>
 
    <element name="extension">
       <annotation>
-         <appinfo>
+         <appInfo>
             <meta.element />
-         </appinfo>
+         </appInfo>
       </annotation>
       <complexType>
          <sequence>
@@ -39,86 +41,89 @@
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
    <element name="logListener">
+      <annotation>
+         <documentation>
+            The definition of a log listener.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="name" type="string">
             <annotation>
                <documentation>
-                  
+                  The descriptive name of the log listener
                </documentation>
             </annotation>
          </attribute>
          <attribute name="listener-class" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The implementing class of a log listener
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="java" basedOn=":org.osgi.service.log.LogListener"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="sync" type="boolean">
             <annotation>
                <documentation>
-                  If not specified it defaults to false
-
-specifies wether the logListener needs to be synced
+                  Defines whether logging on the defined LogListener shall be synchronous or asynchronous. If not specified it defaults to false, i.e. asynchronous.
                </documentation>
             </annotation>
          </attribute>
          <attribute name="filter-class" type="string">
             <annotation>
                <documentation>
-                  
+                  The implementing class of a log filter
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.equinox.log.LogFilter"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="since"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter the first release in which this extension point appears.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="examples"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter extension point usage example here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="apiinfo"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter API information here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="implementation"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter information about supplied implementation of this extension point.]
       </documentation>
