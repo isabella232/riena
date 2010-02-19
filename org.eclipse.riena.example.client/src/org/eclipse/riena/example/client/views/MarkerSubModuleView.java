@@ -16,6 +16,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
@@ -150,7 +151,7 @@ public class MarkerSubModuleView extends SubModuleView {
 		tac2.setWidth(70);
 		hFillFactory.hint(170, hHint).applyTo(tablePersons);
 
-		CompositeTable compTable = UIControlsFactory.createCompositeTable(cmpReviewed, SWT.BORDER);
+		CompositeTable compTable = createCompositeTable(cmpReviewed, SWT.BORDER);
 		new Header(compTable, SWT.NONE);
 		new Row(compTable, SWT.NONE);
 		compTable.setRunTime(true);
@@ -197,6 +198,13 @@ public class MarkerSubModuleView extends SubModuleView {
 				.applyTo(composite);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
 		return composite;
+	}
+
+	private CompositeTable createCompositeTable(Composite parent, int style) {
+		CompositeTable result = new CompositeTable(parent, style);
+		Color bgColor = LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND);
+		result.setBackground(bgColor);
+		return result;
 	}
 
 	private GridLayout createGridLayout(int numColumns) {

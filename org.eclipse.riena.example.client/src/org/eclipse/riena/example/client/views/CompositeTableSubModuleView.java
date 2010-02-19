@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
@@ -127,11 +128,18 @@ public class CompositeTableSubModuleView extends SubModuleView {
 	// helping methods
 	// ////////////////
 
+	private CompositeTable createCompositeTable(Composite parent, int style) {
+		CompositeTable result = new CompositeTable(parent, style);
+		Color bgColor = LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND);
+		result.setBackground(bgColor);
+		return result;
+	}
+
 	private Group createTableGroup(Composite parent) {
 		Group group = UIControlsFactory.createGroup(parent, "Composite Table:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(1).applyTo(group);
 
-		table = UIControlsFactory.createCompositeTable(group, SWT.BORDER);
+		table = createCompositeTable(group, SWT.BORDER);
 		new Header(table, SWT.NONE);
 		new Row(table, SWT.NONE);
 		table.setInsertHint("Press 'Add' to add more rows..."); //$NON-NLS-1$
