@@ -211,6 +211,9 @@ public class Aggregator implements IAggregator {
 	 * .String)
 	 */
 	public synchronized void triggerTransfer(final String category) {
+		if (store == null || sender == null) {
+			return;
+		}
 		boolean elementAdded = workQueue.offer(new TriggerTransferTask(store, sender, category));
 		Assert.isTrue(elementAdded);
 	}
