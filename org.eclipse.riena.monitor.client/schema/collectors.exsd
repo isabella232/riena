@@ -3,10 +3,10 @@
 <schema targetNamespace="org.eclipse.riena.monitor.client" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.monitor.client" id="org.eclipse.riena.monitor" name="collector"/>
+         <meta.schema plugin="org.eclipse.riena.monitor.client" id="collectors" name="Collectors"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         Collectors gather the information that should be transferred to the server.
       </documentation>
    </annotation>
 
