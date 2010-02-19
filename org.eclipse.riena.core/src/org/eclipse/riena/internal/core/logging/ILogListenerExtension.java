@@ -50,7 +50,7 @@ public interface ILogListenerExtension {
 	LogFilter createLogFilter();
 
 	/**
-	 * Defines whether logging on the defined {@code LogListener} shall by
+	 * Defines whether logging on the defined {@code LogListener} shall be
 	 * synchronous or asynchronous.
 	 * 
 	 * @return true for synchronous otherwise asynchronous
