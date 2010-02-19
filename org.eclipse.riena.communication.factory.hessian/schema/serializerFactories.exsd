@@ -3,10 +3,10 @@
 <schema targetNamespace="org.eclipse.riena.communication.factory.hessian" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.communication.factory.hessian" id="org.eclipse.riena.communication.hessian.AbstractSerializerFactory" name="Abstract Serializer Factory"/>
+         <meta.schema plugin="org.eclipse.riena.communication.factory.hessian" id="serializerFactories" name="Hessian Serializer Factory"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         The hessian serialization and deserialization that Riena uses is not able to handle all Java classes. In such cases serializer factories can do this.
       </documentation>
    </annotation>
 
@@ -48,11 +48,16 @@
    </element>
 
    <element name="factory">
+      <annotation>
+         <documentation>
+            A serializer factory
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="implementation" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The implementing class for a serializer factory
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn="org.eclipse.riena.internal.communication.factory.hessian.AbstractRienaSerializerFactory:"/>
