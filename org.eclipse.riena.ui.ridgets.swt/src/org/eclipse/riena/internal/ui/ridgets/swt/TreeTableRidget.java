@@ -22,7 +22,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
@@ -34,6 +33,7 @@ import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 
 /**
  * Ridget for SWT @link {@link Tree} widgets, that shows a tree with multiple
@@ -41,8 +41,9 @@ import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
  */
 public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidget {
 
+	private static final Listener GROUPED_ITEM_ERASER = new GroupedTableEraseListener();
+
 	private final ColumnSortListener sortListener;
-	private final Listener groupedTableListener;
 
 	private boolean isSortedAscending;
 	private int sortedColumn;
@@ -55,7 +56,6 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 
 	public TreeTableRidget() {
 		sortListener = new ColumnSortListener();
-		groupedTableListener = new GroupedTableEraseListener();
 		isSortedAscending = true;
 		sortedColumn = -1;
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
@@ -84,7 +84,8 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 			for (TreeColumn column : control.getColumns()) {
 				column.removeSelectionListener(sortListener);
 			}
-			control.removeListener(SWT.EraseItem, groupedTableListener);
+			SWTFacade facade = SWTFacade.getDefault();
+			facade.removeEraseItemListener(control, GROUPED_ITEM_ERASER);
 		}
 	}
 
@@ -266,13 +267,14 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	}
 
 	private void applyGrouping() {
-		Control control = getUIControl();
+		Tree control = getUIControl();
 		if (control != null) {
 			control.setRedraw(false);
 			try {
-				control.removeListener(SWT.EraseItem, groupedTableListener);
+				SWTFacade facade = SWTFacade.getDefault();
+				facade.removeEraseItemListener(control, GROUPED_ITEM_ERASER);
 				if (isGroupingEnabled) {
-					control.addListener(SWT.EraseItem, groupedTableListener);
+					facade.addEraseItemListener(control, GROUPED_ITEM_ERASER);
 				}
 			} finally {
 				control.setRedraw(true);

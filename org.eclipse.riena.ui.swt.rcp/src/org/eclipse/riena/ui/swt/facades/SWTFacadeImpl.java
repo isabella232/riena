@@ -13,7 +13,6 @@ package org.eclipse.riena.ui.swt.facades;
 import java.util.EventListener;
 
 import org.eclipse.riena.ui.swt.facades.internal.DisabledPainter;
-import org.eclipse.riena.ui.swt.facades.internal.TableItemEraser;
 import org.eclipse.riena.ui.swt.facades.internal.TreeItemEraserAndPainter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintListener;
@@ -49,11 +48,6 @@ public class SWTFacadeImpl extends SWTFacade {
 	@Override
 	public EventListener createDisabledPainter() {
 		return new DisabledPainter();
-	}
-
-	@Override
-	public Listener createTableItemEraser() {
-		return new TableItemEraser();
 	}
 
 	@Override

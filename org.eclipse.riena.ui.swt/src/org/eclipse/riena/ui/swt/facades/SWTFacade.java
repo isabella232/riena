@@ -40,8 +40,6 @@ public abstract class SWTFacade {
 
 	public abstract EventListener createDisabledPainter();
 
-	public abstract Listener createTableItemEraser();
-
 	public abstract Listener createTreeItemEraserAndPainter();
 
 	public abstract void removeEraseItemListener(Table table, Listener listener);
