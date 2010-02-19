@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.communication.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.communication.core" id="org.eclipse.riena.communication.core.proxyselector" name="proxyselector"/>
+         <meta.schema plugin="org.eclipse.riena.communication.core" id="org.eclipse.riena.communication.core.proxySelectors" name="proxyselector"/>
       </appInfo>
       <documentation>
          Riena&apos;s hessian communication uses the Java HTTP/SURLConnection which uses Javas ProxySelector API to retrieve the internet proxies to use for the communication.
@@ -96,7 +96,7 @@ This extension point allows to define specialized proxy selectors that should be
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-            &lt;extension
+         &lt;extension
          point=&quot;org.eclipse.riena.communication.core.proxyselector&quot;&gt;
       &lt;proxyselector
             order=&quot;100&quot;
@@ -104,7 +104,6 @@ This extension point allows to define specialized proxy selectors that should be
             class=&quot;org.eclipse.riena.communication.core.proxyselector.CoreNetProxySelector&quot;&gt;
       &lt;/proxyselector&gt;
    &lt;/extension&gt;
-
       </documentation>
    </annotation>
 
