@@ -2,19 +2,19 @@
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.eclipse.riena.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appinfo>
-         <meta.schema plugin="org.eclipse.riena.core" id="org.eclipse.riena.core.logging.catchers" name="org.eclipse.riena.core.logging.catchers"/>
-      </appinfo>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.riena.core" id="logCatchers" name="Log catchers"/>
+      </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         Log catchers can attach itself (e.g. via listeners) to systems (e.g. Java logging) that are able to emit some sort of log events. The log catcher can than route the events into the Riena&apos;s logging.
       </documentation>
    </annotation>
 
    <element name="extension">
       <annotation>
-         <appinfo>
+         <appInfo>
             <meta.element />
-         </appinfo>
+         </appInfo>
       </annotation>
       <complexType>
          <sequence minOccurs="0" maxOccurs="unbounded">
@@ -39,67 +39,72 @@
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
    <element name="logCatcher">
+      <annotation>
+         <documentation>
+            The definition of a log catcher
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="name" type="string">
             <annotation>
                <documentation>
-                  
+                  The descriptive name of a log catcher
                </documentation>
             </annotation>
          </attribute>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The implementing class of a log catcher
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.core.logging.ILogCatcher"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="since"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter the first release in which this extension point appears.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="examples"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter extension point usage example here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="apiinfo"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter API information here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="implementation"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter information about supplied implementation of this extension point.]
       </documentation>
