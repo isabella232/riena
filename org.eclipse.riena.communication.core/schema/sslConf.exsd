@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.communication.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.communication.core" id="org.eclipse.riena.communication.core.ssl" name="ssl"/>
+         <meta.schema plugin="org.eclipse.riena.communication.core" id="ssl" name="SSL configuration"/>
       </appInfo>
       <documentation>
          An single ssl configuration is required for the https transport of the Riena communication.

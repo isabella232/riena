@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.communication.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.communication.core" id="org.eclipse.riena.communication.core.remoteServiceFactories" name="remote service factory"/>
+         <meta.schema plugin="org.eclipse.riena.communication.core" id="remoteServiceFactories" name="Remote service factories"/>
       </appInfo>
       <documentation>
          This extension point allows to register service factories for various remote service protocols, e.g. &quot;hessian&quot;, &quot;axis2&quot;, ..

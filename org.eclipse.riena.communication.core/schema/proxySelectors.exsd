@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.communication.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.communication.core" id="org.eclipse.riena.communication.core.proxySelectors" name="proxyselector"/>
+         <meta.schema plugin="org.eclipse.riena.communication.core" id="proxySelectors" name="Proxyselectors"/>
       </appInfo>
       <documentation>
          Riena&apos;s hessian communication uses the Java HTTP/SURLConnection which uses Javas ProxySelector API to retrieve the internet proxies to use for the communication.
