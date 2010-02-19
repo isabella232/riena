@@ -19,7 +19,7 @@ import org.eclipse.riena.core.injector.extension.MapName;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
- * Define a n{@code ILogListener}.
+ * Define a {@code LogListener}.
  */
 @ExtensionInterface
 public interface ILogListenerExtension {
