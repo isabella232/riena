@@ -64,7 +64,7 @@
          <attribute name="remoteServiceFactory" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The class implementing the remote service factory.
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.communication.core.factory.IRemoteServiceFactory"/>
@@ -88,14 +88,13 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         	&lt;extension
-		point=&quot;org.eclipse.riena.communication.core.remoteservicefactory&quot;&gt;
-		&lt;factory
-			protocol=&quot;hessian&quot;
-			remoteServiceFactory=&quot;org.eclipse.riena.internal.communication.factory.hessian.RemoteServiceFactoryHessian&quot;&gt;
-		&lt;/factory&gt;
-	&lt;/extension&gt;
-
+         &lt;extension
+  point=&quot;org.eclipse.riena.communication.core.remoteservicefactory&quot;&gt;
+  &lt;factory
+   protocol=&quot;hessian&quot;
+   remoteServiceFactory=&quot;org.eclipse.riena.internal.communication.factory.hessian.RemoteServiceFactoryHessian&quot;&gt;
+  &lt;/factory&gt;
+ &lt;/extension&gt;
       </documentation>
    </annotation>
 
