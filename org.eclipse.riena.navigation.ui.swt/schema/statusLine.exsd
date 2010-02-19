@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.navigation.ui.swt" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.navigation.ui.swt" id="org.eclipse.riena.ui.swt.statusline" name="org.eclipse.riena.ui.swt.statusline"/>
+         <meta.schema plugin="org.eclipse.riena.navigation.ui.swt" id="statusLine" name="status line"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]

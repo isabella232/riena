@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.ui.ridgets" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.riena.ui.ridgets" id="org.eclipse.riena.ui.ridgets.correspondinglabel.config" name="Corresponding Label Config"/>
+         <meta.schema plugin="org.eclipse.riena.ui.ridgets" id="correspondinglabel" name="Corresponding label configuration"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]

@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.navigation.ui.swt" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.navigation.ui.swt" id="org..eclipse.riena.navigation.ui.swt.moduleGroupView" name="module Group View"/>
+         <meta.schema plugin="org.eclipse.riena.navigation.ui.swt" id="moduleGroupView" name="Module group view"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]

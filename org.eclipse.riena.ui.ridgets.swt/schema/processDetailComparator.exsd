@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.ui.ridgets.swt" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.ui.ridgets.swt" id="org.eclipse.riena.ui.ridgets.swt.processdetail" name="org.eclipse.riena.ui.ridgets.swt.processdetail"/>
+         <meta.schema plugin="org.eclipse.riena.ui.ridgets.swt" id="processDetailComparator" name="Process detail comparator"/>
       </appInfo>
       <documentation>
          This extension point provides a way to control the order of the UIProcesses visualized in the StatusLine.

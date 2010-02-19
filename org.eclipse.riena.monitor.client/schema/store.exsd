@@ -3,10 +3,10 @@
 <schema targetNamespace="org.eclipse.riena.monitor.client" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.monitor.client" id="org.eclipse.riena.monitor.store" name="store"/>
+         <meta.schema plugin="org.eclipse.riena.monitor.client" id="store" name="Store"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         The store is responsible for persisting the collected items.
       </documentation>
    </annotation>
 
@@ -48,6 +48,11 @@
    </element>
 
    <element name="store">
+      <annotation>
+         <documentation>
+            The definition of a sender
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="name" type="string" use="required">
             <annotation>
@@ -83,7 +88,7 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         [Enter extension point usage example here.]
+         see: http://wiki.eclipse.org/Riena_Getting_Started_with_Client_Monitoring
       </documentation>
    </annotation>
 

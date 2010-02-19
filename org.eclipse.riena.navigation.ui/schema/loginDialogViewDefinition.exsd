@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.navigation.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.navigation.ui" id="org.eclipse.riena.navigation.ui.loginDialogViewDefinition" name="loginDialogViewDefinition"/>
+         <meta.schema plugin="org.eclipse.riena.navigation.ui" id="loginDialogViewDefinition" name="loginDialogViewDefinition"/>
       </appInfo>
       <documentation>
          Holds the definition for the login dialog view.

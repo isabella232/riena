@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.ui.swt" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.ui.swt" id="org.eclipse.riena.ui.swt.imagepath" name="org.eclipse.riena.ui.swt.imagepath"/>
+         <meta.schema plugin="org.eclipse.riena.ui.swt" id="imagePaths" name="Image paths"/>
       </appInfo>
       <documentation>
          Defines the pathes of images so that the ImageStore can load this images form other bundles.
@@ -78,13 +78,12 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-             &lt;extension
+         &lt;extension
           point=&quot;org.eclipse.riena.ui.swt.imagepath&quot;&gt;
        &lt;path
              path=&quot;icons&quot;&gt;
        &lt;/path&gt;
     &lt;/extension&gt;
-
       </documentation>
    </annotation>
 

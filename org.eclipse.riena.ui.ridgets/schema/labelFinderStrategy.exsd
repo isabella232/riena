@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.ui.ridgets" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.riena.ui.ridgets" id="org.eclipse.riena.ui.ridgets.labelfinderstrategy" name="Label Finder Strategy"/>
+         <meta.schema plugin="org.eclipse.riena.ui.ridgets" id="labelFinderStrategy" name="Label finder strategy"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]

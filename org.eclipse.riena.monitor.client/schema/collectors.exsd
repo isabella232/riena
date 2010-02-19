@@ -48,6 +48,11 @@
    </element>
 
    <element name="collector">
+      <annotation>
+         <documentation>
+            The definition of a collector
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="category" type="string" use="required">
             <annotation>

@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.navigation.ui.swt" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.navigation.ui.swt" id="org.eclipse.riena.navigation.ui.swt.loginSplashViewDefinition" name="loginSplashViewDefinition"/>
+         <meta.schema plugin="org.eclipse.riena.navigation.ui.swt" id="loginSplashViewDefinition" name="loginSplashViewDefinition"/>
       </appInfo>
       <documentation>
          Holds the definition for the login splash dialog view.

@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.eclipse.riena.navigation" xmlns="http://www.w3.org/2001/XMLSchema">
-   <annotation>
+<annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.navigation" id="org.eclipse.riena.navigation.navigationNodeProvider" name="navigationNodeProvider"/>
+         <meta.schema plugin="org.eclipse.riena.navigation" id="navigationNodeProvider" name="Navigation node provider"/>
       </appInfo>
       <documentation>
          Configures which class will be used to create nodes for the application model tree.
@@ -45,6 +45,11 @@
    </element>
 
    <element name="navigationNodeProvider">
+      <annotation>
+         <documentation>
+            Define a navigation node provider
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="id" type="string">
             <annotation>
@@ -72,4 +77,10 @@
          </attribute>
       </complexType>
    </element>
+
+
+
+
+
+
 </schema>

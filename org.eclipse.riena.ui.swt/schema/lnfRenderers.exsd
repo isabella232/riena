@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.ui.swt" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.ui.swt" id="org.eclipse.riena.ui.swt.lnfrenderer" name="org.eclipse.riena.ui.swt.lnfrenderer"/>
+         <meta.schema plugin="org.eclipse.riena.ui.swt" id="lnfRenderers" name="Lnf renderers"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]

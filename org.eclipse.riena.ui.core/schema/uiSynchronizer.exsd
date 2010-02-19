@@ -48,11 +48,16 @@
    </element>
 
    <element name="uiSynchronizer">
+      <annotation>
+         <documentation>
+            The definition of a UISynchronizer
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The imlementing class
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.core.uiprocess.IUISynchronizer"/>
@@ -77,7 +82,7 @@
       </appInfo>
       <documentation>
          &lt;extension point=&quot;org.riena.ui.core.uiprocess&quot;&gt;
-	&lt;uiSynchronizer class=&quot;org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer&quot;/&gt;
+ &lt;uiSynchronizer class=&quot;org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer&quot;/&gt;
 &lt;/extension&gt;
       </documentation>
    </annotation>
