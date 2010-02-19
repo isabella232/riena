@@ -44,7 +44,6 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
@@ -64,13 +63,14 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 
 /**
  * Ridget for SWT {@link Table} widgets.
  */
 public class TableRidget extends AbstractSelectableIndexedRidget implements ITableRidget {
 
-	private static final Listener ERASE_LISTENER = new EraseListener();
+	private static final Listener ITEM_ERASER = SWTFacade.getDefault().createTableItemEraser();
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener doubleClickForwarder;
@@ -184,7 +184,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
-			control.removeListener(SWT.EraseItem, ERASE_LISTENER);
+			SWTFacade facade = SWTFacade.getDefault();
+			facade.removeEraseItemListener(control, ITEM_ERASER);
 		}
 		viewer = null;
 	}
@@ -469,10 +470,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	private void applyEraseListener() {
 		if (viewer != null) {
-			Control control = viewer.getControl();
-			control.removeListener(SWT.EraseItem, ERASE_LISTENER);
+			Table control = viewer.getTable();
+			SWTFacade facade = SWTFacade.getDefault();
+			facade.removeEraseItemListener(control, ITEM_ERASER);
 			if (!isEnabled() && MarkerSupport.isHideDisabledRidgetContent()) {
-				control.addListener(SWT.EraseItem, ERASE_LISTENER);
+				facade.addEraseItemListener(control, ITEM_ERASER);
 			}
 		}
 	}
@@ -619,28 +621,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 					listener.callback();
 				}
 			}
-		}
-	}
-
-	/**
-	 * Erase listener to paint all cells empty when this ridget is disabled.
-	 * <p>
-	 * Implementation note: this works by registering this class an an
-	 * EraseEListener and indicating we will be responsible from drawing the
-	 * cells content. We do not register a PaintListener, meaning that we do NOT
-	 * paint anything.
-	 * 
-	 * @see '<a href="http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
-	 *      >Custom Drawing Table and Tree Items</a>'
-	 */
-	private static final class EraseListener implements Listener {
-
-		/*
-		 * Called EXTREMELY frequently. Must be as efficient as possible.
-		 */
-		public void handleEvent(Event event) {
-			// indicate we are responsible for drawing the cell's content
-			event.detail &= ~SWT.FOREGROUND;
 		}
 	}
 

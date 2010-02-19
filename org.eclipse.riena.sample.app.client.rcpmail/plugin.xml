@@ -3,7 +3,7 @@
 <plugin>
 
    <extension
-         id="application"
+         id="rcpmailapp"
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
@@ -84,7 +84,7 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="org.eclipse.riena.sample.app.client.rcpmail.application"
+            application="org.eclipse.riena.sample.app.client.rcpmail.rcpmailapp"
             name="RCP Product">
          <property
                name="aboutText"

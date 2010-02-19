@@ -63,8 +63,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -88,13 +86,14 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 
 /**
  * Ridget for SWT {@link Tree} widgets.
  */
 public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget {
 
-	private static final Listener ERASE_LISTENER = new EraseAndPaintListener();
+	private static final Listener ITEM_ERASER_AND_PAINTER = SWTFacade.getDefault().createTreeItemEraserAndPainter();
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final DoubleClickForwarder doubleClickForwarder;
@@ -193,8 +192,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		if (control != null) {
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
-			control.removeListener(SWT.EraseItem, ERASE_LISTENER);
-			control.removeListener(SWT.PaintItem, ERASE_LISTENER);
+			SWTFacade facade = SWTFacade.getDefault();
+			facade.removeEraseItemListener(control, ITEM_ERASER_AND_PAINTER);
+			facade.removePaintItemListener(control, ITEM_ERASER_AND_PAINTER);
 		}
 		if (viewer != null) {
 			// IMPORTANT: remove the change listeners from the input model.
@@ -503,11 +503,13 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	private void applyEraseListener() {
 		if (viewer != null) {
-			Control control = viewer.getControl();
-			control.removeListener(SWT.EraseItem, ERASE_LISTENER);
+			Tree control = viewer.getTree();
+			SWTFacade facade = SWTFacade.getDefault();
+			facade.removeEraseItemListener(control, ITEM_ERASER_AND_PAINTER);
+			facade.removePaintItemListener(control, ITEM_ERASER_AND_PAINTER);
 			if (!isEnabled() && MarkerSupport.isHideDisabledRidgetContent()) {
-				control.addListener(SWT.EraseItem, ERASE_LISTENER);
-				control.addListener(SWT.PaintItem, ERASE_LISTENER);
+				facade.addEraseItemListener(control, ITEM_ERASER_AND_PAINTER);
+				facade.addPaintItemListener(control, ITEM_ERASER_AND_PAINTER);
 			}
 		}
 	}
@@ -894,41 +896,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			if (doubleClickListeners != null) {
 				for (IActionListener listener : doubleClickListeners.getListeners()) {
 					listener.callback();
-				}
-			}
-		}
-	}
-
-	/**
-	 * Erase listener to paint all cells empty when this ridget is disabled.
-	 * <p>
-	 * Implementation note: this works by registering this class an an
-	 * EraseEListener and indicating we will be repsonsible from drawing the
-	 * cells content. We do not register a PaintListener, meaning that we do NOT
-	 * paint anything.
-	 * 
-	 * @see '<a href="http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
-	 *      >Custom Drawing Table and Tree Items</a>'
-	 */
-	private static final class EraseAndPaintListener implements Listener {
-
-		private Rectangle bounds = new Rectangle(0, 0, 0, 0);
-
-		/*
-		 * Called EXTREMELY frequently. Must be as efficient as possible.
-		 */
-		public void handleEvent(Event event) {
-			if (SWT.EraseItem == event.type) {
-				// indicate we are responsible for drawing the cell's content
-				event.detail &= ~SWT.FOREGROUND;
-			} else if (SWT.PaintItem == event.type) {
-				TreeItem item = (TreeItem) event.item;
-				Tree tree = item.getParent();
-				if (!tree.isEnabled()) {
-					GC gc = event.gc;
-					bounds.width = tree.getBounds().width;
-					bounds.height = tree.getBounds().height;
-					gc.fillRectangle(bounds);
 				}
 			}
 		}
