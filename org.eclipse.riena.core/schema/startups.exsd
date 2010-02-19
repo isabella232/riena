@@ -2,19 +2,19 @@
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.eclipse.riena.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appinfo>
-         <meta.schema plugin="org.eclipse.riena.core" id="org.eclipse.riena.core.startups" name="startups"/>
-      </appinfo>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.riena.core" id="startups" name="startups"/>
+      </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         With this extension point allows to define startup actions that will be performed when the Riena&apos;s core bundle &quot;org.eclipse.riena.core&quot; has been started.
       </documentation>
    </annotation>
 
    <element name="extension">
       <annotation>
-         <appinfo>
+         <appInfo>
             <meta.element />
-         </appinfo>
+         </appInfo>
       </annotation>
       <complexType>
          <sequence minOccurs="0" maxOccurs="unbounded">
@@ -39,9 +39,9 @@
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
@@ -61,11 +61,11 @@ The actions are:
          <attribute name="runClass" type="string">
             <annotation>
                <documentation>
-                  If given, than the class will be instanitated und the Runnable.run() method will be called.
+                  If given, than the class will be instantiated und the Runnable.run() method will be called.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="java" basedOn=":java.lang.Runnable"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="requiredBundles" type="string">
@@ -86,36 +86,36 @@ The actions are:
    </element>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="since"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter the first release in which this extension point appears.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="examples"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter extension point usage example here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="apiinfo"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter API information here.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="implementation"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter information about supplied implementation of this extension point.]
       </documentation>

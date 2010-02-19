@@ -48,6 +48,11 @@
    </element>
 
    <element name="configuration">
+      <annotation>
+         <documentation>
+            The Log4J configuration
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="location" type="string" use="required">
             <annotation>
