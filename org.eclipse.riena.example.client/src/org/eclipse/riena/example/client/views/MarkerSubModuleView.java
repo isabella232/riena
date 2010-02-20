@@ -16,7 +16,6 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
@@ -37,6 +36,7 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.swt.optional.OptionalUIControlsFactory;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -151,7 +151,7 @@ public class MarkerSubModuleView extends SubModuleView {
 		tac2.setWidth(70);
 		hFillFactory.hint(170, hHint).applyTo(tablePersons);
 
-		CompositeTable compTable = createCompositeTable(cmpReviewed, SWT.BORDER);
+		CompositeTable compTable = OptionalUIControlsFactory.createCompositeTable(cmpReviewed, SWT.BORDER);
 		new Header(compTable, SWT.NONE);
 		new Row(compTable, SWT.NONE);
 		compTable.setRunTime(true);
@@ -198,13 +198,6 @@ public class MarkerSubModuleView extends SubModuleView {
 				.applyTo(composite);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
 		return composite;
-	}
-
-	private CompositeTable createCompositeTable(Composite parent, int style) {
-		CompositeTable result = new CompositeTable(parent, style);
-		Color bgColor = LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND);
-		result.setBackground(bgColor);
-		return result;
 	}
 
 	private GridLayout createGridLayout(int numColumns) {
