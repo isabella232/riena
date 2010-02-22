@@ -56,7 +56,7 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 
 		ITextRidget sometimesMarked = (ITextRidget) getRidget("sometimesMarked"); //$NON-NLS-1$
 		sometimesMarked.addValidationRule(new MinLength(3), ValidationTime.ON_UPDATE_TO_MODEL);
-		sometimesMarked.addValidationMessage("Textfield contains less that 3 characters."); //$NON-NLS-1$
+		sometimesMarked.addValidationMessage("Textfield contains less than 3 characters."); //$NON-NLS-1$
 		sometimesMarked.bindToModel(bean, "sometimesMarkedText"); //$NON-NLS-1$
 		sometimesMarked.updateFromModel();
 
