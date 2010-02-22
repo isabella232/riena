@@ -259,8 +259,10 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	}
 
 	public void fireAction() {
-		actionObserver.widgetSelected(null);
-		setSelected(!isSelected());
+		if (isVisible() && isEnabled()) {
+			setSelected(!isSelected());
+			actionObserver.widgetSelected(null);
+		}
 	}
 
 }
