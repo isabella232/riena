@@ -11,7 +11,6 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -23,6 +22,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 import org.eclipse.riena.ui.swt.MessageBox;
+import org.eclipse.riena.ui.swt.facades.DialogConstantsFacade;
 
 /**
  * The ridget for a message box.
@@ -112,18 +112,19 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	}
 
 	private String getButtonLabel(MessageBoxOption option) {
-
+		String result;
 		if (OK.equals(option)) {
-			return IDialogConstants.OK_LABEL;
+			result = DialogConstantsFacade.getDefault().getOkLabel();
 		} else if (CANCEL.equals(option)) {
-			return IDialogConstants.CANCEL_LABEL;
+			result = DialogConstantsFacade.getDefault().getCancelLabel();
 		} else if (YES.equals(option)) {
-			return IDialogConstants.YES_LABEL;
+			result = DialogConstantsFacade.getDefault().getYesLabel();
 		} else if (NO.equals(option)) {
-			return IDialogConstants.NO_LABEL;
+			result = DialogConstantsFacade.getDefault().getNoLabel();
 		} else {
-			return option.getLabel();
+			result = option.getLabel();
 		}
+		return result;
 	}
 
 	private MessageBoxOption getResultOption() {

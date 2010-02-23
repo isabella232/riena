@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.riena.ui.ridgets.ISpinnerRidget;
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 
 /**
  * Ridget for a SWT {@link Spinner} widget.
@@ -155,11 +156,9 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 
 	@Override
 	protected String replaceToolTipPattern(String toolTipTemplate) {
-		int tempDigits = getDigits();
-
-		if (tempDigits > 0) {
+		if (getDigits() > 0) {
 			int intSelection = getValue();
-			double value = intSelection / Math.pow(10, tempDigits);
+			double value = intSelection / Math.pow(10, getDigits());
 			return toolTipTemplate.replace(ITraverseRidget.VALUE_PATTERN, Double.toString(value));
 		} else {
 			return super.replaceToolTipPattern(toolTipTemplate);
@@ -181,8 +180,8 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 	 */
 	protected void updateUIDigits() {
 		Spinner control = getUIControl();
-		if (control != null) {
-			control.setDigits(getDigits());
+		if (control != null && control.getDigits() != getDigits()) {
+			SWTFacade.getDefault().setDigits(control, getDigits());
 		}
 	}
 

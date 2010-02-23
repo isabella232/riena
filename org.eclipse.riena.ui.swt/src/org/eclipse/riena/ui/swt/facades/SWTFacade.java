@@ -12,8 +12,10 @@ package org.eclipse.riena.ui.swt.facades;
 
 import java.util.EventListener;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
@@ -28,6 +30,14 @@ public abstract class SWTFacade {
 
 	public static final SWTFacade getDefault() {
 		return INSTANCE;
+	}
+
+	public static final boolean isRAP() {
+		return "rap".equals(SWT.getPlatform()); //$NON-NLS-1$
+	}
+
+	public static final boolean isRCP() {
+		return !SWTFacade.isRAP();
 	}
 
 	public abstract void addEraseItemListener(Table table, Listener listener);
@@ -49,4 +59,6 @@ public abstract class SWTFacade {
 	public abstract void removePaintItemListener(Tree tree, Listener listener);
 
 	public abstract void removePaintListener(Control control, EventListener listener);
+
+	public abstract void setDigits(Spinner control, int digits);
 }

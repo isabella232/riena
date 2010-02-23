@@ -35,6 +35,7 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -313,9 +314,12 @@ public class MarkerSupport extends BasicMarkerSupport {
 
 		public MarkerControlDecoration(Control control, int position, int marginWidth, Image image) {
 			super(control, position);
-			ReflectionUtils.setHidden(this, "marginWidth", marginWidth); //$NON-NLS-1$
-			ReflectionUtils.setHidden(this, "image", image); //$NON-NLS-1$
-			update();
+			// TODO [ev] ControlDecorations are only stubs in RAP - need something else
+			if (SWTFacade.isRCP()) {
+				ReflectionUtils.setHidden(this, "marginWidth", marginWidth); //$NON-NLS-1$
+				ReflectionUtils.setHidden(this, "image", image); //$NON-NLS-1$
+				ReflectionUtils.invokeHidden(this, "update", (Object[]) null); //$NON-NLS-1$
+			}
 		}
 
 	}

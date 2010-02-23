@@ -18,13 +18,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
 /**
  * TODO [ev] docs
  */
-public class SWTFacadeImpl extends SWTFacade {
+public final class SWTFacadeImpl extends SWTFacade {
 
 	@Override
 	public void addEraseItemListener(Table table, Listener listener) {
@@ -72,6 +73,10 @@ public class SWTFacadeImpl extends SWTFacade {
 
 	public void removePaintListener(Control control, EventListener listener) {
 		control.removePaintListener((PaintListener) listener);
+	}
+
+	public void setDigits(Spinner control, int digits) {
+		control.setDigits(digits);
 	}
 
 }
