@@ -1,6 +1,5 @@
 package org.eclipse.riena.ui.swt.facades.internal;
 
-import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.events.PaintEvent;
@@ -11,8 +10,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * The actual renderer of the {@link DisabledMarker}-State. Colors and Alpha
- * values are configurable. See {@link LnfManager} for more details on this.
+ * The actual renderer of the DisabledMarker-State. Colors and Alpha values are
+ * configurable. See {@link LnfManager} for more details on this.
  */
 public final class DisabledPainter implements PaintListener {
 	public void paintControl(PaintEvent e) {
