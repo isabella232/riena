@@ -1,6 +1,14 @@
-/**
- * 
- */
+/*******************************************************************************
+ * Copyright (c) 2007, 2009 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
+
 package org.eclipse.riena.navigation.ui.swt.controllers;
 
 import org.easymock.EasyMock;
@@ -13,6 +21,7 @@ import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
@@ -21,7 +30,11 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
- * Abstract class for SubModuleController testing.
+ * package org.eclipse.riena.navigation.ui.swt.controllers;
+ * 
+ * import org.easymock.EasyMock;
+ * 
+ * /** Abstract class for SubModuleController testing.
  */
 @NonUITestCase
 public abstract class AbstractSubModuleControllerTest<C extends SubModuleController> extends RienaTestCase {
@@ -43,8 +56,8 @@ public abstract class AbstractSubModuleControllerTest<C extends SubModuleControl
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm); //$NON-NLS-1$
 
-		ModuleNode module = new ModuleNode();
-		SubModuleNode node = new SubModuleNode();
+		IModuleNode module = new ModuleNode();
+		ISubModuleNode node = new SubModuleNode();
 		node.setParent(module);
 		module.addChild(node);
 		node.setNavigationProcessor(getMockNavigationProcessor());

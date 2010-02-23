@@ -48,12 +48,15 @@ import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.ISliderRidget;
 import org.eclipse.riena.ui.ridgets.ISpinnerRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
+import org.eclipse.riena.ui.ridgets.swt.ImageButtonRidget;
 import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
@@ -65,17 +68,18 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 	private ITableRidget multiTable;
 	private IListRidget tableList;
 	private Temperature temperature;
-	private ITraverseRidget celsiusScale;
-	private ISpinnerRidget fahrenheitSpinner;
 	private List<Person> input = PersonFactory.createPersonList();
 	private long now;
+	private IToggleButtonRidget selectAllToggleButton;
+	private IActionListener toggleListener;
+	private ISelectionListener multiTableSelectionListener;
 
 	/**
 	 * 
 	 */
 	public ControllerTestsPlaygroundSubModuleController() {
 		temperature = new Temperature();
-		temperature.setKelvin(273.15f);
+		temperature.setKelvin(273.15f, true);
 	}
 
 	@Override
@@ -86,7 +90,37 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		configureTraverseGroup();
 		configureMasterDetailsGroup();
 		configureDateTimeGroup();
+		configureImageButtonGroup();
 		//TODO work in progress
+	}
+
+	/**
+	 * 
+	 */
+	private void configureImageButtonGroup() {
+		IActionRidget imageButton = getRidget(ImageButtonRidget.class, "imageButton"); //$NON-NLS-1$
+		imageButton.setIcon("imageBtn"); //$NON-NLS-1$
+		imageButton.addListener(new IActionListener() {
+			public void callback() {
+				System.out.println("Button klicked..."); //$NON-NLS-1$
+			}
+		});
+
+		IActionRidget arrowButton = getRidget(ImageButtonRidget.class, "arrowButton"); //$NON-NLS-1$
+		arrowButton.setIcon("arrowRight"); //$NON-NLS-1$
+		arrowButton.addListener(new IActionListener() {
+			public void callback() {
+				System.out.println("Button klicked..."); //$NON-NLS-1$
+			}
+		});
+
+		IActionRidget arrowHotButton = getRidget(ImageButtonRidget.class, "arrowHotButton"); //$NON-NLS-1$
+		arrowHotButton.setIcon("arrowRight"); //$NON-NLS-1$
+		arrowHotButton.addListener(new IActionListener() {
+			public void callback() {
+				System.out.println("Button klicked..."); //$NON-NLS-1$
+			}
+		});
 	}
 
 	/**
@@ -191,8 +225,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		link2.setText("Visit <a href=\"http://www.eclipse.org/riena/\">Riena</a>"); //$NON-NLS-1$
 
 		ILinkRidget link3 = getRidget(ILinkRidget.class, "link3"); //$NON-NLS-1$
-		link3
-				.setText("Eclipse <a href=\"http://planeteclipse.org\">Blogs</a>, <a href=\"http://www.eclipse.org/community/news/\">News</a> and <a href=\"http://live.eclipse.org\">Events</a>"); //$NON-NLS-1$
+		link3.setText("Eclipse <a href=\"http://planeteclipse.org\">Blogs</a>, <a href=\"http://www.eclipse.org/community/news/\">News</a> and <a href=\"http://live.eclipse.org\">Events</a>"); //$NON-NLS-1$
 
 		final ITextRidget textLinkUrl = getRidget(ITextRidget.class, "textLinkUrl"); //$NON-NLS-1$
 		textLinkUrl.setOutputOnly(true);
@@ -274,7 +307,32 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 
 		tableList.setSelectionType(ISelectableRidget.SelectionType.MULTI);
 
-		final IActionRidget copySelectionButton = getRidget(IActionRidget.class, "copySelectionButton"); //$NON-NLS-1$
+		selectAllToggleButton = getRidget(IToggleButtonRidget.class, "toggleButton"); //$NON-NLS-1$
+		selectAllToggleButton.setText("select all"); //$NON-NLS-1$
+
+		multiTableSelectionListener = new MultiTableSelectionListener();
+		multiTable.addSelectionListener(multiTableSelectionListener);
+
+		toggleListener = new IActionListener() {
+			public void callback() {
+				multiTable.removeSelectionListener(multiTableSelectionListener);
+				if (selectAllToggleButton.isSelected()) {
+					selectAllToggleButton.setText("deselect"); //$NON-NLS-1$
+					int[] allIndeces = new int[multiTable.getOptionCount()];
+					for (int i = 0; i < multiTable.getOptionCount(); i++) {
+						allIndeces[i] = i;
+					}
+					multiTable.setSelection(allIndeces);
+				} else {
+					multiTable.clearSelection();
+					selectAllToggleButton.setText("select all"); //$NON-NLS-1$
+				}
+				multiTable.addSelectionListener(multiTableSelectionListener);
+			}
+		};
+		selectAllToggleButton.addListener(toggleListener);
+
+		IActionRidget copySelectionButton = getRidget(IActionRidget.class, "copySelectionButton"); //$NON-NLS-1$
 		copySelectionButton.addListener(new IActionListener() {
 			public void callback() {
 				List<Object> selection = multiTable.getSelection();
@@ -282,21 +340,39 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 				tableList.updateFromModel();
 			}
 		});
+
 	}
 
 	private void configureTraverseGroup() {
-		TemperatureListener listener = new TemperatureListener();
+		final ISpinnerRidget fahrenheitSpinner = getRidget(ISpinnerRidget.class, "fahrenheitSpinner"); //$NON-NLS-1$
+		final ITraverseRidget celsiusScale = getRidget(ITraverseRidget.class, "celsiusScale"); //$NON-NLS-1$
+		final ISliderRidget kelvinSlider = getRidget(ISliderRidget.class, "kelvinSlider"); //$NON-NLS-1$
 
-		fahrenheitSpinner = getRidget(ISpinnerRidget.class, "fahrenheitSpinner"); //$NON-NLS-1$
+		IActionListener listener = new IActionListener() {
+
+			public void callback() {
+				celsiusScale.updateFromModel();
+				fahrenheitSpinner.updateFromModel();
+				kelvinSlider.updateFromModel();
+			}
+		};
+
+		kelvinSlider.setIncrement(1);
+		kelvinSlider.setMaximum(324);
+		kelvinSlider.setMinimum(273);
+		kelvinSlider.setToolTipText("The current value is: [VALUE] (rounded)."); //$NON-NLS-1$
+		kelvinSlider.bindToModel(BeansObservables.observeValue(temperature, Temperature.PROPERTY_KELVIN));
+		kelvinSlider.updateFromModel();
+		kelvinSlider.addListener(listener);
+
 		fahrenheitSpinner.setIncrement(1);
 		fahrenheitSpinner.setMaximum(122);
 		fahrenheitSpinner.setMinimum(32);
-		fahrenheitSpinner.bindToModel(BeansObservables.observeValue(temperature,
-				Temperature.PROPERTY_DEGREE_FAHRENHEITN));
+		fahrenheitSpinner.bindToModel(BeansObservables
+				.observeValue(temperature, Temperature.PROPERTY_DEGREE_FAHRENHEIT));
 		fahrenheitSpinner.updateFromModel();
 		fahrenheitSpinner.addListener(listener);
 
-		celsiusScale = getRidget(ITraverseRidget.class, "celsiusScale"); //$NON-NLS-1$
 		celsiusScale.setIncrement(1);
 		celsiusScale.setMaximum(50);
 		celsiusScale.setMinimum(0);
@@ -308,17 +384,11 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 	// helpers
 	//////////
 
-	private class TemperatureListener implements IActionListener {
-		public void callback() {
-			celsiusScale.updateFromModel();
-			fahrenheitSpinner.updateFromModel();
-		}
-	}
-
 	private class Temperature extends AbstractBean {
 
 		static final String PROPERTY_DEGREE_CELSIUS = "degreeCelsius"; //$NON-NLS-1$
-		static final String PROPERTY_DEGREE_FAHRENHEITN = "degreeFahrenheit"; //$NON-NLS-1$
+		static final String PROPERTY_DEGREE_FAHRENHEIT = "degreeFahrenheit"; //$NON-NLS-1$
+		static final String PROPERTY_KELVIN = "kelvin"; //$NON-NLS-1$
 
 		private float kelvin;
 		private int degreeCelsius;
@@ -337,7 +407,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 			this.degreeCelsius = degreeCelsius;
 			if (updateKelvin) {
 				float k = degreeCelsius + 273.15f;
-				setKelvin(k);
+				setKelvin(k, false);
 				updateFahrenheit();
 			}
 			firePropertyChanged(PROPERTY_DEGREE_CELSIUS, oldValue, degreeCelsius);
@@ -359,10 +429,10 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 			if (updateKelvin) {
 				float c = (degreeFahrenheit - 32) / 1.8f;
 				float k = c + 273.15f;
-				setKelvin(k);
+				setKelvin(k, false);
 				updateCelsius();
 			}
-			firePropertyChanged(PROPERTY_DEGREE_FAHRENHEITN, oldValue, degreeFahrenheit);
+			firePropertyChanged(PROPERTY_DEGREE_FAHRENHEIT, oldValue, degreeFahrenheit);
 		}
 
 		@SuppressWarnings("unused")
@@ -370,12 +440,23 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 			return degreeFahrenheit;
 		}
 
-		private void setKelvin(float kelvin) {
+		private void setKelvin(float kelvin, boolean updateOthers) {
+			float oldValue = this.kelvin;
 			this.kelvin = kelvin;
+			if (updateOthers) {
+				updateCelsius();
+				updateFahrenheit();
+			}
+			firePropertyChanged(PROPERTY_KELVIN, oldValue, Math.round(kelvin));
 		}
 
-		private float getKelvin() {
-			return kelvin;
+		@SuppressWarnings("unused")
+		public void setKelvin(int kelvin) {
+			setKelvin(kelvin, true);
+		}
+
+		public int getKelvin() {
+			return Math.round(kelvin);
 		}
 
 		private void updateCelsius() {
@@ -387,6 +468,15 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 			int c = Math.round(getKelvin() - 273.15f);
 			int f = Math.round(c * 1.8f + 32);
 			setDegreeFahrenheit(f, false);
+		}
+	}
+
+	private class MultiTableSelectionListener implements ISelectionListener {
+		public void ridgetSelected(SelectionEvent event) {
+			selectAllToggleButton.removeListener(toggleListener);
+			selectAllToggleButton.setSelected(true);
+			selectAllToggleButton.setText("deselect"); //$NON-NLS-1$
+			selectAllToggleButton.addListener(toggleListener);
 		}
 	}
 

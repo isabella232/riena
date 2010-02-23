@@ -36,9 +36,11 @@ import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
+import org.eclipse.riena.ui.ridgets.ISliderRidget;
 import org.eclipse.riena.ui.ridgets.ISpinnerRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 
 /**
@@ -61,19 +63,29 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 	public void testScaleSpinner() {
 		ITraverseRidget scale = getController().getRidget(ITraverseRidget.class, "celsiusScale");
 		ISpinnerRidget fahrenheitSpinner = getController().getRidget(ISpinnerRidget.class, "fahrenheitSpinner");
+		ISliderRidget kelvinSlider = getController().getRidget(ISliderRidget.class, "kelvinSlider");
 
 		assertEquals(0, scale.getValue());
 		assertEquals(32, fahrenheitSpinner.getValue());
+		assertEquals(273, kelvinSlider.getValue());
 
 		scale.setValue(5);
 		scale.triggerListener();
 		assertEquals(5, scale.getValue());
 		assertEquals(41, fahrenheitSpinner.getValue());
+		assertEquals(278, kelvinSlider.getValue());
 
 		fahrenheitSpinner.setValue(100);
 		fahrenheitSpinner.triggerListener();
 		assertEquals(100, fahrenheitSpinner.getValue());
 		assertEquals(38, scale.getValue());
+		assertEquals(311, kelvinSlider.getValue());
+
+		kelvinSlider.setValue(300);
+		kelvinSlider.triggerListener();
+		assertEquals(300, kelvinSlider.getValue());
+		assertEquals(81, fahrenheitSpinner.getValue());
+		assertEquals(27, scale.getValue());
 	}
 
 	public void testCombo() {
@@ -121,6 +133,10 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 		ITableRidget table = getController().getRidget(ITableRidget.class, "multiTable");
 		IActionRidget button = getController().getRidget(IActionRidget.class, "copySelectionButton");
 		IListRidget list = getController().getRidget(IListRidget.class, "tableList");
+		IToggleButtonRidget selectAllToggleButton = getController()
+				.getRidget(IToggleButtonRidget.class, "toggleButton");
+
+		assertFalse(selectAllToggleButton.isSelected());
 
 		assertEquals(persons, table.getObservableList());
 
@@ -128,6 +144,7 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 
 		table.setSelection(0);
 		assertEquals(persons.get(0), table.getSelection().get(0));
+		assertTrue(selectAllToggleButton.isSelected());
 
 		button.fireAction();
 		assertEquals(persons.get(0), list.getObservableList().get(0));
@@ -144,6 +161,17 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 
 		button.fireAction();
 		assertEquals(selectedPersons, list.getObservableList());
+
+		assertTrue(selectAllToggleButton.isSelected());
+
+		selectAllToggleButton.fireAction();
+		//TODO cannot test this at the moment. Bug 298033: Make row selection in TableRidget independent of the UIControl
+		//https://bugs.eclipse.org/bugs/show_bug.cgi?id=298033 has to be fixed first
+		//		assertTrue(table.getSelection().isEmpty());
+
+		selectAllToggleButton.fireAction();
+		assertEquals(table.getObservableList().size(), table.getOptionCount());
+
 	}
 
 	public void testMasterDetails() {

@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
@@ -58,56 +59,67 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView {
 		scrolledComposite.setLayout(new FillLayout());
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
+
 		Composite composite = UIControlsFactory.createComposite(scrolledComposite);
-		composite.setLayout(new GridLayout(2, false));
+		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(composite);
 
 		Label label = UIControlsFactory.createLabel(composite,
 				"Lots of widgets for lots of ridgets for lots of controller tests.", //$NON-NLS-1$
 				SWT.NONE);
-		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		GridDataFactory.swtDefaults().grab(true, false).align(SWT.FILL, SWT.TOP).span(2, 1).applyTo(label);
 
 		Group tableGroup = UIControlsFactory.createGroup(composite, "table"); //$NON-NLS-1$
-		tableGroup.setLayout(new GridLayout(2, false));
-		tableGroup.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
-
+		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(tableGroup);
+		GridDataFactory.swtDefaults().grab(true, false).align(SWT.FILL, SWT.TOP).applyTo(tableGroup);
 		createTableGroup(tableGroup);
 
 		Group comboGroup = UIControlsFactory.createGroup(composite, "combo"); //$NON-NLS-1$
-		comboGroup.setLayout(new GridLayout(2, false));
-		comboGroup.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
-
+		GridLayoutFactory.swtDefaults().applyTo(comboGroup);
+		GridDataFactory.swtDefaults().grab(true, false).align(SWT.FILL, SWT.TOP).applyTo(comboGroup);
 		createComboGroup(comboGroup);
 
 		Group browserGroup = UIControlsFactory.createGroup(composite, "browser and link"); //$NON-NLS-1$
-		browserGroup.setLayout(new GridLayout(2, false));
-		browserGroup.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
+		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(browserGroup);
+		GridDataFactory.swtDefaults().grab(true, false).align(SWT.FILL, SWT.TOP).applyTo(browserGroup);
 		createBrowserGroup(browserGroup);
 
 		Group spinnerScaleGroup = UIControlsFactory.createGroup(composite, "spinner and scale"); //$NON-NLS-1$
-		spinnerScaleGroup.setLayout(new GridLayout(2, false));
-		spinnerScaleGroup.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
-
+		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(spinnerScaleGroup);
+		GridDataFactory.swtDefaults().grab(true, false).align(SWT.FILL, SWT.TOP).applyTo(spinnerScaleGroup);
 		createSpinnerScaleGroup(spinnerScaleGroup);
 
 		Group masterDetailsGroup = UIControlsFactory.createGroup(composite, "masterDetails"); //$NON-NLS-1$
-		masterDetailsGroup.setLayout(new GridLayout(1, false));
-		masterDetailsGroup.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
+		GridLayoutFactory.swtDefaults().applyTo(masterDetailsGroup);
+		GridDataFactory.swtDefaults().grab(true, false).align(SWT.FILL, SWT.TOP).applyTo(masterDetailsGroup);
 		createMasterDetailsGroup(masterDetailsGroup);
 
 		Group dateTimeGroup = UIControlsFactory.createGroup(composite, "dateTime"); //$NON-NLS-1$
-		dateTimeGroup.setLayout(new GridLayout(2, false));
-		dateTimeGroup.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
+		GridLayoutFactory.swtDefaults().applyTo(dateTimeGroup);
+		GridDataFactory.swtDefaults().grab(true, false).align(SWT.FILL, SWT.TOP).applyTo(dateTimeGroup);
 		createDateTimeGroup(dateTimeGroup);
+
+		Group imageButtonGroup = UIControlsFactory.createGroup(composite, "buttons"); //$NON-NLS-1$
+		GridLayoutFactory.swtDefaults().applyTo(imageButtonGroup);
+		GridDataFactory.swtDefaults().grab(true, false).align(SWT.FILL, SWT.TOP).applyTo(imageButtonGroup);
+		createImageButtonGroup(imageButtonGroup);
 
 		// TODO work in progress
 
 		scrolledComposite.setContent(composite);
-		scrolledComposite.setMinSize(700, 1200);
+		scrolledComposite.setMinSize(650, 1500);
+	}
+
+	/**
+	 * @param imageButtonGroup
+	 */
+	private void createImageButtonGroup(Group parent) {
+		UIControlsFactory.createImageButton(parent, SWT.NONE, "imageButton"); //$NON-NLS-1$
+		UIControlsFactory.createImageButton(parent, SWT.NONE, "arrowButton"); //$NON-NLS-1$
+		UIControlsFactory.createImageButton(parent, SWT.HOT, "arrowHotButton"); //$NON-NLS-1$
 	}
 
 	private void createDateTimeGroup(Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		parent.setLayout(new GridLayout(1, false));
 
 		GridDataFactory gdf = GridDataFactory.fillDefaults().grab(true, false);
 		Group group1 = createGroupDT(parent, "dtDate", "dtTime", "txt1", SWT.MEDIUM); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -128,14 +140,11 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView {
 
 		UIControlsFactory.createTextDate(parent, "dateText"); //$NON-NLS-1$
 		UIControlsFactory.createButton(parent, "", "dateTimeButton"); //$NON-NLS-1$ //$NON-NLS-2$
-		//		Text dateTimeText = UIControlsFactory.crea
 	}
 
 	private void createMasterDetailsGroup(Composite parent) {
 
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-
-		parent.setLayout(new GridLayout(1, false));
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridData data = new GridData();
@@ -156,6 +165,11 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView {
 	 * @param parent
 	 */
 	private void createSpinnerScaleGroup(Composite parent) {
+		Label lblKelvin = new Label(parent, SWT.NONE);
+		lblKelvin.setText("Kelvin:"); //$NON-NLS-1$
+
+		Slider kelvinSlider = new Slider(parent, SWT.BORDER);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(kelvinSlider, "kelvinSlider"); //$NON-NLS-1$
 
 		Label lblDegreesFahrenheit = new Label(parent, SWT.NONE);
 		lblDegreesFahrenheit.setText("Degrees Fahrenheit:"); //$NON-NLS-1$
@@ -196,8 +210,12 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView {
 		List tableList = UIControlsFactory.createList(parent, false, false, "tableList"); //$NON-NLS-1$
 		tableList.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
 
+		Button toggleButton = UIControlsFactory.createButtonToggle(parent, "toggleButton"); //$NON-NLS-1$
+		toggleButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+
 		Button tableButton = UIControlsFactory.createButton(parent, "copy selection", "copySelectionButton"); //$NON-NLS-1$ //$NON-NLS-2$
 		tableButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+
 	}
 
 	/**
