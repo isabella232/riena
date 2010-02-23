@@ -147,7 +147,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	// helping methods
 	//////////////////
 
-	private void addMandatory(Control control) {
+	protected void addMandatory(Control control) {
 		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) == null) {
 			control.setData(PRE_MANDATORY_BACKGROUND_KEY, control.getBackground());
 			RienaDefaultLnf lnf = LnfManager.getLnf();
@@ -166,14 +166,14 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
-	private void addOutput(Control control, Color color) {
+	protected void addOutput(Control control, Color color) {
 		if (control.getData(PRE_OUTPUT_BACKGROUND_KEY) == null) {
 			control.setData(PRE_OUTPUT_BACKGROUND_KEY, control.getBackground());
 			control.setBackground(color);
 		}
 	}
 
-	private void clearMandatory(Control control) {
+	protected void clearMandatory(Control control) {
 		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) != null) {
 			control.setBackground((Color) control.getData(PRE_MANDATORY_BACKGROUND_KEY));
 			control.setData(PRE_MANDATORY_BACKGROUND_KEY, null);
@@ -187,7 +187,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
-	private void clearOutput(Control control) {
+	protected void clearOutput(Control control) {
 		if (control.getData(PRE_OUTPUT_BACKGROUND_KEY) != null) {
 			control.setBackground((Color) control.getData(PRE_OUTPUT_BACKGROUND_KEY));
 			control.setData(PRE_OUTPUT_BACKGROUND_KEY, null);
