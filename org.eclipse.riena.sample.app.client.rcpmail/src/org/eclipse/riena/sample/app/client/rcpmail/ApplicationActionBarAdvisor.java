@@ -27,6 +27,8 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
+import org.eclipse.riena.ui.swt.facades.ActionFactoryFacade;
+
 /**
  * An action bar advisor is responsible for creating, adding, and disposing of
  * the actions added to a workbench window. Each window will be populated with
@@ -60,8 +62,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		exitAction = ActionFactory.QUIT.create(window);
 		register(exitAction);
 
-		aboutAction = ActionFactory.ABOUT.create(window);
-		register(aboutAction);
+		aboutAction = ActionFactoryFacade.getDefault().createAboutAction(window);
+		if (aboutAction != null) {
+			register(aboutAction);
+		}
 
 		newWindowAction = ActionFactory.OPEN_NEW_WINDOW.create(window);
 		register(newWindowAction);
@@ -92,7 +96,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		fileMenu.add(exitAction);
 
 		// Help
-		helpMenu.add(aboutAction);
+		if (aboutAction != null) {
+			helpMenu.add(aboutAction);
+		}
 	}
 
 	@Override
