@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -44,13 +45,17 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.common.ISortableByColumn;
+import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
@@ -64,14 +69,15 @@ import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Ridget for SWT {@link Table} widgets.
  */
 public class TableRidget extends AbstractSelectableIndexedRidget implements ITableRidget {
 
-	private static final Listener ITEM_ERASER = new TableItemEraser();
-
+	private final Listener itemEraser;
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener doubleClickForwarder;
 	private final ColumnSortListener sortListener;
@@ -110,6 +116,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private boolean moveableColumns;
 
 	public TableRidget() {
+		itemEraser = new TableItemEraser();
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		doubleClickForwarder = new DoubleClickForwarder();
 		sortListener = new ColumnSortListener();
@@ -185,7 +192,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
 			SWTFacade facade = SWTFacade.getDefault();
-			facade.removeEraseItemListener(control, ITEM_ERASER);
+			facade.removeEraseItemListener(control, itemEraser);
 		}
 		viewer = null;
 	}
@@ -472,10 +479,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		if (viewer != null) {
 			Table control = viewer.getTable();
 			SWTFacade facade = SWTFacade.getDefault();
-			facade.removeEraseItemListener(control, ITEM_ERASER);
-			if (!isEnabled() && MarkerSupport.isHideDisabledRidgetContent()) {
-				facade.addEraseItemListener(control, ITEM_ERASER);
-			}
+			facade.removeEraseItemListener(control, itemEraser);
+			facade.addEraseItemListener(control, itemEraser);
 		}
 	}
 
@@ -611,6 +616,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	}
 
 	/**
+	 * TODO [ev] Update Javadoc
+	 * <p>
 	 * Erase listener to paint all cells empty when this ridget is disabled.
 	 * <p>
 	 * Implementation note: this works by registering this class an an
@@ -621,14 +628,55 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 * @see '<a href="http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
 	 *      >Custom Drawing Table and Tree Items</a>'
 	 */
-	private static final class TableItemEraser implements Listener {
+	private final class TableItemEraser implements Listener {
+
+		private final Color borderColor = LnfManager.getLnf().getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
 
 		/*
 		 * Called EXTREMELY frequently. Must be as efficient as possible.
 		 */
 		public void handleEvent(Event event) {
-			// indicate we are responsible for drawing the cell's content
+			if (isHidingWhenDisabled()) {
+				hideContent(event);
+			} else {
+				if (isMarked(event.item)) {
+					markRow(event);
+				}
+			}
+		}
+
+		private void hideContent(Event event) {
+			// we indicate custom fg drawing, but don't draw foreground => hide
 			event.detail &= ~SWT.FOREGROUND;
+		}
+
+		private boolean isHidingWhenDisabled() {
+			return !isEnabled() && MarkerSupport.isHideDisabledRidgetContent();
+		}
+
+		private boolean isMarked(Widget item) {
+			Collection<RowErrorMessageMarker> markers = getMarkersOfType(RowErrorMessageMarker.class);
+			for (RowErrorMessageMarker marker : markers) {
+				if (marker.getRowValue() == item.getData()) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		private void markRow(Event event) {
+			GC gc = event.gc;
+			Color oldForeground = gc.getForeground();
+			gc.setForeground(borderColor);
+			try {
+				Table table = (Table) event.widget;
+				int clientWidth = table.getClientArea().width;
+				int width = Math.max(0, clientWidth - 1);
+				int height = Math.max(0, event.height - 1);
+				gc.drawRoundRectangle(0, event.y, width, height, 3, 3);
+			} finally {
+				gc.setForeground(oldForeground);
+			}
 		}
 	}
 
