@@ -42,15 +42,19 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.util.ListenerList;
@@ -59,7 +63,6 @@ import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
@@ -80,6 +83,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private final Listener itemEraser;
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener doubleClickForwarder;
+	private final MouseTrackListener tooltipManager;
 	private final ColumnSortListener sortListener;
 	private ListenerList<IActionListener> doubleClickListeners;
 
@@ -119,17 +123,13 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		itemEraser = new TableItemEraser();
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		doubleClickForwarder = new DoubleClickForwarder();
+		tooltipManager = new TableTooltipManager();
 		sortListener = new ColumnSortListener();
 		isSortedAscending = true;
 		sortedColumn = -1;
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
 		comparatorMap = new HashMap<Integer, Comparator<Object>>();
 		formatterMap = new HashMap<Integer, IColumnFormatter>();
-		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				applyEraseListener();
-			}
-		});
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (isOutputOnly()) {
@@ -173,6 +173,9 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(doubleClickForwarder);
+			control.addMouseTrackListener(tooltipManager);
+			SWTFacade facade = SWTFacade.getDefault();
+			facade.addEraseItemListener(control, itemEraser);
 		}
 	}
 
@@ -191,6 +194,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
+			control.removeMouseTrackListener(tooltipManager);
 			SWTFacade facade = SWTFacade.getDefault();
 			facade.removeEraseItemListener(control, itemEraser);
 		}
@@ -475,15 +479,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
-	private void applyEraseListener() {
-		if (viewer != null) {
-			Table control = viewer.getTable();
-			SWTFacade facade = SWTFacade.getDefault();
-			facade.removeEraseItemListener(control, itemEraser);
-			facade.addEraseItemListener(control, itemEraser);
-		}
-	}
-
 	private void applyTableColumnHeaders(Table control) {
 		boolean headersVisible = columnHeaders != null;
 		control.setHeaderVisible(headersVisible);
@@ -526,7 +521,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		applyColumnsMoveable(control);
 		applyTableColumnHeaders(control);
 		applyComparator();
-		applyEraseListener();
 	}
 
 	private void configureViewer(TableViewer viewer) {
@@ -645,6 +639,9 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 		}
 
+		// helping methods
+		//////////////////
+
 		private void hideContent(Event event) {
 			// we indicate custom fg drawing, but don't draw foreground => hide
 			event.detail &= ~SWT.FOREGROUND;
@@ -655,9 +652,10 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 
 		private boolean isMarked(Widget item) {
+			Object data = item.getData();
 			Collection<RowErrorMessageMarker> markers = getMarkersOfType(RowErrorMessageMarker.class);
 			for (RowErrorMessageMarker marker : markers) {
-				if (marker.getRowValue() == item.getData()) {
+				if (marker.getRowValue() == data) {
 					return true;
 				}
 			}
@@ -676,6 +674,63 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 				gc.drawRoundRectangle(0, event.y, width, height, 3, 3);
 			} finally {
 				gc.setForeground(oldForeground);
+			}
+		}
+	}
+
+	/**
+	 * TODO [ev] javadoc
+	 */
+	private final class TableTooltipManager extends MouseTrackAdapter {
+
+		private boolean restore;
+		private String savedToolTip;
+
+		public void mouseExit(MouseEvent event) {
+			Table table = (Table) event.widget;
+			restoreToolTip(table);
+		}
+
+		public void mouseHover(MouseEvent event) {
+			Table table = (Table) event.widget;
+			TableItem item = table.getItem(new Point(event.x, event.y));
+			String tooltip = getToolTip(item);
+			if (tooltip != null) {
+				saveToolTip(table);
+				table.setToolTipText(tooltip);
+			} else {
+				restoreToolTip(table);
+			}
+		}
+
+		// helping methods
+		//////////////////
+
+		private String getToolTip(TableItem item) {
+			if (item != null) {
+				Object data = item.getData();
+				Collection<RowErrorMessageMarker> markers = getMarkersOfType(RowErrorMessageMarker.class);
+				for (RowErrorMessageMarker marker : markers) {
+					if (marker.getRowValue() == data) {
+						return marker.getMessage();
+					}
+				}
+			}
+			return null;
+		}
+
+		private void restoreToolTip(Table table) {
+			if (restore) {
+				table.setToolTipText(savedToolTip);
+				savedToolTip = null;
+				restore = false;
+			}
+		}
+
+		private void saveToolTip(Table table) {
+			if (!restore) {
+				restore = true;
+				savedToolTip = table.getToolTipText();
 			}
 		}
 	}

@@ -55,6 +55,7 @@ public class SnippetTableRidget007 {
 		IObservableList input = new WritableList(createInput(), SuperHero.class);
 		tableRidget.bindToModel(input, SuperHero.class, columnPropertyNames, columnHeaders);
 		tableRidget.updateFromModel();
+		tableRidget.setToolTipText("The ORIGINAL table tooltip!"); //$NON-NLS-1$
 
 		IActionRidget ridgetMark = (IActionRidget) SwtRidgetFactory.createRidget(btnMark);
 		ridgetMark.addListener(new IActionListener() {
@@ -144,6 +145,11 @@ public class SnippetTableRidget007 {
 		@SuppressWarnings("unused")
 		public Integer getAppearance() {
 			return appearance;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%s (%s)", pseudonym, name); //$NON-NLS-1$
 		}
 	}
 }
