@@ -105,11 +105,11 @@ public class DetachedViewsManager {
 	}
 
 	/**
-	 * Deallocate ressources used by this class. Client code must
+	 * Deallocate resources used by this class. Client code must
 	 * {@link #dispose()} instances when no longer needed.
 	 */
 	public void dispose() {
-		String[] keys = id2shell.keySet().toArray(new String[0]);
+		String[] keys = id2shell.keySet().toArray(new String[id2shell.size()]);
 		for (String id : keys) {
 			closeView(id);
 		}
