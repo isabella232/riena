@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
-import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -434,21 +433,18 @@ public class LnFUpdater {
 	 * @return properties
 	 */
 	private PropertyDescriptor[] getProperties(Control control) {
-
-		Class<? extends Control> controlClass = control.getClass();
-		if (!CONTROL_PROPERTIES.containsKey(controlClass)) {
-			BeanInfo beanInfo;
+		final Class<? extends Control> controlClass = control.getClass();
+		PropertyDescriptor[] propertyDescriptors = CONTROL_PROPERTIES.get(controlClass);
+		if (propertyDescriptors == null) {
 			try {
-				beanInfo = Introspector.getBeanInfo(controlClass);
-				PropertyDescriptor[] properties = beanInfo.getPropertyDescriptors();
-				CONTROL_PROPERTIES.put(controlClass, properties);
+				propertyDescriptors = Introspector.getBeanInfo(controlClass).getPropertyDescriptors();
 			} catch (IntrospectionException e) {
-				CONTROL_PROPERTIES.put(controlClass, new PropertyDescriptor[] {});
+				propertyDescriptors = new PropertyDescriptor[0];
 			}
+			CONTROL_PROPERTIES.put(controlClass, propertyDescriptors);
 		}
 
-		return CONTROL_PROPERTIES.get(controlClass);
-
+		return propertyDescriptors;
 	}
 
 	/**
@@ -487,7 +483,7 @@ public class LnFUpdater {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		String lnfKey = generateLnfKey(controlClass, property);
-		Object lnfValue = lnf.getResource(lnfKey.toString());
+		Object lnfValue = lnf.getResource(lnfKey);
 
 		if (lnfValue == null) {
 			if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
