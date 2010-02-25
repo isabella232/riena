@@ -16,7 +16,7 @@ import org.eclipse.swt.graphics.GC;
 /**
  * Implements {@link GCFacade} for RCP.
  */
-public class GCFacadeImpl extends GCFacade {
+public class GCFacadeRCP extends GCFacade {
 
 	@Override
 	public void drawRoundRectangle(GC gc, int x, int y, int width, int height, int arcWidth, int arcHeight) {
