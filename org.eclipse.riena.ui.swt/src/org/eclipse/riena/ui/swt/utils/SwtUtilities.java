@@ -139,11 +139,10 @@ public final class SwtUtilities {
 	 * @param resource
 	 *            resource to dispose
 	 */
-	public static void disposeResource(Resource resource) {
+	public static void disposeResource(final Resource resource) {
 		if (!isDisposed(resource)) {
 			resource.dispose();
 		}
-		resource = null;
 	}
 
 	/**
@@ -153,11 +152,10 @@ public final class SwtUtilities {
 	 * @param widget
 	 *            widget to dispose
 	 */
-	public static void disposeWidget(Widget widget) {
+	public static void disposeWidget(final Widget widget) {
 		if (!isDisposed(widget)) {
 			widget.dispose();
 		}
-		widget = null;
 	}
 
 	/**
