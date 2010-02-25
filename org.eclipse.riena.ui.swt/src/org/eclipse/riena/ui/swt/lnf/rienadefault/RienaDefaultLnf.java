@@ -11,10 +11,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.rienadefault;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -58,7 +55,7 @@ public class RienaDefaultLnf {
 	private final Map<String, ILnfResource> resourceTable = new Hashtable<String, ILnfResource>();
 	private final Map<String, Object> settingTable = new Hashtable<String, Object>();
 	private final Map<String, ILnfRenderer> rendererTable = new Hashtable<String, ILnfRenderer>();
-	private final List<ILnfMarkerSupportExtension> markerSupportList = new ArrayList<ILnfMarkerSupportExtension>();
+	private ILnfMarkerSupportExtension[] markerSupportList = new ILnfMarkerSupportExtension[0];
 	private ILnfTheme theme;
 	private boolean initialized;
 	private boolean defaultColorsInitialized = false;
@@ -139,10 +136,7 @@ public class RienaDefaultLnf {
 	 */
 	@InjectExtension
 	public void update(ILnfRendererExtension[] rendererExtensions) {
-		if (rendererExtensions == null) {
-			return;
-		}
-
+		getRendererTable().clear();
 		for (ILnfRendererExtension rendererExtension : rendererExtensions) {
 			String id = rendererExtension.getLnfId();
 			if (StringUtils.isEmpty(id) || id.equals(getLnfId())) {
@@ -166,12 +160,7 @@ public class RienaDefaultLnf {
 	 */
 	@InjectExtension
 	public void update(ILnfMarkerSupportExtension[] markerSupportExtensions) {
-		if (markerSupportExtensions == null) {
-			return;
-		}
-		markerSupportList.clear();
-		markerSupportList.addAll(Arrays.asList(markerSupportExtensions));
-
+		markerSupportList = markerSupportExtensions;
 	}
 
 	/**
@@ -451,12 +440,7 @@ public class RienaDefaultLnf {
 		if (value instanceof Boolean) {
 			return (Boolean) value;
 		} else {
-			String strgValue = value.toString();
-			try {
-				return new Boolean(strgValue);
-			} catch (NumberFormatException e) {
-				return null;
-			}
+			return Boolean.valueOf(value.toString());
 		}
 	}
 
