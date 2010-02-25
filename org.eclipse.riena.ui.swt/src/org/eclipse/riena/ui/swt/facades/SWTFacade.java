@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.swt.facades;
 import java.util.EventListener;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
@@ -44,6 +45,8 @@ public abstract class SWTFacade {
 
 	public abstract void addEraseItemListener(Tree tree, Listener listener);
 
+	public abstract void addMouseTrackListener(Control control, MouseTrackListener listener);
+
 	public abstract void addPaintItemListener(Tree tree, Listener listener);
 
 	public abstract void addPaintListener(Control control, EventListener listener);
@@ -55,6 +58,8 @@ public abstract class SWTFacade {
 	public abstract void removeEraseItemListener(Table table, Listener listener);
 
 	public abstract void removeEraseItemListener(Tree tre, Listener listener);
+
+	public abstract void removeMouseTrackListener(Control control, MouseTrackListener listener);
 
 	public abstract void removePaintItemListener(Tree tree, Listener listener);
 

@@ -71,6 +71,7 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
+import org.eclipse.riena.ui.swt.facades.GCFacade;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -173,8 +174,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(doubleClickForwarder);
-			control.addMouseTrackListener(tooltipManager);
 			SWTFacade facade = SWTFacade.getDefault();
+			facade.addMouseTrackListener(control, tooltipManager);
 			facade.addEraseItemListener(control, itemEraser);
 		}
 	}
@@ -194,8 +195,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
-			control.removeMouseTrackListener(tooltipManager);
 			SWTFacade facade = SWTFacade.getDefault();
+			facade.removeMouseTrackListener(control, tooltipManager);
 			facade.removeEraseItemListener(control, itemEraser);
 		}
 		viewer = null;
@@ -624,7 +625,13 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 */
 	private final class TableItemEraser implements Listener {
 
-		private final Color borderColor = LnfManager.getLnf().getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
+		private final GCFacade gcFacade;
+		private final Color borderColor;
+
+		public TableItemEraser() {
+			gcFacade = GCFacade.getDefault();
+			borderColor = LnfManager.getLnf().getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
+		}
 
 		/*
 		 * Called EXTREMELY frequently. Must be as efficient as possible.
@@ -671,7 +678,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 				int clientWidth = table.getClientArea().width;
 				int width = Math.max(0, clientWidth - 1);
 				int height = Math.max(0, event.height - 1);
-				gc.drawRoundRectangle(0, event.y, width, height, 3, 3);
+				gcFacade.drawRoundRectangle(gc, 0, event.y, width, height, 3, 3);
 			} finally {
 				gc.setForeground(oldForeground);
 			}
