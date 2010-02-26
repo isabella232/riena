@@ -27,18 +27,24 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
+import org.eclipse.riena.internal.ui.ridgets.swt.optional.CompositeTableRidget;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.IRowRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * A composite table ridget with a row of text fields.
  */
 public final class SnippetCompositeTableRidget001 {
+
+	static {
+		SwtControlRidgetMapper.getInstance().addMapping(CompositeTable.class, CompositeTableRidget.class);
+	}
 
 	private SnippetCompositeTableRidget001() {
 		// "utility class"
