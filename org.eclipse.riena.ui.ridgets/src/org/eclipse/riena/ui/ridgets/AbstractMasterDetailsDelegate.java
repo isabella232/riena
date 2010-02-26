@@ -50,6 +50,15 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
 	 */
+	public String isRemovable(Object item) {
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Default implementation for this method. Subclasses may override.
+	 */
 	public String isValid(IRidgetContainer container) {
 		return null;
 	}

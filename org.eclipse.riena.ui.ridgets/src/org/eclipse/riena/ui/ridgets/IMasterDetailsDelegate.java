@@ -130,7 +130,23 @@ public interface IMasterDetailsDelegate {
 	boolean isChanged(Object source, Object target);
 
 	/**
+	 * Returns null if the current item can be removed.
+	 * <p>
+	 * If removal is not possible, a non-null explaining the reason is returned
+	 * and shown to the user.
+	 * 
+	 * @param item
+	 *            the item behind the master row. Can never be null.
+	 * @return null if the item is removable; an error message why removal is
+	 *         not possible otherwise.
+	 * @since 2.0
+	 */
+	String isRemovable(Object item);
+
+	/**
 	 * Returns null, if the data in details area (i.e. working copy) is valid.
+	 * This will be invoked before apply writes the data back from the details
+	 * area into the model.
 	 * <p>
 	 * The minimal recommended implementation of this method is:
 	 * 

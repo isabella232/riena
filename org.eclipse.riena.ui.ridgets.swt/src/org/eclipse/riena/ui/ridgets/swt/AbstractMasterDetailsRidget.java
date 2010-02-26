@@ -424,6 +424,11 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	private boolean canRemove() {
 		Object selection = getSelection();
 		Assert.isNotNull(selection);
+		String reason = delegate.isRemovable(selection);
+		if (reason != null) {
+			getUIControl().warnRemoveFailed(reason);
+			return false;
+		}
 		return getUIControl().confirmRemove(selection);
 	}
 

@@ -33,7 +33,10 @@ public class Messages extends NLS {
 	 * @since 1.2
 	 */
 	public static String MasterDetailsComposite_dialogTitle_applyFailed;
-
+	/**
+	 * @since 2.0
+	 */
+	public static String MasterDetailsComposite_dialogTitle_removeFailed;
 	/**
 	 * @since 2.0
 	 */

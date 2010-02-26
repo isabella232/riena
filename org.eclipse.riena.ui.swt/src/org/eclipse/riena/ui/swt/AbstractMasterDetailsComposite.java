@@ -321,6 +321,22 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 		MessageDialog.openWarning(getShell(), title, reason);
 	}
 
+	/**
+	 * Informs the user that removal failed for the given {@code reason}.
+	 * <p>
+	 * This implementation will show a blocking dialog. Subclasses may overwrite
+	 * this method without calling super, to change the standard behavior.
+	 * 
+	 * @param reason
+	 *            A string describing why removal is not possible; never null
+	 * @since 2.0
+	 */
+	public void warnRemoveFailed(String reason) {
+		Assert.isNotNull(reason);
+		String title = Messages.MasterDetailsComposite_dialogTitle_removeFailed;
+		MessageDialog.openWarning(getShell(), title, reason);
+	}
+
 	// protected methods
 	////////////////////
 
