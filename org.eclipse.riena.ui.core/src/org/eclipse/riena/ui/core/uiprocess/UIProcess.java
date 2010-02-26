@@ -370,6 +370,12 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		getProcessInfo().setIcon(icon);
 	}
 
+	/**
+	 * Sets the strategy of how progress is interpreted
+	 * 
+	 * @param strategy
+	 *            - the progress strategy
+	 */
 	public void setProgresStrategy(ProcessInfo.ProgresStrategy strategy) {
 		getProcessInfo().setProgresStartegy(strategy);
 	}

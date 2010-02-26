@@ -180,8 +180,8 @@ public class ProcessInfo {
 	}
 
 	/**
-	 * You can choose between these two entries to describe how progress will be
-	 * handled
+	 * You can choose between these two strateguis to describe how progress will
+	 * be handled
 	 */
 	public enum ProgresStrategy {
 		UNIT, CUMULATIVE
