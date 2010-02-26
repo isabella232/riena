@@ -41,14 +41,15 @@ public class SnippetTableRidget007 {
 	public SnippetTableRidget007(Shell shell) {
 		Composite compTable = UIControlsFactory.createComposite(shell);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(compTable);
-		Table table = UIControlsFactory.createTable(compTable, SWT.SINGLE | SWT.FULL_SELECTION);
+		final Table table = UIControlsFactory.createTable(compTable, SWT.SINGLE | SWT.FULL_SELECTION);
 
 		Composite compButton = UIControlsFactory.createComposite(shell);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(compButton);
-		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(compButton);
+		GridLayoutFactory.swtDefaults().numColumns(3).applyTo(compButton);
 		Button btnMark = UIControlsFactory.createButton(compButton, "&Mark"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.RIGHT, SWT.FILL).grab(true, false).applyTo(btnMark);
 		Button btnUnmark = UIControlsFactory.createButton(compButton, "&Unmark"); //$NON-NLS-1$
+		Button btnLines = UIControlsFactory.createButton(compButton, "Toggle &Lines"); //$NON-NLS-1$
 
 		final ITableRidget tableRidget = (ITableRidget) SwtRidgetFactory.createRidget(table);
 		String[] columnPropertyNames = { "pseudonym", "name", "appearance" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
@@ -81,6 +82,13 @@ public class SnippetTableRidget007 {
 					IMarker marker = new RowErrorMessageMarker(null, value);
 					tableRidget.removeMarker(marker);
 				}
+			}
+		});
+
+		IActionRidget ridgetLines = (IActionRidget) SwtRidgetFactory.createRidget(btnLines);
+		ridgetLines.addListener(new IActionListener() {
+			public void callback() {
+				table.setLinesVisible(!table.getLinesVisible());
 			}
 		});
 	}
