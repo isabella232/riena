@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.application;
 
-import org.eclipse.riena.internal.navigation.ui.marker.UIProcessFinsishedObserver;
+import org.eclipse.riena.internal.navigation.ui.marker.UIProcessFinishedObserver;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -47,8 +47,8 @@ public class ProgressVisualizerLocator implements IProgressVisualizerLocator {
 		return aVisualizer;
 	}
 
-	private UIProcessFinsishedObserver createObserver(INavigationNode<?> node) {
-		return new UIProcessFinsishedObserver(node);
+	private UIProcessFinishedObserver createObserver(INavigationNode<?> node) {
+		return new UIProcessFinishedObserver(node);
 	}
 
 	private IProgressVisualizerObserver getUIProcessRidget(ISubApplicationNode subApp) {

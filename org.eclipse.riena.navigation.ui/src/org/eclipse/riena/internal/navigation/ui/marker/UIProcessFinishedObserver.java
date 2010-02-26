@@ -23,7 +23,7 @@ import org.eclipse.riena.ui.core.uiprocess.UIProcess;
  * delegate the markup of nodes showing the path to the node where the
  * {@link UIProcess }was started
  */
-public class UIProcessFinsishedObserver implements IProgressVisualizerObserver {
+public class UIProcessFinishedObserver implements IProgressVisualizerObserver {
 
 	private INavigationNode<?> baseNode;
 
@@ -38,13 +38,13 @@ public class UIProcessFinsishedObserver implements IProgressVisualizerObserver {
 	 *            the strategy that handles the markup of the nodes showing the
 	 *            path to baseNode
 	 */
-	public UIProcessFinsishedObserver(INavigationNode<?> baseNode, IUIProcessMarkupStrategy markupStrategy) {
+	public UIProcessFinishedObserver(INavigationNode<?> baseNode, IUIProcessMarkupStrategy markupStrategy) {
 		this.baseNode = baseNode;
 		uiProcessFinishedMarker = new UIProcessFinishedMarker();
 		this.markupStrategy = markupStrategy;
 	}
 
-	public UIProcessFinsishedObserver(INavigationNode<?> currentNode) {
+	public UIProcessFinishedObserver(INavigationNode<?> currentNode) {
 		this(currentNode, new TypeHierarchyMarkerStrategy());
 	}
 
