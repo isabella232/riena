@@ -48,6 +48,7 @@ public class EmailView extends SubModuleView {
 		Composite container = new Composite(parent, SWT.NONE);
 
 		table = new Table(container, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
+		table.setFont(SWTResourceManager.getFont("Arial", 10, SWT.NORMAL));
 		table.setBackground(SWTResourceManager.getColor(255, 255, 254));
 		table.setLocation(25, 23);
 		table.setSize(703, 190);
@@ -136,7 +137,7 @@ public class EmailView extends SubModuleView {
 		//create button
 		Button openCustomerButton = new Button(container, SWT.NONE);
 		openCustomerButton.setBounds(580, 474, 133, 38);
-		openCustomerButton.setFont(SWTResourceManager.getFont("Arial", 11, SWT.NORMAL)); //$NON-NLS-1$
+		openCustomerButton.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD)); //$NON-NLS-1$
 		openCustomerButton.setText("Open Customer"); //$NON-NLS-1$
 		addUIControl(openCustomerButton, "openCustomer"); //$NON-NLS-1$
 

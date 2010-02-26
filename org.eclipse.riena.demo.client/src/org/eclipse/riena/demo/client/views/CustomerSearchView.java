@@ -45,6 +45,7 @@ public class CustomerSearchView extends SubModuleView {
 		Composite container = new Composite(parent, SWT.NONE);
 
 		ergebnis = new Table(container, SWT.BORDER | SWT.FULL_SELECTION);
+		ergebnis.setFont(SWTResourceManager.getFont("Arial", 10, SWT.NORMAL));
 		ergebnis.setBackground(SWTResourceManager.getColor(255, 255, 254));
 		ergebnis.setLinesVisible(true);
 		ergebnis.setHeaderVisible(true);
@@ -73,12 +74,12 @@ public class CustomerSearchView extends SubModuleView {
 
 		final Label nameLabel = new Label(container, SWT.NONE);
 		nameLabel.setForeground(SWTResourceManager.getColor(1, 0, 0));
-		nameLabel.setFont(SWTResourceManager.getFont("Helvetica", 14, SWT.NONE)); //$NON-NLS-1$
+		nameLabel.setFont(SWTResourceManager.getFont("Arial", 12, SWT.BOLD)); //$NON-NLS-1$
 		nameLabel.setText("Lastname"); //$NON-NLS-1$
 		nameLabel.setBounds(30, 31, 82, 26);
 
 		final Button sucheStarten = new Button(container, SWT.NONE);
-		sucheStarten.setFont(SWTResourceManager.getFont("", 12, SWT.BOLD)); //$NON-NLS-1$
+		sucheStarten.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD)); //$NON-NLS-1$
 		sucheStarten.setText("&Search"); //$NON-NLS-1$
 		sucheStarten.setBounds(345, 25, 82, 32);
 		addUIControl(sucheStarten, "search"); //$NON-NLS-1$
@@ -92,13 +93,13 @@ public class CustomerSearchView extends SubModuleView {
 		addUIControl(treffer, "hits"); //$NON-NLS-1$
 
 		final Button openCustomerButton = new Button(container, SWT.NONE);
-		openCustomerButton.setFont(SWTResourceManager.getFont("", 12, SWT.BOLD)); //$NON-NLS-1$
+		openCustomerButton.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD)); //$NON-NLS-1$
 		openCustomerButton.setText("Open"); //$NON-NLS-1$
 		openCustomerButton.setBounds(250, 460, 133, 34);
 		addUIControl(openCustomerButton, "open"); //$NON-NLS-1$
 
 		final Button newCustomerButton = new Button(container, SWT.NONE);
-		newCustomerButton.setFont(SWTResourceManager.getFont("", 12, SWT.BOLD)); //$NON-NLS-1$
+		newCustomerButton.setFont(SWTResourceManager.getFont("", 10, SWT.BOLD)); //$NON-NLS-1$
 		newCustomerButton.setText("New "); //$NON-NLS-1$
 		newCustomerButton.setBounds(407, 460, 133, 34);
 		addUIControl(newCustomerButton, "new"); //$NON-NLS-1$

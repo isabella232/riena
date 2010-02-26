@@ -43,9 +43,7 @@ public class EclipseTheme extends RienaDefaultTheme {
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(150, 146, 192));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR, new ColorLnfResource(121, 117, 168));
 
-		table
-				.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(250, 250,
-						250));
+		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(250, 250, 250));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(219, 219, 219));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(183, 183, 183));
 
@@ -140,7 +138,7 @@ public class EclipseTheme extends RienaDefaultTheme {
 
 	@Override
 	protected FontLnfResource getPrimaryFont() {
-		return new FontLnfResource("Arial", 14, SWT.NORMAL); //$NON-NLS-1$
+		return new FontLnfResource("Arial", 12, SWT.NORMAL); //$NON-NLS-1$
 	}
 
 	@Override
