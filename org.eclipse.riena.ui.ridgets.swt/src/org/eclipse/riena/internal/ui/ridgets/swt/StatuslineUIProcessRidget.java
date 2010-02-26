@@ -29,6 +29,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.ProcessDetail;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.TimerUtil;
 import org.eclipse.riena.ui.core.IDisposable;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
+import org.eclipse.riena.ui.core.uiprocess.ProcessInfo;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IContextUpdateListener;
@@ -236,7 +237,16 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 				// no more!
 				pDetail.setState(ProcessState.RUNNING);
 			}
-			pDetail.setProgress(progress);
+
+			int newProgress = 0;
+
+			if (ProcessInfo.ProgresStrategy.UNIT.equals(visualizer.getProcessInfo().getProgresStartegy())) {
+				newProgress = pDetail.getProgress() + progress;
+			} else {
+				newProgress = progress;
+			}
+			pDetail.setProgress(newProgress);
+
 		}
 	}
 
@@ -321,15 +331,15 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	 */
 
 	public synchronized void updateProgress(IProgressVisualizer visualizer, int progress) {
-		checkTrigger();
 		// save progress
 		getProcessManager().saveProgress(visualizer, progress);
+		checkTrigger();
 		//update user interface
 		updateUserInterface();
 	}
 
 	private void checkTrigger() {
-		if (getProcessManager().getPending().size() == 1) {
+		if (getProcessManager().getPending().size() == 0) {
 			TimerUtil.stop(timedTrigger);
 			// we need a new instance to be able to restart the task later 
 			buildTrigger();
@@ -342,7 +352,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	 */
 	private void updateUserInterface() {
 		if (Display.getDefault().getThread().equals(Thread.currentThread())) {
-			// upadte on the current thread = user interface thread
+			// update on the current thread = user interface thread
 			updateBaseAndList();
 			return;
 		}
@@ -396,16 +406,20 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		});
 
 		// tell the ui
-		getUIControl().triggerListUpdate(pidos);
+		getUIControl().triggerListUpdate(pidos, true);
 	}
 
 	public synchronized void finalUpdateUI(IProgressVisualizer visualizer) {
+		final ProcessDetail detailForVisualizer = getProcessManager().detailForVisualizer(visualizer);
+		if (detailForVisualizer == null) {
+			return;
+		}
+		detailForVisualizer.setState(visualizer.getProcessInfo().isCanceled() ? ProcessState.CANCELED
+				: ProcessState.FINISHED);
+		updateUserInterface();
 		checkTrigger();
-		getProcessManager().detailForVisualizer(visualizer).setState(
-				visualizer.getProcessInfo().isCanceled() ? ProcessState.CANCELED : ProcessState.FINISHED);
 		checkStillNeeded(visualizer);
 
-		updateUserInterface();
 	}
 
 	private boolean checkStillNeeded(IProgressVisualizer visualizer) {
@@ -442,20 +456,12 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		visualizer2ContextListener.remove(visualizer);
 	}
 
-	public void setActiveProgressVisualizer(IProgressVisualizer visualizer) {
-		// we don´t care
-	}
-
 	public void setContextLocator(IVisualContextManager contextLocator) {
 		this.contextLocator = contextLocator;
 	}
 
 	public void addProgressVisualizer(IProgressVisualizer visualizer) {
 
-	}
-
-	public List<IProgressVisualizer> getProgressVisualizers() {
-		return getProcessManager().getAlVisualizers();
 	}
 
 	public synchronized void initialUpdateUI(IProgressVisualizer visualizer, int totalWork) {
@@ -476,6 +482,9 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	}
 
 	private void createAndRegisterProcessDetail(IProgressVisualizer visualizer) {
+		if (getProcessManager().detailForVisualizer(visualizer) != null) {
+			return;
+		}
 		getProcessManager().register(new ProcessDetail(timeStamp(), visualizer));
 		observeContext(visualizer);
 	}

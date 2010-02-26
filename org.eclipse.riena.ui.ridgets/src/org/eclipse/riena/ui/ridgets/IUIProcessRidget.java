@@ -19,16 +19,6 @@ import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 public interface IUIProcessRidget extends IProgressVisualizerObserver, IRidget {
 
 	/**
-	 * Method is not implemented at the moment!
-	 */
-	void activate();
-
-	/**
-	 * Method is not implemented at the moment!
-	 */
-	void deactivate();
-
-	/**
 	 * Sets the ContextLocator that will be used to determine the current active
 	 * context.
 	 * 

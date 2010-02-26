@@ -13,36 +13,38 @@ package org.eclipse.riena.ui.core.uiprocess;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * {@link ProcessInfo} hold meta information of the owning {@link UIProcess}
+ */
 public class ProcessInfo {
 	public static final String PROPERTY_TITLE = "title"; //$NON-NLS-1$
 	public static final String PROPERTY_ICON = "icon"; //$NON-NLS-1$
 	public static final String PROPERTY_NOTE = "note"; //$NON-NLS-1$
 	public static final String PROPERTY_MAX_PROGRESS = "maxProgress"; //$NON-NLS-1$
-	public static final String PROPERTY_ACTUAL_PROGRESS = "actualProgress"; //$NON-NLS-1$
 	public static final String PROPERTY_CANCELED = "cancel"; //$NON-NLS-1$
-	public static final String DIALOG_VISIBLE = "dialog.visible"; //$NON-NLS-1$
+	public static final String PROPERTY_DIALOG_VISIBLE = "dialog.visible"; //$NON-NLS-1$
+	public static final String PROPERTY_CONTEXT = "context"; //$NON-NLS-1$
+	public static final String PROPERTY_STYLE = "style"; //$NON-NLS-1$
+	public static final String PROPERTY_PROGRESS_STRATEGY = "progress.strategy"; //$NON-NLS-1$
 
-	public enum Style {
-		Plain(), Dialog();
-	}
-
-	public final static Style STYLE_PLAIN = Style.Plain;
-	public final static Style STYLE_DIALOG = Style.Dialog;
-
+	/// properties
 	private String title;
 	private String icon;
 	private String note;
-	private int maxProgress = 0;
-	private int actualProgress = 0;
-	private boolean dialogVisible = true;
-	private Style style = STYLE_PLAIN;
-	private PropertyChangeSupport ppSupport;
+	private int maxProgress;
+	private boolean dialogVisible;
 	private Object context;
 	private boolean canceled;
 	private boolean ignoreCancel;
+	private ProgresStrategy progresStartegy;
+
+	private PropertyChangeSupport ppSupport;
 
 	public ProcessInfo() {
 		ppSupport = new PropertyChangeSupport(this);
+		progresStartegy = ProgresStrategy.UNIT;
+		maxProgress = 0;
+		dialogVisible = true;
 	}
 
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -88,6 +90,23 @@ public class ProcessInfo {
 	}
 
 	/**
+	 * @return the progresStartegy
+	 */
+	public ProgresStrategy getProgresStartegy() {
+		return progresStartegy;
+	}
+
+	/**
+	 * @param progresStartegy
+	 *            the progresStartegy to set
+	 */
+	public void setProgresStartegy(ProgresStrategy progresStartegy) {
+		ProgresStrategy old = this.progresStartegy;
+		this.progresStartegy = progresStartegy;
+		ppSupport.firePropertyChange(PROPERTY_PROGRESS_STRATEGY, old, progresStartegy);
+	}
+
+	/**
 	 * @return the note
 	 */
 	public String getNote() {
@@ -122,30 +141,6 @@ public class ProcessInfo {
 		ppSupport.firePropertyChange(PROPERTY_MAX_PROGRESS, old, maxProgress);
 	}
 
-	/**
-	 * @return the actualProgress
-	 */
-	public int getActualProgress() {
-		return actualProgress;
-	}
-
-	/**
-	 * @param actualProgress
-	 *            the actualProgress to set
-	 */
-	public void setActualProgress(int actualProgress) {
-		int old = this.actualProgress;
-		this.actualProgress = actualProgress;
-		ppSupport.firePropertyChange(PROPERTY_ACTUAL_PROGRESS, old, actualProgress);
-	}
-
-	/**
-	 * @return the style
-	 */
-	public Style getStyle() {
-		return style;
-	}
-
 	public boolean isCanceled() {
 		return canceled;
 	}
@@ -160,7 +155,7 @@ public class ProcessInfo {
 	public void setDialogVisible(boolean visible) {
 		boolean old = this.dialogVisible;
 		this.dialogVisible = visible;
-		ppSupport.firePropertyChange(DIALOG_VISIBLE, old, visible);
+		ppSupport.firePropertyChange(PROPERTY_DIALOG_VISIBLE, old, visible);
 	}
 
 	public boolean isDialogVisible() {
@@ -172,7 +167,9 @@ public class ProcessInfo {
 	 *            the context to set
 	 */
 	public void setContext(Object context) {
+		Object old = this.context;
 		this.context = context;
+		ppSupport.firePropertyChange(PROPERTY_CONTEXT, old, context);
 	}
 
 	/**
@@ -180,6 +177,14 @@ public class ProcessInfo {
 	 */
 	public Object getContext() {
 		return context;
+	}
+
+	/**
+	 * You can choose between these two entries to describe how progress will be
+	 * handled
+	 */
+	public enum ProgresStrategy {
+		UNIT, CUMULATIVE
 	}
 
 }

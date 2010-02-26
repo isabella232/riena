@@ -47,12 +47,10 @@ import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
  * {@link UIProcess}´s in the {@link Statusline}
  */
 public class StatuslineUIProcess extends AbstractStatuslineComposite {
-
 	/**
 	 * the minimum value for the progress
 	 */
 	public static final int PROGRESS_MIN_VALUE = 0;
-
 	/**
 	 * the maximum value for the progress
 	 */
@@ -60,13 +58,18 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 	// the base progress bar rendered inside the status line
 	private ProgressBar progressBar;
-
 	// the window containing the info table
 	private PopupList popup;
-
+	private Composite popupContent;
 	private List<ProgressInfoDataObject> pidos = new ArrayList<ProgressInfoDataObject>();
-
 	private final Map<ProcessState, ILabelFormatter> stateValueMappers = new HashMap<ProcessState, ILabelFormatter>();
+	// maps the pido´s key to a ControlHolder
+	private Map<Integer, ControlHolder> pido2controlHolder = new HashMap<Integer, ControlHolder>();
+	// cache for data objects
+	private Map<Integer, ProgressInfoDataObject> valueCache = new HashMap<Integer, ProgressInfoDataObject>();
+	private Label statusLabel;
+	private Label openLabel;
+	private Label noProcessActiveLable;
 
 	/**
 	 * @param parent
@@ -256,8 +259,6 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		valueCache.clear();
 	}
 
-	private Composite popupContent;
-
 	/**
 	 * the {@link ApplicationWindow} for the list of processes
 	 */
@@ -319,7 +320,9 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	}
 
 	private boolean pidoComplete(ProgressInfoDataObject pido) {
-		return pido.getValue() >= 100;
+		return (pido.getValue() >= 100 && !pido.getProcessState().equals(ProcessState.PENDING))
+				|| ProcessState.CANCELED.equals(pido.getProcessState())
+				|| ProcessState.FINISHED.equals(pido.getProcessState());
 	}
 
 	private void resetStatusLineProgressBar() {
@@ -363,10 +366,10 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 *            is no new data
 	 */
 	public void triggerListUpdate(List<ProgressInfoDataObject> pidos, boolean forceListUpdate) {
-		if (pidos.size() == 0) {
+		if (complete(pidos)) {
 			resetStatusLineProgressBar();
 		}
-		if (isVisible()) {
+		if (!isDisposed() && isVisible()) {
 			if (popVisible() && (forceListUpdate || !pidos.equals(this.pidos))) {
 				//  rebuild table
 				createProcessList(pidos);
@@ -389,9 +392,19 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		}
 	}
 
-	/**
-	 * @return
-	 */
+	private boolean complete(List<ProgressInfoDataObject> pidos) {
+		if (pidos.size() == 0) {
+			return true;
+		}
+
+		for (ProgressInfoDataObject pido : pidos) {
+			if (!pidoComplete(pido)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	private boolean popVisible() {
 		Shell shell = popup.getShell();
 		return shell != null && !shell.isDisposed();
@@ -415,8 +428,10 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 			if (freshValue(pido)) {
 				//update existing bar
 				ControlHolder holder = pido2controlHolder.get(pido.getKey());
-				updateProgressBar(pido, holder.progressBar);
-				updateLabel(pido, holder.label);
+				if (holder != null) {
+					updateProgressBar(pido, holder.progressBar);
+					updateLabel(pido, holder.label);
+				}
 				cacheValue(pido);
 			}
 
@@ -483,67 +498,60 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		}
 	}
 
-	// maps the pido´s key to a ControlHolder
-	private Map<Integer, ControlHolder> pido2controlHolder = new HashMap<Integer, ControlHolder>();
-	// cache for data objects
-	private Map<Integer, ProgressInfoDataObject> valueCache = new HashMap<Integer, ProgressInfoDataObject>();
-
-	/**
-	 * the process state label in the {@link Statusline}
-	 */
-	private Label statusLabel;
-
-	/**
-	 * the observed label for opening/closing the popup window
-	 */
-	private Label openLabel;
-
-	private Label noProcessActiveLable;
-
 	/**
 	 * creates a list of {@link UIProcess} infos in the popup
 	 */
 	private void createProcessList(List<ProgressInfoDataObject> pidos) {
-
-		checkNoActiveProcesses(pidos);
+		checkInActiveProcesses(pidos);
 		Control lastControl = null;
 		ProgressBar bar;
 		Label label;
 		Set<Integer> keys = new HashSet<Integer>();
 		for (ProgressInfoDataObject pido : pidos) {
-			keys.add(pido.getKey());
-			ControlHolder holder = pido2controlHolder.get(pido.getKey());
-			if (holder == null) {
-				holder = createControlHolder(pido);
+			if (!pidoComplete(pido)) {
+				keys.add(pido.getKey());
+				if (noProcessActiveLable != null) {
+					if (!noProcessActiveLable.isDisposed()) {
+						noProcessActiveLable.setVisible(false);
+						noProcessActiveLable.dispose();
+					}
+					popupContent.layout(true);
+				}
+				ControlHolder holder = pido2controlHolder.get(pido.getKey());
+				if (holder == null) {
+					holder = createControlHolder(pido);
+				}
+				bar = holder.progressBar;
+				label = holder.label;
+
+				//do layout stuff
+				FormData formData = new FormData();
+				formData.top = lastControl != null ? new FormAttachment(lastControl, 2) : new FormAttachment(5, 0);
+				formData.height = 14;
+				formData.width = 100;
+				label.setLayoutData(formData);
+
+				formData = new FormData();
+				formData.top = lastControl != null ? new FormAttachment(lastControl, 2) : new FormAttachment(5, 0);
+				formData.left = new FormAttachment(label, 3);
+				formData.height = 14;
+				formData.width = 60;
+				bar.setLayoutData(formData);
+
+				lastControl = bar;
 			}
-			bar = holder.progressBar;
-			label = holder.label;
-
-			//do layout stuff
-			FormData formData = new FormData();
-			formData.top = lastControl != null ? new FormAttachment(lastControl, 2) : new FormAttachment(5, 0);
-			formData.height = 14;
-			formData.width = 100;
-			label.setLayoutData(formData);
-
-			formData = new FormData();
-			formData.top = lastControl != null ? new FormAttachment(lastControl, 2) : new FormAttachment(5, 0);
-			formData.left = new FormAttachment(label, 3);
-			formData.height = 14;
-			formData.width = 60;
-			bar.setLayoutData(formData);
-
-			lastControl = bar;
 		}
 
 		// dispose and clear all controls of zombie pidos
 		clearZombies(keys);
+		popupContent.layout();
+		popupContent.redraw();
 
 	}
 
-	private void checkNoActiveProcesses(List<ProgressInfoDataObject> pidos) {
-		if (pidos.size() == 0) {
-			noProcessRunning();
+	private void checkInActiveProcesses(List<ProgressInfoDataObject> pidos) {
+		if (complete(pidos)) {
+			cleanInactiveProcessPresentation();
 		} else {
 			if (noProcessActiveLable != null) {
 				noProcessActiveLable.dispose();
@@ -551,16 +559,18 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		}
 	}
 
-	private void noProcessRunning() {
+	private void cleanInactiveProcessPresentation() {
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(5, 0);
 		formData.height = 14;
 		formData.width = 160;
-		noProcessActiveLable = new Label(popupContent, SWT.NONE);
-		noProcessActiveLable.setBackground(LnfManager.getLnf().getColor(
-				LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
-		noProcessActiveLable.setText(Messages.StatuslineUIProcess_noActiveProcess);
-		noProcessActiveLable.setLayoutData(formData);
+		if (noProcessActiveLable == null || noProcessActiveLable.isDisposed()) {
+			noProcessActiveLable = new Label(popupContent, SWT.NONE);
+			noProcessActiveLable.setBackground(LnfManager.getLnf().getColor(
+					LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
+			noProcessActiveLable.setText(Messages.StatuslineUIProcess_noActiveProcess);
+			noProcessActiveLable.setLayoutData(formData);
+		}
 	}
 
 	/**
@@ -607,6 +617,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 				valueCache.remove(key);
 			}
 		}
+		popup.getShell().redraw();
 	}
 
 }

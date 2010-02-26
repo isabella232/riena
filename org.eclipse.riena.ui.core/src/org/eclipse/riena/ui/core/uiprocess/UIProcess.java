@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.core.uiprocess;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.core.internal.jobs.JobManager;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -52,28 +53,133 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		this(name, false);
 	}
 
+	/**
+	 * Creates a new UIProcess.
+	 * <p>
+	 * For executing processes the {@code UIProcess) uses the {@code
+	 * UISynchronizer} to create {@code IUISynchronizer} instances which perform
+	 * the actual execution of the process.
+	 * 
+	 * @param name
+	 *            the name of the job
+	 * 
+	 * @param user
+	 *            sets whether or not the process should be displayed as a
+	 *            window
+	 * 
+	 * @throws some_kind_of_runtime_exception
+	 *             if no configuration point is found or if an object of the
+	 *             class given in the extension point can not be instantiated.
+	 * 
+	 * @see UISynchronizer
+	 */
 	public UIProcess(final String name, boolean user) {
 		this(name, user, new Object());
 	}
 
+	/**
+	 * Creates a new UIProcess.
+	 * <p>
+	 * For executing processes the {@code UIProcess) uses the {@code
+	 * UISynchronizer} to create {@code IUISynchronizer} instances which perform
+	 * the actual execution of the process.
+	 * 
+	 * @param name
+	 *            the name of the job
+	 * 
+	 * @param user
+	 *            sets whether or not the process should be displayed as a
+	 *            window
+	 * 
+	 * @param context
+	 *            an object representing the context of this {@link UIProcess}
+	 * 
+	 * @throws some_kind_of_runtime_exception
+	 *             if no configuration point is found or if an object of the
+	 *             class given in the extension point can not be instantiated.
+	 * 
+	 */
 	public UIProcess(final String name, boolean user, Object context) {
 		this(name, UISynchronizer.createSynchronizer(), user, context);
 	}
 
+	/**
+	 * Creates a new UIProcess.
+	 * <p>
+	 * For executing processes the {@code UIProcess) uses the {@code
+	 * UISynchronizer} to create {@code IUISynchronizer} instances which perform
+	 * the actual execution of the process.
+	 * 
+	 * @param name
+	 *            the name of the job
+	 * 
+	 * @param syncher
+	 *            the synchronizer which serializes callbacks to the UI-
+	 *            {@link Thread} of the Widget Toolkit
+	 * 
+	 * @param user
+	 *            sets whether or not the process should be displayed as a
+	 *            window
+	 * 
+	 * @param context
+	 *            an object representing the context of this {@link UIProcess}
+	 * 
+	 * @throws some_kind_of_runtime_exception
+	 *             if no configuration point is found or if an object of the
+	 *             class given in the extension point can not be instantiated.
+	 * 
+	 */
 	public UIProcess(String name, IUISynchronizer syncher, boolean user, Object context) {
 		this(name, new UICallbackDispatcher(syncher), user, context);
 	}
 
+	/**
+	 * Creates a new UIProcess.
+	 * <p>
+	 * For executing processes the {@code UIProcess) uses the {@code
+	 * UISynchronizer} to create {@code IUISynchronizer} instances which perform
+	 * the actual execution of the process.
+	 * 
+	 * @param name
+	 *            the name of the job
+	 * 
+	 * @param dispatcher
+	 *            the {@link UICallbackDispatcher} which is responsible for
+	 *            Thread-switches and {@link IUIMonitor}-delegation (Note: this
+	 *            is very low level)
+	 * 
+	 * @param user
+	 *            sets whether or not the process should be displayed as a
+	 *            window
+	 * 
+	 * @param context
+	 *            an object representing the context of this {@link UIProcess}
+	 * 
+	 * @throws some_kind_of_runtime_exception
+	 *             if no configuration point is found or if an object of the
+	 *             class given in the extension point can not be instantiated.
+	 * 
+	 */
 	private UIProcess(String name, UICallbackDispatcher dispatcher, boolean user, Object context) {
 		this.callbackDispatcher = dispatcher;
 		this.job = createJob(name, user, context);
-		configure();
+		updateProcessConfiguration();
 	}
 
+	/**
+	 * Creates a new UIProcess.
+	 * <p>
+	 * For executing processes the {@code UIProcess) uses the {@code
+	 * UISynchronizer} to create {@code IUISynchronizer} instances which perform
+	 * the actual execution of the process.
+	 * 
+	 * @param job
+	 *            the job which is wrapped by the {@link UIProcess}
+	 */
 	public UIProcess(final Job job) {
 		this.callbackDispatcher = new UICallbackDispatcher(UISynchronizer.createSynchronizer());
 		this.job = job;
-		configure();
+		updateProcessConfiguration();
 	}
 
 	/**
@@ -85,7 +191,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		return UISynchronizer.createSynchronizer();
 	}
 
-	private void configure() {
+	private void updateProcessConfiguration() {
 		register();
 		configureProcessInfo();
 	}
@@ -145,11 +251,17 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 			}
 			monitor.done();
 			afterRun(monitor);
+			ProgressProviderBridge.instance().unregisterMapping(this);
 			return state ? Status.OK_STATUS : Status.CANCEL_STATUS;
 		}
 
 	}
 
+	/**
+	 * 
+	 * @return the job wrapped by the {@link UIProcess}. This job is run by the
+	 *         {@link JobManager} on a worker {@link Thread}
+	 */
 	protected Job getJob() {
 		return job;
 	}
@@ -167,10 +279,14 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	}
 
 	protected int getTotalWork() {
-		return 0;
+		return IProgressMonitor.UNKNOWN;
 	}
 
+	/**
+	 * registers the job at the {@link ProgressProviderBridge}
+	 */
 	private void register() {
+		// registers itself as a monitor
 		callbackDispatcher.addUIMonitor(this);
 		ProgressProviderBridge.instance().registerMapping(job, this);
 	}
@@ -246,19 +362,24 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		getProcessInfo().setTitle(title);
 	}
 
+	/**
+	 * @param icon
+	 *            the icon to set
+	 */
 	public void setIcon(String icon) {
 		getProcessInfo().setIcon(icon);
 	}
 
+	public void setProgresStrategy(ProcessInfo.ProgresStrategy strategy) {
+		getProcessInfo().setProgresStartegy(strategy);
+	}
+
 	/**
-	 * @return the info
+	 * @return the {@link ProcessInfo} object holding meta information of this
+	 *         {@link UIProcess}
 	 */
 	private ProcessInfo getProcessInfo() {
 		return getCallbackDispatcher().getProcessInfo();
-	}
-
-	public boolean isActive(IUIMonitorContainer container) {
-		return true;
 	}
 
 	/**
@@ -266,6 +387,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * {@link #updateUi()}
 	 */
 	protected void notifyUpdateUI() {
+		// serialize on ui thread
 		getCallbackDispatcher().getSyncher().synchronize(new Runnable() {
 
 			public void run() {
@@ -273,7 +395,6 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 					updateUi();
 				} catch (Exception e) {
 					Service.get(Activator.getDefault().getContext(), IExceptionHandlerManager.class).handleException(e);
-					//					logger.log(LogService.LOG_ERROR, "Exception in updateUi", e);
 				}
 			}
 

@@ -15,8 +15,17 @@ package org.eclipse.riena.ui.core.uiprocess;
  */
 public interface IProcessInfoAware {
 
+	/**
+	 * 
+	 * @return the {@link ProcessInfo} object
+	 */
 	ProcessInfo getProcessInfo();
 
+	/**
+	 * sets the {@link ProcessInfo} object
+	 * 
+	 * @param processInfo
+	 */
 	void setProcessInfo(ProcessInfo processInfo);
 
 }

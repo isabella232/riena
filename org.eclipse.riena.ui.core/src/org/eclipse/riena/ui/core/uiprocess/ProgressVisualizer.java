@@ -15,11 +15,23 @@ import java.util.Collection;
 
 import org.eclipse.core.runtime.PlatformObject;
 
+/**
+ * Delegates {@link IUIMonitor}-calls to the {@link IProgressVisualizerObserver}
+ * registered instances
+ * 
+ * @see IProgressVisualizer
+ */
 public class ProgressVisualizer extends PlatformObject implements IProgressVisualizer {
-	private Collection<IProgressVisualizerObserver> observers = new ArrayList<IProgressVisualizerObserver>();
 
+	private Collection<IProgressVisualizerObserver> observers;
 	private ProcessInfo processInfo;
-	private int currentProgress = -1;
+
+	/**
+	 * creates a new instance of {@link ProgressVisualizer}
+	 */
+	public ProgressVisualizer() {
+		observers = new ArrayList<IProgressVisualizerObserver>();
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -45,7 +57,6 @@ public class ProgressVisualizer extends PlatformObject implements IProgressVisua
 		Collection<IProgressVisualizerObserver> currentObservers = new ArrayList<IProgressVisualizerObserver>(observers);
 		for (IProgressVisualizerObserver anObserver : currentObservers) {
 			anObserver.addProgressVisualizer(this);
-			anObserver.setActiveProgressVisualizer(this);
 			anObserver.initialUpdateUI(this, totalWork);
 		}
 	}
@@ -56,7 +67,6 @@ public class ProgressVisualizer extends PlatformObject implements IProgressVisua
 	 * @see org.eclipse.riena.ui.core.uiprocess.IUIProcess#updateProgress(int)
 	 */
 	public void updateProgress(int progress) {
-		setCurrentProgress(progress);
 		Collection<IProgressVisualizerObserver> currentObservers = new ArrayList<IProgressVisualizerObserver>(observers);
 		for (IProgressVisualizerObserver anObserver : currentObservers) {
 			anObserver.updateProgress(this, progress);
@@ -64,7 +74,7 @@ public class ProgressVisualizer extends PlatformObject implements IProgressVisua
 	}
 
 	/**
-	 * @return the processInfo
+	 * @return the processInfo describing the {@link UIProcess}
 	 */
 	public ProcessInfo getProcessInfo() {
 		return processInfo;
@@ -78,24 +88,9 @@ public class ProgressVisualizer extends PlatformObject implements IProgressVisua
 		this.processInfo = processInfo;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.core.uiprocess.IUIProcess#initialUpdateUI(int)
-	 */
-	public void activate() {
-		Collection<IProgressVisualizerObserver> currentObservers = new ArrayList<IProgressVisualizerObserver>(observers);
-		for (IProgressVisualizerObserver anObserver : currentObservers) {
-			anObserver.setActiveProgressVisualizer(this);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer#addObserver(org
-	 * .eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver)
+	/**
+	 * @see org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer#addObserver(org
+	 *      .eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver)
 	 */
 	public void addObserver(IProgressVisualizerObserver anObserver) {
 		if (anObserver != null) {
@@ -108,21 +103,6 @@ public class ProgressVisualizer extends PlatformObject implements IProgressVisua
 		observers.remove(anObserver);
 	}
 
-	/**
-	 * @return the currentProgress
-	 */
-	public int getCurrentProgress() {
-		return currentProgress;
-	}
-
-	/**
-	 * @param currentProgress
-	 *            the currentProgress to set
-	 */
-	public void setCurrentProgress(int currentProgress) {
-		this.currentProgress = currentProgress;
-	}
-
 	@Override
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
@@ -132,14 +112,4 @@ public class ProgressVisualizer extends PlatformObject implements IProgressVisua
 		return super.getAdapter(adapter);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.core.uiprocess.IUIMonitor#acceptState(org.eclipse
-	 * .riena.ui.core.uiprocess.IUIMonitorContainer)
-	 */
-	public boolean isActive(IUIMonitorContainer container) {
-		return container.isVisualizing();
-	}
 }

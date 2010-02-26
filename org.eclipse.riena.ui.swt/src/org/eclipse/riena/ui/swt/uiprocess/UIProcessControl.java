@@ -119,7 +119,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 			setProcessing(true);
 
 			if (null != getProgressBar() && !getProgressBar().isDisposed()) {
-				getProgressBar().setMaximum(90);
+				getProgressBar().setMaximum(100);
 			}
 
 			if (null != getPercentLabel() && !getPercentLabel().isDisposed()) {
@@ -202,6 +202,9 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	 * int)
 	 */
 	public void showProgress(int value, int maxValue) {
+		if (maxValue <= 0) {
+			return;
+		}
 		stopProcessing();
 		int percentValue = calcSelection(value, maxValue);
 		if (getWindow().getShell() != null && !getWindow().getShell().isDisposed()) {

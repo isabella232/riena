@@ -10,10 +10,17 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.uiprocess;
 
+/**
+ * Container holding instances of {@link IUIMonitorContainer}
+ */
 public interface IUIMonitorContainer {
 
+	/**
+	 * adds an {@link IUIMonitor} to the container
+	 * 
+	 * @param uiMontitor
+	 *            - the monitor to add
+	 */
 	void addUIMonitor(IUIMonitor uiMontitor);
-
-	boolean isVisualizing();
 
 }

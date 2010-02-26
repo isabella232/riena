@@ -33,31 +33,30 @@ import org.eclipse.riena.internal.ui.core.Activator;
  */
 public class UICallbackDispatcher extends ProgressProvider implements IUIMonitorContainer {
 
-	private final IUISynchronizer syncher;
-
-	private final List<IUIMonitor> uiMonitors;
-
-	private final ProcessInfo pInfo;
-
-	private boolean visualize;
-
+	private IUISynchronizer syncher;
+	private List<IUIMonitor> uiMonitors;
+	private ProcessInfo pInfo;
 	private ThreadSwitcher threadSwitcher;
 
+	/**
+	 * Creates a instance of {@link UICallbackDispatcher}.
+	 * 
+	 * @param syncher
+	 *            - the {@link IUISynchronizer} for the widget toolkit
+	 */
 	public UICallbackDispatcher(IUISynchronizer syncher) {
 		this.uiMonitors = new ArrayList<IUIMonitor>();
 		this.syncher = syncher;
-		this.pInfo = createProcessInfo();
-		this.visualize = true;
-	}
-
-	private ProcessInfo createProcessInfo() {
-		return new ProcessInfo();
+		this.pInfo = new ProcessInfo();
 	}
 
 	public ProcessInfo getProcessInfo() {
 		return pInfo;
 	}
 
+	/**
+	 * @see IUIMonitorContainer#addUIMonitor(IUIMonitor)
+	 */
 	public void addUIMonitor(IUIMonitor uiMontitor) {
 		IProcessInfoAware processInfoAware = (IProcessInfoAware) uiMontitor.getAdapter(IProcessInfoAware.class);
 		if (processInfoAware != null) {
@@ -95,17 +94,8 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 		});
 	}
 
-	private List<IUIMonitor> getActiveMonitors() {
-		if (visualize) {
-			return new ArrayList<IUIMonitor>(uiMonitors);
-		}
-		List<IUIMonitor> monitors = new ArrayList<IUIMonitor>();
-		for (IUIMonitor monitor : uiMonitors) {
-			if (monitor.isActive(this)) {
-				monitors.add(monitor);
-			}
-		}
-		return monitors;
+	private List<IUIMonitor> getMonitors() {
+		return new ArrayList<IUIMonitor>(uiMonitors);
 	}
 
 	/**
@@ -124,28 +114,26 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 			@Override
 			public void beginTask(String name, int totalWork) {
 				pInfo.setMaxProgress(totalWork);
-				for (IUIMonitor monitor : getActiveMonitors()) {
+				for (IUIMonitor monitor : getMonitors()) {
 					monitor.initialUpdateUI(totalWork);
 				}
 			}
 
 			@Override
 			public void worked(int work) {
-				pInfo.setActualProgress(work);
-				for (IUIMonitor monitor : getActiveMonitors()) {
+				for (IUIMonitor monitor : getMonitors()) {
 					monitor.updateProgress(work);
 				}
 			}
 
 			@Override
 			public void done() {
-				for (IUIMonitor monitor : getActiveMonitors()) {
+				for (IUIMonitor monitor : getMonitors()) {
 					try {
 						monitor.finalUpdateUI();
 					} catch (Exception e) {
 						Service.get(Activator.getDefault().getContext(), IExceptionHandlerManager.class)
 								.handleException(e);
-						//						logger.log(LogService.LOG_ERROR, "Exception in finalUpdateUI", e);
 					}
 
 				}
@@ -161,8 +149,6 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	private final class ThreadSwitcher extends NullProgressMonitor {
 
 		private IProgressMonitor delegate;
-
-		private boolean done;
 
 		public ThreadSwitcher(IProgressMonitor wrappedMonitor) {
 			this.delegate = wrappedMonitor;
@@ -190,28 +176,17 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 
 		@Override
 		public void done() {
-			if (!done) {
-				synchronize(new Runnable() {
+			synchronize(new Runnable() {
 
-					public void run() {
-						delegate.done();
-					}
-				});
-				done = true;
-			}
+				public void run() {
+					delegate.done();
+				}
+			});
 		}
 
 		public void synchronize(Runnable runnable) {
 			syncher.synchronize(runnable);
 		}
-	}
-
-	public boolean isVisualizing() {
-		return visualize;
-	}
-
-	public void setVisualizing(boolean visualize) {
-		this.visualize = visualize;
 	}
 
 }

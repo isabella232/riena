@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.uiprocess;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,13 +25,11 @@ import org.eclipse.core.runtime.jobs.ProgressProvider;
 public class ProgressProviderBridge extends ProgressProvider {
 
 	private static ProgressProviderBridge instance;
-
-	private IProgressVisualizerLocator visualizerFactory;
-
+	private IProgressVisualizerLocator visualizerLocator;
 	private Map<Job, UIProcess> jobUiProcess;
 
 	public ProgressProviderBridge() {
-		jobUiProcess = new HashMap<Job, UIProcess>();
+		jobUiProcess = Collections.synchronizedMap(new HashMap<Job, UIProcess>());
 	}
 
 	public static ProgressProviderBridge instance() {
@@ -40,8 +39,8 @@ public class ProgressProviderBridge extends ProgressProvider {
 		return instance;
 	}
 
-	public void setVisualizerFactory(IProgressVisualizerLocator visualizerFactory) {
-		this.visualizerFactory = visualizerFactory;
+	public void setVisualizerFactory(IProgressVisualizerLocator visualizerLocator) {
+		this.visualizerLocator = visualizerLocator;
 	}
 
 	@Override
@@ -57,7 +56,7 @@ public class ProgressProviderBridge extends ProgressProvider {
 			uiprocess = createDefaultUIProcess(job);
 		}
 		UICallbackDispatcher dispatcher = (UICallbackDispatcher) uiprocess.getAdapter(UICallbackDispatcher.class);
-		dispatcher.addUIMonitor(visualizerFactory.getProgressVisualizer(context));
+		dispatcher.addUIMonitor(visualizerLocator.getProgressVisualizer(context));
 		return dispatcher;
 	}
 
@@ -71,5 +70,9 @@ public class ProgressProviderBridge extends ProgressProvider {
 
 	public void registerMapping(Job job, UIProcess process) {
 		jobUiProcess.put(job, process);
+	}
+
+	public void unregisterMapping(Job job) {
+		jobUiProcess.remove(job);
 	}
 }

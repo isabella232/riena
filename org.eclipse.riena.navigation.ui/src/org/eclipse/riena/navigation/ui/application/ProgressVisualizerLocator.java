@@ -22,7 +22,7 @@ import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver;
 import org.eclipse.riena.ui.core.uiprocess.ProgressVisualizer;
 import org.eclipse.riena.ui.ridgets.IStatuslineUIProcessRidget;
 
-public class VisualizerFactory implements IProgressVisualizerLocator {
+public class ProgressVisualizerLocator implements IProgressVisualizerLocator {
 
 	@SuppressWarnings("unchecked")
 	public IProgressVisualizer getProgressVisualizer(Object context) {

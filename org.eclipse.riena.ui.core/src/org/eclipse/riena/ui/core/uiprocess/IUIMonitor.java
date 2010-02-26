@@ -39,6 +39,4 @@ public interface IUIMonitor extends IAdaptable {
 	 */
 	void finalUpdateUI();
 
-	boolean isActive(IUIMonitorContainer container);
-
 }

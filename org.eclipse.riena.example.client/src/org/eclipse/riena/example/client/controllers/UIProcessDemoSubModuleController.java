@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
@@ -76,22 +77,22 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 			@Override
 			public boolean runJob(IProgressMonitor monitor) {
 				try {
-					Thread.sleep(2500);
+					Thread.sleep(1500);
 				} catch (InterruptedException e1) {
 					e1.getCause(); // .ignore();
 				}
-				for (int i = 0; i <= 10; i++) {
+				for (int i = 0; i < 10; i++) {
 					if (monitor.isCanceled()) {
 						monitor.done();
 						return false;
 					}
 					try {
-						Thread.sleep(800);
+						Thread.sleep(400);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 					setTitle("sample uiProcess worked [" + i + "]"); //$NON-NLS-1$ //$NON-NLS-2$
-					monitor.worked(i);
+					monitor.worked(1);
 				}
 				return true;
 			}
@@ -119,13 +120,13 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 			public IStatus run(IProgressMonitor monitor) {
 				try {
 					monitor.beginTask("eclipse job", 10); //$NON-NLS-1$
-					for (int i = 0; i <= 10; i++) {
+					for (int i = 0; i < 10; i++) {
 						try {
 							Thread.sleep(500);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						monitor.worked(i);
+						monitor.worked(1);
 						if (monitor.isCanceled()) {
 							return Status.CANCEL_STATUS;
 						}

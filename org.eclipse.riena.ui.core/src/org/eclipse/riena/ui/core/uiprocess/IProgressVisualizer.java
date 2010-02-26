@@ -10,16 +10,25 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.uiprocess;
 
+/**
+ * A container managing instances of {@link IProgressVisualizerObserver}.
+ * {@link IUIMonitor} callbacks usually get delegated here to the
+ * {@link IProgressVisualizerObserver}s.
+ */
 public interface IProgressVisualizer extends IUIMonitor, IProcessInfoAware {
 
-	String PROPERTY_CANCEL = "cancel"; //$NON-NLS-1$
-
-	int getCurrentProgress();
-
-	void activate();
-
+	/**
+	 * adds the {@link IProgressVisualizerObserver} to the container
+	 * 
+	 * @param anObserver
+	 */
 	void addObserver(IProgressVisualizerObserver anObserver);
 
+	/**
+	 * removes the {@link IProgressVisualizerObserver} from the container
+	 * 
+	 * @param anObserver
+	 */
 	void removeObserver(IProgressVisualizerObserver anObserver);
 
 }

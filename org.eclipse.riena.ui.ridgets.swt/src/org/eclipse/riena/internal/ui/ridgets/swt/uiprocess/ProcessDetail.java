@@ -41,7 +41,7 @@ public class ProcessDetail {
 	private int pendingProgress = 0;
 
 	//state of work
-	private int progress;
+	private int progress = 0;
 
 	// startup time in millis [TS = time stamp]
 	private final long startupTS;
@@ -65,7 +65,7 @@ public class ProcessDetail {
 	}
 
 	public boolean isPending() {
-		return ProcessState.PENDING.equals(state);
+		return ProcessState.PENDING.equals(state) || getVisualizer().getProcessInfo().getMaxProgress() < 0;
 	}
 
 	/**
@@ -100,6 +100,10 @@ public class ProcessDetail {
 
 	public void setProgress(int progress) {
 		this.progress = progress;
+	}
+
+	public int getProgress() {
+		return progress;
 	}
 
 	/**

@@ -14,7 +14,7 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
-import org.eclipse.riena.ui.core.uiprocess.ProgressVisualizerObserverAdapter;
+import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 
 /**
@@ -23,7 +23,7 @@ import org.eclipse.riena.ui.core.uiprocess.UIProcess;
  * delegate the markup of nodes showing the path to the node where the
  * {@link UIProcess }was started
  */
-public class UIProcessFinsishedObserver extends ProgressVisualizerObserverAdapter {
+public class UIProcessFinsishedObserver implements IProgressVisualizerObserver {
 
 	private INavigationNode<?> baseNode;
 
@@ -35,8 +35,8 @@ public class UIProcessFinsishedObserver extends ProgressVisualizerObserverAdapte
 	 * @param baseNode
 	 *            node where the {@link UIProcess} was started
 	 * @param markupStrategy
-	 *            the strategy that handles the markup of the nodes showing
-	 *            the path to baseNode
+	 *            the strategy that handles the markup of the nodes showing the
+	 *            path to baseNode
 	 */
 	public UIProcessFinsishedObserver(INavigationNode<?> baseNode, IUIProcessMarkupStrategy markupStrategy) {
 		this.baseNode = baseNode;
@@ -52,13 +52,26 @@ public class UIProcessFinsishedObserver extends ProgressVisualizerObserverAdapte
 		return baseNode;
 	}
 
-	@Override
 	public void finalUpdateUI(IProgressVisualizer visualizer) {
 		getMarkupStrategy().applyUIProcessMarker(getBaseNode(), uiProcessFinishedMarker);
 	}
 
 	private IUIProcessMarkupStrategy getMarkupStrategy() {
 		return markupStrategy;
+	}
+
+	////////////////////////// empty callbacks
+
+	public void addProgressVisualizer(IProgressVisualizer visualizer) {
+	}
+
+	public void initialUpdateUI(IProgressVisualizer visualizer, int totalWork) {
+	}
+
+	public void removeProgressVisualizer(IProgressVisualizer visualizer) {
+	}
+
+	public void updateProgress(IProgressVisualizer visualizer, int progress) {
 	}
 
 }

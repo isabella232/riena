@@ -23,7 +23,7 @@ import org.eclipse.riena.communication.core.progressmonitor.RemoteProgressMonito
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.model.ApplicationNode;
-import org.eclipse.riena.navigation.ui.application.VisualizerFactory;
+import org.eclipse.riena.navigation.ui.application.ProgressVisualizerLocator;
 import org.eclipse.riena.ui.core.uiprocess.ProcessInfo;
 import org.eclipse.riena.ui.core.uiprocess.UICallbackDispatcher;
 import org.eclipse.riena.ui.core.uiprocess.UISynchronizer;
@@ -100,7 +100,7 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 		UICallbackDispatcher callBackDispatcher = new UICallbackDispatcher(UISynchronizer.createSynchronizer());
 		ISubApplicationNode subApplicationNode = locateActiveSubApplicationNode();
 		// init delegation
-		callBackDispatcher.addUIMonitor(new VisualizerFactory().getProgressVisualizer(subApplicationNode));
+		callBackDispatcher.addUIMonitor(new ProgressVisualizerLocator().getProgressVisualizer(subApplicationNode));
 		progressMonitor = callBackDispatcher.createThreadSwitcher();
 		init(taskname, progressMonitor);
 		configureProcessInfo(callBackDispatcher, subApplicationNode);

@@ -45,15 +45,10 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget {
 
 	private UIProcessControl uiProcessControl;
-
 	private CancelListener cancelListener;
-
 	private Map<IProgressVisualizer, Progress> visualizerProgress;
-
 	private Map<Object, VisualizerContainer> contexts;
-
 	private IVisualContextManager contextLocator;
-
 	private boolean focusAble;
 
 	public UIProcessRidget() {
@@ -73,7 +68,6 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 			if (time1 == time2) {
 				return 0;
 			}
-
 			return 1;
 		}
 
@@ -112,7 +106,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	 */
 	private final static class Progress {
 		private int totalWork = -1;
-		private int completed = -1;
+		private int completed = 0;
 
 		private Progress() {
 			super();
@@ -290,7 +284,6 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		if (activeContextContainerList.size() == 0) {
 			return true;
 		}
-
 		int count = 0;
 		for (VisualizerContainer visualizerContainer : activeContextContainerList) {
 			count += visualizerContainer.size();
@@ -298,7 +291,6 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 				return false;
 			}
 		}
-
 		return true;
 	}
 
@@ -315,6 +307,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 			open();
 			showProcessing();
 			saveTotalWork(visualizer, totalWork);
+			getProgress(visualizer).completed = 0;
 			updateUi();
 		}
 	}
@@ -395,9 +388,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 
 				private void reinitializeProgress() {
 					int progress = visualizerProgress.get(getCurrentVisualizer()).completed;
-					if (progress > -1) {
-						updateProgress(getCurrentVisualizer(), progress);
-					} else {
+					if (progress <= -1) {
 						showProcessing();
 					}
 				}
@@ -454,12 +445,6 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		}
 	}
 
-	public void setActiveProgressVisualizer(IProgressVisualizer visualizer) {
-		// we do not accept this from outside. It depends on the context which
-		// is the active visualizer
-
-	}
-
 	protected boolean isActive(IProgressVisualizer visualizer) {
 		return visualizer != null && visualizer == getCurrentVisualizer();
 	}
@@ -473,7 +458,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		}
 		saveProgress(visualizer, progress);
 		if (isActive(visualizer)) {
-			getUIControl().showProgress(progress, getTotalWork(visualizer));
+			getUIControl().showProgress(getProgress(visualizer).completed, getTotalWork(visualizer));
 		}
 	}
 
@@ -481,7 +466,12 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	private void saveProgress(IProgressVisualizer visualizer, int progressValue) {
 		Progress progress = getProgress(visualizer);
 		if (progress != null) {
-			progress.completed = progressValue;
+
+			if (ProcessInfo.ProgresStrategy.UNIT.equals(visualizer.getProcessInfo().getProgresStartegy())) {
+				progress.completed += progressValue;
+			} else {
+				progress.completed = progressValue;
+			}
 		}
 	}
 
@@ -491,20 +481,6 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 
 	private Integer getTotalWork(IProgressVisualizer visualizer) {
 		return getProgress(visualizer).totalWork;
-	}
-
-	public List<IProgressVisualizer> getProgressVisualizers() {
-		return new ArrayList<IProgressVisualizer>(visualizerProgress.keySet());
-	}
-
-	public void activate() {
-		// we do not need to activate anything here
-		// FIXME remove empty method-block or mark as deprecated
-	}
-
-	public void deactivate() {
-		// we do not need to DeActivate anything here
-		// FIXME remove empty method-block or mark as deprecated
 	}
 
 	private void saveBounds(Object visualContext) {
@@ -524,6 +500,11 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		return contextLocator;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#getToolTipText()
+	 */
 	public String getToolTipText() {
 		if (getWindowShell() != null && !getWindowShell().isDisposed() && isFocusable()) {
 			return getWindowShell().getToolTipText();
@@ -531,9 +512,18 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		return ""; //$NON-NLS-1$
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#getUIControl()
+	 */
 	public UIProcessControl getUIControl() {
 		return uiProcessControl;
 	}
+
+	/**
+	 * answers true if the dialog window has the focus. otherwise false
+	 */
 
 	public boolean hasFocus() {
 		if (getWindowShell() != null && !getWindowShell().isDisposed() && isFocusable()) {
@@ -550,6 +540,10 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		this.focusAble = focusable;
 	}
 
+	/**
+	 * answers true if the dialog window is visible. otherwise false
+	 */
+
 	public boolean isVisible() {
 		if (getWindowShell() != null && !getWindowShell().isDisposed()) {
 			return getWindowShell().isVisible();
@@ -557,6 +551,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		return false;
 	}
 
+	/**
+	 * answers true if the dialog window is enabled. otherwise false
+	 */
 	public boolean isEnabled() {
 		if (getWindowShell() != null && !getWindowShell().isDisposed()) {
 			return getWindowShell().isEnabled();
@@ -579,6 +576,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		}
 	}
 
+	/**
+	 * controls the visibility of the dialog
+	 */
 	public void setVisible(boolean visible) {
 		if (visible) {
 			open();
@@ -587,6 +587,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		}
 	}
 
+	/**
+	 * controls the enabled state of the managed dialog window
+	 */
 	public void setEnabled(boolean enabled) {
 		if (getWindowShell() != null && !getWindowShell().isDisposed()) {
 			getWindowShell().setEnabled(enabled);

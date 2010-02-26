@@ -67,7 +67,7 @@ public abstract class AbstractApplication implements IApplication {
 	private void setProgressProviderBridge() {
 		ProgressProviderBridge bridge = ProgressProviderBridge.instance();
 		Job.getJobManager().setProgressProvider(bridge);
-		bridge.setVisualizerFactory(new VisualizerFactory());
+		bridge.setVisualizerFactory(new ProgressVisualizerLocator());
 	}
 
 	/**
