@@ -38,6 +38,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
+import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
@@ -987,6 +988,33 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 		assertEquals("alpha", control.getItem(0).getText());
 		assertEquals("riena", control.getItem(1).getText());
+	}
+
+	public void testRowErrorMessageMarker() {
+		ITableRidget ridget = getRidget();
+		RowErrorMessageMarker marker1 = new RowErrorMessageMarker(null, person1);
+		RowErrorMessageMarker marker2 = new RowErrorMessageMarker(null, person2);
+
+		assertFalse(ridget.isErrorMarked());
+
+		ridget.addMarker(marker1);
+		ridget.addMarker(marker1);
+
+		assertTrue(ridget.isErrorMarked());
+
+		ridget.removeMarker(marker1);
+
+		assertFalse(ridget.isErrorMarked());
+
+		ridget.addMarker(marker1);
+		ridget.addMarker(marker2);
+		ridget.removeMarker(marker1);
+
+		assertTrue(ridget.isErrorMarked());
+
+		ridget.removeMarker(marker2);
+
+		assertFalse(ridget.isErrorMarked());
 	}
 
 	// helping methods

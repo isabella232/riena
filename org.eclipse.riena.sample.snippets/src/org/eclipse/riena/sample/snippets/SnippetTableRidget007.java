@@ -33,7 +33,8 @@ import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * TODO [ev] javadoc
+ * Demostrates how to use a {@link RowErrorMessageMarker} to mark errors in the
+ * rows of a table ridget.
  */
 public class SnippetTableRidget007 {
 

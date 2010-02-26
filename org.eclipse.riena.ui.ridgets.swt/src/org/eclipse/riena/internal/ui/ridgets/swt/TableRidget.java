@@ -702,7 +702,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			Table table = (Table) event.widget;
 			TableItem item = table.getItem(new Point(event.x, event.y));
 			String tooltip = getToolTip(item);
-			if (tooltip != null) {
+			if (tooltip != null && tooltip.length() > 0) {
 				saveToolTip(table);
 				table.setToolTipText(tooltip);
 			} else {
