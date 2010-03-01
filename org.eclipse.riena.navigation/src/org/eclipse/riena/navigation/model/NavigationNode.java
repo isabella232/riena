@@ -763,7 +763,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @see java.lang.Object#getContext()
+	 * @see org.eclipse.riena.navigation.INavigationNode#getContext()
 	 */
 	public Object getContext(String key) {
 		if (context == null) {
@@ -773,7 +773,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNode#setContextData(String,
+	 * @see org.eclipse.riena.navigation.INavigationNode#setContext(String,
 	 *      Object)
 	 */
 	public void setContext(String key, Object value) {
@@ -781,6 +781,12 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 			context = new HashMap<String, Object>();
 		}
 		context.put(key, value);
+	}
+
+	public void removeContext(String key) {
+		if (context != null) {
+			context.remove(key);
+		}
 	}
 
 	/**

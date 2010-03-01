@@ -408,6 +408,15 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void setContext(String key, Object pContext);
 
 	/**
+	 * Removes the next in hierarchy available context.
+	 * 
+	 * @param key
+	 *            the key whose associated context is to be removed
+	 * @return the context
+	 */
+	void removeContext(String key);
+
+	/**
 	 * Adds an action to the node. Actions can be associated with nodes to
 	 * automatically show and hide actions corresponding to the activated node
 	 * 

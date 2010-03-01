@@ -11,7 +11,9 @@
 package org.eclipse.riena.navigation.model;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.AssertionFailedException;
 
@@ -707,7 +709,44 @@ public class NavigationNodeTest extends RienaTestCase {
 		node.removeAllFilters();
 		assertTrue(node.getFilters().isEmpty());
 		assertTrue(node.isFilterRemovedCalled());
+	}
 
+	/**
+	 * Tests the method setContext
+	 */
+	public void testSetContext() {
+		NaviNode node = new NaviNode(null);
+		node.setContext("context1", "value1");
+		Map<String, Object> context = ReflectionUtils.getHidden(node, "context");
+		assertEquals("value1", context.get("context1"));
+		node.setContext("context1", "value2");
+		assertEquals("value2", context.get("context1"));
+	}
+
+	/**
+	 * Tests the method getContext
+	 */
+	public void testGetContext() {
+		NaviNode node = new NaviNode(null);
+		assertNull(node.getContext("nothinghere"));
+		Map<String, Object> context = new HashMap<String, Object>();
+		ReflectionUtils.setHidden(node, "context", context);
+		context.put("context1", "value1");
+		assertEquals("value1", node.getContext("context1"));
+		context.put("context1", "value2");
+		assertEquals("value2", node.getContext("context1"));
+	}
+
+	public void testRemoveContext() {
+		NaviNode node = new NaviNode(null);
+		Map<String, Object> context = new HashMap<String, Object>();
+		ReflectionUtils.setHidden(node, "context", context);
+		context.put("context1", "value1");
+		context.put("context2", "value2");
+		assertEquals(2, context.size());
+		node.removeContext("context1");
+		assertEquals(1, context.size());
+		assertNull(context.get("context1"));
 	}
 
 	private class NaviNode extends SubModuleNode implements ISimpleNavigationNodeListener {
