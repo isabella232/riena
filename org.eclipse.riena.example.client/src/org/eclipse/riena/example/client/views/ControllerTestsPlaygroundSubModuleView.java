@@ -69,8 +69,7 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView {
 		GridDataFactory.swtDefaults().grab(true, false).align(SWT.FILL, SWT.TOP).span(2, 1).applyTo(label);
 
 		Group tableGroup = UIControlsFactory.createGroup(composite, "table"); //$NON-NLS-1$
-		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(tableGroup);
-		GridDataFactory.swtDefaults().grab(true, false).align(SWT.FILL, SWT.TOP).applyTo(tableGroup);
+
 		createTableGroup(tableGroup);
 
 		Group comboGroup = UIControlsFactory.createGroup(composite, "combo"); //$NON-NLS-1$
@@ -203,19 +202,24 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView {
 	 * @param parent
 	 */
 	private void createTableGroup(Composite parent) {
+		GridLayoutFactory.swtDefaults().numColumns(3).applyTo(parent);
+		GridDataFactory.swtDefaults().grab(true, false).align(SWT.FILL, SWT.TOP).applyTo(parent);
+
 		Table multiTable = UIControlsFactory.createTable(parent, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION,
 				"multiTable"); //$NON-NLS-1$
-		multiTable.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
+		GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.FILL).grab(true, false).applyTo(multiTable);
+		//		multiTable.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
 
 		List tableList = UIControlsFactory.createList(parent, false, false, "tableList"); //$NON-NLS-1$
-		tableList.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
+		//		tableList.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
+		GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.FILL).grab(true, false).applyTo(tableList);
 
 		Button toggleButton = UIControlsFactory.createButtonToggle(parent, "toggleButton"); //$NON-NLS-1$
 		toggleButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 
 		Button tableButton = UIControlsFactory.createButton(parent, "copy selection", "copySelectionButton"); //$NON-NLS-1$ //$NON-NLS-2$
 		tableButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-
+		UIControlsFactory.createLabel(parent, "", "doubleClickLabel"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**

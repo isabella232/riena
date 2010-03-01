@@ -142,12 +142,12 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 
 		assertTrue(table.getSelection().isEmpty());
 
-		table.setSelection(0);
-		assertEquals(persons.get(0), table.getSelection().get(0));
+		table.setSelection(2);
+		assertEquals(persons.get(2), table.getSelection().get(0));
 		assertTrue(selectAllToggleButton.isSelected());
 
 		button.fireAction();
-		assertEquals(persons.get(0), list.getObservableList().get(0));
+		assertEquals(persons.get(2), list.getObservableList().get(0));
 
 		int[] selection = { 0, 3, 5 };
 		table.setSelection(selection);

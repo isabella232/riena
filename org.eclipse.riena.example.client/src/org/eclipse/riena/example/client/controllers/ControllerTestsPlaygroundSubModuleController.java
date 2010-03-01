@@ -300,6 +300,12 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		multiTable.setSelectionType(ISelectableRidget.SelectionType.MULTI);
 		String[] colValues = new String[] { "lastname", "firstname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] colHeaders = new String[] { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		multiTable.addDoubleClickListener(new IActionListener() {
+
+			public void callback() {
+				multiTable.getSelection();
+			}
+		});
 		multiTable.bindToModel(createPersonList(), Person.class, colValues, colHeaders);
 		multiTable.updateFromModel();
 
