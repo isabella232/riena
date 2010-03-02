@@ -147,9 +147,7 @@ public final class ColumnUtils {
 				layout.addColumnData(columnData[index]);
 			}
 			control.setLayout(layout);
-			if (parent.isVisible()) {
-				parent.layout(true, true);
-			}
+			parent.layout(true, true);
 		} else if ((control instanceof Tree && control.getLayout() == null && parent.getLayout() == null && parent
 				.getChildren().length == 1)
 				|| parent.getLayout() instanceof TreeColumnLayout) {
@@ -160,9 +158,7 @@ public final class ColumnUtils {
 				layout.setColumnData(column, columnData[index]);
 			}
 			parent.setLayout(layout);
-			if (parent.isVisible()) {
-				parent.layout();
-			}
+			parent.layout();
 		} else if ((control instanceof Table && control.getLayout() == null && parent.getLayout() == null && parent
 				.getChildren().length == 1)
 				|| parent.getLayout() instanceof TableColumnLayout) {
@@ -173,9 +169,7 @@ public final class ColumnUtils {
 				layout.setColumnData(column, columnData[index]);
 			}
 			parent.setLayout(layout);
-			if (parent.isVisible()) {
-				parent.layout();
-			}
+			parent.layout();
 		} else {
 			// Other: manually compute width for each columnm, apply to TableColumn
 			// 1. absolute widths: apply absolute widths first
