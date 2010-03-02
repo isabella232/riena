@@ -35,9 +35,9 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 	private static Color defaultColor = null;
-	private final static int TITLEBAR_LABEL_PADDING_LEFT = 5;
+	protected final static int TITLEBAR_LABEL_PADDING_LEFT = 5;
 	private final static int TITLEBAR_LABEL_PADDING = 4;
-	private final static int TITLEBAR_ICON_TEXT_GAP = 4;
+	protected final static int TITLEBAR_ICON_TEXT_GAP = 4;
 
 	private Control control;
 	private Image image;
@@ -102,7 +102,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @return font
 	 */
-	private Font getTitlebarFont() {
+	protected Font getTitlebarFont() {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		Font font = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT);
 		return font;
@@ -234,7 +234,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			getHoverBorderRenderer().paint(gc, null);
 		}
 
-		flasherSupport.startFlasher();
+		getFlasherSupport().startFlasher();
 
 	}
 
@@ -278,11 +278,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		return title;
 	}
 
-	private int getHeight() {
+	protected int getHeight() {
 		return getBounds().height - 1;
 	}
 
-	private int getWidth() {
+	protected int getWidth() {
 		return getBounds().width - 1;
 	}
 
@@ -311,7 +311,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @return bounds
 	 */
-	private Rectangle computeCloseButtonBounds() {
+	protected Rectangle computeCloseButtonBounds() {
 
 		Rectangle closeBounds = new Rectangle(0, 0, 0, 0);
 
@@ -351,7 +351,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @return button image
 	 */
-	private Image getCloseButtonImage() {
+	protected Image getCloseButtonImage() {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 
@@ -529,7 +529,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 		String key = null;
 		if (isEnabled()) {
-			if (isActive() || flasherSupport.isProcessMarkerVisible()) {
+			if (isActive() || getFlasherSupport().isProcessMarkerVisible()) {
 				key = activeKey;
 			} else {
 				key = passiveKey;
@@ -549,6 +549,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 
 		return key;
+
+	}
+
+	protected FlasherSupportForRenderer getFlasherSupport() {
+		return flasherSupport;
 
 	}
 }
