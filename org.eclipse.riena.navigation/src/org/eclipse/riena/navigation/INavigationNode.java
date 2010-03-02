@@ -412,7 +412,6 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * 
 	 * @param key
 	 *            the key whose associated context is to be removed
-	 * @return the context
 	 */
 	void removeContext(String key);
 
