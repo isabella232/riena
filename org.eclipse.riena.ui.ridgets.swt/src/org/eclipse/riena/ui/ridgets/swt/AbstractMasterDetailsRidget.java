@@ -611,7 +611,6 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		assertIsBoundToModel();
 		Assert.isNotNull(editable);
 		delegate.copyBean(delegate.getWorkingCopy(), editable);
-		delegate.itemApplied(editable);
 		if (!rowObservables.contains(editable)) { // add to table
 			rowObservables.add(editable);
 			getTableRidget().updateFromModel();
@@ -620,6 +619,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		} else { // update
 			getTableRidget().updateFromModel();
 		}
+		delegate.itemApplied(editable);
 		if (hasNewButton() && !isDirectWriting) {
 			handleAdd(); // automatically hit the 'new/add' button
 			setFocusToDetails();
