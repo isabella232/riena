@@ -107,9 +107,9 @@ public class CustomerContractController extends SubModuleController {
 		public boolean isChanged(Object source, Object target) {
 			Contract source2 = (Contract) source;
 			Contract target2 = (Contract) target;
-			return (!source2.getContractNo().equals(target2.getContractNo())
-					|| !(source2.getContractValue() != target2.getContractValue())
-					|| !source2.getDescription().equals(target2.getDescription()) || !source2.getStatus().equals(
+			return !(source2.getContractNo().equals(target2.getContractNo())
+					&& source2.getContractValue() == target2.getContractValue()
+					&& source2.getDescription().equals(target2.getDescription()) && source2.getStatus().equals(
 					target2.getStatus()));
 		}
 	}
