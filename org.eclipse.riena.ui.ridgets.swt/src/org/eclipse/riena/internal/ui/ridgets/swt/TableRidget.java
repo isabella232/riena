@@ -611,14 +611,14 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	}
 
 	/**
-	 * TODO [ev] Update Javadoc
-	 * <p>
-	 * Erase listener to paint all cells empty when this ridget is disabled.
-	 * <p>
-	 * Implementation note: this works by registering this class an an
-	 * EraseEListener and indicating we will be responsible from drawing the
-	 * cells content. We do not register a PaintListener, meaning that we do NOT
-	 * paint anything.
+	 * Erase listener for custom painting of table cells. It is responsible
+	 * for:[
+	 * <ul>
+	 * <li>erasing (emptying) all cells when this ridget is disabled and
+	 * {@link LnfKeyConstants#DISABLED_MARKER_HIDE_CONTENT} is true</li>
+	 * <li>drawing a red border around cells that have been marked with a
+	 * {@link RowErrorMessageMarker} (unless disabled)</li>
+	 * </ul>
 	 * 
 	 * @see '<a href="http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
 	 *      >Custom Drawing Table and Tree Items</a>'
@@ -686,7 +686,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	}
 
 	/**
-	 * TODO [ev] javadoc
+	 * Shows the appropriate tooltip (error tooltip / regular tooltip / no
+	 * tooltip) for the current hovered row.
 	 */
 	private final class TableTooltipManager extends MouseTrackAdapter {
 
@@ -701,10 +702,10 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		public void mouseHover(MouseEvent event) {
 			Table table = (Table) event.widget;
 			TableItem item = table.getItem(new Point(event.x, event.y));
-			String tooltip = getToolTip(item);
-			if (tooltip != null && tooltip.length() > 0) {
+			String errorToolTip = getErrorToolTip(item);
+			if (errorToolTip != null && errorToolTip.length() > 0) {
 				saveToolTip(table);
-				table.setToolTipText(tooltip);
+				table.setToolTipText(errorToolTip);
 			} else {
 				restoreToolTip(table);
 			}
@@ -713,7 +714,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		// helping methods
 		//////////////////
 
-		private String getToolTip(TableItem item) {
+		private String getErrorToolTip(TableItem item) {
 			if (item != null) {
 				Object data = item.getData();
 				Collection<RowErrorMessageMarker> markers = getMarkersOfType(RowErrorMessageMarker.class);
