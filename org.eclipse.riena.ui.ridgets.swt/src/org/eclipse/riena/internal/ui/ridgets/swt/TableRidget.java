@@ -50,6 +50,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
@@ -675,10 +676,29 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			gc.setForeground(borderColor);
 			try {
 				Table table = (Table) event.widget;
-				int clientWidth = table.getClientArea().width;
-				int width = Math.max(0, clientWidth - 1);
-				int height = Math.max(0, event.height - 1);
-				gcFacade.drawRoundRectangle(gc, 0, event.y, width, height, 3, 3);
+				int colCount = table.getColumnCount();
+				if (colCount > 0) {
+					TableItem item = (TableItem) event.item;
+					int x = 0, y = 0, width = 0, height = 0;
+					for (int i = 0; i < colCount; i++) {
+						Rectangle bounds = item.getBounds(i);
+						if (i == 0) {
+							// start 3px to the left of first column
+							x = bounds.x - 3;
+							y = bounds.y;
+							width += 3;
+						}
+						width += bounds.width;
+						height = Math.max(height, bounds.height);
+					}
+					width = Math.max(0, width - 1);
+					height = Math.max(0, height - 1);
+					gcFacade.drawRoundRectangle(gc, x, y, width, height, 3, 3);
+				} else {
+					int width = Math.max(0, event.width - 1);
+					int height = Math.max(0, event.height - 1);
+					gcFacade.drawRoundRectangle(gc, event.x, event.y, width, height, 3, 3);
+				}
 			} finally {
 				gc.setForeground(oldForeground);
 			}
