@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 
+import org.eclipse.riena.internal.ui.swt.nls.Messages;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -45,7 +46,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * This composite contains a table-like widget (the "master") of n columns, as
- * well as new, remove and update buttons. It also contains an arbitratry
+ * well as new, remove and update buttons. It also contains an arbitrary
  * composite (the "details"), which is updated automatically when the selected
  * row in the table changes.
  * <p>

@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.internal.ui.swt.nls.Messages;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -152,7 +153,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		stateValueMappers.put(ProcessState.FINISHED, new ILabelFormatter() {
 
 			public String formatValue(int value) {
-				return "finished"; //$NON-NLS-1$
+				return Messages.StatuslineUIProcess_finished;
 			}
 
 		});
@@ -160,7 +161,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		stateValueMappers.put(ProcessState.CANCELED, new ILabelFormatter() {
 
 			public String formatValue(int value) {
-				return "canceled"; //$NON-NLS-1$
+				return Messages.StatuslineUIProcess_canceled;
 			}
 
 		});

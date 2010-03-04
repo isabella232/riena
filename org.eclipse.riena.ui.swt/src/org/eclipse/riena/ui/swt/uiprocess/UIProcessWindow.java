@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.internal.ui.swt.nls.Messages;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.swt.RienaWindowRenderer;
 
@@ -131,7 +132,7 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 			}
 
 		});
-		cancel.setText("cancel"); //$NON-NLS-1$
+		cancel.setText(Messages.UIProcessWindow_cancel);
 		formDate = new FormData();
 		formDate.top = new FormAttachment(progressBar, 10);
 		formDate.width = CANCEL_BUTTON_WIDTH;

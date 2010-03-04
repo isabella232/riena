@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.swt;
+package org.eclipse.riena.internal.ui.swt.nls;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -16,7 +16,7 @@ import org.eclipse.osgi.util.NLS;
  * Provides internationalized UI strings.
  */
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.riena.ui.swt.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.riena.internal.ui.swt.nls.messages"; //$NON-NLS-1$
 
 	public static String MasterDetailsComposite_buttonApply;
 	public static String MasterDetailsComposite_buttonNew;
@@ -40,7 +40,20 @@ public class Messages extends NLS {
 	/**
 	 * @since 2.0
 	 */
+	public static String StatuslineUIProcess_canceled;
+	/**
+	 * @since 2.0
+	 */
+	public static String StatuslineUIProcess_finished;
+
+	/**
+	 * @since 2.0
+	 */
 	public static String StatuslineUIProcess_noActiveProcess;
+	/**
+	 * @since 2.0
+	 */
+	public static String UIProcessWindow_cancel;
 
 	static {
 		// initialize resource bundle
