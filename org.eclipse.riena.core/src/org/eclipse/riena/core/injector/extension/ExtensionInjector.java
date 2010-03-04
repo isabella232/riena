@@ -47,6 +47,7 @@ public class ExtensionInjector implements IStoppable {
 
 	private final ExtensionDescriptor extensionDesc;
 	private final Object target;
+	private final List<IRegistryEventListener> injectorListeners = new ArrayList<IRegistryEventListener>(2);
 
 	// private BundleContext context; // see comment in andStart()
 	private boolean started;
@@ -54,7 +55,6 @@ public class ExtensionInjector implements IStoppable {
 	private boolean nonSpecific = true;
 	private String updateMethodName = DEFAULT_UPDATE_METHOD_NAME;
 	private Method updateMethod;
-	private IRegistryEventListener injectorListener;
 	private boolean isArray;
 	private Class<?> componentType;
 
@@ -99,8 +99,9 @@ public class ExtensionInjector implements IStoppable {
 		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
 		Assert.isLegal(extensionRegistry != null,
 				"For some reason the extension registry has not been created. Injecting extensions is not possible."); //$NON-NLS-1$
-		injectorListener = new InjectorListener();
 		for (final String id : extensionDesc.getExtensionPointId().compatibleIds()) {
+			final IRegistryEventListener injectorListener = new InjectorListener();
+			injectorListeners.add(injectorListener);
 			extensionRegistry.addListener(injectorListener, id);
 		}
 		return this;
@@ -156,13 +157,15 @@ public class ExtensionInjector implements IStoppable {
 		if (extensionRegistry == null) {
 			LOGGER.log(LogService.LOG_ERROR, "For some reason the extension registry has been gone!"); //$NON-NLS-1$
 		} else {
-			extensionRegistry.removeListener(injectorListener);
+			for (final IRegistryEventListener injectorListener : injectorListeners) {
+				extensionRegistry.removeListener(injectorListener);
+			}
 		}
 
 		// cleanup
 		final Object emptyExtensions = isArray ? Array.newInstance(componentType, 0) : null;
 		update(new Object[] { emptyExtensions });
-		injectorListener = null;
+		injectorListeners.clear();
 	}
 
 	private Method findUpdateMethod() {
