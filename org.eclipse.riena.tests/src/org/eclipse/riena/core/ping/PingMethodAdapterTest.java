@@ -12,15 +12,14 @@ package org.eclipse.riena.core.ping;
 
 import java.lang.reflect.Method;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Tests class {@link PingMethodAdapter PingMethodAdapter}.
  */
 @NonUITestCase
-public class PingMethodAdapterTest extends TestCase {
+public class PingMethodAdapterTest extends RienaTestCase {
 
 	protected static class PingableMock extends DefaultPingable {
 
@@ -59,17 +58,18 @@ public class PingMethodAdapterTest extends TestCase {
 	 * PingMethodAdapter()}.
 	 */
 	public void testPingMethodAdapter() throws Exception {
-		// TODO: find alternative to SCP3 Precondition
-		// try {
-		// new PingMethodAdapter(pingableMock, null);
-		// fail("Expected precondition violation");
-		// } catch (Exception e) {
-		// }
-		// try {
-		// new PingMethodAdapter(null, pingableMock.getPingDiesUndDasMethod());
-		// fail("Expected precondition violation");
-		// } catch (Exception e) {
-		// }
+		try {
+			new PingMethodAdapter(pingableMock, null);
+			fail("Expected precondition violation");
+		} catch (Exception e) {
+			ok();
+		}
+		try {
+			new PingMethodAdapter(null, pingableMock.getPingDiesUndDasMethod());
+			fail("Expected precondition violation");
+		} catch (Exception e) {
+			ok();
+		}
 		new PingMethodAdapter(pingableMock, pingableMock.getPingDiesUndDasMethod());
 	}
 
