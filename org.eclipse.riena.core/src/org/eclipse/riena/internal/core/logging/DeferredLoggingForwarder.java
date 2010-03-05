@@ -18,7 +18,6 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.logging.ConsoleLogger;
-import org.eclipse.riena.core.logging.LoggerProvider;
 import org.eclipse.riena.internal.core.Activator;
 
 /**

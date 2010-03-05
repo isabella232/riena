@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,43 +15,15 @@ import org.osgi.framework.BundleContext;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.equinox.log.Logger;
 
-import org.eclipse.riena.core.logging.LoggerProvider;
-
 /**
  * Abstract base class for riena plugins.<br>
- * It provides all descendant classes access to the bundle context and the
- * logger.<br>
+ * It provides all descendant classes access to the bundle context.
+ * <p>
  * <b>Note: </b>Derived Activators/Plugins must call <code>super.start()</code>
  * and <code>super.stop()</code> within their <code>start()</code> and
  * <code>stop()</stop> methods.
  */
 public abstract class RienaPlugin extends Plugin implements IRienaActivator {
-
-	private final LoggerProvider loggerProvider = new LoggerProvider();
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		loggerProvider.start();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		loggerProvider.stop();
-		super.stop(context);
-	}
 
 	/**
 	 * Get the shared context.
@@ -72,8 +44,9 @@ public abstract class RienaPlugin extends Plugin implements IRienaActivator {
 	 * @return the logger
 	 */
 	@Deprecated
-	public Logger getLogger(String name) {
-		return loggerProvider.getLogger(name);
+	public Logger getLogger(final String name) {
+		return Log4r.getLogger(this, name);
+
 	}
 
 	/**
@@ -86,8 +59,8 @@ public abstract class RienaPlugin extends Plugin implements IRienaActivator {
 	 * @return the logger
 	 */
 	@Deprecated
-	public Logger getLogger(Class<?> clazz) {
-		return loggerProvider.getLogger(clazz);
+	public Logger getLogger(final Class<?> clazz) {
+		return Log4r.getLogger(this, clazz);
 	}
 
 }

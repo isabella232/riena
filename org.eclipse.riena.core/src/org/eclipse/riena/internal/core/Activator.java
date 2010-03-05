@@ -13,7 +13,6 @@ package org.eclipse.riena.internal.core;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.CoreException;
@@ -21,15 +20,15 @@ import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
-import org.eclipse.equinox.log.Logger;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
-import org.eclipse.riena.internal.core.logging.LoggerMill;
+import org.eclipse.riena.internal.core.logging.LoggerProvider;
 
 public class Activator extends RienaPlugin {
 
@@ -38,9 +37,6 @@ public class Activator extends RienaPlugin {
 
 	// ´startup´ status of Riena
 	private boolean active = false;
-
-	private ServiceRegistration loggerMillServiceReg;
-	private LoggerMill loggerMill;
 
 	// The shared instance
 	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
@@ -54,8 +50,8 @@ public class Activator extends RienaPlugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
-		startLogging();
-		logStage(getLogger(Activator.class));
+		LoggerProvider.instance().start();
+		logStage();
 		startStartupListener();
 		startExceptionHandling();
 	}
@@ -63,17 +59,7 @@ public class Activator extends RienaPlugin {
 	/**
 	 * 
 	 */
-	private void startLogging() {
-		loggerMill = new LoggerMill();
-		Wire.instance(loggerMill).andStart(getContext());
-		loggerMillServiceReg = getContext().registerService(LoggerMill.class.getName(), loggerMill,
-				RienaConstants.newDefaultServiceProperties());
-	}
-
-	/**
-	 * @param logger
-	 */
-	private void logStage(final Logger logger) {
+	private void logStage() {
 		final IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
 		String stage;
 		try {
@@ -81,7 +67,7 @@ public class Activator extends RienaPlugin {
 		} catch (final CoreException e) {
 			stage = "No stage information set."; //$NON-NLS-1$
 		}
-		logger.log(LogService.LOG_INFO, stage);
+		Log4r.getLogger(this, Activator.class).log(LogService.LOG_INFO, stage);
 	}
 
 	private void startStartupListener() {
@@ -101,7 +87,7 @@ public class Activator extends RienaPlugin {
 	public void stop(final BundleContext context) throws Exception {
 		active = false;
 		Activator.plugin = null;
-		context.ungetService(loggerMillServiceReg.getReference());
+		LoggerProvider.instance().stop();
 		super.stop(context);
 	}
 

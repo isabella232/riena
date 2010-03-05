@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,12 +15,10 @@ import org.osgi.framework.BundleContext;
 
 import org.eclipse.equinox.log.Logger;
 
-import org.eclipse.riena.core.logging.LoggerProvider;
-
 /**
  * Abstract base class for riena activators.<br>
- * It provides all descendant classes access to the bundle context and the
- * logger.<br>
+ * It provides all descendant classes access to the bundle context.
+ * <p>
  * <b>Note: </b>Derived Activators/Plugins must call <code>super.start()</code>
  * and <code>super.stop()</code> within their <code>start()</code> and
  * <code>stop()</stop> methods.
@@ -28,25 +26,19 @@ import org.eclipse.riena.core.logging.LoggerProvider;
 public abstract class RienaActivator implements BundleActivator, IRienaActivator {
 
 	private BundleContext context;
-	private final LoggerProvider loggerProvider = new LoggerProvider();
 
-	/*
-	 * @see
-	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext
-	 * )
+	/**
+	 * {@inheritDoc}
 	 */
 	public void start(final BundleContext context) throws Exception {
 		this.context = context;
-		loggerProvider.start();
 	}
 
-	/*
-	 * @see
-	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void stop(final BundleContext context) throws Exception {
 		this.context = null;
-		loggerProvider.stop();
 	}
 
 	/**
@@ -68,8 +60,8 @@ public abstract class RienaActivator implements BundleActivator, IRienaActivator
 	 * @return the logger
 	 */
 	@Deprecated
-	public Logger getLogger(String name) {
-		return loggerProvider.getLogger(name);
+	public Logger getLogger(final String name) {
+		return Log4r.getLogger(this, name);
 	}
 
 	/**
@@ -82,7 +74,7 @@ public abstract class RienaActivator implements BundleActivator, IRienaActivator
 	 * @return the logger
 	 */
 	@Deprecated
-	public Logger getLogger(Class<?> clazz) {
-		return loggerProvider.getLogger(clazz);
+	public Logger getLogger(final Class<?> clazz) {
+		return Log4r.getLogger(this, clazz);
 	}
 }

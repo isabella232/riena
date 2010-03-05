@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import org.osgi.framework.ServiceReference;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.logging.ConsoleLogger;
+import org.eclipse.riena.internal.core.logging.LoggerProvider;
 
 /**
  * Gets a logger ({@code Logger}) from the {@code IRienaActivator}. <br>
@@ -45,10 +46,9 @@ public final class Log4r {
 	 *            categorizes the logger
 	 * @return the {@code Logger}
 	 */
-	@SuppressWarnings("deprecation")
-	public static Logger getLogger(IRienaActivator activator, Class<?> clazz) {
+	public static Logger getLogger(final IRienaActivator activator, final Class<?> clazz) {
 		if (activator != null) {
-			return activator.getLogger(clazz);
+			return LoggerProvider.instance().getLogger(clazz);
 		}
 		return getEmergencyLogger(clazz.getName());
 	}
@@ -68,16 +68,15 @@ public final class Log4r {
 	 *            categorizes the logger
 	 * @return the {@code Logger}
 	 */
-	@SuppressWarnings("deprecation")
-	public static Logger getLogger(IRienaActivator activator, String className) {
+	public static Logger getLogger(final IRienaActivator activator, final String className) {
 		if (activator != null) {
-			return activator.getLogger(className);
+			return LoggerProvider.instance().getLogger(className);
 		}
 		return getEmergencyLogger(className);
 	}
 
 	// use ConsoleLogger unless the system property specifies otherwise
-	private static Logger getEmergencyLogger(String className) {
+	private static Logger getEmergencyLogger(final String className) {
 		return RienaStatus.isDevelopment() ? new ConsoleLogger(className) : new NullLogger();
 	}
 
@@ -87,26 +86,26 @@ public final class Log4r {
 			return "NullLogger"; //$NON-NLS-1$
 		}
 
-		public boolean isLoggable(int level) {
+		public boolean isLoggable(final int level) {
 			return false;
 		}
 
-		public void log(int level, String message) {
+		public void log(final int level, final String message) {
 		}
 
-		public void log(int level, String message, Throwable exception) {
+		public void log(final int level, final String message, final Throwable exception) {
 		}
 
-		public void log(ServiceReference sr, int level, String message) {
+		public void log(final ServiceReference sr, final int level, final String message) {
 		}
 
-		public void log(ServiceReference sr, int level, String message, Throwable exception) {
+		public void log(final ServiceReference sr, final int level, final String message, final Throwable exception) {
 		}
 
-		public void log(Object context, int level, String message) {
+		public void log(final Object context, final int level, final String message) {
 		}
 
-		public void log(Object context, int level, String message, Throwable exception) {
+		public void log(final Object context, final int level, final String message, final Throwable exception) {
 		}
 
 	}

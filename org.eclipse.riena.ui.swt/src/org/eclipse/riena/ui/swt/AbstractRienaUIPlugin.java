@@ -16,42 +16,17 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import org.eclipse.riena.core.IRienaActivator;
-import org.eclipse.riena.core.logging.LoggerProvider;
+import org.eclipse.riena.core.Log4r;
 
 /**
  * Abstract base class for riena UI plugins.<br>
- * It provides all descendant classes access to the bundle context and the
- * logger.<br>
+ * It provides all descendant classes access to the bundle context.
+ * <p>
  * <b>Note: </b>Derived plugins must call <code>super.start()</code> and
  * <code>super.stop()</code> within their <code>start()</code> and
  * <code>stop()</stop> methods.
  */
 public abstract class AbstractRienaUIPlugin extends AbstractUIPlugin implements IRienaActivator {
-
-	private BundleContext context;
-	private final LoggerProvider loggerProvider = new LoggerProvider();
-
-	/*
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		this.context = context;
-		loggerProvider.start();
-	}
-
-	/*
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		this.context = null;
-		loggerProvider.stop();
-		super.stop(context);
-	}
 
 	/**
 	 * Get the shared context.
@@ -59,7 +34,7 @@ public abstract class AbstractRienaUIPlugin extends AbstractUIPlugin implements 
 	 * @return
 	 */
 	public BundleContext getContext() {
-		return context;
+		return getBundle().getBundleContext();
 	}
 
 	/**
@@ -73,7 +48,7 @@ public abstract class AbstractRienaUIPlugin extends AbstractUIPlugin implements 
 	 */
 	@Deprecated
 	public Logger getLogger(String name) {
-		return loggerProvider.getLogger(name);
+		return Log4r.getLogger(this, name);
 	}
 
 	/**
@@ -87,7 +62,7 @@ public abstract class AbstractRienaUIPlugin extends AbstractUIPlugin implements 
 	 */
 	@Deprecated
 	public Logger getLogger(Class<?> clazz) {
-		return loggerProvider.getLogger(clazz);
+		return Log4r.getLogger(this, clazz);
 	}
 
 }

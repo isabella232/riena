@@ -19,7 +19,6 @@ import org.osgi.service.log.LogService;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.logging.ConsoleLogger;
-import org.eclipse.riena.core.logging.LoggerProvider;
 
 /**
  * A dynamic proxy that mimics a {@code Logger} that either logs to a
