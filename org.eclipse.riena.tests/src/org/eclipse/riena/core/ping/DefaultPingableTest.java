@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.core.ping;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Tests class {@link DefaultPingable DefaultPingable}.
  */
 @NonUITestCase
-public class DefaultPingableTest extends TestCase {
+public class DefaultPingableTest extends RienaTestCase {
 
 	/**
 	 * Tests method {@link DefaultPingable#ping(PingVisitor) ping()}.

@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.core.ping;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Tests class {@link PingFingerprint PingFingerprint}.
  */
 @NonUITestCase
-public class PingFingerprintTest extends TestCase {
+public class PingFingerprintTest extends RienaTestCase {
 
 	/**
 	 * Tests method {@link PingFingerprint#PingFingerprint(IPingable)
@@ -29,6 +28,7 @@ public class PingFingerprintTest extends TestCase {
 			new PingFingerprint(null);
 			fail("Expected precondition violation");
 		} catch (Exception e) {
+			ok();
 		}
 		IPingable pingable = new DefaultPingable() {
 		};
@@ -45,6 +45,7 @@ public class PingFingerprintTest extends TestCase {
 			new PingFingerprint(null, true);
 			fail("Expected precondition violation");
 		} catch (Exception e) {
+			ok();
 		}
 		IPingable pingable = new DefaultPingable() {
 		};

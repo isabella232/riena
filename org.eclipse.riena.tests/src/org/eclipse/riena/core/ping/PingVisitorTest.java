@@ -18,15 +18,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Tests class {@link PingVisitor PingVisitor}.
  */
 @NonUITestCase
-public class PingVisitorTest extends TestCase {
+public class PingVisitorTest extends RienaTestCase {
 
 	protected static class PingMock extends DefaultPingable {
 		private boolean pingCalled;
@@ -155,13 +154,13 @@ public class PingVisitorTest extends TestCase {
 		mock4 = new PingMock();
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
-			IPingable pingable1 = mock4;
-			IPingable pingable2 = mock5;
+			private IPingable pingable1 = mock4;
+			private IPingable pingable2 = mock5;
 		};
 		mock2 = new PingMock();
 		mock1 = new PingMock() {
-			IPingable pingable1 = mock2;
-			IPingable pingable2 = mock3;
+			private IPingable pingable1 = mock2;
+			private IPingable pingable2 = mock3;
 		};
 
 		mock4.letPingFail();
@@ -183,13 +182,13 @@ public class PingVisitorTest extends TestCase {
 		mock4 = new PingMock();
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
-			IPingable pingable1 = mock4;
-			IPingable pingable2 = mock5;
+			private IPingable pingable1 = mock4;
+			private IPingable pingable2 = mock5;
 		};
 		mock2 = new PingMock();
 		mock1 = new PingMock() {
-			IPingable pingable1 = mock2;
-			IPingable pingable2 = mock3;
+			private IPingable pingable1 = mock2;
+			private IPingable pingable2 = mock3;
 		};
 
 		((PingMockWithPingMethods) mock3).letPingDBFail();
@@ -211,19 +210,19 @@ public class PingVisitorTest extends TestCase {
 		mock4 = new PingMock();
 		mock5 = new PingMock() {
 			// cycle
-			IPingable pingable1 = this;
+			private IPingable pingable1 = this;
 		};
 		mock3 = new PingMockWithPingMethods() {
-			IPingable pingable1 = mock4;
-			IPingable pingable2 = mock5;
+			private IPingable pingable1 = mock4;
+			private IPingable pingable2 = mock5;
 		};
 		mock2 = new PingMock() {
 			// cycle
-			IPingable pingable1 = this;
+			private IPingable pingable1 = this;
 		};
 		mock1 = new PingMock() {
-			IPingable pingable1 = mock2;
-			IPingable pingable2 = mock3;
+			private IPingable pingable1 = mock2;
+			private IPingable pingable2 = mock3;
 		};
 
 		PingVisitor visitor = new PingVisitor();
@@ -243,7 +242,7 @@ public class PingVisitorTest extends TestCase {
 		mock4 = new PingMock();
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
-			IPingable pingable1 = mock4;
+			private IPingable pingable1 = mock4;
 
 			private Iterable<IPingable> getAdditionalPingables() {
 				return Arrays.asList(new IPingable[] { mock5 });
@@ -251,8 +250,8 @@ public class PingVisitorTest extends TestCase {
 		};
 		mock2 = new PingMock();
 		mock1 = new PingMock() {
-			IPingable pingable1 = mock2;
-			IPingable pingable2 = mock3;
+			private IPingable pingable1 = mock2;
+			private IPingable pingable2 = mock3;
 		};
 
 		PingVisitor visitor = new PingVisitor();
@@ -288,8 +287,8 @@ public class PingVisitorTest extends TestCase {
 		mock3 = new PingMock();
 		mock2 = new PingMock();
 		mock1 = new PingMockWithPingMethods() {
-			IPingable pingable1 = mock2;
-			IPingable pingable2 = mock3;
+			private IPingable pingable1 = mock2;
+			private IPingable pingable2 = mock3;
 
 			private Iterable<IPingable> getAdditionalPingables() {
 				return Arrays.asList(new IPingable[] { mock4, mock5 });
@@ -335,8 +334,8 @@ public class PingVisitorTest extends TestCase {
 		mock3 = new PingMock();
 		mock2 = new PingMock();
 		PingMock mock1 = new PingMock() {
-			IPingable pingable1 = mock2;
-			IPingable pingable2 = mock3;
+			private IPingable pingable1 = mock2;
+			private IPingable pingable2 = mock3;
 		};
 
 		Set<IPingable> set = new HashSet<IPingable>();
@@ -402,7 +401,7 @@ public class PingVisitorTest extends TestCase {
 		mock4 = new PingMock();
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
-			IPingable pingable1 = mock4;
+			private IPingable pingable1 = mock4;
 
 			private Iterable<IPingable> getAdditionalPingables() {
 				return Arrays.asList(new IPingable[] { mock5 });
@@ -410,8 +409,8 @@ public class PingVisitorTest extends TestCase {
 		};
 		mock2 = new PingMock();
 		mock1 = new PingMock() {
-			IPingable pingable2 = mock3;
-			IPingable pingable1 = mock2;
+			private IPingable pingable2 = mock3;
+			private IPingable pingable1 = mock2;
 		};
 
 		PingVisitor visitor = new PingVisitor();
