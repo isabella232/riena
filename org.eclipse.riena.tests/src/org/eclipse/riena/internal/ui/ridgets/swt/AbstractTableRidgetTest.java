@@ -114,6 +114,25 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		}
 	}
 
+	/**
+	 * As per Bug 304733
+	 */
+	public void testClearSelectionWhenSelectionIsRemovedFromModel() {
+		ISelectableIndexedRidget ridget = getRidget();
+
+		ridget.bindSingleSelectionToModel(manager, "selectedPerson");
+		ridget.setSelection(person2);
+
+		assertSame(person2, ridget.getSelection().get(0));
+		assertSame(person2, manager.getSelectedPerson());
+
+		manager.getPersons().remove(person2);
+		ridget.updateFromModel();
+
+		assertTrue(ridget.getSelection().isEmpty());
+		assertNull(manager.getSelectedPerson());
+	}
+
 	public void testGetSelection() {
 		ISelectableIndexedRidget ridget = getRidget();
 

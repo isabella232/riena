@@ -807,9 +807,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 			assertTrue(rex.getMessage().contains("Object"));
 		}
 
-		ridget
-				.setColumnWidths(new Object[] { new ColumnPixelData(20), new ColumnPixelData(40),
-						new ColumnPixelData(60) });
+		ridget.setColumnWidths(new Object[] { new ColumnPixelData(20), new ColumnPixelData(40), new ColumnPixelData(60) });
 		String[] columns3 = { "firstname", "lastname", "entry" };
 		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
 
@@ -907,7 +905,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * As per Bug 298033
+	 * As per Bug 298033, 304733
 	 */
 	public void testUpdateSingleSelectionFromModelWithBoundControl() {
 		ITreeRidget ridget = getRidget();
@@ -926,7 +924,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * As per Bug 298033
+	 * As per Bug 298033, 304733
 	 */
 	public void testUpdateMultiSelectionFromModelWithBoundControl() {
 		ITreeRidget ridget = getRidget();

@@ -323,6 +323,11 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		if (selectionBindingInternal != null) {
 			selectionBindingInternal.updateModelToTarget();
 		}
+		// Bug 304733: clear selection if not in rowObservables
+		Object selection = selectionObservable.getValue();
+		if (selection != null && !rowObservables.contains(selection)) {
+			setSelection(emptySelection);
+		}
 	}
 
 	/**

@@ -186,7 +186,9 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(null, getSelectedString(control));
 		assertEquals(0, getItemCount(control));
+
 		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
+
 		assertEquals(null, getSelectedString(control));
 		assertEquals(0, getItemCount(control));
 
@@ -981,6 +983,87 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(selection1.toString(), getText(control));
 		assertEquals(selection1, ridget.getSelection());
 		assertEquals(selection1, selection.getValue());
+	}
+
+	// TODO [ev]
+	//	/**
+	//	 * As per Bug 304733
+	//	 */
+	//	public void testShowErrorMarkerWhenSelectionIsRemovedFromModel() {
+	//		AbstractComboRidget ridget = getRidget();
+	//		ridget.bindToModel(manager, "persons", Person.class, null, manager, "selectedPerson");
+	//		ridget.updateFromModel();
+	//
+	//		ridget.addValidationRule(new IValidator() {
+	//			public IStatus validate(Object value) {
+	//				System.out.println("v: " + value);
+	//				if (value == null) {
+	//					return Status.CANCEL_STATUS;
+	//				}
+	//				return Status.OK_STATUS;
+	//			}
+	//
+	//		});
+	//		ridget.setSelection(selection1);
+	//
+	//		assertFalse(ridget.isErrorMarked());
+	//
+	//		manager.getPersons().remove(selection1);
+	//		ridget.updateFromModel();
+	//
+	//		assertTrue(ridget.isErrorMarked());
+	//
+	//		ridget.setSelection(selection2);
+	//
+	//		assertFalse(ridget.isErrorMarked());
+	//	}
+
+	/**
+	 * As per Bug 304733
+	 */
+	public void testClearSelectionWhenSelectionIsRemovedFromModel() {
+		AbstractComboRidget ridget = getRidget();
+		Control control = getWidget();
+		ridget.bindToModel(manager, "persons", Person.class, null, manager, "selectedPerson");
+		ridget.updateFromModel();
+
+		ridget.setSelection(selection2);
+
+		assertEquals(selection2.toString(), getSelectedString(control));
+		assertSame(selection2, ridget.getSelection());
+		assertSame(selection2, manager.getSelectedPerson());
+
+		manager.getPersons().remove(selection2);
+		ridget.updateFromModel();
+
+		assertEquals(null, getSelectedString(control));
+		assertEquals(null, ridget.getSelection());
+		assertEquals(null, manager.getSelectedPerson());
+	}
+
+	/**
+	 * As per Bug 304733
+	 */
+	public void testBackToEmptyWhenSelectionIsRemovedFromModel() {
+		AbstractComboRidget ridget = getRidget();
+		Control control = getWidget();
+		ridget.setEmptySelectionItem(selection1);
+		ridget.bindToModel(manager, "persons", Person.class, null, manager, "selectedPerson");
+		ridget.updateFromModel();
+
+		ridget.setSelection(selection2);
+
+		assertEquals(selection2.toString(), getSelectedString(control));
+		assertSame(selection2, ridget.getSelection());
+		assertSame(selection2, manager.getSelectedPerson());
+
+		manager.getPersons().remove(selection2);
+		ridget.updateFromModel();
+
+		// selection1 is the 'empty' choice
+		assertEquals(selection1.toString(), getSelectedString(control));
+		assertEquals(null, ridget.getSelection());
+		assertEquals(selection1, manager.getSelectedPerson());
 	}
 
 	// helping methods
