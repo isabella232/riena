@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import org.eclipse.riena.navigation.ui.swt.nls.Messages;
+
 /**
  * Terminates the workbench, after asking for user confirmation.
  */
@@ -27,8 +29,8 @@ public class ExitApplication extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = HandlerUtil.getActiveShell(event);
-		String message = String.format("Exit %s?", getName()); //$NON-NLS-1$
-		boolean isConfirmed = MessageDialog.openConfirm(shell, "Confirm Exit", message); //$NON-NLS-1$
+		String message = String.format(Messages.ExitApplication_exit, getName());
+		boolean isConfirmed = MessageDialog.openConfirm(shell, Messages.ExitApplication_confirmExit, message);
 		if (isConfirmed) {
 			PlatformUI.getWorkbench().close();
 		}
@@ -40,7 +42,7 @@ public class ExitApplication extends AbstractHandler {
 
 	private String getName() {
 		IProduct product = Platform.getProduct();
-		return product != null ? product.getName() : "application"; //$NON-NLS-1$
+		return product != null ? product.getName() : Messages.ExitApplication_application;
 	}
 
 }
