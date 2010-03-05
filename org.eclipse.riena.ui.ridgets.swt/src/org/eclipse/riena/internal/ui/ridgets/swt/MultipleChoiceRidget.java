@@ -147,6 +147,12 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		ChoiceComposite control = getUIControl();
 		disposeChildren(control);
 		createChildren(control);
+		// remove unavailable elements and re-apply selection
+		for (Object candidate : oldSelection) {
+			if (!optionsObservable.contains(candidate)) {
+				selectionObservable.remove(candidate);
+			}
+		}
 		firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
 	}
 

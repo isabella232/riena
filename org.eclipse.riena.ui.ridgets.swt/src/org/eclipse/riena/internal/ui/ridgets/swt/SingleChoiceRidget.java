@@ -148,7 +148,13 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		ChoiceComposite control = getUIControl();
 		disposeChildren(control);
 		createChildren(control);
-		firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable.getValue());
+		// remove unavailable element and re-apply selection
+		Object newSelection = oldSelection;
+		if (newSelection != null && !optionsObservable.contains(newSelection)) {
+			selectionObservable.setValue(null);
+			newSelection = null;
+		}
+		firePropertyChange(PROPERTY_SELECTION, oldSelection, newSelection);
 	}
 
 	public Object getSelection() {

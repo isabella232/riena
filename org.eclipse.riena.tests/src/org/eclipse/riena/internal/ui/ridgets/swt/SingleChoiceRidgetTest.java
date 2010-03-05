@@ -175,6 +175,25 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	/**
+	 * As per Bug 304733
+	 */
+	public void testClearSelectionWhenSelectionIsRemovedFromModel() {
+		ISingleChoiceRidget ridget = getRidget();
+
+		String optionA = optionProvider.getOptions().get(0);
+		ridget.setSelection(optionA);
+
+		assertSame(optionA, ridget.getSelection());
+		assertSame(optionA, optionProvider.getSelectedOption());
+
+		optionProvider.getOptions().remove(0);
+		ridget.updateFromModel();
+
+		assertEquals(null, ridget.getSelection());
+		assertEquals(null, optionProvider.getSelectedOption());
+	}
+
+	/**
 	 * Test that control.setSelection() affects the ridget and the widget.
 	 */
 	public void testUpdateSelectionFromControl() {

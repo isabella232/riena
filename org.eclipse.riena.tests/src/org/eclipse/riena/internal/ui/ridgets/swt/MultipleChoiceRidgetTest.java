@@ -209,6 +209,28 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		}
 	}
 
+	/**
+	 * As per Bug 304733
+	 */
+	public void testClearSelectionWhenSelectionIsRemovedFromModel() {
+		IMultipleChoiceRidget ridget = getRidget();
+
+		String optionA = optionProvider.getOptions().get(0);
+		String optionB = optionProvider.getOptions().get(1);
+		ridget.setSelection(Arrays.asList(optionA, optionB));
+
+		assertSame(optionA, ridget.getSelection().get(0));
+		assertSame(optionB, ridget.getSelection().get(1));
+		assertSame(optionA, optionProvider.getSelectedOptions().get(0));
+		assertSame(optionB, optionProvider.getSelectedOptions().get(1));
+
+		optionProvider.getOptions().remove(0);
+		ridget.updateFromModel();
+
+		assertSame(optionB, ridget.getSelection().get(0));
+		assertSame(optionB, optionProvider.getSelectedOptions().get(0));
+	}
+
 	public void testSelectionFiresEvents() {
 		IMultipleChoiceRidget ridget = getRidget();
 		String element0 = optionProvider.getOptions().get(0);
@@ -440,9 +462,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		IMultipleChoiceRidget ridget = getRidget();
 
 		try {
-			ridget
-					.bindToModel(null, PojoObservables.observeList(Realm.getDefault(), optionProvider,
-							"selectedOptions"));
+			ridget.bindToModel(null, PojoObservables.observeList(Realm.getDefault(), optionProvider, "selectedOptions"));
 			fail();
 		} catch (RuntimeException rex) {
 			ok();
