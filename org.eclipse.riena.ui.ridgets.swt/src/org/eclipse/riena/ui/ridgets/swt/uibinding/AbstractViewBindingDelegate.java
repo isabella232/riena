@@ -57,7 +57,7 @@ public abstract class AbstractViewBindingDelegate {
 	}
 
 	/**
-	 * Adds the given control to the list of the controls that will be binded.
+	 * Adds the given control to the list of the controls that will be bound.
 	 * 
 	 * @param uiControl
 	 *            control to bind
