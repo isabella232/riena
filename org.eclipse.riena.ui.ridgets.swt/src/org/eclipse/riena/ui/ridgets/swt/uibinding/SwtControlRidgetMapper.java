@@ -46,6 +46,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.DateTextRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.DateTimeRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.DecimalTextRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.EmbeddedTitleBarRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.InfoFlyoutRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LinkRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ListRidget;
@@ -78,6 +79,7 @@ import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.ImageButton;
+import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
@@ -155,6 +157,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(Scale.class, ScaleRidget.class);
 		addMapping(Spinner.class, SpinnerRidget.class);
 		addMapping(Slider.class, SliderRidget.class);
+		addMapping(InfoFlyout.class, InfoFlyoutRidget.class);
 	}
 
 	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
@@ -255,6 +258,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 	 * @return the Primary-Interface extending IRidget or null if nothing was
 	 *         found
 	 */
+	@SuppressWarnings("unchecked")
 	public Class<? extends IRidget> getPrimaryRidgetInterface(Class<? extends IRidget> ridgetClass) {
 		if (ridgetClass == null || ridgetClass.isInterface()) {
 			return null;

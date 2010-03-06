@@ -79,6 +79,7 @@ import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.DefaultStatuslineContentFactory;
 import org.eclipse.riena.ui.swt.IStatusLineContentFactory;
+import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineSpacer;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
@@ -164,12 +165,18 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		titleComposite = createTitleComposite(shell);
 		Composite menuBarComposite = createMenuBarComposite(shell, titleComposite);
 		Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
-		createMainComposite(shell, coolBarComposite);
+		Composite mainComposite = createMainComposite(shell, coolBarComposite);
+		createInfoFlyout(mainComposite);
 
 		RestoreFocusOnEscListener focusListener = new RestoreFocusOnEscListener(shell);
 		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(menuBarComposite));
 		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(coolBarComposite));
 
+	}
+
+	private void createInfoFlyout(Composite mainComposite) {
+		InfoFlyout flyout = new InfoFlyout(mainComposite);
+		binding.addUIControl(flyout, "infoFlyout"); //$NON-NLS-1$
 	}
 
 	@Override

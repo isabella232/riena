@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.ui.controllers;
 
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
+import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
@@ -24,6 +25,7 @@ public class ApplicationController extends NavigationNodeController<IApplication
 	private IWindowRidget applicationWindow;
 	private IWindowRidgetListener windowRidgetListener;
 	private IStatuslineRidget statuslineRidget;
+	private IInfoFlyoutRidget infoFlyout;
 	private boolean menuBarVisible;
 
 	public ApplicationController(IApplicationNode applicationNode) {
@@ -125,6 +127,21 @@ public class ApplicationController extends NavigationNodeController<IApplication
 
 	public boolean isMenubarVisible() {
 		return menuBarVisible;
+	}
+
+	/**
+	 * @param infoFlyout
+	 *            the infoFlyout to set
+	 */
+	public void setInfoFlyout(IInfoFlyoutRidget infoFlyout) {
+		this.infoFlyout = infoFlyout;
+	}
+
+	/**
+	 * @return the infoFlyout
+	 */
+	public IInfoFlyoutRidget getInfoFlyout() {
+		return infoFlyout;
 	}
 
 }

@@ -28,6 +28,7 @@ import org.eclipse.riena.example.client.controllers.DefaultButtonSubModuleContro
 import org.eclipse.riena.example.client.controllers.DetachedSubModuleController;
 import org.eclipse.riena.example.client.controllers.DialogSubModuleController;
 import org.eclipse.riena.example.client.controllers.FocusableSubModuleController;
+import org.eclipse.riena.example.client.controllers.InfoFlyoutSubModuleController;
 import org.eclipse.riena.example.client.controllers.LayoutSubModuleController;
 import org.eclipse.riena.example.client.controllers.LinkSubModuleController;
 import org.eclipse.riena.example.client.controllers.ListSubModuleController;
@@ -60,6 +61,7 @@ import org.eclipse.riena.example.client.views.DefaultButtonSubModuleView;
 import org.eclipse.riena.example.client.views.DetachedSubModuleView;
 import org.eclipse.riena.example.client.views.DialogSubModuleView;
 import org.eclipse.riena.example.client.views.FocusableSubModuleView;
+import org.eclipse.riena.example.client.views.InfoFlyoutSubModuleView;
 import org.eclipse.riena.example.client.views.LayoutSubModuleView;
 import org.eclipse.riena.example.client.views.LinkSubModuleView;
 import org.eclipse.riena.example.client.views.ListSubModuleView;
@@ -196,6 +198,12 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(focusableSubModule, FocusableSubModuleController.class, FocusableSubModuleView.ID,
 				false);
 		playgroundModule.addChild(focusableSubModule);
+
+		ISubModuleNode flyoutSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.flyout"), "InfoFlyout"); //$NON-NLS-1$//$NON-NLS-2$
+		workarea.registerDefinition(flyoutSubModule, InfoFlyoutSubModuleController.class, InfoFlyoutSubModuleView.ID,
+				false);
+		playgroundModule.addChild(flyoutSubModule);
 
 		ISubModuleNode layoutSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.layout"), "Layout"); //$NON-NLS-1$ //$NON-NLS-2$

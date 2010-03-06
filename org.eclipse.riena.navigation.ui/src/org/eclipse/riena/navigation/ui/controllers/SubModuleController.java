@@ -20,6 +20,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.internal.navigation.ui.Activator;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -27,6 +28,7 @@ import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
+import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
@@ -119,6 +121,18 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		return getRidget(IWindowRidget.class, WINDOW_RIDGET);
 	}
 
+	/**
+	 * Returns the {@link IInfoFlyoutRidget} for this sub module.
+	 * 
+	 * @return an {@link IInfoFlyoutRidget}; never null
+	 * @since 2.0
+	 */
+	public IInfoFlyoutRidget getInfoFlyout() {
+		ApplicationController appController = (ApplicationController) getNavigationNode().getParentOfType(
+				IApplicationNode.class).getNavigationNodeController();
+		return appController.getInfoFlyout();
+	}
+
 	@Override
 	public void setNavigationNode(ISubModuleNode navigationNode) {
 		super.setNavigationNode(navigationNode);
@@ -189,10 +203,9 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 				try {
 					ridget.updateFromModel();
 				} catch (BindingException ex) {
-					LOGGER
-							.log(
-									LogService.LOG_WARNING,
-									"Update from the model was unsuccessful for the ridget: " + ridget + ", with id: " + ridget.getID()); //$NON-NLS-1$ //$NON-NLS-2$
+					LOGGER.log(
+							LogService.LOG_WARNING,
+							"Update from the model was unsuccessful for the ridget: " + ridget + ", with id: " + ridget.getID()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			} else {
 				ridget.updateFromModel();
