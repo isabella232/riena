@@ -15,6 +15,7 @@ import org.eclipse.riena.ui.core.marker.AttentionMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
+import org.eclipse.riena.ui.swt.InfoFlyout;
 
 /**
  * Keys of the look and feel of riena.
@@ -899,6 +900,92 @@ public final class LnfKeyConstants {
 	 * @since 2.0
 	 */
 	public static final String MASTER_DETAILS_WIDGET_SEPARATOR_FOREGROUND = "MDW.separatorForeground"; //$NON-NLS-1$
+
+	/**
+	 * The time it takes for the {@link InfoFlyout} to be fully grown resp.
+	 * shrunk.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String INFO_FLYOUT_SHOW_AND_HIDE_ANIMATION_TIME = "InfoFlyout.showhidetime"; //$NON-NLS-1$
+
+	/**
+	 * The time the {@link InfoFlyout} stays open.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String INFO_FLYOUT_WAIT_ANIMATION_TIME = "InfoFlyout.waittime"; //$NON-NLS-1$
+
+	/**
+	 * The length of the pause between two InfoFlyouts.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String INFO_FLYOUT_PAUSE_ANIMATION_TIME = "InfoFlyout.pausetime"; //$NON-NLS-1$
+
+	/**
+	 * The border color of the {@link InfoFlyout}.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String INFO_FLYOUT_BORDER_COLOR = "InfoFlyout.bordercolor"; //$NON-NLS-1$
+
+	/**
+	 * The background color of the {@link InfoFlyout}.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String INFO_FLYOUT_BACKGROUND_COLOR = "InfoFlyout.backgroundcolor"; //$NON-NLS-1$
+
+	/**
+	 * The width of the {@link InfoFlyout}.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String INFO_FLYOUT_WIDTH = "InfoFlyout.width"; //$NON-NLS-1$
+
+	/**
+	 * The height of the {@link InfoFlyout}.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String INFO_FLYOUT_HEIGHT = "InfoFlyout.height"; //$NON-NLS-1$
+
+	/**
+	 * The gap between text and icon in the {@link InfoFlyout}.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String INFO_FLYOUT_ICON_TEXT_GAP = "InfoFlyout.icontextgap"; //$NON-NLS-1$
+
+	/**
+	 * The gap between the left border and the icon in the {@link InfoFlyout}.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String INFO_FLYOUT_LEFT_MARGIN = "InfoFlyout.leftmargin"; //$NON-NLS-1$
+
+	/**
+	 * The gap between the right border and the text in the {@link InfoFlyout}.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String INFO_FLYOUT_RIGHT_MARGIN = "InfoFlyout.rightmargin"; //$NON-NLS-1$
+
+	/**
+	 * The gap between the right border of the {@link InfoFlyout} and top level
+	 * shell.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String INFO_FLYOUT_RIGHT_INDENT = "InfoFlyout.rightindent"; //$NON-NLS-1$
+
+	/**
+	 * The font for the {@link InfoFlyout}.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String INFO_FLYOUT_FONT = "InfoFlyout.font"; //$NON-NLS-1$
 
 	private LnfKeyConstants() {
 		super();

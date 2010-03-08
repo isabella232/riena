@@ -111,9 +111,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(100, 153, 186));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR, new ColorLnfResource(171, 171, 174));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND, getPrimaryForeground());
-		table
-				.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(244, 244,
-						245));
+		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(244, 244, 245));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(220, 220, 220));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(213, 213, 216));
 
@@ -171,6 +169,10 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.DISABLED_MARKER_BACKGROUND, getPrimaryBackground());
 
 		table.put(LnfKeyConstants.MASTER_DETAILS_WIDGET_SEPARATOR_FOREGROUND, new ColorLnfResource(171, 173, 179));
+
+		table.put(LnfKeyConstants.INFO_FLYOUT_BACKGROUND_COLOR, new ColorLnfResource(222, 237, 244));
+
+		table.put(LnfKeyConstants.INFO_FLYOUT_BORDER_COLOR, new ColorLnfResource(150, 165, 170));
 
 		// Standard SWT controls
 		table.put("Button.background", getPrimaryBackground()); //$NON-NLS-1$
@@ -242,6 +244,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FONT, getPrimaryFont());
 
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, getPrimaryFont());
+
+		table.put(LnfKeyConstants.INFO_FLYOUT_FONT, new FontLnfResource(getPrimaryFont().getFontData().getName(), 8,
+				SWT.BOLD));
 
 		// Standard SWT controls
 		table.put("Button.font", getPrimaryFont()); //$NON-NLS-1$
@@ -409,6 +414,15 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		table.put(LnfKeyConstants.MARKER_SUPPORT_ID, "defaultMarkerSupport"); //$NON-NLS-1$
 
+		table.put(LnfKeyConstants.INFO_FLYOUT_PAUSE_ANIMATION_TIME, 1000);
+		table.put(LnfKeyConstants.INFO_FLYOUT_SHOW_AND_HIDE_ANIMATION_TIME, 1500);
+		table.put(LnfKeyConstants.INFO_FLYOUT_WAIT_ANIMATION_TIME, 2500);
+		table.put(LnfKeyConstants.INFO_FLYOUT_WIDTH, 300);
+		table.put(LnfKeyConstants.INFO_FLYOUT_HEIGHT, 46);
+		table.put(LnfKeyConstants.INFO_FLYOUT_ICON_TEXT_GAP, 3);
+		table.put(LnfKeyConstants.INFO_FLYOUT_LEFT_MARGIN, 13);
+		table.put(LnfKeyConstants.INFO_FLYOUT_RIGHT_MARGIN, 50);
+		table.put(LnfKeyConstants.INFO_FLYOUT_RIGHT_INDENT, 21);
 	}
 
 	//

@@ -21,15 +21,18 @@ import org.eclipse.riena.ui.swt.InfoFlyout;
  * Controller for the {@link InfoFlyout} example.
  */
 public class InfoFlyoutSubModuleController extends SubModuleController {
+	private int counter;
 
 	@Override
 	public void configureRidgets() {
 		IActionRidget button = getRidget(IActionRidget.class, "flyoutButton"); //$NON-NLS-1$
+		counter = 0;
+
 		button.addListener(new IActionListener() {
 			public void callback() {
 				IInfoFlyoutRidget flyout = getInfoFlyout();
 				Info info = new Info("arrowRight", //$NON-NLS-1$
-						"This is an IInfoFlyout. It can show and image and two lines of text."); //$NON-NLS-1$
+						"This is an IInfoFlyout. It can show and image and two lines of text. " + ++counter); //$NON-NLS-1$
 				flyout.addInfo(info);
 			}
 		});

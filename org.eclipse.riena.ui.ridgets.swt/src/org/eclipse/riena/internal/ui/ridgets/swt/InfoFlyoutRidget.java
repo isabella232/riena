@@ -20,6 +20,8 @@ import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.InfoFlyout;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
@@ -71,17 +73,24 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 
 	private class Worker extends Thread {
 
+		private int sleepTime = LnfManager.getLnf().getIntegerSetting(
+				LnfKeyConstants.INFO_FLYOUT_SHOW_AND_HIDE_ANIMATION_TIME)
+				* 2
+				+ LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_WAIT_ANIMATION_TIME)
+				+ LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_PAUSE_ANIMATION_TIME);
+
 		@Override
 		public void run() {
 			Info info;
 			while (true) {
 				try {
 					info = infos.take();
+					processInfo(info);
+					Thread.sleep(sleepTime);
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
 					break;
 				}
-				processInfo(info);
 			}
 
 		}
