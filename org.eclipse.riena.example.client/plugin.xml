@@ -781,6 +781,12 @@
       </assembly>
       
       <assembly
+            id="org.eclipse.riena.example.navigate.thirdSubModule"
+            assembler="org.eclipse.riena.example.client.navigation.model.ComboAssemblerAsThirdSubModule"
+            parentTypeId="org.eclipse.riena.example.list">
+      </assembly>
+      
+      <assembly
             id="org.eclipse.riena.example.navigate.firstmodule"
             assembler="org.eclipse.riena.example.client.navigation.model.FirstModuleAssembler"
             parentTypeId="org.eclipse.riena.example.navigate.comboAndList">

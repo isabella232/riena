@@ -59,6 +59,10 @@ public class NavigateSubModuleView extends SubModuleView {
 		Button openAsFirstSubModule = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(openAsFirstSubModule);
 		addUIControl(openAsFirstSubModule, "openAsFirstSubModule"); //$NON-NLS-1$
+
+		Button openAsThirdSubModule = UIControlsFactory.createButton(parent);
+		fillFactory.applyTo(openAsThirdSubModule);
+		addUIControl(openAsThirdSubModule, "openAsThirdSubModule"); //$NON-NLS-1$
 	}
 
 }
