@@ -31,7 +31,7 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 /**
  *
  */
-public class CbAsm extends AbstractNavigationAssembler {
+public class FirstModuleAssembler extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds;
 
@@ -45,7 +45,7 @@ public class CbAsm extends AbstractNavigationAssembler {
 	 */
 	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
 		if (knownTargetIds == null) {
-			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigate.test2" //$NON-NLS-1$
+			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigate.firstmodule" //$NON-NLS-1$
 					));
 			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
 		}
@@ -63,10 +63,11 @@ public class CbAsm extends AbstractNavigationAssembler {
 	 */
 	public INavigationNode<?> buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
 
-		IModuleNode module = new ModuleNode(new NavigationNodeId("org.eclipse.riena.example.navigate.test2"), "Test 2"); //$NON-NLS-1$ //$NON-NLS-2$
+		IModuleNode module = new ModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.navigate.firstmodule"), "First Module"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.navigate.testSubModule"), "Test 2"); //$NON-NLS-1$ //$NON-NLS-2$
+				"org.eclipse.riena.example.navigate.testSubModule"), "First Module"); //$NON-NLS-1$ //$NON-NLS-2$
 		IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule,
 				ComboAndChoiceSubModuleController.class, ComboAndChoiceSubModuleView.ID);
 		module.addChild(subModule);

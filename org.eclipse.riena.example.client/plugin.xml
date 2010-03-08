@@ -775,14 +775,14 @@
       </assembly>
       
       <assembly
-            id="org.eclipse.riena.example.navigate.test"
+            id="org.eclipse.riena.example.navigate.firstSubModule"
             assembler="org.eclipse.riena.example.client.navigation.model.ComboAssembler"
             parentTypeId="org.eclipse.riena.example.list">
       </assembly>
       
       <assembly
-            id="org.eclipse.riena.example.navigate.test2"
-            assembler="org.eclipse.riena.example.client.navigation.model.CbAsm"
+            id="org.eclipse.riena.example.navigate.firstmodule"
+            assembler="org.eclipse.riena.example.client.navigation.model.FirstModuleAssembler"
             parentTypeId="org.eclipse.riena.example.navigate.comboAndList">
       </assembly>
       

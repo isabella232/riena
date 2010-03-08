@@ -265,7 +265,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 	public Point computeSize(int wHint, int hHint) {
 		GC gc = new GC(Display.getCurrent());
 		getRenderer().setItems(getAllVisibleModuleViews());
-		getRenderer().setNavigationNode(moduleGroupNode);
+		getRenderer().setNavigationNode(getNavigationNode());
 		Point size = getRenderer().computeSize(gc, wHint, hHint);
 		gc.dispose();
 		return size;

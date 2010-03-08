@@ -106,7 +106,8 @@ public class NavigateSubModuleController extends SubModuleController {
 		public void callback() {
 			NavigationArgument naviAgr = new NavigationArgument();
 			naviAgr.setNodePositioner(NodePositioner.ADD_BEGINNING);
-			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigate.test2"), naviAgr); //$NON-NLS-1$
+			getNavigationNode().navigate(
+					new NavigationNodeId("org.eclipse.riena.example.navigate.firstmodule"), naviAgr); //$NON-NLS-1$
 
 		}
 
@@ -120,7 +121,8 @@ public class NavigateSubModuleController extends SubModuleController {
 		public void callback() {
 			NavigationArgument naviAgr = new NavigationArgument();
 			naviAgr.setNodePositioner(NodePositioner.ADD_BEGINNING);
-			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigate.test"), naviAgr); //$NON-NLS-1$
+			getNavigationNode().navigate(
+					new NavigationNodeId("org.eclipse.riena.example.navigate.firstSubModule"), naviAgr); //$NON-NLS-1$
 
 		}
 
