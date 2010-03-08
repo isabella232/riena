@@ -322,7 +322,7 @@ public class EmbeddedTitleBar extends Canvas {
 	}
 
 	public void setCloseButtonHover(boolean closeButtonHover) {
-		if (hasChanged(this.closeButtonHover, closeButtonHover)) {
+		if (hasChanged(this.closeButtonHover, closeButtonHover) && !isDisposed()) {
 			this.closeButtonHover = closeButtonHover;
 			redraw();
 		}

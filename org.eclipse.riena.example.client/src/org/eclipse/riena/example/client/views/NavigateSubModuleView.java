@@ -51,6 +51,14 @@ public class NavigateSubModuleView extends SubModuleView {
 		Button btnNavigateToRidget = UIControlsFactory.createButton(parent, "Navigate to First Name", //$NON-NLS-1$
 				"btnNavigateToRidget"); //$NON-NLS-1$
 		fillFactory.applyTo(btnNavigateToRidget);
+
+		Button openAsFirstModule = UIControlsFactory.createButton(parent);
+		fillFactory.applyTo(openAsFirstModule);
+		addUIControl(openAsFirstModule, "openAsFirstModule"); //$NON-NLS-1$
+
+		Button openAsFirstSubModule = UIControlsFactory.createButton(parent);
+		fillFactory.applyTo(openAsFirstSubModule);
+		addUIControl(openAsFirstSubModule, "openAsFirstSubModule"); //$NON-NLS-1$
 	}
 
 }

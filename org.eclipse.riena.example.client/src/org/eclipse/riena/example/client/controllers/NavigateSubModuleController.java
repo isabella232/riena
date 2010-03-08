@@ -42,7 +42,7 @@ public class NavigateSubModuleController extends SubModuleController {
 		comboAndList.addListener(new ComboAndListListener());
 
 		IActionRidget tableTextAndTree = getRidget(IActionRidget.class, "tableTextAndTree"); //$NON-NLS-1$
-		tableTextAndTree.setText("Table, Text and Tree (SubApplication 2)"); //$NON-NLS-1$
+		tableTextAndTree.setText("Table, Text and Tree (SubApplication 2) [First Position]"); //$NON-NLS-1$
 		tableTextAndTree.addListener(new TableTextAndTreeListener());
 
 		IActionRidget textAssembly = getRidget(IActionRidget.class, "textAssembly"); //$NON-NLS-1$
