@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.PropertiesUtils;
+import org.eclipse.riena.ui.ridgets.nls.Messages;
 
 /**
  * Blocking 'maximum length' validation rule.

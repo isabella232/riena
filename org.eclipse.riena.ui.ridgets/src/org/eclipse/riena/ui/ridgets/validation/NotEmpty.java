@@ -13,6 +13,8 @@ package org.eclipse.riena.ui.ridgets.validation;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
+import org.eclipse.riena.ui.ridgets.nls.Messages;
+
 /**
  * Validation checking that a String is non-null at has at least one
  * non-whitespace character.

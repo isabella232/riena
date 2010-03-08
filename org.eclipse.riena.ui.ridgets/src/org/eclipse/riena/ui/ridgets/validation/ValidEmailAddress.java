@@ -16,6 +16,8 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.osgi.util.NLS;
 
+import org.eclipse.riena.ui.ridgets.nls.Messages;
+
 /**
  * Implementation for a email address validation. This rule accepts any String
  * which is either <tt>null</tt>, empty, all whitespace or a valid email

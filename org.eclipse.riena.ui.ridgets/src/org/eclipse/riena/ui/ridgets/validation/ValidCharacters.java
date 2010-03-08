@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.PropertiesUtils;
+import org.eclipse.riena.ui.ridgets.nls.Messages;
 
 /**
  * Implementation for a plausibility rule which checks if the typed character is

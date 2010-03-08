@@ -25,6 +25,7 @@ import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.ArraysUtil;
 import org.eclipse.riena.core.util.PropertiesUtils;
+import org.eclipse.riena.ui.ridgets.nls.Messages;
 
 /**
  * Implementation for a plausibility rule for a number range check. Checks <br>

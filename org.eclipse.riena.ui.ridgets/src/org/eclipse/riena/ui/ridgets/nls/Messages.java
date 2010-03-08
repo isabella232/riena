@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.validation;
+package org.eclipse.riena.ui.ridgets.nls;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -18,7 +18,7 @@ import org.eclipse.osgi.util.NLS;
  * @since 2.0
  */
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.riena.ui.ridgets.validation.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.riena.ui.ridgets.nls.messages"; //$NON-NLS-1$
 
 	public static String AbstractValidDate_error_invalidDate;
 

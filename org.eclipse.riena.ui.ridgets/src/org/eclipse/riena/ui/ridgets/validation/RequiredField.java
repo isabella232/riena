@@ -15,6 +15,8 @@ import java.util.Arrays;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
+import org.eclipse.riena.ui.ridgets.nls.Messages;
+
 /**
  * Implementation for a required field validation. This rule accepts any String
  * which is not either <tt>null</tt>, empty or all whitespace including ignored

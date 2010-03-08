@@ -25,6 +25,7 @@ import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.ArraysUtil;
 import org.eclipse.riena.core.util.PropertiesUtils;
+import org.eclipse.riena.ui.ridgets.nls.Messages;
 
 /**
  * Checks if a given string could be safely converted to a decimal number, that

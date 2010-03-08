@@ -22,6 +22,7 @@ import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
+import org.eclipse.riena.ui.ridgets.nls.Messages;
 
 /**
  * Validator checking that a String matches a given pattern for a Date.
