@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import java.util.concurrent.CountDownLatch;
+
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.Timeline.TimelineState;
 import org.pushingpixels.trident.callback.TimelineCallbackAdapter;
@@ -35,19 +37,17 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Widget class for a notification that the turns up on top of the
- * SubModuleView. No user interaction is possible and it closes after a few
- * seconds.
- * <p>
+ * Widget class for a message the turns up on top of the SubModuleView. No user
+ * interaction is possible and it closes after a few seconds. <br>
  * It is possible to set a message and an icon.
  * 
  * @since 2.0
@@ -61,42 +61,41 @@ public class InfoFlyout implements IPropertyNameProvider {
 	private static final int ICON_LEFT_INDENT = 13;
 	private static final int TEXT_LEFT_INDENT = 3;
 
-	private final Control parent;
+	private String message;
+	private String icon;
 
 	private String bindingId;
+
+	private Shell shell;
+	private final Composite parent;
 
 	private Timeline tShow;
 	private Timeline tWait;
 	private Timeline tHide;
 
-	private Shell shell;
 	private Label rightLabel;
 	private Label leftLabel;
-	private String message;
-	private String icon;
 	private Rectangle topLevelShellBounds;
 	private int xPosition;
 	private int startY;
 	private int endY;
 
+	private CountDownLatch latch;
+
 	public InfoFlyout(Composite parent) {
 		this.parent = parent;
 		message = ""; //$NON-NLS-1$
 		icon = null;
+		latch = new CountDownLatch(0);
 		initializeLayout();
 	}
 
-	public final String getPropertyName() {
-		return bindingId;
-	}
-
-	public void open() {
+	public void openFlyout() {
 		if (!isAnimationGoingOn()) {
-			rightLabel.setText(message);
-			leftLabel.setImage(ImageStore.getInstance().getImage(icon));
-
-			updateLayoutData();
+			latch = new CountDownLatch(1);
+			updateIconAndMessage();
 			updateLocation();
+			updateLayoutData();
 			initializeTimelines();
 
 			shell.setVisible(true);
@@ -105,6 +104,9 @@ public class InfoFlyout implements IPropertyNameProvider {
 		}
 	}
 
+	/**
+	 * @param message
+	 */
 	public void setMessage(String message) {
 		this.message = message;
 	}
@@ -117,9 +119,23 @@ public class InfoFlyout implements IPropertyNameProvider {
 		this.bindingId = bindingId;
 	}
 
+	public final String getPropertyName() {
+		return bindingId;
+	}
+
+	/**
+	 * Lets the InfoFlyout wait until the last one is closed.
+	 */
+	public void waitForClosing() {
+		try {
+			latch.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// helping methods
 	//////////////////
-
 	private void initializeLayout() {
 		Assert.isTrue(shell == null); // only call once
 
@@ -143,26 +159,15 @@ public class InfoFlyout implements IPropertyNameProvider {
 		fontData.setStyle(SWT.BOLD);
 		Font boldFont = rsm.createFont(FontDescriptor.createFrom(fontData));
 		rightLabel.setFont(boldFont);
+
+		updateLocation();
+		updateLayoutData();
 	}
 
-	private void updateLayoutData() {
-		int topIndent = (HEIGHT - rightLabel.getBounds().height) / 2;
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(ICON_LEFT_INDENT, topIndent).applyTo(
-				leftLabel);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(TEXT_LEFT_INDENT, topIndent).hint(WIDTH - 50,
-				SWT.DEFAULT).applyTo(rightLabel);
+	private void updateIconAndMessage() {
+		rightLabel.setText(message);
+		leftLabel.setImage(ImageStore.getInstance().getImage(icon));
 		shell.layout(true);
-	}
-
-	private void updateLocation() {
-		topLevelShellBounds = parent.getShell().getBounds();
-		xPosition = topLevelShellBounds.x + topLevelShellBounds.width - WIDTH - SHELL_RIGHT_INDENT;
-		Display display = parent.getDisplay();
-		startY = display.map(parent.getParent(), null, parent.getBounds()).y;
-		endY = startY - HEIGHT;
-
-		shell.setSize(WIDTH, 0);
-		shell.setLocation(xPosition, startY);
 	}
 
 	private void initializeTimelines() {
@@ -198,15 +203,47 @@ public class InfoFlyout implements IPropertyNameProvider {
 			}
 		});
 
+		tHide.addCallback(new TimelineCallbackAdapter() {
+			public void onTimelineStateChanged(TimelineState oldState, TimelineState newState, float durationFraction,
+					float timelinePosition) {
+				if (newState == TimelineState.DONE) {
+					synchronized (this) {
+						latch.countDown();
+						System.err.println("countdown");
+						//						latch = new CountDownLatch(1);
+					}
+				}
+			}
+		});
+
 		tShow.setDuration(1500);
 		tWait.setDuration(2500);
 		tHide.setDuration(1500);
 
 		tHide.setEase(new Sine());
 		tShow.setEase(new Sine());
+
 	}
 
-	// TODO [sac] it would be better to have some kind of queue
+	private void updateLayoutData() {
+		int topIndent = (HEIGHT - rightLabel.getBounds().height) / 2;
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(ICON_LEFT_INDENT, topIndent).applyTo(
+				leftLabel);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(TEXT_LEFT_INDENT, topIndent).hint(250,
+				SWT.DEFAULT).applyTo(rightLabel);
+
+	}
+
+	private void updateLocation() {
+		topLevelShellBounds = PlatformUI.getWorkbench().getDisplay().getShells()[0].getBounds();
+		xPosition = topLevelShellBounds.x + topLevelShellBounds.width - WIDTH - SHELL_RIGHT_INDENT;
+		startY = parent.getDisplay().map(parent.getParent(), null, parent.getBounds()).y;
+		endY = startY - HEIGHT;
+
+		shell.setSize(WIDTH, 0);
+		shell.setLocation(xPosition, startY);
+	}
+
 	private boolean isAnimationGoingOn() {
 		if (tShow == null || tWait == null || tHide == null) {
 			return false;
@@ -239,6 +276,7 @@ public class InfoFlyout implements IPropertyNameProvider {
 			gc.setForeground(oldFg);
 			gc.setLineWidth(oldWidth);
 		}
+
 	}
 
 	/**
@@ -263,7 +301,9 @@ public class InfoFlyout implements IPropertyNameProvider {
 				tShow.abort();
 				tWait.abort();
 				tHide.abort();
+				latch.countDown();
 			}
 		}
 	}
+
 }

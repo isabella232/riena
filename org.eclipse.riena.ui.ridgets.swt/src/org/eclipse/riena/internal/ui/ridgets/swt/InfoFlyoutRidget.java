@@ -10,39 +10,37 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import org.eclipse.core.runtime.Assert;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.InfoFlyout;
+import org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
- * A ridget for the {@link InfoFlyout} widget.
+ * A ridget for the {@link InfoFlyout}
  */
 public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidget {
 
 	private InfoFlyout infoFlyout;
+	private BlockingQueue<Info> infos;
+	private SwtUISynchronizer syncher;
+	private Worker worker = null;
 
 	public InfoFlyoutRidget() {
 		super();
+		infos = new LinkedBlockingQueue<Info>();
+		syncher = new SwtUISynchronizer();
 	}
 
-	public boolean isVisible() {
-		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
-	}
-
-	public void setVisible(boolean visible) {
-		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
-	}
-
-	public boolean isEnabled() {
-		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
-	}
-
-	public void setEnabled(boolean enabled) {
-		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
+	public InfoFlyoutRidget(InfoFlyout infoFlyout) {
+		setUIControl(infoFlyout);
 	}
 
 	public InfoFlyout getUIControl() {
@@ -53,16 +51,69 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 		infoFlyout = (InfoFlyout) uiControl;
 	}
 
+	public String getID() {
+		IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		return locator.locateBindingProperty(getUIControl());
+	}
+
+	public void addInfo(Info info) {
+		if (worker == null) {
+			worker = new Worker();
+			worker.start();
+		}
+		try {
+			infos.put(info);
+		} catch (InterruptedException e) {
+			new ConsoleLogger(InfoFlyoutRidget.class.getName()).log(LogService.LOG_ERROR,
+					"Queueing info failed: " + info, e); //$NON-NLS-1$
+		}
+	}
+
+	private class Worker extends Thread {
+
+		@Override
+		public void run() {
+			Info info;
+			while (true) {
+				try {
+					info = infos.take();
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+					break;
+				}
+				processInfo(info);
+			}
+
+		}
+
+		private void processInfo(final Info info) {
+
+			infoFlyout.waitForClosing();
+
+			syncher.synchronize(new Runnable() {
+				public void run() {
+					infoFlyout.setMessage(info.getMessage());
+					infoFlyout.setIcon(info.getIcon());
+					infoFlyout.openFlyout();
+				}
+			});
+
+		}
+	}
+
+	/// methods that are not really needed
+	//////////////////////////////////////
+
 	public void requestFocus() {
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
 	public boolean hasFocus() {
-		return false;
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
 	public boolean isFocusable() {
-		return false;
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
 	public void setFocusable(boolean focusable) {
@@ -77,22 +128,20 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
-	public String getID() {
-		IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		return locator.locateBindingProperty(getUIControl());
+	public boolean isEnabled() {
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
-	public void setIcon(String icon) {
-		getUIControl().setIcon(icon);
+	public void setEnabled(boolean enabled) {
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
-	public void setMessage(String message) {
-		Assert.isNotNull(message);
-		getUIControl().setMessage(message);
+	public boolean isVisible() {
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
-	public void open() {
-		getUIControl().open();
-
+	public void setVisible(boolean visible) {
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
+
 }
