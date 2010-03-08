@@ -11,12 +11,15 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.beans.common.DateBean;
@@ -24,9 +27,12 @@ import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
+import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.DatePickerComposite.IDateConverterStrategy;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -465,6 +471,42 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("24.12.2009 00:00", ridget.getText());
 	}
 
+	/**
+	 * As per Bug 305056.
+	 */
+	public void testMandatoryWithDatePickerWidget() {
+		IDateTextRidget ridget = getRidget();
+		ridget.setMandatory(true);
+		DatePickerComposite control = new DatePickerComposite(getShell(), SWT.BORDER);
+		ridget.setUIControl(control);
+
+		Display display = control.getDisplay();
+		Color colorWhite = display.getSystemColor(SWT.COLOR_WHITE);
+		Color colorMandatory = Activator.getSharedColor(display, SharedColors.COLOR_MANDATORY);
+		assertFalse(colorWhite.equals(colorMandatory)); // sanity check
+
+		ridget.setText("01.10.2008");
+
+		assertEquals("01.10.2008", ridget.getText());
+		assertEquals("01.10.2008", control.getTextfield().getText());
+		assertMandatoryMarker(ridget, 1, true);
+		assertEquals(colorWhite, control.getTextfield().getBackground());
+
+		ridget.setText("  .  .    ");
+
+		assertEquals("  .  .    ", ridget.getText());
+		assertEquals("  .  .    ", control.getTextfield().getText());
+		assertMandatoryMarker(ridget, 1, false);
+		assertEquals(colorMandatory, control.getTextfield().getBackground());
+
+		ridget.setMandatory(false);
+
+		assertEquals("  .  .    ", ridget.getText());
+		assertEquals("  .  .    ", control.getTextfield().getText());
+		assertMandatoryMarker(ridget, 0, false);
+		assertEquals(colorWhite, control.getTextfield().getBackground());
+	}
+
 	// helping methods
 	//////////////////
 
@@ -474,6 +516,14 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 
 	private void assertText(String before, int keyCode, String after) {
 		TestUtils.assertText(getWidget(), before, keyCode, after);
+	}
+
+	private void assertMandatoryMarker(IMarkableRidget ridget, int count, boolean isDisabled) {
+		Collection<MandatoryMarker> markers = ridget.getMarkersOfType(MandatoryMarker.class);
+		assertEquals(count, markers.size());
+		for (MandatoryMarker marker : markers) {
+			assertEquals(isDisabled, marker.isDisabled());
+		}
 	}
 
 }

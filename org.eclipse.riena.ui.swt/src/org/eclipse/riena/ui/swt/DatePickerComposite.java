@@ -26,6 +26,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -84,22 +85,34 @@ public class DatePickerComposite extends Composite {
 		dateConverterStrategy = new RegexDateConverterStrategy(textfield);
 	}
 
-	public IDateConverterStrategy getDateConverterStrategy() {
-		return dateConverterStrategy;
+	@Override
+	public void dispose() {
+		datePicker.dispose();
+		super.dispose();
 	}
 
-	public void setDateConverterStrategy(IDateConverterStrategy dateConverterStrategy) {
-		this.dateConverterStrategy = dateConverterStrategy;
+	public IDateConverterStrategy getDateConverterStrategy() {
+		return dateConverterStrategy;
 	}
 
 	public Text getTextfield() {
 		return textfield;
 	}
 
+	public void setDateConverterStrategy(IDateConverterStrategy dateConverterStrategy) {
+		this.dateConverterStrategy = dateConverterStrategy;
+	}
+
 	@Override
-	public void dispose() {
-		datePicker.dispose();
-		super.dispose();
+	public void setForeground(Color color) {
+		super.setForeground(color);
+		textfield.setForeground(color);
+	}
+
+	@Override
+	public void setBackground(Color color) {
+		super.setBackground(color);
+		textfield.setBackground(color);
 	}
 
 	// helping methods
