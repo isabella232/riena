@@ -11,6 +11,8 @@
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +20,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 
+import org.eclipse.riena.navigation.model.ModuleGroupNode;
+import org.eclipse.riena.navigation.ui.swt.views.ModuleGroupView;
 import org.eclipse.riena.navigation.ui.swt.views.ModuleView;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -33,6 +37,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 
 	private boolean active;
 	private List<ModuleView> items;
+	private ModuleGroupNode navigationNode;
 
 	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
@@ -86,6 +91,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		int h = 0;
 		if (modules.size() > 0) {
 			h = getModuleGroupPadding();
+			Collections.sort(modules, new ModuleCompartor());
 			for (Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
 				ModuleView moduleView = iterator.next();
 				if (moduleView.getNavigationNode() == null || moduleView.getNavigationNode().isDisposed()) {
@@ -103,6 +109,20 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		}
 
 		return new Point(w, h);
+
+	}
+
+	private class ModuleCompartor implements Comparator<ModuleView> {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+		 */
+		public int compare(ModuleView o1, ModuleView o2) {
+			return navigationNode.getIndexOfChild(o1.getNavigationNode()) < navigationNode.getIndexOfChild(o2
+					.getNavigationNode()) ? -1 : 1;
+		}
 
 	}
 
@@ -169,6 +189,15 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	/**
+	 * @param navigationNode
+	 *            is the {@link ModuleGroupNode} of the related
+	 *            {@link ModuleGroupView}
+	 */
+	public void setNavigationNode(ModuleGroupNode navigationNode) {
+		this.navigationNode = navigationNode;
 	}
 
 }

@@ -193,6 +193,20 @@ public class SWTModuleController extends ModuleController {
 				tree.collapse(source);
 			}
 		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#childAdded
+		 * (org.eclipse.riena.navigation.INavigationNode,
+		 * org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void childAdded(ISubModuleNode source, ISubModuleNode childAdded) {
+			super.childAdded(source, childAdded);
+			tree.updateFromModel();
+		}
 	}
 
 }

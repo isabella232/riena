@@ -33,6 +33,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
+import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
@@ -73,6 +74,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	private NavigationTreeObserver navigationTreeObserver;
 
 	private ListenerList<IComponentUpdateListener> updateListeners;
+	private ModuleGroupNode moduleGroupNode;
 
 	public ModuleView(Composite parent) {
 		this.parent = parent;
@@ -83,6 +85,17 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 	public void addUpdateListener(IComponentUpdateListener listener) {
 		updateListeners.add(listener);
+	}
+
+	public void setModuleGroupNode(ModuleGroupNode moduleGroupNode) {
+		this.moduleGroupNode = moduleGroupNode;
+	}
+
+	/**
+	 * @return the moduleGroupNode parent of the moduleNode
+	 */
+	public ModuleGroupNode getModuleGroupNode() {
+		return moduleGroupNode;
 	}
 
 	public void bind(ModuleNode node) {
@@ -443,11 +456,11 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	private void buildView() {
 		title = new ModuleTitleBar(getParent(), SWT.NONE);
 		binding.addUIControl(title, WINDOW_RIDGET);
-		layoutTitle();
+		//		layoutTitle();
 		new ModuleToolTip(title);
 
 		body = new Composite(getParent(), SWT.DOUBLE_BUFFERED);
-		updateModuleView();
+		//		updateModuleView();
 
 		createBodyContent(body);
 		LNF_UPDATER.updateUIControls(body);
@@ -552,27 +565,40 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	private void layoutTitle() {
-		Control[] children = getParent().getChildren();
+
 		FormData formData = new FormData();
-		int index = -1;
-		for (int i = 0; i < children.length; i++) {
-			if (children[i] == title) {
-				index = i;
-				break;
-			}
-		}
+
+		int index = getModuleGroupNode().getIndexOfChild(getNavigationNode());
+
 		if (index == 0) {
 			formData.top = new FormAttachment(0, 0);
 		} else if (index < 0) {
-			formData.top = new FormAttachment(children[children.length - 1], getModuleGroupRenderer()
-					.getModuleModuleGap());
+			formData.top = new FormAttachment(getModuleViewBody(getModuleGroupNode().getChild(
+					getModuleGroupNode().getChildren().size() - 1)), getModuleGroupRenderer().getModuleModuleGap());
 		} else {
-			formData.top = new FormAttachment(children[index - 1], getModuleGroupRenderer().getModuleModuleGap());
+			formData.top = new FormAttachment(getModuleViewBody(getModuleGroupNode().getChild(index - 1)),
+					getModuleGroupRenderer().getModuleModuleGap());
 		}
 		formData.left = new FormAttachment(0, 0);
 		formData.right = new FormAttachment(100, 0);
 		formData.height = title.getSize().y;
 		title.setLayoutData(formData);
+	}
+
+	/**
+	 * Locates the body {@link Control} of the given {@link IModuleNode}
+	 * 
+	 * @param child
+	 *            - the child for which the body control will be located
+	 * @return - the body {@link Control}
+	 */
+	private Control getModuleViewBody(IModuleNode child) {
+		for (ModuleView moduleView : getModuleGroupRenderer().getItems()) {
+			if (moduleView.getNavigationNode() == child) {
+				return moduleView.getBody();
+			}
+		}
+		return null;
 	}
 
 	/**

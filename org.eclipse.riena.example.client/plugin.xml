@@ -773,6 +773,19 @@
             assembler="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeAssembler"
             parentTypeId="org.eclipse.riena.example.navigation.subapplication">
       </assembly>
+      
+      <assembly
+            id="org.eclipse.riena.example.navigate.test"
+            assembler="org.eclipse.riena.example.client.navigation.model.ComboAssembler"
+            parentTypeId="org.eclipse.riena.example.list">
+      </assembly>
+      
+      <assembly
+            id="org.eclipse.riena.example.navigate.test2"
+            assembler="org.eclipse.riena.example.client.navigation.model.CbAsm"
+            parentTypeId="org.eclipse.riena.example.navigate.comboAndList">
+      </assembly>
+      
       <assembly
             id="org.eclipse.riena.example.navigate.tableTextAndTree.assembly"
             assembler="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeAssembler"

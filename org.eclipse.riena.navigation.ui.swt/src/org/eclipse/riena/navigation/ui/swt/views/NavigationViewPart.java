@@ -11,6 +11,8 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -328,6 +330,19 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	 */
 	private void registerModuleGroupView(ModuleGroupView moduleGroupView) {
 		moduleGroupViews.add(moduleGroupView);
+		ModuleGroupViewComparator comparator = new ModuleGroupViewComparator();
+		Collections.sort(moduleGroupViews, comparator);
+	}
+
+	class ModuleGroupViewComparator implements Comparator<ModuleGroupView> {
+
+		public int compare(ModuleGroupView moduleGroupView1, ModuleGroupView moduleGroupView2) {
+			ModuleGroupNode moduleGroupNode1 = moduleGroupView1.getNavigationNode();
+			ModuleGroupNode moduleGroupNode2 = moduleGroupView2.getNavigationNode();
+			return getSubApplicationNode().getIndexOfChild(moduleGroupNode1) < getSubApplicationNode().getIndexOfChild(
+					moduleGroupNode2) ? -1 : 1;
+		}
+
 	}
 
 	/**
@@ -363,6 +378,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		moduleGroupBody.setLayout(layout);
 
 		ModuleView moduleView = viewFactory.createModuleView(moduleGroupBody);
+		moduleView.setModuleGroupNode(moduleGroupView.getNavigationNode());
 		NodeIdentificationSupport.setIdentification(moduleView.getTitle(), "titleBar", moduleNode); //$NON-NLS-1$
 		NodeIdentificationSupport.setIdentification(moduleView.getTree(), "tree", moduleNode); //$NON-NLS-1$
 		moduleNodesToViews.put(moduleNode, moduleView);
@@ -395,6 +411,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 	public int calculateBounds() {
 		int yPosition = 0;
+		Collections.sort(moduleGroupViews, new ModuleGroupViewComparator());
 		for (ModuleGroupView moduleGroupView : moduleGroupViews) {
 			yPosition = moduleGroupView.calculateBounds(yPosition);
 		}

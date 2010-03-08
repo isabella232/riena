@@ -15,6 +15,7 @@ import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.NodePositioner;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -47,6 +48,14 @@ public class NavigateSubModuleController extends SubModuleController {
 		IActionRidget textAssembly = getRidget(IActionRidget.class, "textAssembly"); //$NON-NLS-1$
 		textAssembly.setText("Text Assembly (SubApplication 1)"); //$NON-NLS-1$
 		textAssembly.addListener(new TextAssemblyListener());
+
+		IActionRidget openAsFirstModule = getRidget(IActionRidget.class, "openAsFirstModule"); //$NON-NLS-1$
+		openAsFirstModule.setText("Open Module As First"); //$NON-NLS-1$
+		openAsFirstModule.addListener(new OpenModuleAsFirstListener());
+
+		IActionRidget openAsFirstSubModule = getRidget(IActionRidget.class, "openAsFirstSubModule"); //$NON-NLS-1$
+		openAsFirstSubModule.setText("Open SubModule As First [create Combo And List Before]"); //$NON-NLS-1$
+		openAsFirstSubModule.addListener(new OpenSubModuleAsFirstListener());
 
 		final PersonModificationBean bean = new PersonModificationBean();
 		bean.setPerson(new Person("Doe", "Jane")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -81,7 +90,38 @@ public class NavigateSubModuleController extends SubModuleController {
 		 * {@inheritDoc}
 		 */
 		public void callback() {
-			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigate.tableTextAndTree")); //$NON-NLS-1$
+			NavigationArgument naviAgr = new NavigationArgument();
+			naviAgr.setNodePositioner(NodePositioner.ADD_BEGINNING);
+			getNavigationNode().navigate(
+					new NavigationNodeId("org.eclipse.riena.example.navigate.tableTextAndTree"), naviAgr); //$NON-NLS-1$
+		}
+
+	}
+
+	private class OpenModuleAsFirstListener implements IActionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void callback() {
+			NavigationArgument naviAgr = new NavigationArgument();
+			naviAgr.setNodePositioner(NodePositioner.ADD_BEGINNING);
+			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigate.test2"), naviAgr); //$NON-NLS-1$
+
+		}
+
+	}
+
+	private class OpenSubModuleAsFirstListener implements IActionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void callback() {
+			NavigationArgument naviAgr = new NavigationArgument();
+			naviAgr.setNodePositioner(NodePositioner.ADD_BEGINNING);
+			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigate.test"), naviAgr); //$NON-NLS-1$
+
 		}
 
 	}
