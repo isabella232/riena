@@ -101,43 +101,6 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	int getSelectionIndex();
 
 	/**
-	 * Indicates whether an edited text will be added to the list of options.
-	 * The list of options is the value of the combobox provided by the value
-	 * provider. The addable state will not be significant if the adapter is
-	 * readonly.
-	 * 
-	 * @return true if edited values will be added to the list of options, false
-	 *         otherwise.
-	 */
-	boolean isAddable();
-
-	/**
-	 * Return true if the receiver's drop down list is mutable, ie. options snot
-	 * yet contained in the list will automatically be added if entered into the
-	 * text field.
-	 * 
-	 * @return true if the receiver is mutable, otherwise false
-	 */
-	boolean isListMutable();
-
-	/**
-	 * Indicates whether the text in the textfield can be edited by the user.
-	 * 
-	 * @return true if the combobox is readonly, false if it can be edited.
-	 */
-	boolean isReadonly();
-
-	/**
-	 * Sets the addable state of the combobox. If addable, edited values will be
-	 * added to the list of options. The addable state will not be significant
-	 * if the adapter is readonly.
-	 * 
-	 * @param addable
-	 *            The new addable state.
-	 */
-	void setAddable(boolean addable);
-
-	/**
 	 * Sets the option that represents 'no selection'.
 	 * <p>
 	 * When this option is selected the ridget behaves just as if nothing was
@@ -148,21 +111,6 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 *            The option that represents 'no selection'.
 	 */
 	void setEmptySelectionItem(Object emptySelection);
-
-	/**
-	 * Set the mutability of the <code>IComboRidget</code> drop down list. If
-	 * the list is mutable text entered into the entry field (see
-	 * {@link IComboRidget#isEditable()}) that is not yet contained in the
-	 * receivers drop down list will automatically be added to the list. Note
-	 * that setting this value to <code>true</code> only makes sense if the list
-	 * model this ridget is bound to (see
-	 * {@link IComboRidget#bindToModel(IObservableList, Class, String, IObservableValue)}
-	 * ) is mutable, too.
-	 * 
-	 * @param mutable
-	 *            true if the receiver is mutable, otherwise false
-	 */
-	void setListMutable(boolean mutable);
 
 	/**
 	 * Sets the converter used when updating from the model to the UI-control.
@@ -178,15 +126,6 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 * @since 1.2
 	 */
 	void setModelToUIControlConverter(IConverter converter);
-
-	/**
-	 * Sets the readonly state of the combobox. If it is readonly, the text in
-	 * the textfield can not be edited.
-	 * 
-	 * @param readonly
-	 *            The new readonly state.
-	 */
-	void setReadonly(boolean readonly);
 
 	/**
 	 * Set the current selection to index.

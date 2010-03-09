@@ -226,11 +226,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return result;
 	}
 
-	/** Not implemented. */
-	public boolean isAddable() {
-		throw new UnsupportedOperationException(); // TODO implement
-	}
-
 	@Override
 	public boolean isDisableMandatoryMarker() {
 		return hasInput();
@@ -241,33 +236,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return super.isEnabled() && !isOutputOnly();
 	}
 
-	/** Not implemented. */
-	public boolean isListMutable() {
-		throw new UnsupportedOperationException(); // TODO implement
-	}
-
-	/** Not implemented. */
-	public boolean isReadonly() {
-		throw new UnsupportedOperationException(); // TODO implement
-	}
-
-	/** Not implemented. */
-	public void setAddable(boolean addable) {
-		throw new UnsupportedOperationException(); // TODO implement
-	}
-
 	public void setEmptySelectionItem(Object emptySelection) {
 		this.emptySelection = emptySelection;
-	}
-
-	/** Not implemented. */
-	public void setListMutable(boolean mutable) {
-		throw new UnsupportedOperationException(); // TODO implement
-	}
-
-	/** Not implemented. */
-	public void setReadonly(boolean readonly) {
-		throw new UnsupportedOperationException(); // TODO implement
 	}
 
 	public void setSelection(Object newSelection) {
