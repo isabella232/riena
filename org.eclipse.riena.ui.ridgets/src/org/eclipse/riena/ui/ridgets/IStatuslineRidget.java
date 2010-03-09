@@ -11,58 +11,68 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * Ridget for a status line consisting of a message and a icon.
- * 
+ * Ridget for a status line. The status line consists of at least a message and
+ * an icon.
  */
 public interface IStatuslineRidget extends IComplexRidget {
 
 	/**
-	 * @param aMessage
-	 *            The info message.
-	 */
-	void info(String aMessage);
-
-	/**
-	 * @param aMessage
-	 *            The warning message.
-	 */
-	void warning(String aMessage);
-
-	/**
-	 * @param aMessage
-	 *            The error message.
-	 */
-	void error(String aMessage);
-
-	/**
-	 * Clears the message and the icon.
+	 * Show an info message (and icon) in the status line.
 	 * 
+	 * @param message
+	 *            The info message; never null; may be empty
+	 */
+	void info(String message);
+
+	/**
+	 * Show a warning message (and icon) in the status line.
+	 * 
+	 * @param message
+	 *            The warning message; never null; may be empty
+	 */
+	void warning(String message);
+
+	/**
+	 * Show an error message (and icon) in the status line.
+	 * 
+	 * @param message
+	 *            The error message; never null; may be empty
+	 */
+	void error(String message);
+
+	/**
+	 * Clears the message and the icon from the status line.
 	 */
 	void clear();
 
 	/**
-	 * @return The message.
+	 * Returns the message shown in the status line.
+	 * 
+	 * @return a String; never null; may be empty
 	 */
 	String getMessage();
 
 	/**
+	 * Shows the given message in the status line.
+	 * 
 	 * @param message
-	 *            The message to set.
+	 *            The message to set; never null; may be empty.
 	 */
 	void setMessage(String message);
 
 	/**
-	 * Method is not implemented at the moment!
-	 */
-	void hidePopups();
-
-	/**
-	 * @return the statuslineProcess
+	 * Return the {@link IStatuslineUIProcessRidget} for this status line, if
+	 * available.
+	 * 
+	 * @return an {@link IStatuslineUIProcessRidget} or null.
 	 */
 	IStatuslineUIProcessRidget getStatuslineUIProcessRidget();
 
 	/**
-	 * @return the statuslineNumer
+	 * Return the {@link IStatuslineNumberRidget} for this status line, if
+	 * available.
+	 * 
+	 * @return an {@link IStatuslineNumberRidget} or null.
 	 */
 	IStatuslineNumberRidget getStatuslineNumberRidget();
 
