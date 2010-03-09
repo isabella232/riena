@@ -67,7 +67,7 @@ public class ContextMenuSubModuleView extends SubModuleView {
 		textField.setMenu(createMenuWithFactory(textField));
 		Label label2 = UIControlsFactory.createLabel(groupText, "Hide 'Clear':"); //$NON-NLS-1$
 		labelGDF.applyTo(label2);
-		UIControlsFactory.createButtonCheck(groupText, "markerButton"); //$NON-NLS-1$
+		UIControlsFactory.createButtonCheck(groupText, "", "markerButton"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		Group groupTable = UIControlsFactory.createGroup(parent, "Table with Context Menu:"); //$NON-NLS-1$
 		groupGLF.numColumns(1).applyTo(groupTable);

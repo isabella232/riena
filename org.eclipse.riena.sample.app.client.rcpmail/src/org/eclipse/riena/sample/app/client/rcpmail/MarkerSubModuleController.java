@@ -123,7 +123,6 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IToggleButtonRidget checkOutput = (IToggleButtonRidget) getRidget("checkOutput"); //$NON-NLS-1$
 		final IToggleButtonRidget checkHidden = (IToggleButtonRidget) getRidget("checkHidden"); //$NON-NLS-1$
 
-		checkMandatory.setText("&mandatory"); //$NON-NLS-1$
 		checkMandatory.addListener(new IActionListener() {
 			public void callback() {
 				boolean isMandatory = checkMandatory.isSelected();
@@ -150,7 +149,6 @@ public class MarkerSubModuleController extends SubModuleController {
 			}
 		});
 
-		checkError.setText("&error"); //$NON-NLS-1$
 		checkError.addListener(new IActionListener() {
 			private IValidator alwaysWrong = new AlwaysWrongValidator();
 
@@ -177,7 +175,6 @@ public class MarkerSubModuleController extends SubModuleController {
 			}
 		});
 
-		checkDisabled.setText("&disabled"); //$NON-NLS-1$
 		checkDisabled.addListener(new IActionListener() {
 			public void callback() {
 				boolean isEnabled = !checkDisabled.isSelected();
@@ -187,7 +184,6 @@ public class MarkerSubModuleController extends SubModuleController {
 			}
 		});
 
-		checkOutput.setText("&output"); //$NON-NLS-1$
 		checkOutput.addListener(new IActionListener() {
 			public void callback() {
 				boolean isOutput = checkOutput.isSelected();
@@ -199,7 +195,6 @@ public class MarkerSubModuleController extends SubModuleController {
 			}
 		});
 
-		checkHidden.setText("&hidden"); //$NON-NLS-1$
 		checkHidden.addListener(new IActionListener() {
 			public void callback() {
 				boolean isVisible = !checkHidden.isSelected();

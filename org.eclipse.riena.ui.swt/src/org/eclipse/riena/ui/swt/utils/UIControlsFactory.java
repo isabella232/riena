@@ -47,7 +47,13 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
- * TODO [ev] docs + method docs
+ * Convenience class for creating SWT controls.
+ * <p>
+ * Will apply consistent style settings and an optional binding id. Can create
+ * special instances of certain generic controls, such as numeric or date Text
+ * fields.
+ * <p>
+ * Factory methods are annotated for compatibility with the SWT Designer tool.
  * 
  * @wbp.factory
  */
@@ -57,11 +63,11 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static final String KEY_LNF_STYLE = "lnfStyle"; //$NON-NLS-1$
+	public static final String KEY_TYPE = "type"; //$NON-NLS-1$
 	/**
 	 * @since 1.2
 	 */
 	public static final String LNF_STYLE_SECTION_LABEL = "sectionLabel"; //$NON-NLS-1$
-	public static final String KEY_TYPE = "type"; //$NON-NLS-1$
 	public static final String TYPE_NUMERIC = "numeric"; //$NON-NLS-1$
 	public static final String TYPE_DECIMAL = "decimal"; //$NON-NLS-1$
 	public static final String TYPE_DATE = "date"; //$NON-NLS-1$
@@ -79,56 +85,302 @@ public class UIControlsFactory {
 	/**
 	 * @since 1.2
 	 */
-	protected UIControlsFactory() {
+	public static Browser createBrowser(Composite parent, int style) {
+		return new Browser(parent, style);
 	}
 
 	/**
-	 * @wbp.factory.parameter.source text "myMenuItemText"
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @wbp.factory.parameter.source bindingId "myBrowserId"
 	 * @since 1.2
 	 */
-	public static MenuItem createMenuItem(Menu parent, String text, int style) {
-		MenuItem item = new MenuItem(parent, style);
-		item.setText(text);
-		return item;
+	public static Browser createBrowser(Composite parent, int style, String bindingId) {
+		Browser result = createBrowser(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
+	}
+
+	public static Button createButton(Composite parent) {
+		Button button = new Button(parent, SWT.PUSH);
+		button.setBackground(SHARED_BG_COLOR);
+		return button;
 	}
 
 	/**
-	 * @wbp.factory.parameter.source text "myMenuItemText"
-	 * @since 1.2
+	 * @wbp.factory.parameter.source text "myButtonText"
 	 */
-	public static MenuItem createMenuItem(Menu parent, String text) {
-		MenuItem item = new MenuItem(parent, SWT.None);
-		item.setText(text);
-		return item;
+	public static Button createButton(Composite parent, String text) {
+		Button result = new Button(parent, SWT.PUSH);
+		result.setText(text);
+		return result;
 	}
 
 	/**
-	 * @wbp.factory.parameter.source text "myMenuItemText"
-	 * @wbp.factory.parameter.source bindingId "myMenuItemId"
-	 * @since 1.2
+	 * @wbp.factory.parameter.source text "myButtonText"
+	 * @wbp.factory.parameter.source bindingId "myButtonId"
 	 */
-	public static MenuItem createMenuItem(Menu parent, String text, String bindingId) {
-		MenuItem item = new MenuItem(parent, SWT.None);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, bindingId);
-		item.setText(text);
-		return item;
+	public static Button createButton(Composite parent, String text, String bindingId) {
+		Button result = createButton(parent, text);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
+	}
+
+	public static Button createButtonCheck(Composite parent) {
+		Button result = new Button(parent, SWT.CHECK);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source text "myButtonCheckText"
+	 * @wbp.factory.parameter.source bindingId "myButtonCheckId"
+	 * @since 2.0
+	 */
+	public static Button createButtonCheck(Composite parent, String text, String bindingId) {
+		Button result = createButtonCheck(parent);
+		result.setText(text);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
+	}
+
+	public static Button createButtonRadio(Composite parent) {
+		Button result = new Button(parent, SWT.RADIO);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source bindingId "myButtonRadioId"
+	 * @since 2.0
+	 */
+	public static Button createButtonRadio(Composite parent, String text, String bindingId) {
+		Button result = createButtonRadio(parent);
+		result.setText(text);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
+	}
+
+	public static Button createButtonToggle(Composite parent) {
+		return new Button(parent, SWT.TOGGLE);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source text "myButtonToggleText"
+	 * @wbp.factory.parameter.source bindingId "myButtonToggleId"
+	 * @since 2.0
+	 */
+	public static Button createButtonToggle(Composite parent, String text, String bindingId) {
+		Button result = createButtonToggle(parent);
+		result.setText(text);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
+	}
+
+	public static DateTime createCalendar(Composite parent) {
+		DateTime result = new DateTime(parent, SWT.CALENDAR);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source bindingId "myCalendarId"
+	 */
+	public static DateTime createCalendar(Composite parent, String bindingId) {
+		DateTime result = createCalendar(parent);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
 	}
 
 	/**
 	 * @since 1.2
 	 */
-	public static Menu createMenu(Control parent) {
-		Menu item = new Menu(parent);
-		return item;
+	public static CCombo createCCombo(Composite parent) {
+		CCombo result = new CCombo(parent, SWT.BORDER | SWT.READ_ONLY);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source bindingId "myComboId"
+	 * @since 1.2
+	 */
+	public static CCombo createCCombo(Composite parent, String bindingId) {
+		CCombo combo = createCCombo(parent);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
+		return combo;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @wbp.factory.parameter.source multipleSelection false
+	 */
+	public static ChoiceComposite createChoiceComposite(Composite parent, int style, boolean multipleSelection) {
+		return new ChoiceComposite(parent, style, multipleSelection);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @wbp.factory.parameter.source multipleSelection false
+	 * @wbp.factory.parameter.source bindingId "myChoiceCompositeId"
+	 */
+	public static ChoiceComposite createChoiceComposite(Composite parent, int style, boolean multipleSelection,
+			String bindingId) {
+		ChoiceComposite composite = createChoiceComposite(parent, style, multipleSelection);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(composite, bindingId);
+		return composite;
+	}
+
+	public static Combo createCombo(Composite parent) {
+		return new Combo(parent, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source bindingId "myComboId"
+	 */
+	public static Combo createCombo(Composite parent, String bindingId) {
+		Combo combo = createCombo(parent);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
+		return combo;
+	}
+
+	public static Composite createComposite(Composite parent) {
+		return createComposite(parent, SWT.NONE);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 */
+	public static Composite createComposite(Composite parent, int style) {
+		Composite composite = new Composite(parent, style);
+		composite.setBackground(SHARED_BG_COLOR);
+		return composite;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @wbp.factory.parameter.source bindingId "myCompositeId"
+	 * @since 2.0
+	 */
+	public static Composite createComposite(Composite parent, int style, String bindingId) {
+		Composite composite = createComposite(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(composite, bindingId);
+		return composite;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.MEDIUM
+	 */
+	public static DateTime createDate(Composite parent, int style) {
+		DateTime result = new DateTime(parent, SWT.DATE | SWT.DROP_DOWN | style);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.MEDIUM
+	 * @wbp.factory.parameter.source bindingId "myDateTimeId"
+	 */
+	public static DateTime createDate(Composite parent, int style, String bindingId) {
+		DateTime result = createDate(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
 	}
 
 	/**
 	 * @since 1.2
 	 */
-	public static Menu createMenu(MenuItem parent) {
-		Menu item = new Menu(parent);
-		return item;
+	public static DatePickerComposite createDatePickerComposite(Composite parent) {
+		DatePickerComposite result = new DatePickerComposite(parent, SWT.SINGLE | SWT.RIGHT);
+		result.setData(KEY_TYPE, TYPE_DATE);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source bindingId "myDatePickerId"
+	 * @since 1.2
+	 */
+	public static DatePickerComposite createDatePickerComposite(Composite parent, String bindingId) {
+		DatePickerComposite result = createDatePickerComposite(parent);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source text "myGroupText"
+	 */
+	public static Group createGroup(Composite parent, String text) {
+		Group result = new Group(parent, SWT.NONE);
+		result.setText(text);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source text "myGroupText"
+	 * @wbp.factory.parameter.source bindingId "myGroupId"
+	 * @since 2.0
+	 */
+	public static Group createGroup(Composite parent, String text, String bindingId) {
+		Group result = createGroup(parent, text);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
+		return result;
+	}
+
+	/**
+	 * Creates a button with only an image (no border, no text).
+	 * 
+	 * @param parent
+	 *            a composite control which will be the parent of the new
+	 *            instance (cannot be null)
+	 * @param image
+	 *            image of the button
+	 * @param style
+	 *            the style of image button to construct
+	 * @param bindingId
+	 *            the binding ID
+	 * @return image button
+	 * 
+	 */
+	public static ImageButton createImageButton(Composite parent, Image image, int style, String bindingId) {
+		ImageButton btn = createImageButton(parent, style, bindingId);
+		btn.setImage(image);
+		return btn;
+	}
+
+	/**
+	 * Creates a button that only display an image (no border, no text).
+	 * 
+	 * @param parent
+	 *            a composite control which will be the parent of the new
+	 *            instance (cannot be null)
+	 * @param style
+	 *            the style of image button to construct
+	 * @return image button
+	 * 
+	 */
+	public static ImageButton createImageButton(Composite parent, int style) {
+		ImageButton btn = new ImageButton(parent, style);
+		btn.setBackground(SHARED_BG_COLOR);
+		return btn;
+	}
+
+	/**
+	 * Creates a button that only display an image (no border, no text).
+	 * 
+	 * @param parent
+	 *            a composite control which will be the parent of the new
+	 *            instance (cannot be null)
+	 * @param style
+	 *            the style of image button to construct
+	 * @param bindingId
+	 *            the binding ID
+	 * @return image button
+	 * 
+	 */
+	public static ImageButton createImageButton(Composite parent, int style, String bindingId) {
+		ImageButton btn = createImageButton(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(btn, bindingId);
+		return btn;
 	}
 
 	/**
@@ -197,6 +449,126 @@ public class UIControlsFactory {
 		return result;
 	}
 
+	public static List createList(Composite parent, boolean hScroll, boolean vScroll) {
+		int style = SWT.BORDER | SWT.MULTI;
+		if (hScroll) {
+			style |= SWT.H_SCROLL;
+		}
+		if (vScroll) {
+			style |= SWT.V_SCROLL;
+		}
+		return new List(parent, style);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source bindingId "myListId"
+	 */
+	public static List createList(Composite parent, boolean hScroll, boolean vScroll, String bindingId) {
+		List list = createList(parent, hScroll, vScroll);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(list, bindingId);
+		return list;
+	}
+
+	public static MasterDetailsComposite createMasterDetails(Composite parent) {
+		return new MasterDetailsComposite(parent, SWT.NONE);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source bindingId "myMasterDetailId"
+	 */
+	public static MasterDetailsComposite createMasterDetails(Composite parent, String bindingId) {
+		MasterDetailsComposite masterDetails = new MasterDetailsComposite(parent, SWT.NONE);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(masterDetails, bindingId);
+		return masterDetails;
+	}
+
+	/**
+	 * @since 1.2
+	 */
+	public static Menu createMenu(Control parent) {
+		Menu item = new Menu(parent);
+		return item;
+	}
+
+	/**
+	 * @since 1.2
+	 */
+	public static Menu createMenu(MenuItem parent) {
+		Menu item = new Menu(parent);
+		return item;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source text "myMenuItemText"
+	 * @since 1.2
+	 */
+	public static MenuItem createMenuItem(Menu parent, String text) {
+		MenuItem item = new MenuItem(parent, SWT.None);
+		item.setText(text);
+		return item;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source text "myMenuItemText"
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @since 1.2
+	 */
+	public static MenuItem createMenuItem(Menu parent, String text, int style) {
+		MenuItem item = new MenuItem(parent, style);
+		item.setText(text);
+		return item;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source text "myMenuItemText"
+	 * @wbp.factory.parameter.source bindingId "myMenuItemId"
+	 * @since 1.2
+	 */
+	public static MenuItem createMenuItem(Menu parent, String text, String bindingId) {
+		MenuItem item = new MenuItem(parent, SWT.None);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, bindingId);
+		item.setText(text);
+		return item;
+	}
+
+	public static MessageBox createMessageBox(Composite parent) {
+		return new MessageBox(parent);
+	}
+
+	public static Shell createShell(Display display) {
+		Assert.isNotNull(display);
+		Shell shell = new Shell(display);
+		shell.setBackground(SHARED_BG_COLOR);
+		return shell;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 */
+	public static Table createTable(Composite parent, int style) {
+		return new Table(parent, style);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @wbp.factory.parameter.source bindingId "myTableId"
+	 */
+	public static Table createTable(Composite parent, int style, String bindingId) {
+		Table table = createTable(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(table, bindingId);
+		return table;
+	}
+
+	/**
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 */
+	// TODO [ev] find another home for this -- enter into migration guide
+	//	public static CompositeTable createCompositeTable(Composite parent, int style) {
+	//		CompositeTable result = new CompositeTable(parent, style);
+	//		result.setBackground(SHARED_BG_COLOR);
+	//		return result;
+	//	}
+
 	public static Text createText(Composite parent) {
 		return new Text(parent, SWT.SINGLE | SWT.BORDER);
 	}
@@ -233,25 +605,6 @@ public class UIControlsFactory {
 		return result;
 	}
 
-	/**
-	 * @since 1.2
-	 */
-	public static DatePickerComposite createDatePickerComposite(Composite parent) {
-		DatePickerComposite result = new DatePickerComposite(parent, SWT.SINGLE | SWT.RIGHT);
-		result.setData(KEY_TYPE, TYPE_DATE);
-		return result;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source bindingId "myDatePickerId"
-	 * @since 1.2
-	 */
-	public static DatePickerComposite createDatePickerComposite(Composite parent, String bindingId) {
-		DatePickerComposite result = createDatePickerComposite(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
-	}
-
 	public static Text createTextDecimal(Composite parent) {
 		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
 		result.setData(KEY_TYPE, TYPE_DECIMAL);
@@ -267,30 +620,17 @@ public class UIControlsFactory {
 		return result;
 	}
 
-	public static Text createTextNumeric(Composite parent) {
-		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
-		result.setData(KEY_TYPE, TYPE_NUMERIC);
-		return result;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source bindingId "myTextNumericId"
-	 */
-	public static Text createTextNumeric(Composite parent, String bindingId) {
-		Text result = createTextNumeric(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
-	}
-
-	/**
-	 * @since 1.2
-	 */
-	public static Text createTextMultiWrap(Composite parent, boolean hScroll, boolean vScroll) {
-		return createTextMulti(parent, SWT.WRAP, hScroll, vScroll);
-	}
-
 	public static Text createTextMulti(Composite parent, boolean hScroll, boolean vScroll) {
 		return createTextMulti(parent, SWT.NONE, hScroll, vScroll);
+	}
+
+	/**
+	 * @wbp.factory.parameter.source bindingId "myTextMultiId"
+	 */
+	public static Text createTextMulti(Composite parent, boolean hScroll, boolean vScroll, String bindingId) {
+		Text text = createTextMulti(parent, hScroll, vScroll);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(text, bindingId);
+		return text;
 	}
 
 	/**
@@ -308,351 +648,25 @@ public class UIControlsFactory {
 	}
 
 	/**
-	 * @wbp.factory.parameter.source bindingId "myTextMultiId"
-	 */
-	public static Text createTextMulti(Composite parent, boolean hScroll, boolean vScroll, String bindingId) {
-		Text text = createTextMulti(parent, hScroll, vScroll);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(text, bindingId);
-		return text;
-	}
-
-	/**
 	 * @since 1.2
 	 */
-	public static Browser createBrowser(Composite parent, int style) {
-		return new Browser(parent, style);
+	public static Text createTextMultiWrap(Composite parent, boolean hScroll, boolean vScroll) {
+		return createTextMulti(parent, SWT.WRAP, hScroll, vScroll);
+	}
+
+	public static Text createTextNumeric(Composite parent) {
+		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
+		result.setData(KEY_TYPE, TYPE_NUMERIC);
+		return result;
 	}
 
 	/**
-	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
-	 * @wbp.factory.parameter.source bindingId "myBrowserId"
-	 * @since 1.2
+	 * @wbp.factory.parameter.source bindingId "myTextNumericId"
 	 */
-	public static Browser createBrowser(Composite parent, int style, String bindingId) {
-		Browser result = createBrowser(parent, style);
+	public static Text createTextNumeric(Composite parent, String bindingId) {
+		Text result = createTextNumeric(parent);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
 		return result;
-	}
-
-	public static Button createButton(Composite parent) {
-		Button button = new Button(parent, SWT.PUSH);
-		button.setBackground(SHARED_BG_COLOR);
-		return button;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source text "myButtonText"
-	 */
-	public static Button createButton(Composite parent, String text) {
-		Button result = new Button(parent, SWT.PUSH);
-		result.setText(text);
-		return result;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source text "myButtonText"
-	 * @wbp.factory.parameter.source bindingId "myButtonId"
-	 */
-	public static Button createButton(Composite parent, String text, String bindingId) {
-		Button result = createButton(parent, text);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
-	}
-
-	public static Button createButtonToggle(Composite parent) {
-		return new Button(parent, SWT.TOGGLE);
-	}
-
-	/**
-	 * @wbp.factory.parameter.source bindingId "myButtonToggleId"
-	 */
-	public static Button createButtonToggle(Composite parent, String bindingId) {
-		Button button = createButtonToggle(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, bindingId);
-		return button;
-	}
-
-	public static Button createButtonCheck(Composite parent) {
-		Button button = new Button(parent, SWT.CHECK);
-		button.setBackground(SHARED_BG_COLOR);
-		return button;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source bindingId "myButtonCheckId"
-	 */
-	public static Button createButtonCheck(Composite parent, String bindingId) {
-		Button button = createButtonCheck(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, bindingId);
-		return button;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source text "myButtonCheckText"
-	 * @wbp.factory.parameter.source bindingId "myButtonCheckId"
-	 * @since 2.0
-	 */
-	public static Button createButtonCheck(Composite parent, String text, String bindingId) {
-		Button button = createButtonCheck(parent, bindingId);
-		button.setText(text);
-		return button;
-	}
-
-	public static Button createButtonRadio(Composite parent) {
-		Button button = new Button(parent, SWT.RADIO);
-		button.setBackground(SHARED_BG_COLOR);
-		return button;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source bindingId "myButtonRadioId"
-	 */
-	public static Button createButtonRadio(Composite parent, String bindingId) {
-		Button button = createButtonRadio(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, bindingId);
-		return button;
-	}
-
-	/**
-	 * Creates a button with only an image (no border, no text).
-	 * 
-	 * @param parent
-	 *            a composite control which will be the parent of the new
-	 *            instance (cannot be null)
-	 * @param image
-	 *            image of the button
-	 * @param style
-	 *            the style of image button to construct
-	 * @param bindingId
-	 *            the binding ID
-	 * @return image button
-	 * 
-	 */
-	public static ImageButton createImageButton(Composite parent, Image image, int style, String bindingId) {
-		ImageButton btn = createImageButton(parent, style, bindingId);
-		btn.setImage(image);
-		return btn;
-	}
-
-	/**
-	 * Creates a button that only display an image (no border, no text).
-	 * 
-	 * @param parent
-	 *            a composite control which will be the parent of the new
-	 *            instance (cannot be null)
-	 * @param style
-	 *            the style of image button to construct
-	 * @param bindingId
-	 *            the binding ID
-	 * @return image button
-	 * 
-	 */
-	public static ImageButton createImageButton(Composite parent, int style, String bindingId) {
-		ImageButton btn = createImageButton(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(btn, bindingId);
-		return btn;
-	}
-
-	/**
-	 * Creates a button that only display an image (no border, no text).
-	 * 
-	 * @param parent
-	 *            a composite control which will be the parent of the new
-	 *            instance (cannot be null)
-	 * @param style
-	 *            the style of image button to construct
-	 * @return image button
-	 * 
-	 */
-	public static ImageButton createImageButton(Composite parent, int style) {
-		ImageButton btn = new ImageButton(parent, style);
-		btn.setBackground(SHARED_BG_COLOR);
-		return btn;
-	}
-
-	public static DateTime createCalendar(Composite parent) {
-		DateTime result = new DateTime(parent, SWT.CALENDAR);
-		result.setBackground(SHARED_BG_COLOR);
-		return result;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source bindingId "myCalendarId"
-	 */
-	public static DateTime createCalendar(Composite parent, String bindingId) {
-		DateTime result = createCalendar(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
-	}
-
-	/**
-	 * @since 1.2
-	 */
-	public static CCombo createCCombo(Composite parent) {
-		CCombo result = new CCombo(parent, SWT.BORDER | SWT.READ_ONLY);
-		result.setBackground(SHARED_BG_COLOR);
-		return result;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source bindingId "myComboId"
-	 * @since 1.2
-	 */
-	public static CCombo createCCombo(Composite parent, String bindingId) {
-		CCombo combo = createCCombo(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
-		return combo;
-	}
-
-	public static Combo createCombo(Composite parent) {
-		return new Combo(parent, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
-	}
-
-	/**
-	 * @wbp.factory.parameter.source bindingId "myComboId"
-	 */
-	public static Combo createCombo(Composite parent, String bindingId) {
-		Combo combo = createCombo(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
-		return combo;
-	}
-
-	public static Composite createComposite(Composite parent) {
-		return createComposite(parent, SWT.NONE);
-	}
-
-	/**
-	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
-	 */
-	public static Composite createComposite(Composite parent, int style) {
-		Composite composite = new Composite(parent, style);
-		composite.setBackground(SHARED_BG_COLOR);
-		return composite;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
-	 * @wbp.factory.parameter.source bindingId "myCompositeId"
-	 * @since 2.0
-	 */
-	public static Composite createComposite(Composite parent, int style, String bindingId) {
-		Composite composite = createComposite(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(composite, bindingId);
-		return composite;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
-	 */
-	// TODO [ev] find another home for this -- enter into migration guide
-	//	public static CompositeTable createCompositeTable(Composite parent, int style) {
-	//		CompositeTable result = new CompositeTable(parent, style);
-	//		result.setBackground(SHARED_BG_COLOR);
-	//		return result;
-	//	}
-
-	/**
-	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
-	 * @wbp.factory.parameter.source multipleSelection false
-	 */
-	public static ChoiceComposite createChoiceComposite(Composite parent, int style, boolean multipleSelection) {
-		return new ChoiceComposite(parent, style, multipleSelection);
-	}
-
-	/**
-	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
-	 * @wbp.factory.parameter.source multipleSelection false
-	 * @wbp.factory.parameter.source bindingId "myChoiceCompositeId"
-	 */
-	public static ChoiceComposite createChoiceComposite(Composite parent, int style, boolean multipleSelection,
-			String bindingId) {
-		ChoiceComposite composite = createChoiceComposite(parent, style, multipleSelection);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(composite, bindingId);
-		return composite;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.MEDIUM
-	 */
-	public static DateTime createDate(Composite parent, int style) {
-		DateTime result = new DateTime(parent, SWT.DATE | SWT.DROP_DOWN | style);
-		result.setBackground(SHARED_BG_COLOR);
-		return result;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.MEDIUM
-	 * @wbp.factory.parameter.source bindingId "myDateTimeId"
-	 */
-	public static DateTime createDate(Composite parent, int style, String bindingId) {
-		DateTime result = createDate(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source text "myGroupText"
-	 */
-	public static Group createGroup(Composite parent, String text) {
-		Group result = new Group(parent, SWT.NONE);
-		result.setText(text);
-		result.setBackground(SHARED_BG_COLOR);
-		return result;
-	}
-
-	/**
-	 * @wbp.factory.parameter.source text "myGroupText"
-	 * @wbp.factory.parameter.source bindingId "myGroupId"
-	 * @since 2.0
-	 */
-	public static Group createGroup(Composite parent, String text, String bindingId) {
-		Group result = createGroup(parent, text);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
-	}
-
-	public static List createList(Composite parent, boolean hScroll, boolean vScroll) {
-		int style = SWT.BORDER | SWT.MULTI;
-		if (hScroll) {
-			style |= SWT.H_SCROLL;
-		}
-		if (vScroll) {
-			style |= SWT.V_SCROLL;
-		}
-		return new List(parent, style);
-	}
-
-	/**
-	 * @wbp.factory.parameter.source bindingId "myListId"
-	 */
-	public static List createList(Composite parent, boolean hScroll, boolean vScroll, String bindingId) {
-		List list = createList(parent, hScroll, vScroll);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(list, bindingId);
-		return list;
-	}
-
-	public static MasterDetailsComposite createMasterDetails(Composite parent) {
-		return new MasterDetailsComposite(parent, SWT.NONE);
-	}
-
-	/**
-	 * @wbp.factory.parameter.source bindingId "myMasterDetailId"
-	 */
-	public static MasterDetailsComposite createMasterDetails(Composite parent, String bindingId) {
-		MasterDetailsComposite masterDetails = new MasterDetailsComposite(parent, SWT.NONE);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(masterDetails, bindingId);
-		return masterDetails;
-	}
-
-	public static MessageBox createMessageBox(Composite parent) {
-		return new MessageBox(parent);
-	}
-
-	public static Shell createShell(Display display) {
-		Assert.isNotNull(display);
-		Shell shell = new Shell(display);
-		shell.setBackground(SHARED_BG_COLOR);
-		return shell;
 	}
 
 	/**
@@ -691,21 +705,10 @@ public class UIControlsFactory {
 		return tree;
 	}
 
-	/**
-	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
-	 */
-	public static Table createTable(Composite parent, int style) {
-		return new Table(parent, style);
-	}
-
-	/**
-	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
-	 * @wbp.factory.parameter.source bindingId "myTableId"
-	 */
-	public static Table createTable(Composite parent, int style, String bindingId) {
-		Table table = createTable(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(table, bindingId);
-		return table;
+	public static int getHeightHint(List list, int numItems) {
+		Assert.isLegal(numItems > 0, "numItems must be greater than 0"); //$NON-NLS-1$
+		int items = list.getItemHeight() * numItems;
+		return items;
 	}
 
 	public static int getWidthHint(Button button) {
@@ -732,10 +735,10 @@ public class UIControlsFactory {
 		}
 	}
 
-	public static int getHeightHint(List list, int numItems) {
-		Assert.isLegal(numItems > 0, "numItems must be greater than 0"); //$NON-NLS-1$
-		int items = list.getItemHeight() * numItems;
-		return items;
+	/**
+	 * @since 1.2
+	 */
+	protected UIControlsFactory() {
 	}
 
 }

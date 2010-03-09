@@ -77,16 +77,16 @@ public class RidgetsSubModuleView extends SubModuleView {
 		Group buttonGroup = UIControlsFactory.createGroup(parent, "Buttons"); //$NON-NLS-1$
 		buttonGroup.setLayout(new RowLayout(SWT.VERTICAL));
 
-		UIControlsFactory.createButtonToggle(buttonGroup, "toggleOne"); //$NON-NLS-1$
+		UIControlsFactory.createButtonToggle(buttonGroup, "", "toggleOne"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		Button toggleTwo = UIControlsFactory.createButtonToggle(buttonGroup, "toggleTwo"); //$NON-NLS-1$
+		Button toggleTwo = UIControlsFactory.createButtonToggle(buttonGroup, "", "toggleTwo"); //$NON-NLS-1$ //$NON-NLS-2$
 		Display display = parent.getDisplay();
 		Image image = display.getSystemImage(SWT.ICON_QUESTION);
 		Assert.isTrue(scaledQuestionImage == null);
 		scaledQuestionImage = new Image(display, image.getImageData().scaledTo(16, 16));
 		toggleTwo.setImage(scaledQuestionImage);
 
-		UIControlsFactory.createButtonCheck(buttonGroup, "checkOne"); //$NON-NLS-1$
+		UIControlsFactory.createButtonCheck(buttonGroup, "", "checkOne"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		UIControlsFactory.createButton(buttonGroup, "", "buttonOne"); //$NON-NLS-1$ //$NON-NLS-2$
 

@@ -20,7 +20,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.nebula.widgets.compositetable.ResizableGridRowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
@@ -72,10 +71,10 @@ public class MarkerSubModuleView extends SubModuleView {
 		Group group = UIControlsFactory.createGroup(parent, "Marker Options:"); //$NON-NLS-1$
 		group.setLayout(createGridLayout(4));
 
-		UIControlsFactory.createButtonCheck(group, "checkMandatory");//$NON-NLS-1$
-		UIControlsFactory.createButtonCheck(group, "checkError"); //$NON-NLS-1$
-		UIControlsFactory.createButtonCheck(group, "checkDisabled"); //$NON-NLS-1$
-		UIControlsFactory.createButtonCheck(group, "checkOutput"); //$NON-NLS-1$
+		UIControlsFactory.createButtonCheck(group, "&mandatory", "checkMandatory");//$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonCheck(group, "&error", "checkError"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonCheck(group, "&disabled", "checkDisabled"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonCheck(group, "&output", "checkOutput"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return group;
 	}
@@ -84,8 +83,8 @@ public class MarkerSubModuleView extends SubModuleView {
 		Group group = UIControlsFactory.createGroup(parent, "Visibility Options:"); //$NON-NLS-1$
 		group.setLayout(createGridLayout(2));
 
-		UIControlsFactory.createButtonCheck(group, "checkHidden"); //$NON-NLS-1$
-		UIControlsFactory.createButtonCheck(group, "checkHiddenParent"); //$NON-NLS-1$
+		UIControlsFactory.createButtonCheck(group, "&hidden", "checkHidden"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonCheck(group, "hidden &parent", "checkHiddenParent"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return group;
 	}
@@ -99,7 +98,7 @@ public class MarkerSubModuleView extends SubModuleView {
 		GridDataFactory hFillFactory = GridDataFactory.fillDefaults().grab(true, false);
 
 		UIControlsFactory.createLabel(group, "Name:", "labeltextName"); //$NON-NLS-1$ //$NON-NLS-2$
-		Text textName = UIControlsFactory.createText(group, SWT.SINGLE | SWT.BORDER, "textName"); //$NON-NLS-1$
+		Text textName = UIControlsFactory.createText(group, SWT.SINGLE, "textName"); //$NON-NLS-1$
 		hFillFactory.applyTo(textName);
 
 		UIControlsFactory.createLabel(group, "Price:", "labeltextPrice"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -119,11 +118,11 @@ public class MarkerSubModuleView extends SubModuleView {
 		UIControlsFactory.createDatePickerComposite(cmpDate, "dtPicker"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Age:", "labelcomboAge"); //$NON-NLS-1$ //$NON-NLS-2$
-		final Combo comboAge = UIControlsFactory.createCombo(group, "comboAge"); //$NON-NLS-1$
+		Combo comboAge = UIControlsFactory.createCombo(group, "comboAge"); //$NON-NLS-1$
 		hFillFactory.applyTo(comboAge);
 
 		UIControlsFactory.createLabel(group, "Size:", "labelccomboSize"); //$NON-NLS-1$ //$NON-NLS-2$
-		final CCombo ccomboSize = UIControlsFactory.createCCombo(group, "ccomboSize"); //$NON-NLS-1$
+		CCombo ccomboSize = UIControlsFactory.createCCombo(group, "ccomboSize"); //$NON-NLS-1$
 		hFillFactory.applyTo(ccomboSize);
 
 		UIControlsFactory.createLabel(group, "Type:", "labelchoiceType"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -175,18 +174,13 @@ public class MarkerSubModuleView extends SubModuleView {
 		trc2.setWidth(40);
 		hFillFactory.hint(200, hHint).applyTo(treeWCols);
 
-		UIControlsFactory.createLabel(cmpReviewed2, ""); //$NON-NLS-1$
-
 		UIControlsFactory.createLabel(group, "Buttons:", "labelbuttonToggle"); //$NON-NLS-1$ //$NON-NLS-2$
 		Composite cmpButtons = createComposite(group, 5, false);
-		UIControlsFactory.createButtonToggle(cmpButtons, "buttonToggle"); //$NON-NLS-1$
+		UIControlsFactory.createButtonToggle(cmpButtons, "Toggle", "buttonToggle"); //$NON-NLS-1$ //$NON-NLS-2$
 		UIControlsFactory.createButton(cmpButtons, "Push", "buttonPush"); //$NON-NLS-1$ //$NON-NLS-2$
-		Button buttonRadioA = UIControlsFactory.createButtonRadio(cmpButtons, "buttonRadioA"); //$NON-NLS-1$
-		buttonRadioA.setText("Radio A"); //$NON-NLS-1$
-		Button buttonRadioB = UIControlsFactory.createButtonRadio(cmpButtons, "buttonRadioB"); //$NON-NLS-1$
-		buttonRadioB.setText("Radio B"); //$NON-NLS-1$
-		Button buttonCheck = UIControlsFactory.createButtonCheck(cmpButtons, "buttonCheck"); //$NON-NLS-1$
-		buttonCheck.setText("Check"); //$NON-NLS-1$
+		UIControlsFactory.createButtonRadio(cmpButtons, "Radio A", "buttonRadioA"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonRadio(cmpButtons, "Radio B", "buttonRadioB"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonCheck(cmpButtons, "Check", "buttonCheck"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return group;
 	}

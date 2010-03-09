@@ -214,7 +214,7 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView {
 		//		tableList.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
 		GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.FILL).grab(true, false).applyTo(tableList);
 
-		Button toggleButton = UIControlsFactory.createButtonToggle(parent, "toggleButton"); //$NON-NLS-1$
+		Button toggleButton = UIControlsFactory.createButtonToggle(parent, "", "toggleButton"); //$NON-NLS-1$ //$NON-NLS-2$
 		toggleButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 
 		Button tableButton = UIControlsFactory.createButton(parent, "copy selection", "copySelectionButton"); //$NON-NLS-1$ //$NON-NLS-2$

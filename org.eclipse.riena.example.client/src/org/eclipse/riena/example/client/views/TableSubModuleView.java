@@ -79,7 +79,7 @@ public class TableSubModuleView extends SubModuleView {
 		Composite buttonComposite = UIControlsFactory.createComposite(group);
 		GridLayoutFactory.fillDefaults().numColumns(4).equalWidth(false).applyTo(buttonComposite);
 
-		Button buttonPrintSelection = UIControlsFactory.createButtonCheck(buttonComposite, "buttonPrintSelection"); //$NON-NLS-1$
+		Button buttonPrintSelection = UIControlsFactory.createButtonCheck(buttonComposite, "", "buttonPrintSelection"); //$NON-NLS-1$ //$NON-NLS-2$
 		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.CENTER).hint(120, SWT.DEFAULT).applyTo(
 				buttonPrintSelection);
 

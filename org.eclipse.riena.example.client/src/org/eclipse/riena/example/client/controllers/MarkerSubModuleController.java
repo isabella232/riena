@@ -159,7 +159,6 @@ public class MarkerSubModuleController extends SubModuleController {
 		treeWCols.updateFromModel();
 
 		final IToggleButtonRidget buttonToggle = getRidget(IToggleButtonRidget.class, "buttonToggle"); //$NON-NLS-1$
-		buttonToggle.setText("Toggle"); //$NON-NLS-1$
 		buttonToggle.setSelected(true);
 		final IActionRidget buttonPush = getRidget(IActionRidget.class, "buttonPush"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonRadioA = getRidget(IToggleButtonRidget.class, "buttonRadioA"); //$NON-NLS-1$
@@ -177,7 +176,6 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IToggleButtonRidget checkHidden = getRidget(IToggleButtonRidget.class, "checkHidden"); //$NON-NLS-1$
 		final IToggleButtonRidget checkHiddenParent = getRidget(IToggleButtonRidget.class, "checkHiddenParent"); //$NON-NLS-1$
 
-		checkMandatory.setText("&mandatory"); //$NON-NLS-1$
 		checkMandatory.addListener(new IActionListener() {
 			public void callback() {
 				boolean isMandatory = checkMandatory.isSelected();
@@ -212,7 +210,6 @@ public class MarkerSubModuleController extends SubModuleController {
 			}
 		});
 
-		checkError.setText("&error"); //$NON-NLS-1$
 		checkError.addListener(new IActionListener() {
 			private IValidator alwaysWrong = new AlwaysWrongValidator();
 
@@ -241,16 +238,9 @@ public class MarkerSubModuleController extends SubModuleController {
 			}
 		});
 
-		checkDisabled.setText("&disabled"); //$NON-NLS-1$
 		checkDisabled.addListener(new DisabledActionListener(markables, checkDisabled));
-
-		checkOutput.setText("&output"); //$NON-NLS-1$
 		checkOutput.addListener(new OutputActionListener(markables, checkOutput));
-
-		checkHidden.setText("&hidden"); //$NON-NLS-1$
 		checkHidden.addListener(new HiddenActionListener(checkHidden, markables));
-
-		checkHiddenParent.setText("&hidden parent"); //$NON-NLS-1$
 		checkHiddenParent.addListener(new HiddenParentActionListener(checkHiddenParent, markables));
 
 		getNavigationNode().addSimpleListener(new SimpleNavigationNodeAdapter() {

@@ -13,9 +13,7 @@ package org.eclipse.riena.sample.app.client.rcpmail;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -61,29 +59,21 @@ public class MarkerSubModuleView extends SubModuleView {
 
 	private Group createMarkerOptionsGroup(Composite parent) {
 		Group group = UIControlsFactory.createGroup(parent, "Marker Options:"); //$NON-NLS-1$
-		group.setLayout(createFillLayout());
+		group.setLayout(createGridLayout(4));
 
-		Button checkMandatory = UIControlsFactory.createButtonCheck(group);
-		addUIControl(checkMandatory, "checkMandatory"); //$NON-NLS-1$
-
-		Button checkError = UIControlsFactory.createButtonCheck(group);
-		addUIControl(checkError, "checkError"); //$NON-NLS-1$
-
-		Button checkDisabled = UIControlsFactory.createButtonCheck(group);
-		addUIControl(checkDisabled, "checkDisabled"); //$NON-NLS-1$
-
-		Button checkOutput = UIControlsFactory.createButtonCheck(group);
-		addUIControl(checkOutput, "checkOutput"); //$NON-NLS-1$
+		UIControlsFactory.createButtonCheck(group, "&mandatory", "checkMandatory");//$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonCheck(group, "&error", "checkError"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonCheck(group, "&disabled", "checkDisabled"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonCheck(group, "&output", "checkOutput"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return group;
 	}
 
 	private Group createVisibilityOptionsGroup(Composite parent) {
 		Group group = UIControlsFactory.createGroup(parent, "Visibility Options:"); //$NON-NLS-1$
-		group.setLayout(createFillLayout());
+		group.setLayout(createGridLayout(1));
 
-		Button checkHidden = UIControlsFactory.createButtonCheck(group);
-		addUIControl(checkHidden, "checkHidden"); //$NON-NLS-1$
+		UIControlsFactory.createButtonCheck(group, "&hidden", "checkHidden"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return group;
 	}
@@ -94,46 +84,38 @@ public class MarkerSubModuleView extends SubModuleView {
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
 
-		Composite composite;
 		GridDataFactory hFillFactory = GridDataFactory.fillDefaults().grab(true, false);
 
-		UIControlsFactory.createLabel(group, "Name:"); //$NON-NLS-1$
-		Text textName = UIControlsFactory.createText(group);
+		UIControlsFactory.createLabel(group, "Name:", "labeltextName"); //$NON-NLS-1$ //$NON-NLS-2$
+		Text textName = UIControlsFactory.createText(group, SWT.SINGLE, "textName"); //$NON-NLS-1$
 		hFillFactory.applyTo(textName);
-		addUIControl(textName, "textName"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Price:"); //$NON-NLS-1$
-		Text textPrice = UIControlsFactory.createTextDecimal(group);
+		UIControlsFactory.createLabel(group, "Price:", "labeltextPrice"); //$NON-NLS-1$ //$NON-NLS-2$
+		Text textPrice = UIControlsFactory.createTextDecimal(group, "textPrice"); //$NON-NLS-1$
 		hFillFactory.applyTo(textPrice);
-		addUIControl(textPrice, "textPrice"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Age:"); //$NON-NLS-1$
-		final Combo comboAge = UIControlsFactory.createCombo(group);
+		UIControlsFactory.createLabel(group, "Age:", "labelcomboAge"); //$NON-NLS-1$ //$NON-NLS-2$
+		Combo comboAge = UIControlsFactory.createCombo(group, "comboAge"); //$NON-NLS-1$
 		hFillFactory.applyTo(comboAge);
-		addUIControl(comboAge, "comboAge"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Type:"); //$NON-NLS-1$
-		ChoiceComposite choiceType = new ChoiceComposite(group, SWT.BORDER, false);
+		UIControlsFactory.createLabel(group, "Type:", "labelchoiceType"); //$NON-NLS-1$ //$NON-NLS-2$
+		ChoiceComposite choiceType = UIControlsFactory.createChoiceComposite(group, SWT.BORDER, false, "choiceType"); //$NON-NLS-1$
 		choiceType.setOrientation(SWT.HORIZONTAL);
-		addUIControl(choiceType, "choiceType"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Flavor:"); //$NON-NLS-1$
-		ChoiceComposite choiceFlavor = new ChoiceComposite(group, SWT.BORDER, true);
+		UIControlsFactory.createLabel(group, "Flavor:", "labelchoiceFlavor"); //$NON-NLS-1$ //$NON-NLS-2$
+		ChoiceComposite choiceFlavor = UIControlsFactory.createChoiceComposite(group, SWT.BORDER, true, "choiceFlavor"); //$NON-NLS-1$
 		choiceFlavor.setOrientation(SWT.HORIZONTAL);
-		addUIControl(choiceFlavor, "choiceFlavor"); //$NON-NLS-1$
 
-		Label lblReviewed = UIControlsFactory.createLabel(group, "Reviewed by:"); //$NON-NLS-1$
+		Label lblReviewed = UIControlsFactory.createLabel(group, "Reviewed by:", "labellistPersons"); //$NON-NLS-1$ //$NON-NLS-2$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblReviewed);
-		composite = createComposite(group);
+		Composite cmpReviewed = createComposite(group);
 
-		List listPersons = UIControlsFactory.createList(composite, false, true);
+		List listPersons = UIControlsFactory.createList(cmpReviewed, false, true, "listPersons"); //$NON-NLS-1$
 		int hHint = UIControlsFactory.getHeightHint(listPersons, 5);
 		hFillFactory.hint(150, hHint).applyTo(listPersons);
-		addUIControl(listPersons, "listPersons"); //$NON-NLS-1$
 
-		Table tablePersons = new Table(composite, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
+		Table tablePersons = new Table(cmpReviewed, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 		tablePersons.setLinesVisible(true);
-		tablePersons.setHeaderVisible(true);
 		TableColumn tac1 = new TableColumn(tablePersons, SWT.NONE);
 		tac1.setWidth(100);
 		TableColumn tac2 = new TableColumn(tablePersons, SWT.NONE);
@@ -141,11 +123,11 @@ public class MarkerSubModuleView extends SubModuleView {
 		hFillFactory.hint(170, hHint).applyTo(tablePersons);
 		addUIControl(tablePersons, "tablePersons"); //$NON-NLS-1$
 
-		Tree treePersons = new Tree(composite, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
+		Tree treePersons = UIControlsFactory.createTree(cmpReviewed, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION,
+				"treePersons"); //$NON-NLS-1$
 		hFillFactory.hint(150, hHint).applyTo(treePersons);
-		addUIControl(treePersons, "treePersons"); //$NON-NLS-1$
 
-		Tree treeWCols = new Tree(composite, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
+		Tree treeWCols = new Tree(cmpReviewed, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
 		treeWCols.setLinesVisible(true);
 		treeWCols.setHeaderVisible(true);
 		TreeColumn trc1 = new TreeColumn(treeWCols, SWT.NONE);
@@ -155,22 +137,13 @@ public class MarkerSubModuleView extends SubModuleView {
 		hFillFactory.hint(200, hHint).applyTo(treeWCols);
 		addUIControl(treeWCols, "treeWCols"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Buttons:"); //$NON-NLS-1$
-		composite = createComposite(group);
-		Button buttonToggle = UIControlsFactory.createButtonToggle(composite);
-		addUIControl(buttonToggle, "buttonToggle"); //$NON-NLS-1$
-		Button buttonPush = UIControlsFactory.createButton(composite);
-		buttonPush.setText("Push"); //$NON-NLS-1$
-		addUIControl(buttonPush, "buttonPush"); //$NON-NLS-1$
-		Button buttonRadioA = UIControlsFactory.createButtonRadio(composite);
-		buttonRadioA.setText("Radio A"); //$NON-NLS-1$
-		addUIControl(buttonRadioA, "buttonRadioA"); //$NON-NLS-1$
-		Button buttonRadioB = UIControlsFactory.createButtonRadio(composite);
-		buttonRadioB.setText("Radio B"); //$NON-NLS-1$
-		addUIControl(buttonRadioB, "buttonRadioB"); //$NON-NLS-1$
-		Button buttonCheck = UIControlsFactory.createButtonCheck(composite);
-		buttonCheck.setText("Check"); //$NON-NLS-1$
-		addUIControl(buttonCheck, "buttonCheck"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Buttons:", "labelbuttonToggle"); //$NON-NLS-1$ //$NON-NLS-2$
+		Composite cmpButtons = createComposite(group);
+		UIControlsFactory.createButtonToggle(cmpButtons, "Toggle", "buttonToggle"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButton(cmpButtons, "Push", "buttonPush"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonRadio(cmpButtons, "Radio A", "buttonRadioA"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonRadio(cmpButtons, "Radio B", "buttonRadioB"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonCheck(cmpButtons, "Check", "buttonCheck"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return group;
 	}
@@ -186,8 +159,8 @@ public class MarkerSubModuleView extends SubModuleView {
 		return composite;
 	}
 
-	private FillLayout createFillLayout() {
-		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
+	private GridLayout createGridLayout(int numColumns) {
+		GridLayout layout = new GridLayout(numColumns, false);
 		layout.marginWidth = 20;
 		layout.marginHeight = 20;
 		return layout;
