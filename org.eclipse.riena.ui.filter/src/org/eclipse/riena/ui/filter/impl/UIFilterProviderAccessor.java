@@ -16,6 +16,7 @@ import org.eclipse.riena.ui.filter.IUIFilterProvider;
 /**
  *
  */
+@Deprecated
 public final class UIFilterProviderAccessor {
 
 	/**
