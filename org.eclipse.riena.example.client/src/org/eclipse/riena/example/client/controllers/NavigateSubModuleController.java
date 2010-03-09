@@ -54,11 +54,11 @@ public class NavigateSubModuleController extends SubModuleController {
 		openAsFirstModule.addListener(new OpenModuleAsFirstListener());
 
 		IActionRidget openAsFirstSubModule = getRidget(IActionRidget.class, "openAsFirstSubModule"); //$NON-NLS-1$
-		openAsFirstSubModule.setText("Open SubModule As FIRST [create Combo And List Before]"); //$NON-NLS-1$
+		openAsFirstSubModule.setText("Open SubModule As FIRST in 'Combo And List'"); //$NON-NLS-1$
 		openAsFirstSubModule.addListener(new OpenSubModuleAsFirstListener());
 
 		IActionRidget openAsThirdSubModule = getRidget(IActionRidget.class, "openAsThirdSubModule"); //$NON-NLS-1$
-		openAsThirdSubModule.setText("Open SubModule As THIRD [create Combo And List Before]"); //$NON-NLS-1$
+		openAsThirdSubModule.setText("Open SubModule As THIRD in 'Combo And List'"); //$NON-NLS-1$
 		openAsThirdSubModule.addListener(new OpenSubModuleAsThirdListener());
 
 		final PersonModificationBean bean = new PersonModificationBean();

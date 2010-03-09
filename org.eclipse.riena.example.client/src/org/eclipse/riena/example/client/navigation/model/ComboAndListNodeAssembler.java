@@ -85,7 +85,8 @@ public class ComboAndListNodeAssembler extends AbstractNavigationAssembler {
 		if (knownTargetIds == null) {
 			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigate.comboAndList", //$NON-NLS-1$
 					"org.eclipse.riena.example.combo", //$NON-NLS-1$
-					"org.eclipse.riena.example.listdemo" //$NON-NLS-1$
+					"org.eclipse.riena.example.listdemo", //$NON-NLS-1$
+					"org.eclipse.riena.example.navigate.comboAndListGroup" //$NON-NLS-1$
 			));
 			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
 		}

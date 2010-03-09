@@ -789,7 +789,7 @@
       <assembly
             id="org.eclipse.riena.example.navigate.firstmodule"
             assembler="org.eclipse.riena.example.client.navigation.model.FirstModuleAssembler"
-            parentTypeId="org.eclipse.riena.example.navigate.comboAndList">
+            parentTypeId="org.eclipse.riena.example.navigate.comboAndListGroup">
       </assembly>
       
       <assembly
