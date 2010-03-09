@@ -777,13 +777,13 @@
       <assembly
             id="org.eclipse.riena.example.navigate.firstSubModule"
             assembler="org.eclipse.riena.example.client.navigation.model.ComboAssembler"
-            parentTypeId="org.eclipse.riena.example.list">
+            parentTypeId="org.eclipse.riena.example.listdemo">
       </assembly>
       
       <assembly
             id="org.eclipse.riena.example.navigate.thirdSubModule"
             assembler="org.eclipse.riena.example.client.navigation.model.ComboAssemblerAsThirdSubModule"
-            parentTypeId="org.eclipse.riena.example.list">
+            parentTypeId="org.eclipse.riena.example.listdemo">
       </assembly>
       
       <assembly
