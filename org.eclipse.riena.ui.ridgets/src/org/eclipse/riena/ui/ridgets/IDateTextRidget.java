@@ -13,25 +13,26 @@ package org.eclipse.riena.ui.ridgets;
 /**
  * Ridget for a date text field.
  * <p>
- * Input must conform to the format given via {@link #setFormat(String)}.
+ * Input must conform to the formatting pattern given via
+ * {@link #setFormat(String)}.
  */
 public interface IDateTextRidget extends ITextRidget {
 
-	/** <code>FORMAT_DDMMYYYY</code> = {@value} */
+	/** Formatting pattern for {@value} . See {@link #setFormat(String)}. */
 	String FORMAT_DDMMYYYY = "dd.MM.yyyy"; //$NON-NLS-1$
-	/** <code>FORMAT_DDMMYY</code> = {@value} */
+	/** Formatting pattern for {@value} . See {@link #setFormat(String)}. */
 	String FORMAT_DDMMYY = "dd.MM.yy"; //$NON-NLS-1$
-	/** <code>FORMAT_DDMM</code> = {@value} */
+	/** Formatting pattern for {@value} . See {@link #setFormat(String)}. */
 	String FORMAT_DDMM = "dd.MM"; //$NON-NLS-1$
-	/** <code>FORMAT_MMYYYY</code> = {@value} */
+	/** Formatting pattern for {@value} . See {@link #setFormat(String)}. */
 	String FORMAT_MMYYYY = "MM.yyyy"; //$NON-NLS-1$
-	/** <code>FORMAT_YYYY</code> = {@value} */
+	/** Formatting pattern for {@value} . See {@link #setFormat(String)}. */
 	String FORMAT_YYYY = "yyyy"; //$NON-NLS-1$
-	/** <code>FORMAT_HHMMSS</code> = {@value} */
+	/** Formatting pattern for {@value} . See {@link #setFormat(String)}. */
 	String FORMAT_HHMMSS = "HH:mm:ss"; //$NON-NLS-1$
-	/** <code>FORMAT_HHMM</code> = {@value} */
+	/** Formatting pattern for {@value} . See {@link #setFormat(String)}. */
 	String FORMAT_HHMM = "HH:mm"; //$NON-NLS-1$
-	/** <code>FORMAT_DDMMYYYYHHMM</code> = {@value} */
+	/** Formatting pattern for {@value} . See {@link #setFormat(String)}. */
 	String FORMAT_DDMMYYYYHHMM = "dd.MM.yyyy HH:mm"; //$NON-NLS-1$
 
 	/**
