@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.example.client.nls;
+package org.eclipse.riena.example.client.nls;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -16,7 +16,7 @@ import org.eclipse.osgi.util.NLS;
  * Provides internationalized UI strings.
  */
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.riena.internal.example.client.nls.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.riena.example.client.nls.messages"; //$NON-NLS-1$
 
 	// example:
 	// public static String MasterDetailsRidget_dialogTitle_applyFailed;

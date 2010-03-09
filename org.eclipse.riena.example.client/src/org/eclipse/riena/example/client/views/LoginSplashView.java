@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.example.client.controllers.LoginDialogController;
-import org.eclipse.riena.internal.example.client.nls.Messages;
+import org.eclipse.riena.example.client.nls.Messages;
 import org.eclipse.riena.navigation.ui.swt.login.AbstractLoginSplashView;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
