@@ -150,6 +150,8 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 
 		private IProgressMonitor delegate;
 
+		private boolean done;
+
 		public ThreadSwitcher(IProgressMonitor wrappedMonitor) {
 			this.delegate = wrappedMonitor;
 		}
@@ -176,12 +178,15 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 
 		@Override
 		public void done() {
-			synchronize(new Runnable() {
+			if (!done) {
+				synchronize(new Runnable() {
 
-				public void run() {
-					delegate.done();
-				}
-			});
+					public void run() {
+						delegate.done();
+					}
+				});
+				done = true;
+			}
 		}
 
 		public void synchronize(Runnable runnable) {
