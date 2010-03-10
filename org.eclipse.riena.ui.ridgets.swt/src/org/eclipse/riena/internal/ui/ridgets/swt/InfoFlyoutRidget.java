@@ -31,13 +31,13 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidget {
 
 	private InfoFlyout infoFlyout;
-	private BlockingQueue<Info> infos;
+	private BlockingQueue<InfoFlyoutData> infos;
 	private SwtUISynchronizer syncher;
 	private Worker worker = null;
 
 	public InfoFlyoutRidget() {
 		super();
-		infos = new LinkedBlockingQueue<Info>();
+		infos = new LinkedBlockingQueue<InfoFlyoutData>();
 		syncher = new SwtUISynchronizer();
 	}
 
@@ -58,7 +58,7 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 		return locator.locateBindingProperty(getUIControl());
 	}
 
-	public void addInfo(Info info) {
+	public void addInfo(InfoFlyoutData info) {
 		if (worker == null) {
 			worker = new Worker();
 			worker.start();
@@ -81,7 +81,7 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 
 		@Override
 		public void run() {
-			Info info;
+			InfoFlyoutData info;
 			while (true) {
 				try {
 					info = infos.take();
@@ -95,7 +95,7 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 
 		}
 
-		private void processInfo(final Info info) {
+		private void processInfo(final InfoFlyoutData info) {
 
 			infoFlyout.waitForClosing();
 

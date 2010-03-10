@@ -14,7 +14,7 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
-import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget.Info;
+import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget.InfoFlyoutData;
 import org.eclipse.riena.ui.swt.InfoFlyout;
 
 /**
@@ -31,7 +31,7 @@ public class InfoFlyoutSubModuleController extends SubModuleController {
 		button.addListener(new IActionListener() {
 			public void callback() {
 				IInfoFlyoutRidget flyout = getInfoFlyout();
-				Info info = new Info("arrowRight", //$NON-NLS-1$
+				InfoFlyoutData info = new InfoFlyoutData("arrowRight", //$NON-NLS-1$
 						"This is an IInfoFlyout. It can show and image and two lines of text. " + ++counter); //$NON-NLS-1$
 				flyout.addInfo(info);
 			}

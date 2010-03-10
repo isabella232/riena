@@ -22,16 +22,16 @@ public interface IInfoFlyoutRidget extends IRidget {
 
 	public static final int PROPERTY_FYLOUT_FINISHED = 0;
 
-	void addInfo(Info info);
+	void addInfo(InfoFlyoutData info);
 
 	/**
 	 * The info displayed in the {@link InfoFlyout}.
 	 */
-	public class Info {
+	public class InfoFlyoutData {
 		private String message;
 		private String icon;
 
-		public Info(String icon, String message) {
+		public InfoFlyoutData(String icon, String message) {
 			this.icon = icon;
 			this.message = message;
 		}
