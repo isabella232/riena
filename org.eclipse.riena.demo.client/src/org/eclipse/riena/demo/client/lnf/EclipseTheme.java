@@ -76,7 +76,7 @@ public class EclipseTheme extends RienaDefaultTheme {
 
 		String imagePath = "Tabback.png"; //$NON-NLS-1$ 
 		table.put(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(imagePath));
-		imagePath = "Eclipselogo.png"; //$NON-NLS-1$ 
+		imagePath = "EclipseLogo.png"; //$NON-NLS-1$ 
 		table.put(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(imagePath));
 
 		imagePath = "ledred.png"; //$NON-NLS-1$ 
