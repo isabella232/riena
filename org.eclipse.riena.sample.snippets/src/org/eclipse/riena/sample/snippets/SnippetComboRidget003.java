@@ -10,93 +10,64 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.snippets;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.databinding.conversion.IConverter;
+import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.riena.beans.common.ListBean;
-import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
-import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * TODO [ev] javadoc
+ * Designating a 'placeholder' item that is equivalent to no selection.
  */
 public class SnippetComboRidget003 {
 
 	public static void main(String[] args) {
 		Display display = Display.getDefault();
+		new DefaultRealm();
 
 		try {
 			Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetComboRidget003.class.getSimpleName());
 			GridLayoutFactory.swtDefaults().numColumns(2).spacing(5, 5).applyTo(shell);
 
-			UIControlsFactory.createLabel(shell, "Combo:"); //$NON-NLS-1$
-			Combo combo = UIControlsFactory.createCombo(shell);
+			UIControlsFactory.createLabel(shell, "CCombo:"); //$NON-NLS-1$
+			CCombo ccombo = UIControlsFactory.createCCombo(shell);
 
 			UIControlsFactory.createLabel(shell, "Selection:"); //$NON-NLS-1$
-			final Label lblSelection = UIControlsFactory.createLabel(shell, ""); //$NON-NLS-1$
-			GridDataFactory.fillDefaults().grab(true, false).applyTo(lblSelection);
+			Label lblSelection = UIControlsFactory.createLabel(shell, ""); //$NON-NLS-1$
 
-			Button button = UIControlsFactory.createButton(shell, "&Remove Selection"); //$NON-NLS-1$
+			Button button = UIControlsFactory.createButton(shell, "&Reset"); //$NON-NLS-1$
 			GridDataFactory.fillDefaults().span(2, 1).applyTo(button);
 
 			// data model
+			final String emptySelection = "<no selection>"; //$NON-NLS-1$
+			IObservableList input = createInput(emptySelection);
 
-			final ListBean input = createInput();
-			final StringBean selection = new StringBean("Monday"); //$NON-NLS-1$
-
-			// ridgets
-
-			final IComboRidget comboRidget = (IComboRidget) SwtRidgetFactory.createRidget(combo);
-			comboRidget.bindToModel(input, ListBean.PROPERTY_VALUES, String.class, null, selection,
-					StringBean.PROP_VALUE);
-			comboRidget.updateFromModel();
-			comboRidget.setMandatory(true);
-
-			final ILabelRidget labelRidget = (ILabelRidget) SwtRidgetFactory.createRidget(lblSelection);
-			labelRidget.setModelToUIControlConverter(new IConverter() {
-				public Object getToType() {
-					return String.class;
-				}
-
-				public Object getFromType() {
-					return String.class;
-				}
-
-				public Object convert(Object fromObject) {
-					return String.valueOf(fromObject);
-				}
-			});
-			labelRidget.bindToModel(selection, StringBean.PROP_VALUE);
-			labelRidget.updateFromModel();
-			selection.addPropertyChangeListener(new PropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent evt) {
-					labelRidget.updateFromModel();
-					comboRidget.setErrorMarked(selection.getValue() == null);
-				}
-			});
+			final IComboRidget ccomboRidget = (IComboRidget) SwtRidgetFactory.createRidget(ccombo);
+			ccomboRidget.setMandatory(true);
+			ccomboRidget.setEmptySelectionItem(emptySelection);
+			ccomboRidget.bindToModel(input, String.class, null, SWTObservables.observeText(lblSelection));
+			ccomboRidget.updateFromModel();
 
 			IActionRidget actionRidget = (IActionRidget) SwtRidgetFactory.createRidget(button);
 			actionRidget.addListener(new IActionListener() {
 				public void callback() {
-					input.getValues().remove(comboRidget.getSelection());
-					comboRidget.updateFromModel();
+					ccomboRidget.setSelection(emptySelection);
 				}
 			});
 
@@ -112,13 +83,15 @@ public class SnippetComboRidget003 {
 		}
 	}
 
-	private static ListBean createInput() {
+	private static IObservableList createInput(String emptySelection) {
 		List<String> days = new ArrayList<String>();
-		for (String day : new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-				"Sunday" }) { //$NON-NLS-1$
+		String[] values = new String[] { emptySelection,
+				"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"Sunday" }; //$NON-NLS-1$
+		for (String day : values) {
 			days.add(day);
 		}
-		return new ListBean(days);
+		return new WritableList(days, String.class);
 	}
 
 }
