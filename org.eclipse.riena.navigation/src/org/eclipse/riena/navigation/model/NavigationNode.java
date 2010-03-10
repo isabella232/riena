@@ -536,12 +536,17 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	@Override
 	public String toString() {
 		String llabel = getLabel();
-		if (llabel != null) {
-			return llabel;
-		} else if (nodeId != null) {
-			return "ID=" + nodeId.getTypeId(); //$NON-NLS-1$
+		String nodeIDString;
+		if (nodeId != null) {
+			nodeIDString = "nodeId=" + nodeId.getTypeId(); //$NON-NLS-1$
+		} else {
+			nodeIDString = "nodeId=null"; //$NON-NLS-1$
 		}
-		return super.toString();
+		if (llabel != null) {
+			return llabel + " " + nodeIDString; //$NON-NLS-1$
+		} else {
+			return "no label " + nodeIDString; //$NON-NLS-1$
+		}
 	}
 
 	private INavigationNode<?> parent;
