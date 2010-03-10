@@ -14,7 +14,6 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Comparator;
 
-import org.easymock.EasyMock;
 import org.easymock.LogicalOperator;
 
 import org.eclipse.riena.beans.common.Person;
@@ -25,6 +24,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.NodePositioner;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.controllers.AbstractSubModuleControllerTest;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -143,11 +143,12 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 	}
 
 	public void testNavigateTableTextAndTree() {
+		NavigationArgument naviAgr = new NavigationArgument();
+		naviAgr.setNodePositioner(NodePositioner.ADD_BEGINNING);
 		expect(
 				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
-						eq(new NavigationNodeId("org.eclipse.riena.example.navigate.tableTextAndTree")),
-						(NavigationArgument) EasyMock.isNull())).andReturn(
-				createNavigationNode("org.eclipse.riena.example.navigate.tableTextAndTree"));
+						eq(new NavigationNodeId("org.eclipse.riena.example.navigate.tableTextAndTree")), eq(naviAgr)))
+				.andReturn(createNavigationNode("org.eclipse.riena.example.navigate.tableTextAndTree"));
 
 		replay(getMockNavigationProcessor());
 		IActionRidget navigateToTableTextAndTree = getController().getRidget(IActionRidget.class, "tableTextAndTree");
