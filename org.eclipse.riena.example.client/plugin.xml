@@ -1136,34 +1136,4 @@
              factory="org.eclipse.riena.example.client.statusline.ExampleStatuslineContentFactory">
        </contentFactory>
     </extension>
-    <extension
-          point="org.eclipse.riena.navigation.assemblies2">
-       <assembly2
-             id="ass21--"
-             parentNodeId="application"
-             startOrder="1">
-          <subApplication
-                name="Sub21--"
-                nodeId="sub21--"
-                perspectiveId="subapplication.3">
-             <moduleGroup
-                   name="Mg21--"
-                   nodeId="mg21--">
-                <module
-                      closable="false"
-                      name="M21--"
-                      nodeId="m21--">
-                   <subModule
-                         controller="org.eclipse.riena.example.client.controllers.RidgetsSubModuleController"
-                         name="sm21--"
-                         nodeId="sm21--"
-                         selectable="true"
-                         sharedView="false"
-                         viewId="org.eclipse.riena.example.client.views.RidgetsSubModuleView">
-                   </subModule>
-                </module>
-             </moduleGroup>
-          </subApplication>
-       </assembly2>
-    </extension>
 </plugin>
