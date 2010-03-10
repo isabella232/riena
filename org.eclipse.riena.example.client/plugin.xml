@@ -618,9 +618,9 @@
                name="Selectable Submodule"
                nodeId="org.eclipse.riena.example.selectablesubmodule.modulegroup">
             <module
-                  nodeId="org.eclipse.riena.example.selectablesubmodule.module">
+                  nodeId="org.eclipse.riena.example.selectablesubmodule.module"
                   name="Selectable Submodule"
-                  unclosable="false">
+                  closable="true">
                <subModule
                      controller="org.eclipse.riena.example.client.controllers.SalaryController"
                      name="Salary"
