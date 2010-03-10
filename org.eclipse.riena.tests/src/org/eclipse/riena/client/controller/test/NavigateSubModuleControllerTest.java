@@ -50,7 +50,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
 						eq(new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList")),
 						(NavigationArgument) notNull())).andReturn(
-				getNavigationNode("org.eclipse.riena.example.navigate.comboAndList"));
+				createNavigationNode("org.eclipse.riena.example.navigate.comboAndList"));
 
 		replay(getMockNavigationProcessor());
 
@@ -89,7 +89,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 								}
 							}
 
-						}, LogicalOperator.EQUAL))).andReturn(getNavigationNode("org.eclipse.riena.example.combo"));
+						}, LogicalOperator.EQUAL))).andReturn(createNavigationNode("org.eclipse.riena.example.combo"));
 
 		replay(getMockNavigationProcessor());
 		IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class, "btnNavigateToRidget");
@@ -110,7 +110,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
 						eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
 						new NavigationArgument(notNull(), "textFirst"))).andReturn(
-				getNavigationNode("org.eclipse.riena.example.combo"));
+				createNavigationNode("org.eclipse.riena.example.combo"));
 
 		replay(getMockNavigationProcessor());
 		IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class, "btnNavigateToRidget");
@@ -134,7 +134,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
 						eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
 						eq(new NavigationArgument(bean, "textFirst")))).andReturn(
-				getNavigationNode("org.eclipse.riena.example.combo"));
+				createNavigationNode("org.eclipse.riena.example.combo"));
 
 		replay(getMockNavigationProcessor());
 		IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class, "btnNavigateToRidget");
@@ -147,7 +147,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
 						eq(new NavigationNodeId("org.eclipse.riena.example.navigate.tableTextAndTree")),
 						(NavigationArgument) EasyMock.isNull())).andReturn(
-				getNavigationNode("org.eclipse.riena.example.navigate.tableTextAndTree"));
+				createNavigationNode("org.eclipse.riena.example.navigate.tableTextAndTree"));
 
 		replay(getMockNavigationProcessor());
 		IActionRidget navigateToTableTextAndTree = getController().getRidget(IActionRidget.class, "tableTextAndTree");
@@ -164,7 +164,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 	}
 
 	@SuppressWarnings("rawtypes")
-	private INavigationNode getNavigationNode(String id) {
+	private INavigationNode createNavigationNode(String id) {
 		return new SubModuleNode(new NavigationNodeId(id));
 	}
 }
