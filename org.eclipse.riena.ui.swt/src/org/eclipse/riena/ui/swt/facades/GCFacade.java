@@ -21,6 +21,9 @@ public abstract class GCFacade {
 
 	private static final GCFacade INSTANCE = (GCFacade) FacadeFactory.newFacade(GCFacade.class);
 
+	/**
+	 * The applicable implementation of this class.
+	 */
 	public static final GCFacade getDefault() {
 		return INSTANCE;
 	}
@@ -28,6 +31,8 @@ public abstract class GCFacade {
 	/**
 	 * Draws a round-cornered rectangle according to the given arguments with
 	 * the GC's foreground color.
+	 * <p>
+	 * The RAP implementation of this class does nothing.
 	 * 
 	 * @param GC
 	 *            a GC instance; never null

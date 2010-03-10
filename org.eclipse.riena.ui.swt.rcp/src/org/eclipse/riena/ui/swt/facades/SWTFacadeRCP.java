@@ -49,7 +49,9 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	public void addPaintListener(Control control, EventListener listener) {
-		control.addPaintListener((PaintListener) listener);
+		if (listener != null) {
+			control.addPaintListener((PaintListener) listener);
+		}
 	}
 
 	@Override
@@ -83,11 +85,13 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	public void removePaintListener(Control control, EventListener listener) {
-		control.removePaintListener((PaintListener) listener);
+		if (listener != null) {
+			control.removePaintListener((PaintListener) listener);
+		}
 	}
 
-	public void setDigits(Spinner control, int digits) {
-		control.setDigits(digits);
+	public void setDigits(Spinner spinner, int digits) {
+		spinner.setDigits(digits);
 	}
 
 }

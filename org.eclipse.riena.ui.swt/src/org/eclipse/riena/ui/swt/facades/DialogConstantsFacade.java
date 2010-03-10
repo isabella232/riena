@@ -11,7 +11,10 @@
 package org.eclipse.riena.ui.swt.facades;
 
 /**
- * TODO [ev] javadoc
+ * Single-sourced access to common Dialog-Button labels.
+ * <p>
+ * This is necessary because RAP supports several languages per server and thus
+ * the access mechanism to UI-Strings is different than in RCP.
  * 
  * @since 2.0
  */
@@ -20,15 +23,38 @@ public abstract class DialogConstantsFacade {
 	private static final DialogConstantsFacade INSTANCE = (DialogConstantsFacade) FacadeFactory
 			.newFacade(DialogConstantsFacade.class);
 
+	/**
+	 * The applicable implementation of this class.
+	 */
 	public static final DialogConstantsFacade getDefault() {
 		return INSTANCE;
 	}
 
+	/**
+	 * Returns the OK label for a Dialog button.
+	 * 
+	 * @return a String; never null
+	 */
 	public abstract String getOkLabel();
 
+	/**
+	 * Returns the CANCEL label for a Dialog button.
+	 * 
+	 * @return a String; never null
+	 */
 	public abstract String getCancelLabel();
 
+	/**
+	 * Returns the YES label for a Dialog button.
+	 * 
+	 * @return a String; never null
+	 */
 	public abstract String getYesLabel();
 
+	/**
+	 * Returns the NO label for a Dialog button.
+	 * 
+	 * @return a String; never null
+	 */
 	public abstract String getNoLabel();
 }
