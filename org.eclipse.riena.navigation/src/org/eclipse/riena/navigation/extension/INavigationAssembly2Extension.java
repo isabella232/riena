@@ -43,7 +43,7 @@ public interface INavigationAssembly2Extension extends ICommonNavigationAssembly
 	 * 
 	 * @return module definitions
 	 */
-	@MapName("subModule")
+	@MapName("module")
 	IModuleNode2Extension[] getModules();
 
 	/**

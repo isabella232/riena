@@ -21,7 +21,7 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="assembly2"/>
+            <element ref="assembly2" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="id" type="string">
             <annotation>
@@ -241,7 +241,7 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="viewId" type="string" use="required">
+         <attribute name="viewId" type="string">
             <annotation>
                <documentation>
                   For the SWT-based Riena UI this is the ID of the view associated with the submodule. Must match the ID field of an &quot;org.eclipse.ui.view&quot; extension.
