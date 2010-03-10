@@ -244,7 +244,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	public final List<Object> getUIControls() {
 		SWTControlFinder finder = new SWTControlFinder(details) {
 			@Override
-			public boolean contains(Control control) {
+			public boolean skip(Control control) {
 				return controls.contains(control);
 			}
 
