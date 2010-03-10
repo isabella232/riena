@@ -165,6 +165,7 @@ public class NavigationArgument {
 
 	/**
 	 * @return the nodePositioner
+	 * @since 2.0
 	 */
 	public NodePositioner getNodePositioner() {
 		return nodePositioner;
@@ -173,6 +174,7 @@ public class NavigationArgument {
 	/**
 	 * @param nodePositioner
 	 *            the nodePositioner to set
+	 * @since 2.0
 	 */
 	public void setNodePositioner(NodePositioner nodePositioner) {
 		this.nodePositioner = nodePositioner;
