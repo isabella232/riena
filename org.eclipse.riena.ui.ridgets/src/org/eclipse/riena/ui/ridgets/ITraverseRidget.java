@@ -46,7 +46,6 @@ public interface ITraverseRidget extends IEditableRidget, IMarkableRidget {
 	 * the pattern mode. So on changing the value to 6, the tooltip will be
 	 * "Value is 6".
 	 */
-	// TODO [ev] move to IRidget / IRidget#setTooltip later?
 	String VALUE_PATTERN = "[VALUE]"; //$NON-NLS-1$
 
 	/**

@@ -11,12 +11,13 @@
 package org.eclipse.riena.ui.ridgets.uibinding;
 
 /**
- * Helper class to get the ID of a UI control used for binding.
+ * Helper class to get the ID (binding property) of a UI control used for
+ * binding.
  */
 public interface IBindingPropertyLocator {
 
 	/**
-	 * Returns the ID of the given UI control.
+	 * Returns the ID (binding property) of the given UI control.
 	 * 
 	 * @param uiControl
 	 *            UI control; may be null

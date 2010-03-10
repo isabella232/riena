@@ -15,11 +15,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 
@@ -28,7 +33,14 @@ import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
  */
 public final class SWTBindingPropertyLocator implements IBindingPropertyLocator {
 
+	/**
+	 * Key to retrieve a control's binding property.
+	 * <p>
+	 * The identifier (Stirng) will also be assigned to the Ridget that is
+	 * paired with the control.
+	 */
 	public final static String BINDING_PROPERTY = "binding_property"; //$NON-NLS-1$
+
 	private static SWTBindingPropertyLocator locator;
 
 	private SWTBindingPropertyLocator() {
@@ -100,6 +112,14 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 		return result;
 	}
 
+	/**
+	 * Set the ID (binding property) for the given {@code uiControl}.
+	 * 
+	 * @param uiControl
+	 *            an instanceof {@link Widget} or {@link IPropertyNameProvider}
+	 * @param id
+	 *            the binding property; never null; must not be empty
+	 */
 	public void setBindingProperty(Object uiControl, String id) {
 		if (uiControl instanceof Widget) {
 			Widget widget = (Widget) uiControl;
@@ -109,6 +129,11 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 			widget.setData(BINDING_PROPERTY, id);
 		} else if (uiControl instanceof IPropertyNameProvider) {
 			((IPropertyNameProvider) uiControl).setPropertyName(id);
+		} else {
+			Logger log = Log4r.getLogger(Activator.getDefault(), SWTBindingPropertyLocator.class);
+			String className = uiControl != null ? uiControl.getClass().getName() : "null"; //$NON-NLS-1$
+			String msg = String.format("Failed to set binding property '%s' for %s", id, className); //$NON-NLS-1$
+			log.log(LogService.LOG_WARNING, msg);
 		}
 	}
 
