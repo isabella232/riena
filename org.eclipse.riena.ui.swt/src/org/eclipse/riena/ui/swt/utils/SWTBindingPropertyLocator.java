@@ -36,8 +36,8 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	/**
 	 * Key to retrieve a control's binding property.
 	 * <p>
-	 * The identifier (Stirng) will also be assigned to the Ridget that is
-	 * paired with the control.
+	 * That value (String) will also be assigned to the Ridget that is paired to
+	 * the control.
 	 */
 	public final static String BINDING_PROPERTY = "binding_property"; //$NON-NLS-1$
 
@@ -118,7 +118,9 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	 * @param uiControl
 	 *            an instanceof {@link Widget} or {@link IPropertyNameProvider}
 	 * @param id
-	 *            the binding property; never null; must not be empty
+	 *            the binding property; never null; must not be empty.The given
+	 *            value will also be assigned to the Ridget that is paired to
+	 *            the control.
 	 */
 	public void setBindingProperty(Object uiControl, String id) {
 		if (uiControl instanceof Widget) {
