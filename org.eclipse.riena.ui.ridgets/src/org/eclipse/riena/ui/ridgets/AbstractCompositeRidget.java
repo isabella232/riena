@@ -24,7 +24,9 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.RienaStatus;
 
 /**
- * TODO [ev] javadoc + rename to AbstractComplexRidget?
+ * Default implementation of the {@link IComplexRidget} interface.
+ * <p>
+ * Implementors may extend this class instead from starting from scratch.
  */
 public abstract class AbstractCompositeRidget extends AbstractRidget implements IComplexRidget {
 
@@ -52,7 +54,14 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		ridgets.put(id, ridget);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The default implementation is empty. Implementors may extend to configure
+	 * (sub)-ridgets injected into this {@link IComplexRidget}.
+	 */
 	public void configureRidgets() {
+		// implementors may extend
 	}
 
 	/**
@@ -82,10 +91,9 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 					if (mappedRidgetClazz != null) {
 						ridget = mappedRidgetClazz.newInstance();
 					}
-					Assert
-							.isNotNull(
-									ridget,
-									"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+					Assert.isNotNull(
+							ridget,
+							"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
 					ridget = ridgetClazz.newInstance();
 				}

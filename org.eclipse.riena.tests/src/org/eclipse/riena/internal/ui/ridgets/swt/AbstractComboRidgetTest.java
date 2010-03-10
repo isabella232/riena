@@ -985,7 +985,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(selection1, selection.getValue());
 	}
 
-	// TODO [ev]
+	// TODO [ev] revisit before closing Bug 304733
 	//	/**
 	//	 * As per Bug 304733
 	//	 */
