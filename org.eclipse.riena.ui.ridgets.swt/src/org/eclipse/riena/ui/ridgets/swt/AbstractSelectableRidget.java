@@ -224,7 +224,14 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	}
 
 	/**
-	 * TODO [ev] javadoc
+	 * Updates the current selection to ensure that all selected items are still
+	 * available in the ridget's model.
+	 * <p>
+	 * Subclasses should call this from their {@link #updateFromModel()} method.
+	 * <p>
+	 * Implementation note: the method computes the subset of the current
+	 * selection that is available. If the subset is smaller that the current
+	 * selection, it will be applied and become the new current selection.
 	 */
 	protected final void refreshSelection() {
 		List<?> rowObservables = getRowObservables();
