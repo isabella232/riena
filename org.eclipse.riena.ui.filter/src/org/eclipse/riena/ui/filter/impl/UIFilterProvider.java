@@ -38,6 +38,7 @@ import org.eclipse.riena.ui.filter.extension.IUIFilterExtension;
 public class UIFilterProvider implements IUIFilterProvider {
 
 	private IUIFilterExtension[] uiFilterExtensions;
+	private RulesProvider rulesProvider;
 
 	/**
 	 * Returns the extension for the given ID.
@@ -68,13 +69,11 @@ public class UIFilterProvider implements IUIFilterProvider {
 
 		Collection<IUIFilterRule> rules = new ArrayList<IUIFilterRule>(1);
 
-		RulesProvider rulesProvider = newRulesProvider();
-
 		// rules for marker/ridget
 		for (IRuleMarkerRidget ruleExtension : filterExtension.getRuleMarkerRidgets()) {
 
 			String markerType = ruleExtension.getMarker();
-			IUIFilterRuleMarkerRidget rule = rulesProvider.getRuleMarkerRidget(markerType);
+			IUIFilterRuleMarkerRidget rule = getRulesProvider().getRuleMarkerRidget(markerType);
 			if (rule != null) {
 				String id = ruleExtension.getRidgetId();
 				rule.setId(id);
@@ -87,7 +86,7 @@ public class UIFilterProvider implements IUIFilterProvider {
 		for (IRuleMarkerMenuItem ruleExtension : filterExtension.getRuleMarkerMenuItems()) {
 
 			String markerType = ruleExtension.getMarker();
-			IUIFilterRuleMarkerRidget rule = rulesProvider.getRuleMarkerMenuItem(markerType);
+			IUIFilterRuleMarkerRidget rule = getRulesProvider().getRuleMarkerMenuItem(markerType);
 			if (rule != null) {
 				String id = ruleExtension.getItemId();
 				rule.setId(id);
@@ -100,7 +99,7 @@ public class UIFilterProvider implements IUIFilterProvider {
 		for (IRuleMarkerNavigation ruleExtension : filterExtension.getRuleMarkerNavigations()) {
 
 			String markerType = ruleExtension.getMarker();
-			IUIFilterRuleMarkerNavigation rule = rulesProvider.getRuleMarkerNavigation(markerType);
+			IUIFilterRuleMarkerNavigation rule = getRulesProvider().getRuleMarkerNavigation(markerType);
 			if (rule != null) {
 				String id = ruleExtension.getNodeId();
 				rule.setNode(id);
@@ -134,8 +133,7 @@ public class UIFilterProvider implements IUIFilterProvider {
 	 */
 	private IUIFilterRuleValidator createRuleValidatorRidget(IRuleValidatorRidget ruleExtension) {
 
-		RulesProvider rulesProvider = newRulesProvider();
-		IUIFilterRuleValidatorRidget rule = rulesProvider.getRuleValidatorRidget();
+		IUIFilterRuleValidatorRidget rule = getRulesProvider().getRuleValidatorRidget();
 		if (rule != null) {
 			rule.setId(ruleExtension.getRidgetId());
 			String timeString = ruleExtension.getValidationTime();
@@ -164,9 +162,12 @@ public class UIFilterProvider implements IUIFilterProvider {
 		this.uiFilterExtensions = uiFilterExtensions;
 	}
 
-	private RulesProvider newRulesProvider() {
-		RulesProvider rulesProvider = new RulesProvider();
-		Wire.instance(rulesProvider).andStart(Activator.getDefault().getContext());
+	private RulesProvider getRulesProvider() {
+		if (rulesProvider == null) {
+			rulesProvider = new RulesProvider();
+			Wire.instance(rulesProvider).andStart(Activator.getDefault().getContext());
+		}
 		return rulesProvider;
 	}
+
 }

@@ -33,11 +33,9 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
-import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -128,15 +126,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 			navigation = newPart;
 		}
 		knownParts.add(newPart);
-	}
-
-	/**
-	 * Creates a delegate for the binding of view and controller.
-	 * 
-	 * @return delegate for binding
-	 */
-	protected AbstractViewBindingDelegate createBinding() {
-		return new InjectSwtViewBindingDelegate();
 	}
 
 	/**

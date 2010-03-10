@@ -40,6 +40,9 @@ public class StartupNodeInfo implements Comparable<StartupNodeInfo> {
 		return id;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -49,6 +52,9 @@ public class StartupNodeInfo implements Comparable<StartupNodeInfo> {
 		return result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -74,10 +80,8 @@ public class StartupNodeInfo implements Comparable<StartupNodeInfo> {
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {

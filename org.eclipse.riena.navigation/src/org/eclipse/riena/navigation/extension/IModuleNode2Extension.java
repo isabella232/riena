@@ -8,8 +8,9 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation;
+package org.eclipse.riena.navigation.extension;
 
+import org.eclipse.riena.core.injector.extension.DefaultValue;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 
@@ -18,29 +19,7 @@ import org.eclipse.riena.core.injector.extension.MapName;
  * subtree in the application model tree.
  */
 @ExtensionInterface
-public interface IModuleNodeExtension extends INodeExtension {
-
-	/**
-	 * Returns the label of the module.
-	 * 
-	 * @return label of the module
-	 */
-	String getLabel();
-
-	/**
-	 * Returns the icon ID of the module.
-	 * 
-	 * @return icon ID
-	 */
-	String getIcon();
-
-	/**
-	 * Returns whether the user can close the module.
-	 * 
-	 * @return <code>true</code> if this item is closable, <code>false</code>
-	 *         otherwise. Default is <code>false</code>.
-	 */
-	boolean isUnclosable();
+public interface IModuleNode2Extension extends INode2Extension {
 
 	/**
 	 * Returns all sub module node definitions that are children of this module
@@ -48,15 +27,24 @@ public interface IModuleNodeExtension extends INodeExtension {
 	 * 
 	 * @return child sub module node definitions
 	 */
-	@MapName("submodule")
-	ISubModuleNodeExtension[] getSubModuleNodes();
+	@MapName("subModule")
+	ISubModuleNode2Extension[] getSubModuleNodes();
 
 	/**
 	 * {@inheritDoc}
 	 * 
 	 * @return child sub module node definitions
 	 */
-	@MapName("submodule")
-	ISubModuleNodeExtension[] getChildNodes();
+	@MapName("subModule")
+	ISubModuleNode2Extension[] getChildNodes();
+
+	/**
+	 * Returns whether the user can close the module.
+	 * 
+	 * @return {@code true} if this module is closable, <{@code false}
+	 *         otherwise. Default is {@code true}.
+	 */
+	@DefaultValue("true")
+	boolean isClosable();
 
 }

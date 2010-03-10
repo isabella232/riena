@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation;
+package org.eclipse.riena.navigation.extension;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
@@ -18,7 +18,7 @@ import org.eclipse.riena.core.injector.extension.MapName;
  * or a subtree in the application model tree.
  */
 @ExtensionInterface
-public interface IModuleGroupNodeExtension extends INodeExtension {
+public interface IModuleGroupNode2Extension extends INode2Extension {
 
 	/**
 	 * Returns all module node definitions that are children of this module
@@ -27,7 +27,7 @@ public interface IModuleGroupNodeExtension extends INodeExtension {
 	 * @return child module node definitions
 	 */
 	@MapName("module")
-	IModuleNodeExtension[] getModuleNodes();
+	IModuleNode2Extension[] getModuleNodes();
 
 	/**
 	 * {@inheritDoc}
@@ -35,6 +35,6 @@ public interface IModuleGroupNodeExtension extends INodeExtension {
 	 * @return child module node definitions
 	 */
 	@MapName("module")
-	IModuleNodeExtension[] getChildNodes();
+	IModuleNode2Extension[] getChildNodes();
 
 }

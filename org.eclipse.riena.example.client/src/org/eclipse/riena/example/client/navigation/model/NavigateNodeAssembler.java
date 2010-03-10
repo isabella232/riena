@@ -42,7 +42,7 @@ public class NavigateNodeAssembler extends AbstractNavigationAssembler {
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?> buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
+	public INavigationNode<?>[] buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
 
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(nodeId);
 		moduleGroup.setPresentWithSingleModule(false);
@@ -58,7 +58,7 @@ public class NavigateNodeAssembler extends AbstractNavigationAssembler {
 		def.setRequiredPreparation(true);
 
 		module.addChild(subModule);
-		return moduleGroup;
+		return new IModuleGroupNode[] { moduleGroup };
 	}
 
 	/**

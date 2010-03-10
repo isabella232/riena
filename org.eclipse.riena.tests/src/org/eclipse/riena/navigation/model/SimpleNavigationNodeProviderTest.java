@@ -10,30 +10,29 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.osgi.framework.Bundle;
-
-import org.eclipse.core.runtime.IConfigurationElement;
+import java.util.List;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
-import org.eclipse.riena.navigation.IModuleGroupNodeExtension;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.IModuleNodeExtension;
 import org.eclipse.riena.navigation.INavigationAssembler;
-import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
-import org.eclipse.riena.navigation.ISubApplicationNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.StartupNodeInfo;
+import org.eclipse.riena.navigation.StartupNodeInfo.Level;
+import org.eclipse.riena.navigation.extension.IModuleNode2Extension;
+import org.eclipse.riena.navigation.extension.ModuleNode2Extension;
+import org.eclipse.riena.navigation.extension.NavigationAssembly2Extension;
 
 /**
- * Tests of the class {@link SimpleNavigationNodeProvider}.
+ * Tests of the class {@link SimpleNavigationNodeProvider} and
+ * {@link AbstractSimpleNavigationNodeProvider}.
  */
 @NonUITestCase
 public class SimpleNavigationNodeProviderTest extends RienaTestCase {
@@ -114,15 +113,21 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 	public void testRegister() {
 
 		SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
-		MyAssemblyExtension assembly = new MyAssemblyExtension();
+		NavigationAssembly2Extension assembly = new NavigationAssembly2Extension();
+		assembly.setId("test4711");
+		assembly.setParentNodeId("parent0815");
+		assembly.setStartOrder(123);
 		provider.register(assembly);
 		INavigationAssembler assembler = provider.getNavigationAssembler(assembly.getId());
 		assertTrue(assembler instanceof GenericNavigationAssembler);
 		assertSame(assembly, assembler.getAssembly());
+		assertEquals("test4711", assembler.getId());
+		assertEquals("parent0815", assembler.getParentNodeId());
+		assertEquals(123, assembler.getStartOrder());
 
 		provider.cleanUp();
 		INavigationAssembler naviAssembler = new TestSecondModuleGroupNodeAssembler();
-		assembly.setNaviAssembler(naviAssembler);
+		assembly.setAssembler(naviAssembler);
 		provider.register(assembly);
 		assembler = provider.getNavigationAssembler(assembly.getId());
 		assertSame(naviAssembler, assembler);
@@ -149,17 +154,23 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the <i>private</i> method {@code prepareAll(INavigationNode<?>)}.
+	 * Tests the <i>private</i> method {@code
+	 * prepareAll(INavigationNode<?>,NavigationArgument)}.
 	 */
 	public void testPrepareAll() {
 
+		NavigationArgument arg = new NavigationArgument(new Integer(4711));
 		SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
-		ReflectionUtils.invokeHidden(provider, "prepareAll", subApplication);
+		ReflectionUtils.invokeHidden(provider, "prepareAll", subApplication, arg);
 		assertFalse(applicationNode.isPrepared());
 		assertTrue(subApplication.isPrepared());
 		assertTrue(moduleGroup.isPrepared());
 		assertTrue(module.isPrepared());
 		assertTrue(subModule.isPrepared());
+
+		assertEquals(4711, moduleGroup.getNavigationArgument().getParameter());
+		assertEquals(4711, module.getNavigationArgument().getParameter());
+		assertEquals(4711, subModule.getNavigationArgument().getParameter());
 
 	}
 
@@ -172,15 +183,65 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 		SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
 		NavigationArgument naviArg = new NavigationArgument(null, new NavigationNodeId("one"));
 		INavigationAssembler naviAssembler = new TestSecondModuleGroupNodeAssembler();
-		MyAssemblyExtension assembly = new MyAssemblyExtension();
-		assembly.setParentTypeId("parentId");
-		naviAssembler.setAssembly(assembly);
 		NavigationNodeId parentId = ReflectionUtils.invokeHidden(provider, "getParentTypeId", naviArg, naviAssembler);
 		assertEquals("one", parentId.getTypeId());
 
 		naviArg = new NavigationArgument();
 		parentId = ReflectionUtils.invokeHidden(provider, "getParentTypeId", naviArg, naviAssembler);
-		assertEquals("parentId", parentId.getTypeId());
+		assertEquals("application", parentId.getTypeId());
+
+	}
+
+	/**
+	 * Tests the method {@code getSortedStartupNodeInfos()}.
+	 */
+	public void testGetSortedStartupNodeInfos() {
+
+		// no assembler is registered => empty list
+		SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
+		provider.cleanUp();
+		List<StartupNodeInfo> startupNodeInfos = provider.getSortedStartupNodeInfos();
+		assertNotNull(startupNodeInfos);
+		assertTrue(startupNodeInfos.isEmpty());
+
+		// one assembler without an assembly is registered => empty list
+		INavigationAssembler naviAssembler = new TestSecondModuleGroupNodeAssembler();
+		naviAssembler.setId("ass1");
+		naviAssembler.setStartOrder(1);
+		provider.registerNavigationAssembler(naviAssembler.getId(), naviAssembler);
+		startupNodeInfos = provider.getSortedStartupNodeInfos();
+		assertNotNull(startupNodeInfos);
+		assertTrue(startupNodeInfos.isEmpty());
+
+		// one assembler with an assembly is registered but assembly has no children => list with one "custom" entry 
+		NavigationAssembly2Extension assembly = new NavigationAssembly2Extension();
+		naviAssembler.setAssembly(assembly);
+		assembly.setNavigationAssembler(naviAssembler.getClass().getName());
+		startupNodeInfos = provider.getSortedStartupNodeInfos();
+		assertNotNull(startupNodeInfos);
+		assertEquals(1, startupNodeInfos.size());
+		StartupNodeInfo startupNodeInfo = startupNodeInfos.get(0);
+		assertEquals(new StartupNodeInfo(Level.CUSTOM, 1, "ass1"), startupNodeInfo);
+
+		// one assembler with an assembly is registered; the assembly has one child module => list with one "module" entry 
+		ModuleNode2Extension moduleExt = new ModuleNode2Extension();
+		moduleExt.setNodeId("mod1");
+		assembly.setModules(new IModuleNode2Extension[] { moduleExt });
+		startupNodeInfos = provider.getSortedStartupNodeInfos();
+		assertNotNull(startupNodeInfos);
+		startupNodeInfo = startupNodeInfos.get(0);
+		assertEquals(new StartupNodeInfo(Level.MODULE, 1, "mod1"), startupNodeInfo);
+
+	}
+
+	/**
+	 * Tests the method {@code getRootNode(INavigationNode<?>)}.
+	 */
+	public void testGetRootNode() {
+
+		MyProvider provider = new MyProvider();
+		INavigationNode<?> root = provider.getRootNode(subModule);
+		assertSame(applicationNode, root);
 
 	}
 
@@ -199,75 +260,14 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 			return super.findNode(node, targetId);
 		}
 
-	}
-
-	/**
-	 * Implementation of {@link INavigationAssemblyExtension} only for simple
-	 * unit tests.
-	 */
-	private static class MyAssemblyExtension implements INavigationAssemblyExtension {
-
-		private INavigationAssembler naviAssembler;
-		private String parentTypeId;
-
-		public IConfigurationElement getConfigurationElement() {
-			return null;
-		}
-
-		public Bundle getContributingBundle() {
-			return null;
-		}
-
-		public INavigationAssembler createNavigationAssembler() {
-			return getNaviAssembler();
-		}
-
-		public String getNavigationAssembler() {
-			return null;
-		}
-
-		public String getParentTypeId() {
-			return parentTypeId;
-		}
-
-		public String getId() {
-			return "myId";
-		}
-
-		public int getAutostartSequence() {
-			return 0;
-		}
-
-		public ISubApplicationNodeExtension getSubApplicationNode() {
-			return null;
-		}
-
-		public IModuleGroupNodeExtension getModuleGroupNode() {
-			return null;
-		}
-
-		public IModuleNodeExtension getModuleNode() {
-			return null;
-		}
-
-		public ISubModuleNodeExtension getSubModuleNode() {
-			return null;
-		}
-
-		public String getRef() {
-			return null;
-		}
-
-		public void setNaviAssembler(INavigationAssembler naviAssembler) {
-			this.naviAssembler = naviAssembler;
-		}
-
-		public INavigationAssembler getNaviAssembler() {
-			return naviAssembler;
-		}
-
-		public void setParentTypeId(String parentTypeId) {
-			this.parentTypeId = parentTypeId;
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * Visibility changed.
+		 */
+		@Override
+		protected INavigationNode<?> getRootNode(INavigationNode<?> node) {
+			return super.getRootNode(node);
 		}
 
 	}

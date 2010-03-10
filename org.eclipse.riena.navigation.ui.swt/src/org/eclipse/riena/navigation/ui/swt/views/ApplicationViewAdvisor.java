@@ -19,6 +19,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -449,9 +450,13 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		Control control = getWindowConfigurer().createCoolBarControl(result);
 		if (control instanceof CoolBar) {
 			CoolBar coolbar = (CoolBar) control;
-			CoolbarUtils.initCoolBar(coolbar);
+			CoolbarUtils.initCoolBar(coolbar, getToolbarFont());
 		}
 		return result;
+	}
+
+	private static Font getToolbarFont() {
+		return LnfManager.getLnf().getFont(LnfKeyConstants.TOOLBAR_FONT);
 	}
 
 	private int getCoolBarSeparatorPadding() {

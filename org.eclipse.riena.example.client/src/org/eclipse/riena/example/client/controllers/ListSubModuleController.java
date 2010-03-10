@@ -25,6 +25,7 @@ import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -42,7 +43,8 @@ public class ListSubModuleController extends SubModuleController {
 	/** Manages a collection of persons. */
 	private final PersonManager manager;
 	/** Holds editable data for a person. */
-	private final PersonModificationBean value;
+	private PersonModificationBean value;
+	private ITableRidget listPersons;
 
 	public ListSubModuleController() {
 		this(null);
@@ -63,7 +65,7 @@ public class ListSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		final ITableRidget listPersons = (ITableRidget) getRidget("listPersons"); //$NON-NLS-1$ 
+		listPersons = (ITableRidget) getRidget("listPersons"); //$NON-NLS-1$
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		listPersons.setComparator(0, new TypedComparator<String>());
 		listPersons.setSortedColumn(0);
@@ -144,6 +146,19 @@ public class ListSubModuleController extends SubModuleController {
 		DataBindingContext dbc = new DataBindingContext();
 		bindEnablementToValue(dbc, buttonRemove, hasSelection);
 		bindEnablementToValue(dbc, buttonSave, hasSelection);
+
+		if (getNavigationNode().getNavigationArgument() != null) {
+			setValuesFromNavigation();
+		}
+
+	}
+
+	private void setValuesFromNavigation() {
+		NavigationArgument navigationArgument = getNavigationNode().getNavigationArgument();
+		if (navigationArgument.getParameter() instanceof Integer) {
+			int modelIndex = (Integer) navigationArgument.getParameter();
+			listPersons.setSelection(modelIndex);
+		}
 	}
 
 	private void bindEnablementToValue(DataBindingContext dbc, IRidget ridget, IObservableValue value) {

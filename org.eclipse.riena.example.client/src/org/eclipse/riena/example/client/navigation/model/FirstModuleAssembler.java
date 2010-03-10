@@ -25,7 +25,6 @@ import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
@@ -35,14 +34,6 @@ public class FirstModuleAssembler extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.INavigationAssembler#acceptsToBuildNode(
-	 * org.eclipse.riena.navigation.NavigationNodeId,
-	 * org.eclipse.riena.navigation.NavigationArgument)
-	 */
 	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
 		if (knownTargetIds == null) {
 			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigate.firstmodule" //$NON-NLS-1$
@@ -53,24 +44,17 @@ public class FirstModuleAssembler extends AbstractNavigationAssembler {
 		return knownTargetIds.contains(nodeId.getTypeId());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse
-	 * .riena.navigation.NavigationNodeId,
-	 * org.eclipse.riena.navigation.NavigationArgument)
-	 */
-	public INavigationNode<?> buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
+	public INavigationNode<?>[] buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
 
 		IModuleNode module = new ModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.navigate.firstmodule"), "First Module"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigate.testSubModule"), "First Module"); //$NON-NLS-1$ //$NON-NLS-2$
-		IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule,
-				ComboAndChoiceSubModuleController.class, ComboAndChoiceSubModuleView.ID);
+		WorkareaManager.getInstance().registerDefinition(subModule, ComboAndChoiceSubModuleController.class,
+				ComboAndChoiceSubModuleView.ID);
 		module.addChild(subModule);
-		return module;
+		return new INavigationNode<?>[] { module };
 	}
+
 }

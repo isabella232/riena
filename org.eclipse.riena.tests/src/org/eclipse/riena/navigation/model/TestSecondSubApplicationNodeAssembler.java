@@ -10,38 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.navigation.INavigationAssembler;
-import org.eclipse.riena.navigation.INavigationAssemblyExtension;
+import org.eclipse.riena.navigation.AbstractNavigationAssembler;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 
-public class TestSecondSubApplicationNodeAssembler implements INavigationAssembler {
-
-	private INavigationAssemblyExtension assembly;
-
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationAssembler#getAssembly()
-	 */
-	public INavigationAssemblyExtension getAssembly() {
-		return assembly;
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationAssembler#setAssembly(org.eclipse.riena.navigation.INavigationAssemblyExtension)
-	 */
-	public void setAssembly(INavigationAssemblyExtension nodeDefinition) {
-		assembly = nodeDefinition;
-	}
+public class TestSecondSubApplicationNodeAssembler extends AbstractNavigationAssembler {
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
+	public INavigationNode<?>[] buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
 		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId);
-		return subApplication;
+		return new ISubApplicationNode[] { subApplication };
 	}
 
 	/**
@@ -52,6 +35,7 @@ public class TestSecondSubApplicationNodeAssembler implements INavigationAssembl
 		return nodeId.getTypeId().equals("org.eclipse.riena.navigation.model.test.secondSubApplication");
 	}
 
+	@Override
 	public String getParentNodeId() {
 		return "application";
 	}

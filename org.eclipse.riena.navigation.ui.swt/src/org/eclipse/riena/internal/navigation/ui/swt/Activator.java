@@ -17,6 +17,7 @@ import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.ui.swt.workarea.SwtExtensionWorkareaDefinitionRegistry;
 import org.eclipse.riena.internal.ui.ridgets.swt.StatuslineUIProcessRidget;
 import org.eclipse.riena.navigation.INavigationAssemblyExtension;
+import org.eclipse.riena.navigation.extension.INavigationAssembly2Extension;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
 import org.eclipse.riena.ui.swt.StatuslineUIProcess;
@@ -47,6 +48,8 @@ public class Activator extends AbstractRienaUIPlugin {
 				.newDefaultServiceProperties());
 		Inject.extension(INavigationAssemblyExtension.EXTENSIONPOINT).useType(INavigationAssemblyExtension.class).into(
 				registry).andStart(Activator.getDefault().getBundle().getBundleContext());
+		Inject.extension(INavigationAssembly2Extension.EXTENSIONPOINT).useType(INavigationAssembly2Extension.class)
+				.into(registry).andStart(Activator.getDefault().getBundle().getBundleContext());
 
 		SwtControlRidgetMapper.getInstance().addMapping(StatuslineUIProcess.class, StatuslineUIProcessRidget.class);
 	}

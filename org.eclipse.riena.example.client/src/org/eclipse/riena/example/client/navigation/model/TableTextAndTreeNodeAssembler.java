@@ -21,10 +21,9 @@ import org.eclipse.riena.example.client.controllers.TreeSubModuleController;
 import org.eclipse.riena.example.client.views.TableSubModuleView;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.example.client.views.TreeSubModuleView;
+import org.eclipse.riena.navigation.AbstractNavigationAssembler;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.INavigationAssembler;
-import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -36,24 +35,9 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 /**
  *
  */
-public class TableTextAndTreeNodeAssembler implements INavigationAssembler {
+public class TableTextAndTreeNodeAssembler extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds = null;
-	private INavigationAssemblyExtension assembly;
-
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationAssembler#getAssembly()
-	 */
-	public INavigationAssemblyExtension getAssembly() {
-		return assembly;
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationAssembler#setAssembly(org.eclipse.riena.navigation.INavigationAssemblyExtension)
-	 */
-	public void setAssembly(INavigationAssemblyExtension nodeDefinition) {
-		assembly = nodeDefinition;
-	}
 
 	public TableTextAndTreeNodeAssembler() {
 		super();
@@ -63,7 +47,7 @@ public class TableTextAndTreeNodeAssembler implements INavigationAssembler {
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public IModuleGroupNode buildNode(NavigationNodeId presentationId, NavigationArgument navigationArgument) {
+	public IModuleGroupNode[] buildNode(NavigationNodeId presentationId, NavigationArgument navigationArgument) {
 
 		IModuleGroupNode node = new ModuleGroupNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigate.tableTextAndTree")); //$NON-NLS-1$
@@ -81,7 +65,7 @@ public class TableTextAndTreeNodeAssembler implements INavigationAssembler {
 		WorkareaManager.getInstance().registerDefinition(subModule, TreeSubModuleController.class,
 				TreeSubModuleView.ID, false);
 		module.addChild(subModule);
-		return node;
+		return new IModuleGroupNode[] { node };
 	}
 
 	/**

@@ -16,19 +16,38 @@ import java.util.Map;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 
+/**
+ * Registry of all {@link IWorkareaDefinition}s.
+ */
 public abstract class AbstractWorkareaDefinitionRegistry implements IWorkareaDefinitionRegistry {
 
 	protected Map<Object, IWorkareaDefinition> workareas = new HashMap<Object, IWorkareaDefinition>();
 
-	public IWorkareaDefinition getDefinition(Object id) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public IWorkareaDefinition getDefinition(final Object id) {
 		return workareas.get(id);
 	}
 
-	public IWorkareaDefinition register(Object id, IWorkareaDefinition definition) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public IWorkareaDefinition register(final Object id, final IWorkareaDefinition definition) {
 		return internalRegister(id, definition);
 	}
 
-	protected IWorkareaDefinition internalRegister(Object id, IWorkareaDefinition definition) {
+	/**
+	 * Puts (registers) the given definition of a work area in the map.
+	 * 
+	 * @param id
+	 *            the type ID
+	 * @param definition
+	 *            definition of a work area
+	 * @return the registered definition of a work area
+	 */
+	protected IWorkareaDefinition internalRegister(final Object id, final IWorkareaDefinition definition) {
+
 		if (getDefinition(id) != null) {
 			IWorkareaDefinition existingDefinition = getDefinition(id);
 			if ((existingDefinition.getControllerClass() == null && definition.getControllerClass() != null)
@@ -55,8 +74,11 @@ public abstract class AbstractWorkareaDefinitionRegistry implements IWorkareaDef
 			}
 			return existingDefinition;
 		}
+
 		workareas.put(id, definition);
+
 		return definition;
+
 	}
 
 }

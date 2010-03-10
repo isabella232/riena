@@ -110,7 +110,7 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
+	public INavigationNode<?>[] buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
 
 		final WorkareaManager workarea = WorkareaManager.getInstance();
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId);
@@ -321,7 +321,7 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(noControllerSubModule, NoControllerSubModuleView.ID);
 		playgroundModule.addChild(noControllerSubModule);
 
-		return moduleGroup;
+		return new IModuleGroupNode[] { moduleGroup };
 	}
 
 	/**

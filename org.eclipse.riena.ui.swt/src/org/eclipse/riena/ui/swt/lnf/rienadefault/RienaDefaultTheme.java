@@ -236,6 +236,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		table.put(LnfKeyConstants.DIALOG_FONT, getPrimaryFont());
 
+		table.put(LnfKeyConstants.MENUBAR_FONT, getPrimaryFont());
+		// table.put(LnfKeyConstants.TOOLBAR_FONT, getPrimaryFont());
+
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_FONT, getPrimaryFont());
 
 		table.put(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT, getPrimaryFont());

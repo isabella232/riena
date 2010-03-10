@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation;
+package org.eclipse.riena.navigation.extension;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
@@ -18,21 +18,24 @@ import org.eclipse.riena.core.injector.extension.MapName;
  * node or a subtree in the application model tree.
  */
 @ExtensionInterface
-public interface ISubApplicationNodeExtension extends INodeExtension {
+public interface ISubApplicationNode2Extension extends INode2Extension {
 
 	/**
-	 * Returns the label of the sub application.
+	 * Returns all module group node definitions that are children of this sub
+	 * application node.
 	 * 
-	 * @return label of the sub application
+	 * @return child module group node definitions
 	 */
-	String getLabel();
+	@MapName("moduleGroup")
+	IModuleGroupNode2Extension[] getModuleGroupNodes();
 
 	/**
-	 * Returns the icon ID of the sub application.
+	 * {@inheritDoc}
 	 * 
-	 * @return icon ID
+	 * @return child module group node definitions
 	 */
-	String getIcon();
+	@MapName("moduleGroup")
+	IModuleGroupNode2Extension[] getChildNodes();
 
 	/**
 	 * Returns the ID of the perspective associated with the sub application.
@@ -41,24 +44,6 @@ public interface ISubApplicationNodeExtension extends INodeExtension {
 	 * 
 	 * @return ID of perspective
 	 */
-	@MapName("view")
-	String getViewId();
-
-	/**
-	 * Returns all module group node definitions that are children of this sub
-	 * application node.
-	 * 
-	 * @return child module group node definitions
-	 */
-	@MapName("modulegroup")
-	IModuleGroupNodeExtension[] getModuleGroupNodes();
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @return child module group node definitions
-	 */
-	@MapName("modulegroup")
-	IModuleGroupNodeExtension[] getChildNodes();
+	String getPerspectiveId();
 
 }

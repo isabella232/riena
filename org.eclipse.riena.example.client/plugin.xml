@@ -35,6 +35,11 @@
             id="subapplication.2"
             name="subapplication.2">
       </perspective>
+      <perspective
+            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
+            id="subapplication.3"
+            name="subapplication.3">
+      </perspective>
    </extension>
    <extension point="org.eclipse.ui.views">
       <view allowMultiple="true"
@@ -605,49 +610,6 @@
             parentTypeId="playground">
       </assembly>
       <assembly
-            id="org.eclipse.riena.example.uiProcesses"
-            name="uiProcesses_definition"
-            parentTypeId="playground">
-         <modulegroup
-               name="uiProcesses_group"
-               typeId="org.eclipse.riena.example.uiProcesses">
-            <module
-                  icon="ledred.png"
-                  label="UIProcess"
-                  name="uiProcesses"
-                  typeId="uiProcesses">
-               <submodule
-                     controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"
-                     icon="ledlightgreen.png"
-                     label="Demo1"
-                     name="uiProcess_1"
-                     typeId="org.eclipse.riena.example.uiProcess_1"
-                     view="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView">
-               </submodule>
-               <submodule
-                     typeId="org.eclipse.riena.example.uiProcess_2"
-                     name="uiProcess_2"
-                     label="Demo2"
-                     view="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
-                     controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"/>
-            </module>
-            <module
-                  icon="ledred.png"
-                  label="service call progress"
-                  name="remoteProgress"
-                  typeId="remoteProgress">
-               <submodule
-                     typeId="org.eclipse.riena.example.remoteProgress"
-                     name="org.eclipse.riena.example.remoteProgress"
-                     label="service call progress"
-                     icon="ledlightgreen.png"
-                     view="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView"
-                     controller="org.eclipse.riena.example.client.controllers.RemoteServiceProgressSubModuleController"/>
-            </module>
-            
-         </modulegroup>
-      </assembly>
-      <assembly
             autostartsequence="100"
             id="org.eclipse.riena.example.deselectablenodes.assembly"
             name="Selectable Submodule Assembly"
@@ -1040,27 +1002,59 @@
         </exceptionHandler>
      </extension>
     <extension
-          point="org.eclipse.riena.navigation.assemblies">
-       <assembly
-             autostartsequence="1"
+          point="org.eclipse.riena.navigation.assemblies2">
+       <assembly2
+             startOrder="1"
              id="org.eclipse.riena.example.exceptiontest"
-             parentTypeId="playground">
-          <modulegroup
+             parentNodeId="playground">
+          <moduleGroup
                 name="ExceptionTest"
-                typeId="org.eclipse.riena.example.exceptiontest.mg">
+                nodeId="org.eclipse.riena.example.exceptiontest.mg">
              <module
-                   label="Exception Test"
-                   typeId="org.eclipse.riena.example.exceptiontest.module"
-                   unclosable="false">
-                <submodule
+                   name="Exception Test"
+                   nodeId="org.eclipse.riena.example.exceptiontest.module"
+                   closable="true">
+                <subModule
                       controller="org.eclipse.riena.example.client.controllers.ExceptionTestController"
-                      shared="false"
-                      typeId="org.eclipse.riena.example.exceptiontest.submodule"
-                      view="org.eclipse.riena.example.client.exceptiontest.view">
-                </submodule>
+                      sharedView="false"
+                      nodeId="org.eclipse.riena.example.exceptiontest.submodule"
+                      viewId="org.eclipse.riena.example.client.exceptiontest.view">
+                </subModule>
              </module>
-          </modulegroup>
-       </assembly>
+          </moduleGroup>
+         <moduleGroup
+               name="uiProcesses_group"
+               nodeId="org.eclipse.riena.example.uiProcesses">
+            <module
+                  icon="ledred.png"
+                  name="UIProcess"
+                  nodeId="uiProcesses">
+               <subModule
+                     controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"
+                     icon="ledlightgreen.png"
+                     name="Demo1"
+                     nodeId="org.eclipse.riena.example.uiProcess_1"
+                     viewId="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView">
+               </subModule>
+               <subModule
+                     nodeId="org.eclipse.riena.example.uiProcess_2"
+                     name="uiProcess_2"
+                     viewId="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
+                     controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"/>
+            </module>
+            <module
+                  icon="ledred.png"
+                  name="service call progress"
+                  nodeId="remoteProgress">
+               <subModule
+                     nodeId="org.eclipse.riena.example.remoteProgress"
+                     name="service call progress"
+                     icon="ledlightgreen.png"
+                     viewId="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView"
+                     controller="org.eclipse.riena.example.client.controllers.RemoteServiceProgressSubModuleController"/>
+            </module>
+         </moduleGroup>
+       </assembly2>
     </extension>
     
     <extension
@@ -1142,5 +1136,34 @@
              factory="org.eclipse.riena.example.client.statusline.ExampleStatuslineContentFactory">
        </contentFactory>
     </extension>
-   
+    <extension
+          point="org.eclipse.riena.navigation.assemblies2">
+       <assembly2
+             id="ass21--"
+             parentNodeId="application"
+             startOrder="1">
+          <subApplication
+                name="Sub21--"
+                nodeId="sub21--"
+                perspectiveId="subapplication.3">
+             <moduleGroup
+                   name="Mg21--"
+                   nodeId="mg21--">
+                <module
+                      closable="false"
+                      name="M21--"
+                      nodeId="m21--">
+                   <subModule
+                         controller="org.eclipse.riena.example.client.controllers.RidgetsSubModuleController"
+                         name="sm21--"
+                         nodeId="sm21--"
+                         selectable="true"
+                         sharedView="false"
+                         viewId="org.eclipse.riena.example.client.views.RidgetsSubModuleView">
+                   </subModule>
+                </module>
+             </moduleGroup>
+          </subApplication>
+       </assembly2>
+    </extension>
 </plugin>

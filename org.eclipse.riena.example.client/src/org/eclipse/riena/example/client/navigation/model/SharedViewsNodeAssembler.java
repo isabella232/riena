@@ -38,7 +38,7 @@ public class SharedViewsNodeAssembler extends AbstractNavigationAssembler {
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
+	public INavigationNode<?>[] buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(
 				new NavigationNodeId("org.eclipse.riena.example.sharedViews")); //$NON-NLS-1$
 
@@ -64,7 +64,7 @@ public class SharedViewsNodeAssembler extends AbstractNavigationAssembler {
 				SharedViewDemoSubModuleView.ID, true);
 		sharedViewModule.addChild(sharedViewSm3);
 
-		return moduleGroup;
+		return new IModuleGroupNode[] { moduleGroup };
 	}
 
 	/**

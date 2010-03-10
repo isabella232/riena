@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import org.eclipse.riena.navigation.model.SimpleNavigationNodeProvider;
+import org.eclipse.riena.navigation.extension.INavigationAssembly2Extension;
 
 /**
  * Creates a node or a subtree for the application model tree.
@@ -18,19 +18,22 @@ import org.eclipse.riena.navigation.model.SimpleNavigationNodeProvider;
 public interface INavigationAssembler {
 
 	/**
-	 * @return The extension interface representing the definition of the
-	 *         navigation node extension point
+	 * Returns the extension interface representing the definition of the
+	 * navigation node extension point
+	 * 
+	 * @return extension of an assembly
 	 */
-	INavigationAssemblyExtension getAssembly();
+	INavigationAssembly2Extension getAssembly();
 
 	/**
 	 * Set the extension interface representing the definition of the navigation
 	 * node extension point. In the current implementation this extension
-	 * interface would be injected by the {@link SimpleNavigationNodeProvider}
+	 * interface would be injected by the {@link LegacyNavigationNodeProvider}
 	 * 
-	 * @param nodeDefinition
+	 * @param assembly
+	 *            extension of an assembly
 	 */
-	void setAssembly(INavigationAssemblyExtension nodeDefinition);
+	void setAssembly(INavigationAssembly2Extension assembly);
 
 	/**
 	 * Creates a node or an application model subtree. The node (or in the case
@@ -49,16 +52,69 @@ public interface INavigationAssembler {
 	 *            be null.
 	 * @return The created node or subtree root node.
 	 */
-	INavigationNode<?> buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument);
+	INavigationNode<?>[] buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument);
 
 	/**
+	 * Tests if this assembler knows how to build the node with the provided id.
+	 * 
 	 * @param nodeId
 	 *            The ID of the node to create.
 	 * @param argument
 	 *            The navigation argument. May provide additional information
 	 *            for node creation.
-	 * @return <code>true</code> if this assembler knows how to build the node
-	 *         with the provided id, <code>false</code> otherwise.
+	 * @return <code>true</code> if this assembler knows how to build the node ,
+	 *         <code>false</code> otherwise.
 	 */
 	boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument);
+
+	/**
+	 * Returns the ID of the parent indicating where to insert a node or subtree
+	 * created with this definition in the application model tree.
+	 * 
+	 * @return ID of the parent node
+	 */
+	String getParentNodeId();
+
+	/**
+	 * Returns the ID of this assembler.
+	 * 
+	 * @return assembler ID
+	 */
+	String getId();
+
+	/**
+	 * Returns the index that this assembly takes in the system startup
+	 * sequence. 0 or less indicates that automatic startup of this assembly is
+	 * not desired.
+	 * 
+	 * @return >0 start order; otherwise no auto start
+	 */
+	int getStartOrder();
+
+	/**
+	 * Sets the ID of the parent indicating where to insert a node or subtree
+	 * created with this definition in the application model tree.
+	 * 
+	 * @param prarentNodeId
+	 *            ID of the parent node
+	 */
+	void setParentNodeId(String prarentNodeId);
+
+	/**
+	 * Sets the ID of this assembler.
+	 * 
+	 * @param id
+	 *            assembler ID
+	 */
+	void setId(String id);
+
+	/**
+	 * Sets the index that this assembly takes in the system startup sequence. 0
+	 * or less indicates that automatic startup of this assembly is not desired.
+	 * 
+	 * @param order
+	 *            >0 start order; otherwise no auto start
+	 */
+	void setStartOrder(int order);
+
 }

@@ -41,7 +41,7 @@ public class ComboAndListNodeAssembler extends AbstractNavigationAssembler {
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public IModuleGroupNode buildNode(NavigationNodeId presentationId, NavigationArgument navigationArgument) {
+	public IModuleGroupNode[] buildNode(NavigationNodeId presentationId, NavigationArgument navigationArgument) {
 
 		IModuleGroupNode node = new ModuleGroupNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigate.comboAndListGroup")); //$NON-NLS-1$
@@ -74,7 +74,7 @@ public class ComboAndListNodeAssembler extends AbstractNavigationAssembler {
 		subModule.addChild(subModule4);
 
 		module.addChild(subModule);
-		return node;
+		return new IModuleGroupNode[] { node };
 	}
 
 	/**

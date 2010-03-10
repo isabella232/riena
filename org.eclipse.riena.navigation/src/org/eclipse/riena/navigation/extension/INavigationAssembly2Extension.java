@@ -8,52 +8,51 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation;
+package org.eclipse.riena.navigation.extension;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
-import org.eclipse.riena.navigation.extension.ICommonNavigationAssemblyExtension;
 
 /**
- * Interface for a NavigationNodeType extension that defines how to create a
- * node or a subtree in the application model tree.
+ * Interface for a (assembly) extension that defines how to create a node or a
+ * subtree in the application model tree.
  */
 @ExtensionInterface
-public interface INavigationAssemblyExtension extends ICommonNavigationAssemblyExtension {
+public interface INavigationAssembly2Extension extends ICommonNavigationAssemblyExtension {
 
-	String EXTENSIONPOINT = "org.eclipse.riena.navigation.assemblies"; //$NON-NLS-1$
-
-	/**
-	 * Returns a sub-application definitions of this assembly.
-	 * 
-	 * @return sub-application node definition
-	 */
-	@MapName("subapplication")
-	ISubApplicationNodeExtension getSubApplicationNode();
+	String EXTENSIONPOINT = "org.eclipse.riena.navigation.assemblies2"; //$NON-NLS-1$
 
 	/**
-	 * Returns a module group definitions of this assembly.
+	 * Returns all sub-application definitions of this assembly.
 	 * 
-	 * @return module group node definition
+	 * @return sub-application group definitions
 	 */
-	@MapName("modulegroup")
-	IModuleGroupNodeExtension getModuleGroupNode();
+	@MapName("subApplication")
+	ISubApplicationNode2Extension[] getSubApplications();
 
 	/**
-	 * Returns a module definitions of this assembly.
+	 * Returns all module group definitions of this assembly.
 	 * 
-	 * @return module node definition
+	 * @return module group definitions
 	 */
-	@MapName("module")
-	IModuleNodeExtension getModuleNode();
+	@MapName("moduleGroup")
+	IModuleGroupNode2Extension[] getModuleGroups();
 
 	/**
-	 * Returns a sub-module definitions of this assembly.
+	 * Returns all module definitions of this assembly.
 	 * 
-	 * @return sub-module node definition
+	 * @return module definitions
 	 */
-	@MapName("submodule")
-	ISubModuleNodeExtension getSubModuleNode();
+	@MapName("subModule")
+	IModuleNode2Extension[] getModules();
+
+	/**
+	 * Returns all sub-module definitions of this assembly.
+	 * 
+	 * @return sub-module definitions
+	 */
+	@MapName("subModule")
+	ISubModuleNode2Extension[] getSubModules();
 
 	/**
 	 * Returns the ID of the parent indicating where to insert a node or subtree
@@ -61,7 +60,6 @@ public interface INavigationAssemblyExtension extends ICommonNavigationAssemblyE
 	 * 
 	 * @return ID of the parent node
 	 */
-	@MapName("parentTypeId")
 	String getParentNodeId();
 
 	/**
@@ -71,7 +69,6 @@ public interface INavigationAssemblyExtension extends ICommonNavigationAssemblyE
 	 * 
 	 * @return >0 start order; otherwise no auto start
 	 */
-	@MapName("autostartsequence")
 	int getStartOrder();
 
 }

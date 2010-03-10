@@ -422,6 +422,9 @@ public final class LnfKeyConstants {
 
 	public static final String DIALOG_FONT = "Dialog.font"; //$NON-NLS-1$
 
+	public static final String MENUBAR_FONT = "Menubar.font"; //$NON-NLS-1$
+	public static final String TOOLBAR_FONT = "Toolbar.font"; //$NON-NLS-1$
+
 	public static final String SUB_APPLICATION_SWITCHER_FONT = "SubApplicationSwitcher.font"; //$NON-NLS-1$
 
 	public static final String MODULE_ITEM_TOOLTIP_FONT = "ModuleItemToolTip.font"; //$NON-NLS-1$

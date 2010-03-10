@@ -42,7 +42,7 @@ public class NavigationSubApplicationNodeAssembler extends AbstractNavigationAss
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
+	public INavigationNode<?>[] buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
 
 		ISubApplicationNode subApplication = new SubApplicationNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigation.subapplication"), "Na&vigation"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -107,9 +107,10 @@ public class NavigationSubApplicationNodeAssembler extends AbstractNavigationAss
 				CustomerDetailSubModuleView.ID, false);
 		module.addChild(subModule);
 
-		return subApplication;
+		return new ISubApplicationNode[] { subApplication };
 	}
 
+	@Override
 	public String getParentNodeId() {
 		return "application"; //$NON-NLS-1$
 	}

@@ -10,19 +10,72 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.navigation.extension.INavigationAssembly2Extension;
+
 /**
  * Abstract class that supplies some standard methods for INavigationAssembler
  */
 public abstract class AbstractNavigationAssembler implements INavigationAssembler {
 
-	private INavigationAssemblyExtension assembly;
+	private String id;
+	private String parentNodeId;
+	private int startOrder;
+	private INavigationAssembly2Extension assembly;
 
-	public INavigationAssemblyExtension getAssembly() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public String getParentNodeId() {
+		return parentNodeId;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setParentNodeId(String parentNodeId) {
+		this.parentNodeId = parentNodeId;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public int getStartOrder() {
+		return startOrder;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setStartOrder(int startOrder) {
+		this.startOrder = startOrder;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public INavigationAssembly2Extension getAssembly() {
 		return assembly;
 	}
 
-	public void setAssembly(INavigationAssemblyExtension nodeDefinition) {
-		this.assembly = nodeDefinition;
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setAssembly(INavigationAssembly2Extension assembly) {
+		this.assembly = assembly;
 	}
 
 }

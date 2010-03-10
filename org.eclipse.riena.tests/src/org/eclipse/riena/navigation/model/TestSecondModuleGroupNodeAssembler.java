@@ -10,38 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import org.eclipse.riena.navigation.AbstractNavigationAssembler;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.INavigationAssembler;
-import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 
-public class TestSecondModuleGroupNodeAssembler implements INavigationAssembler {
-
-	private INavigationAssemblyExtension assembly;
-
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationAssembler#getAssembly()
-	 */
-	public INavigationAssemblyExtension getAssembly() {
-		return assembly;
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationAssembler#setAssembly(org.eclipse.riena.navigation.INavigationAssemblyExtension)
-	 */
-	public void setAssembly(INavigationAssemblyExtension nodeDefinition) {
-		assembly = nodeDefinition;
-	}
+public class TestSecondModuleGroupNodeAssembler extends AbstractNavigationAssembler {
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
+	public INavigationNode<?>[] buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId);
 		IModuleNode module = new ModuleNode(
 				new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModule"));
@@ -49,7 +32,7 @@ public class TestSecondModuleGroupNodeAssembler implements INavigationAssembler 
 		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.secondSubModule"));
 		module.addChild(subModule);
-		return moduleGroup;
+		return new IModuleGroupNode[] { moduleGroup };
 	}
 
 	/**
@@ -62,6 +45,7 @@ public class TestSecondModuleGroupNodeAssembler implements INavigationAssembler 
 				|| nodeId.getTypeId().equals("org.eclipse.riena.navigation.model.test.secondSubModule");
 	}
 
+	@Override
 	public String getParentNodeId() {
 		return "application";
 	}

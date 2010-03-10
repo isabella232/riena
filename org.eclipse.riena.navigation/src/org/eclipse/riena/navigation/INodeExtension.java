@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import org.osgi.framework.Bundle;
-
-import org.eclipse.core.runtime.IConfigurationElement;
-
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 
@@ -23,25 +19,6 @@ import org.eclipse.riena.core.injector.extension.MapName;
  */
 @ExtensionInterface
 public interface INodeExtension {
-
-	/**
-	 * @return The contributing bundle
-	 */
-	Bundle getContributingBundle();
-
-	/**
-	 * @return The configuration element of this extension interface.
-	 */
-	IConfigurationElement getConfigurationElement();
-
-	/**
-	 * Creates and returns a navigation assembler that creates a node or a
-	 * subtree for this sub module or <code>null</code>.
-	 * 
-	 * @return navigation assembler
-	 */
-	@MapName("assembler")
-	INavigationAssembler createNavigationAssembler();
 
 	/**
 	 * Returns the type part of the ID of a navigation node.
@@ -60,9 +37,12 @@ public interface INodeExtension {
 	String getInstanceId();
 
 	/**
-	 * @return The child navigation node definitions of the receiver. These may
-	 *         be subapplication-, module group-, module- or sub module node
-	 *         definitions.
+	 * Returns the child navigation node definitions of the receiver. These may
+	 * be sub application-, module group-, module- or sub module node
+	 * definitions.
+	 * 
+	 * @return child node definitions
+	 * 
 	 * @see ISubApplicationNodeExtension
 	 * @see IModuleGroupNodeExtension
 	 * @see IModuleNodeExtension

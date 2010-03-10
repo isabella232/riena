@@ -17,6 +17,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -27,6 +28,8 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import org.eclipse.riena.internal.navigation.ui.swt.CoolbarUtils;
 import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
@@ -95,10 +98,14 @@ public class MenuCoolBarComposite extends Composite {
 	 */
 	private void create() {
 		CoolBar coolBar = new CoolBar(this, SWT.FLAT);
-		coolItem = CoolbarUtils.initCoolBar(coolBar);
+		coolItem = CoolbarUtils.initCoolBar(coolBar, getMenuBarFont());
 
 		toolBar = (ToolBar) coolItem.getControl();
 		toolBar.addMouseMoveListener(new ToolBarMouseListener());
+	}
+
+	private Font getMenuBarFont() {
+		return LnfManager.getLnf().getFont(LnfKeyConstants.MENUBAR_FONT);
 	}
 
 	// helping classes

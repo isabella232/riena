@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.navigation.ui.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
@@ -34,13 +35,22 @@ public final class CoolbarUtils {
 	 *            cool bar
 	 * @return the first cool item of the given cool bar
 	 */
-	public static CoolItem initCoolBar(CoolBar coolBar) {
+	public static CoolItem initCoolBar(CoolBar coolBar, Font font) {
+
 		if (coolBar.getItemCount() == 0) {
 			CoolItem coolItem = new CoolItem(coolBar, SWT.DROP_DOWN);
 			ToolBar toolBar = new ToolBar(coolBar, SWT.FLAT);
+			toolBar.setFont(font);
 			coolItem.setControl(toolBar);
 			// sets the default size of an empty menu bar or tool bar
 			coolItem.setSize(new Point(0, 1));
+		} else {
+			CoolItem[] itmes = coolBar.getItems();
+			for (CoolItem coolItem : itmes) {
+				if (coolItem.getControl() != null) {
+					coolItem.getControl().setFont(font);
+				}
+			}
 		}
 
 		coolBar.setBackground(getCoolbarBackground());

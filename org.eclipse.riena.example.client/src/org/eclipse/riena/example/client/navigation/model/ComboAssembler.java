@@ -23,7 +23,6 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
@@ -33,14 +32,6 @@ public class ComboAssembler extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.INavigationAssembler#acceptsToBuildNode(
-	 * org.eclipse.riena.navigation.NavigationNodeId,
-	 * org.eclipse.riena.navigation.NavigationArgument)
-	 */
 	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
 		if (knownTargetIds == null) {
 			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigate.firstSubModule" //$NON-NLS-1$
@@ -51,20 +42,12 @@ public class ComboAssembler extends AbstractNavigationAssembler {
 		return knownTargetIds.contains(nodeId.getTypeId());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse
-	 * .riena.navigation.NavigationNodeId,
-	 * org.eclipse.riena.navigation.NavigationArgument)
-	 */
-	public INavigationNode<?> buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
+	public INavigationNode<?>[] buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
 		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigate.firstSubModule"), "First SubModule"); //$NON-NLS-1$ //$NON-NLS-2$
-		IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule,
-				ComboAndChoiceSubModuleController.class, ComboAndChoiceSubModuleView.ID);
-		return subModule;
+		WorkareaManager.getInstance().registerDefinition(subModule, ComboAndChoiceSubModuleController.class,
+				ComboAndChoiceSubModuleView.ID);
+		return new INavigationNode<?>[] { subModule };
 	}
 
 }

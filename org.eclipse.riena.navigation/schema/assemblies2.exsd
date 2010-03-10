@@ -57,12 +57,11 @@
          </documentation>
       </annotation>
       <complexType>
-         <choice minOccurs="0" maxOccurs="unbounded">
-            <element ref="subApplication"/>
-            <element ref="moduleGroup"/>
-            <element ref="module"/>
-            <element ref="subModule"/>
-            <element ref="custom"/>
+         <choice minOccurs="0" maxOccurs="1">
+            <element ref="subApplication" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="moduleGroup" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="module" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="subModule" minOccurs="1" maxOccurs="unbounded"/>
          </choice>
          <attribute name="id" type="string" use="required">
             <annotation>
@@ -290,58 +289,6 @@
             <annotation>
                <documentation>
                   Indicates whether the navigation node should be prepared after the sub module node is created. Preparation means that the controller is created (among other things).
-               </documentation>
-            </annotation>
-         </attribute>
-      </complexType>
-   </element>
-
-   <element name="custom">
-      <annotation>
-         <documentation>
-            Node for custom elements in the navigation bar. A custom module needs to be defined by itself and not within a given navigation structure. Its parentTypeId must be a subapplication.
-It must contain a view and can contain a controller for it.
-         </documentation>
-      </annotation>
-      <complexType>
-         <attribute name="nodeId" type="string" use="required">
-            <annotation>
-               <documentation>
-                  Type part of the ID of the nodes created with this definition. When a subtree is defined it is the type ID of the root node.
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="name" type="string">
-            <annotation>
-               <documentation>
-                  Contains the description of this navigation node that will be used in the plugin-editor.
-               </documentation>
-               <appInfo>
-                  <meta.attribute translatable="true"/>
-               </appInfo>
-            </annotation>
-         </attribute>
-         <attribute name="closable" type="boolean" use="default" value="true">
-            <annotation>
-               <documentation>
-                  Indicates if the module is closeable.
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="view" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-               <appInfo>
-                  <meta.attribute kind="java"/>
-               </appInfo>
-            </annotation>
-         </attribute>
-         <attribute name="controller" type="string">
-            <annotation>
-               <documentation>
-                  
                </documentation>
             </annotation>
          </attribute>
