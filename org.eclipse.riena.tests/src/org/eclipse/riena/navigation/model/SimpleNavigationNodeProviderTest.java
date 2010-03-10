@@ -83,7 +83,7 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 		INavigationAssembler assembler = new TestSecondModuleGroupNodeAssembler();
 		provider.registerNavigationAssembler("myTestAssemberId", assembler);
 
-		NavigationArgument naviArg = new NavigationArgument(null, new NavigationNodeId(
+		NavigationArgument naviArg = new NavigationArgument(new Integer(4711), new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.subApplication"));
 		INavigationNode<?> node = provider.provideNode(subModule, new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.secondModuleGroup"), naviArg);
@@ -92,6 +92,7 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 		assertEquals(2, subApplication.getChildren().size());
 		INavigationNode<?> subModuleChild = node.getChild(0).getChild(0);
 		assertFalse(subModuleChild.isPrepared());
+		assertEquals(4711, node.getNavigationArgument().getParameter());
 
 		subApplication.removeChild(node);
 		assertEquals(1, subApplication.getChildren().size());
@@ -104,6 +105,7 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 		assertEquals(2, subApplication.getChildren().size());
 		subModuleChild = node.getChild(0).getChild(0);
 		assertTrue(subModuleChild.isPrepared());
+		assertEquals(4711, node.getNavigationArgument().getParameter());
 
 	}
 
@@ -159,18 +161,13 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 	 */
 	public void testPrepareAll() {
 
-		NavigationArgument arg = new NavigationArgument(new Integer(4711));
 		SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
-		ReflectionUtils.invokeHidden(provider, "prepareAll", subApplication, arg);
+		ReflectionUtils.invokeHidden(provider, "prepareAll", subApplication);
 		assertFalse(applicationNode.isPrepared());
 		assertTrue(subApplication.isPrepared());
 		assertTrue(moduleGroup.isPrepared());
 		assertTrue(module.isPrepared());
 		assertTrue(subModule.isPrepared());
-
-		assertEquals(4711, moduleGroup.getNavigationArgument().getParameter());
-		assertEquals(4711, module.getNavigationArgument().getParameter());
-		assertEquals(4711, subModule.getNavigationArgument().getParameter());
 
 	}
 

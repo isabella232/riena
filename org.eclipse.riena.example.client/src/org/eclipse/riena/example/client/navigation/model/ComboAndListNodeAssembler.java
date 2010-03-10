@@ -65,7 +65,7 @@ public class ComboAndListNodeAssembler extends AbstractNavigationAssembler {
 
 		SubModuleNode subModule3 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.list3"), "List3"); //$NON-NLS-1$ //$NON-NLS-2$
 		WorkareaManager.getInstance().registerDefinition(subModule3, ListSubModuleController.class,
-				ListSubModuleView.ID, false);
+				ListSubModuleView.ID, false).setRequiredPreparation(true);
 		subModule.addChild(subModule3);
 
 		SubModuleNode subModule4 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.list4"), "List4"); //$NON-NLS-1$ //$NON-NLS-2$

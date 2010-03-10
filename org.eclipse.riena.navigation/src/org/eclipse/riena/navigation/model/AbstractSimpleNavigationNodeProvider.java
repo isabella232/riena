@@ -158,6 +158,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 					NodePositioner nodePositioner = argument != null ? argument.getNodePositioner()
 							: NodePositioner.ADD_END;
 					for (INavigationNode<?> node : targetNodes) {
+						storeNavigationArgument(node, argument);
 						nodePositioner.addChildToParent(parentNode, node);
 						if (node.getNodeId() == null && assembler.getId().equals(targetId.getTypeId())) {
 							node.setNodeId(targetId);
@@ -169,16 +170,30 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 			} else {
 				throw new ExtensionPointFailure("No assembler found for ID=" + targetId.getTypeId()); //$NON-NLS-1$
 			}
+		} else {
+			storeNavigationArgument(targetNode, argument);
 		}
 		if (argument != null) {
-			// store the NavigationArgument in node context
-			targetNode.setContext(NavigationArgument.CONTEXTKEY_ARGUMENT, argument);
 			if (argument.isPrepareAll()) {
 				prepareAll(targetNode);
 			}
 		}
 
 		return targetNode;
+	}
+
+	/**
+	 * Stores the given argument in the context of the given node
+	 * 
+	 * @param targetNode
+	 *            target node
+	 * @param argument
+	 *            contains information passed used for providing the target node
+	 */
+	private void storeNavigationArgument(INavigationNode<?> targetNode, NavigationArgument argument) {
+		if (argument != null) {
+			targetNode.setContext(NavigationArgument.CONTEXTKEY_ARGUMENT, argument);
+		}
 	}
 
 	/**

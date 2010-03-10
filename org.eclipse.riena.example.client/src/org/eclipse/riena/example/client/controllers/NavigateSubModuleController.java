@@ -80,8 +80,7 @@ public class NavigateSubModuleController extends SubModuleController {
 		 * {@inheritDoc}
 		 */
 		public void callback() {
-			NavigationArgument naviAgr = new NavigationArgument();
-			naviAgr.setPrepareAll(true);
+			NavigationArgument naviAgr = new NavigationArgument(new Integer(2));
 			getNavigationNode().navigate(
 					new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList"), naviAgr); //$NON-NLS-1$
 		}
