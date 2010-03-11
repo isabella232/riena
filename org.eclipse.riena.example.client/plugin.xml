@@ -743,6 +743,12 @@
             parentNodeId="org.eclipse.riena.example.navigate.comboAndListGroup">
       </assembly2>
       
+       <assembly2
+            id="org.eclipse.riena.example.navigate.submoduleToModuleAtIndex2"
+            assembler="org.eclipse.riena.example.client.navigation.model.AddSubmoduleToModuleAtIndexAssembler"
+            parentNodeId="org.eclipse.riena.example.navigate.module">
+      </assembly2>
+      
       <assembly2
             id="org.eclipse.riena.example.navigate.tableTextAndTree.assembly"
             assembler="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeAssembler"

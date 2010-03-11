@@ -61,6 +61,10 @@ public class NavigateSubModuleController extends SubModuleController {
 		openAsThirdSubModule.setText("Open SubModule As THIRD in 'Combo And List'"); //$NON-NLS-1$
 		openAsThirdSubModule.addListener(new OpenSubModuleAsThirdListener());
 
+		IActionRidget addToModule = getRidget(IActionRidget.class, "addToModule"); //$NON-NLS-1$
+		addToModule.setText("Add SubModule to current Module at index 2"); //$NON-NLS-1$
+		addToModule.addListener(new AddSubModuleToCurrentModule());
+
 		final PersonModificationBean bean = new PersonModificationBean();
 		bean.setPerson(new Person("Doe", "Jane")); //$NON-NLS-1$ //$NON-NLS-2$
 		IActionRidget navigateRidget = getRidget(IActionRidget.class, "btnNavigateToRidget"); //$NON-NLS-1$
@@ -141,6 +145,25 @@ public class NavigateSubModuleController extends SubModuleController {
 			naviAgr.setNodePositioner(NodePositioner.indexed(2));
 			getNavigationNode().navigate(
 					new NavigationNodeId("org.eclipse.riena.example.navigate.thirdSubModule"), naviAgr); //$NON-NLS-1$
+
+		}
+
+	}
+
+	private class AddSubModuleToCurrentModule implements IActionListener {
+
+		private int instanceId = 1;
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void callback() {
+			NavigationArgument naviAgr = new NavigationArgument();
+			naviAgr.setNodePositioner(NodePositioner.indexed(2));
+			getNavigationNode()
+					.create(
+							new NavigationNodeId(
+									"org.eclipse.riena.example.navigate.submoduleToModuleAtIndex2", String.valueOf(instanceId++)), naviAgr); //$NON-NLS-1$
 
 		}
 
