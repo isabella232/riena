@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Widget;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.NavigationNode;
@@ -73,6 +74,7 @@ public class SWTModuleController extends ModuleController {
 	 */
 	private void addListeners() {
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
+		navigationTreeObserver.addListener(new ModuleListener());
 		navigationTreeObserver.addListener(new SubModuleListener());
 		navigationTreeObserver.addListenerTo(getNavigationNode());
 	}
@@ -191,7 +193,10 @@ public class SWTModuleController extends ModuleController {
 			super.childRemoved(source, childRemoved);
 			if (source.getChildren().size() == 0) {
 				tree.collapse(source);
+				return;
 			}
+			tree.updateFromModel();
+
 		}
 
 		/*
@@ -205,6 +210,39 @@ public class SWTModuleController extends ModuleController {
 		@Override
 		public void childAdded(ISubModuleNode source, ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
+			tree.updateFromModel();
+		}
+	}
+
+	/**
+	 * updates the tree whenever submodule are added or removed
+	 */
+	private class ModuleListener extends ModuleNodeListener {
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#childAdded
+		 * (org.eclipse.riena.navigation.INavigationNode,
+		 * org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void childAdded(IModuleNode source, ISubModuleNode childAdded) {
+			super.childAdded(source, childAdded);
+			tree.updateFromModel();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#childRemoved
+		 * (org.eclipse.riena.navigation.INavigationNode,
+		 * org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void childRemoved(IModuleNode source, ISubModuleNode childRemoved) {
+			super.childRemoved(source, childRemoved);
 			tree.updateFromModel();
 		}
 	}
