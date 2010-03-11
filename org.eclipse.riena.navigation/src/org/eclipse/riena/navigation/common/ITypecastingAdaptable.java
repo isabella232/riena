@@ -13,10 +13,18 @@ package org.eclipse.riena.navigation.common;
 import org.eclipse.core.runtime.IAdaptable;
 
 /**
- * An adaptable, but casting to the destination class
+ * An adaptable, but casted to the destination class.
  */
 public interface ITypecastingAdaptable extends IAdaptable {
-	
-	<T> T getTypecastedAdapter(Class<T> pClass);
 
+	/**
+	 * Returns an object of class <code>pClass</code>. Returns <code>null</code>
+	 * if no such object can be found.
+	 * 
+	 * @param pClass
+	 *            the adapter class to look up.
+	 * @return an object of class <code>pClass</code>, or <code>null</code> if
+	 *         this object does not have an adapter for the given class.
+	 */
+	<T> T getTypecastedAdapter(Class<T> pClass);
 }

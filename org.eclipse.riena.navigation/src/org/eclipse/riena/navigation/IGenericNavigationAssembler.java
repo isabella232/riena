@@ -11,16 +11,15 @@
 package org.eclipse.riena.navigation;
 
 /**
- *
+ * The interface for generic assemblers to build navigation nodes.
  */
 public interface IGenericNavigationAssembler extends INavigationAssembler {
 
 	/**
-	 * Set an assembly provider that may be used by the resolve assembly
-	 * references.
+	 * Set an assembly provider that may be used to resolve assembly references.
 	 * 
 	 * @param assemblyProvider
+	 *            the assembly provider.
 	 */
 	void setAssemblerProvider(IAssemblerProvider assemblyProvider);
-
 }
