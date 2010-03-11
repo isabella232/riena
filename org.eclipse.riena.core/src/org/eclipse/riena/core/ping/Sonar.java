@@ -37,7 +37,7 @@ public final class Sonar {
 
 		// fetch ALL services
 		final BundleContext context = FrameworkUtil.getBundle(Sonar.class).getBundleContext();
-		ServiceReference[] allServiceReferences = null;
+		ServiceReference[] allServiceReferences;
 		try {
 			allServiceReferences = context.getAllServiceReferences(null, null);
 		} catch (final InvalidSyntaxException e) {
