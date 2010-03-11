@@ -51,7 +51,7 @@ public class PingVisitorTest extends RienaTestCase {
 		}
 
 		/**
-		 * @see com.dvag.commons.base.util.ping.DefaultPingable#ping(com.dvag.commons.base.util.ping.PingVisitor)
+		 * @see DefaultPingable#ping(PingVisitor)
 		 */
 		@Override
 		public PingVisitor ping(PingVisitor visitor) {
@@ -91,7 +91,7 @@ public class PingVisitorTest extends RienaTestCase {
 		}
 
 		/**
-		 * @see com.dvag.commons.base.util.ping.PingVisitorTest.PingMock#reset()
+		 * @see PingMock#reset()
 		 */
 		@Override
 		public void reset() {
@@ -102,7 +102,7 @@ public class PingVisitorTest extends RienaTestCase {
 		}
 
 		/**
-		 * @see com.dvag.commons.base.util.ping.PingVisitorTest.PingMock#verify()
+		 * @see PingMock#verify()
 		 */
 		@Override
 		public void verify() {
@@ -154,12 +154,16 @@ public class PingVisitorTest extends RienaTestCase {
 		mock4 = new PingMock();
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = mock4;
+			@SuppressWarnings("unused")
 			private IPingable pingable2 = mock5;
 		};
 		mock2 = new PingMock();
 		mock1 = new PingMock() {
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = mock2;
+			@SuppressWarnings("unused")
 			private IPingable pingable2 = mock3;
 		};
 
@@ -182,12 +186,16 @@ public class PingVisitorTest extends RienaTestCase {
 		mock4 = new PingMock();
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = mock4;
+			@SuppressWarnings("unused")
 			private IPingable pingable2 = mock5;
 		};
 		mock2 = new PingMock();
 		mock1 = new PingMock() {
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = mock2;
+			@SuppressWarnings("unused")
 			private IPingable pingable2 = mock3;
 		};
 
@@ -210,18 +218,24 @@ public class PingVisitorTest extends RienaTestCase {
 		mock4 = new PingMock();
 		mock5 = new PingMock() {
 			// cycle
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = this;
 		};
 		mock3 = new PingMockWithPingMethods() {
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = mock4;
+			@SuppressWarnings("unused")
 			private IPingable pingable2 = mock5;
 		};
 		mock2 = new PingMock() {
 			// cycle
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = this;
 		};
 		mock1 = new PingMock() {
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = mock2;
+			@SuppressWarnings("unused")
 			private IPingable pingable2 = mock3;
 		};
 
@@ -242,15 +256,19 @@ public class PingVisitorTest extends RienaTestCase {
 		mock4 = new PingMock();
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = mock4;
 
+			@SuppressWarnings("unused")
 			private Iterable<IPingable> getAdditionalPingables() {
 				return Arrays.asList(new IPingable[] { mock5 });
 			}
 		};
 		mock2 = new PingMock();
 		mock1 = new PingMock() {
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = mock2;
+			@SuppressWarnings("unused")
 			private IPingable pingable2 = mock3;
 		};
 
@@ -287,9 +305,12 @@ public class PingVisitorTest extends RienaTestCase {
 		mock3 = new PingMock();
 		mock2 = new PingMock();
 		mock1 = new PingMockWithPingMethods() {
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = mock2;
+			@SuppressWarnings("unused")
 			private IPingable pingable2 = mock3;
 
+			@SuppressWarnings("unused")
 			private Iterable<IPingable> getAdditionalPingables() {
 				return Arrays.asList(new IPingable[] { mock4, mock5 });
 			}
@@ -334,7 +355,9 @@ public class PingVisitorTest extends RienaTestCase {
 		mock3 = new PingMock();
 		mock2 = new PingMock();
 		PingMock mock1 = new PingMock() {
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = mock2;
+			@SuppressWarnings("unused")
 			private IPingable pingable2 = mock3;
 		};
 
@@ -356,6 +379,7 @@ public class PingVisitorTest extends RienaTestCase {
 		mock3 = new PingMock();
 		mock2 = new PingMock();
 		PingMock mock1 = new PingMock() {
+			@SuppressWarnings("unused")
 			private Iterable<IPingable> getAdditionalPingables() {
 				return Arrays.asList(new IPingable[] { mock2, mock3 });
 			}
@@ -379,6 +403,7 @@ public class PingVisitorTest extends RienaTestCase {
 		mock3 = new PingMock();
 		mock2 = new PingMock();
 		PingMock mock1 = new PingMock() {
+			@SuppressWarnings("unused")
 			private Iterable<? extends IPingable> getAdditionalPingables() {
 				return Arrays.asList(new IPingable[] { mock2, mock3 });
 			}
@@ -401,15 +426,19 @@ public class PingVisitorTest extends RienaTestCase {
 		mock4 = new PingMock();
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = mock4;
 
+			@SuppressWarnings("unused")
 			private Iterable<IPingable> getAdditionalPingables() {
 				return Arrays.asList(new IPingable[] { mock5 });
 			}
 		};
 		mock2 = new PingMock();
 		mock1 = new PingMock() {
+			@SuppressWarnings("unused")
 			private IPingable pingable2 = mock3;
+			@SuppressWarnings("unused")
 			private IPingable pingable1 = mock2;
 		};
 
