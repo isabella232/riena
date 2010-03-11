@@ -11,6 +11,8 @@
 package org.eclipse.riena.navigation.ui.swt.component;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -267,6 +269,40 @@ public class SubApplicationSwitcherWidget extends Canvas {
 		item.setIcon(subApp.getIcon());
 		item.setLabel(subApp.getLabel());
 		getItems().add(item);
+		IApplicationNode applicationNode = findApplicationNode(getItems());
+		if (applicationNode != null) {
+			orderItems(applicationNode);
+		}
+
+	}
+
+	private IApplicationNode findApplicationNode(List<SubApplicationItem> items) {
+		for (SubApplicationItem item : items) {
+			ISubApplicationNode node = item.getSubApplicationNode();
+			if (node.getParent() != null) {
+				return (IApplicationNode) node.getParent();
+			}
+		}
+		return null;
+	}
+
+	private void orderItems(IApplicationNode appNode) {
+		Collections.sort(getItems(), new SubApplicationItemComparator(appNode));
+	}
+
+	private class SubApplicationItemComparator implements Comparator<SubApplicationItem> {
+
+		private IApplicationNode appNode;
+
+		public SubApplicationItemComparator(IApplicationNode appNode) {
+			this.appNode = appNode;
+		}
+
+		public int compare(SubApplicationItem item1, SubApplicationItem item2) {
+			return appNode.getIndexOfChild(item1.getSubApplicationNode()) < appNode.getIndexOfChild(item2
+					.getSubApplicationNode()) ? -1 : 1;
+		}
+
 	}
 
 	private void unregisterSubApplication(ISubApplicationNode subApp) {
