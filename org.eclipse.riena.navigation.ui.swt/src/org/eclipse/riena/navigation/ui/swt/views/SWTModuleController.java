@@ -215,7 +215,7 @@ public class SWTModuleController extends ModuleController {
 	}
 
 	/**
-	 * updates the tree whenever submodule are added or removed
+	 * updates the tree whenever submodule are added
 	 */
 	private class ModuleListener extends ModuleNodeListener {
 		/*
@@ -232,19 +232,6 @@ public class SWTModuleController extends ModuleController {
 			tree.updateFromModel();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#childRemoved
-		 * (org.eclipse.riena.navigation.INavigationNode,
-		 * org.eclipse.riena.navigation.INavigationNode)
-		 */
-		@Override
-		public void childRemoved(IModuleNode source, ISubModuleNode childRemoved) {
-			super.childRemoved(source, childRemoved);
-			tree.updateFromModel();
-		}
 	}
 
 }
