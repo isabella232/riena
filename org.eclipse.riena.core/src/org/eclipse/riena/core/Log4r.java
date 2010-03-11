@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.core;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 
 import org.eclipse.equinox.log.Logger;
@@ -33,6 +35,31 @@ public final class Log4r {
 
 	/**
 	 * Get a {@code Logger} for class {@code clazz}.
+	 * <p>
+	 * If this is called in an OSGi context this method will return the {@code
+	 * Logger} of the Riena framework. Otherwise if the boolean system property
+	 * {@code LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a simple {@code
+	 * Logger} that writes to the console will be returned. If the system
+	 * property is {@code false} a <i>null</i> logger that does nothing will be
+	 * returned.
+	 * 
+	 * @param clazz
+	 *            categorizes the logger
+	 * @return the {@code Logger}
+	 */
+	public static Logger getLogger(final Class<?> clazz) {
+		final Bundle bundle = FrameworkUtil.getBundle(clazz);
+		if (bundle != null) {
+			return LoggerProvider.instance().getLogger(clazz);
+		}
+		return getEmergencyLogger(clazz.getName());
+	}
+
+	/**
+	 * Get a {@code Logger} for class {@code clazz}.
+	 * <p>
+	 * <b>Note: </b>Consider using {@code Log4r.getLogger(Class<? clazz)}. It is
+	 * functional identical but does not have the dependency to the activator.
 	 * 
 	 * @param activator
 	 *            If the activator is NOT {@code null} this method will return
@@ -40,8 +67,8 @@ public final class Log4r {
 	 *            boolean system property {@code
 	 *            LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a simple
 	 *            {@code Logger} that writes to the console will be returned. If
-	 *            the system property is {@code false} a ´null´ logger that does
-	 *            nothing will be returned.
+	 *            the system property is {@code false} a <i>null</i> logger that
+	 *            does nothing will be returned.
 	 * @param clazz
 	 *            categorizes the logger
 	 * @return the {@code Logger}
@@ -62,8 +89,8 @@ public final class Log4r {
 	 *            boolean system property {@code
 	 *            LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a simple
 	 *            {@code Logger} that writes to the console will be returned. If
-	 *            the system property is {@code false} a ´null´ logger that does
-	 *            nothing will be returned.
+	 *            the system property is {@code false} a <i>null</i> logger that
+	 *            does nothing will be returned.
 	 * @param className
 	 *            categorizes the logger
 	 * @return the {@code Logger}
