@@ -71,6 +71,7 @@ public class ModuleGroupViewTest extends TestCase {
 			assertEquals(10, y);
 
 			ModuleView moduleView = new ModuleView(shell);
+			moduleView.setModuleGroupNode(node);
 			ModuleNode moduleNode = new ModuleNode();
 			node.addChild(moduleNode);
 			moduleView.bind(moduleNode);

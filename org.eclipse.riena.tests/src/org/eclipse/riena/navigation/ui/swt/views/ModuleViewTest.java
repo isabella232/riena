@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
@@ -43,9 +44,12 @@ public class ModuleViewTest extends RienaTestCase {
 		super.setUp();
 
 		shell = new Shell();
-		view = new ModuleView(shell);
 		final NavigationProcessor navigationProcessor = new NavigationProcessor();
 		node = new ModuleNode();
+		view = new ModuleView(shell);
+		ModuleGroupNode moduleGroupNode = new ModuleGroupNode();
+		moduleGroupNode.addChild(node);
+		view.setModuleGroupNode(moduleGroupNode);
 		node.setNavigationProcessor(navigationProcessor);
 		subNode = new SubModuleNode();
 		subNode.setNavigationProcessor(navigationProcessor);
