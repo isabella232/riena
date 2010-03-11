@@ -271,11 +271,20 @@ public class SubApplicationSwitcherWidget extends Canvas {
 		getItems().add(item);
 		IApplicationNode applicationNode = findApplicationNode(getItems());
 		if (applicationNode != null) {
+			// honor the order of subapplicationNodes in the applicationNode
 			orderItems(applicationNode);
 		}
-
 	}
 
+	/**
+	 * Finds the {@link IApplicationNode} of the {@link ISubApplicationNode}s.
+	 * Consider that it is possible that this method returns null
+	 * 
+	 * @param items
+	 *            - the {@link SubApplicationItem}s holding the
+	 *            {@link ISubApplicationNode}s
+	 * @return - the {@link IApplicationNode} as the root of the whole model
+	 */
 	private IApplicationNode findApplicationNode(List<SubApplicationItem> items) {
 		for (SubApplicationItem item : items) {
 			ISubApplicationNode node = item.getSubApplicationNode();
@@ -287,6 +296,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	}
 
 	private void orderItems(IApplicationNode appNode) {
+		// use comparator to order the items honoring order of subapplicationNodes
 		Collections.sort(getItems(), new SubApplicationItemComparator(appNode));
 	}
 
