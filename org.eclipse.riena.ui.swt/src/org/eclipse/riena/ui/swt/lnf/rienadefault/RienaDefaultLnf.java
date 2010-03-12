@@ -298,6 +298,25 @@ public class RienaDefaultLnf {
 	}
 
 	/**
+	 * Returns the color for the given key.
+	 * 
+	 * @param key
+	 *            key whose associated color is to be returned.
+	 * @return the color to which this map maps the specified key, or the
+	 *         {@code defaultValue} if the map contains no mapping for this key.
+	 * 
+	 * @since 2.0
+	 */
+	public Color getColor(String key, Color defaultValue) {
+		initColorDefaults();
+		Resource value = getResource(key);
+		if (value instanceof Color) {
+			return (Color) value;
+		}
+		return defaultValue;
+	}
+
+	/**
 	 * Returns the font for the given key.
 	 * 
 	 * @param key
@@ -451,8 +470,8 @@ public class RienaDefaultLnf {
 	 *            key whose associated setting is to be returned.
 	 * @param defaultValue
 	 *            value to return, if no value is set
-	 * @return the setting to which this setting maps the specified key, or
-	 *         <code>false</code> if the map contains no mapping for this key.
+	 * @return the setting to which this setting maps the specified key, or the
+	 *         {@code defaultValue} if the map contains no mapping for this key.
 	 * @since 1.2
 	 */
 	public Boolean getBooleanSetting(String key, boolean defaultValue) {
