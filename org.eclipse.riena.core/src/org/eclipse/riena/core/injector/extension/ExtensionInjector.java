@@ -30,7 +30,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.IStoppable;
 import org.eclipse.riena.core.injector.InjectionFailure;
-import org.eclipse.riena.internal.core.Activator;
+import org.eclipse.riena.core.util.WeakRef;
 import org.eclipse.riena.internal.core.injector.extension.ExtensionMapper;
 
 /**
@@ -46,7 +46,8 @@ public class ExtensionInjector implements IStoppable {
 	public static final String RIENA_EXTENSIONS_DONOTWIRE_SYSTEM_PROPERTY = "riena.extensions.donotwire"; //$NON-NLS-1$
 
 	private final ExtensionDescriptor extensionDesc;
-	private final Object target;
+	private final WeakRef<Object> targetRef;
+	private final Class<?> targetClass;
 	private final List<IRegistryEventListener> injectorListeners = new ArrayList<IRegistryEventListener>(2);
 
 	// private BundleContext context; // see comment in andStart()
@@ -59,7 +60,7 @@ public class ExtensionInjector implements IStoppable {
 	private Class<?> componentType;
 
 	private static final String DEFAULT_UPDATE_METHOD_NAME = "update"; //$NON-NLS-1$
-	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ExtensionInjector.class);
+	private static final Logger LOGGER = Log4r.getLogger(ExtensionInjector.class);
 
 	/**
 	 * @param extensionDesc
@@ -67,7 +68,12 @@ public class ExtensionInjector implements IStoppable {
 	 */
 	ExtensionInjector(final ExtensionDescriptor extensionDesc, final Object target) {
 		this.extensionDesc = extensionDesc;
-		this.target = target;
+		this.targetRef = new WeakRef<Object>(target, new Runnable() {
+			public void run() {
+				stop();
+			}
+		});
+		this.targetClass = target.getClass();
 	}
 
 	/**
@@ -204,7 +210,7 @@ public class ExtensionInjector implements IStoppable {
 			throws NoSuchMethodException {
 		try {
 			final Class<?> seeking = isArray ? Array.newInstance(interfaceType, 0).getClass() : interfaceType;
-			return target.getClass().getMethod(updateMethodName, seeking);
+			return targetClass.getMethod(updateMethodName, seeking);
 		} catch (final NoSuchMethodException e) {
 			for (final Class<?> superInterfaceType : interfaceType.getInterfaces()) {
 				final Method attempt = seekMatchingUpdateMethod(superInterfaceType, isArray);
@@ -213,7 +219,7 @@ public class ExtensionInjector implements IStoppable {
 				}
 			}
 		}
-		throw new NoSuchMethodError("In " + target.getClass() + " is no method matching " + updateMethodName //$NON-NLS-1$ //$NON-NLS-2$
+		throw new NoSuchMethodError("In " + targetClass + " is no method matching " + updateMethodName //$NON-NLS-1$ //$NON-NLS-2$
 				+ "(" + interfaceType + (isArray ? "[]" : "") + " )"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
@@ -225,7 +231,7 @@ public class ExtensionInjector implements IStoppable {
 	 */
 	private Method findUpdateMethodForUnkownType() {
 		final List<Method> candidates = new ArrayList<Method>();
-		final Method[] methods = target.getClass().getMethods();
+		final Method[] methods = targetClass.getMethods();
 		for (final Method method : methods) {
 			if (method.getName().equals(updateMethodName) && method.getParameterTypes().length == 1
 					&& isExtensionInterface(method.getParameterTypes()[0])) {
@@ -304,7 +310,10 @@ public class ExtensionInjector implements IStoppable {
 
 	private void update(final Object[] params) {
 		try {
-			updateMethod.invoke(target, params);
+			final Object target = targetRef.get();
+			if (target != null) {
+				updateMethod.invoke(target, params);
+			}
 		} catch (final IllegalArgumentException e) {
 			throw new InjectionFailure("Calling 'bind' method " + updateMethod + " failed.", e); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (final IllegalAccessException e) {

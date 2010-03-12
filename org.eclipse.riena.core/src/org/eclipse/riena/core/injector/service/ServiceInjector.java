@@ -32,7 +32,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.IStoppable;
 import org.eclipse.riena.core.injector.InjectionFailure;
-import org.eclipse.riena.internal.core.Activator;
+import org.eclipse.riena.core.util.WeakRef;
 
 /**
  * The is the abstract base class for the specialized service injectors. See
@@ -52,7 +52,8 @@ public abstract class ServiceInjector implements IStoppable {
 	public static final String DEFAULT_UNBIND_METHOD_NAME = "unbind"; //$NON-NLS-1$
 
 	private final ServiceDescriptor serviceDesc;
-	private final Object target;
+	private final WeakRef<Object> targetRef;
+	private final Class<?> targetClass;
 	private BundleContext context;
 	private final String filter;
 	private String bindMethodName;
@@ -67,7 +68,7 @@ public abstract class ServiceInjector implements IStoppable {
 		INITIAL, STARTING, STARTED, STOPPING, STOPPED
 	};
 
-	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ServiceInjector.class);
+	private final static Logger LOGGER = Log4r.getLogger(ServiceInjector.class);
 
 	/**
 	 * Constructor for the <code>injectInto()</code> of
@@ -79,7 +80,12 @@ public abstract class ServiceInjector implements IStoppable {
 	ServiceInjector(final ServiceDescriptor serviceDesc, final Object target) {
 		this.state = State.INITIAL;
 		this.serviceDesc = serviceDesc;
-		this.target = target;
+		this.targetRef = new WeakRef<Object>(target, new Runnable() {
+			public void run() {
+				stop();
+			}
+		});
+		this.targetClass = target.getClass();
 		final StringBuilder bob = new StringBuilder().append("(").append(Constants.OBJECTCLASS).append("=").append( //$NON-NLS-1$ //$NON-NLS-2$
 				serviceDesc.getServiceClazz()).append(")"); //$NON-NLS-1$
 		if (serviceDesc.getFilter() != null) {
@@ -236,7 +242,7 @@ public abstract class ServiceInjector implements IStoppable {
 
 	private List<Method> collectMethods(final String message, final String methodName) {
 		final List<Method> prospects = new ArrayList<Method>();
-		final Method[] methods = target.getClass().getMethods();
+		final Method[] methods = targetClass.getMethods();
 		for (final Method method : methods) {
 			if (method.getName().equals(methodName) && method.getParameterTypes().length == 1) {
 				prospects.add(method);
@@ -248,7 +254,7 @@ public abstract class ServiceInjector implements IStoppable {
 		}
 
 		throw new InjectionFailure(message + " '" + methodName + "' does not exist in target class '" //$NON-NLS-1$ //$NON-NLS-2$
-				+ target.getClass().getName());
+				+ targetClass.getName());
 	}
 
 	protected void handleEvent(final ServiceEvent event) {
@@ -352,7 +358,7 @@ public abstract class ServiceInjector implements IStoppable {
 
 		if (targetedMethods.isEmpty()) {
 			LOGGER.log(LogService.LOG_ERROR, "Could not find a matching Bind/Unbind method from '" + methods //$NON-NLS-1$
-					+ "' for target class '" + target.getClass().getName() + "'."); //$NON-NLS-1$ //$NON-NLS-2$
+					+ "' for target class '" + targetClass.getName() + "'."); //$NON-NLS-1$ //$NON-NLS-2$
 			return null;
 		}
 		// find most specific method
@@ -376,6 +382,10 @@ public abstract class ServiceInjector implements IStoppable {
 	private void invoke(final Method method, final Object service) {
 		Assert.isNotNull(method);
 		Assert.isNotNull(service);
+		final Object target = targetRef.get();
+		if (target == null) {
+			return;
+		}
 		Throwable t = null;
 		String cause = null;
 
@@ -395,7 +405,7 @@ public abstract class ServiceInjector implements IStoppable {
 			cause = "Invocation target exception on invoking '"; //$NON-NLS-1$
 		}
 		if (t != null) {
-			final String message = cause + method + "' on '" + target.getClass().getName() + "'."; //$NON-NLS-1$ //$NON-NLS-2$
+			final String message = cause + method + "' on '" + targetClass.getName() + "'."; //$NON-NLS-1$ //$NON-NLS-2$
 			LOGGER.log(LogService.LOG_ERROR, message, t);
 			throw new InjectionFailure(message, t);
 		}
