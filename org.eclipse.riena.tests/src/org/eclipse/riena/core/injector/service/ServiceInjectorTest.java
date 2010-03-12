@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,29 +22,10 @@ import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
- * 
+ * Tests the {@code ServiceInjector}.
  */
 @NonUITestCase
 public class ServiceInjectorTest extends RienaTestCase {
-
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
-	public void scribble() {
-		Object target = null;
-
-		Inject.service(String.class).into(target).andStart(getContext());
-		Inject.service("serviceClazz").into(target).andStart(getContext());
-		Inject.service("serviceClazz").into(target).bind("bind").unbind("unbind").andStart(getContext());
-		Inject.service("serviceClazz").useFilter("").into(target).bind("bind").unbind("unbind").andStart(getContext());
-	}
 
 	public void testInjectDepOneObviousBindUnbindError() {
 		printTestName();
