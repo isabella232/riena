@@ -21,12 +21,14 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -165,6 +167,25 @@ public class MasterDetailsCompositeTest extends TestCase {
 
 		assertEquals(3, widget.getSpacing().x);
 		assertEquals(4, widget.getSpacing().y);
+	}
+
+	public void testCheckButton() {
+		MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE);
+
+		Button button = new Button(shell, SWT.PUSH);
+		ImageButton imageButton = new ImageButton(shell, SWT.NONE);
+
+		ReflectionUtils.invokeHidden(widget, "checkButton", button, true);
+		ReflectionUtils.invokeHidden(widget, "checkButton", button, false);
+		ReflectionUtils.invokeHidden(widget, "checkButton", imageButton, true);
+		ReflectionUtils.invokeHidden(widget, "checkButton", imageButton, false);
+
+		try {
+			ReflectionUtils.invokeHidden(widget, "checkButton", new Object(), true);
+			fail();
+		} catch (RuntimeException rex) {
+			// ok
+		}
 	}
 
 	// helping classes

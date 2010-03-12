@@ -30,6 +30,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
@@ -169,28 +170,36 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	/**
 	 * Return the 'Apply' control.
 	 * 
-	 * @return a Control instance; never null.
+	 * @return a Button or ImageButton instance; never null.
 	 */
 	public final Control getButtonApply() {
-		return (Control) getUIControl(BIND_ID_APPLY);
+		Control result = getUIControl(BIND_ID_APPLY);
+		checkButton(result, false);
+		return result;
 	}
 
 	/**
 	 * Return the 'New' control.
 	 * 
-	 * @return a Control instance; may be null if 'New' is unsupported.
+	 * @return a Button or ImageButton instance; may be null if 'New' is
+	 *         unsupported.
 	 */
 	public final Control getButtonNew() {
-		return (Control) getUIControl(BIND_ID_NEW);
+		Control result = getUIControl(BIND_ID_NEW);
+		checkButton(result, true);
+		return result;
 	}
 
 	/**
 	 * Return the 'Remove' control.
 	 * 
-	 * @return a Control instance; may be null if 'Remove' is unsupported.
+	 * @return a Button or ImageButton instance; may be null if 'Remove' is
+	 *         unsupported.
 	 */
 	public final Control getButtonRemove() {
-		return (Control) getUIControl(BIND_ID_REMOVE);
+		Control result = getUIControl(BIND_ID_REMOVE);
+		checkButton(result, true);
+		return result;
 	}
 
 	/**
@@ -485,6 +494,14 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 
 	// helping methods
 	//////////////////
+
+	private void checkButton(Control control, boolean allowNull) {
+		if (allowNull && control == null) {
+			return;
+		}
+		boolean ok = control instanceof Button || control instanceof ImageButton;
+		Assert.isLegal(ok, "Control must be a Button or ImageButton: " + String.valueOf(control)); //$NON-NLS-1$
+	}
 
 	private void checkOrientation(int orientation) {
 		int[] allowedValues = { SWT.TOP, SWT.BOTTOM };
