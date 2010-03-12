@@ -30,7 +30,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
@@ -168,30 +167,30 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	/**
-	 * Return the 'Apply' button.
+	 * Return the 'Apply' control.
 	 * 
-	 * @return a Button instance; never null.
+	 * @return a Control instance; never null.
 	 */
-	public final Button getButtonApply() {
-		return (Button) getUIControl(BIND_ID_APPLY);
+	public final Control getButtonApply() {
+		return (Control) getUIControl(BIND_ID_APPLY);
 	}
 
 	/**
-	 * Return the 'New' button.
+	 * Return the 'New' control.
 	 * 
-	 * @return a Button instance; may be null if 'New' is unsupported.
+	 * @return a Control instance; may be null if 'New' is unsupported.
 	 */
-	public final Button getButtonNew() {
-		return (Button) getUIControl(BIND_ID_NEW);
+	public final Control getButtonNew() {
+		return (Control) getUIControl(BIND_ID_NEW);
 	}
 
 	/**
-	 * Return the 'Remove' button.
+	 * Return the 'Remove' control.
 	 * 
-	 * @return a Button instance; may be null if 'Remove' is unsupported.
+	 * @return a Control instance; may be null if 'Remove' is unsupported.
 	 */
-	public final Button getButtonRemove() {
-		return (Button) getUIControl(BIND_ID_REMOVE);
+	public final Control getButtonRemove() {
+		return (Control) getUIControl(BIND_ID_REMOVE);
 	}
 
 	/**
@@ -342,46 +341,46 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	////////////////////
 
 	/**
-	 * Creates the 'Apply' Button. Subclasses may override.
+	 * Creates the 'Apply' Control. Subclasses may override.
 	 * 
 	 * @param compButton
 	 *            the parent composite; never null
 	 * 
-	 * @return a Button or null. If this returns null you are responsible for
+	 * @return a Control or null. If this returns null you are responsible for
 	 *         adding a button with the binding id {@link #BIND_ID_APPLY} to
 	 *         this control elsewhere.
 	 */
-	protected Button createButtonApply(Composite compButton) {
+	protected Control createButtonApply(Composite compButton) {
 		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonApply);
 	}
 
 	/**
-	 * Creates the 'New' Button. Subclasses may override.
+	 * Creates the 'New' Control. Subclasses may override.
 	 * 
 	 * @param compButton
 	 *            the parent composite; never null
 	 * 
-	 * @return a Button or null. If this returns null you are responsible for
+	 * @return a Control or null. If this returns null you are responsible for
 	 *         adding a button with the binding id {@link #BIND_ID_NEW} to this
 	 *         composite elsewhere &ndash; otherwise 'New' will not be
 	 *         available.
 	 */
-	protected Button createButtonNew(Composite compButton) {
+	protected Control createButtonNew(Composite compButton) {
 		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonNew);
 	}
 
 	/**
-	 * Creates the 'Remove' Button. Subclasses may override.
+	 * Creates the 'Remove' Control. Subclasses may override.
 	 * 
 	 * @param compButton
 	 *            the parent composite; never null
 	 * 
-	 * @return a Button or null. If this returns null you are responsible for
+	 * @return a Control or null. If this returns null you are responsible for
 	 *         adding a button with the binding id {@link #BIND_ID_REMOVE} to
 	 *         this composite elsewhere &ndash; otherwise 'Remove' will not be
 	 *         available.
 	 */
-	protected Button createButtonRemove(Composite compButton) {
+	protected Control createButtonRemove(Composite compButton) {
 		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonRemove);
 	}
 
@@ -408,17 +407,17 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 		buttonLayout.fill = true;
 		result.setLayout(buttonLayout);
 
-		Button btnNew = createButtonNew(result);
+		Control btnNew = createButtonNew(result);
 		if (btnNew != null) {
 			addUIControl(btnNew, BIND_ID_NEW);
 		}
 
-		Button btnRemove = createButtonRemove(result);
+		Control btnRemove = createButtonRemove(result);
 		if (btnRemove != null) {
 			addUIControl(btnRemove, BIND_ID_REMOVE);
 		}
 
-		Button btnApply = createButtonApply(result);
+		Control btnApply = createButtonApply(result);
 		if (btnApply != null) {
 			addUIControl(btnApply, BIND_ID_APPLY);
 		}

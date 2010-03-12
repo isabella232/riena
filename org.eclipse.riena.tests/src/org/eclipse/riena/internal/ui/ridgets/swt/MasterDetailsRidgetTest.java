@@ -22,8 +22,8 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
@@ -784,7 +784,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		IMasterDetailsRidget ridget = getRidget();
 		MDBean first = input.get(0);
 		ridget.setSelection(first);
-		Button applyButton = getWidget().getButtonApply();
+		Control applyButton = getWidget().getButtonApply();
 		ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
 		txtColumn1.addValidationRule(new MinLength(5), ValidationTime.ON_UPDATE_TO_MODEL);
 		txtColumn1.setText("abc");
@@ -819,7 +819,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		IMasterDetailsRidget ridget = getRidget();
 		MDBean first = input.get(0);
 		ridget.setSelection(first);
-		Button applyButton = getWidget().getButtonApply();
+		Control applyButton = getWidget().getButtonApply();
 		ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
 		MandatoryMarker marker = new MandatoryMarker();
 		txtColumn1.addMarker(marker);

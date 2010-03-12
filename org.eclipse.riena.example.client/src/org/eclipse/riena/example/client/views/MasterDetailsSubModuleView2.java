@@ -20,6 +20,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -79,10 +80,10 @@ public class MasterDetailsSubModuleView2 extends SubModuleView {
 				buttonLayout.fill = true;
 				result.setLayout(buttonLayout);
 
-				Button btnNew = createButtonNew(result);
+				Control btnNew = createButtonNew(result);
 				addUIControl(btnNew, BIND_ID_NEW);
 
-				Button btnRemove = createButtonRemove(result);
+				Control btnRemove = createButtonRemove(result);
 				addUIControl(btnRemove, BIND_ID_REMOVE);
 
 				return result;
