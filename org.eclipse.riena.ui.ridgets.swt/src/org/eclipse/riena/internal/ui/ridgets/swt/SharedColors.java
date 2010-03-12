@@ -26,16 +26,18 @@ import org.eclipse.swt.widgets.Display;
  */
 public final class SharedColors {
 
-	public static final String COLOR_MANDATORY = "COLOR_MANDATORY"; //$NON-NLS-1$
-	public static final String COLOR_OUTPUT = "COLOR_OUTPUT"; //$NON-NLS-1$
-	public static final String COLOR_MANDATORY_OUTPUT = "COLOR_MANDATORY_OUTPUT"; //$NON-NLS-1$
 	public static final String COLOR_FLASH_ERROR = "COLOR_FLASH_ERROR"; //$NON-NLS-1$
+	public static final String COLOR_MANDATORY = "COLOR_MANDATORY"; //$NON-NLS-1$
+	public static final String COLOR_MANDATORY_OUTPUT = "COLOR_MANDATORY_OUTPUT"; //$NON-NLS-1$
+	public static final String COLOR_NEGATIVE = "COLOR_NEGATIVE"; //$NON-NLS-1$
+	public static final String COLOR_OUTPUT = "COLOR_OUTPUT"; //$NON-NLS-1$
 
 	private Map<String, Color> sharedColors;
 
 	SharedColors(Display display) {
 		Object[] values = { COLOR_MANDATORY, new RGB(255, 255, 175), COLOR_OUTPUT, new RGB(231, 233, 245),
-				COLOR_MANDATORY_OUTPUT, new RGB(242, 243, 210), COLOR_FLASH_ERROR, new RGB(250, 190, 190) };
+				COLOR_MANDATORY_OUTPUT, new RGB(242, 243, 210), COLOR_FLASH_ERROR, new RGB(250, 190, 190),
+				COLOR_NEGATIVE, new RGB(255, 0, 0) };
 		sharedColors = new HashMap<String, Color>();
 		for (int i = 0; i < values.length; i = i + 2) {
 			String key = (String) values[i];
