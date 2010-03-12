@@ -193,6 +193,13 @@ public class UIControlsFactory {
 		return result;
 	}
 
+	@Deprecated
+	public static Button createButtonCheck(Composite parent, String bindingId) {
+		Button button = createButtonCheck(parent);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, bindingId);
+		return button;
+	}
+
 	/**
 	 * Creates a checkbox {@link Button}.
 	 * 
@@ -228,6 +235,13 @@ public class UIControlsFactory {
 		return result;
 	}
 
+	@Deprecated
+	public static Button createButtonRadio(Composite parent, String bindingId) {
+		Button button = createButtonRadio(parent);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, bindingId);
+		return button;
+	}
+
 	/**
 	 * Creates a radio {@link Button}.
 	 * 
@@ -260,6 +274,13 @@ public class UIControlsFactory {
 	 */
 	public static Button createButtonToggle(Composite parent) {
 		return new Button(parent, SWT.TOGGLE);
+	}
+
+	@Deprecated
+	public static Button createButtonToggle(Composite parent, String bindingId) {
+		Button button = createButtonToggle(parent);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, bindingId);
+		return button;
 	}
 
 	/**
