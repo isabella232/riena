@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation;
 
 import org.eclipse.riena.navigation.extension.INavigationAssembly2Extension;
+import org.eclipse.riena.navigation.model.SimpleNavigationNodeProvider;
 
 /**
  * Creates a node or a subtree for the application model tree.
@@ -28,7 +29,7 @@ public interface INavigationAssembler {
 	/**
 	 * Set the extension interface representing the definition of the navigation
 	 * node extension point. In the current implementation this extension
-	 * interface would be injected by the {@link LegacyNavigationNodeProvider}
+	 * interface would be injected by the {@link SimpleNavigationNodeProvider}
 	 * 
 	 * @param assembly
 	 *            extension of an assembly
