@@ -242,7 +242,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 	 * 
 	 * @throws InterruptedException
 	 */
-	public void testTrackingWithKnownTypeAndMultipleData() throws InterruptedException {
+	// TODO enable when 302679 is addressed
+	public void XXX_testTrackingWithKnownTypeAndMultipleData() throws InterruptedException {
 		System.out.println("ExtensionInjectorTest.testTrackingWithKnownTypeAndMultipleData()");
 		printTestName();
 		final int sleepInMs = 500;

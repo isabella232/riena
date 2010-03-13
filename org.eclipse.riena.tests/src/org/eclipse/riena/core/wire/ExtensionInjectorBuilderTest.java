@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.riena.core.injector.extension.ExtensionInjector;
 import org.eclipse.riena.core.injector.extension.IData;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.core.util.WeakRef;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.core.wire.ExtensionInjectorBuilder;
@@ -198,7 +199,8 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 	}
 
 	private Object getBean(ExtensionInjector injector) {
-		return ReflectionUtils.getHidden(injector, "target");
+		WeakRef<?> ref = ReflectionUtils.getHidden(injector, "targetRef");
+		return ref.get();
 	}
 
 	private String getUpdate(ExtensionInjector injector) {

@@ -636,21 +636,21 @@ public class NavigationNodeTest extends RienaTestCase {
 	public void testToString() {
 
 		NaviNode node = new NaviNode(null);
-		assertTrue(node.toString().startsWith(node.getClass().getName()));
+		assertEquals("no label nodeId=null", node.toString());
 
 		node = new NaviNode(null);
 		node.setLabel("LabelOfNode");
-		assertEquals("LabelOfNode", node.toString());
+		assertEquals("LabelOfNode nodeId=null", node.toString());
 
 		node = new NaviNode(new NavigationNodeId("4711"));
-		assertEquals("ID=4711", node.toString());
+		assertEquals("no label nodeId=4711", node.toString());
 
 		node = new NaviNode(new NavigationNodeId("4711", "0815"));
-		assertEquals("ID=4711", node.toString());
+		assertEquals("no label nodeId=4711", node.toString());
 
 		node = new NaviNode(new NavigationNodeId("4711", "0815"));
 		node.setLabel("LabelTwo");
-		assertEquals("LabelTwo", node.toString());
+		assertEquals("LabelTwo nodeId=4711", node.toString());
 
 	}
 

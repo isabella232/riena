@@ -16,6 +16,7 @@ import org.eclipse.riena.core.injector.service.FilterInjector;
 import org.eclipse.riena.core.injector.service.RankingInjector;
 import org.eclipse.riena.core.injector.service.ServiceInjector;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.core.util.WeakRef;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.core.wire.ServiceInjectorBuilder;
@@ -114,7 +115,8 @@ public class ServiceInjectorBuilderTest extends RienaTestCase {
 	}
 
 	private Object getBean(ServiceInjector injector) {
-		return ReflectionUtils.getHidden(injector, "target");
+		WeakRef<?> ref = ReflectionUtils.getHidden(injector, "targetRef");
+		return ref.get();
 	}
 
 	private String getBind(ServiceInjector injector) {
