@@ -181,6 +181,8 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	 * Fires the same event that would be fired if the UIControl was klicked.
 	 * Does nothing if the Ridget is disabled or invisible. <br>
 	 * Should only be used in controller tests.
+	 * 
+	 * @since 2.0
 	 */
 	public void fireAction() {
 		if (isVisible() && isEnabled()) {
