@@ -26,6 +26,8 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
  * Ridget of an {@link ImageButton} widget.
+ * 
+ * @since 2.0
  */
 public class ImageButtonRidget extends AbstractActionRidget {
 

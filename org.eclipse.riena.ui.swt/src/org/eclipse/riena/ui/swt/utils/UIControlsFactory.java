@@ -634,6 +634,7 @@ public class UIControlsFactory {
 	 *            value will also be assigned to the Ridget that is paired to
 	 *            this control.
 	 * @return an {@link ImageButton} instance
+	 * @since 2.0
 	 */
 	public static ImageButton createImageButton(Composite parent, Image image, int style, String bindingId) {
 		ImageButton btn = createImageButton(parent, style, bindingId);
@@ -650,6 +651,7 @@ public class UIControlsFactory {
 	 * @param style
 	 *            the style of image button to construct (SWT.NONE, SWT.HOT)
 	 * @return an {@link ImageButton} instance
+	 * @since 2.0
 	 */
 	public static ImageButton createImageButton(Composite parent, int style) {
 		ImageButton btn = new ImageButton(parent, style);
@@ -670,6 +672,7 @@ public class UIControlsFactory {
 	 *            value will also be assigned to the Ridget that is paired to
 	 *            this control.
 	 * @return an {@link ImageButton} instance
+	 * @since 2.0
 	 */
 	public static ImageButton createImageButton(Composite parent, int style, String bindingId) {
 		ImageButton btn = createImageButton(parent, style);
