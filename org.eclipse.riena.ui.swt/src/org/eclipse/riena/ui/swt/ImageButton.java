@@ -84,8 +84,8 @@ public class ImageButton extends Composite {
 	 * states and adds listeners.
 	 * 
 	 * @param parent
-	 *            a widget which will be the parent of the new {@code
-	 *            ImageButton} (cannot be null)
+	 *            a widget which will be the parent of the new
+	 *            {@code ImageButton} (cannot be null)
 	 * @param style
 	 *            the style of widget to construct; SWT.HOT adds a button border
 	 *            and buttons background that is only visible if the mouse
@@ -113,8 +113,8 @@ public class ImageButton extends Composite {
 	/**
 	 * Returns whether the style of the button has {@code SWT.HOT}.
 	 * 
-	 * @return {@code true} if style has {@code SWT.HOT}; otherwise {@code
-	 *         false}
+	 * @return {@code true} if style has {@code SWT.HOT}; otherwise
+	 *         {@code false}
 	 */
 	private boolean hasHotStyle() {
 
@@ -128,7 +128,6 @@ public class ImageButton extends Composite {
 	 * pointer is over this UI control.
 	 */
 	private void addHoverButton() {
-
 		hoverButton = new Button(this, SWT.PUSH);
 		FormData data = new FormData();
 		data.left = new FormAttachment(0, 0);
@@ -137,7 +136,6 @@ public class ImageButton extends Composite {
 		data.bottom = new FormAttachment(100, 0);
 		hoverButton.setLayoutData(data);
 		hoverButton.setVisible(false);
-
 	}
 
 	/**
@@ -333,6 +331,7 @@ public class ImageButton extends Composite {
 			if (imageToDraw == null) {
 				imageToDraw = getImage();
 			}
+
 			return imageToDraw;
 		}
 
@@ -413,10 +412,9 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Show or hides the "hover" button depending in the hover state.
+	 * Shows or hides the "hover" button depending in the hover state.
 	 */
 	private void updateHoverButton() {
-
 		if (hoverButton != null) {
 			boolean visible = isHover() || isPressed();
 			if (visible != hoverButton.isVisible()) {
@@ -426,7 +424,6 @@ public class ImageButton extends Composite {
 				hoverButton.setImage(getImageToDraw());
 			}
 		}
-
 	}
 
 	/**
@@ -494,8 +491,8 @@ public class ImageButton extends Composite {
 	 * {@code ImageButton}. The {@code ImageButton} will have the same height as
 	 * other push buttons.
 	 * 
-	 * @return useIdealHight {@code true} use ideal height; otherwise {@code
-	 *         false}
+	 * @return useIdealHight {@code true} use ideal height; otherwise
+	 *         {@code false}
 	 */
 	public boolean isUseIdealHeight() {
 		return useIdealHeight;
@@ -671,8 +668,8 @@ public class ImageButton extends Composite {
 	 * Sets whether the button has the focus or hasn't the focus.
 	 * 
 	 * @param focused
-	 *            {@code true} if the button has the focus; otherwise {@code
-	 *            false}
+	 *            {@code true} if the button has the focus; otherwise
+	 *            {@code false}
 	 */
 	private void setFocused(boolean focused) {
 		if (isFocused() != focused) {
@@ -790,7 +787,7 @@ public class ImageButton extends Composite {
 				return;
 			}
 			if (!ignoreMouseButton(e) && !ignoreWidget(e)) {
-				if (isPressed() && isHover()) {
+				if (isPressed() && isHover() && isOverButton(new Point(e.x, e.y))) {
 					Event event = new Event();
 					notifyListeners(SWT.Selection, event);
 				}
@@ -875,13 +872,13 @@ public class ImageButton extends Composite {
 				return;
 			}
 			if (!ignoreWidget(e)) {
-				if (isPressed()) {
+				if ((e.stateMask & SWT.BUTTON_MASK) != 0) {
 					boolean oldHover = isHover();
 					Point point = new Point(e.x, e.y);
 					if (isOverButton(point)) {
-						setHover(true);
+						setPressed(true);
 					} else {
-						setHover(false);
+						setPressed(false);
 					}
 					if (oldHover != isHover()) {
 						updateHoverButton();
@@ -926,8 +923,8 @@ public class ImageButton extends Composite {
 		 * 
 		 * @param point
 		 *            position of the mouse pointer
-		 * @return {@code true} if point is inside the button; otherwise {@code
-		 *         false}
+		 * @return {@code true} if point is inside the button; otherwise
+		 *         {@code false}
 		 */
 		private boolean isOverButton(Point point) {
 			return (point.x <= getBounds().width) && (point.y <= getBounds().height);
