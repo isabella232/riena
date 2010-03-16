@@ -65,6 +65,6 @@
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.build.feature.samples.sdk,org.eclipse.riena.build.feature.samples.sdk"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.build3,org.eclipse.riena.build3"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.ui.ridgets.swt.optional,org.eclipse.riena.ui.ridgets.swt.optional"/>
-<project reference="1.0,:pserver:dev.eclipse.org:/cvsroot/eclipse,e4/org.eclipse.e4.ui/bundles/org.pushingpixels.trident,org.pushingpixels.trident"/>
+<project reference="1.0,:pserver:dev.eclipse.org:/cvsroot/eclipse,e4/org.eclipse.e4.ui/bundles/org.pushingpixels.trident,org.pushingpixels.trident,v20100204-1500"/>
 </provider>
 </psf>
