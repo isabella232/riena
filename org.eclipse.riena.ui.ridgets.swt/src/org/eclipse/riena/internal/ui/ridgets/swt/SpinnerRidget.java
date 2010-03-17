@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.riena.ui.ridgets.ISpinnerRidget;
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
-import org.eclipse.riena.ui.swt.facades.SWTFacade;
 
 /**
  * Ridget for a SWT {@link Spinner} widget.
@@ -181,7 +180,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 	protected void updateUIDigits() {
 		Spinner control = getUIControl();
 		if (control != null && control.getDigits() != getDigits()) {
-			SWTFacade.getDefault().setDigits(control, getDigits());
+			control.setDigits(getDigits());
 		}
 	}
 
