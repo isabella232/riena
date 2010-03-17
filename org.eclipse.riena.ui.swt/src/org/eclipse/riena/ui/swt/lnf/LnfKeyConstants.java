@@ -990,8 +990,14 @@ public final class LnfKeyConstants {
 	 */
 	public static final String INFO_FLYOUT_FONT = "InfoFlyout.font"; //$NON-NLS-1$
 
+	/**
+	 * Key to access the default and the minimum size of the application window.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String APPLICATION_MIN_SIZE = "riena.application.size.minimum"; //$NON-NLS-1$
+
 	private LnfKeyConstants() {
 		super();
 	}
-
 }

@@ -102,14 +102,18 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private static final String PROPERTY_RIENA_APPLICATION_WIDTH = "riena.application.width"; //$NON-NLS-1$
 	/**
-	 * System property defining the minimum height of the application window.
+	 * System property defining the initial height of the application window.
 	 */
 	private static final String PROPERTY_RIENA_APPLICATION_HEIGHT = "riena.application.height"; //$NON-NLS-1$
-
 	/**
-	 * The default and the minimum size of the application.
+	 * System property defining the minimum width of the application window.
 	 */
-	private static final Point APPLICATION_MIN_SIZE = new Point(800, 600);
+	private static final String PROPERTY_RIENA_APPLICATION_MINIMUM_WIDTH = "riena.application.minimum.width"; //$NON-NLS-1$
+	/**
+	 * System property defining the minimum height of the application window.
+	 */
+	private static final String PROPERTY_RIENA_APPLICATION_MINIMUM_HEIGHT = "riena.application.minimum.height"; //$NON-NLS-1$
+
 	private static final int DEFAULT_COOLBAR_TOP_MARGIN = 2;
 	public static final String SHELL_RIDGET_PROPERTY = "applicationWindow"; //$NON-NLS-1$
 
@@ -125,6 +129,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	// content factory for delegation of content creation from the statusline
 	private IStatusLineContentFactory statuslineContentFactory;
+
+	/**
+	 * The application window size minimum.
+	 */
+	private Point applicationSizeMinimum;
 
 	/**
 	 * @noreference This constructor is not intended to be referenced by
@@ -256,24 +265,44 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private void initApplicationSize(IWorkbenchWindowConfigurer configurer) {
 
-		int width = Integer.getInteger(PROPERTY_RIENA_APPLICATION_WIDTH, APPLICATION_MIN_SIZE.x);
-		if (width < APPLICATION_MIN_SIZE.x) {
-			width = APPLICATION_MIN_SIZE.x;
+		int width = Integer.getInteger(PROPERTY_RIENA_APPLICATION_WIDTH, getApplicationSizeMinimum().x);
+		if (width < getApplicationSizeMinimum().x) {
+			width = getApplicationSizeMinimum().x;
 			LOGGER.log(LogService.LOG_WARNING,
 					"The initial width of the application is less than the minimum width which is " //$NON-NLS-1$
-							+ APPLICATION_MIN_SIZE.x);
+							+ getApplicationSizeMinimum().x);
 		}
 
-		int height = Integer.getInteger(PROPERTY_RIENA_APPLICATION_HEIGHT, APPLICATION_MIN_SIZE.y);
-		if (height < APPLICATION_MIN_SIZE.y) {
-			height = APPLICATION_MIN_SIZE.y;
+		int height = Integer.getInteger(PROPERTY_RIENA_APPLICATION_HEIGHT, getApplicationSizeMinimum().y);
+		if (height < getApplicationSizeMinimum().y) {
+			height = getApplicationSizeMinimum().y;
 			LOGGER.log(LogService.LOG_WARNING,
-					"The initial height of the application is less than the minimum heightwhich is " //$NON-NLS-1$
-							+ APPLICATION_MIN_SIZE.y);
+					"The initial height of the application is less than the minimum height which is " //$NON-NLS-1$
+							+ getApplicationSizeMinimum().y);
 		}
 
 		configurer.setInitialSize(new Point(width, height));
+	}
 
+	private void initApplicationSizeMinimum() {
+
+		int widthMinimum = Integer.getInteger(PROPERTY_RIENA_APPLICATION_MINIMUM_WIDTH,
+				getApplicationDefaultSizeMinimum().x);
+		int heightMinimum = Integer.getInteger(PROPERTY_RIENA_APPLICATION_MINIMUM_HEIGHT,
+				getApplicationDefaultSizeMinimum().y);
+		applicationSizeMinimum = new Point(widthMinimum, heightMinimum);
+	}
+
+	private Point getApplicationSizeMinimum() {
+		if (applicationSizeMinimum == null) {
+			initApplicationSizeMinimum();
+		}
+
+		return applicationSizeMinimum;
+	}
+
+	private Point getApplicationDefaultSizeMinimum() {
+		return (Point) LnfManager.getLnf().getSetting(LnfKeyConstants.APPLICATION_MIN_SIZE);
 	}
 
 	private void doInitialBinding() {
@@ -317,7 +346,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		String iconName = controller.getNavigationNode().getIcon();
 		shell.setImage(ImageStore.getInstance().getImage(iconName));
-		shell.setMinimumSize(APPLICATION_MIN_SIZE);
+		shell.setMinimumSize(getApplicationSizeMinimum());
 
 		// prepare shell for binding
 		addUIControl(shell, SHELL_RIDGET_PROPERTY);
