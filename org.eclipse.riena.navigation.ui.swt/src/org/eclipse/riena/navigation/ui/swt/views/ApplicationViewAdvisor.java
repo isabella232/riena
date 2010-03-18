@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
@@ -788,10 +791,17 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			}
 		}
 
-		for (INavigationNode<?> child : node.getChildren()) {
+		/*
+		 * The number of children can change while iterating. Only observe the
+		 * node children !before! the iteration begins. Any child added while
+		 * iterating will be handled automatically if preparation is required.
+		 * Just ensure that there will be no concurrent modification of the
+		 * children list while iterating over it. Conclusion is a copy..
+		 */
+		List<INavigationNode<?>> children = new ArrayList<INavigationNode<?>>(node.getChildren());
+		for (INavigationNode<?> child : children) {
 			prepare(child);
 		}
-
 	}
 
 	/**
