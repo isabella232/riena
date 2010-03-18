@@ -74,7 +74,7 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="org.eclipse.riena.sample.app.client.mail.application"
+            application="org.eclipse.riena.sample.app.client.mail.mailapp"
             name="RCP Product">
          <property
                name="aboutText"

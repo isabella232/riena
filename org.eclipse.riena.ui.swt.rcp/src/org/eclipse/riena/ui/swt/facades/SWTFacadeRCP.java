@@ -15,11 +15,11 @@ import java.util.EventListener;
 import org.eclipse.riena.ui.swt.facades.internal.DisabledPainter;
 import org.eclipse.riena.ui.swt.facades.internal.TreeItemEraserAndPainter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
@@ -39,6 +39,13 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	@Override
+	public void addMouseMoveListener(Control control, EventListener listener) {
+		if (listener != null) {
+			control.addMouseMoveListener((MouseMoveListener) listener);
+		}
+	}
+
+	@Override
 	public void addMouseTrackListener(Control control, MouseTrackListener listener) {
 		control.addMouseTrackListener(listener);
 	}
@@ -48,6 +55,7 @@ public final class SWTFacadeRCP extends SWTFacade {
 		tree.addListener(SWT.PaintItem, listener);
 	}
 
+	@Override
 	public void addPaintListener(Control control, EventListener listener) {
 		if (listener != null) {
 			control.addPaintListener((PaintListener) listener);
@@ -75,6 +83,13 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	@Override
+	public void removeMouseMoveListener(Control control, EventListener listener) {
+		if (control != null) {
+			control.removeMouseMoveListener((MouseMoveListener) listener);
+		}
+	}
+
+	@Override
 	public void removeMouseTrackListener(Control control, MouseTrackListener listener) {
 		control.removeMouseTrackListener(listener);
 	}
@@ -84,14 +99,11 @@ public final class SWTFacadeRCP extends SWTFacade {
 		tree.removeListener(SWT.PaintItem, listener);
 	}
 
+	@Override
 	public void removePaintListener(Control control, EventListener listener) {
 		if (listener != null) {
 			control.removePaintListener((PaintListener) listener);
 		}
-	}
-
-	public void setDigits(Spinner spinner, int digits) {
-		spinner.setDigits(digits);
 	}
 
 }

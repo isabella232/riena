@@ -12,11 +12,11 @@ package org.eclipse.riena.ui.swt.facades;
 
 import java.util.EventListener;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
@@ -32,6 +32,24 @@ import org.eclipse.swt.widgets.Tree;
 public abstract class SWTFacade {
 
 	private static final SWTFacade INSTANCE = (SWTFacade) FacadeFactory.newFacade(SWTFacade.class);
+
+	/**
+	 * Traversal event detail field value indicating that a mnemonic key
+	 * sequence was pressed (value is 1&lt;&lt;7).
+	 */
+	public static final int TRAVERSE_MNEMONIC = 1 << 7;
+
+	/**
+	 * The mouse wheel event type (value is 37). This is a synonym for
+	 * {@link #MouseVerticalWheel} (value is 37). Newer applications should use
+	 * {@link #MouseVerticalWheel} instead of {@link #MouseWheel} to make code
+	 * more understandable.
+	 * 
+	 * @see org.eclipse.swt.widgets.Widget#addListener
+	 * @see org.eclipse.swt.widgets.Display#addFilter
+	 * @see org.eclipse.swt.widgets.Event
+	 */
+	public static final int MouseWheel = 37;
 
 	/**
 	 * The applicable implementation of this class.
@@ -55,6 +73,13 @@ public abstract class SWTFacade {
 	}
 
 	/**
+	 * Returns true if the trident animation library is available.
+	 */
+	public static final boolean hasTrident() {
+		return Platform.getBundle("org.pushingpixels.trident") != null; //$NON-NLS-1$
+	}
+
+	/**
 	 * Adds an SWT.EraseItem listener to the given table.
 	 */
 	public abstract void addEraseItemListener(Table table, Listener listener);
@@ -63,6 +88,15 @@ public abstract class SWTFacade {
 	 * Adds an SWT.EraseItem listener to the given tree.
 	 */
 	public abstract void addEraseItemListener(Tree tree, Listener listener);
+
+	/**
+	 * Adds a MouseMoveListener to the given control.
+	 * 
+	 * @param listener
+	 *            an EventListener that implements the MouseMoveListener
+	 *            interface, or null
+	 */
+	public abstract void addMouseMoveListener(Control control, EventListener listener);
 
 	/**
 	 * Adds a MouseTrackListener to the given control.
@@ -109,6 +143,15 @@ public abstract class SWTFacade {
 	public abstract void removeEraseItemListener(Tree tree, Listener listener);
 
 	/**
+	 * Removes a MouseMoveListener from the given control.
+	 * 
+	 * @param listener
+	 *            an EventListener that implements the MouseMoveListener
+	 *            interface, or null
+	 */
+	public abstract void removeMouseMoveListener(Control control, EventListener listener);
+
+	/**
 	 * Removes a MouseTrackListener from the given control.
 	 */
 	public abstract void removeMouseTrackListener(Control control, MouseTrackListener listener);
@@ -126,17 +169,4 @@ public abstract class SWTFacade {
 	 *            or null
 	 */
 	public abstract void removePaintListener(Control control, EventListener listener);
-
-	/**
-	 * Sets the numbers of decimal digits in the given spinner.
-	 * <p>
-	 * <b>Note:</b> throws a RuntimeException if invoked in RAP.
-	 * 
-	 * @param digits
-	 *            the number of decimal digits (zero or greater)
-	 * @throws RuntimeException
-	 *             if invoked in RAP. The RAP Spinner does not support decimal
-	 *             digits at this time.
-	 */
-	public abstract void setDigits(Spinner spinner, int digits);
 }
