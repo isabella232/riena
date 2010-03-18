@@ -403,6 +403,11 @@ public final class LnfKeyConstants {
 	/**
 	 * @since 2.0
 	 */
+	public static final String MANDATORY_OUTPUT_MARKER_BACKGROUND = "mandatoryOutputMarker.background"; //$NON-NLS-1$
+
+	/**
+	 * @since 2.0
+	 */
 	public static final String ERROR_MARKER_BORDER_COLOR = "errorMarker.borderColor"; //$NON-NLS-1$
 
 	/**
@@ -732,8 +737,8 @@ public final class LnfKeyConstants {
 	 */
 	public static final String DISABLED_MARKER_COMPLEX_ALPHA = "DisabledMarker.complexAlpha"; //$NON-NLS-1$
 	/**
-	 * This constants turns the advanced disabled marker rendering on ({@code
-	 * true}) or off ({@code false}).<br>
+	 * This constants turns the advanced disabled marker rendering on (
+	 * {@code true}) or off ({@code false}).<br>
 	 * Is advanced rendering turned off for disabled UI control only the method
 	 * setEnabled is called. Is advanced rendering turned off the widgets are
 	 * renderer in a spacial way (@see DisabledMarkerVisualizer).

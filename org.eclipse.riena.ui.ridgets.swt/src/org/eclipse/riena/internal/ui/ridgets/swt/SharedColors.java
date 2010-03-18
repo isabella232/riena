@@ -36,7 +36,7 @@ public final class SharedColors {
 
 	SharedColors(Display display) {
 		Object[] values = { COLOR_MANDATORY, new RGB(255, 255, 175), COLOR_OUTPUT, new RGB(231, 233, 245),
-				COLOR_MANDATORY_OUTPUT, new RGB(242, 243, 210), COLOR_FLASH_ERROR, new RGB(250, 190, 190),
+				COLOR_MANDATORY_OUTPUT, new RGB(255, 249, 216), COLOR_FLASH_ERROR, new RGB(250, 190, 190),
 				COLOR_NEGATIVE, new RGB(255, 0, 0) };
 		sharedColors = new HashMap<String, Color>();
 		for (int i = 0; i < values.length; i = i + 2) {

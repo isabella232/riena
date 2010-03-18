@@ -53,8 +53,8 @@ public class MarkerSupport extends BasicMarkerSupport {
 	/**
 	 * This flag defines the default value that defines whether disabled ridgets
 	 * do hide their content. Since v2.0 the default value is {@code false}. It
-	 * can be overridden by setting the system property {@code 
-	 * 'HIDE_DISABLED_RIDGET_CONTENT'} to {@code true}.
+	 * can be overridden by setting the system property
+	 * {@code  'HIDE_DISABLED_RIDGET_CONTENT'} to {@code true}.
 	 * <p>
 	 * Note: A Look&Feel constants exists to define whether disabled ridgets do
 	 * hide their content: {@code LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT}.
@@ -292,11 +292,15 @@ public class MarkerSupport extends BasicMarkerSupport {
 		if (getRidget().isOutputOnly() && getRidget().isEnabled()) {
 			clearMandatory(control);
 			clearOutput(control);
+			RienaDefaultLnf lnf = LnfManager.getLnf();
 			if (isMandatory(getRidget())) {
-				Color color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY_OUTPUT);
+				Color color = lnf.getColor(LnfKeyConstants.MANDATORY_OUTPUT_MARKER_BACKGROUND);
+				if (color == null) {
+					color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY_OUTPUT);
+				}
 				addOutput(control, color);
 			} else {
-				Color color = LnfManager.getLnf().getColor(LnfKeyConstants.OUTPUT_MARKER_BACKGROUND);
+				Color color = lnf.getColor(LnfKeyConstants.OUTPUT_MARKER_BACKGROUND);
 				addOutput(control, color);
 			}
 		} else {
