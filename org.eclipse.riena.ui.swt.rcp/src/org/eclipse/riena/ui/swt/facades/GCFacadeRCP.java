@@ -23,4 +23,19 @@ public class GCFacadeRCP extends GCFacade {
 		gc.drawRoundRectangle(x, y, width, height, arcWidth, arcHeight);
 	}
 
+	@Override
+	public void drawLine(GC gc, int x1, int y1, int x2, int y2) {
+		gc.drawLine(x1, y1, x2, y2);
+	}
+
+	@Override
+	public void setAdvanced(GC gc, boolean isEnabled) {
+		gc.setAdvanced(isEnabled);
+	}
+
+	@Override
+	public void setAntialias(GC gc, int option) {
+		gc.setAntialias(option);
+	}
+
 }

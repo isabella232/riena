@@ -39,7 +39,7 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	@Override
-	public void addMouseMoveListener(Control control, EventListener listener) {
+	public void addMouseMoveListener(Control control, Object listener) {
 		if (listener != null) {
 			control.addMouseMoveListener((MouseMoveListener) listener);
 		}
@@ -83,7 +83,7 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	@Override
-	public void removeMouseMoveListener(Control control, EventListener listener) {
+	public void removeMouseMoveListener(Control control, Object listener) {
 		if (control != null) {
 			control.removeMouseMoveListener((MouseMoveListener) listener);
 		}
