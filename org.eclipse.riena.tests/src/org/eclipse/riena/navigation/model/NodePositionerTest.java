@@ -22,7 +22,7 @@ import org.eclipse.riena.navigation.NodePositioner;
 @NonUITestCase
 public class NodePositionerTest extends TestCase {
 
-	public void testAddChildToParent() {
+	public void testAddChildToParentFixed() {
 		final SubModuleNode parent = new SubModuleNode(new NavigationNodeId("p"));
 		final SubModuleNode childA = new SubModuleNode(new NavigationNodeId("ca"));
 		final SubModuleNode childToAdd = new SubModuleNode(new NavigationNodeId("cta"));
@@ -59,6 +59,44 @@ public class NodePositionerTest extends TestCase {
 		}
 		assertTrue(failureOccured);
 
+		failureOccured = false;
+
+		try {
+			NodePositioner.ordinal(10).addChildToParent(parent, new SubModuleNode(new NavigationNodeId("ordinal")));
+		} catch (NavigationModelFailure e) {
+			failureOccured = true;
+		}
+		assertTrue(failureOccured);
+
 	}
 
+	public void testAddChildToParentOrdinal() {
+		final SubModuleNode parent = new SubModuleNode(new NavigationNodeId("p"));
+		final SubModuleNode childA = new SubModuleNode(new NavigationNodeId("A"));
+		final SubModuleNode childB = new SubModuleNode(new NavigationNodeId("B"));
+		final SubModuleNode childC = new SubModuleNode(new NavigationNodeId("C"));
+		final SubModuleNode childD = new SubModuleNode(new NavigationNodeId("D"));
+
+		assertFalse(parent.getChildren().contains(childA));
+		assertFalse(parent.getChildren().contains(childB));
+
+		NodePositioner.ordinal(10).addChildToParent(parent, childA);
+		assertEquals(childA, parent.getChild(0));
+		NodePositioner.ordinal(5).addChildToParent(parent, childB);
+		assertEquals(childB, parent.getChild(0));
+		assertEquals(childA, parent.getChild(1));
+		NodePositioner.ordinal(15).addChildToParent(parent, childC);
+		assertEquals(childB, parent.getChild(0));
+		assertEquals(childA, parent.getChild(1));
+		assertEquals(childC, parent.getChild(2));
+
+		boolean failureOccured = false;
+		try {
+			NodePositioner.indexed(1).addChildToParent(parent, childD);
+		} catch (NavigationModelFailure e) {
+			failureOccured = true;
+		}
+		assertTrue(failureOccured);
+
+	}
 }

@@ -743,10 +743,22 @@
             parentNodeId="org.eclipse.riena.example.navigate.comboAndListGroup">
       </assembly2>
       
-       <assembly2
+      <assembly2
             id="org.eclipse.riena.example.navigate.submoduleToModuleAtIndex2"
             assembler="org.eclipse.riena.example.client.navigation.model.AddSubmoduleToModuleAtIndexAssembler"
             parentNodeId="org.eclipse.riena.example.navigate.module">
+      </assembly2>
+      
+      <assembly2
+            id="org.eclipse.riena.example.navigate.ordinal5SubModule"
+            assembler="org.eclipse.riena.example.client.navigation.model.OrdinalIndex5NodeAssembler"
+            parentNodeId="org.eclipse.riena.example.ordinalparent">
+      </assembly2>
+      
+      <assembly2
+            id="org.eclipse.riena.example.navigate.ordinal10SubModule"
+            assembler="org.eclipse.riena.example.client.navigation.model.OrdinalIndex10NodeAssembler"
+            parentNodeId="org.eclipse.riena.example.ordinalparent">
       </assembly2>
       
       <assembly2

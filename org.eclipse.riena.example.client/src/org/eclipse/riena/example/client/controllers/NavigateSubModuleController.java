@@ -61,6 +61,14 @@ public class NavigateSubModuleController extends SubModuleController {
 		openAsThirdSubModule.setText("Open SubModule As THIRD in 'Combo And List'"); //$NON-NLS-1$
 		openAsThirdSubModule.addListener(new OpenSubModuleAsThirdListener());
 
+		IActionRidget openAsOrdinal10 = getRidget(IActionRidget.class, "openAsOrdinal10"); //$NON-NLS-1$
+		openAsOrdinal10.setText("Open SubModule with ORDINAL index 10"); //$NON-NLS-1$
+		openAsOrdinal10.addListener(new OpenSubModuleOrdinal10Listener());
+
+		IActionRidget openAsOrdinal5 = getRidget(IActionRidget.class, "openAsOrdinal5"); //$NON-NLS-1$
+		openAsOrdinal5.setText("Open SubModule with ORDINAL index 5"); //$NON-NLS-1$
+		openAsOrdinal5.addListener(new OpenSubModuleOrdinal5Listener());
+
 		IActionRidget addToModule = getRidget(IActionRidget.class, "addToModule"); //$NON-NLS-1$
 		addToModule.setText("Add SubModule to current Module at index 2"); //$NON-NLS-1$
 		addToModule.addListener(new AddSubModuleToCurrentModule());
@@ -145,6 +153,36 @@ public class NavigateSubModuleController extends SubModuleController {
 			naviAgr.setNodePositioner(NodePositioner.indexed(2));
 			getNavigationNode().navigate(
 					new NavigationNodeId("org.eclipse.riena.example.navigate.thirdSubModule"), naviAgr); //$NON-NLS-1$
+
+		}
+
+	}
+
+	private class OpenSubModuleOrdinal10Listener implements IActionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void callback() {
+			NavigationArgument naviAgr = new NavigationArgument();
+			naviAgr.setNodePositioner(NodePositioner.ordinal(10));
+			getNavigationNode().navigate(
+					new NavigationNodeId("org.eclipse.riena.example.navigate.ordinal10SubModule"), naviAgr); //$NON-NLS-1$
+
+		}
+
+	}
+
+	private class OpenSubModuleOrdinal5Listener implements IActionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void callback() {
+			NavigationArgument naviAgr = new NavigationArgument();
+			naviAgr.setNodePositioner(NodePositioner.ordinal(5));
+			getNavigationNode().navigate(
+					new NavigationNodeId("org.eclipse.riena.example.navigate.ordinal5SubModule"), naviAgr); //$NON-NLS-1$
 
 		}
 

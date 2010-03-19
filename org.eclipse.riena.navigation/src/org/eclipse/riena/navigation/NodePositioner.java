@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.riena.navigation.model.NavigationModelFailure;
 
 /**
@@ -24,14 +28,24 @@ import org.eclipse.riena.navigation.model.NavigationModelFailure;
 @SuppressWarnings("unchecked")
 public abstract class NodePositioner {
 
+	public final static String POSITIONING_ORDINALITY_KEY = NodePositioner.class.getName()
+			+ "positioning-ordinality-key"; //$NON-NLS-1$
+
+	protected Map<String, Object> context = new HashMap<String, Object>();
+
+	enum Mode {
+		FIXED, ORDINAL
+	}
+
 	/**
 	 * Adds a node to another at index 0.
 	 */
 	public final static NodePositioner ADD_BEGINNING = new NodePositioner() {
+		private final NodePositioner delegate = indexed(0);
 
 		@Override
 		public void addChildToParent(INavigationNode parent, INavigationNode child) {
-			indexed(0).addChildToParent(parent, child);
+			delegate.addChildToParent(parent, child);
 		}
 	};
 
@@ -42,8 +56,10 @@ public abstract class NodePositioner {
 
 		@Override
 		public void addChildToParent(INavigationNode parent, INavigationNode child) {
+			assertMode(parent, Mode.FIXED);
 			parent.addChild(child);
 		}
+
 	};
 
 	/**
@@ -55,6 +71,7 @@ public abstract class NodePositioner {
 
 			@Override
 			public void addChildToParent(INavigationNode parent, INavigationNode child) {
+				assertMode(parent, Mode.FIXED);
 				if (index < 0) {
 					throw new NavigationModelFailure("Cannot add child " + child + " to parent " + parent //$NON-NLS-1$//$NON-NLS-2$
 							+ " at index " + index + ". Index must be >= 0"); //$NON-NLS-1$//$NON-NLS-2$
@@ -69,6 +86,53 @@ public abstract class NodePositioner {
 			}
 
 		};
+	}
+
+	/**
+	 * Adds a node to another as a child with the specified ordinality(relative
+	 * index). Note that you may not add different children with fixed index and
+	 * ordinality to the same parent node.
+	 */
+	public final static NodePositioner ordinal(final int ordinality) {
+		return new NodePositioner() {
+
+			@Override
+			public void addChildToParent(INavigationNode parent, INavigationNode child) {
+				assertMode(parent, Mode.ORDINAL);
+				child.setContext(POSITIONING_ORDINALITY_KEY, ordinality);
+
+				if (parent.getChildren().size() == 0) {
+					parent.addChild(child);
+					return;
+				}
+
+				List<INavigationNode> oldChildren = parent.getChildren();
+				int ix = 0;
+				while (ix < oldChildren.size()
+						&& ordinality >= (Integer) oldChildren.get(ix).getContext(POSITIONING_ORDINALITY_KEY)) {
+					ix++;
+				}
+				if (ix == oldChildren.size()) {
+					parent.addChild(child);
+				} else {
+					parent.addChild(ix, child);
+				}
+
+			}
+
+		};
+	}
+
+	private static void assertMode(INavigationNode node, Mode expected) {
+		if (node.getChildren().size() == 0) {
+			return;
+		}
+		INavigationNode firstChild = (INavigationNode) node.getChildren().get(0);
+		Mode currentMode = firstChild.getContext(POSITIONING_ORDINALITY_KEY) != null ? Mode.ORDINAL : Mode.FIXED;
+		if (!currentMode.equals(expected)) {
+			throw new NavigationModelFailure("Node " + node + " cannot be added with NodePositioningMode " + expected //$NON-NLS-1$ //$NON-NLS-2$
+					+ " as the current mode is " + currentMode); //$NON-NLS-1$
+		}
 	}
 
 	/**
