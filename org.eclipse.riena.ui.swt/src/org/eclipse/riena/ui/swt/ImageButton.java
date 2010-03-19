@@ -110,6 +110,15 @@ public class ImageButton extends Composite {
 
 	}
 
+	@Override
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		setPressed(false);
+		setHover(false);
+		setFocused(false);
+		redraw();
+	}
+
 	/**
 	 * Returns whether the style of the button has {@code SWT.HOT}.
 	 * 
