@@ -927,7 +927,7 @@ public class ImageButton extends Composite {
 		 *         {@code false}
 		 */
 		private boolean isOverButton(Point point) {
-			return (point.x <= getBounds().width) && (point.y <= getBounds().height);
+			return (point.x <= getBounds().width && point.x >= 0) && (point.y <= getBounds().height && point.y >= 0);
 		}
 
 	}
