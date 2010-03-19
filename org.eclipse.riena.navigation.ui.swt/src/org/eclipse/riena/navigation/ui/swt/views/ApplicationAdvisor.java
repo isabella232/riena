@@ -15,6 +15,7 @@ import java.io.IOException;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.jface.bindings.Binding;
 import org.eclipse.jface.bindings.Scheme;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -32,6 +33,7 @@ import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentationFactory;
+import org.eclipse.riena.ui.swt.facades.BindingServiceFacade;
 
 public class ApplicationAdvisor extends WorkbenchAdvisor {
 
@@ -81,16 +83,18 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 	//////////////////
 
 	private void installDefaultBinding() {
+		BindingServiceFacade facade = BindingServiceFacade.getDefault();
+
 		IBindingService bindingService = (IBindingService) PlatformUI.getWorkbench().getService(IBindingService.class);
-		String scheme = advisorHelper.getKeyScheme();
-		Scheme rienaScheme = bindingService.getScheme(scheme);
+		String schemeId = advisorHelper.getKeyScheme();
+		Scheme rienaScheme = facade.getScheme(bindingService, schemeId);
 		try {
 			// saving will activate (!) the scheme:
-			bindingService.savePreferences(rienaScheme, bindingService.getBindings());
+			Binding[] bindings = facade.getBindings(bindingService);
+			facade.savePreferences(bindingService, rienaScheme, bindings);
 		} catch (IOException ioe) {
 			Logger logger = Log4r.getLogger(Activator.getDefault(), this.getClass());
-			logger.log(LogService.LOG_ERROR, "Could not activate scheme: " + scheme, ioe); //$NON-NLS-1$
+			logger.log(LogService.LOG_ERROR, "Could not activate scheme: " + schemeId, ioe); //$NON-NLS-1$
 		}
 	}
-
 }
