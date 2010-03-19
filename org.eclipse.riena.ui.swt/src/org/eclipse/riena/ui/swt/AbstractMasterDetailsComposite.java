@@ -37,6 +37,8 @@ import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
+import org.eclipse.riena.ui.swt.facades.GCFacade;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.nls.Messages;
@@ -528,7 +530,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 				GridDataFactory.fillDefaults().applyTo(compButton);
 			}
 			if ((compButton.getStyle() & SWT.BORDER) == 0) {
-				compButton.addPaintListener(new LinePaintListener());
+				SWTFacade.getDefault().addPaintListener(compButton, new LinePaintListener());
 			}
 		} else {
 			((GridData) compTable.getLayoutData()).horizontalSpan = 2;
@@ -579,7 +581,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 			}
 			gc.setForeground(fgColor);
 			Rectangle bounds = ((Control) e.widget).getBounds();
-			gc.drawLine(0, 0, 0, bounds.height);
+			GCFacade.getDefault().drawLine(gc, 0, 0, 0, bounds.height);
 			gc.setForeground(oldFg);
 		}
 	}
