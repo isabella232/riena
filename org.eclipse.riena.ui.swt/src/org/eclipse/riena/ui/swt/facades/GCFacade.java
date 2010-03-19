@@ -28,6 +28,8 @@ public abstract class GCFacade {
 		return INSTANCE;
 	}
 
+	public abstract void drawLine(GC gc, int x1, int y1, int x2, int y2);
+
 	/**
 	 * Draws a round-cornered rectangle according to the given arguments with
 	 * the GC's foreground color.
@@ -50,5 +52,9 @@ public abstract class GCFacade {
 	 *            the height of the arc
 	 */
 	public abstract void drawRoundRectangle(GC gc, int x, int y, int width, int height, int arcWidth, int arcHeight);
+
+	public abstract void setAdvanced(GC gc, boolean isEnabled);
+
+	public abstract void setAntialias(GC gc, int option);
 
 }

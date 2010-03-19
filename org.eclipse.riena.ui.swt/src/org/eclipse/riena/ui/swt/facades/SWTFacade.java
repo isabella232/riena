@@ -93,10 +93,10 @@ public abstract class SWTFacade {
 	 * Adds a MouseMoveListener to the given control.
 	 * 
 	 * @param listener
-	 *            an EventListener that implements the MouseMoveListener
-	 *            interface, or null
+	 *            an Object that implements the MouseMoveListener interface, or
+	 *            null
 	 */
-	public abstract void addMouseMoveListener(Control control, EventListener listener);
+	public abstract void addMouseMoveListener(Control control, Object listener);
 
 	/**
 	 * Adds a MouseTrackListener to the given control.
@@ -146,10 +146,10 @@ public abstract class SWTFacade {
 	 * Removes a MouseMoveListener from the given control.
 	 * 
 	 * @param listener
-	 *            an EventListener that implements the MouseMoveListener
-	 *            interface, or null
+	 *            an Object that implements the MouseMoveListener interface, or
+	 *            null
 	 */
-	public abstract void removeMouseMoveListener(Control control, EventListener listener);
+	public abstract void removeMouseMoveListener(Control control, Object listener);
 
 	/**
 	 * Removes a MouseTrackListener from the given control.
