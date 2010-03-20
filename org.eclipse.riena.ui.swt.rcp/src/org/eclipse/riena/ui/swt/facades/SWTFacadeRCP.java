@@ -19,6 +19,7 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
@@ -70,6 +71,11 @@ public final class SWTFacadeRCP extends SWTFacade {
 	@Override
 	public Listener createTreeItemEraserAndPainter() {
 		return new TreeItemEraserAndPainter();
+	}
+
+	@Override
+	public Control getCursorControl(Display display) {
+		return null;
 	}
 
 	@Override

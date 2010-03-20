@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
@@ -131,6 +132,8 @@ public abstract class SWTFacade {
 	 * @return a Listener or null (in RAP)
 	 */
 	public abstract Listener createTreeItemEraserAndPainter();
+
+	public abstract Control getCursorControl(Display display);
 
 	/**
 	 * Removes an SWT.EraseItem listener from the given table.

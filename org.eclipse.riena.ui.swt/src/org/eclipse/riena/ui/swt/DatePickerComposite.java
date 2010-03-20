@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -247,7 +248,7 @@ public class DatePickerComposite extends Composite {
 				@Override
 				public void focusLost(FocusEvent e) {
 					Display display = e.widget.getDisplay();
-					Control focusControl = display.getCursorControl();
+					Control focusControl = SWTFacade.getDefault().getCursorControl(display);
 					if (focusControl != datePicker.getPickerButton()) {
 						close();
 					}

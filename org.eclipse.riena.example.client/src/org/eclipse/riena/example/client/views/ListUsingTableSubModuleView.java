@@ -36,7 +36,7 @@ public class ListUsingTableSubModuleView extends ListSubModuleView {
 		Composite tableComposite = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(false, true).span(2, 1).hint(200, SWT.DEFAULT).applyTo(tableComposite);
 
-		int style = SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.NO_BACKGROUND;
+		int style = SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION | SWT.V_SCROLL;
 		Table listPersons = UIControlsFactory.createTable(tableComposite, style);
 		listPersons.setLinesVisible(false);
 		TableColumn listColumn = new TableColumn(listPersons, SWT.LEFT);
