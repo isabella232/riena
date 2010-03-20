@@ -47,7 +47,7 @@ public class MasterDetailsSubModuleView extends SubModuleView {
 
 		parent.setLayout(new GridLayout(1, false));
 
-		Composite composite = new Composite(parent, SWT.NONE);
+		Composite composite = UIControlsFactory.createComposite(parent);
 		GridData data = new GridData();
 		data.grabExcessHorizontalSpace = true;
 		data.horizontalAlignment = SWT.FILL;
