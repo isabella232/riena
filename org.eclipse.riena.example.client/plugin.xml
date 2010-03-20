@@ -2,7 +2,7 @@
 <?eclipse version="3.2"?>
 <plugin>   
    <extension
-         id="org.eclipse.riena.example.client.application"
+         id="exampleapp"
          name="org.eclipse.riena.example.client.application"
          point="org.eclipse.core.runtime.applications">
       <application>
@@ -15,7 +15,7 @@
          id="example_product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="org.eclipse.riena.example.client.application"
+            application="org.eclipse.riena.example.client.exampleapp"
             name="%product.name">
          <property
                name="appName"
