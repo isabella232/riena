@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -45,9 +46,9 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget {
 
 	private UIProcessControl uiProcessControl;
-	private CancelListener cancelListener;
-	private Map<IProgressVisualizer, Progress> visualizerProgress;
-	private Map<Object, VisualizerContainer> contexts;
+	private final CancelListener cancelListener;
+	private final Map<IProgressVisualizer, Progress> visualizerProgress;
+	private final Map<Object, VisualizerContainer> contexts;
 	private IVisualContextManager contextLocator;
 	private boolean focusAble;
 
@@ -242,11 +243,10 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 			if (currentVisualizer != null && currentVisualizer.getProcessInfo().isDialogVisible()) {
 				open();
 				Object currentContext = null;
-
-				for (Object context : contexts.keySet()) {
-					VisualizerContainer container = contexts.get(context);
-					if (container.getCurrentVisualizer() == currentVisualizer) {
-						currentContext = context;
+				for (Entry<Object, VisualizerContainer> entry : contexts.entrySet()) {
+					VisualizerContainer container = entry.getValue();
+					if (container != null && container.getCurrentVisualizer() == currentVisualizer) {
+						currentContext = entry.getKey();
 						break;
 					}
 				}
@@ -424,11 +424,10 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	}
 
 	private void cleanContext() {
-		Iterator<Object> contextIter = contexts.keySet().iterator();
+		Iterator<VisualizerContainer> contextIter = contexts.values().iterator();
 		while (contextIter.hasNext()) {
-			Object context = contextIter.next();
-			VisualizerContainer container = contexts.get(context);
-			if (container.size() == 0) {
+			VisualizerContainer container = contextIter.next();
+			if (container != null && container.size() == 0) {
 				contextIter.remove();
 			}
 		}
