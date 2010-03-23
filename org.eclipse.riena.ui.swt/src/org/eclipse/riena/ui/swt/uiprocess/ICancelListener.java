@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.uiprocess;
 
-
 /**
- * Such a listener can be used to observe the
+ * A {@code ICancelListener} observes the
  * {@link org.eclipse.jface.window.ApplicationWindow}´s cancel state
  */
 public interface ICancelListener {
 
 	/**
-	 * notifies that either the window is closed or the cancel button is
+	 * Notifies that either the window is closed or the cancel button is
 	 * pressed. Closing the window leads to all
 	 * {@link org.eclipse.riena.ui.core.uiprocess.UIProcess} being stopped.
 	 * Cancel only stops the current visualized
