@@ -27,6 +27,11 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 
+	/**
+	 * The key of the SWT data property that identifies the (top) composite of a
+	 * sub-module view.
+	 */
+	private static final String IS_SUB_MODULE_VIEW_COMPOSITE = "isSubModuleViewComposite"; //$NON-NLS-1$
 	private FocusManager focusManager = new FocusManager();
 	private boolean focusable;
 
@@ -97,10 +102,92 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 
 		if (!SwtUtilities.isDisposed(getUIControl())) {
 			// the swt control is bound
-			return getUIControl().isVisible();
+			if (isChildOfSubModuleView(getUIControl())) {
+				return isControlVisible(getUIControl());
+			} else {
+				return getUIControl().isVisible();
+			}
 		}
 		// control is not bound
 		return savedVisibleState;
+	}
+
+	/**
+	 * Returns whether the given control is the (top) composite of a sub-module
+	 * view.
+	 * 
+	 * @param uiControl
+	 *            UI control
+	 * @return {@code true} if control is composite of a sub-module; otherwise
+	 *         {@code false}
+	 */
+	private boolean isSubModuleViewComposite(Control uiControl) {
+
+		if (!(uiControl instanceof Composite)) {
+			return false;
+		}
+
+		if (uiControl.getData(IS_SUB_MODULE_VIEW_COMPOSITE) instanceof Boolean) {
+			if (((Boolean) uiControl.getData(IS_SUB_MODULE_VIEW_COMPOSITE))) {
+				return true;
+			}
+		}
+		return false;
+
+	}
+
+	/**
+	 * Returns whether the given control is a child of the (top) composite of a
+	 * sub-module view.
+	 * 
+	 * @param uiControl
+	 *            UI control
+	 * @return {@code true} if control is child of a sub-module; otherwise
+	 *         {@code false}
+	 */
+	private boolean isChildOfSubModuleView(Control uiControl) {
+
+		if (uiControl.getVisible()) {
+			Composite parent = uiControl.getParent();
+			if (parent == null) {
+				return false;
+			}
+			if (isSubModuleViewComposite(parent)) {
+				return true;
+			}
+			return isChildOfSubModuleView(parent);
+		} else {
+			return false;
+		}
+
+	}
+
+	/**
+	 * Returns whether the given control is visible or invisible.
+	 * <p>
+	 * Similar to the SWT method isVisible of the class {@link Control} this
+	 * method also checks if the parent composite are also visible. But this
+	 * checks end at the top composite of a sub-module view.
+	 * 
+	 * @param uiControl
+	 *            UI control
+	 * @return {@code true} if control is visible; otherwise {@code false}
+	 */
+	private boolean isControlVisible(Control uiControl) {
+
+		if (uiControl.getVisible()) {
+			Composite parent = uiControl.getParent();
+			if (parent == null) {
+				return true;
+			}
+			if (isSubModuleViewComposite(parent)) {
+				return true;
+			}
+			return isControlVisible(parent);
+		} else {
+			return false;
+		}
+
 	}
 
 	@Override

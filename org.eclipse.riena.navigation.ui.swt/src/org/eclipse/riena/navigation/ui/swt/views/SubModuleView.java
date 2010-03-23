@@ -72,6 +72,11 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubModuleView.class);
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
 	private final static Map<SubModuleView, SubModuleNode> FALLBACK_NODES = new HashMap<SubModuleView, SubModuleNode>();
+	/**
+	 * The key of the SWT data property that identifies the (top) composite of a
+	 * sub-module view.
+	 */
+	private static final String IS_SUB_MODULE_VIEW_COMPOSITE = "isSubModuleViewComposite"; //$NON-NLS-1$
 
 	private final AbstractViewBindingDelegate binding;
 	private final FocusListener focusListener;
@@ -169,6 +174,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	@Override
 	public void createPartControl(Composite parent) {
 		this.parentComposite = parent;
+		parent.setData(IS_SUB_MODULE_VIEW_COMPOSITE, Boolean.TRUE);
 		if (!Beans.isDesignTime()) {
 			observeRoot();
 			SubModuleController controller = createController(getNavigationNode());

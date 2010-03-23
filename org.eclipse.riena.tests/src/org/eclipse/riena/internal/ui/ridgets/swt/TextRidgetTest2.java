@@ -31,6 +31,7 @@ import org.eclipse.riena.beans.common.DateBean;
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.beans.common.TestBean;
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
@@ -56,6 +57,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Tests for the class {@link TextRidget}.
@@ -1577,6 +1579,101 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		} catch (RuntimeException rex) {
 			ok("expected - must have a String.class to-type");
 		}
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code isSubModuleViewComposite(Control)}
+	 * .
+	 */
+	public void testIsSubModuleViewComposite() {
+
+		Text text = new Text(getShell(), SWT.BORDER);
+
+		boolean ret = ReflectionUtils.invokeHidden(getRidget(), "isSubModuleViewComposite", text);
+		assertFalse(ret);
+
+		text.setData("isSubModuleViewComposite", Boolean.TRUE);
+		ret = ReflectionUtils.invokeHidden(getRidget(), "isSubModuleViewComposite", text);
+		assertFalse(ret);
+		SwtUtilities.disposeWidget(text);
+
+		Composite comp = new Composite(getShell(), SWT.NONE);
+
+		ret = ReflectionUtils.invokeHidden(getRidget(), "isSubModuleViewComposite", comp);
+		assertFalse(ret);
+
+		comp.setData("isSubModuleViewComposite", Boolean.TRUE);
+		ret = ReflectionUtils.invokeHidden(getRidget(), "isSubModuleViewComposite", comp);
+		assertTrue(ret);
+		SwtUtilities.disposeWidget(comp);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code isChildOfSubModuleView(Control)} .
+	 */
+	public void testIsChildOfSubModuleView() {
+
+		Text text = new Text(getShell(), SWT.BORDER);
+		boolean ret = ReflectionUtils.invokeHidden(getRidget(), "isChildOfSubModuleView", text);
+		assertFalse(ret);
+		SwtUtilities.disposeWidget(text);
+
+		Composite comp = new Composite(getShell(), SWT.NONE);
+		text = new Text(comp, SWT.BORDER);
+		ret = ReflectionUtils.invokeHidden(getRidget(), "isChildOfSubModuleView", text);
+		assertFalse(ret);
+
+		comp.setData("isSubModuleViewComposite", Boolean.TRUE);
+		ret = ReflectionUtils.invokeHidden(getRidget(), "isChildOfSubModuleView", text);
+		assertTrue(ret);
+		SwtUtilities.disposeWidget(text);
+		SwtUtilities.disposeWidget(comp);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code isControlVisible(Control)} .
+	 */
+	public void testIsControlVisible() {
+
+		Text text = new Text(getShell(), SWT.BORDER);
+		boolean ret = ReflectionUtils.invokeHidden(getRidget(), "isControlVisible", text);
+		assertTrue(ret);
+		getShell().setVisible(false);
+		ret = ReflectionUtils.invokeHidden(getRidget(), "isControlVisible", text);
+		assertFalse(ret);
+		SwtUtilities.disposeWidget(text);
+		getShell().setVisible(true);
+
+		Composite compTop = new Composite(getShell(), SWT.NONE);
+		Composite compChild = new Composite(compTop, SWT.NONE);
+		text = new Text(compChild, SWT.BORDER);
+		ret = ReflectionUtils.invokeHidden(getRidget(), "isControlVisible", text);
+		assertTrue(ret);
+
+		getShell().setVisible(false);
+		ret = ReflectionUtils.invokeHidden(getRidget(), "isControlVisible", text);
+		assertFalse(ret);
+
+		compTop.setData("isSubModuleViewComposite", Boolean.TRUE);
+		ret = ReflectionUtils.invokeHidden(getRidget(), "isControlVisible", text);
+		assertTrue(ret);
+
+		compTop.setVisible(false);
+		ret = ReflectionUtils.invokeHidden(getRidget(), "isControlVisible", text);
+		assertTrue(ret);
+
+		compTop.setVisible(true);
+		compChild.setVisible(false);
+		ret = ReflectionUtils.invokeHidden(getRidget(), "isControlVisible", text);
+		assertFalse(ret);
+
+		getShell().setVisible(true);
+		SwtUtilities.disposeWidget(text);
+		SwtUtilities.disposeWidget(compChild);
+		SwtUtilities.disposeWidget(compTop);
+
 	}
 
 	// helping methods
