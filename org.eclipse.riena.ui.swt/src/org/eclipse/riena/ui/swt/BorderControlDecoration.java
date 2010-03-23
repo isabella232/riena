@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.ui.swt.Activator;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * This class renders a decoration around the control. For every decorated
@@ -85,6 +86,10 @@ public class BorderControlDecoration {
 		// workaround for DatePicker
 		if (this.control.getParent() instanceof DatePickerComposite) {
 			this.control = this.control.getParent();
+		} else if (SWTBindingPropertyLocator.getInstance().locateBindingProperty(control).equals(
+				MasterDetailsComposite.BIND_ID_TABLE)) {
+			System.err.println(this.control.getParent().getParent().getParent().getClass());
+			this.control = this.control.getParent().getParent();
 		}
 		this.borderWidth = borderWidth;
 		if (this.borderWidth < 0) {
