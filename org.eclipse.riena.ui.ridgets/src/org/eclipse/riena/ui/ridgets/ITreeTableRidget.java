@@ -60,7 +60,7 @@ public interface ITreeTableRidget extends ITreeRidget, ISortableByColumn {
 	 *            children will be shown underneath their parent.
 	 * @param parentAccessor
 	 *            a non-null, non-empty String specifying an accessor for
-	 *            abtaining the parent Object from an object in the tree. The
+	 *            obtaining the parent Object from an object in the tree. The
 	 *            accessor is allowed to return null for root elements. For
 	 *            example "parent" specifies "getParent()". The parents are used
 	 *            when determining the correct way to expand or collapse a tree
