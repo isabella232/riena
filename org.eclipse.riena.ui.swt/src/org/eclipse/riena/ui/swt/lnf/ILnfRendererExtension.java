@@ -14,7 +14,7 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
- * Descriptor of a renderer.
+ * Descriptor of a look & feel renderer.
  * <p>
  * <b>Note:</b> The "lnfrenderer" (lower case 'renderer') is @deprecated.
  * 
