@@ -24,9 +24,11 @@ import org.eclipse.riena.core.injector.extension.MapName;
 @ExtensionInterface(id = "org.eclipse.riena.ui.ridgets.labelfinderstrategy,labelFinderStrategy")
 public interface ILabelFinderStrategyExtension {
 
-	@MapName("className")
-	String getClassName();
-
+	/**
+	 * Create a {@code ILabelFinderStrategy}
+	 * 
+	 * @return a {@code ILabelFinderStrategy}
+	 */
 	@MapName("className")
 	ILabelFinderStrategy createFinderStrategy();
 }
