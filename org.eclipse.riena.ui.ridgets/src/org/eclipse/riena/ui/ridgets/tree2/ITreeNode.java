@@ -121,7 +121,7 @@ public interface ITreeNode {
 	 * @throws RuntimeException
 	 *             if propertyChangeListener is null
 	 */
-	void addPropertyChangeListener(PropertyChangeListener listener);
+	void addPropertyChangeListener(PropertyChangeListener propertyChangeListener);
 
 	/**
 	 * Removes a PropertyChangeListener from this class.
@@ -131,5 +131,5 @@ public interface ITreeNode {
 	 * @throws RuntimeException
 	 *             if propertyChangeListener is null
 	 */
-	void removePropertyChangeListener(PropertyChangeListener listener);
+	void removePropertyChangeListener(PropertyChangeListener propertyChangeListener);
 }

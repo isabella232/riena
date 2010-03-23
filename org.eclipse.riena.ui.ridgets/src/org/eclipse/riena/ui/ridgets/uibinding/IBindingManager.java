@@ -17,12 +17,12 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 
 /**
- * Views use this implementations of this interface to bind their Ridgets.
+ * Views use implementations of this interface to bind their Ridgets.
  */
 public interface IBindingManager {
 
 	/**
-	 * injects the mapped ridgets for the uiControls in the controller.
+	 * Injects the mapped ridgets for the uiControls in the controller.
 	 * 
 	 * @param controller
 	 *            The controller which gets the ridgets injected.
@@ -32,7 +32,7 @@ public interface IBindingManager {
 	void injectRidgets(IRidgetContainer controller, List<Object> uiControls);
 
 	/**
-	 * binds uiControls to their ridgets in the controller.
+	 * Binds uiControls to their ridgets in the controller.
 	 * 
 	 * @param controller
 	 *            The controller which holds the ridgets.
@@ -42,7 +42,7 @@ public interface IBindingManager {
 	void bind(IRidgetContainer controller, List<Object> uiControls);
 
 	/**
-	 * unbinds uiControls from their ridgets in the controller.
+	 * Unbinds uiControls from their ridgets in the controller.
 	 * 
 	 * @param controller
 	 *            The controller which holds the ridgets.
