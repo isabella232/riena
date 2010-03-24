@@ -13,7 +13,7 @@ package org.eclipse.riena.core.marker;
 import java.util.Collection;
 
 /**
- * An interface to combine all markable objects. e.g. Adapter and Controller
+ * An interface to combine all markable objects, e.g. Ridget and Controller.
  * This interfaces describes the minimal capabilities of markable objects
  */
 

@@ -11,13 +11,12 @@
 package org.eclipse.riena.internal.core.cache;
 
 /**
- * Interface for cache entries in the various cache implementations
- * 
+ * Interface for cache entries in the various cache implementations.
  */
 public interface ICacheEntry<K, V> {
 
 	/**
-	 * Returns the value that is hold in the cache, null if no value was found
+	 * Returns the value of the cache entry, null if no value was found
 	 * 
 	 * @return value
 	 */

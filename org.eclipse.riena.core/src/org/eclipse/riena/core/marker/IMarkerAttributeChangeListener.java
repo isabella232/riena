@@ -12,7 +12,6 @@ package org.eclipse.riena.core.marker;
 
 /**
  * Listening for changes of a markers attributes.
- * 
  */
 public interface IMarkerAttributeChangeListener {
 

@@ -11,9 +11,9 @@
 package org.eclipse.riena.navigation;
 
 /**
- * Listener for changes performed. The NavigationArgument itself is immutable
- * and cannot be changed, but the changelistener could notify a listener (i.e.
- * another controller) that a passed object has changed.
+ * Listener for changes performed. The {@code NavigationArgument} itself is
+ * immutable and cannot be changed, but the change listener could notify a
+ * listener (i.e. another controller) that a passed object has changed.
  * 
  * @see INavigationNode#navigate(NavigationNodeId, NavigationArgument)
  */

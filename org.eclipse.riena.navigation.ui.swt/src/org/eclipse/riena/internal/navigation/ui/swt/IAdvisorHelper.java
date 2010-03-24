@@ -36,7 +36,9 @@ public interface IAdvisorHelper {
 	/**
 	 * Returns the default key binding scheme for this application.
 	 * 
-	 * @see {@code org.eclipse.ui.bindings} extension point docs
+	 * @return the default key binding scheme
+	 * 
+	 * @see {@code org.eclipse.ui.bindings} extension point documentation
 	 * @see SwtApplication#getKeyScheme()
 	 */
 	String getKeyScheme();

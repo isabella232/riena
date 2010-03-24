@@ -19,36 +19,36 @@ import org.eclipse.riena.navigation.common.ITypecastingAdaptable;
 public interface INavigationNodeController extends ITypecastingAdaptable {
 
 	/**
-	 * Check if the node pNode can be activated within the navigation context
+	 * Check if the node can be activated within the navigation context
 	 * 
-	 * @param pNode
+	 * @param node
 	 *            the node to check
 	 * @param context
 	 *            current navigation context
-	 * @return true - if the node pNode can be disposed
+	 * @return true if the node can be disposed
 	 */
-	boolean allowsActivate(INavigationNode<?> pNode, INavigationContext context);
+	boolean allowsActivate(INavigationNode<?> node, INavigationContext context);
 
 	/**
-	 * Check if the node pNode can be deactivated within the navigation context
+	 * Check if the node can be deactivated within the navigation context
 	 * 
-	 * @param pNode
+	 * @param node
 	 *            the node to check
 	 * @param context
 	 *            current navigation context
-	 * @return true - if the node pNode can be deactivated
+	 * @return true if the node can be deactivated
 	 */
-	boolean allowsDeactivate(INavigationNode<?> pNode, INavigationContext context);
+	boolean allowsDeactivate(INavigationNode<?> node, INavigationContext context);
 
 	/**
-	 * Check if the node pNode can be disposed within the navigation context
+	 * Check if the node can be disposed within the navigation context
 	 * 
-	 * @param pNode
+	 * @param node
 	 *            the node to check
 	 * @param context
 	 *            current navigation context
-	 * @return true - if the node pNode can be disposed
+	 * @return true if the node can be disposed
 	 */
-	boolean allowsDispose(INavigationNode<?> pNode, INavigationContext context);
+	boolean allowsDispose(INavigationNode<?> node, INavigationContext context);
 
 }
