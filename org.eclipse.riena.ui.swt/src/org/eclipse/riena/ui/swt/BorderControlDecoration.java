@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.swt;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.DisposeEvent;
@@ -178,6 +179,8 @@ public class BorderControlDecoration {
 			installCompositeListeners(c);
 			if (c instanceof Shell) {
 				// We just installed on a shell, so don't go further
+				c = null;
+			} else if (c instanceof ScrolledComposite) {
 				c = null;
 			} else {
 				Rectangle decoRect = getDecorationRectangle(c);
