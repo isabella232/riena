@@ -45,9 +45,9 @@ import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
  * in one step call {@link #createAndRegisterProxy(..)}
  * <p>
  * The RemoteServiceFactory does not create a IRemoteServiceReference itself.
- * This is delegated to protocol specific implementations of {@code
- * IRemoteServiceFactory}. These implementations are defined with the extension
- * point "remoteservicefactory".
+ * This is delegated to protocol specific implementations of
+ * {@code IRemoteServiceFactory}. These implementations are defined with the
+ * extension point "remoteservicefactory".
  * <p>
  * This RemoteServiceFactory does nothing if no protocol specific
  * IRemoteServiceFactory is available.
@@ -55,8 +55,11 @@ import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
  * <b>NOTE</b><br>
  * The Riena communication bundle content includes generic class loading and
  * object instantiation or delegates this behavior to other Riena communication
- * bundles. Riena supports Eclipse-BuddyPolicy concept. For further information
- * about Riena class loading and instantiation please read /readme.txt.
+ * bundles. Riena supports Eclipse-BuddyPolicy concept.
+ * 
+ * @see <a
+ *      href="http://wiki.eclipse.org/Riena_Getting_started_remoteservices">Riena
+ *      Wiki</a>
  */
 public class RemoteServiceFactory {
 
@@ -83,11 +86,11 @@ public class RemoteServiceFactory {
 	}
 
 	@InjectService(useRanking = true)
-	public void bind(IRemoteServiceRegistry registryParm) {
+	public void bind(final IRemoteServiceRegistry registryParm) {
 		registry = registryParm;
 	}
 
-	public void unbind(IRemoteServiceRegistry registryParm) {
+	public void unbind(final IRemoteServiceRegistry registryParm) {
 		if (registry == registryParm) {
 			registry = null;
 		}
@@ -97,9 +100,9 @@ public class RemoteServiceFactory {
 	 * @since 1.2
 	 */
 	@InjectExtension
-	public void update(IRemoteServiceFactoryExtension[] factories) {
+	public void update(final IRemoteServiceFactoryExtension[] factories) {
 		remoteServiceFactoryImplementations = new HashMap<String, IRemoteServiceFactory>();
-		for (IRemoteServiceFactoryExtension factory : factories) {
+		for (final IRemoteServiceFactoryExtension factory : factories) {
 			remoteServiceFactoryImplementations.put(factory.getProtocol(), factory.createRemoteServiceFactory());
 		}
 	}
@@ -123,9 +126,9 @@ public class RemoteServiceFactory {
 	 *            the context in which the proxy is registered
 	 * @return the registration object or <code>null</code>
 	 */
-	public IRemoteServiceRegistration createAndRegisterProxy(Class<?> interfaceClass, String url, String protocol,
-			BundleContext context) {
-		RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol);
+	public IRemoteServiceRegistration createAndRegisterProxy(final Class<?> interfaceClass, final String url,
+			final String protocol, final BundleContext context) {
+		final RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol);
 		return createAndRegisterProxy(rsd, context);
 	}
 
@@ -147,7 +150,8 @@ public class RemoteServiceFactory {
 	 *            the context in which the proxy is registered
 	 * @return the registration object or <code>null</code>
 	 */
-	public IRemoteServiceRegistration createAndRegisterProxy(RemoteServiceDescription rsDesc, BundleContext context) {
+	public IRemoteServiceRegistration createAndRegisterProxy(final RemoteServiceDescription rsDesc,
+			final BundleContext context) {
 		// create serviceInstance first
 		IRemoteServiceReference rsRef = createProxy(rsDesc);
 		if (rsRef == null) {
@@ -161,7 +165,7 @@ public class RemoteServiceFactory {
 		}
 		// register directly
 		if (registry != null) {
-			IRemoteServiceRegistration reg = registry.registerService(rsRef, context);
+			final IRemoteServiceRegistration reg = registry.registerService(rsRef, context);
 			return reg;
 		}
 		return null;
@@ -179,13 +183,14 @@ public class RemoteServiceFactory {
 	 * @param protocol
 	 * @return the serviceInstance references or <code>null</code>
 	 */
-	public IRemoteServiceReference createProxy(Class<?> interfaceClass, String url, String protocol) {
-		RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol);
+	public IRemoteServiceReference createProxy(final Class<?> interfaceClass, final String url, final String protocol) {
+		final RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol);
 		return createProxy(rsd);
 	}
 
-	private RemoteServiceDescription createDescription(Class<?> interfaceClass, String url, String protocol) {
-		RemoteServiceDescription rsd = new RemoteServiceDescription();
+	private RemoteServiceDescription createDescription(final Class<?> interfaceClass, final String url,
+			final String protocol) {
+		final RemoteServiceDescription rsd = new RemoteServiceDescription();
 		rsd.setServiceInterfaceClass(interfaceClass);
 		rsd.setServiceInterfaceClassName(interfaceClass.getName());
 		rsd.setURL(url);
@@ -202,7 +207,7 @@ public class RemoteServiceFactory {
 	 * @param rsd
 	 * @return the serviceInstance references or <code>null</code>
 	 */
-	public IRemoteServiceReference createProxy(RemoteServiceDescription rsd) {
+	public IRemoteServiceReference createProxy(final RemoteServiceDescription rsd) {
 		// BundleContext context = Activator.getDefault().getContext();
 		if (!RienaStatus.isActive()) {
 			LOGGER.log(LogService.LOG_WARNING, "riena.core is not started. This may probably not work."); //$NON-NLS-1$
@@ -211,7 +216,7 @@ public class RemoteServiceFactory {
 		try {
 			// Substitute any ${refs} within the url
 			rsd.setURL(VariableManagerUtil.substitute(rsd.getURL()));
-		} catch (CoreException e) {
+		} catch (final CoreException e) {
 			LOGGER.log(LogService.LOG_ERROR, "Could not substitute url '" + rsd.getURL() + "'.", e); //$NON-NLS-1$ //$NON-NLS-2$
 			return null;
 		}
@@ -233,8 +238,8 @@ public class RemoteServiceFactory {
 
 		// ask factory to create a serviceInstance for me, and intercept the
 		// calls with a CallHooksProxy instance
-		IRemoteServiceReference rsr = factory.createProxy(rsd);
-		CallHooksProxy callHooksProxy = new CallHooksProxy(rsr.getServiceInstance());
+		final IRemoteServiceReference rsr = factory.createProxy(rsd);
+		final CallHooksProxy callHooksProxy = new CallHooksProxy(rsr.getServiceInstance());
 		callHooksProxy.setRemoteServiceDescription(rsd);
 		callHooksProxy.setMessageContextAccessor(factory.getMessageContextAccessor());
 		rsr.setServiceInstance(Proxy.newProxyInstance(rsd.getServiceInterfaceClass().getClassLoader(),
@@ -242,19 +247,19 @@ public class RemoteServiceFactory {
 		return rsr;
 	}
 
-	private IRemoteServiceReference createLazyProxy(RemoteServiceDescription rsd) {
+	private IRemoteServiceReference createLazyProxy(final RemoteServiceDescription rsd) {
 		try {
-			LazyProxyHandler lazyProxyHandler = new LazyProxyHandler(rsd);
-			Class<?> serviceClass = RemoteServiceFactory.class.getClassLoader().loadClass(
+			final LazyProxyHandler lazyProxyHandler = new LazyProxyHandler(rsd);
+			final Class<?> serviceClass = RemoteServiceFactory.class.getClassLoader().loadClass(
 					rsd.getServiceInterfaceClassName());
 
-			Object serviceInstance = Proxy.newProxyInstance(this.getClass().getClassLoader(),
+			final Object serviceInstance = Proxy.newProxyInstance(this.getClass().getClassLoader(),
 					new Class[] { serviceClass }, lazyProxyHandler);
-			LazyRemoteServiceReference ref = new LazyRemoteServiceReference(serviceInstance, rsd
+			final LazyRemoteServiceReference ref = new LazyRemoteServiceReference(serviceInstance, rsd
 					.getServiceInterfaceClassName(), rsd);
 			lazyProxyHandler.setLazyRemoteServiceReference(ref);
 			return ref;
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			LOGGER.log(LogService.LOG_ERROR, "Could not load service interface class '" //$NON-NLS-1$
 					+ rsd.getServiceInterfaceClassName() + "'.", e); //$NON-NLS-1$
 			return null;
@@ -269,7 +274,7 @@ public class RemoteServiceFactory {
 	 * 
 	 * @throws ClassNotFoundException
 	 */
-	public Class<?> loadClass(String interfaceClassName) throws ClassNotFoundException {
+	public Class<?> loadClass(final String interfaceClassName) throws ClassNotFoundException {
 
 		return getClass().getClassLoader().loadClass(interfaceClassName);
 	}
@@ -277,27 +282,27 @@ public class RemoteServiceFactory {
 	private class LazyProxyHandler implements InvocationHandler {
 
 		private InvocationHandler delegateHandler;
-		private RemoteServiceDescription rsd;
+		private final RemoteServiceDescription rsd;
 		private LazyRemoteServiceReference lazyRemoteServiceReference;
 
-		protected LazyProxyHandler(RemoteServiceDescription rsd) {
+		protected LazyProxyHandler(final RemoteServiceDescription rsd) {
 			super();
 			this.rsd = rsd;
 		}
 
-		public void setLazyRemoteServiceReference(LazyRemoteServiceReference ref) {
+		public void setLazyRemoteServiceReference(final LazyRemoteServiceReference ref) {
 			this.lazyRemoteServiceReference = ref;
 		}
 
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 			if (delegateHandler == null) {
-				IRemoteServiceReference ref = createProxy(rsd);
+				final IRemoteServiceReference ref = createProxy(rsd);
 				if (ref == null) {
 					throw new RuntimeException("LazyProxy: missing IRemoteServiceFactory to create proxy for " //$NON-NLS-1$
 							+ "protocol=" + rsd.getProtocol() + " url=" + rsd.getURL() + " interface=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							+ rsd.getServiceInterfaceClassName());
 				}
-				Object proxyInstance = ref.getServiceInstance();
+				final Object proxyInstance = ref.getServiceInstance();
 				delegateHandler = Proxy.getInvocationHandler(proxyInstance);
 				lazyRemoteServiceReference.setDelegateRef(ref);
 			}
@@ -309,21 +314,22 @@ public class RemoteServiceFactory {
 
 	private static class LazyRemoteServiceReference implements IRemoteServiceReference {
 
-		private Object serviceInstance;
-		private String serviceClass;
+		private final Object serviceInstance;
+		private final String serviceClass;
 		private IRemoteServiceReference delegateReference;
 		private BundleContext tempBundleContext;
-		private RemoteServiceDescription rsd;
+		private final RemoteServiceDescription rsd;
 		private ServiceRegistration serviceRegistration;
 
-		protected LazyRemoteServiceReference(Object serviceInstance, String serviceClass, RemoteServiceDescription rsd) {
+		protected LazyRemoteServiceReference(final Object serviceInstance, final String serviceClass,
+				final RemoteServiceDescription rsd) {
 			super();
 			this.serviceInstance = serviceInstance;
 			this.serviceClass = serviceClass;
 			this.rsd = rsd;
 		}
 
-		private void setDelegateRef(IRemoteServiceReference delegateRef) {
+		private void setDelegateRef(final IRemoteServiceReference delegateRef) {
 			this.delegateReference = delegateRef;
 			if (tempBundleContext != null) {
 				delegateRef.setContext(tempBundleContext);
@@ -337,7 +343,7 @@ public class RemoteServiceFactory {
 		}
 
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if (delegateReference != null) {
 				return delegateReference.equals(obj);
 			}
@@ -391,7 +397,7 @@ public class RemoteServiceFactory {
 			return this.getClass().hashCode();
 		}
 
-		public void setContext(BundleContext context) {
+		public void setContext(final BundleContext context) {
 			if (delegateReference == null) {
 				tempBundleContext = context;
 			} else {
@@ -399,7 +405,7 @@ public class RemoteServiceFactory {
 			}
 		}
 
-		public void setServiceInstance(Object serviceInstance) {
+		public void setServiceInstance(final Object serviceInstance) {
 			if (delegateReference != null) {
 				delegateReference.setServiceInstance(serviceInstance);
 			} else {
@@ -408,7 +414,7 @@ public class RemoteServiceFactory {
 			}
 		}
 
-		public void setServiceRegistration(ServiceRegistration serviceRegistration) {
+		public void setServiceRegistration(final ServiceRegistration serviceRegistration) {
 			this.serviceRegistration = serviceRegistration;
 		}
 

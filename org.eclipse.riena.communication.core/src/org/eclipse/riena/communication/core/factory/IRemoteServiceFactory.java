@@ -42,8 +42,11 @@ import org.eclipse.riena.communication.core.publisher.IServicePublisher;
  * <b>NOTE</b><br>
  * The Riena communication bundle content includes generic class loading and
  * object instantiation or delegates this behavior to other Riena communication
- * bundles. Riena supports Eclipse-BuddyPolicy concept. For further information
- * about Riena class loading and instanciation please read /readme.txt.
+ * bundles. Riena supports Eclipse-BuddyPolicy concept.
+ * 
+ * @see <a
+ *      href="http://wiki.eclipse.org/Riena_Getting_started_remoteservices">Riena
+ *      Wiki</a>
  * 
  * @see IRemoteServiceProtocol
  * @see IRemoteServiceReference
