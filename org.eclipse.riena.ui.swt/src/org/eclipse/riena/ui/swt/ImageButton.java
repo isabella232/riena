@@ -126,10 +126,8 @@ public class ImageButton extends Composite {
 	 *         {@code false}
 	 */
 	private boolean hasHotStyle() {
-
 		int style = getStyle();
 		return (style & SWT.HOT) == SWT.HOT;
-
 	}
 
 	/**
@@ -763,7 +761,7 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * This listener paints the {@code ImageButton} after a pint event was
+	 * This listener paints the {@code ImageButton} after a paint event was
 	 * fired.
 	 */
 	private class PaintDelegation implements PaintListener {
