@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
@@ -53,8 +54,8 @@ public class MarkerSupport extends BasicMarkerSupport {
 	/**
 	 * This flag defines the default value that defines whether disabled ridgets
 	 * do hide their content. Since v2.0 the default value is {@code false}. It
-	 * can be overridden by setting the system property
-	 * {@code  'HIDE_DISABLED_RIDGET_CONTENT'} to {@code true}.
+	 * can be overridden by setting the system property {@code 
+	 * 'HIDE_DISABLED_RIDGET_CONTENT'} to {@code true}.
 	 * <p>
 	 * Note: A Look&Feel constants exists to define whether disabled ridgets do
 	 * hide their content: {@code LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT}.
@@ -317,13 +318,25 @@ public class MarkerSupport extends BasicMarkerSupport {
 	private static class MarkerControlDecoration extends ControlDecoration {
 
 		public MarkerControlDecoration(Control control, int position, int marginWidth, Image image) {
-			super(control, position);
+			super(control, position, getScrolledComposite(control));
 			// TODO [ev] ControlDecorations are only stubs in RAP - need something else
 			if (SWTFacade.isRCP()) {
 				ReflectionUtils.setHidden(this, "marginWidth", marginWidth); //$NON-NLS-1$
 				ReflectionUtils.setHidden(this, "image", image); //$NON-NLS-1$
 				ReflectionUtils.invokeHidden(this, "update", (Object[]) null); //$NON-NLS-1$
 			}
+		}
+
+		private static ScrolledComposite getScrolledComposite(Control control) {
+
+			if (control == null) {
+				return null;
+			} else if (control instanceof ScrolledComposite) {
+				return (ScrolledComposite) control;
+			} else {
+				return getScrolledComposite(control.getParent());
+			}
+
 		}
 
 	}
