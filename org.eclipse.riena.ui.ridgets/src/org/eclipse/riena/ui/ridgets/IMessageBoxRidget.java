@@ -190,6 +190,11 @@ public interface IMessageBoxRidget extends IRidget {
 			this.label = label;
 		}
 
+		/**
+		 * Return the button label text .
+		 * 
+		 * @return the button label text.
+		 */
 		public String getLabel() {
 			return label;
 		}
