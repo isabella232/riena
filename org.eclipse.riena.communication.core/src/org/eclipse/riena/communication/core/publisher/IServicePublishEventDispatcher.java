@@ -13,10 +13,10 @@ package org.eclipse.riena.communication.core.publisher;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 
 /**
- * Implementations of IServicePublishEventDispatcher provide a List of all
- * service end points for published OSGi Services within a container.
+ * Implementations of {@code IServicePublishEventDispatcher} provide a list of
+ * all service end points for published OSGi services within a container.
  * 
- * An implementation should be registered as OSGi Service and maybe published as
+ * An implementation should be registered as OSGi service and maybe published as
  * "remote" OSGi service itself.
  * 
  * @see RemoteServiceDescription
@@ -25,8 +25,9 @@ import org.eclipse.riena.communication.core.RemoteServiceDescription;
 public interface IServicePublishEventDispatcher {
 
 	/**
+	 * Return the list of service end points for published OSGi services.
 	 * 
-	 * @return the list of service end points for published OSGi Services.
+	 * @return the list of service end points for published OSGi services.
 	 */
 	RemoteServiceDescription[] getAllServices();
 }
