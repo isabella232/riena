@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.ridgets;
 import org.eclipse.riena.ui.common.IComplexComponent;
 
 /**
- * A Ridget that containts other ridgets.
+ * A Ridget that contains other ridgets.
  * <p>
  * Implementors are advised to subclass {@link AbstractCompositeRidget} and
  * override the widget-specific protected methods. Implementations are often

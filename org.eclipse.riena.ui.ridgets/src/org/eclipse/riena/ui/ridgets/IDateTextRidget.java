@@ -40,7 +40,7 @@ public interface IDateTextRidget extends ITextRidget {
 	 * java.util.Date in the model.
 	 * <p>
 	 * In general, supported patterns consist of several segments of 1-n digits
-	 * followed by zero or more groups that either contain a signle separator or
+	 * followed by zero or more groups that either contain a single separator or
 	 * another segment, i.e.:
 	 * 
 	 * <pre>
