@@ -126,6 +126,8 @@ public interface IMasterDetailsDelegate {
 	 * @param target
 	 *            the target object; never null. Holds the latest values from
 	 *            the details area.
+	 * @return true if there is a difference between {@code source} and
+	 *         {@code target}; otherwise false
 	 */
 	boolean isChanged(Object source, Object target);
 
@@ -137,8 +139,8 @@ public interface IMasterDetailsDelegate {
 	 * 
 	 * @param item
 	 *            the item behind the master row. Can never be null.
-	 * @return null if the item is removable; an error message why removal is
-	 *         not possible otherwise.
+	 * @return null if the item is removable; otherwise an error message when
+	 *         removal is not possible.
 	 * @since 2.0
 	 */
 	String isRemovable(Object item);
