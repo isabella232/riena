@@ -18,9 +18,9 @@ public interface IUIMonitorContainer {
 	/**
 	 * Adds an {@link IUIMonitor} to the container.
 	 * 
-	 * @param uiMontitor
+	 * @param uiMonitor
 	 *            the monitor to add
 	 */
-	void addUIMonitor(IUIMonitor uiMontitor);
+	void addUIMonitor(IUIMonitor uiMonitor);
 
 }
