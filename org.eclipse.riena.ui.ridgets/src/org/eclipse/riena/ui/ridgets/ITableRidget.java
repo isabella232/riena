@@ -98,6 +98,8 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	/**
 	 * Return true, if this table allows columns to be re-arranged by the user.
 	 * The default value is false.
+	 * 
+	 * @return true if table allows columns to be re-arranged; otherwise false
 	 */
 	boolean hasMoveableColumns();
 
