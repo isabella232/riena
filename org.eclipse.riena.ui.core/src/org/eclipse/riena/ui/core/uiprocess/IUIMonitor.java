@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.IAdaptable;
 
 /**
  * {@link IUIMonitor}s implement callback functions that are called on the user
- * interface thread
+ * interface thread.
  */
 public interface IUIMonitor extends IAdaptable {
 
@@ -22,20 +22,21 @@ public interface IUIMonitor extends IAdaptable {
 	 * Handle process progress. Synchronized with UI-Thread
 	 * 
 	 * @param progress
+	 *            a non-negative number of work units just completed
 	 */
 	void updateProgress(int progress);
 
 	/**
-	 * The first Update of the UI. Synchronized with UI-Thread
+	 * The first update of the UI. Synchronized with UI-Thread
 	 * 
-	 * @param progress
+	 * @param totalWork
+	 *            the total number of work units into which the main task is
+	 *            been subdivided.
 	 */
 	void initialUpdateUI(int totalWork);
 
 	/**
 	 * Called when the process has finished. Synchronized with UI-Thread
-	 * 
-	 * @param progress
 	 */
 	void finalUpdateUI();
 
