@@ -27,7 +27,7 @@ public interface ISessionStore {
 	 * 
 	 * @param principal
 	 *            principal for which sessions should be read
-	 * @return returns an array of session objects
+	 * @return an array of session objects
 	 */
 	Session[] read(Principal principal);
 

@@ -80,7 +80,7 @@ public interface IMasterDetailsDelegate {
 	 * @param target
 	 *            The target object. If null, a new instance, obtained from
 	 *            {@link #createWorkingCopy()}, will be used as the target.
-	 * @return returns the target object; never null.
+	 * @return the target object; never null.
 	 */
 	Object copyBean(Object source, Object target);
 

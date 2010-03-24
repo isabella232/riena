@@ -63,7 +63,7 @@ public class Attachment {
 	 * @pre file.exist==true
 	 * @throws java.io.FileNotFoundException
 	 */
-	public Attachment(File file) throws IOException {
+	public Attachment(final File file) throws IOException {
 		this();
 		type = Type.FILE;
 		this.file = file;
@@ -75,7 +75,7 @@ public class Attachment {
 	 * @param url
 	 *            create attachment from url content
 	 */
-	public Attachment(URL url) throws IOException {
+	public Attachment(final URL url) throws IOException {
 		this();
 		type = Type.URL;
 		//		this.url = url;
@@ -86,14 +86,14 @@ public class Attachment {
 	/**
 	 * @param dataHandler
 	 */
-	public Attachment(InputStream inputStream) throws IOException {
+	public Attachment(final InputStream inputStream) throws IOException {
 		this();
 		type = Type.INPUTSTREAM;
 		this.dataSource = new InputStreamDataSource(inputStream);
 		this.dataSource.checkValid();
 	}
 
-	protected Attachment(ByteArrayDataSource dataSource) {
+	protected Attachment(final ByteArrayDataSource dataSource) {
 		this();
 		type = Type.INPUTSTREAM;
 		this.dataSource = dataSource;
@@ -118,14 +118,14 @@ public class Attachment {
 	 *         storage)
 	 * @throws IOException
 	 */
-	public File readAsFile(String fullFilePath) throws IOException {
-		InputStream input = readAsStream();
+	public File readAsFile(final String fullFilePath) throws IOException {
+		final InputStream input = readAsStream();
 		if (input == null) {
 			throw new IOException("no inputstream to save as file"); //$NON-NLS-1$
 		}
-		FileOutputStream output = new FileOutputStream(fullFilePath);
+		final FileOutputStream output = new FileOutputStream(fullFilePath);
 		try {
-			byte[] b = new byte[READ_BLOCK_SIZE];
+			final byte[] b = new byte[READ_BLOCK_SIZE];
 			int length = 0;
 			while ((length = input.read(b)) == READ_BLOCK_SIZE) {
 				output.write(b, 0, length);
@@ -133,7 +133,7 @@ public class Attachment {
 			if (length > 0) {
 				output.write(b, 0, length);
 			}
-			File returnFile = new File(fullFilePath);
+			final File returnFile = new File(fullFilePath);
 			return returnFile;
 		} finally {
 			output.close();
@@ -141,7 +141,7 @@ public class Attachment {
 	}
 
 	/**
-	 * @return return the construction type of the attachment
+	 * @return the construction type of the attachment
 	 */
 	protected Type getType() {
 		return type;
@@ -169,15 +169,15 @@ public class Attachment {
 		try {
 			if (type == Type.INPUTSTREAM) {
 				try {
-					InputStream input = dataSource.getInputStream();
+					final InputStream input = dataSource.getInputStream();
 					if (input != null && input.markSupported()) {
 						input.reset();
 					}
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					Nop.reason("do nothing"); //$NON-NLS-1$
 				}
 			}
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			return new AttachmentSerialized(dataSource);
 		}
 		return new AttachmentSerialized(dataSource);

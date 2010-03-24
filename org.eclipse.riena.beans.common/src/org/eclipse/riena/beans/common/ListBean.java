@@ -60,7 +60,7 @@ public class ListBean extends AbstractBean {
 	}
 
 	/**
-	 * @return Returns the value list
+	 * @return the value list
 	 */
 	public List<?> getValues() {
 		return values;

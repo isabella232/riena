@@ -45,7 +45,7 @@ public class BooleanBean extends AbstractBean {
 	}
 
 	/**
-	 * @return Returns the value.
+	 * @return the value.
 	 */
 	public boolean isValue() {
 		return value;

@@ -215,7 +215,7 @@ public class Person extends AbstractBean {
 	}
 
 	/**
-	 * @return Returns the hasDaughter.
+	 * @return the hasDaughter.
 	 */
 	public boolean isHasDog() {
 		return hasDog;
@@ -233,7 +233,7 @@ public class Person extends AbstractBean {
 	}
 
 	/**
-	 * @return Returns the hasSon.
+	 * @return the hasSon.
 	 */
 	public boolean isHasCat() {
 		return hasCat;
@@ -251,7 +251,7 @@ public class Person extends AbstractBean {
 	}
 
 	/**
-	 * @return Returns the hasFish.
+	 * @return the hasFish.
 	 */
 	public boolean isHasFish() {
 		return hasFish;
@@ -304,7 +304,7 @@ public class Person extends AbstractBean {
 	}
 
 	/**
-	 * @return Returns the birthday.
+	 * @return the birthday.
 	 */
 	public String getBirthday() {
 		return birthday;

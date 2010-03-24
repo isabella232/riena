@@ -65,10 +65,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (toActivate != null) {
 			if (toActivate.isActivated()) {
 				if (debugNaviProc) {
-					LOGGER
-							.log(
-									LogService.LOG_DEBUG,
-									"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
+					LOGGER.log(
+							LogService.LOG_DEBUG,
+							"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
 				}
 				Nop.reason("see comment below."); //$NON-NLS-1$
 				// do nothing
@@ -82,10 +81,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				}
 				if (!toActivate.isVisible() || !toActivate.isEnabled()) {
 					if (debugNaviProc) {
-						LOGGER
-								.log(
-										LogService.LOG_DEBUG,
-										"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is not visible or not enabled --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
+						LOGGER.log(
+								LogService.LOG_DEBUG,
+								"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is not visible or not enabled --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
 					}
 
 					return;
@@ -468,7 +466,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * 
 	 * @param toDispose
 	 *            the node to dispose
-	 * @return return a list of nodes
+	 * @return a list of nodes
 	 */
 	private List<INavigationNode<?>> getNodesToActivateOnDispose(INavigationNode<?> toDispose) {
 		// on dispose must only then something be activated, if one of the
