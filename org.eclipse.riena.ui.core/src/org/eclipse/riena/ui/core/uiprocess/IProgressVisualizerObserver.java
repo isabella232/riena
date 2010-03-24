@@ -20,45 +20,49 @@ package org.eclipse.riena.ui.core.uiprocess;
 public interface IProgressVisualizerObserver {
 
 	/**
-	 * adds the {@link IProgressVisualizer}
+	 * Adds the {@link IProgressVisualizer}
 	 * 
-	 * @param aVisualizer
+	 * @param visualizer
+	 *            the current visualizer
 	 */
-	void addProgressVisualizer(IProgressVisualizer aVisualizer);
+	void addProgressVisualizer(IProgressVisualizer visualizer);
 
 	/**
-	 * removes the {@link IProgressVisualizer}
+	 * Removes the {@link IProgressVisualizer}
 	 * 
-	 * @param aVisualizer
+	 * @param visualizer
+	 *            the current visualizer
 	 */
-	void removeProgressVisualizer(IProgressVisualizer aVisualizer);
+	void removeProgressVisualizer(IProgressVisualizer visualizer);
 
 	/**
 	 * @see IUIMonitor#updateProgress(int)
 	 * @see ProcessInfo#setProgresStartegy(org.eclipse.riena.ui.core.uiprocess.ProcessInfo.ProgresStrategy)
-	 * @param aVisualizer
-	 *            - the current visualizer
+	 * 
+	 * @param visualizer
+	 *            the current visualizer
 	 * @param progress
-	 *            - the current progress. consider that the progress can grow in
-	 *            2 different ways. (unit based and cumulative)
+	 *            the current progress. consider that the progress can grow in two
+	 *            different ways. (unit based and cumulative)
 	 */
-	void updateProgress(IProgressVisualizer aVisualizer, int progress);
+	void updateProgress(IProgressVisualizer visualizer, int progress);
 
 	/**
 	 * @see IUIMonitor#initialUpdateUI(int)
 	 * @see ProcessInfo#setProgresStartegy(org.eclipse.riena.ui.core.uiprocess.ProcessInfo.ProgresStrategy)
-	 * @param aVisualizer
-	 *            - the current visualizer
+	 * 
+	 * @param visualizer
+	 *            the current visualizer
 	 * @param totalWork
-	 *            - total number of work units
+	 *            total number of work units
 	 */
-	void initialUpdateUI(IProgressVisualizer aVisualizer, int totalWork);
+	void initialUpdateUI(IProgressVisualizer visualizer, int totalWork);
 
 	/**
 	 * @see IUIMonitor#finalUpdateUI()
-	 * @param aVisualizer
-	 *            - the current visualizer
+	 * @param visualizer
+	 *            the current visualizer
 	 * 
 	 */
-	void finalUpdateUI(IProgressVisualizer aVisualizer);
+	void finalUpdateUI(IProgressVisualizer visualizer);
 }

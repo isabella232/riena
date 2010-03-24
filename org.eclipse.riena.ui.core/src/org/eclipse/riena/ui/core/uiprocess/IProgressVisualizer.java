@@ -18,17 +18,19 @@ package org.eclipse.riena.ui.core.uiprocess;
 public interface IProgressVisualizer extends IUIMonitor, IProcessInfoAware {
 
 	/**
-	 * adds the {@link IProgressVisualizerObserver} to the container
+	 * Adds the {@link IProgressVisualizerObserver} to the container
 	 * 
-	 * @param anObserver
+	 * @param observer
+	 *            the {@code IProgressVisualizerObserver} to add
 	 */
-	void addObserver(IProgressVisualizerObserver anObserver);
+	void addObserver(IProgressVisualizerObserver observer);
 
 	/**
-	 * removes the {@link IProgressVisualizerObserver} from the container
+	 * Removes the {@link IProgressVisualizerObserver} from the container
 	 * 
-	 * @param anObserver
+	 * @param observer
+	 *            the {@code IProgressVisualizerObserver} to remove
 	 */
-	void removeObserver(IProgressVisualizerObserver anObserver);
+	void removeObserver(IProgressVisualizerObserver observer);
 
 }
