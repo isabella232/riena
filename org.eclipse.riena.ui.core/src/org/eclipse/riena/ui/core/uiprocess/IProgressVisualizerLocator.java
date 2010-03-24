@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.core.uiprocess;
 
 /**
- * locates an {@link IProgressVisualizer} for a given visualization context.
+ * Locates an {@link IProgressVisualizer} for a given visualization context.
  */
 public interface IProgressVisualizerLocator {
 
