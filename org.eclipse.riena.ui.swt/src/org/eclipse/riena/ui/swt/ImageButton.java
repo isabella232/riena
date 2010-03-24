@@ -116,7 +116,6 @@ public class ImageButton extends Composite {
 		setPressed(false);
 		setHover(false);
 		setFocused(false);
-		redraw();
 	}
 
 	/**
