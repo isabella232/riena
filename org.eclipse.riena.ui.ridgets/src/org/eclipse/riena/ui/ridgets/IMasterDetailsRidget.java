@@ -97,6 +97,8 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * <p>
 	 * See {@link #setDirectWriting(boolean)} for details.
 	 * 
+	 * @return true if 'directWriting' is enabled; otherwise false
+	 * 
 	 * @since 1.2
 	 */
 	boolean isDirectWriting();
@@ -107,6 +109,10 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * <p>
 	 * The default setting for this option is false.
 	 * 
+	 * @return true if the 'Apply' button enables on the condition that all
+	 *         ridgets in the Details are have <b>no</b> error markers;
+	 *         otherwise false
+	 * 
 	 * @since 2.0
 	 */
 	boolean isApplyRequiresNoErrors();
@@ -116,6 +122,10 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * ridgets in the Details are have <b>no</b> mandatory markers.
 	 * <p>
 	 * The default setting for this option is false.
+	 * 
+	 * @return true if the 'Apply' button enables on the condition that all
+	 *         ridgets in the Details are have <b>no</b> mandatory markers;
+	 *         otherwise false
 	 * 
 	 * @since 2.0
 	 */
@@ -151,7 +161,7 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * Adjust the column widths of the ridget's table control according to the
 	 * information in the {@code widths} array.
 	 * <p>
-	 * When running on SWT: {@code widths} may only contain sublasses of
+	 * When running on SWT: {@code widths} may only contain subclasses of
 	 * ColumnLayoutData. The following layout managers are supported:
 	 * TableLayout, TableColumnLayout, other. See ColumnUtils for implementation
 	 * details.
@@ -175,8 +185,8 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 
 	/**
 	 * When direct writing is enabled, changes in the details area will be
-	 * immediatelly and automatically applied back to the model. When adding new
-	 * rows, these will be immediatelly added to the table. Since there is no
+	 * Immediately and automatically applied back to the model. When adding new
+	 * rows, these will be immediately added to the table. Since there is no
 	 * need to apply, the 'Apply' button will not be shown.
 	 * <p>
 	 * The default setting for direct writing is false.
