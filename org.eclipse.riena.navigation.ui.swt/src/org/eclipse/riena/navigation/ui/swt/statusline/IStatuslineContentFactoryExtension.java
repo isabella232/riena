@@ -21,6 +21,11 @@ import org.eclipse.riena.ui.swt.IStatusLineContentFactory;
 @ExtensionInterface(id = "org.eclipse.riena.ui.swt.statusline,statusLine")
 public interface IStatuslineContentFactoryExtension {
 
+	/**
+	 * Create an instance of {@code IStatusLineContentFactory}.
+	 * 
+	 * @return a new {@code IStatusLineContentFactory}
+	 */
 	IStatusLineContentFactory createFactory();
 
 }
