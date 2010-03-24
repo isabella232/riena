@@ -273,6 +273,10 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		if (!parentComposite.isDisposed()) {
 			parentComposite.setCursor(block ? getWaitCursor() : getArrowCursor());
 			contentComposite.setEnabled(!block);
+			if (!block) {
+				contentComposite.setRedraw(false);
+				contentComposite.setRedraw(true);
+			}
 		}
 	}
 
