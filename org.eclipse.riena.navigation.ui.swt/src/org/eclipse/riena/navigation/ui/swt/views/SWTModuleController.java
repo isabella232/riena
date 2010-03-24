@@ -35,6 +35,7 @@ public class SWTModuleController extends ModuleController {
 	private final static String PROPERTY_ENABLED = "enabled"; //$NON-NLS-1$
 	private final static String PROPERTY_VISIBLE = "visible"; //$NON-NLS-1$
 	private final static String PROPERTY_IMAGE = "icon"; //$NON-NLS-1$
+	private final static String PROPERTY_EXPANDED = "expanded"; //$NON-NLS-1$
 
 	/**
 	 * @param navigationNode
@@ -86,7 +87,7 @@ public class SWTModuleController extends ModuleController {
 		tree.setRootsVisible(false);
 		INavigationNode<?>[] roots = createTreeRootNodes();
 		tree.bindToModel(roots, NavigationNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
-				"label", PROPERTY_ENABLED, PROPERTY_VISIBLE, PROPERTY_IMAGE); //$NON-NLS-1$
+				"label", PROPERTY_ENABLED, PROPERTY_VISIBLE, PROPERTY_IMAGE, null, PROPERTY_EXPANDED); //$NON-NLS-1$
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		selectActiveNode();
 	}

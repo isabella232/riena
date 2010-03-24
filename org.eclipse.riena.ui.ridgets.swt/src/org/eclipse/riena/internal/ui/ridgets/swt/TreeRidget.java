@@ -94,6 +94,7 @@ import org.eclipse.riena.ui.swt.facades.SWTFacade;
 public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget {
 
 	private static final Listener ITEM_ERASER_AND_PAINTER = SWTFacade.getDefault().createTreeItemEraserAndPainter();
+	private static final String PREFIX_IS = "is"; //$NON-NLS-1$
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final DoubleClickForwarder doubleClickForwarder;
@@ -103,7 +104,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private DataBindingContext dbc;
 	/*
 	 * Binds the viewer's multiple selection to the multiple selection
-	 * observable. This binding hsa to be disposed when the ridget is set to
+	 * observable. This binding has to be disposed when the ridget is set to
 	 * output-only, to avoid updating the model. It has to be recreated when the
 	 * ridget is set to not-output-only.
 	 */
@@ -116,7 +117,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	/*
 	 * The original array of elements given as input to the ridget via the
 	 * #bindToModel method. The ridget however works with the copy (treeRoots)
-	 * in order to be independend of modification to the original array.
+	 * in order to be independent of modification to the original array.
 	 * 
 	 * Calling #updateFromModel will synchronize the treeRoots array with the
 	 * model array.
@@ -132,6 +133,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private String visibilityAccessor;
 	private String imageAccessor;
 	private String openNodeImageAccessor;
+	private String checkExpandedMethod;
 	private boolean showRoots = true;
 
 	public TreeRidget() {
@@ -222,6 +224,14 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	protected void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String[] valueAccessors, String[] columnHeaders, String enablementAccessor,
 			String visibilityAccessor, String imageAccessor, String openNodeImageAccessor) {
+
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, columnHeaders,
+				enablementAccessor, visibilityAccessor, imageAccessor, openNodeImageAccessor, null);
+	}
+
+	protected void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
+			String parentAccessor, String[] valueAccessors, String[] columnHeaders, String enablementAccessor,
+			String visibilityAccessor, String imageAccessor, String openNodeImageAccessor, String expandedAccessor) {
 		Assert.isNotNull(treeRoots);
 		Assert.isLegal(treeRoots.length > 0, "treeRoots must have at least one entry"); //$NON-NLS-1$
 		Assert.isNotNull(treeElementClass);
@@ -254,14 +264,42 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		this.visibilityAccessor = visibilityAccessor;
 		this.imageAccessor = imageAccessor;
 		this.openNodeImageAccessor = openNodeImageAccessor;
-
-		expansionStack.clear();
-		if (treeRoots.length == 1) {
-			ExpansionCommand cmd = new ExpansionCommand(ExpansionState.EXPAND, treeRoots[0]);
-			expansionStack.add(cmd);
+		if (expandedAccessor != null) {
+			this.checkExpandedMethod = PREFIX_IS + StringUtils.capitalize(expandedAccessor);
 		}
 
+		initializeExpansionStack();
+
 		bindUIControl();
+	}
+
+	private void initializeExpansionStack() {
+		expansionStack.clear();
+		if (treeRoots.length == 1) {
+			addExpansionCommand(treeRoots[0]);
+			if (checkExpandedMethod != null) {
+				addExpansionCommandsForRootDecendants(treeRoots[0]);
+			}
+		}
+	}
+
+	private void addExpansionCommandsForRootDecendants(Object element) {
+		Set<Object> allDescendants = new HashSet<Object>();
+		collectChildren(element, allDescendants);
+		for (Object descendant : allDescendants) {
+			if (isExpanded(descendant)) {
+				addExpansionCommand(descendant);
+			}
+		}
+	}
+
+	private boolean isExpanded(Object element) {
+		return ReflectionUtils.invoke(element, checkExpandedMethod, new Object[0]);
+	}
+
+	private void addExpansionCommand(Object element) {
+		ExpansionCommand cmd = new ExpansionCommand(ExpansionState.EXPAND, element);
+		expansionStack.add(cmd);
 	}
 
 	/**
@@ -373,6 +411,17 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		String[] noColumnHeaders = null;
 		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
 				noColumnHeaders, enablementAccessor, visibilityAccessor, imageAccessor, openNodeImageAccessor);
+	}
+
+	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
+			String parentAccessor, String valueAccessor, String enablementAccessor, String visibilityAccessor,
+			String imageAccessor, String openNodeImageAccessor, String expandedAccessor) {
+		Assert.isNotNull(valueAccessor);
+		String[] myValueAccessors = new String[] { valueAccessor };
+		String[] noColumnHeaders = null;
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
+				noColumnHeaders, enablementAccessor, visibilityAccessor, imageAccessor, openNodeImageAccessor,
+				expandedAccessor);
 	}
 
 	public void collapse(Object element) {
@@ -530,7 +579,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * Initialize databining for tree viewer.
+	 * Initialize databinding for tree viewer.
 	 */
 	private void bindToViewer(final Tree control) {
 		viewer = new TreeViewer(control);
