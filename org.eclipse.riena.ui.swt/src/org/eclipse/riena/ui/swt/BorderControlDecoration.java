@@ -86,9 +86,8 @@ public class BorderControlDecoration {
 		// workaround for DatePicker
 		if (this.control.getParent() instanceof DatePickerComposite) {
 			this.control = this.control.getParent();
-		} else if (SWTBindingPropertyLocator.getInstance().locateBindingProperty(control).equals(
-				MasterDetailsComposite.BIND_ID_TABLE)) {
-			System.err.println(this.control.getParent().getParent().getParent().getClass());
+		} else if (MasterDetailsComposite.BIND_ID_TABLE.equals(SWTBindingPropertyLocator.getInstance()
+				.locateBindingProperty(control))) {
 			this.control = this.control.getParent().getParent();
 		}
 		this.borderWidth = borderWidth;
