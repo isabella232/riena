@@ -25,22 +25,26 @@ import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor
  * 'riena.protocol'=[aProtocol] (e.g. for aProtocol set 'hessian')<br>
  * <p>
  * Code sample:<br>
+ * 
+ * <pre>
  * <code>
  * public void start(BundleContext context) throws Exception {
  *     publisher = new XYZRemoteServicePublisher(); 
  *     Hashtable properties = new Hashtable(1);     
- *     properties.put(IServicePublisher.PROP_PROTOCOL, publisher.getProtocol());     <br>
- * 
- *     regPublisher = context.registerService(IServicePublisher.ID, publisher, properties);     <br>
+ *     properties.put(IServicePublisher.PROP_PROTOCOL, publisher.getProtocol());
+ *     regPublisher = context.registerService(IServicePublisher.ID, publisher, properties);
  * }     
  * </code>
- * <p>
+ * </pre>
  * 
  * <b>NOTE</b><br>
  * The Riena communication bundle content includes generic class loading and
  * object instantiation or delegates this behavior to other Riena communication
- * bundles. Riena supports Eclipse-BuddyPolicy concept. For further information
- * about Riena class loading and instanciation please read /readme.txt.
+ * bundles. Riena supports Eclipse-BuddyPolicy concept.
+ * 
+ * @see <a
+ *      href="http://wiki.eclipse.org/Riena_Getting_started_remoteservices">Riena
+ *      Wiki</a>
  * 
  * @see IRemoteServiceProtocol
  * @see RemoteServiceDescription
