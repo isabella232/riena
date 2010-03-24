@@ -23,7 +23,7 @@ public class SearchResultContainer extends AbstractBean {
 	private List<Customer> customerList;
 
 	/**
-	 * @return Returns the customerOverview.
+	 * @return the customerOverview.
 	 */
 	public List<Customer> getCustomerList() {
 		return customerList;

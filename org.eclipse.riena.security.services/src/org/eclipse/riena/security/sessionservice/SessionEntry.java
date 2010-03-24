@@ -46,7 +46,7 @@ public class SessionEntry {
 	}
 
 	/**
-	 * @return Returns the session.
+	 * @return the session.
 	 */
 	public Session getSession() {
 		return session;
@@ -61,7 +61,7 @@ public class SessionEntry {
 	}
 
 	/**
-	 * @return Returns the userid.
+	 * @return the userid.
 	 */
 	public Set<Principal> getPrincipals() {
 		return principalSet;

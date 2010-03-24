@@ -37,7 +37,7 @@ public class Vertrag extends AbstractTransactedObject implements ITransactedObje
 	}
 
 	/**
-	 * @return Returns the vertragsNummer.
+	 * @return the vertragsNummer.
 	 */
 	public String getVertragsNummer() {
 		return (String) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "vertragsNummer",
@@ -56,7 +56,7 @@ public class Vertrag extends AbstractTransactedObject implements ITransactedObje
 	}
 
 	/**
-	 * @return Returns the vertragsBeschreibung.
+	 * @return the vertragsBeschreibung.
 	 */
 	public String getVertragsBeschreibung() {
 		return (String) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "vertragsBeschreibung",
@@ -76,7 +76,7 @@ public class Vertrag extends AbstractTransactedObject implements ITransactedObje
 	}
 
 	/**
-	 * @return Returns the vertragsSumme.
+	 * @return the vertragsSumme.
 	 */
 	public Long getVertragsSumme() {
 		return (Long) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "vertragsSumme",

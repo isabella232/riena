@@ -44,7 +44,7 @@ public class TransactionDelta implements Cloneable {
 	}
 
 	/**
-	 * @return Returns the objectId.
+	 * @return the objectId.
 	 */
 	public IObjectId getObjectId() {
 		return objectId;
@@ -141,7 +141,7 @@ public class TransactionDelta implements Cloneable {
 	}
 
 	/**
-	 * @return Returns the state.
+	 * @return the state.
 	 */
 	public State getState() {
 		return state;
@@ -184,7 +184,7 @@ public class TransactionDelta implements Cloneable {
 	}
 
 	/**
-	 * @return Returns the version.
+	 * @return the version.
 	 */
 	public String getVersion() {
 		return version;

@@ -28,14 +28,14 @@ public class MultipleChangeEntry {
 	}
 
 	/**
-	 * @return Returns the childObject.
+	 * @return the childObject.
 	 */
 	public Object getChildObject() {
 		return childObject;
 	}
 
 	/**
-	 * @return Returns the state.
+	 * @return the state.
 	 */
 	public State getState() {
 		return state;

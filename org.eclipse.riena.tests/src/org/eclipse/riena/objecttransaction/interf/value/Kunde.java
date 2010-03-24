@@ -54,7 +54,7 @@ public class Kunde extends AbstractTransactedObject {
 	}
 
 	/**
-	 * @return Returns the kundennr.
+	 * @return the kundennr.
 	 */
 	public String getKundennr() {
 		return (String) getCurrentObjectTransaction().getReference(this, "kundennr", kundennr);
@@ -77,7 +77,7 @@ public class Kunde extends AbstractTransactedObject {
 	}
 
 	/**
-	 * @return Returns the nachname.
+	 * @return the nachname.
 	 */
 	public String getNachname() {
 		return (String) getCurrentObjectTransaction().getReference(this, "nachname", nachname);
@@ -97,7 +97,7 @@ public class Kunde extends AbstractTransactedObject {
 	}
 
 	/**
-	 * @return Returns the vorname.
+	 * @return the vorname.
 	 */
 	public String getVorname() {
 		return (String) getCurrentObjectTransaction().getReference(this, "vorname", vorname);
@@ -117,7 +117,7 @@ public class Kunde extends AbstractTransactedObject {
 	}
 
 	/**
-	 * @return Returns the addresse.
+	 * @return the addresse.
 	 */
 	public IAddresse getAddresse() {
 		return (IAddresse) getCurrentObjectTransaction().getReference(this, "addresse", (ITransactedObject) addresse);

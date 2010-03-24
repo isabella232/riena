@@ -63,6 +63,7 @@ public interface IRemoteServiceRegistry {
 	 * {@link IRemoteServiceRegistration#unregister()}
 	 * 
 	 * @param reference
+	 *            the reference to register
 	 * @return the RemoteServiceRegistration object
 	 * 
 	 * @see #unregisterService(IRemoteServiceReference)
@@ -75,7 +76,7 @@ public interface IRemoteServiceRegistry {
 	 * associated "remote" OSGi Service become automatically unregistered.
 	 * 
 	 * @param reference
-	 *            to unregister
+	 *            the reference to unregister
 	 * 
 	 * @see #registerService(IRemoteServiceReference)
 	 */

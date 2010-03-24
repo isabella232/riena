@@ -46,7 +46,7 @@ public class Vertrag extends AbstractTransactedObject implements IVertrag {
 	}
 
 	/**
-	 * @return Returns the vertragsNummer.
+	 * @return the vertragsNummer.
 	 */
 	public String getVertragsNummer() {
 		return (String) getCurrentObjectTransaction().getReference(this, "vertragsNummer", vertragsNummer);
@@ -64,7 +64,7 @@ public class Vertrag extends AbstractTransactedObject implements IVertrag {
 	}
 
 	/**
-	 * @return Returns the vertragsBeschreibung.
+	 * @return the vertragsBeschreibung.
 	 */
 	public String getVertragsBeschreibung() {
 		return (String) getCurrentObjectTransaction().getReference(this, "vertragsBeschreibung", vertragsBeschreibung);
@@ -82,7 +82,7 @@ public class Vertrag extends AbstractTransactedObject implements IVertrag {
 	}
 
 	/**
-	 * @return Returns the vertragsSumme.
+	 * @return the vertragsSumme.
 	 */
 	public Long getVertragsSumme() {
 		return (Long) getCurrentObjectTransaction().getReference(this, "vertragsSumme", vertragsSumme);

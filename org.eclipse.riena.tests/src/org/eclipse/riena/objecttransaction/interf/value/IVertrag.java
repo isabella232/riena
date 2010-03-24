@@ -15,7 +15,7 @@ package org.eclipse.riena.objecttransaction.interf.value;
  */
 public interface IVertrag {
 	/**
-	 * @return Returns the vertragsNummer.
+	 * @return the vertragsNummer.
 	 */
 	String getVertragsNummer();
 
@@ -26,7 +26,7 @@ public interface IVertrag {
 	void setVertragsNummer(String vertragsNummer);
 
 	/**
-	 * @return Returns the vertragsBeschreibung.
+	 * @return the vertragsBeschreibung.
 	 */
 	String getVertragsBeschreibung();
 
@@ -37,7 +37,7 @@ public interface IVertrag {
 	void setVertragsBeschreibung(String vertragsBeschreibung);
 
 	/**
-	 * @return Returns the vertragsSumme.
+	 * @return the vertragsSumme.
 	 */
 	Long getVertragsSumme();
 

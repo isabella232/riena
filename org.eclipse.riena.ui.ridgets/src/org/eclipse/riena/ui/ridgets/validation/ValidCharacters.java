@@ -82,7 +82,7 @@ public class ValidCharacters implements IValidator, IExecutableExtension {
 	}
 
 	/**
-	 * @return Returns the allowedChars.
+	 * @return the allowedChars.
 	 */
 	public String getAllowedChars() {
 		return allowedChars;

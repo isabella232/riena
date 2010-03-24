@@ -119,7 +119,7 @@ public class BankData implements Cloneable {
 	/**
 	 * Returns the bank code
 	 * 
-	 * @return Returns the bankCode.
+	 * @return the bankCode.
 	 */
 	public String getBankCode() {
 

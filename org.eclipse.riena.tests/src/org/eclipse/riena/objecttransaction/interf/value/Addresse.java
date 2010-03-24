@@ -60,7 +60,7 @@ public class Addresse extends AbstractTransactedObject implements IAddresse {
 	}
 
 	/**
-	 * @return Returns the ort.
+	 * @return the ort.
 	 */
 	public String getOrt() {
 		return (String) getCurrentObjectTransaction().getReference(this, "ort", ort);
@@ -79,7 +79,7 @@ public class Addresse extends AbstractTransactedObject implements IAddresse {
 	}
 
 	/**
-	 * @return Returns the plz.
+	 * @return the plz.
 	 */
 	public String getPlz() {
 		return (String) getCurrentObjectTransaction().getReference(this, "plz", plz);
@@ -98,7 +98,7 @@ public class Addresse extends AbstractTransactedObject implements IAddresse {
 	}
 
 	/**
-	 * @return Returns the strasse.
+	 * @return the strasse.
 	 */
 	public String getStrasse() {
 		return (String) getCurrentObjectTransaction().getReference(this, "strasse", strasse);

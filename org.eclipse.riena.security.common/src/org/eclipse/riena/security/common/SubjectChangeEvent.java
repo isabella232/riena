@@ -34,14 +34,14 @@ public class SubjectChangeEvent {
     }
 
     /**
-     * @return Returns the newSubject.
+     * @return the newSubject.
      */
     public Subject getNewPrincipal() {
         return newSubject;
     }
 
     /**
-     * @return Returns the oldSubject.
+     * @return the oldSubject.
      */
     public Subject getOldPrincipal() {
         return oldSubject;

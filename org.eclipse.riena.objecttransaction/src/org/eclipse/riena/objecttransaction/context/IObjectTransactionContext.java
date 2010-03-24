@@ -19,7 +19,7 @@ import org.eclipse.riena.objecttransaction.IObjectTransaction;
 public interface IObjectTransactionContext extends IContext {
 
 	/**
-	 * @return Returns the objectTransaction.
+	 * @return the objectTransaction.
 	 */
 	IObjectTransaction getObjectTransaction();
 

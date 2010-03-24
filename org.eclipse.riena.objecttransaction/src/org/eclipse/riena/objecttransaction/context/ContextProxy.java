@@ -129,7 +129,7 @@ public final class ContextProxy implements InvocationHandler {
 	}
 
 	/**
-	 * @return Returns the service.
+	 * @return the service.
 	 */
 	public Object getService() {
 		return service;

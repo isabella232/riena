@@ -25,15 +25,13 @@ import org.osgi.framework.ServiceRegistration;
  * A IRemoteServiceReference is managed by the IRemoteServiceRegistry OSGi
  * Service.
  * 
- * 
  * @see IRemoteServiceRegistry#registerService(IRemoteServiceReference)
  * @see IRemoteServiceRegistry#unregisterService(IRemoteServiceReference)
- * 
- * 
  */
 public interface IRemoteServiceReference {
 
 	/**
+	 * Get the {@code URL} of the remote end point.
 	 * 
 	 * @return the URL of the remote end point
 	 */
@@ -43,10 +41,12 @@ public interface IRemoteServiceReference {
 	 * Sets the service instance of this remote service reference
 	 * 
 	 * @param serviceInstance
+	 *            the service instance
 	 */
 	void setServiceInstance(Object serviceInstance);
 
 	/**
+	 * Get the service instance.
 	 * 
 	 * @return the service instance i.e. proxy reference. The service instance
 	 *         represents the remote OSGi Service
@@ -54,6 +54,7 @@ public interface IRemoteServiceReference {
 	Object getServiceInstance();
 
 	/**
+	 * Get the remote service end point description.
 	 * 
 	 * @return the remote end point description
 	 */

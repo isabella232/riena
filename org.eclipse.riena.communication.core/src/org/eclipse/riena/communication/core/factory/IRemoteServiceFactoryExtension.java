@@ -21,11 +21,15 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 public interface IRemoteServiceFactoryExtension {
 
 	/**
+	 * Get the protocol property.
+	 * 
 	 * @return the protocol property
 	 */
 	String getProtocol();
 
 	/**
+	 * Create an instance of a {@code IRemoteServiceFactory}.
+	 * 
 	 * @return the RemoteServiceFactory instance for this protocol
 	 */
 	IRemoteServiceFactory createRemoteServiceFactory();

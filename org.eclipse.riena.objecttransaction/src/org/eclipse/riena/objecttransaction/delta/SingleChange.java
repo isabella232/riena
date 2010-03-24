@@ -28,7 +28,7 @@ public class SingleChange extends AbstractBaseChange {
 	}
 
 	/**
-	 * @return Returns the childObject.
+	 * @return the childObject.
 	 */
 	public Object getChildObject() {
 		return childObject;

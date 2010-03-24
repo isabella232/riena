@@ -76,7 +76,7 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 	}
 
 	/**
-	 * @return Returns the objectTransaction.
+	 * @return the objectTransaction.
 	 */
 	public IObjectTransaction getObjectTransaction() {
 		return objectTransaction;

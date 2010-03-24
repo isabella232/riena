@@ -28,7 +28,7 @@ public class RequiredField implements IValidator {
 	private char[] sortedIgnoreCharacters = new char[0];
 
 	/**
-	 * @return Returns the ignoreCharacters.
+	 * @return the ignoreCharacters.
 	 */
 	public String getIgnoreCharacters() {
 		return ignoreCharacters;

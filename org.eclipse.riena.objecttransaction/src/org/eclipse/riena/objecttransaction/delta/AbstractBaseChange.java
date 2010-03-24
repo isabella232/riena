@@ -31,7 +31,7 @@ public abstract class AbstractBaseChange {
 	}
 
 	/**
-	 * @return Returns the relationName.
+	 * @return the relationName.
 	 */
 	public String getRelationName() {
 		return relationName;

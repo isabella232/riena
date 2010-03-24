@@ -23,6 +23,7 @@ package org.eclipse.riena.communication.core;
 public interface IRemoteServiceRegistration {
 
 	/**
+	 * Get the remote service reference.
 	 * 
 	 * @return the remote service reference
 	 */
@@ -32,6 +33,7 @@ public interface IRemoteServiceRegistration {
 	 * Sets the given remote service reference
 	 * 
 	 * @param reference
+	 *            the remote service reference
 	 */
 	void setReference(IRemoteServiceReference reference);
 

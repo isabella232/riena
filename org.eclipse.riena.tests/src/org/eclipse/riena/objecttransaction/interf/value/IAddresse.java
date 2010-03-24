@@ -15,7 +15,7 @@ package org.eclipse.riena.objecttransaction.interf.value;
  */
 public interface IAddresse {
 	/**
-	 * @return Returns the ort.
+	 * @return the ort.
 	 */
 	String getOrt();
 
@@ -26,7 +26,7 @@ public interface IAddresse {
 	void setOrt(String ort);
 
 	/**
-	 * @return Returns the plz.
+	 * @return the plz.
 	 */
 	String getPlz();
 
@@ -37,7 +37,7 @@ public interface IAddresse {
 	void setPlz(String plz);
 
 	/**
-	 * @return Returns the strasse.
+	 * @return the strasse.
 	 */
 	String getStrasse();
 

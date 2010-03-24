@@ -30,6 +30,7 @@ public interface IRemoteServiceProtocol {
 	String PROP_PROTOCOL = "riena.protocol"; //$NON-NLS-1$
 
 	/**
+	 * Get the protocol name.
 	 * 
 	 * @return the protocol name for this IRemoteServiceFactory is responsible.
 	 */

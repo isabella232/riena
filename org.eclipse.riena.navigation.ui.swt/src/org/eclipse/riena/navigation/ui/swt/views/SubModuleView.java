@@ -501,7 +501,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * @return Returns a fallback navigation node for views that are not
+	 * @return a fallback navigation node for views that are not
 	 *         associated with a node in the navigation tree.
 	 */
 	private SubModuleNode getFallbackNavigationNode() {

@@ -311,13 +311,13 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	protected abstract String[] getUIControlItems();
 
 	/**
-	 * @return Returns an observable observing the items attribute of the
+	 * @return an observable observing the items attribute of the
 	 *         control.
 	 */
 	protected abstract IObservableList getUIControlItemsObservable();
 
 	/**
-	 * @return Returns an observable observing the selection attribute of the
+	 * @return an observable observing the selection attribute of the
 	 *         control.
 	 */
 	protected abstract ISWTObservableValue getUIControlSelectionObservable();

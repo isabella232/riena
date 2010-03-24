@@ -17,7 +17,7 @@ package org.eclipse.riena.objecttransaction.context;
 public interface IContextProvider {
 
 	/**
-	 * @return Returns the context of this UIRepresentation.
+	 * @return the context of this UIRepresentation.
 	 */
 	IContext getContext();
 

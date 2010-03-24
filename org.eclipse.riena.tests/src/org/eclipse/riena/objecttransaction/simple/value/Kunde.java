@@ -55,7 +55,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	}
 
 	/**
-	 * @return Returns the kundennr.
+	 * @return the kundennr.
 	 */
 	public String getKundennr() {
 		return (String) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "kundennr", kundennr);
@@ -78,7 +78,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	}
 
 	/**
-	 * @return Returns the nachname.
+	 * @return the nachname.
 	 */
 	public String getNachname() {
 		return (String) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "nachname", nachname);
@@ -98,7 +98,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	}
 
 	/**
-	 * @return Returns the vorname.
+	 * @return the vorname.
 	 */
 	public String getVorname() {
 		return (String) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "vorname", vorname);
@@ -118,7 +118,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	}
 
 	/**
-	 * @return Returns the addresse.
+	 * @return the addresse.
 	 */
 	public Addresse getAddresse() {
 		return (Addresse) ObjectTransactionManager.getInstance().getCurrent().getReference(this, "addresse", addresse);

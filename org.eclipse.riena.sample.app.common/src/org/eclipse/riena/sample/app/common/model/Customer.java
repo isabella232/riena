@@ -358,7 +358,7 @@ public class Customer {
 	}
 
 	/**
-	 * @return Returns the customerNumber.
+	 * @return the customerNumber.
 	 */
 	public Integer getCustomerNumber() {
 

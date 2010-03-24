@@ -25,19 +25,21 @@ import org.eclipse.riena.communication.core.publisher.IServicePublisher;
  * An implementation of an IRemoteServiceFactory is responsible for a protocol
  * (e.g. Hessian). The implementation has be registered as OSGi Service and set
  * with follow property (see also {@link IRemoteServiceProtocol}):<br>
- * 
  * <p>
  * Code sample:<br>
+ * 
+ * <pre>
  * <code>
  * public void start(BundleContext context) throws Exception {
  *     factory = new RemoteServiceFactoryHessian();
  *     Hashtable properties = new Hashtable(1);
  *     properties.put(IRemoteServiceFactory.PROP_PROTOCOL, factory.getProtocol());
  * 
- *     regFactory = context.registerService(IRemoteServiceFactory.ID, factory, properties);     <br>
+ *     regFactory = context.registerService(IRemoteServiceFactory.ID, factory, properties);
  * }
+ * </pre>
+ * 
  * </code>
- * <p>
  * 
  * <b>NOTE</b><br>
  * The Riena communication bundle content includes generic class loading and
