@@ -307,6 +307,8 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
 	public void addChild(int index, C pChild) {
 		checkChild(pChild);
@@ -788,6 +790,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		context.put(key, value);
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	public void removeContext(String key) {
 		if (context != null) {
 			context.remove(key);
