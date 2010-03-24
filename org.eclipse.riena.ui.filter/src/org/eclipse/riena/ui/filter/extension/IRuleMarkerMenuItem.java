@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.filter.extension;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 /**
- * The rule to mark a ridget.
+ * The rule to mark a menu item.
  */
 @ExtensionInterface
 public interface IRuleMarkerMenuItem {

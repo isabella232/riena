@@ -16,10 +16,10 @@ package org.eclipse.riena.ui.core.uiprocess;
 public interface IUIMonitorContainer {
 
 	/**
-	 * adds an {@link IUIMonitor} to the container
+	 * Adds an {@link IUIMonitor} to the container.
 	 * 
 	 * @param uiMontitor
-	 *            - the monitor to add
+	 *            the monitor to add
 	 */
 	void addUIMonitor(IUIMonitor uiMontitor);
 

@@ -53,7 +53,8 @@ public interface IActionRidget extends IRidget {
 	 *            the method on {@code target} to invoke
 	 * @see java.beans.EventHandler#create(Class, Object, String)
 	 * 
-	 * @deprecated use {@link #addListener(IActionListener)} or {@code
+	 * @deprecated use {@link #addListener(IActionListener)} or
+	 *             {@code
 	 *             IActionListener listener =
 	 *             EventHandler.create(IActionListener.class, target, action);
 	 *             this.addListener(listener);}
@@ -88,14 +89,14 @@ public interface IActionRidget extends IRidget {
 	 * 
 	 * @see #setIcon
 	 * 
-	 * @return Returns the name of icon.
+	 * @return the name of icon.
 	 */
 	String getIcon();
 
 	/**
 	 * Sets the name of the icon.
 	 * 
-	 * @param name
+	 * @param iconName
 	 *            name of the icon
 	 * 
 	 */
