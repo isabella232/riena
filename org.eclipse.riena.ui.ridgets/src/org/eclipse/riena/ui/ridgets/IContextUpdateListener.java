@@ -18,7 +18,7 @@ package org.eclipse.riena.ui.ridgets;
 public interface IContextUpdateListener {
 
 	/**
-	 * gets called before the state of the observed context changes
+	 * Gets called before the state of the observed context changes.
 	 * 
 	 * @param context
 	 *            the observed context
@@ -26,12 +26,12 @@ public interface IContextUpdateListener {
 	void beforeContextUpdate(Object context);
 
 	/**
-	 * notification for context updates
+	 * Notification for context updates.
 	 * 
 	 * @param context
 	 *            the observed context
-	 * @return true if this listener should be unregistered automatically at
-	 *         the observerd component
+	 * @return true if this listener should be unregistered automatically at the
+	 *         observed component
 	 */
 	boolean contextUpdated(Object context);
 
