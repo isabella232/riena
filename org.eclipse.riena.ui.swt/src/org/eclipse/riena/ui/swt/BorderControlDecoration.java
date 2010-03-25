@@ -268,6 +268,10 @@ public class BorderControlDecoration {
 	 */
 	private void onPaint(GC gc, Rectangle rect) {
 
+		if ((rect.width == 0) && (rect.height == 0)) {
+			return;
+		}
+
 		Color previousForeground = gc.getForeground();
 		if (getBorderColor() != null) {
 			gc.setForeground(getBorderColor());
@@ -353,6 +357,9 @@ public class BorderControlDecoration {
 		}
 
 		Rectangle controlBounds = control.getBounds();
+		if ((controlBounds.width <= 0) && (controlBounds.height <= 0)) {
+			return ZERO_RECTANGLE;
+		}
 		int x = controlBounds.x - getBorderWidth();
 		int y = controlBounds.y - getBorderWidth();
 		Point globalPoint = control.getParent().toDisplay(x, y);
