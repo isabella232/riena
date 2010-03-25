@@ -1187,6 +1187,18 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		getNavigationProcessor().create(this, targetId, argument);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.INavigationNode#moveTo(org.eclipse.riena
+	 * .navigation.NavigationNodeId)
+	 */
+	public void moveTo(NavigationNodeId targetId) {
+		throw new UnsupportedOperationException("Only ModuleNodes can be moved to a new target."); //$NON-NLS-1$
+
+	}
+
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(org.eclipse.riena.navigation.NavigationNodeId)
 	 */

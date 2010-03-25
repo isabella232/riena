@@ -92,6 +92,18 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	INavigationNode<?> create(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
+	 * Moves the sourceNode to the node identified by the targetId. When moving
+	 * a node as child to another keep in mind that you have to honor the strict
+	 * type hierarchy of the nodes in the navigation model.
+	 * 
+	 * @param sourceNode
+	 *            An existing node in the application model tree.
+	 * @param targetId
+	 *            ID of the node where the sourceNode has to be added as child.
+	 */
+	void move(INavigationNode<?> sourceNode, NavigationNodeId targetId);
+
+	/**
 	 * Navigates from the specified source node to the specified target node.
 	 * The target node is created and added to the application model if no node
 	 * with the specified id exists.

@@ -16,6 +16,9 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.NodePositioner;
+import org.eclipse.riena.navigation.model.ModuleGroupNode;
+import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -72,6 +75,14 @@ public class NavigateSubModuleController extends SubModuleController {
 		IActionRidget addToModule = getRidget(IActionRidget.class, "addToModule"); //$NON-NLS-1$
 		addToModule.setText("Add SubModule to current Module at index 2"); //$NON-NLS-1$
 		addToModule.addListener(new AddSubModuleToCurrentModule());
+
+		IActionRidget moveModule = getRidget(IActionRidget.class, "moveModule"); //$NON-NLS-1$
+		moveModule.setText("Move Active Module"); //$NON-NLS-1$
+		moveModule.addListener(new MoveActiveModule());
+
+		IActionRidget moveInActiveModule = getRidget(IActionRidget.class, "moveInActiveModule"); //$NON-NLS-1$
+		moveInActiveModule.setText("Move Inactive Module"); //$NON-NLS-1$
+		moveInActiveModule.addListener(new MoveInActiveModule());
 
 		final PersonModificationBean bean = new PersonModificationBean();
 		bean.setPerson(new Person("Doe", "Jane")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -205,6 +216,31 @@ public class NavigateSubModuleController extends SubModuleController {
 
 		}
 
+	}
+
+	private class MoveActiveModule implements IActionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void callback() {
+			getNavigationNode().getParentOfType(ModuleNode.class).moveTo(
+					new NavigationNodeId("org.eclipse.riena.example.moduleGroup1.1.1")); //$NON-NLS-1$
+
+		}
+	}
+
+	private class MoveInActiveModule implements IActionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void callback() {
+			ModuleNode moduleNode = (ModuleNode) getNavigationNode().getParentOfType(SubApplicationNode.class)
+					.findNode(new NavigationNodeId("org.eclipse.riena.example.module.1.1.1")); //$NON-NLS-1$
+			moduleNode.moveTo(getNavigationNode().getParentOfType(ModuleGroupNode.class).getNodeId());
+
+		}
 	}
 
 	private class TextAssemblyListener implements IActionListener {

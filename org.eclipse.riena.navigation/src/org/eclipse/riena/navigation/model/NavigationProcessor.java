@@ -22,6 +22,7 @@ import java.util.Vector;
 
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
@@ -50,6 +51,9 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
  */
 public class NavigationProcessor implements INavigationProcessor, INavigationHistory {
 
+	/**
+	 * 
+	 */
 	private static int maxStacksize = 40;
 	private Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
 	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
@@ -65,9 +69,10 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (toActivate != null) {
 			if (toActivate.isActivated()) {
 				if (debugNaviProc) {
-					LOGGER.log(
-							LogService.LOG_DEBUG,
-							"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
+					LOGGER
+							.log(
+									LogService.LOG_DEBUG,
+									"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
 				}
 				Nop.reason("see comment below."); //$NON-NLS-1$
 				// do nothing
@@ -81,9 +86,10 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				}
 				if (!toActivate.isVisible() || !toActivate.isEnabled()) {
 					if (debugNaviProc) {
-						LOGGER.log(
-								LogService.LOG_DEBUG,
-								"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is not visible or not enabled --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
+						LOGGER
+								.log(
+										LogService.LOG_DEBUG,
+										"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is not visible or not enabled --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
 					}
 
 					return;
@@ -264,6 +270,36 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	public INavigationNode<?> create(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
 		return provideNode(sourceNode, targetId, argument);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
+	 */
+	public void move(INavigationNode<?> sourceNode, NavigationNodeId targetId) {
+		Assert.isTrue(ModuleNode.class.isAssignableFrom(sourceNode.getClass()));
+		ModuleNode moduleNode = ModuleNode.class.cast(sourceNode);
+		INavigationNode<?> targetNode = create(sourceNode, targetId);
+		Assert.isTrue(ModuleGroupNode.class.isAssignableFrom(targetNode.getClass()));
+		ModuleGroupNode targetModuleGroup = ModuleGroupNode.class.cast(targetNode);
+		ModuleGroupNode oldParentModuleGroup = ModuleGroupNode.class.cast(moduleNode.getParent());
+		if (targetModuleGroup.equals(oldParentModuleGroup)) {
+			return;
+		}
+		boolean isActivated = moduleNode.isActivated();
+		moduleNode.dispose(null);
+		moduleNode.deactivate(null);
+		oldParentModuleGroup.removeChild(moduleNode);
+		targetModuleGroup.addChild(moduleNode);
+		if (isActivated) {
+			moduleNode.activate();
+		}
+		if (oldParentModuleGroup.getChildren().size() == 0) {
+			oldParentModuleGroup.dispose();
+		} else {
+			oldParentModuleGroup.getChild(0).setSelected(true);
+		}
 	}
 
 	/**

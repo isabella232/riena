@@ -50,10 +50,12 @@ public class NavigationSubApplicationNodeAssembler extends AbstractNavigationAss
 		WorkareaManager.getInstance().registerDefinition(subApplication, "subapplication.1", false); //$NON-NLS-1$
 		subApplication.setSelected(true);
 
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId("moduleGroup", "1.1")); //$NON-NLS-1$ //$NON-NLS-2$
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId(
+				"org.eclipse.riena.example.moduleGroup1.1.1")); //$NON-NLS-1$ //$NON-NLS-2$
 		moduleGroup.setLabel("ModuleGroup 1.1"); //$NON-NLS-1$
 		subApplication.addChild(moduleGroup);
-		IModuleNode module = new ModuleNode(new NavigationNodeId("module", "1.1.1"), "Module 1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		IModuleNode module = new ModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.module.1.1.1"), "Module 1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		module.setIcon(ExampleIcons.ICON_APPLICATION);
 		moduleGroup.addChild(module);
 		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
@@ -131,12 +133,8 @@ public class NavigationSubApplicationNodeAssembler extends AbstractNavigationAss
 		if (knownTargetIds == null) {
 			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigation.subapplication", //$NON-NLS-1$
 					"org.eclipse.riena.example.customerDetail", //$NON-NLS-1$
-					"org.eclipse.riena.example.customerDetail", //$NON-NLS-1$
-					"org.eclipse.riena.example.customerDetail", //$NON-NLS-1$
-					"org.eclipse.riena.example.customerDetail", //$NON-NLS-1$
 					"org.eclipse.riena.example.navigation", //$NON-NLS-1$
-					"org.eclipse.riena.example.customerDetail", //$NON-NLS-1$
-					"org.eclipse.riena.example.customerDetail" //$NON-NLS-1$
+					"org.eclipse.riena.example.module.1.1.1" //$NON-NLS-1$
 			));
 			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
 		}

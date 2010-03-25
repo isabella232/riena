@@ -48,6 +48,8 @@ public class NavigationProcessorTest extends RienaTestCase {
 	private IModuleGroupNode moduleGroup;
 	private IModuleNode module;
 	private ISubModuleNode subModule;
+	private ModuleGroupNode moduleGroup2;
+	private ModuleNode module2;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -63,8 +65,14 @@ public class NavigationProcessorTest extends RienaTestCase {
 		applicationNode.addChild(subApplication);
 		moduleGroup = new ModuleGroupNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.moduleGroup"));
 		subApplication.addChild(moduleGroup);
+		moduleGroup2 = new ModuleGroupNode(
+				new NavigationNodeId("org.eclipse.riena.navigation.model.test.moduleGroup.2"));
+		subApplication.addChild(moduleGroup2);
+
 		module = new ModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.module"));
 		moduleGroup.addChild(module);
+		module2 = new ModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.module.2"));
+		moduleGroup.addChild(module2);
 		subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule"));
 		module.addChild(subModule);
 	}
@@ -644,6 +652,23 @@ public class NavigationProcessorTest extends RienaTestCase {
 		} finally {
 			removeExtension("navigation.processor.test");
 		}
+	}
+
+	/**
+	 * Tests the method {@code create}.
+	 */
+	public void testMove() throws Exception {
+
+		INavigationNode<?> targetModuleGroup = navigationProcessor.create(subApplication, new NavigationNodeId(
+				"org.eclipse.riena.navigation.model.test.moduleGroup.2"), null);
+		assertEquals(module2, moduleGroup.getChild(1));
+		assertEquals(2, moduleGroup.getChildren().size());
+		assertEquals(0, moduleGroup2.getChildren().size());
+		module2.moveTo(new NavigationNodeId("org.eclipse.riena.navigation.model.test.moduleGroup.2"));
+		assertEquals(1, moduleGroup.getChildren().size());
+		assertEquals(1, moduleGroup2.getChildren().size());
+		assertEquals(module2, targetModuleGroup.getChild(0));
+
 	}
 
 	/**

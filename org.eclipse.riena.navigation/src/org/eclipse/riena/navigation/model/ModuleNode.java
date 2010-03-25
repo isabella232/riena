@@ -80,6 +80,18 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 		closeable = true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.model.NavigationNode#moveTo(org.eclipse.
+	 * riena.navigation.NavigationNodeId)
+	 */
+	@Override
+	public void moveTo(NavigationNodeId targetId) {
+		getNavigationProcessor().move(this, targetId);
+	}
+
 	/**
 	 * @return the presentSingleSubModule
 	 */

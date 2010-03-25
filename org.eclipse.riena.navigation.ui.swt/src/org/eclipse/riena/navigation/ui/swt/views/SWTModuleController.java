@@ -11,7 +11,6 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -25,6 +24,7 @@ import org.eclipse.riena.navigation.ui.controllers.ModuleController;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
+import org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer;
 
 /**
  * Controller of a module.
@@ -108,7 +108,7 @@ public class SWTModuleController extends ModuleController {
 	}
 
 	private Display getDisplay() {
-		return ((Widget) getTree().getUIControl()).getDisplay();
+		return new SwtUISynchronizer().getDisplay();
 	}
 
 	private void runAsync(Runnable op) {

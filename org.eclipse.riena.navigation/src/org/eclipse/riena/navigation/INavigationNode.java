@@ -617,6 +617,16 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void create(NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
+	 * Moves this node to the node identified by the targetId. When moving a
+	 * node as child to another keep in mind that you have to honor the strict
+	 * type hierarchy of the nodes in the navigation model.
+	 * 
+	 * @param targetId
+	 *            ID of the node where this node has to be added as child.
+	 */
+	void moveTo(NavigationNodeId targetId);
+
+	/**
 	 * Creates the specified navigation node (if it does not already exist) and
 	 * navigates to it.
 	 * 

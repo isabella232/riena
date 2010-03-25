@@ -29,16 +29,21 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		if (!hasDisplay()) {
 			waitForDisplay(15000);
 		}
-		Display display = null;
-		if (hasDisplay()) {
-			display = PlatformUI.getWorkbench().getDisplay();
+		Display display = getDisplay();
+		if (null != display) {
 			if (!display.isDisposed()) {
 				display.syncExec(runnable);
+				return;
 			}
 		}
-		if (display == null || display.isDisposed()) {
-			getLogger().log(LogService.LOG_ERROR, "Could not obtain display for runnable"); //$NON-NLS-1$
+		getLogger().log(LogService.LOG_ERROR, "Could not obtain display for runnable"); //$NON-NLS-1$
+	}
+
+	public Display getDisplay() {
+		if (hasDisplay()) {
+			return PlatformUI.getWorkbench().getDisplay();
 		}
+		return null;
 	}
 
 	private Logger getLogger() {

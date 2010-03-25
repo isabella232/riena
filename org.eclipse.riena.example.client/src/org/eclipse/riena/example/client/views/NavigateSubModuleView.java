@@ -72,6 +72,14 @@ public class NavigateSubModuleView extends SubModuleView {
 		fillFactory.applyTo(openAsOrdinal5);
 		addUIControl(openAsOrdinal5, "openAsOrdinal5"); //$NON-NLS-1$
 
+		Button moveModule = UIControlsFactory.createButton(parent);
+		fillFactory.applyTo(moveModule);
+		addUIControl(moveModule, "moveModule"); //$NON-NLS-1$
+
+		Button moveInActiveModule = UIControlsFactory.createButton(parent);
+		fillFactory.applyTo(moveInActiveModule);
+		addUIControl(moveInActiveModule, "moveInActiveModule"); //$NON-NLS-1$
+
 		Button addToModule = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(addToModule);
 		addUIControl(addToModule, "addToModule"); //$NON-NLS-1$
