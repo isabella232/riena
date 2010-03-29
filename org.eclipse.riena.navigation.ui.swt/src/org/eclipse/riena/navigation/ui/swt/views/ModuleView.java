@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
@@ -41,6 +45,7 @@ import org.eclipse.riena.navigation.ui.swt.component.ModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.component.SubModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleTreeItemMarkerRenderer;
+import org.eclipse.riena.ui.core.marker.IIconizableMarker;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
@@ -627,10 +632,48 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			TreeItem item = (TreeItem) event.item;
 			SubModuleNode node = (SubModuleNode) item.getData();
 			if (node != null) {
-				renderer.setMarkers(node.getMarkers());
+				boolean deep = !item.getExpanded();
+				Collection<? extends IMarker> markers = getAllMarkers(node, deep);
+				renderer.setMarkers(markers);
 			}
 			renderer.paint(event.gc, event.item);
 		}
+	}
+
+	/**
+	 * Returns all (IIconizableMarker) markers of the given node and all of its
+	 * child nodes (if deep is true).
+	 * 
+	 * @param node
+	 *            sub-module node
+	 * @param deep
+	 *            {@code true} return also the markers of the child nodes;
+	 *            {@code false} only markers of the given node
+	 * @return all markers, that can be displayed in the navigation tree
+	 */
+	private Collection<? extends IMarker> getAllMarkers(ISubModuleNode node, boolean deep) {
+
+		Set<IMarker> markers = new HashSet<IMarker>();
+
+		if (node == null) {
+			return markers;
+		}
+
+		for (IMarker marker : node.getMarkers()) {
+			if (marker instanceof IIconizableMarker) {
+				markers.add(marker);
+			}
+		}
+
+		if (deep) {
+			for (ISubModuleNode child : node.getChildren()) {
+				Collection<? extends IMarker> childMarkers = getAllMarkers(child, deep);
+				markers.addAll(childMarkers);
+			}
+		}
+
+		return markers;
+
 	}
 
 	// helping classes

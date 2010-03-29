@@ -231,23 +231,8 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		playgroundModule.addChild(markerSubModule);
 		markerSubModule.addMarker(new AttentionMarker());
 
-		ISubModuleNode mdSubModule = new SubModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.masterdetails"), "Master/Details"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(mdSubModule, MasterDetailsSubModuleController.class, MasterDetailsSubModuleView.ID,
-				false);
-		playgroundModule.addChild(mdSubModule);
-
-		ISubModuleNode mdSubModule2 = new SubModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.masterdetails2"), "Master/Details II"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(mdSubModule2, MasterDetailsSubModuleController2.class,
-				MasterDetailsSubModuleView2.ID, false);
-		playgroundModule.addChild(mdSubModule2);
-
-		ISubModuleNode mdSubModule3 = new SubModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.masterdetails3"), "Master/Details III"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(mdSubModule3, MasterDetailsSubModuleController.class,
-				MasterDetailsSubModuleView3.ID, false);
-		playgroundModule.addChild(mdSubModule3);
+		ISubModuleNode masterDetailsFolderSubModule = buildMasterDetailsNodes();
+		playgroundModule.addChild(masterDetailsFolderSubModule);
 
 		ISubModuleNode messageBoxSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.messageBox"), "Message Box"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -266,21 +251,8 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(tableSubModule, TableSubModuleController.class, TableSubModuleView.ID, false);
 		playgroundModule.addChild(tableSubModule);
 
-		ISubModuleNode textSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.text"), "Text"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(textSubModule, TextSubModuleController.class, TextSubModuleView.ID, false);
-		playgroundModule.addChild(textSubModule);
-
-		ISubModuleNode textNumbersSubModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.text.numeric"), "Text (Numeric)"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(textNumbersSubModule, TextNumericSubModuleController.class,
-				TextNumericSubModuleView.ID, false);
-		playgroundModule.addChild(textNumbersSubModule);
-
-		ISubModuleNode textDateSubModule = new SubModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.text.date"), "Text (Date)"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(textDateSubModule, TextDateSubModuleController.class, TextDateSubModuleView.ID,
-				false);
-		playgroundModule.addChild(textDateSubModule);
+		ISubModuleNode textFolderSubModule = buildTextNodes();
+		playgroundModule.addChild(textFolderSubModule);
 
 		ISubModuleNode traverseSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.traverse"), "Traverse"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -322,6 +294,76 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		playgroundModule.addChild(noControllerSubModule);
 
 		return new IModuleGroupNode[] { moduleGroup };
+	}
+
+	/**
+	 * Creates a sub-module with child nodes that demonstrates the usage of text
+	 * Ridgets.
+	 * 
+	 * @return folder sub-module
+	 */
+	private ISubModuleNode buildTextNodes() {
+
+		final WorkareaManager workarea = WorkareaManager.getInstance();
+
+		ISubModuleNode textFolderSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.textFolder"), "Text"); //$NON-NLS-1$ //$NON-NLS-2$
+		textFolderSubModule.setSelectable(false);
+
+		ISubModuleNode textSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.text"), "Text"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(textSubModule, TextSubModuleController.class, TextSubModuleView.ID, false);
+		textFolderSubModule.addChild(textSubModule);
+
+		ISubModuleNode textNumbersSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.text.numeric"), "Text (Numeric)"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(textNumbersSubModule, TextNumericSubModuleController.class,
+				TextNumericSubModuleView.ID, false);
+		textFolderSubModule.addChild(textNumbersSubModule);
+
+		ISubModuleNode textDateSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.text.date"), "Text (Date)"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(textDateSubModule, TextDateSubModuleController.class, TextDateSubModuleView.ID,
+				false);
+		textFolderSubModule.addChild(textDateSubModule);
+
+		return textFolderSubModule;
+
+	}
+
+	/**
+	 * Creates a sub-module with child nodes that demonstrates the usage of
+	 * master-details Ridgets.
+	 * 
+	 * @return folder sub-module
+	 */
+	private ISubModuleNode buildMasterDetailsNodes() {
+
+		final WorkareaManager workarea = WorkareaManager.getInstance();
+
+		ISubModuleNode masterDetailsFolderSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.masterDetailsFolder"), "Master/Details"); //$NON-NLS-1$ //$NON-NLS-2$
+		masterDetailsFolderSubModule.setSelectable(false);
+
+		ISubModuleNode mdSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.masterdetails"), "Master/Details"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(mdSubModule, MasterDetailsSubModuleController.class, MasterDetailsSubModuleView.ID,
+				false);
+		masterDetailsFolderSubModule.addChild(mdSubModule);
+
+		ISubModuleNode mdSubModule2 = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.masterdetails2"), "Master/Details II"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(mdSubModule2, MasterDetailsSubModuleController2.class,
+				MasterDetailsSubModuleView2.ID, false);
+		masterDetailsFolderSubModule.addChild(mdSubModule2);
+
+		ISubModuleNode mdSubModule3 = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.masterdetails3"), "Master/Details III"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(mdSubModule3, MasterDetailsSubModuleController.class,
+				MasterDetailsSubModuleView3.ID, false);
+		masterDetailsFolderSubModule.addChild(mdSubModule3);
+
+		return masterDetailsFolderSubModule;
+
 	}
 
 	/**
