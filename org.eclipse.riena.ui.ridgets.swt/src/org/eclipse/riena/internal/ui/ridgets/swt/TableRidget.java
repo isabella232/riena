@@ -810,14 +810,21 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		private ClickEvent createClickEvent(MouseEvent e) {
 			Table table = (Table) e.widget;
 			int colIndex = findColumn(table, new Point(e.x, e.y));
-			Assert.isLegal(colIndex >= 0);
 			// x = 0 gets us an item even not using SWT.FULL_SELECTION
 			TableItem item = table.getItem(new Point(0, e.y));
-			Object rowData = item.getData();
+			Object rowData = item != null ? item.getData() : null;
 			ClickEvent event = new ClickEvent(colIndex, e.button, rowData);
 			return event;
 		}
 
+		/**
+		 * Returns the 0 based index of the column at {@code pt}. The code can
+		 * handle re-ordered columns. The index refers to the original ordering
+		 * (as used by SWT API).
+		 * <p>
+		 * Will return -1 if no column could be computed -- this is the case
+		 * when all columns are resized to have width 0.
+		 */
 		private int findColumn(Table table, Point pt) {
 			int width = 0;
 			int[] colOrder = table.getColumnOrder();

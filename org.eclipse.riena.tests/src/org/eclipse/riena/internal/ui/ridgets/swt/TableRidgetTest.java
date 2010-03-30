@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
@@ -40,8 +41,9 @@ import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
-import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
@@ -253,6 +255,52 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 		assertEquals(2, ridget.getSelectionIndices().length);
 		assertEquals(2, control.getSelectionCount());
+	}
+
+	public void testAddClickListener() {
+		TableRidget ridget = getRidget();
+		ridget.updateFromModel();
+		Table control = getWidget();
+		control.getColumn(0).setWidth(100);
+		control.getColumn(1).setWidth(100);
+
+		try {
+			ridget.addClickListener(null);
+			fail();
+		} catch (RuntimeException npe) {
+			ok();
+		}
+
+		FTClickListener listener1 = new FTClickListener();
+		ridget.addClickListener(listener1);
+
+		FTClickListener listener2 = new FTClickListener();
+		ridget.addClickListener(listener2);
+		ridget.addClickListener(listener2);
+
+		Event mdEvent = new Event();
+		mdEvent.widget = control;
+		mdEvent.type = SWT.MouseDown;
+		mdEvent.button = 2;
+		TableItem row2 = control.getItem(2);
+		mdEvent.item = row2;
+		mdEvent.x = row2.getBounds().x + 1;
+		mdEvent.y = row2.getBounds().y + 1;
+		control.notifyListeners(SWT.MouseDown, mdEvent);
+
+		assertEquals(1, listener1.getCount());
+		assertEquals(1, listener2.getCount());
+
+		ClickEvent event = listener2.getEvent();
+		assertEquals(2, event.getButton());
+		assertEquals(0, event.getColumnIndex());
+		assertEquals(row2.getData(), event.getRow());
+
+		ridget.removeClickListener(listener1);
+
+		control.notifyListeners(SWT.MouseDown, mdEvent);
+
+		assertEquals(1, listener1.getCount());
 	}
 
 	public void testAddDoubleClickListener() {
