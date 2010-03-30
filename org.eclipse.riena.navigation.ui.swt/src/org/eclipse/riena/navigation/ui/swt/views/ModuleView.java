@@ -655,7 +655,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 		Set<IMarker> markers = new HashSet<IMarker>();
 
-		if (node == null) {
+		if ((node == null) || !node.isVisible()) {
 			return markers;
 		}
 

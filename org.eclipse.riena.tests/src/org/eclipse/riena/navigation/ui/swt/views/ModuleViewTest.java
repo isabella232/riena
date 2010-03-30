@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import org.eclipse.riena.core.marker.AbstractMarker;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
@@ -33,7 +34,6 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleTreeItemMarkerRenderer;
 import org.eclipse.riena.ui.core.marker.AttentionMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
-import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
@@ -148,8 +148,9 @@ public class ModuleViewTest extends RienaTestCase {
 		subSubNode.addMarker(mm2);
 		IMarker am3 = new AttentionMarker();
 		subSubSubNode.addMarker(am3);
-		IMarker hm4 = new HiddenMarker();
-		subSubSubNode.addMarker(hm4);
+		// This marker will be never returned, because it does not implement IIconizableMarker
+		IMarker mym4 = new MyMarker();
+		subSubSubNode.addMarker(mym4);
 
 		Collection<? extends IMarker> markers = ReflectionUtils.invokeHidden(view, "getAllMarkers", subNode, false);
 		assertEquals(1, markers.size());
@@ -160,14 +161,42 @@ public class ModuleViewTest extends RienaTestCase {
 		assertTrue(markers.contains(em1));
 		assertTrue(markers.contains(mm2));
 		assertTrue(markers.contains(am3));
-		assertFalse(markers.contains(hm4));
+		assertFalse(markers.contains(mym4));
 
 		markers = ReflectionUtils.invokeHidden(view, "getAllMarkers", subSubNode, true);
 		assertEquals(2, markers.size());
 		assertFalse(markers.contains(em1));
 		assertTrue(markers.contains(mm2));
 		assertTrue(markers.contains(am3));
-		assertFalse(markers.contains(hm4));
+		assertFalse(markers.contains(mym4));
+
+		// Markers of hidden nodes (and their child nodes) will not be returned
+		subSubSubNode.setVisible(false);
+		markers = ReflectionUtils.invokeHidden(view, "getAllMarkers", subNode, true);
+		assertEquals(2, markers.size());
+		assertTrue(markers.contains(em1));
+		assertTrue(markers.contains(mm2));
+		assertFalse(markers.contains(am3));
+		assertFalse(markers.contains(mym4));
+
+		subSubNode.setVisible(false);
+		subSubSubNode.setVisible(true);
+		markers = ReflectionUtils.invokeHidden(view, "getAllMarkers", subNode, true);
+		assertEquals(1, markers.size());
+		assertTrue(markers.contains(em1));
+		assertFalse(markers.contains(mm2));
+		assertFalse(markers.contains(am3));
+		assertFalse(markers.contains(mym4));
+
+		// Markers of disabled will not be returned
+		subSubNode.setVisible(true);
+		subSubSubNode.setEnabled(false);
+		markers = ReflectionUtils.invokeHidden(view, "getAllMarkers", subNode, true);
+		assertEquals(3, markers.size());
+		assertTrue(markers.contains(em1));
+		assertTrue(markers.contains(mm2));
+		assertTrue(markers.contains(am3));
+		assertFalse(markers.contains(mym4));
 
 	}
 
@@ -225,6 +254,10 @@ public class ModuleViewTest extends RienaTestCase {
 
 	}
 
+	/**
+	 * This ModuleView makes the visibility of the method {@code getTree()}
+	 * public for testing.
+	 */
 	private class MyModuleView extends ModuleView {
 
 		public MyModuleView(Composite parent) {
@@ -238,11 +271,21 @@ public class ModuleViewTest extends RienaTestCase {
 
 	}
 
+	/**
+	 * This Look&Feel makes the visibility of the method {@code
+	 * getRendererTable()} public for testing.
+	 */
 	private class MyLnf extends RienaDefaultLnf {
 		@Override
 		public Map<String, ILnfRenderer> getRendererTable() {
 			return super.getRendererTable();
 		}
+	}
+
+	/**
+	 * Marker that not implements {@code IIconizableMarker}.
+	 */
+	private class MyMarker extends AbstractMarker {
 	}
 
 }

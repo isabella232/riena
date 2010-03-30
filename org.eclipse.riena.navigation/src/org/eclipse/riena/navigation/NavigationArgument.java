@@ -26,9 +26,9 @@ public class NavigationArgument {
 
 	public static final String CONTEXTKEY_PARAMETER = "riena.navigation.parameter"; //$NON-NLS-1$
 
+	private IUpdateListener updateListener = null;
 	private Object parameter;
 	private NavigationNodeId parentNodeId;
-	private IUpdateListener updateListener = null;
 	private String ridgetId;
 	private boolean prepareAll;
 	private NodePositioner nodePositioner;
@@ -191,6 +191,11 @@ public class NavigationArgument {
 		updateListener.handleUpdate(parameter);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * All properties of this class are used.
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -203,38 +208,58 @@ public class NavigationArgument {
 		return result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * All properties of this class are used.
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
+
 		NavigationArgument other = (NavigationArgument) obj;
 		if (nodePositioner == null) {
-			if (other.nodePositioner != null)
+			if (other.nodePositioner != null) {
 				return false;
-		} else if (!nodePositioner.equals(other.nodePositioner))
+			}
+		} else if (!nodePositioner.equals(other.nodePositioner)) {
 			return false;
+		}
 		if (parameter == null) {
-			if (other.parameter != null)
+			if (other.parameter != null) {
 				return false;
+			}
 		} else if (!parameter.equals(other.parameter))
 			return false;
 		if (parentNodeId == null) {
-			if (other.parentNodeId != null)
+			if (other.parentNodeId != null) {
 				return false;
-		} else if (!parentNodeId.equals(other.parentNodeId))
+			}
+		} else if (!parentNodeId.equals(other.parentNodeId)) {
 			return false;
-		if (prepareAll != other.prepareAll)
+		}
+		if (prepareAll != other.prepareAll) {
 			return false;
+		}
 		if (ridgetId == null) {
-			if (other.ridgetId != null)
+			if (other.ridgetId != null) {
 				return false;
-		} else if (!ridgetId.equals(other.ridgetId))
+			}
+		} else if (!ridgetId.equals(other.ridgetId)) {
 			return false;
+		}
+
 		return true;
+
 	}
 
 }
