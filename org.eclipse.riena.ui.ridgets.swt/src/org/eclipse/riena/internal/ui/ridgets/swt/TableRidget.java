@@ -66,6 +66,8 @@ import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
+import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableIndexedRidget;
@@ -84,9 +86,10 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	private final Listener itemEraser;
 	private final SelectionListener selectionTypeEnforcer;
-	private final MouseListener doubleClickForwarder;
+	private final MouseListener clickForwarder;
 	private final MouseTrackListener tooltipManager;
 	private final ColumnSortListener sortListener;
+	private ListenerList<IClickListener> clickListeners;
 	private ListenerList<IActionListener> doubleClickListeners;
 
 	private DataBindingContext dbc;
@@ -124,7 +127,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	public TableRidget() {
 		itemEraser = new TableItemEraser();
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
-		doubleClickForwarder = new DoubleClickForwarder();
+		clickForwarder = new ClickForwarder();
 		tooltipManager = new TableTooltipManager();
 		sortListener = new ColumnSortListener();
 		isSortedAscending = true;
@@ -174,7 +177,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 				column.addSelectionListener(sortListener);
 			}
 			control.addSelectionListener(selectionTypeEnforcer);
-			control.addMouseListener(doubleClickForwarder);
+			control.addMouseListener(clickForwarder);
 			SWTFacade facade = SWTFacade.getDefault();
 			facade.addMouseTrackListener(control, tooltipManager);
 			facade.addEraseItemListener(control, itemEraser);
@@ -195,7 +198,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 				column.removeSelectionListener(sortListener);
 			}
 			control.removeSelectionListener(selectionTypeEnforcer);
-			control.removeMouseListener(doubleClickForwarder);
+			control.removeMouseListener(clickForwarder);
 			SWTFacade facade = SWTFacade.getDefault();
 			facade.removeMouseTrackListener(control, tooltipManager);
 			facade.removeEraseItemListener(control, itemEraser);
@@ -203,9 +206,16 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		viewer = null;
 	}
 
-	@Override
 	protected java.util.List<?> getRowObservables() {
 		return viewerObservables;
+	}
+
+	public void addClickListener(IClickListener listener) {
+		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
+		if (clickListeners == null) {
+			clickListeners = new ListenerList<IClickListener>(IClickListener.class);
+		}
+		clickListeners.add(listener);
 	}
 
 	public void addDoubleClickListener(IActionListener listener) {
@@ -329,6 +339,12 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	public void removeDoubleClickListener(IActionListener listener) {
 		if (doubleClickListeners != null) {
 			doubleClickListeners.remove(listener);
+		}
+	}
+
+	public void removeClickListener(IClickListener listener) {
+		if (clickListeners != null) {
+			clickListeners.remove(listener);
 		}
 	}
 
@@ -764,9 +780,21 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	}
 
 	/**
-	 * Notifies doubleClickListeners when the bound widget is double clicked.
+	 * Notifies single- and double-click listeners when the bound widget is
+	 * clicked.
 	 */
-	private final class DoubleClickForwarder extends MouseAdapter {
+	private final class ClickForwarder extends MouseAdapter {
+
+		@Override
+		public void mouseDown(MouseEvent e) {
+			if (clickListeners != null) {
+				ClickEvent event = createClickEvent(e);
+				for (IClickListener listener : clickListeners.getListeners()) {
+					listener.callback(event);
+				}
+			}
+		}
+
 		@Override
 		public void mouseDoubleClick(MouseEvent e) {
 			if (doubleClickListeners != null) {
@@ -774,6 +802,40 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 					listener.callback();
 				}
 			}
+		}
+
+		// helping methods
+		//////////////////
+
+		private ClickEvent createClickEvent(MouseEvent e) {
+			Table table = (Table) e.widget;
+			int colIndex = findColumn(table, new Point(e.x, e.y));
+			Assert.isLegal(colIndex >= 0);
+			// x = 0 gets us an item even not using SWT.FULL_SELECTION
+			TableItem item = table.getItem(new Point(0, e.y));
+			Object rowData = item.getData();
+			ClickEvent event = new ClickEvent(colIndex, e.button, rowData);
+			return event;
+		}
+
+		private int findColumn(Table table, Point pt) {
+			int width = 0;
+			int[] colOrder = table.getColumnOrder();
+			// compute the current column ordering
+			TableColumn[] columns = new TableColumn[colOrder.length];
+			for (int i = 0; i < colOrder.length; i++) {
+				int idx = colOrder[i];
+				columns[i] = table.getColumn(idx);
+			}
+			// find the column under Point pt\
+			for (TableColumn col : columns) {
+				int colWidth = col.getWidth();
+				if (width < pt.x && pt.x < width + colWidth) {
+					return table.indexOf(col);
+				}
+				width += colWidth;
+			}
+			return -1;
 		}
 	}
 

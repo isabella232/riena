@@ -51,6 +51,7 @@ import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 
 /**
  * An abstract Ridget for lists that does not depend on the class
@@ -115,6 +116,10 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 				}
 			}
 		});
+	}
+
+	public void addClickListener(IClickListener listener) {
+		throw new UnsupportedOperationException("not implemented"); // TODO [ev] implement
 	}
 
 	public void addDoubleClickListener(IActionListener listener) {
@@ -236,6 +241,10 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		if (viewer != null) {
 			viewer.refresh(node, true);
 		}
+	}
+
+	public void removeClickListener(IClickListener listener) {
+		throw new UnsupportedOperationException("not implemented"); // TODO [ev] implement 	
 	}
 
 	public void removeDoubleClickListener(IActionListener listener) {
