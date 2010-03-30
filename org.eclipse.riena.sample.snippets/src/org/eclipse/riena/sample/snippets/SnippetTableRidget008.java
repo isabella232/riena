@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.beans.common.SuperHero;
 import org.eclipse.riena.beans.common.SuperHeroFactory;
-import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.listener.IClickListener;
@@ -33,8 +32,8 @@ import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Demostrates how to use a {@link RowErrorMessageMarker} to mark errors in the
- * rows of a table ridget.
+ * Demostrates how to use an {@link IClickListener} to react to a click of a
+ * specific column.
  */
 public class SnippetTableRidget008 {
 
