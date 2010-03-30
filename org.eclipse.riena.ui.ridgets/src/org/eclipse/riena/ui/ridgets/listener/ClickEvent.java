@@ -21,6 +21,17 @@ public final class ClickEvent {
 	private final int button;
 	private final Object rowData;
 
+	/**
+	 * Create a new instance of this class
+	 * 
+	 * @param columnIndex
+	 *            the 0-based index of a column, or -1
+	 * @param button
+	 *            the mouse button used; 1 for the first button, 2 for the 2nd,
+	 *            3 for the 3rd, etc.
+	 * @param rowData
+	 *            the row clicked, or null if no row / column was determined
+	 */
 	public ClickEvent(int columnIndex, int button, Object rowData) {
 		this.columnIndex = columnIndex;
 		this.button = button;
