@@ -23,7 +23,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
  */
 public class HoverBorderRenderer extends AbstractLnfRenderer {
 
-	private final static int PADDING = 0;
+	private final static int DEFAULT_MARGIN = 0;
 
 	/**
 	 * @param value
@@ -35,11 +35,15 @@ public class HoverBorderRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(GC gc, Object value) {
 
+		//		int oldAntialias = gc.getAntialias();
+		//		gc.setAntialias(SWT.OFF);
+
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		int x = getBounds().x + PADDING;
-		int y = getBounds().y + PADDING;
-		int width = getBounds().width - 2 * PADDING;
-		int height = getBounds().height - 2 * PADDING;
+		int margin = lnf.getIntegerSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_MARGIN, DEFAULT_MARGIN);
+		int x = getBounds().x + margin;
+		int y = getBounds().y + margin;
+		int width = getBounds().width - 2 * margin;
+		int height = getBounds().height - 2 * margin;
 
 		// top
 		Color topColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_TOP_COLOR);
@@ -63,6 +67,8 @@ public class HoverBorderRenderer extends AbstractLnfRenderer {
 		Color bottomColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_BOTTOM_COLOR);
 		gc.setForeground(bottomColor);
 		gc.drawLine(x + 1, y + height, x + width - 2, y + height);
+
+		//		gc.setAntialias(oldAntialias);
 
 	}
 

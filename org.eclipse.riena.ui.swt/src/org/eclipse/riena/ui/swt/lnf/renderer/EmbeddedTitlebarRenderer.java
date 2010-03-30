@@ -207,6 +207,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		if (getImage() != null) {
 			Rectangle imageBounds = getImage().getBounds();
 			y = getBounds().y + (getHeight() - imageBounds.height) / 2;
+			y++;
 			gc.drawImage(getImage(), x, y);
 			x += imageBounds.width + TITLEBAR_ICON_TEXT_GAP;
 		}
@@ -220,6 +221,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			gc.setForeground(fgColor);
 			int y2 = (getHeight() - gc.getFontMetrics().getHeight()) / 2;
 			y = getBounds().y + y2;
+			y++;
 			text = getClippedText(gc, text);
 			gc.drawText(text, x, y, true);
 		}

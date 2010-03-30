@@ -112,7 +112,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(100, 153, 186));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR, new ColorLnfResource(171, 171, 174));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND, getPrimaryForeground());
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(244, 244, 245));
+		table
+				.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(244, 244,
+						245));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(220, 220, 220));
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(213, 213, 216));
 
@@ -401,8 +403,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH, 0);
 
 		table.put(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY, 0);
-
 		table.put(LnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY, 500);
+
+		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_MARGIN, 0);
 
 		table.put(LnfKeyConstants.NAVIGATION_SUB_MODULE_GAP, 5);
 		table.put(LnfKeyConstants.MENUBAR_TOP_MARGIN, 0);

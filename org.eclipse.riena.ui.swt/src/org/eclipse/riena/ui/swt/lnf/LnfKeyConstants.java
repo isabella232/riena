@@ -737,8 +737,8 @@ public final class LnfKeyConstants {
 	 */
 	public static final String DISABLED_MARKER_COMPLEX_ALPHA = "DisabledMarker.complexAlpha"; //$NON-NLS-1$
 	/**
-	 * This constants turns the advanced disabled marker rendering on (
-	 * {@code true}) or off ({@code false}).<br>
+	 * This constants turns the advanced disabled marker rendering on ( {@code
+	 * true}) or off ({@code false}).<br>
 	 * Is advanced rendering turned off for disabled UI control only the method
 	 * setEnabled is called. Is advanced rendering turned off the widgets are
 	 * renderer in a spacial way (@see DisabledMarkerVisualizer).
@@ -816,6 +816,15 @@ public final class LnfKeyConstants {
 	public static final String STATUSLINE_HEIGHT = "statusline.height"; //$NON-NLS-1$
 
 	public static final String MODULE_ITEM_TOOLTIP_POPUP_DELAY = "ModuleItemToolTip.popupDelay"; //$NON-NLS-1$
+
+	/**
+	 * This constant is described in Eclipsepedia.
+	 * 
+	 * @see <a
+	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
+	 *      Riena Wiki</a>
+	 */
+	public static final String EMBEDDED_TITLEBAR_HOVER_BORDER_MARGIN = "EmbeddedTitlebar.hoverBorderMargin"; //$NON-NLS-1$
 
 	/**
 	 * @since 1.2
