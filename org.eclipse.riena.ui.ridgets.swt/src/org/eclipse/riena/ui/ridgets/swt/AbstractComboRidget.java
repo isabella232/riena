@@ -311,14 +311,12 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	protected abstract String[] getUIControlItems();
 
 	/**
-	 * @return an observable observing the items attribute of the
-	 *         control.
+	 * @return an observable observing the items attribute of the control.
 	 */
 	protected abstract IObservableList getUIControlItemsObservable();
 
 	/**
-	 * @return an observable observing the selection attribute of the
-	 *         control.
+	 * @return an observable observing the selection attribute of the control.
 	 */
 	protected abstract ISWTObservableValue getUIControlSelectionObservable();
 
@@ -542,8 +540,11 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		public void handleValueChange(ValueChangeEvent event) {
 			Object oldValue = event.diff.getOldValue();
 			Object newValue = event.diff.getNewValue();
-			firePropertyChange(IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
-			disableMandatoryMarkers(hasInput());
+			try {
+				firePropertyChange(IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
+			} finally {
+				disableMandatoryMarkers(hasInput());
+			}
 		}
 	}
 

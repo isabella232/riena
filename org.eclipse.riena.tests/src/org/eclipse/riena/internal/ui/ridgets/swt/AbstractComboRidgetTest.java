@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
@@ -34,8 +35,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.beans.common.StringManager;
+import org.eclipse.riena.beans.common.StringPojo;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
@@ -1066,8 +1070,49 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(selection1, manager.getSelectedPerson());
 	}
 
+	/**
+	 * As per Bug 307592
+	 */
+	public void testUpdateMandatoryMarkerOnUpdateFromModelWithPojo() {
+		AbstractComboRidget ridget = getRidget();
+		ridget.setMandatory(true);
+
+		assertMandatory(ridget, 1, false);
+
+		ridget.addSelectionListener(new ISelectionListener() {
+			public void ridgetSelected(SelectionEvent event) {
+				if (event.getNewSelection().isEmpty()) {
+					throw new NullPointerException("im a bad listener");
+				}
+			}
+		});
+
+		StringPojo selection = new StringPojo("a");
+		WritableList values = new WritableList(Arrays.asList("a", "b", "c"), String.class);
+		ridget.bindToModel(values, String.class, null, PojoObservables.observeValue(selection, "value"));
+		ridget.updateFromModel();
+
+		assertMandatory(ridget, 1, true);
+
+		selection.setValue(null);
+
+		assertMandatory(ridget, 1, true);
+
+		ridget.updateFromModel();
+
+		assertMandatory(ridget, 1, false);
+	}
+
 	// helping methods
 	// ////////////////
+
+	private void assertMandatory(IMarkableRidget ridget, int count, boolean isDisabled) {
+		Collection<MandatoryMarker> markers = ridget.getMarkersOfType(MandatoryMarker.class);
+		assertEquals(count, markers.size());
+		for (MandatoryMarker marker : markers) {
+			assertEquals(isDisabled, marker.isDisabled());
+		}
+	}
 
 	private void checkPersonList(PersonManager manager) {
 		Control control = getWidget();
