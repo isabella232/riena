@@ -99,7 +99,7 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 
 			infoFlyout.waitForClosing();
 
-			syncher.synchronize(new Runnable() {
+			syncher.syncExec(new Runnable() {
 				public void run() {
 					infoFlyout.setMessage(info.getMessage());
 					infoFlyout.setIcon(info.getIcon());

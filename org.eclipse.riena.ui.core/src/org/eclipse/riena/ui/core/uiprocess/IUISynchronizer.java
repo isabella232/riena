@@ -24,5 +24,14 @@ public interface IUISynchronizer {
 	 * @param runnable
 	 *            the {@code Runnable} to be executed on the UI-thread
 	 */
-	void synchronize(Runnable runnable);
+	void syncExec(Runnable runnable);
+
+	/**
+	 * The given {@code Runnable} will be executed on the UI-thread. The calling
+	 * thread will return immediately.
+	 * 
+	 * @param runnable
+	 *            the {@code Runnable} to be executed on the UI-thread
+	 */
+	void asyncExec(Runnable runnable);
 }

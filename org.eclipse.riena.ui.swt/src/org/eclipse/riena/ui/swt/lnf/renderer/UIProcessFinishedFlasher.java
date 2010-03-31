@@ -51,7 +51,7 @@ public class UIProcessFinishedFlasher extends Thread {
 
 		while (processMarker.isFlashing()) {
 
-			uiSynchronizer.synchronize(updater);
+			uiSynchronizer.syncExec(updater);
 			processMarker.increase();
 			processMarker.setOn(!processMarker.isOn());
 			try {
@@ -72,7 +72,7 @@ public class UIProcessFinishedFlasher extends Thread {
 			}
 		}
 
-		uiSynchronizer.synchronize(updater);
+		uiSynchronizer.syncExec(updater);
 
 	}
 

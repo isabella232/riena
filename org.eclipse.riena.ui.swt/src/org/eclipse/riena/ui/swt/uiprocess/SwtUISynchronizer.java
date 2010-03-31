@@ -21,22 +21,42 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
 
 /**
- * serializes a runnable to the SWT-Thread - if possible
+ * Serializes a runnable to the SWT-Thread
+ * 
  */
 public class SwtUISynchronizer implements IUISynchronizer {
 
-	public void synchronize(Runnable runnable) {
+	/**
+	 * @see IUISynchronizer#syncExec(Runnable)
+	 */
+	public void syncExec(Runnable runnable) {
+		execute(new SyncExecutor(), runnable);
+	}
+
+	/**
+	 * @see IUISynchronizer#asyncExec(Runnable)
+	 */
+	public void asyncExec(Runnable runnable) {
+		execute(new ASyncExecutor(), runnable);
+	}
+
+	/*
+	 * Executes the given runnable using the executor. First checks if there is
+	 * a display available.
+	 */
+	private void execute(Executor executor, Runnable runnable) {
 		if (!hasDisplay()) {
 			waitForDisplay(15000);
 		}
 		Display display = getDisplay();
 		if (null != display) {
 			if (!display.isDisposed()) {
-				display.syncExec(runnable);
+				executor.execute(display, runnable);
 				return;
 			}
 		}
 		getLogger().log(LogService.LOG_ERROR, "Could not obtain display for runnable"); //$NON-NLS-1$
+
 	}
 
 	public Display getDisplay() {
@@ -50,7 +70,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		return Log4r.getLogger(org.eclipse.riena.internal.ui.swt.Activator.getDefault(), SwtUISynchronizer.class);
 	}
 
-	private boolean hasDisplay() {
+	protected boolean hasDisplay() {
 		return PlatformUI.isWorkbenchRunning() && PlatformUI.getWorkbench().getDisplay() != null;
 	}
 
@@ -73,4 +93,19 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		} while (time < timeoutMs && !hasDisplay());
 	}
 
+	private interface Executor {
+		void execute(Display display, Runnable runnable);
+	}
+
+	private static class SyncExecutor implements Executor {
+		public void execute(Display display, Runnable runnable) {
+			display.syncExec(runnable);
+		}
+	}
+
+	private static class ASyncExecutor implements Executor {
+		public void execute(Display display, Runnable runnable) {
+			display.asyncExec(runnable);
+		}
+	}
 }

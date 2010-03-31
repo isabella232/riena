@@ -106,7 +106,7 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 		}
 
 		private void blockSubModule(final boolean block) {
-			UISynchronizer.createSynchronizer().synchronize(new Runnable() {
+			UISynchronizer.createSynchronizer().syncExec(new Runnable() {
 
 				public void run() {
 					setBlocked(block);

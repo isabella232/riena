@@ -190,7 +190,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 		}
 
 		public void synchronize(Runnable runnable) {
-			syncher.synchronize(runnable);
+			syncher.syncExec(runnable);
 		}
 	}
 
