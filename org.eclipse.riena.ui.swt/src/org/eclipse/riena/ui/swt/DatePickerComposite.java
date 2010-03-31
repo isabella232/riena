@@ -198,7 +198,8 @@ public class DatePickerComposite extends Composite {
 		 */
 		protected DatePicker(final DatePickerComposite datePicker) {
 			this.datePicker = datePicker;
-			shell = new Shell(datePicker.getPickerButton().getDisplay(), SWT.NO_TRIM | SWT.ON_TOP);
+			Shell parentShell = datePicker.getPickerButton().getShell();
+			shell = new Shell(parentShell, SWT.NO_TRIM | SWT.ON_TOP);
 			shell.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 			GridLayoutFactory.fillDefaults().margins(1, 1).applyTo(shell);
 
