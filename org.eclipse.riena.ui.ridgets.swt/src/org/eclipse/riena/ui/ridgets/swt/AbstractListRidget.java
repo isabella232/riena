@@ -482,7 +482,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	// ////////////////
 
 	/**
-	 * Notifies doubleClickListeners when the bound widget is double clicked.
+	 * Notifies doubleClickListeners when the bound widget is clicked.
 	 */
 	private final class ClickForwarder extends MouseAdapter {
 		@Override
