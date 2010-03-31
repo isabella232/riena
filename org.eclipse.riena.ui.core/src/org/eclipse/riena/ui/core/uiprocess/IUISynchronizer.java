@@ -12,8 +12,7 @@ package org.eclipse.riena.ui.core.uiprocess;
 
 /**
  * Class implementing this interface are responsible for executing a {@code
- * Runnable} on the UI-Thread of the underlying widget toolkit. The calling
- * thread will be suspended until the {@code Runnable} completes.
+ * Runnable} on the UI-Thread of the underlying widget toolkit.
  */
 public interface IUISynchronizer {
 
