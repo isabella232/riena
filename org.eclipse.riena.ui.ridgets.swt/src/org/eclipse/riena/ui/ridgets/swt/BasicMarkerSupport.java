@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.ridgets.swt;
 
 import java.beans.PropertyChangeSupport;
 
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Combo;
@@ -56,8 +57,12 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		if (control != null) {
 			control.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
-					if (e.widget == getUIControl()) {
-						clearAllMarkers(getUIControl());
+					Control control = getUIControl();
+					if (e.widget == control) {
+						// workaround for Bug 304869
+						if (!(control instanceof CCombo)) {
+							clearAllMarkers(control);
+						}
 					}
 				}
 			});
