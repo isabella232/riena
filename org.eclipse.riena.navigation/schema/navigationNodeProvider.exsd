@@ -71,7 +71,7 @@
          <attribute name="priority" type="string" use="default" value="0">
             <annotation>
                <documentation>
-                  The priority of this implenentation among others. Integer.MIN_VALUE has the least chance to be selected, Integer.MAX_VALUE would most probably be used. Default is 0.
+                  The priority of this implementation among others. Integer.MIN_VALUE has the least chance to be selected, Integer.MAX_VALUE would most probably be used. Default is 0.
                </documentation>
             </annotation>
          </attribute>

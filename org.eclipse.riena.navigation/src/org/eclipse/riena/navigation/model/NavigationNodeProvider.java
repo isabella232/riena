@@ -40,6 +40,9 @@ public final class NavigationNodeProvider {
 	}
 
 	/**
+	 * Provide the single instance of the object configured for
+	 * {@code INavigationNodeProvider}.
+	 * 
 	 * @since 1.2
 	 */
 	public static INavigationNodeProvider getInstance() {
@@ -92,10 +95,27 @@ public final class NavigationNodeProvider {
 	@ExtensionInterface(id = "navigationNodeProvider")
 	public interface INavigationNodeProviderExtension {
 
+		/**
+		 * An optional identifier for the implementation.
+		 * 
+		 * @return the identifier.
+		 */
 		String getId();
 
+		/**
+		 * The priority of this implementation among others. Integer.MIN_VALUE
+		 * has the least chance to be selected, Integer.MAX_VALUE would most
+		 * probably be used. Default is 0.
+		 * 
+		 * @return the priority.
+		 */
 		int getPriority();
 
+		/**
+		 * The implementation of INavigationNodeProvider to be used.
+		 * 
+		 * @return the object.
+		 */
 		INavigationNodeProvider createClass();
 	}
 
