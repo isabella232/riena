@@ -22,6 +22,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -169,6 +170,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
 		ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
 
+		ridget.setApplyTriggersNew(false);
 		bindToModel(true);
 		int oldSize = input.size();
 
@@ -199,7 +201,52 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("A", newEntry.column1);
 		assertEquals("B", newEntry.column2);
 
-		// when there is a 'new' button handleApply() automatically invokes it
+		// apply triggers 'New' = false
+		assertEquals(newEntry, ridget.getSelection());
+		assertFalse(txtColumn1.isEnabled());
+		assertFalse(txtColumn2.isEnabled());
+		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn2.getText());
+	}
+
+	public void testAddBeanAndApplyTriggersNew() {
+		MasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
+		ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
+
+		ridget.setApplyTriggersNew(true);
+		bindToModel(true);
+		int oldSize = input.size();
+
+		ridget.setSelection(input.get(0));
+
+		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertEquals("TestR0C2", widget.txtColumn2.getText());
+
+		ridget.handleAdd();
+		assertTrue(txtColumn1.isEnabled());
+		assertTrue(txtColumn2.isEnabled());
+
+		assertTrue(widget.txtColumn1.isFocusControl());
+
+		assertEquals(oldSize, input.size());
+		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn2.getText());
+
+		widget.txtColumn1.setFocus();
+		UITestHelper.sendString(widget.getDisplay(), "A\r");
+		widget.txtColumn2.setFocus();
+		UITestHelper.sendString(widget.getDisplay(), "B\r");
+
+		ridget.handleApply();
+
+		MDBean newEntry = input.get(oldSize);
+		assertEquals(oldSize + 1, input.size());
+		assertEquals("A", newEntry.column1);
+		assertEquals("B", newEntry.column2);
+
+		// apply triggers 'New' = true
 		assertNull(ridget.getSelection());
 		assertTrue(txtColumn1.isEnabled());
 		assertTrue(txtColumn2.isEnabled());
@@ -853,6 +900,31 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(applyButton.isEnabled());
 	}
 
+	public void testApplyTriggersNew() {
+		IMasterDetailsRidget ridget = getRidget();
+
+		assertFalse(ridget.isApplyTriggersNew());
+
+		ridget.setApplyTriggersNew(true);
+
+		assertTrue(ridget.isApplyTriggersNew());
+
+		ridget.setApplyTriggersNew(false);
+
+		assertFalse(ridget.isApplyTriggersNew());
+
+		IMasterDetailsRidget ridget2 = (IMasterDetailsRidget) createRidget();
+		ridget2.setUIControl(new MDWidget(getShell(), SWT.NONE) {
+			@Override
+			public Button createButtonNew(Composite parent) {
+				return null;
+			}
+		});
+		ridget2.setApplyTriggersNew(true);
+
+		assertFalse(ridget2.isApplyTriggersNew());
+	}
+
 	// helping methods
 	//////////////////
 
@@ -955,7 +1027,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	/**
 	 * A MasterDetailsComposite with a details area containing two text fields.
 	 */
-	private static final class MDWidget extends MasterDetailsComposite {
+	private static class MDWidget extends MasterDetailsComposite {
 
 		private Text txtColumn1;
 		private Text txtColumn2;
@@ -988,7 +1060,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	 * Implements a delegate with two text ridgets. This class is a companion
 	 * class to {@link MDBean} and {@link MDWidget}.
 	 */
-	private static class MDDelegate extends AbstractMasterDetailsDelegate {
+	private static final class MDDelegate extends AbstractMasterDetailsDelegate {
 
 		private final MDBean workingCopy = createWorkingCopy();
 		private boolean isTxtColumn1IsEnabled = true;

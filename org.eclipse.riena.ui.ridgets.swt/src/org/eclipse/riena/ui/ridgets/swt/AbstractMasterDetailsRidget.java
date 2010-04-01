@@ -60,6 +60,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	private boolean isDirectWriting;
 	private boolean applyRequiresNoErrors;
 	private boolean applyRequiresNoMandatories;
+	private boolean applyTriggersNew;
 	private boolean detailsEnabled;
 	private boolean ignoreChanges;
 
@@ -211,6 +212,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return applyRequiresNoMandatories;
 	}
 
+	public boolean isApplyTriggersNew() {
+		return applyTriggersNew && hasNewButton();
+	}
+
 	public boolean isDirectWriting() {
 		return isDirectWriting;
 	}
@@ -227,6 +232,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			applyRequiresNoMandatories = requiresNoMandatories;
 			updateApplyButton();
 		}
+	}
+
+	public void setApplyTriggersNew(boolean triggersNew) {
+		applyTriggersNew = triggersNew;
 	}
 
 	public void setColumnWidths(Object[] widths) {
@@ -621,7 +630,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			getTableRidget().updateFromModel();
 		}
 		delegate.itemApplied(editable);
-		if (hasNewButton() && !isDirectWriting) {
+		if (!isDirectWriting && isApplyTriggersNew()) {
 			handleAdd(); // automatically hit the 'new/add' button
 			setFocusToDetails();
 		} else {

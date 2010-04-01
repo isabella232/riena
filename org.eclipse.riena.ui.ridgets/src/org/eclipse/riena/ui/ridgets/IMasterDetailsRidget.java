@@ -132,6 +132,21 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	boolean isApplyRequiresNoMandatories();
 
 	/**
+	 * Return true, if a sucessfull 'Apply' triggers the 'New' action. If the
+	 * 'New' action is unavailable, the method returns false regardless of the
+	 * setting.
+	 * <p>
+	 * The default setting for this option is false.
+	 * 
+	 * @return Return true, if a sucessfull 'Apply' triggers the 'New' action. *
+	 *         If the 'New' action is unavailable, the method returns false
+	 *         regardless of the setting.
+	 * 
+	 * @since 2.0
+	 */
+	boolean isApplyTriggersNew();
+
+	/**
 	 * When set to true, the 'Apply' button will only enable when all ridgets in
 	 * the Details area have <b>no</b> error markers.
 	 * <p>
@@ -158,6 +173,19 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	void setApplyRequiresNoMandatories(boolean requiresNoMandatories);
 
 	/**
+	 * When set to true, a sucessfull 'Apply' will trigger a 'New'. This will
+	 * only happen if the 'New' action is available.
+	 * <p>
+	 * The default setting for this option is false.
+	 * 
+	 * @param triggersNew
+	 *            The new settings for this option.
+	 * 
+	 * @since 2.0
+	 */
+	void setApplyTriggersNew(boolean triggersNew);
+
+	/**
 	 * Adjust the column widths of the ridget's table control according to the
 	 * information in the {@code widths} array.
 	 * <p>
@@ -169,7 +197,8 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * @param widths
 	 *            an Array with width information, one instance per column. The
 	 *            array may be null, in that case the available width is
-	 *            distributed equally to all columns
+	 *            distributed equally to all columns.
+	 * 
 	 * @since 1.2
 	 */
 	void setColumnWidths(Object[] widths);
