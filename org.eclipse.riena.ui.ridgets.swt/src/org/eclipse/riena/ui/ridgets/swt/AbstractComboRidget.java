@@ -245,6 +245,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return result;
 	}
 
+	@Override
 	public boolean isDisableMandatoryMarker() {
 		return hasInput();
 	}

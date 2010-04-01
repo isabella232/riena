@@ -180,7 +180,6 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	 * @param subModuleExt
 	 *            extension of a sub-module
 	 */
-	@SuppressWarnings("unchecked")
 	protected void register(ISubModuleNode2Extension subModuleExt) {
 
 		// create and register view definition

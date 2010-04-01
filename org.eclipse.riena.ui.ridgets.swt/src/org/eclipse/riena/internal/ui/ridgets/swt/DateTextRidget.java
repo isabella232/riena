@@ -110,6 +110,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	 * 
 	 * @return a Text widget or null
 	 */
+	@Override
 	protected Text getTextWidget() {
 		Text result;
 		Control control = super.getUIControl();
@@ -276,7 +277,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		}
 
 		public void verifyText(VerifyEvent e) {
-			if (e.doit == false || !isEnabled) {
+			if (!e.doit == false || !isEnabled) {
 				return;
 			}
 			Text control = (Text) e.widget;

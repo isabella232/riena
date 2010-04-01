@@ -206,6 +206,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		viewer = null;
 	}
 
+	@Override
 	protected java.util.List<?> getRowObservables() {
 		return viewerObservables;
 	}
@@ -730,11 +731,13 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		private boolean restore;
 		private String savedToolTip;
 
+		@Override
 		public void mouseExit(MouseEvent event) {
 			Table table = (Table) event.widget;
 			restoreToolTip(table);
 		}
 
+		@Override
 		public void mouseHover(MouseEvent event) {
 			Table table = (Table) event.widget;
 			TableItem item = table.getItem(new Point(event.x, event.y));

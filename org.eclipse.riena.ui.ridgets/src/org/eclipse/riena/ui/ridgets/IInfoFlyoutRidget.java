@@ -11,8 +11,8 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * A notification that turns up on top of the SubModuleView. No user
- * interaction is possible and it closes after a few seconds.
+ * A notification that turns up on top of the SubModuleView. No user interaction
+ * is possible and it closes after a few seconds.
  * <p>
  * It is possible to set a message and an icon.
  * 
@@ -20,7 +20,7 @@ package org.eclipse.riena.ui.ridgets;
  */
 public interface IInfoFlyoutRidget extends IRidget {
 
-	public static final int PROPERTY_FYLOUT_FINISHED = 0;
+	static final int PROPERTY_FYLOUT_FINISHED = 0;
 
 	void addInfo(InfoFlyoutData info);
 

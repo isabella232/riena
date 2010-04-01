@@ -190,6 +190,7 @@ public class InfoFlyout implements IPropertyNameProvider {
 				.to(new Point(WIDTH, 0)));
 
 		tShow.addCallback(new TimelineCallbackAdapter() {
+			@Override
 			public void onTimelineStateChanged(TimelineState oldState, TimelineState newState, float durationFraction,
 					float timelinePosition) {
 				if (newState == TimelineState.DONE) {
@@ -199,6 +200,7 @@ public class InfoFlyout implements IPropertyNameProvider {
 		});
 
 		tWait.addCallback(new TimelineCallbackAdapter() {
+			@Override
 			public void onTimelineStateChanged(TimelineState oldState, TimelineState newState, float durationFraction,
 					float timelinePosition) {
 				if (newState == TimelineState.DONE) {
@@ -208,6 +210,7 @@ public class InfoFlyout implements IPropertyNameProvider {
 		});
 
 		tHide.addCallback(new TimelineCallbackAdapter() {
+			@Override
 			public void onTimelineStateChanged(TimelineState oldState, TimelineState newState, float durationFraction,
 					float timelinePosition) {
 				if (newState == TimelineState.DONE) {
@@ -218,6 +221,7 @@ public class InfoFlyout implements IPropertyNameProvider {
 		});
 
 		tWaitAtEnd.addCallback(new TimelineCallbackAdapter() {
+			@Override
 			public void onTimelineStateChanged(TimelineState oldState, TimelineState newState, float durationFraction,
 					float timelinePosition) {
 				if (newState == TimelineState.DONE) {

@@ -31,8 +31,8 @@ import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
-import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
@@ -764,7 +764,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 	public void testSimplifiedBinding() {
 		List control = new List(getShell(), SWT.NONE);
-		IListRidget ridget = (IListRidget) createRidget();
+		IListRidget ridget = createRidget();
 		ridget.setUIControl(control);
 		SimplifiedModel model = new SimplifiedModel();
 		ridget.bindToModel(model, "values");

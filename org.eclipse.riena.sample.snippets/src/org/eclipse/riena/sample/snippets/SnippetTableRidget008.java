@@ -54,6 +54,7 @@ public class SnippetTableRidget008 {
 		tableRidget.setMoveableColumns(true);
 
 		ColumnFormatter bgFormatter = new ColumnFormatter() {
+			@Override
 			public Color getForeground(Object element) {
 				SuperHero hero = (SuperHero) element;
 				int colorId = hero.getActive() ? SWT.COLOR_BLACK : SWT.COLOR_GRAY;
@@ -64,6 +65,7 @@ public class SnippetTableRidget008 {
 		tableRidget.setColumnFormatter(1, bgFormatter);
 
 		tableRidget.setColumnFormatter(2, new ColumnFormatter() {
+			@Override
 			public String getText(Object element) {
 				return ""; //$NON-NLS-1$
 			}
