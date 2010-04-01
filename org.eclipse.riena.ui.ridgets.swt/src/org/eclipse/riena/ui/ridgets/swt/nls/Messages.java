@@ -18,8 +18,7 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.riena.ui.ridgets.swt.nls.messages"; //$NON-NLS-1$
 
-	// example:
-	// public static String MasterDetailsRidget_dialogTitle_applyFailed;
+	public static String AbstractComboRidget_markerMessage_selectionMismatch;
 
 	static {
 		// initialize resource bundle

@@ -44,6 +44,7 @@ import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
+import org.eclipse.riena.ui.ridgets.swt.nls.Messages;
 
 /**
  * Superclass of ComboRidget that does not depend on the Combo SWT control. May
@@ -264,7 +265,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	public void setMarkSelectionMismatch(boolean mark) {
 		if (mark != markSelectionMismatch) {
 			if (mark == true && selectionMismatchMarker == null) {
-				selectionMismatchMarker = new ErrorMessageMarker("The selected value is no longer available"); // TODO [ev] i18n
+				selectionMismatchMarker = new ErrorMessageMarker(
+						Messages.AbstractComboRidget_markerMessage_selectionMismatch);
 			}
 			markSelectionMismatch = mark;
 			applyMarkSelectionMismatch();
