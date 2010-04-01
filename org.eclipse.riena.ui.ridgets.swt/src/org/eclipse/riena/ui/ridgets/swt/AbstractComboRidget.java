@@ -38,6 +38,8 @@ import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
@@ -98,6 +100,22 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * May be null, when there is no model.
 	 */
 	private Binding selectionBindingExternal;
+
+	/**
+	 * If true, it will cause an error marker to be shown, once the selected
+	 * value in the combo is no longer available in the list of selectable
+	 * values. This can occur if the selection was removed from the bound model
+	 * and {@link #updateFromModel()} is called.
+	 * <p>
+	 * The default setting is false.
+	 * 
+	 * @see Bug 304733
+	 */
+	private boolean markSelectionMismatch;
+	/**
+	 * The {@link ErrorMarker} used when a 'selection mismatch' occurs
+	 */
+	private ErrorMarker selectionMismatchMarker;
 
 	public AbstractComboRidget() {
 		super();
@@ -226,7 +244,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return result;
 	}
 
-	@Override
 	public boolean isDisableMandatoryMarker() {
 		return hasInput();
 	}
@@ -236,8 +253,22 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return super.isEnabled() && !isOutputOnly();
 	}
 
+	public boolean isMarkSelectionMismatch() {
+		return markSelectionMismatch;
+	}
+
 	public void setEmptySelectionItem(Object emptySelection) {
 		this.emptySelection = emptySelection;
+	}
+
+	public void setMarkSelectionMismatch(boolean mark) {
+		if (mark != markSelectionMismatch) {
+			if (mark == true && selectionMismatchMarker == null) {
+				selectionMismatchMarker = new ErrorMessageMarker("The selected value is no longer available"); // TODO [ev] i18n
+			}
+			markSelectionMismatch = mark;
+			applyMarkSelectionMismatch();
+		}
 	}
 
 	public void setSelection(Object newSelection) {
@@ -294,10 +325,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			selectionBindingInternal.updateModelToTarget();
 		}
 		// Bug 304733: clear selection if not in rowObservables
-		Object selection = selectionObservable.getValue();
-		if (selection != null && !rowObservables.contains(selection)) {
-			setSelection(emptySelection);
-		}
+		applyMarkSelectionMismatch();
 	}
 
 	/**
@@ -354,6 +382,18 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			bindControlToSelectionAndUpdate();
 		} else {
 			unbindControlFromSelectionAndClear();
+		}
+	}
+
+	private void applyMarkSelectionMismatch() {
+		Object selection = selectionObservable.getValue();
+		if (markSelectionMismatch && selection != null && !rowObservables.contains(selection)) {
+			Assert.isNotNull(markSelectionMismatch);
+			addMarker(selectionMismatchMarker);
+		} else {
+			if (selectionMismatchMarker != null) {
+				removeMarker(selectionMismatchMarker);
+			}
 		}
 	}
 
@@ -544,6 +584,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 				firePropertyChange(IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
 			} finally {
 				disableMandatoryMarkers(hasInput());
+				applyMarkSelectionMismatch();
 			}
 		}
 	}

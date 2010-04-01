@@ -989,85 +989,104 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(selection1, selection.getValue());
 	}
 
-	// TODO [ev] revisit before closing Bug 304733
-	//	/**
-	//	 * As per Bug 304733
-	//	 */
-	//	public void testShowErrorMarkerWhenSelectionIsRemovedFromModel() {
-	//		AbstractComboRidget ridget = getRidget();
-	//		ridget.bindToModel(manager, "persons", Person.class, null, manager, "selectedPerson");
-	//		ridget.updateFromModel();
-	//
-	//		ridget.addValidationRule(new IValidator() {
-	//			public IStatus validate(Object value) {
-	//				System.out.println("v: " + value);
-	//				if (value == null) {
-	//					return Status.CANCEL_STATUS;
-	//				}
-	//				return Status.OK_STATUS;
-	//			}
-	//
-	//		});
-	//		ridget.setSelection(selection1);
-	//
-	//		assertFalse(ridget.isErrorMarked());
-	//
-	//		manager.getPersons().remove(selection1);
-	//		ridget.updateFromModel();
-	//
-	//		assertTrue(ridget.isErrorMarked());
-	//
-	//		ridget.setSelection(selection2);
-	//
-	//		assertFalse(ridget.isErrorMarked());
-	//	}
-
 	/**
 	 * As per Bug 304733
 	 */
-	public void testClearSelectionWhenSelectionIsRemovedFromModel() {
+	public void testSetMarkSelectionMismatch() {
 		AbstractComboRidget ridget = getRidget();
 		Control control = getWidget();
 		ridget.bindToModel(manager, "persons", Person.class, null, manager, "selectedPerson");
 		ridget.updateFromModel();
 
+		// select and then remove 'selection2'
 		ridget.setSelection(selection2);
-
-		assertEquals(selection2.toString(), getSelectedString(control));
-		assertSame(selection2, ridget.getSelection());
-		assertSame(selection2, manager.getSelectedPerson());
-
 		manager.getPersons().remove(selection2);
 		ridget.updateFromModel();
 
 		assertEquals(null, getSelectedString(control));
-		assertEquals(null, ridget.getSelection());
-		assertEquals(null, manager.getSelectedPerson());
+		assertEquals(selection2, ridget.getSelection());
+		assertEquals(selection2, manager.getSelectedPerson());
+
+		assertFalse(ridget.isMarkSelectionMismatch());
+		assertFalse(ridget.isErrorMarked());
+
+		ridget.setMarkSelectionMismatch(true);
+
+		assertTrue(ridget.isMarkSelectionMismatch());
+		assertTrue(ridget.isErrorMarked());
+
+		ridget.setMarkSelectionMismatch(false);
+
+		assertFalse(ridget.isMarkSelectionMismatch());
+		assertFalse(ridget.isErrorMarked());
 	}
 
 	/**
 	 * As per Bug 304733
 	 */
-	public void testBackToEmptyWhenSelectionIsRemovedFromModel() {
+	public void testHideSelectionMismatchViaSetSelection() {
 		AbstractComboRidget ridget = getRidget();
 		Control control = getWidget();
-		ridget.setEmptySelectionItem(selection1);
 		ridget.bindToModel(manager, "persons", Person.class, null, manager, "selectedPerson");
 		ridget.updateFromModel();
 
+		ridget.setMarkSelectionMismatch(true);
 		ridget.setSelection(selection2);
 
 		assertEquals(selection2.toString(), getSelectedString(control));
 		assertSame(selection2, ridget.getSelection());
 		assertSame(selection2, manager.getSelectedPerson());
+		assertFalse(ridget.isErrorMarked());
 
 		manager.getPersons().remove(selection2);
 		ridget.updateFromModel();
 
-		// selection1 is the 'empty' choice
+		assertEquals(null, getSelectedString(control));
+		assertEquals(selection2, ridget.getSelection());
+		assertEquals(selection2, manager.getSelectedPerson());
+		assertTrue(ridget.isErrorMarked());
+
+		// remove error marker on valid selection via java API
+		ridget.setSelection(selection1);
+
 		assertEquals(selection1.toString(), getSelectedString(control));
-		assertEquals(null, ridget.getSelection());
+		assertEquals(selection1, ridget.getSelection());
 		assertEquals(selection1, manager.getSelectedPerson());
+		assertFalse(ridget.isErrorMarked());
+	}
+
+	/**
+	 * As per Bug 304733
+	 */
+	public void testHideSelectionMismatchViaWidgetSelection() {
+		AbstractComboRidget ridget = getRidget();
+		Control control = getWidget();
+		ridget.bindToModel(manager, "persons", Person.class, null, manager, "selectedPerson");
+		ridget.updateFromModel();
+
+		ridget.setMarkSelectionMismatch(true);
+		ridget.setSelection(selection2);
+
+		assertEquals(selection2.toString(), getSelectedString(control));
+		assertSame(selection2, ridget.getSelection());
+		assertSame(selection2, manager.getSelectedPerson());
+		assertFalse(ridget.isErrorMarked());
+
+		manager.getPersons().remove(selection2);
+		ridget.updateFromModel();
+
+		assertEquals(null, getSelectedString(control));
+		assertEquals(selection2, ridget.getSelection());
+		assertEquals(selection2, manager.getSelectedPerson());
+		assertTrue(ridget.isErrorMarked());
+
+		// remove error marker on valid selection via java API
+		select(control, 0);
+
+		assertEquals(selection1.toString(), getSelectedString(control));
+		assertEquals(selection1, ridget.getSelection());
+		assertEquals(selection1, manager.getSelectedPerson());
+		assertFalse(ridget.isErrorMarked());
 	}
 
 	/**

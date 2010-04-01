@@ -101,6 +101,11 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	int getSelectionIndex();
 
 	/**
+	 * TODO [ev] javadoc
+	 */
+	boolean isMarkSelectionMismatch();
+
+	/**
 	 * Sets the option that represents 'no selection'.
 	 * <p>
 	 * When this option is selected the ridget behaves just as if nothing was
@@ -111,6 +116,11 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 *            The option that represents 'no selection'.
 	 */
 	void setEmptySelectionItem(Object emptySelection);
+
+	/**
+	 * TODO [ev] javadoc
+	 */
+	void setMarkSelectionMismatch(boolean mark);
 
 	/**
 	 * Sets the converter used when updating from the model to the UI-control.
