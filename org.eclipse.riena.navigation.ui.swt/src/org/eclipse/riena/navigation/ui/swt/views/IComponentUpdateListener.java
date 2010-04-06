@@ -12,8 +12,18 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.riena.navigation.INavigationNode;
 
+/**
+ * Interface for listeners of view components, which want to react on changes of
+ * a navigation node.
+ */
 public interface IComponentUpdateListener {
 
+	/**
+	 * React on changes done one navigation node <code>node</code>.
+	 * 
+	 * @param node
+	 *            the node for which the update is triggert.
+	 */
 	void update(INavigationNode<?> node);
 
 }
