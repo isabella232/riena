@@ -20,10 +20,25 @@ import org.eclipse.riena.navigation.ui.swt.views.ModuleView;
 @ExtensionInterface(id = "moduleView")
 public interface IModuleDescriptionExtension {
 
+	/**
+	 * Returns the view class.
+	 * 
+	 * @return the view class.
+	 */
 	Class<ModuleView> getView();
 
+	/**
+	 * Returns the controller class.
+	 * 
+	 * @return the controller class.
+	 */
 	Class<ModuleController> getController();
 
+	/**
+	 * Returns the name of the module.
+	 * 
+	 * @return the name.
+	 */
 	String getName();
 
 }
