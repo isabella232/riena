@@ -19,11 +19,25 @@ import org.eclipse.riena.navigation.ui.swt.views.ModuleGroupView;
  */
 @ExtensionInterface(id = "moduleGroupView")
 public interface IModuleGroupDescriptionExtension {
-
+	/**
+	 * Returns the view class.
+	 * 
+	 * @return the view class.
+	 */
 	Class<ModuleGroupView> getView();
 
+	/**
+	 * Returns the controller class.
+	 * 
+	 * @return the controller class.
+	 */
 	Class<ModuleGroupController> getController();
 
+	/**
+	 * Returns the name of the module.
+	 * 
+	 * @return the name.
+	 */
 	String getName();
 
 }
