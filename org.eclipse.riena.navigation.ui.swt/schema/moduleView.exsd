@@ -50,7 +50,7 @@
    <element name="module">
       <annotation>
          <documentation>
-            Decribes a module view.
+            Describes a module view.
          </documentation>
       </annotation>
       <complexType>
