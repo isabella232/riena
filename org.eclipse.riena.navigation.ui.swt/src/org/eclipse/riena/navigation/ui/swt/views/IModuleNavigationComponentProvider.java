@@ -19,32 +19,41 @@ import org.eclipse.riena.navigation.model.ModuleGroupNode;
 
 /**
  * Describes the interface of a navigation component provider being interested
- * to be extended with scrolling logic
+ * to be extended with scrolling logic.
  */
 public interface IModuleNavigationComponentProvider {
 
 	/**
-	 * @return the main navigation component
+	 * The control representing the main navigation component.
+	 * 
+	 * @return the main navigation component.
 	 */
 	Composite getNavigationComponent();
 
 	/**
-	 * @return the composite holding the real content being scrolled inside
-	 *         the main navigation component
+	 * @return the composite holding the real content being scrolled inside the
+	 *         main navigation component.
 	 */
 	Composite getScrolledComponent();
 
+	/**
+	 * Calculate the bounds of the the main navigation component.
+	 * 
+	 * @return the calculated bounds.
+	 */
 	int calculateBounds();
 
 	/**
 	 * @param moduleGroupNode
-	 * @return the {@link ModuleGroupView} for the parameter node
+	 *            the node for which the corresponding view has to be looked up.
+	 * @return the {@link ModuleGroupView} for the parameter node.
 	 */
 	ModuleGroupView getModuleGroupViewForNode(IModuleGroupNode moduleGroupNode);
 
 	/**
 	 * @param moduleGroupNode
-	 * @return the {@link ModuleGroupView} for the parameter node
+	 *            the node for which the corresponding view has to be looked up.
+	 * @return the {@link ModuleGroupView} for the parameter node.
 	 * 
 	 * @since 1.2
 	 */
@@ -55,6 +64,9 @@ public interface IModuleNavigationComponentProvider {
 	 */
 	IModuleGroupNode getActiveModuleGroupNode();
 
+	/**
+	 * @return the current sub application node.
+	 */
 	ISubApplicationNode getSubApplicationNode();
 
 }
