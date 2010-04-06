@@ -20,7 +20,7 @@ public interface ILnfTheme {
 	/**
 	 * Adds color resources to the given table.
 	 * 
-	 * @param table -
+	 * @param table
 	 *            table with the resources of the look and feel
 	 */
 	void addCustomColors(Map<String, ILnfResource> table);
@@ -28,7 +28,7 @@ public interface ILnfTheme {
 	/**
 	 * Adds font resources to the given table.
 	 * 
-	 * @param table -
+	 * @param table
 	 *            table with the resources of the look and feel
 	 */
 	void addCustomFonts(Map<String, ILnfResource> table);
@@ -36,7 +36,7 @@ public interface ILnfTheme {
 	/**
 	 * Adds image resources to the given table.
 	 * 
-	 * @param table -
+	 * @param table
 	 *            table with the resources of the look and feel
 	 */
 	void addCustomImages(Map<String, ILnfResource> table);
@@ -44,7 +44,7 @@ public interface ILnfTheme {
 	/**
 	 * Adds settings to the given table.
 	 * 
-	 * @param table -
+	 * @param table
 	 *            table with the settings of the look and feel
 	 */
 	void addCustomSettings(Map<String, Object> table);

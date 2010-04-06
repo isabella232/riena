@@ -26,8 +26,7 @@ import org.eclipse.swt.widgets.Widget;
 public interface IStatusLineContentFactory {
 
 	/**
-	 * layouts(Includes) Widgets in(to) the {@link Statusline}. Can add
-	 * additional Widgets.
+	 * Sets the layout status line and adds Widgets to it.
 	 * 
 	 * @param statusline
 	 *            the {@link Statusline}
