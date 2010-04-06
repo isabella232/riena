@@ -41,6 +41,17 @@ public interface IVisualContextManager {
 	 */
 	void addContextUpdateListener(IContextUpdateListener listener, Object context);
 
+	/**
+	 * Removes a listener to be notified when one contexts state changes.
+	 * <p>
+	 * If the same listener is added more that once, it will be invoked several
+	 * times!
+	 * 
+	 * @param listener
+	 *            the listener to be notified
+	 * @param context
+	 *            the context
+	 */
 	void removeContextUpdateListener(IContextUpdateListener listener, Object context);
 
 }
