@@ -98,13 +98,19 @@ public abstract class AbstractDialogView extends Dialog {
 
 	@Override
 	public void create() {
+
 		// compute the 'styled' shell style, before creating the shell
 		setShellStyle(dlgRenderer.computeShellStyle());
 		super.create();
 		applyTitle(getShell());
+
 		addUIControls(getShell());
 		bindController();
 		LNF_UPDATER.updateUIControlsAfterBind(getShell());
+		// after binding the controller it is necessary to calculate the bounds of the dialog again
+		// because the controller can add some data that influences the size of some widgets (e.g. ChoiceComposite)
+		initializeBounds();
+
 		getShell().addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				if (!isClosing) {
@@ -112,6 +118,7 @@ public abstract class AbstractDialogView extends Dialog {
 				}
 			}
 		});
+
 	}
 
 	@Override
@@ -244,4 +251,5 @@ public abstract class AbstractDialogView extends Dialog {
 			super.setController(controller);
 		}
 	}
+
 }
