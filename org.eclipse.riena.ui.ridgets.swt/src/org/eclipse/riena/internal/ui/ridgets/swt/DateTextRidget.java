@@ -277,7 +277,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		}
 
 		public void verifyText(VerifyEvent e) {
-			if (!e.doit == false || !isEnabled) {
+			if (!e.doit || !isEnabled) {
 				return;
 			}
 			Text control = (Text) e.widget;
