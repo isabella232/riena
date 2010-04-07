@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.riena.ui.ridgets" id="labelFinderStrategy" name="Label finder strategy"/>
       </appinfo>
       <documentation>
-         [Enter description of this extension point.]
+         This strategy is used to find a corresponding label of a Ridget.
       </documentation>
    </annotation>
 
@@ -48,11 +48,16 @@
    </element>
 
    <element name="labelFinderStrategy">
+      <annotation>
+         <documentation>
+            The strategy that will be used to find corresponding labels of a Ridget.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="className" type="string">
             <annotation>
                <documentation>
-                  Custom Strategy for finding a corresponding ILabelRidget.
+                  Custom strategy for finding a corresponding ILabelRidget for a IRidget.
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.ridgets.uibinding.ILabelFinderStrategy"/>

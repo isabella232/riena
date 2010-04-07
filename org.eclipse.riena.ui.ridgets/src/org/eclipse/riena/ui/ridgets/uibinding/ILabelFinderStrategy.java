@@ -31,7 +31,7 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 public interface ILabelFinderStrategy {
 
 	/**
-	 * Custom Strategy to find a {@link ILabelRidget} for a {@link IRidget}.
+	 * Custom strategy to find a {@link ILabelRidget} for a {@link IRidget}.
 	 * 
 	 * @param ridgetContainer
 	 *            the ridgetContainer which holds the ridgets that can be
