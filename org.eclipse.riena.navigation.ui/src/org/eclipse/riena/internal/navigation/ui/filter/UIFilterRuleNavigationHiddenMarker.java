@@ -13,7 +13,7 @@ package org.eclipse.riena.internal.navigation.ui.filter;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 
 /**
- *
+ * This rule of an UI filter adds a HiddenMarker to a navigation node.
  */
 public class UIFilterRuleNavigationHiddenMarker extends AbstractUIFilterRuleNavigationMarker {
 

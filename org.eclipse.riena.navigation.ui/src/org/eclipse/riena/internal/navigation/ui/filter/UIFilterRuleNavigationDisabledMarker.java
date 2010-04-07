@@ -13,7 +13,7 @@ package org.eclipse.riena.internal.navigation.ui.filter;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 
 /**
- *
+ * This rule of an UI filter adds a DisabledMarker to a navigation node.
  */
 public class UIFilterRuleNavigationDisabledMarker extends AbstractUIFilterRuleNavigationMarker {
 
