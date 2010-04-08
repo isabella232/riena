@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.riena.ui.filter" id="ruleMapper" name="ruleMapper"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         To avoid problems with bundle dependencies (e.g. cycles) the classes of the different rules of the UI Filters are defined with this extension point.
       </documentation>
    </annotation>
 
@@ -64,6 +64,11 @@
    </element>
 
    <element name="ridgetHiddenMarker">
+      <annotation>
+         <documentation>
+            Filter rule to provide a hidden marker for a ridget.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="ruleClass" type="string" use="required">
             <annotation>
@@ -79,6 +84,11 @@
    </element>
 
    <element name="ridgetDisabledMarker">
+      <annotation>
+         <documentation>
+            Filter rule to provide a disabled marker for a ridget.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="ruleClass" type="string" use="required">
             <annotation>
@@ -94,6 +104,11 @@
    </element>
 
    <element name="ridgetOutputMarker">
+      <annotation>
+         <documentation>
+            Filter rule to provide a output marker for a ridget.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="ruleClass" type="string" use="required">
             <annotation>
@@ -109,6 +124,11 @@
    </element>
 
    <element name="ridgetMandatoryMarker">
+      <annotation>
+         <documentation>
+            Filter rule to provide a mandatory marker for a ridget.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="ruleClass" type="string" use="required">
             <annotation>
@@ -124,6 +144,11 @@
    </element>
 
    <element name="menuItemHiddenMarker">
+      <annotation>
+         <documentation>
+            Filter rule to provide a hidden marker for a menu and tool bar item.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="ruleClass" type="string" use="required">
             <annotation>
@@ -139,6 +164,11 @@
    </element>
 
    <element name="menuItemDisabledMarker">
+      <annotation>
+         <documentation>
+            Filter rule to provide a disabled marker for a menu and tool bar item.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="ruleClass" type="string" use="required">
             <annotation>
@@ -154,6 +184,11 @@
    </element>
 
    <element name="navigationHiddenMarker">
+      <annotation>
+         <documentation>
+            Filter rule adds to provide a HiddenMarker for a navigation node.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="ruleClass" type="string" use="required">
             <annotation>
@@ -169,6 +204,11 @@
    </element>
 
    <element name="navigationDisabledMarker">
+      <annotation>
+         <documentation>
+            Filter rule adds to provide a DisabledMarker for a navigation node.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="ruleClass" type="string" use="required">
             <annotation>
@@ -184,6 +224,11 @@
    </element>
 
    <element name="ridgetValidator">
+      <annotation>
+         <documentation>
+            Filter rule to provide a validator for a ridget.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="ruleClass" type="string" use="required">
             <annotation>
