@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,10 @@ import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
- * 
+ * A simple implementation of a {@code IExceptionHandlerManager}.<br>
+ * This exception handler manager asks the configured {@code IExceptionHandler}s
+ * whether they can handle a given exception, e.g. display the exception in
+ * dialog or log it.
  */
 public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 
@@ -32,11 +35,11 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleExceptionHandlerManager.class);
 
 	@InjectExtension
-	public void update(IExceptionHandlerExtension[] exceptionHandlerDefinitions) {
-		List<TopologicalNode<IExceptionHandler>> nodes = new ArrayList<TopologicalNode<IExceptionHandler>>(
+	public void update(final IExceptionHandlerExtension[] exceptionHandlerDefinitions) {
+		final List<TopologicalNode<IExceptionHandler>> nodes = new ArrayList<TopologicalNode<IExceptionHandler>>(
 				exceptionHandlerDefinitions.length);
-		for (IExceptionHandlerExtension handlerDefinition : exceptionHandlerDefinitions) {
-			IExceptionHandler exceptionHandler = handlerDefinition.createExceptionHandler();
+		for (final IExceptionHandlerExtension handlerDefinition : exceptionHandlerDefinitions) {
+			final IExceptionHandler exceptionHandler = handlerDefinition.createExceptionHandler();
 			if (exceptionHandler == null) {
 				LOGGER.log(LogService.LOG_ERROR, "could not instantiate exception handler " //$NON-NLS-1$
 						+ handlerDefinition.getName() + " for class " + handlerDefinition.getExceptionHandler()); //$NON-NLS-1$
@@ -47,49 +50,33 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 		handlers = TopologicalSort.sort(nodes);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.core.exception.IExceptionHandlerManager#handleCaught
-	 * (java.lang.Throwable)
+	/**
+	 * {@inheritDoc}
 	 */
-	public Action handleException(Throwable t) {
+	public Action handleException(final Throwable t) {
 		return handleException(t, null, LOGGER);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.core.exception.IExceptionHandlerManager#handleCaught
-	 * (java.lang.Throwable, org.eclipse.equinox.log.Logger)
+	/**
+	 * {@inheritDoc}
 	 */
-	public Action handleException(Throwable t, Logger logger) {
+	public Action handleException(final Throwable t, final Logger logger) {
 		return handleException(t, null, logger);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.core.exception.IExceptionHandlerManager#handleCaught
-	 * (java.lang.Throwable, java.lang.String)
+	/**
+	 * {@inheritDoc}
 	 */
-	public Action handleException(Throwable t, String msg) {
+	public Action handleException(final Throwable t, final String msg) {
 		return handleException(t, msg, LOGGER);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.core.exception.IExceptionHandlerManager#handleCaught
-	 * (java.lang.Throwable, java.lang.String, org.eclipse.equinox.log.Logger)
+	/**
+	 * {@inheritDoc}
 	 */
-	public Action handleException(Throwable t, String msg, Logger logger) {
-		for (IExceptionHandler handler : handlers) {
-			Action action = handler.handleException(t, msg, logger);
+	public Action handleException(final Throwable t, final String msg, final Logger logger) {
+		for (final IExceptionHandler handler : handlers) {
+			final Action action = handler.handleException(t, msg, logger);
 			if (action != Action.NOT_HANDLED) {
 				return action;
 			}
