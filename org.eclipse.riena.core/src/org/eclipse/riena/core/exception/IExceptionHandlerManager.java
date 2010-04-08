@@ -21,7 +21,28 @@ public interface IExceptionHandlerManager {
 	 * Defines actions how to process after the exception was handled.
 	 */
 	public enum Action {
-		NOT_HANDLED, OK, RETRY, CANCEL
+
+		/**
+		 * Indicates that the exception handler has not handled the exception.
+		 * The exception handler manager might continue asking other handlers.
+		 */
+		NOT_HANDLED,
+
+		/**
+		 * Indicates that the exception handler has handled the exception. The
+		 * exception handler manager needs not to ask other handlers.
+		 */
+		OK,
+
+		/**
+		 * 
+		 */
+		RETRY,
+
+		/**
+		 * 
+		 */
+		CANCEL
 	}
 
 	/**
