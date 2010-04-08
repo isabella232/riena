@@ -21,8 +21,8 @@ public interface IExceptionHandler {
 
 	/**
 	 * Check if the exception passed can be handled and return an {@link Action}
-	 * how might to process. This method should be used anywhere where an
-	 * exceptions is catched directly.
+	 * how might to process. This method should be used anywhere where
+	 * exceptions are caught directly.
 	 * 
 	 * @pre t != null
 	 * @post result != null
