@@ -24,6 +24,11 @@ import org.eclipse.riena.core.injector.extension.MapName;
 @ExtensionInterface(id = "processDetailComparator,org.eclipse.riena.ui.ridgets.swt.processdetail")
 public interface IProcessDetailComparatorExtension {
 
+	/**
+	 * Create an {@code Comparator} instance for {@code ProcessDetail}s.
+	 * 
+	 * @return the comparator
+	 */
 	@MapName("instance")
 	Comparator<ProcessDetail> createComparator();
 
