@@ -188,8 +188,9 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 		createWorkarea(contentComposite);
 
-		LNF_UPDATER.updateUIControls(getParentComposite());
-		if (!Beans.isDesignTime()) {
+		if (Beans.isDesignTime()) {
+			LNF_UPDATER.updateUIControls(getParentComposite());
+		} else {
 			createViewFacade();
 			doBinding();
 		}
@@ -357,12 +358,10 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			}
 			binding.bind(currentController);
 			currentController.afterBind();
+			LNF_UPDATER.updateUIControlsAfterBind(getParentComposite());
 		}
 
 		NavigationSourceProvider.activeNodeChanged(getNavigationNode());
-
-		LNF_UPDATER.updateUIControlsAfterBind(getParentComposite());
-
 	}
 
 	public SubModuleNode getNavigationNode() {
@@ -501,8 +500,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * @return a fallback navigation node for views that are not
-	 *         associated with a node in the navigation tree.
+	 * @return a fallback navigation node for views that are not associated with
+	 *         a node in the navigation tree.
 	 */
 	private SubModuleNode getFallbackNavigationNode() {
 		SubModuleNode fallbackNode = FALLBACK_NODES.get(this);
