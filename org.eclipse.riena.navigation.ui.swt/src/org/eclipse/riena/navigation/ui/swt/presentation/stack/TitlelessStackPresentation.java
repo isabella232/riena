@@ -128,10 +128,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 		knownParts.add(newPart);
 	}
 
-	/**
-	 * @see org.eclipse.ui.presentations.StackPresentation#selectPart(org.eclipse
-	 *      .ui.presentations.IPresentablePart)
-	 */
 	@Override
 	public void selectPart(IPresentablePart toSelect) {
 		if (current == toSelect) {
@@ -142,17 +138,11 @@ public class TitlelessStackPresentation extends StackPresentation {
 			toSelect.setBounds(navi);
 			redrawSubModuleTitle();
 		} else if (toSelect != null) {
-			Rectangle inner = calcSubModuleInnerBounds();
-			toSelect.setBounds(inner);
-			if (current != null) {
-				/*
-				 * A SWT control´s visible state depends on all of its
-				 * predecessors to the root shell. A Ridget should answer
-				 * isShowing=true even when it´s view is temporarily not showing
-				 * because of another active view.
-				 */
-				current.setBounds(new Rectangle(0, 0, 0, 0));
+			Rectangle newInnerBounds = calcSubModuleInnerBounds();
+			if (hasOldBounds(toSelect, newInnerBounds)) {
+				toSelect.setBounds(newInnerBounds);
 			}
+			toSelect.getControl().moveAbove(current != null ? current.getControl() : null);
 			redrawSubModuleTitle();
 			current = toSelect;
 		}
@@ -161,6 +151,15 @@ public class TitlelessStackPresentation extends StackPresentation {
 		}
 	}
 
+	/**
+	 * This is called when the window is resized.
+	 * <ol>
+	 * <li>compute new size for navigation</li>
+	 * <li>all non-current views are set to size zero (until they become current
+	 * and are shown)</li>
+	 * <li>the current view is resized</li>
+	 * </ol>
+	 */
 	@Override
 	public void setBounds(Rectangle bounds) {
 		parent.setBounds(bounds);
@@ -169,8 +168,13 @@ public class TitlelessStackPresentation extends StackPresentation {
 			navigation.setBounds(navi);
 		}
 		if (current != null) {
-			Rectangle inner = calcSubModuleInnerBounds();
-			current.setBounds(inner);
+			Rectangle innerBounds = calcSubModuleInnerBounds();
+			for (IPresentablePart part : knownParts) {
+				if (part != current && !isNavigation(part)) {
+					part.setBounds(new Rectangle(0, 0, 0, 0));
+				}
+			}
+			current.setBounds(innerBounds);
 		}
 		parent.setVisible(true);
 	}
@@ -203,9 +207,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 		return null;
 	}
 
-	/**
-	 * @see org.eclipse.ui.presentations.StackPresentation#getControl()
-	 */
 	@Override
 	public Control getControl() {
 		return parent;
@@ -413,6 +414,14 @@ public class TitlelessStackPresentation extends StackPresentation {
 			result = (SubApplicationController) subApplication.getNavigationNodeController();
 		}
 		return result;
+	}
+
+	/**
+	 * Return true if the {@link IPresentablePart} has bounds that are different
+	 * than {@code newBounds}.
+	 */
+	private boolean hasOldBounds(IPresentablePart toSelect, Rectangle newBounds) {
+		return toSelect.getControl() == null || !newBounds.equals(toSelect.getControl().getBounds());
 	}
 
 	/**
