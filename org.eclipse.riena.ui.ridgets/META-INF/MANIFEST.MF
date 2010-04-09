@@ -21,8 +21,8 @@ Export-Package: org.eclipse.riena.internal.ui.ridgets;x-internal:=true,
  org.eclipse.riena.ui.ridgets.uibinding,
  org.eclipse.riena.ui.ridgets.validation
 Import-Package: org.apache.commons.beanutils;version="1.7.0",
+ org.apache.oro.text.perl,
  org.osgi.service.log;version="1.3.0"
 Bundle-ClassPath: lib/commons-validator-1.3.1.jar,
- lib/jakarta-oro-2.0.8.jar,
  .
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
