@@ -13,14 +13,19 @@ package org.eclipse.riena.ui.ridgets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 
+import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
+import org.eclipse.riena.beans.common.DateBean;
+import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.beans.common.TestBean;
+import org.eclipse.riena.beans.common.TypedBean;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
@@ -30,6 +35,8 @@ import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
+import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
 import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
@@ -330,6 +337,100 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		valueBindingSupport.updateValidationStatus(rule, okStatus);
 
 		assertEquals(0, markable.getMarkersOfType(ErrorMarker.class).size());
+	}
+
+	/**
+	 * As per Bug 289653
+	 */
+	public void testConversionFromModel_DateToString() {
+		StringBean target = new StringBean("");
+		DateBean model = new DateBean(new Date(0L));
+		ValueBindingSupport vbs1 = new ValueBindingSupport(
+				BeansObservables.observeValue(target, StringBean.PROP_VALUE), BeansObservables.observeValue(model,
+						DateBean.DATE_PROPERTY));
+		vbs1.setModelToUIControlConverter(new DateToStringConverter(IDateTextRidget.FORMAT_DDMMYYYY));
+		vbs1.rebindToModel();
+		vbs1.updateFromModel();
+
+		assertEquals("01.01.1970", target.getValue());
+	}
+
+	/**
+	 * As per Bug 289653
+	 */
+	public void testConversionFromModel_GenericDateToString() {
+		StringBean target = new StringBean("");
+		TypedBean<Date> model = new TypedBean<Date>(new Date(0L));
+		ValueBindingSupport vbs2 = new ValueBindingSupport(
+				BeansObservables.observeValue(target, StringBean.PROP_VALUE), BeansObservables.observeValue(model,
+						TypedBean.PROP_VALUE));
+		vbs2.setModelToUIControlConverter(new DateToStringConverter(IDateTextRidget.FORMAT_DDMMYYYY));
+		vbs2.rebindToModel();
+		vbs2.updateFromModel();
+
+		assertEquals("01.01.1970", target.getValue());
+	}
+
+	/**
+	 * As per Bug 289653
+	 */
+	public void testConversionFromModel_GenericDateToGenericString() {
+		TypedBean<String> target = new TypedBean<String>("");
+		TypedBean<Date> model = new TypedBean<Date>(new Date(0L));
+		ValueBindingSupport vbs2 = new ValueBindingSupport(BeansObservables.observeValue(target, TypedBean.PROP_VALUE),
+				BeansObservables.observeValue(model, TypedBean.PROP_VALUE));
+		vbs2.setModelToUIControlConverter(new DateToStringConverter(IDateTextRidget.FORMAT_DDMMYYYY));
+		vbs2.rebindToModel();
+		vbs2.updateFromModel();
+
+		assertEquals("01.01.1970", target.getValue());
+	}
+
+	/**
+	 * As per Bug 289653
+	 */
+	public void testConversionToModel_StringToDate() {
+		StringBean target = new StringBean("01.01.1970");
+		DateBean model = new DateBean(new Date(1234L));
+		ValueBindingSupport vbs1 = new ValueBindingSupport(
+				BeansObservables.observeValue(target, StringBean.PROP_VALUE), BeansObservables.observeValue(model,
+						DateBean.DATE_PROPERTY));
+		vbs1.setUIControlToModelConverter(new StringToDateConverter(IDateTextRidget.FORMAT_DDMMYYYY));
+		vbs1.rebindToModel();
+		vbs1.updateFromTarget();
+
+		assertEquals(0L, model.getValue().getTime());
+	}
+
+	/**
+	 * As per Bug 289653
+	 */
+	public void testConversionToModel_StringToGenericDate() {
+		StringBean target = new StringBean("01.01.1970");
+		TypedBean<Date> model = new TypedBean<Date>(new Date(1234L));
+		ValueBindingSupport vbs2 = new ValueBindingSupport(
+				BeansObservables.observeValue(target, StringBean.PROP_VALUE), BeansObservables.observeValue(model,
+						TypedBean.PROP_VALUE));
+		vbs2.setUIControlToModelConverter(new StringToDateConverter(IDateTextRidget.FORMAT_DDMMYYYY));
+		vbs2.rebindToModel();
+		vbs2.updateFromTarget();
+
+		assertEquals(0L, model.getValue().getTime());
+	}
+
+	/**
+	 * As per Bug 289653
+	 */
+	public void testConversionToModel_GenericStringToGenericDate() {
+		TypedBean<String> target = new TypedBean<String>("01.01.1970");
+		TypedBean<Date> model = new TypedBean<Date>(new Date(1234L));
+		ValueBindingSupport vbs2 = new ValueBindingSupport(BeansObservables.observeValue(target, TypedBean.PROP_VALUE),
+				BeansObservables.observeValue(model, TypedBean.PROP_VALUE));
+		vbs2.setUIControlToModelConverter(new StringToDateConverter(IDateTextRidget.FORMAT_DDMMYYYY));
+		vbs2.rebindToModel();
+		vbs2.updateFromTarget();
+
+		assertEquals(0L, model.getValue().getTime());
 	}
 
 	// helping methods

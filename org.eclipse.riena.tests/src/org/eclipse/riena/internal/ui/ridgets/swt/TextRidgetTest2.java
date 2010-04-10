@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.riena.beans.common.DateBean;
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.beans.common.TestBean;
+import org.eclipse.riena.beans.common.TypedBean;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
@@ -39,6 +40,7 @@ import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
@@ -1674,6 +1676,37 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		SwtUtilities.disposeWidget(compChild);
 		SwtUtilities.disposeWidget(compTop);
 
+	}
+
+	public void testConversion() {
+		ITextRidget ridget = getRidget();
+		Text control = getWidget();
+		DateBean bean = new DateBean(new Date(0L));
+		ridget.setUIControlToModelConverter(new StringToDateConverter(IDateTextRidget.FORMAT_DDMMYY));
+		ridget.setModelToUIControlConverter(new DateToStringConverter(IDateTextRidget.FORMAT_DDMMYY));
+		ridget.bindToModel(bean, DateBean.DATE_PROPERTY);
+		ridget.updateFromModel();
+
+		assertEquals("01.01.70", ridget.getText());
+		assertEquals("01.01.70", control.getText());
+		assertEquals(0, bean.getValue().getTime());
+	}
+
+	/**
+	 * As per Bug 289653
+	 */
+	public void testConversionWithGenerics() {
+		ITextRidget ridget = getRidget();
+		Text control = getWidget();
+		TypedBean<Date> bean = new TypedBean<Date>(new Date(0L));
+		ridget.setUIControlToModelConverter(new StringToDateConverter(IDateTextRidget.FORMAT_DDMMYY));
+		ridget.setModelToUIControlConverter(new DateToStringConverter(IDateTextRidget.FORMAT_DDMMYY));
+		ridget.bindToModel(bean, DateBean.DATE_PROPERTY);
+		ridget.updateFromModel();
+
+		assertEquals("01.01.70", ridget.getText());
+		assertEquals("01.01.70", control.getText());
+		assertEquals(0, bean.getValue().getTime());
 	}
 
 	// helping methods
