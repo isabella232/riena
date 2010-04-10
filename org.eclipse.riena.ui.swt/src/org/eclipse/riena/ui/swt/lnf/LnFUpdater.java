@@ -18,9 +18,12 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.oro.util.CacheLRU;
 
 import org.osgi.service.log.LogService;
 
@@ -42,14 +45,16 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class LnFUpdater {
 
-	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), LnFUpdater.class);
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), LnFUpdater.class);
+	private static final CacheLRU RESOURCE_CACHE = new CacheLRU(200);
+	private static final Object NULL_RESOURCE = new Object();
 
 	/**
 	 * System property defining if properties of views are updated.
 	 */
 	private static final String PROPERTY_RIENA_LNF_UPDATE_VIEW = "riena.lnf.update.view"; //$NON-NLS-1$
 
-	private final static Map<Class<? extends Control>, PropertyDescriptor[]> CONTROL_PROPERTIES = new Hashtable<Class<? extends Control>, PropertyDescriptor[]>();
+	private final static Map<Class<? extends Control>, List<PropertyDescriptor>> CONTROL_PROPERTIES = new Hashtable<Class<? extends Control>, List<PropertyDescriptor>>();
 	private final static Map<Class<? extends Control>, Map<String, Object>> DEFAULT_PROPERTY_VALUES = new Hashtable<Class<? extends Control>, Map<String, Object>>();
 	private final static List<Class<? extends Control>> CONTROLS_AFTER_BIND = new ArrayList<Class<? extends Control>>();
 
@@ -100,7 +105,6 @@ public class LnFUpdater {
 
 		updateAfterBind(parent);
 		parent.layout();
-
 	}
 
 	/**
@@ -135,8 +139,8 @@ public class LnFUpdater {
 	 * 
 	 * @param uiControl
 	 *            UI control
-	 * @return {@code true} if the control must be updated; otherwise {@code
-	 *         false}
+	 * @return {@code true} if the control must be updated; otherwise
+	 *         {@code false}
 	 */
 	private boolean checkUpdateAfterBind(Control uiControl) {
 
@@ -168,6 +172,9 @@ public class LnFUpdater {
 	/**
 	 * Updates the properties of the UI control according to the values of the
 	 * LnF.
+	 * <p>
+	 * Note: this is very frequently (basically once for each control in the UI)
+	 * so it is performance sensitive.
 	 * 
 	 * @param control
 	 *            UI control
@@ -181,18 +188,25 @@ public class LnFUpdater {
 		if (!Modifier.isPublic(classModifiers)) {
 			return;
 		}
-		PropertyDescriptor[] properties = getProperties(control);
-		for (PropertyDescriptor property : properties) {
-			Object newValue = getLnfValue(control, property);
-			if (newValue == null) {
-				continue;
-			}
+		List<PropertyDescriptor> properties = getProperties(control);
+		// A list of properties that should not be checked next time, because
+		// they do not have a public setter.
+		List<PropertyDescriptor> toRemove = new ArrayList<PropertyDescriptor>();
+		Iterator<PropertyDescriptor> iter = properties.iterator();
+		while (iter.hasNext()) {
+			PropertyDescriptor property = iter.next();
 			Method setter = property.getWriteMethod();
 			if (setter == null) {
+				toRemove.add(property);
 				continue;
 			}
 			int setterModifiers = setter.getModifiers();
 			if (!Modifier.isPublic(setterModifiers)) {
+				toRemove.add(property);
+				continue;
+			}
+			Object newValue = getLnfValue(control, property);
+			if (newValue == null) {
 				continue;
 			}
 			if (hasNoDefaultValue(control, property)) {
@@ -208,7 +222,8 @@ public class LnFUpdater {
 				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(control, property), e);
 			}
 		}
-
+		// shrink the list of properties for this type, by removing non-relevant entries
+		properties.removeAll(toRemove);
 	}
 
 	/**
@@ -283,9 +298,10 @@ public class LnFUpdater {
 	 * @return simple name of the class
 	 */
 	@SuppressWarnings("unchecked")
-	private String getSimpleClassName(Class<? extends Control> controlClass) {
-
-		if (StringUtils.isEmpty(controlClass.getSimpleName())) {
+	private String getSimpleClassName(final Class<? extends Control> controlClass) {
+		// performance improvement: calling getSimpleName() just once
+		final String simpleName = controlClass.getSimpleName();
+		if (StringUtils.isEmpty(simpleName)) {
 			if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
 				Class<? extends Control> superClass = (Class<? extends Control>) controlClass.getSuperclass();
 				return getSimpleClassName(superClass);
@@ -293,9 +309,7 @@ public class LnFUpdater {
 				return null;
 			}
 		}
-
-		return controlClass.getSimpleName();
-
+		return simpleName;
 	}
 
 	/**
@@ -349,8 +363,8 @@ public class LnFUpdater {
 				defaultControl = null;
 			}
 			if (defaultControl != null) {
-				PropertyDescriptor[] properties = getProperties(control);
-				Map<String, Object> defaults = new Hashtable<String, Object>(properties.length);
+				List<PropertyDescriptor> properties = getProperties(control);
+				Map<String, Object> defaults = new Hashtable<String, Object>(properties.size());
 				for (PropertyDescriptor defaultProperty : properties) {
 					Object value = getPropertyValue(defaultControl, defaultProperty);
 					if (value != null) {
@@ -432,14 +446,18 @@ public class LnFUpdater {
 	 *            the control
 	 * @return properties
 	 */
-	private PropertyDescriptor[] getProperties(Control control) {
+	private List<PropertyDescriptor> getProperties(Control control) {
 		final Class<? extends Control> controlClass = control.getClass();
-		PropertyDescriptor[] propertyDescriptors = CONTROL_PROPERTIES.get(controlClass);
+		List<PropertyDescriptor> propertyDescriptors = CONTROL_PROPERTIES.get(controlClass);
 		if (propertyDescriptors == null) {
+			propertyDescriptors = new ArrayList<PropertyDescriptor>();
 			try {
-				propertyDescriptors = Introspector.getBeanInfo(controlClass).getPropertyDescriptors();
+				PropertyDescriptor[] descriptors = Introspector.getBeanInfo(controlClass).getPropertyDescriptors();
+				for (PropertyDescriptor pd : descriptors) {
+					propertyDescriptors.add(pd);
+				}
 			} catch (IntrospectionException e) {
-				propertyDescriptors = new PropertyDescriptor[0];
+				// ignore
 			}
 			CONTROL_PROPERTIES.put(controlClass, propertyDescriptors);
 		}
@@ -469,8 +487,10 @@ public class LnFUpdater {
 	}
 
 	/**
-	 * Returns for th given control class and the given property the
+	 * Returns for the given control class and the given property the
 	 * corresponding value of the LnF.
+	 * <p>
+	 * This method will use cached values first.
 	 * 
 	 * @param controlClass
 	 *            class of the control
@@ -480,19 +500,53 @@ public class LnFUpdater {
 	 */
 	@SuppressWarnings("unchecked")
 	private Object getLnfValue(Class<? extends Control> controlClass, PropertyDescriptor property) {
-
-		RienaDefaultLnf lnf = LnfManager.getLnf();
 		String lnfKey = generateLnfKey(controlClass, property);
-		Object lnfValue = lnf.getResource(lnfKey);
-
-		if (lnfValue == null) {
-			if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
-				lnfValue = getLnfValue((Class<? extends Control>) controlClass.getSuperclass(), property);
-			}
+		Object lnfValue = RESOURCE_CACHE.getElement(lnfKey);
+		if (lnfValue != null) {
+			return lnfValue == NULL_RESOURCE ? null : lnfValue;
 		}
 
+		lnfValue = LnfManager.getLnf().getResource(lnfKey);
+		if (lnfValue == null) {
+			if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
+				lnfValue = getLnfValueInternal((Class<? extends Control>) controlClass.getSuperclass(), property);
+			}
+		}
+		/*
+		 * Store the lnf value for the given controlClass. Since the lookup
+		 * starts with the most specific class and goes upwards the type
+		 * hierarchy towards more generic types, we store the most specific
+		 * result only. This saves the most time at a later look-up AND allows
+		 * us to operate with a fairly small cache size. This is implemented by
+		 * invoking getLnfValue for the 1st lookup anfd the getLnfValueInternal
+		 * for the 2nd - nth levels of the type hierarchy
+		 */
+		RESOURCE_CACHE.addElement(lnfKey, lnfValue == null ? NULL_RESOURCE : lnfValue);
 		return lnfValue;
+	}
 
+	/**
+	 * Returns for the given control class and the given property the
+	 * corresponding value of the LnF.
+	 * <p>
+	 * This method does not use any caching.
+	 * 
+	 * @param controlClass
+	 *            class of the control
+	 * @param property
+	 *            description of one property
+	 * @return value of LnF
+	 */
+	@SuppressWarnings("unchecked")
+	private Object getLnfValueInternal(Class<? extends Control> controlClass, PropertyDescriptor property) {
+		String lnfKey = generateLnfKey(controlClass, property);
+		Object lnfValue = LnfManager.getLnf().getResource(lnfKey);
+		if (lnfValue == null) {
+			if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
+				lnfValue = getLnfValueInternal((Class<? extends Control>) controlClass.getSuperclass(), property);
+			}
+		}
+		return lnfValue;
 	}
 
 	/**
