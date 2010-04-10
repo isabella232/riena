@@ -18,6 +18,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 
+import org.apache.oro.util.CacheLRU;
+
 import org.osgi.framework.Bundle;
 
 import org.eclipse.core.runtime.Assert;
@@ -32,6 +34,11 @@ import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
  * <b>Note:</b> Use this helper only for test code!!!
  */
 public final class ReflectionUtils {
+
+	/** A cache of Method (or NO_SUCH_METHOD) values. */
+	private static final CacheLRU METHOD_CACHE = new CacheLRU(25);
+	/** Placeholder for the indicate a 'null' result (vs a cache miss) */
+	private static final Object NO_SUCH_METHOD = new Object();
 
 	/**
 	 * Private default constructor.
@@ -114,39 +121,6 @@ public final class ReflectionUtils {
 	 */
 	public static <T> T newInstanceHidden(final Class<T> clazz, final Object... args) {
 		return newInstance(true, clazz, args);
-	}
-
-	/**
-	 * Create a new instance of type ´clazz´ by invoking the constructor with
-	 * the given list of arguments.
-	 * 
-	 * @param open
-	 *            if true it is tried to make the constructor accessible.
-	 * @param clazz
-	 *            the type of new instance.
-	 * @param args
-	 *            the arguments for the constructor.
-	 * @return the new instance.
-	 * @pre clazz != null
-	 */
-	private static <T> T newInstance(final boolean open, final Class<T> clazz, final Object... args) {
-		Assert.isNotNull(clazz, "clazz must be given!"); //$NON-NLS-1$
-
-		try {
-			Class<?>[] clazzes = classesPrimitiveFromObjects(args);
-			Constructor<T> constructor = findMatchingConstructor(open, clazz, clazzes);
-			if (constructor == null) {
-				clazzes = classesFromObjects(args);
-				constructor = findMatchingConstructor(open, clazz, clazzes);
-			}
-			if (open) {
-				constructor.setAccessible(true);
-			}
-			return constructor.newInstance(args);
-		} catch (final Throwable t) {
-			throw new ReflectionFailure("Error creating instance for " + clazz.getName() + " with parameters " //$NON-NLS-1$ //$NON-NLS-2$
-					+ Arrays.asList(args) + "!", t); //$NON-NLS-1$
-		}
 	}
 
 	/**
@@ -509,35 +483,49 @@ public final class ReflectionUtils {
 
 	private static Method findMatchingMethod(final boolean open, final Class<?> clazz, final String name,
 			final Class<?>[] clazzes) {
-		Assert.isNotNull(clazz);
-		Assert.isNotNull(name);
+		// Reflective method lookup is expensive, therefore we cache the 25 most 
+		// frequent look-ups using a hashcode of (clazz x name x clazzes)
+		Integer key = computeKey(clazz, name, clazzes);
+		Object cachedMethod = METHOD_CACHE.getElement(key);
+		if (cachedMethod != null) {
+			// cache hit; return 
+			return cachedMethod == NO_SUCH_METHOD ? null : (Method) cachedMethod;
+		}
 
+		Method result = null;
 		try {
 			if (clazzes == null) {
-				return clazz.getDeclaredMethod(name);
-			}
-
-			final Method[] methods = open ? clazz.getDeclaredMethods() : clazz.getMethods();
-			for (final Method method : methods) {
-				if (method.getName().equals(name)) {
-					final Class<?>[] expectedParameterTypes = method.getParameterTypes();
-					if (expectedParameterTypes.length == clazzes.length) {
-						boolean stop = false;
-						for (int j = 0; j < expectedParameterTypes.length && !stop; j++) {
-							if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j])) {
-								stop = true;
+				result = clazz.getDeclaredMethod(name);
+			} else {
+				final Method[] methods = open ? clazz.getDeclaredMethods() : clazz.getMethods();
+				for (final Method method : methods) {
+					if (method.getName().equals(name)) {
+						final Class<?>[] expectedParameterTypes = method.getParameterTypes();
+						if (expectedParameterTypes.length == clazzes.length) {
+							boolean discard = false;
+							for (int j = 0; j < expectedParameterTypes.length && !discard; j++) {
+								if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j])) {
+									discard = true;
+								}
 							}
-						}
-						if (!stop) {
-							return method;
+							if (!discard) {
+								result = method;
+								break;
+							}
 						}
 					}
 				}
 			}
-			return null;
 		} catch (final NoSuchMethodException nsme) {
-			return null;
+			// do nothing
 		}
+		// cache miss
+		if (result == null) {
+			METHOD_CACHE.addElement(key, NO_SUCH_METHOD);
+		} else {
+			METHOD_CACHE.addElement(key, result);
+		}
+		return result;
 	}
 
 	private static Class<? extends Object>[] classesPrimitiveFromObjects(final Object[] objects) {
@@ -581,6 +569,17 @@ public final class ReflectionUtils {
 			clazzes[i] = objects[i] == null ? Object.class : objects[i].getClass();
 		}
 		return clazzes;
+	}
+
+	private static Integer computeKey(Class<?> clazz, String name, Class<?>[] args) {
+		int result = clazz.hashCode();
+		result = (37 * result) + name.hashCode();
+		if (args != null) {
+			for (Class<?> arg : args) {
+				result = (37 * result) + arg.hashCode();
+			}
+		}
+		return Integer.valueOf(result);
 	}
 
 	private static Class<?> getClass(final Object instance) {
@@ -632,5 +631,38 @@ public final class ReflectionUtils {
 			throw new ReflectionFailure("Could not load class " + className + ".", cnfe); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return foundClass;
+	}
+
+	/**
+	 * Create a new instance of type ´clazz´ by invoking the constructor with
+	 * the given list of arguments.
+	 * 
+	 * @param open
+	 *            if true it is tried to make the constructor accessible.
+	 * @param clazz
+	 *            the type of new instance.
+	 * @param args
+	 *            the arguments for the constructor.
+	 * @return the new instance.
+	 * @pre clazz != null
+	 */
+	private static <T> T newInstance(final boolean open, final Class<T> clazz, final Object... args) {
+		Assert.isNotNull(clazz, "clazz must be given!"); //$NON-NLS-1$
+
+		try {
+			Class<?>[] clazzes = classesPrimitiveFromObjects(args);
+			Constructor<T> constructor = findMatchingConstructor(open, clazz, clazzes);
+			if (constructor == null) {
+				clazzes = classesFromObjects(args);
+				constructor = findMatchingConstructor(open, clazz, clazzes);
+			}
+			if (open) {
+				constructor.setAccessible(true);
+			}
+			return constructor.newInstance(args);
+		} catch (final Throwable t) {
+			throw new ReflectionFailure("Error creating instance for " + clazz.getName() + " with parameters " //$NON-NLS-1$ //$NON-NLS-2$
+					+ Arrays.asList(args) + "!", t); //$NON-NLS-1$
+		}
 	}
 }
