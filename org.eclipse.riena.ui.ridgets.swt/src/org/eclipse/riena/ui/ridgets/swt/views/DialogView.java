@@ -136,7 +136,7 @@ public abstract class DialogView extends RienaDialog {
 		super.create();
 		addUIControls(getShell());
 		bindController();
-		LNF_UPDATER.updateUIControlsAfterBind(getShell());
+		LNF_UPDATER.updateUIControls(getShell());
 
 		getShell().addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {

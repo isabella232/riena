@@ -358,7 +358,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			}
 			binding.bind(currentController);
 			currentController.afterBind();
-			LNF_UPDATER.updateUIControlsAfterBind(getParentComposite());
+			LNF_UPDATER.updateUIControls(getParentComposite());
 		}
 
 		NavigationSourceProvider.activeNodeChanged(getNavigationNode());

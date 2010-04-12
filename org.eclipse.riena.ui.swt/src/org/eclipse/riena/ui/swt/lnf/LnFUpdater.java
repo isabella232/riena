@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.swt.lnf;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -46,7 +47,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class LnFUpdater {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), LnFUpdater.class);
-	private static final CacheLRU RESOURCE_CACHE = new CacheLRU(200);
+	private static CacheLRU resourceCache = new CacheLRU(200);
 	private static final Object NULL_RESOURCE = new Object();
 
 	/**
@@ -56,17 +57,15 @@ public class LnFUpdater {
 
 	private final static Map<Class<? extends Control>, List<PropertyDescriptor>> CONTROL_PROPERTIES = new Hashtable<Class<? extends Control>, List<PropertyDescriptor>>();
 	private final static Map<Class<? extends Control>, Map<String, Object>> DEFAULT_PROPERTY_VALUES = new Hashtable<Class<? extends Control>, Map<String, Object>>();
-	private final static List<Class<? extends Control>> CONTROLS_AFTER_BIND = new ArrayList<Class<? extends Control>>();
 
-	/**
-	 * @since 1.2
-	 */
-	public static void addControlsAfterBind(Class<? extends Control> controlClass) {
+	public LnFUpdater() {
+		this(false);
+	}
 
-		if (!CONTROLS_AFTER_BIND.contains(controlClass)) {
-			CONTROLS_AFTER_BIND.add(controlClass);
+	public LnFUpdater(boolean clearCache) {
+		if (clearCache) {
+			resourceCache = new CacheLRU(200);
 		}
-
 	}
 
 	/**
@@ -91,72 +90,6 @@ public class LnFUpdater {
 			}
 
 		}
-
-	}
-
-	/**
-	 * Updates the properties of all children of the given composite and updates
-	 * the layout of the given parent.
-	 * 
-	 * @param parent
-	 *            composite which children are updated.
-	 */
-	public void updateUIControlsAfterBind(Composite parent) {
-
-		updateAfterBind(parent);
-		parent.layout();
-	}
-
-	/**
-	 * Updates the properties of all children of the given composite.
-	 * 
-	 * @param parent
-	 *            composite which children are updated.
-	 */
-	private void updateAfterBind(Composite parent) {
-
-		if (!checkPropertyUpdateView()) {
-			return;
-		}
-
-		Control[] controls = parent.getChildren();
-		for (Control uiControl : controls) {
-
-			if (checkUpdateAfterBind(uiControl)) {
-				updateUIControl(uiControl);
-			}
-
-			if (uiControl instanceof Composite) {
-				updateAfterBind((Composite) uiControl);
-			}
-
-		}
-
-	}
-
-	/**
-	 * Checks is the given UI control must be updated after bind.
-	 * 
-	 * @param uiControl
-	 *            UI control
-	 * @return {@code true} if the control must be updated; otherwise
-	 *         {@code false}
-	 */
-	private boolean checkUpdateAfterBind(Control uiControl) {
-
-		if (uiControl == null) {
-			return false;
-		}
-
-		if (CONTROLS_AFTER_BIND.contains(uiControl.getClass())) {
-			return true;
-		}
-
-		if (uiControl.getParent() != null) {
-			return checkUpdateAfterBind(uiControl.getParent());
-		}
-
-		return false;
 
 	}
 
@@ -195,6 +128,9 @@ public class LnFUpdater {
 		Iterator<PropertyDescriptor> iter = properties.iterator();
 		while (iter.hasNext()) {
 			PropertyDescriptor property = iter.next();
+			if (ignoreProperty(control, property)) {
+				continue;
+			}
 			Method setter = property.getWriteMethod();
 			if (setter == null) {
 				toRemove.add(property);
@@ -224,6 +160,29 @@ public class LnFUpdater {
 		}
 		// shrink the list of properties for this type, by removing non-relevant entries
 		properties.removeAll(toRemove);
+	}
+
+	/**
+	 * @param control
+	 * @param property
+	 * @return
+	 */
+	private boolean ignoreProperty(Control control, PropertyDescriptor property) {
+
+		IgnoreLnFUpdater ignoreLnFUpdater = control.getClass().getAnnotation(IgnoreLnFUpdater.class);
+		if (ignoreLnFUpdater != null) {
+			String[] ignoreProps = ignoreLnFUpdater.value();
+			for (String ignoreProp : ignoreProps) {
+				if (ignoreProp != null) {
+					if (ignoreProp.equals(property.getName())) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+
 	}
 
 	/**
@@ -302,9 +261,9 @@ public class LnFUpdater {
 		// performance improvement: calling getSimpleName() just once
 		final String simpleName = controlClass.getSimpleName();
 		if (StringUtils.isEmpty(simpleName)) {
-			if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
-				Class<? extends Control> superClass = (Class<? extends Control>) controlClass.getSuperclass();
-				return getSimpleClassName(superClass);
+			final Class<?> superClass = controlClass.getSuperclass();
+			if (Control.class.isAssignableFrom(superClass)) {
+				return getSimpleClassName((Class<? extends Control>) superClass);
 			} else {
 				return null;
 			}
@@ -353,15 +312,7 @@ public class LnFUpdater {
 
 		Class<? extends Control> controlClass = control.getClass();
 		if (!DEFAULT_PROPERTY_VALUES.containsKey(controlClass)) {
-			Control defaultControl = null;
-			try {
-				defaultControl = ReflectionUtils.newInstanceHidden(controlClass, control.getParent(), control
-						.getStyle());
-			} catch (ReflectionFailure failure) {
-				LOGGER.log(LogService.LOG_ERROR, "Cannot create an instance of \"" + controlClass.getName() + "\"", //$NON-NLS-1$ //$NON-NLS-2$
-						failure);
-				defaultControl = null;
-			}
+			Control defaultControl = createDefaultControl(controlClass, control.getParent(), control.getStyle());
 			if (defaultControl != null) {
 				List<PropertyDescriptor> properties = getProperties(control);
 				Map<String, Object> defaults = new Hashtable<String, Object>(properties.size());
@@ -373,6 +324,8 @@ public class LnFUpdater {
 				}
 				defaultControl.dispose();
 				DEFAULT_PROPERTY_VALUES.put(controlClass, defaults);
+			} else {
+				LOGGER.log(LogService.LOG_ERROR, "Cannot create an instance of \"" + controlClass.getName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 
@@ -501,7 +454,7 @@ public class LnFUpdater {
 	@SuppressWarnings("unchecked")
 	private Object getLnfValue(Class<? extends Control> controlClass, PropertyDescriptor property) {
 		String lnfKey = generateLnfKey(controlClass, property);
-		Object lnfValue = RESOURCE_CACHE.getElement(lnfKey);
+		Object lnfValue = resourceCache.getElement(lnfKey);
 		if (lnfValue != null) {
 			return lnfValue == NULL_RESOURCE ? null : lnfValue;
 		}
@@ -521,7 +474,7 @@ public class LnFUpdater {
 		 * invoking getLnfValue for the 1st lookup anfd the getLnfValueInternal
 		 * for the 2nd - nth levels of the type hierarchy
 		 */
-		RESOURCE_CACHE.addElement(lnfKey, lnfValue == null ? NULL_RESOURCE : lnfValue);
+		resourceCache.addElement(lnfKey, lnfValue == null ? NULL_RESOURCE : lnfValue);
 		return lnfValue;
 	}
 
@@ -589,6 +542,65 @@ public class LnFUpdater {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		String lnfKey = style + "." + property.getName(); //$NON-NLS-1$
 		return lnf.getResource(lnfKey);
+
+	}
+
+	/**
+	 * Creates an instance of the given control class.
+	 * 
+	 * @param controlClass
+	 *            class of the UI control
+	 * @param parent
+	 *            a widget which will be the parent of the new instance
+	 * @param style
+	 *            the style of widget to construct
+	 * @return instance of UI control or {@code null} if no instance can be
+	 *         created
+	 */
+	private Control createDefaultControl(final Class<? extends Control> controlClass, final Composite parent, int style) {
+
+		Control defaultControl = null;
+
+		try {
+			defaultControl = ReflectionUtils.newInstanceHidden(controlClass, parent, style);
+		} catch (ReflectionFailure failure) {
+			try {
+				final Constructor<? extends Control>[] constructors = controlClass.getConstructors();
+				for (final Constructor<? extends Control> constructor : constructors) {
+					Class<?>[] paramTypes = constructor.getParameterTypes();
+					Object[] params = new Object[paramTypes.length];
+					boolean parentAssigned = false;
+					boolean styleAssigned = false;
+					for (int i = 0; i < paramTypes.length; i++) {
+						if (paramTypes[i].isAssignableFrom(parent.getClass()) && !parentAssigned) {
+							params[i] = parent;
+							parentAssigned = true;
+						} else if (paramTypes[i].isAssignableFrom(Integer.class) && !styleAssigned) {
+							params[i] = style;
+							styleAssigned = true;
+						} else {
+							try {
+								params[i] = paramTypes[i].newInstance();
+							} catch (Exception e) {
+								params[i] = null;
+							}
+						}
+					}
+					try {
+						defaultControl = constructor.newInstance(params);
+					} catch (Exception e) {
+						defaultControl = null;
+					}
+					if (defaultControl != null) {
+						break;
+					}
+				}
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return defaultControl;
 
 	}
 

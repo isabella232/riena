@@ -106,7 +106,7 @@ public abstract class AbstractDialogView extends Dialog {
 
 		addUIControls(getShell());
 		bindController();
-		LNF_UPDATER.updateUIControlsAfterBind(getShell());
+		LNF_UPDATER.updateUIControls(getShell());
 		// after binding the controller it is necessary to calculate the bounds of the dialog again
 		// because the controller can add some data that influences the size of some widgets (e.g. ChoiceComposite)
 		initializeBounds();
@@ -194,7 +194,6 @@ public abstract class AbstractDialogView extends Dialog {
 	protected final Control createDialogArea(Composite parent) {
 		Control result = buildView(parent);
 		addUIControl(getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
-		LNF_UPDATER.updateUIControls(parent);
 		return result;
 	}
 

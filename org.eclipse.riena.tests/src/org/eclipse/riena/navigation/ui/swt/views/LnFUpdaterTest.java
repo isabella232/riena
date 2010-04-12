@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
-import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
@@ -50,7 +49,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		shell = new Shell();
-		lnFUpdater = new LnFUpdater();
+		lnFUpdater = new LnFUpdater(true);
 	}
 
 	@Override
@@ -161,25 +160,6 @@ public class LnFUpdaterTest extends RienaTestCase {
 		} finally {
 			LnfManager.setLnf(oldLnf);
 		}
-	}
-
-	/**
-	 * Tests the <i>private</i> method {@code checkUpdateAfterBind}.
-	 */
-	public void testCheckUpdateAfterBind() {
-
-		Composite comp1 = new Composite(shell, SWT.NONE);
-		Label label1 = new Label(comp1, SWT.NONE);
-		boolean retValue = ReflectionUtils.invokeHidden(lnFUpdater, "checkUpdateAfterBind", label1);
-		assertFalse(retValue);
-
-		ChoiceComposite choiceComp1 = new ChoiceComposite(comp1, SWT.NONE, false);
-		retValue = ReflectionUtils.invokeHidden(lnFUpdater, "checkUpdateAfterBind", choiceComp1);
-		assertTrue(retValue);
-		Label label2 = new Label(choiceComp1, SWT.NONE);
-		retValue = ReflectionUtils.invokeHidden(lnFUpdater, "checkUpdateAfterBind", label2);
-		assertTrue(retValue);
-
 	}
 
 	/**
