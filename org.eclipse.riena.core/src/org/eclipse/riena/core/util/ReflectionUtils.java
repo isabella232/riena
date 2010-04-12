@@ -37,7 +37,7 @@ public final class ReflectionUtils {
 
 	/** A cache of Method (or NO_SUCH_METHOD) values. */
 	private static final CacheLRU METHOD_CACHE = new CacheLRU(25);
-	/** Placeholder for the indicate a 'null' result (vs a cache miss) */
+	/** Placeholder indicating a 'null' result (vs a cache miss) */
 	private static final Object NO_SUCH_METHOD = new Object();
 
 	/**
@@ -300,10 +300,10 @@ public final class ReflectionUtils {
 		Class<?> clazz = getClass(instance);
 		while (clazz != null) {
 			Class<?>[] clazzes = classesPrimitiveFromObjects(args);
-			Method method = findMatchingMethod(open, clazz, methodName, clazzes);
+			Method method = findMatchingMethodCached(open, clazz, methodName, clazzes);
 			if (method == null) {
 				clazzes = classesFromObjects(args);
-				method = findMatchingMethod(open, clazz, methodName, clazzes);
+				method = findMatchingMethodCached(open, clazz, methodName, clazzes);
 			}
 			if (method != null) {
 				if (open) {
@@ -459,8 +459,7 @@ public final class ReflectionUtils {
 				return open ? clazz.getDeclaredConstructor() : clazz.getConstructor();
 			}
 
-			final Constructor<T>[] constructors = (Constructor<T>[]) (open ? clazz.getDeclaredConstructors() : clazz
-					.getConstructors());
+			final Constructor<T>[] constructors = (open ? clazz.getDeclaredConstructors() : clazz.getConstructors());
 			for (final Constructor<T> constructor : constructors) {
 				final Class<?>[] expectedParameterTypes = constructor.getParameterTypes();
 				if (expectedParameterTypes.length == clazzes.length) {
@@ -481,51 +480,53 @@ public final class ReflectionUtils {
 		}
 	}
 
-	private static Method findMatchingMethod(final boolean open, final Class<?> clazz, final String name,
+	private static Method findMatchingMethodCached(final boolean open, final Class<?> clazz, final String name,
 			final Class<?>[] clazzes) {
 		// Reflective method lookup is expensive, therefore we cache the 25 most 
 		// frequent look-ups using a hashcode of (clazz x name x clazzes)
-		Integer key = computeKey(clazz, name, clazzes);
-		Object cachedMethod = METHOD_CACHE.getElement(key);
+		final Integer key = computeKey(clazz, name, clazzes);
+		final Object cachedMethod = METHOD_CACHE.getElement(key);
 		if (cachedMethod != null) {
 			// cache hit; return 
 			return cachedMethod == NO_SUCH_METHOD ? null : (Method) cachedMethod;
 		}
+		final Method result = findMatchingMethod(open, clazz, name, clazzes);
+		// for a method miss add NO_SUCH_METHOD
+		METHOD_CACHE.addElement(key, result == null ? NO_SUCH_METHOD : result);
+		return result;
+	}
 
-		Method result = null;
+	private static Method findMatchingMethod(final boolean open, final Class<?> clazz, final String name,
+			final Class<?>[] clazzes) {
+		Assert.isNotNull(clazz);
+		Assert.isNotNull(name);
+
 		try {
 			if (clazzes == null) {
-				result = clazz.getDeclaredMethod(name);
-			} else {
-				final Method[] methods = open ? clazz.getDeclaredMethods() : clazz.getMethods();
-				for (final Method method : methods) {
-					if (method.getName().equals(name)) {
-						final Class<?>[] expectedParameterTypes = method.getParameterTypes();
-						if (expectedParameterTypes.length == clazzes.length) {
-							boolean discard = false;
-							for (int j = 0; j < expectedParameterTypes.length && !discard; j++) {
-								if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j])) {
-									discard = true;
-								}
+				return clazz.getDeclaredMethod(name);
+			}
+
+			final Method[] methods = open ? clazz.getDeclaredMethods() : clazz.getMethods();
+			for (final Method method : methods) {
+				if (method.getName().equals(name)) {
+					final Class<?>[] expectedParameterTypes = method.getParameterTypes();
+					if (expectedParameterTypes.length == clazzes.length) {
+						boolean stop = false;
+						for (int j = 0; j < expectedParameterTypes.length && !stop; j++) {
+							if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j])) {
+								stop = true;
 							}
-							if (!discard) {
-								result = method;
-								break;
-							}
+						}
+						if (!stop) {
+							return method;
 						}
 					}
 				}
 			}
+			return null;
 		} catch (final NoSuchMethodException nsme) {
-			// do nothing
+			return null;
 		}
-		// cache miss
-		if (result == null) {
-			METHOD_CACHE.addElement(key, NO_SUCH_METHOD);
-		} else {
-			METHOD_CACHE.addElement(key, result);
-		}
-		return result;
 	}
 
 	private static Class<? extends Object>[] classesPrimitiveFromObjects(final Object[] objects) {
@@ -571,15 +572,15 @@ public final class ReflectionUtils {
 		return clazzes;
 	}
 
-	private static Integer computeKey(Class<?> clazz, String name, Class<?>[] args) {
+	private static Integer computeKey(final Class<?> clazz, final String name, final Class<?>[] args) {
 		int result = clazz.hashCode();
 		result = (37 * result) + name.hashCode();
 		if (args != null) {
-			for (Class<?> arg : args) {
+			for (final Class<?> arg : args) {
 				result = (37 * result) + arg.hashCode();
 			}
 		}
-		return Integer.valueOf(result);
+		return result;
 	}
 
 	private static Class<?> getClass(final Object instance) {
