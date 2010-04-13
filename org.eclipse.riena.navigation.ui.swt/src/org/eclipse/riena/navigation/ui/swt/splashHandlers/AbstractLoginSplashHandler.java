@@ -103,21 +103,35 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 
 	private void createUI() {
 		// Create the login panel
-		loginComposite = new Composite(getSplash(), SWT.BORDER);
-		GridLayout layout = new GridLayout(1, false);
-		loginComposite.setLayout(layout);
-		loginComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		// Force composite to inherit the splash background
-		loginComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		loginComposite = createUILoginComposite();
 		loginView = loginSplashViewExtension.createViewClass();
 		loginView.build(loginComposite);
+	}
+
+	protected Composite createUILoginComposite() {
+		Composite composite = new Composite(getSplash(), hasLoginCompositeBorder() ? SWT.BORDER : SWT.NONE);
+		GridLayout layout = new GridLayout(1, false);
+		composite.setLayout(layout);
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		// Force composite to inherit the parents (splash) background
+		composite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		return composite;
+	}
+
+	/**
+	 * Returns if the login composite should have a border.
+	 * 
+	 * @return true, if the login composite should have a border, else false.
+	 */
+	protected boolean hasLoginCompositeBorder() {
+		return false;
 	}
 
 	protected void configureUISplash() {
 		// Configure layout
 		GridLayout layout = new GridLayout(1, false);
 		getSplash().setLayout(layout);
-		// Force shell to inherit the splash background
+		// Force splash to inherit the parents background
 		getSplash().setBackgroundMode(SWT.INHERIT_DEFAULT);
 	}
 
