@@ -22,13 +22,6 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 @NonUITestCase
 public class PropertiesUtilsTest extends RienaTestCase {
 
-	/**
-	 *
-	 */
-	public interface IDefault {
-		String get(String key);
-	}
-
 	public void testAsMapNullString() {
 		Map<String, String> map = PropertiesUtils.asMap(null);
 		assertEquals(0, map.size());
