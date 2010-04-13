@@ -18,6 +18,8 @@ import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -30,6 +32,7 @@ import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
+import org.eclipse.riena.ui.swt.lnf.IgnoreLnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -63,10 +66,11 @@ public class LnFUpdaterTest extends RienaTestCase {
 	 * Tests the <i>private</i> method {@code getErrorMessage}.
 	 * 
 	 * @throws IntrospectionException
+	 *             handled by jUnit
 	 */
 	public void testGetErrorMessage() throws IntrospectionException {
 
-		PropertyDescriptor property = getForegroundProperty();
+		PropertyDescriptor property = getProperty(Label.class, "foreground");
 		Label label = new Label(shell, SWT.NONE);
 		String message = ReflectionUtils.invokeHidden(lnFUpdater, "getErrorMessage", label, property);
 		assertNotNull(message);
@@ -78,6 +82,9 @@ public class LnFUpdaterTest extends RienaTestCase {
 
 	/**
 	 * Tests the <i>private</i> method {@code getLnfValue}.
+	 * 
+	 * @throws IntrospectionException
+	 *             handled by jUnit
 	 */
 	public void testGetLnfValue() throws IntrospectionException {
 		RienaDefaultLnf oldLnf = LnfManager.getLnf();
@@ -87,7 +94,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 		try {
 			lnf.setTheme(new MyTheme());
 			Label label = new Label(shell, SWT.NONE);
-			PropertyDescriptor property = getForegroundProperty();
+			PropertyDescriptor property = getProperty(Label.class, "foreground");
 			Object value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfValue", label, property);
 			SwtUtilities.disposeWidget(label);
 
@@ -112,6 +119,9 @@ public class LnFUpdaterTest extends RienaTestCase {
 
 	/**
 	 * Tests the <i>private</i> method {@code getLnfStyleValue}.
+	 * 
+	 * @throws IntrospectionException
+	 *             handled by jUnit
 	 */
 	public void testGetLnfStyleValue() throws IntrospectionException {
 		RienaDefaultLnf oldLnf = LnfManager.getLnf();
@@ -123,7 +133,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 			lnf.setTheme(new MyTheme());
 			Label label = new Label(shell, SWT.NONE);
 			label.setData(UIControlsFactory.KEY_LNF_STYLE, "section");
-			PropertyDescriptor property = getForegroundProperty();
+			PropertyDescriptor property = getProperty(Label.class, "foreground");
 			Object value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfStyleValue", label, property);
 			SwtUtilities.disposeWidget(label);
 
@@ -214,7 +224,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 		Label label = new Label(shell, SWT.NONE);
 		PropertyDescriptor foregroundProperty = new PropertyDescriptor("foreground", Label.class);
 		Object value = ReflectionUtils.invokeHidden(lnFUpdater, "getDefaultPropertyValue", label, foregroundProperty);
-		assertEquals(label.getForeground(), value);
+		assertEquals(label.getForeground().getRGB(), value);
 
 	}
 
@@ -305,12 +315,134 @@ public class LnFUpdaterTest extends RienaTestCase {
 		}
 	}
 
-	private PropertyDescriptor getForegroundProperty() throws IntrospectionException {
+	/**
+	 * Tests the <i>private</i> method {@code fontDataEquals}.
+	 */
+	public void testFontDataEquals() {
 
-		BeanInfo beanInfo = Introspector.getBeanInfo(Label.class);
+		FontData[] data1 = new FontData[] {};
+		FontData[] data2 = new FontData[] {};
+		boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "fontDataEquals", data1, data2);
+		assertTrue(ret);
+
+		data1 = new FontData[] { new FontData("Arial", 12, SWT.BOLD) };
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "fontDataEquals", data1, data2);
+		assertFalse(ret);
+
+		data2 = new FontData[] { new FontData("Arial", 12, SWT.BOLD) };
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "fontDataEquals", data1, data2);
+		assertTrue(ret);
+
+		data1 = new FontData[] { new FontData("Arial", 12, SWT.BOLD), new FontData("Arial", 33, SWT.BOLD) };
+		data2 = new FontData[] { new FontData("Arial", 12, SWT.BOLD), new FontData("Arial", 12, SWT.BOLD) };
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "fontDataEquals", data1, data2);
+		assertFalse(ret);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code checkLnfClassKeys}.
+	 */
+	public void testCheckLnfClassKeys() {
+
+		RienaDefaultLnf oldLnf = LnfManager.getLnf();
+		RienaDefaultLnf lnf = new RienaDefaultLnf();
+		LnfManager.setLnf(lnf);
+		lnf.setTheme(new MyTheme());
+
+		boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "checkLnfClassKeys", Label.class);
+		assertTrue(ret);
+
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "checkLnfClassKeys", Text.class);
+		assertFalse(ret);
+
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "checkLnfClassKeys", MyComposite.class);
+		assertTrue(ret);
+
+		LnfManager.setLnf(oldLnf);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code ignoreProperty}.
+	 * 
+	 * @throws IntrospectionException
+	 *             handled by jUnit
+	 */
+	public void testIgnoreProperty() throws IntrospectionException {
+
+		PropertyDescriptor property = getProperty(Label.class, "foreground");
+		Label label = new Label(shell, SWT.NONE);
+		boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreProperty", label, property);
+		assertFalse(ret);
+		label.dispose();
+
+		property = getProperty(MyComposite.class, "foreground");
+		MyComposite composite = new MyComposite(shell, SWT.NONE);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreProperty", composite, property);
+		assertFalse(ret);
+
+		property = getProperty(MyComposite.class, "background");
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreProperty", composite, property);
+		assertTrue(ret);
+
+		property = getProperty(Composite.class, "background");
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreProperty", composite, property);
+		assertTrue(ret);
+
+		composite.dispose();
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getResourceData(Object)}.
+	 */
+	public void testGetResourceData() {
+
+		String strg = "strgValue";
+		Object data = ReflectionUtils.invokeHidden(lnFUpdater, "getResourceData", strg);
+		assertEquals(strg, data);
+
+		Color red = new Color(null, 200, 10, 10);
+		data = ReflectionUtils.invokeHidden(lnFUpdater, "getResourceData", red);
+		assertEquals(red.getRGB(), data);
+
+		red.dispose();
+		data = ReflectionUtils.invokeHidden(lnFUpdater, "getResourceData", red);
+		assertSame(red, data);
+
+		Font font = new Font(null, "Arial", 12, SWT.BOLD);
+		data = ReflectionUtils.invokeHidden(lnFUpdater, "getResourceData", font);
+		assertTrue(data instanceof FontData[]);
+		FontData[] fontData = (FontData[]) data;
+		assertEquals(font.getFontData()[0], fontData[0]);
+
+		font.dispose();
+		data = ReflectionUtils.invokeHidden(lnFUpdater, "getResourceData", font);
+		assertSame(font, data);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code generateLnfKey}.
+	 * 
+	 * @throws IntrospectionException
+	 *             handled by jUnit
+	 */
+	public void testGenerateLnfKey() throws IntrospectionException {
+
+		PropertyDescriptor property = getProperty(Label.class, "foreground");
+		String ret = ReflectionUtils.invokeHidden(lnFUpdater, "generateLnfKey", Label.class, property);
+		assertEquals("Label.foreground", ret);
+
+	}
+
+	private PropertyDescriptor getProperty(Class<?> clazz, String propertyName) throws IntrospectionException {
+
+		BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
 		PropertyDescriptor[] properties = beanInfo.getPropertyDescriptors();
 		for (PropertyDescriptor property : properties) {
-			if (property.getName().equals("foreground")) {
+			if (property.getName().equals(propertyName)) {
 				return property;
 			}
 		}
@@ -319,9 +451,13 @@ public class LnFUpdaterTest extends RienaTestCase {
 
 	}
 
+	/**
+	 * Simple Riena Look&Feel theme with only some colors.
+	 */
 	private static class MyTheme implements ILnfTheme {
 
 		public void addCustomColors(Map<String, ILnfResource> table) {
+			table.put("Composite.background", new ColorLnfResource(47, 11, 15));
 			table.put("Label.foreground", new ColorLnfResource(1, 2, 3));
 			table.put("section.foreground", new ColorLnfResource(111, 22, 3));
 		}
@@ -333,6 +469,15 @@ public class LnFUpdaterTest extends RienaTestCase {
 		}
 
 		public void addCustomSettings(Map<String, Object> table) {
+		}
+
+	}
+
+	@IgnoreLnFUpdater("background")
+	private static class MyComposite extends Composite {
+
+		public MyComposite(Composite parent, int style) {
+			super(parent, style);
 		}
 
 	}

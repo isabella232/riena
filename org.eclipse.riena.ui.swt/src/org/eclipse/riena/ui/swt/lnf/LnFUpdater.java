@@ -29,10 +29,16 @@ import org.apache.oro.util.CacheLRU;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
@@ -62,6 +68,13 @@ public class LnFUpdater {
 		this(false);
 	}
 
+	/**
+	 * Creates a new instance of {@code LnFUpdater} and clears (if necessary)
+	 * the resource cache.
+	 * 
+	 * @param clearCache
+	 *            {@code true} clear cache; {@code false} don't clear cache
+	 */
 	public LnFUpdater(boolean clearCache) {
 		if (clearCache) {
 			resourceCache = new CacheLRU(200);
@@ -163,9 +176,18 @@ public class LnFUpdater {
 	}
 
 	/**
+	 * Returns whether the given property should be ignored for the given
+	 * control.
+	 * <p>
+	 * Properties of the annotation {@code IgnoreLnFUpdater} should not be
+	 * changed.
+	 * 
 	 * @param control
+	 *            UI control
 	 * @param property
-	 * @return
+	 *            property to check
+	 * @return {@code true} if property should be ignored; otherwise {@code
+	 *         false}
 	 */
 	private boolean ignoreProperty(Control control, PropertyDescriptor property) {
 
@@ -289,13 +311,57 @@ public class LnFUpdater {
 			Object defaultValue = getDefaultPropertyValue(control, property);
 			Object currentValue = getPropertyValue(control, property);
 			if (defaultValue != null) {
-				if (!defaultValue.equals(currentValue)) {
+				if ((defaultValue instanceof FontData[])) {
+					FontData[] defaultFontData = (FontData[]) defaultValue;
+					FontData[] currentFontData = ((Font) currentValue).getFontData();
+					if (!fontDataEquals(defaultFontData, currentFontData)) {
+						return true;
+					}
+				} else if ((defaultValue instanceof RGB) && (currentValue instanceof Color)) {
+					RGB defaultRgb = (RGB) defaultValue;
+					RGB currentRgb = ((Color) currentValue).getRGB();
+					if (!defaultRgb.equals(currentRgb)) {
+						return true;
+					}
+				} else if (!defaultValue.equals(currentValue)) {
 					return true;
 				}
 			}
 		}
 
 		return false;
+
+	}
+
+	/**
+	 * Compares two arrays with font data.
+	 * 
+	 * @param data1
+	 *            the first array with font data to be compared
+	 * @param data2
+	 *            the second array with font data to be compared
+	 * @return {@code true} if the two arrays are equal; otherwise {@code false}
+	 */
+	private boolean fontDataEquals(FontData[] data1, FontData[] data2) {
+
+		if ((data1 == null) && (data2 == null)) {
+			return true;
+		}
+		if ((data1 == null) || (data2 == null)) {
+			return false;
+		}
+
+		if (data1.length != data2.length) {
+			return false;
+		}
+
+		for (int i = 0; i < data1.length; i++) {
+			if (!data1[i].equals(data2[i])) {
+				return false;
+			}
+		}
+
+		return true;
 
 	}
 
@@ -318,6 +384,7 @@ public class LnFUpdater {
 				Map<String, Object> defaults = new Hashtable<String, Object>(properties.size());
 				for (PropertyDescriptor defaultProperty : properties) {
 					Object value = getPropertyValue(defaultControl, defaultProperty);
+					value = getResourceData(value);
 					if (value != null) {
 						defaults.put(defaultProperty.getName(), value);
 					}
@@ -334,6 +401,41 @@ public class LnFUpdater {
 			return null;
 		}
 		return defaultValues.get(property.getName());
+
+	}
+
+	/**
+	 * Extracts the description of the given resource.
+	 * <p>
+	 * <ul>
+	 * <li>for {@code Font} this method returns {@code FontData}</li>
+	 * <li>for {@code Color} this method returns {@code RGB}</li>
+	 * </ul>
+	 * <p>
+	 * <i>This descriptions can be used to compare resources (also
+	 * disposed).</i>
+	 * 
+	 * @param object
+	 *            the resource
+	 * @return description of resource or the resource itself, if no description
+	 *         exists
+	 */
+	private Object getResourceData(final Object object) {
+
+		if (!(object instanceof Resource)) {
+			return object;
+		}
+
+		Resource resource = (Resource) object;
+		if (resource.isDisposed()) {
+			return resource;
+		}
+		if (resource instanceof Font) {
+			return ((Font) resource).getFontData();
+		} else if (resource instanceof Color) {
+			return ((Color) resource).getRGB();
+		}
+		return resource;
 
 	}
 
@@ -410,7 +512,7 @@ public class LnFUpdater {
 					propertyDescriptors.add(pd);
 				}
 			} catch (IntrospectionException e) {
-				// ignore
+				Nop.reason("ignore"); //$NON-NLS-1$
 			}
 			CONTROL_PROPERTIES.put(controlClass, propertyDescriptors);
 		}
