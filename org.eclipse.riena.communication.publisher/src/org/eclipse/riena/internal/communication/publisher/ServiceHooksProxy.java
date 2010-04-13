@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.security.auth.Subject;
 
@@ -23,18 +24,19 @@ import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContext;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.wire.InjectService;
+import org.eclipse.riena.core.wire.Wire;
 
 public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationHandler {
 
-	private HashSet<IServiceHook> serviceHooks = new HashSet<IServiceHook>();
+	private final Set<IServiceHook> serviceHooks = new HashSet<IServiceHook>();
 	private RemoteServiceDescription rsd;
 	private IServiceMessageContextAccessor mca;
 	private Subject subject;
 
 	public ServiceHooksProxy(Object serviceInstance) {
 		super(serviceInstance);
-		Inject.service(IServiceHook.class).into(this).andStart(Activator.getDefault().getContext());
+		Wire.instance(this).andStart(Activator.getDefault().getContext());
 	}
 
 	@Override
@@ -54,7 +56,7 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 		ServiceContext context = null;
 		// only create context (it might be expensive), if you have serviceHooks
 		if (serviceHooks.size() > 0) {
-			context = new ServiceContext(rsd, method.getName(), mc);
+			context = new ServiceContext(rsd, method, getServiceInstance(), mc);
 
 			// call before service hook
 			for (IServiceHook sHook : serviceHooks) {
@@ -72,8 +74,7 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 		} catch (InvocationTargetException e) {
 			throw e.getTargetException();
 		} finally {
-			// context might be null, but serviceHooks were injected during
-			// invoke
+			// context might be null, but serviceHooks were injected during invoke
 			if (context != null) {
 				for (IServiceHook sHook : serviceHooks) {
 					sHook.afterService(context);
@@ -82,6 +83,7 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 		}
 	}
 
+	@InjectService(useRanking = true)
 	public void bind(IServiceHook serviceHook) {
 		serviceHooks.add(serviceHook);
 	}

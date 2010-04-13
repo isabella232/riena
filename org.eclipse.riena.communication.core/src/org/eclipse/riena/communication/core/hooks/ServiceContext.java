@@ -25,14 +25,17 @@ import org.eclipse.riena.communication.core.RemoteServiceDescription;
  */
 public class ServiceContext {
 
-	private RemoteServiceDescription rsd;
-	private String methodName;
+	private final RemoteServiceDescription rsd;
+	private final Method method;
+	private final Object service;
+	private final IServiceMessageContext messageContext;
 	private HashMap<String, Object> properties;
-	private IServiceMessageContext messageContext;
 
-	public ServiceContext(RemoteServiceDescription rsd, String methodName, IServiceMessageContext messageContext) {
+	public ServiceContext(final RemoteServiceDescription rsd, final Method method, final Object service,
+			final IServiceMessageContext messageContext) {
 		this.rsd = rsd;
-		this.methodName = methodName;
+		this.service = service;
+		this.method = method;
 		this.messageContext = messageContext;
 	}
 
@@ -60,32 +63,26 @@ public class ServiceContext {
 	 * @return
 	 */
 	public String getMethodName() {
-		return methodName;
+		return method.getName();
 	}
 
 	/**
-	 * The method that is called as Method object.
+	 * The method instance corresponding to the interface method invoked on the
+	 * {@code ServiceHooksProxy} instance.
 	 * 
-	 * @return
-	 * @throws UnsupportedOperationException
-	 *             if more than one method with the method name are found. That
-	 *             is currently not supported.
+	 * @return the method instance
 	 */
 	public Method getMethod() {
-		Class<?> interf = getInterfaceClass();
-		Method[] methods = interf.getMethods();
-		Method foundMethod = null;
-		for (Method method : methods) {
-			if (method.getName().equals(methodName)) {
-				if (foundMethod == null) {
-					foundMethod = method;
-				} else {
-					throw new UnsupportedOperationException("More than one method with the same name '" + methodName //$NON-NLS-1$
-							+ "' found."); //$NON-NLS-1$
-				}
-			}
-		}
-		return foundMethod;
+		return method;
+	}
+
+	/**
+	 * Return the service instance on which the method is called.
+	 * 
+	 * @return the service instance
+	 */
+	public Object getService() {
+		return service;
 	}
 
 	/**
@@ -97,7 +94,7 @@ public class ServiceContext {
 	 * @param value
 	 *            value for that key
 	 */
-	public void setProperty(String name, Object value) {
+	public void setProperty(final String name, final Object value) {
 		if (properties == null) {
 			properties = new HashMap<String, Object>();
 		}
@@ -111,7 +108,7 @@ public class ServiceContext {
 	 * @param name
 	 * @return
 	 */
-	public Object getProperty(String name) {
+	public Object getProperty(final String name) {
 		if (properties == null) {
 			return null;
 		}
@@ -135,12 +132,12 @@ public class ServiceContext {
 	 * @return
 	 */
 	public Cookie[] getCookies() {
-		List<String> cookieValues = messageContext.getRequestHeaderValue("Cookie"); //$NON-NLS-1$
+		final List<String> cookieValues = messageContext.getRequestHeaderValue("Cookie"); //$NON-NLS-1$
 		if (cookieValues == null || cookieValues.size() == 0) {
 			return null;
 		}
-		List<Cookie> cookies = new ArrayList<Cookie>();
-		for (String temp : cookieValues) {
+		final List<Cookie> cookies = new ArrayList<Cookie>();
+		for (final String temp : cookieValues) {
 			cookies.add(new Cookie(temp.substring(0, temp.indexOf("=")), temp.substring(temp.indexOf("=") + 1))); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return cookies.toArray(new Cookie[cookies.size()]);
@@ -152,7 +149,7 @@ public class ServiceContext {
 	 * 
 	 * @param cookie
 	 */
-	public void addCookie(Cookie cookie) {
+	public void addCookie(final Cookie cookie) {
 		messageContext.addResponseHeader("Set-Cookie", cookie.getName() + "=" + cookie.getValue()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }
