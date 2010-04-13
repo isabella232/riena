@@ -316,31 +316,6 @@ public class LnFUpdaterTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the <i>private</i> method {@code fontDataEquals}.
-	 */
-	public void testFontDataEquals() {
-
-		FontData[] data1 = new FontData[] {};
-		FontData[] data2 = new FontData[] {};
-		boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "fontDataEquals", data1, data2);
-		assertTrue(ret);
-
-		data1 = new FontData[] { new FontData("Arial", 12, SWT.BOLD) };
-		ret = ReflectionUtils.invokeHidden(lnFUpdater, "fontDataEquals", data1, data2);
-		assertFalse(ret);
-
-		data2 = new FontData[] { new FontData("Arial", 12, SWT.BOLD) };
-		ret = ReflectionUtils.invokeHidden(lnFUpdater, "fontDataEquals", data1, data2);
-		assertTrue(ret);
-
-		data1 = new FontData[] { new FontData("Arial", 12, SWT.BOLD), new FontData("Arial", 33, SWT.BOLD) };
-		data2 = new FontData[] { new FontData("Arial", 12, SWT.BOLD), new FontData("Arial", 12, SWT.BOLD) };
-		ret = ReflectionUtils.invokeHidden(lnFUpdater, "fontDataEquals", data1, data2);
-		assertFalse(ret);
-
-	}
-
-	/**
 	 * Tests the <i>private</i> method {@code checkLnfClassKeys}.
 	 */
 	public void testCheckLnfClassKeys() {

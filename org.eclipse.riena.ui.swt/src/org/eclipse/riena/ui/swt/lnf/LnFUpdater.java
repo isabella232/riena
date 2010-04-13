@@ -18,6 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -314,7 +315,7 @@ public class LnFUpdater {
 				if ((defaultValue instanceof FontData[])) {
 					FontData[] defaultFontData = (FontData[]) defaultValue;
 					FontData[] currentFontData = ((Font) currentValue).getFontData();
-					if (!fontDataEquals(defaultFontData, currentFontData)) {
+					if (!Arrays.equals(defaultFontData, currentFontData)) {
 						return true;
 					}
 				} else if ((defaultValue instanceof RGB) && (currentValue instanceof Color)) {
@@ -330,38 +331,6 @@ public class LnFUpdater {
 		}
 
 		return false;
-
-	}
-
-	/**
-	 * Compares two arrays with font data.
-	 * 
-	 * @param data1
-	 *            the first array with font data to be compared
-	 * @param data2
-	 *            the second array with font data to be compared
-	 * @return {@code true} if the two arrays are equal; otherwise {@code false}
-	 */
-	private boolean fontDataEquals(FontData[] data1, FontData[] data2) {
-
-		if ((data1 == null) && (data2 == null)) {
-			return true;
-		}
-		if ((data1 == null) || (data2 == null)) {
-			return false;
-		}
-
-		if (data1.length != data2.length) {
-			return false;
-		}
-
-		for (int i = 0; i < data1.length; i++) {
-			if (!data1[i].equals(data2[i])) {
-				return false;
-			}
-		}
-
-		return true;
 
 	}
 
