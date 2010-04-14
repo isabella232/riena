@@ -64,9 +64,12 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 	@Override
 	protected void removeListeners() {
 
-		removeMouseListener(mouseListener);
-		removeMouseMoveListener(mouseListener);
-		removeMouseTrackListener(mouseListener);
+		if (mouseListener != null) {
+			removeMouseListener(mouseListener);
+			removeMouseMoveListener(mouseListener);
+			removeMouseTrackListener(mouseListener);
+			mouseListener = null;
+		}
 
 		super.removeListeners();
 

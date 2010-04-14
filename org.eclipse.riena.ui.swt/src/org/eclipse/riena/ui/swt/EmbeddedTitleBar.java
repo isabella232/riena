@@ -82,7 +82,10 @@ public class EmbeddedTitleBar extends Canvas {
 	 * Removes the paint listener from this {@code EmbeddedTitleBar}.
 	 */
 	protected void removeListeners() {
-		removePaintListener(paintListener);
+		if (paintListener != null) {
+			removePaintListener(paintListener);
+			paintListener = null;
+		}
 	}
 
 	/**
