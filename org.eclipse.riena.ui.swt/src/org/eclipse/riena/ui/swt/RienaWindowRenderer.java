@@ -45,6 +45,8 @@ public class RienaWindowRenderer {
 
 	private final Window dialog;
 	private Composite centerComposite;
+	private DialogTitleBarMouseListener mouseListener;
+	private Composite topComposite;
 
 	public RienaWindowRenderer(Window dialog) {
 		this.dialog = dialog;
@@ -117,14 +119,14 @@ public class RienaWindowRenderer {
 		contentsComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		int titleBarHeight = 0;
-		Composite topComposite = new Composite(contentsComposite, SWT.NONE);
+		topComposite = new Composite(contentsComposite, SWT.NONE);
 		if (isHideOsBorder()) {
 			topComposite.addPaintListener(new DialogTitlePaintListener(isCloseable(), isMaximizeable(),
 					isMinimizeable()));
 			DialogTitleBarRenderer titleBarRenderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(
 					LnfKeyConstants.DIALOG_RENDERER);
 			titleBarHeight = titleBarRenderer.getHeight();
-			DialogTitleBarMouseListener mouseListener = new DialogTitleBarMouseListener();
+			mouseListener = new DialogTitleBarMouseListener();
 			topComposite.addMouseListener(mouseListener);
 			topComposite.addMouseMoveListener(mouseListener);
 			topComposite.addMouseTrackListener(mouseListener);
@@ -154,6 +156,17 @@ public class RienaWindowRenderer {
 
 	public Composite getCenterComposite() {
 		return centerComposite;
+	}
+
+	public void removeDialogTitleBarMouseListener() {
+
+		if ((topComposite != null) && (mouseListener != null)) {
+			topComposite.removeMouseListener(mouseListener);
+			topComposite.removeMouseMoveListener(mouseListener);
+			topComposite.removeMouseTrackListener(mouseListener);
+			mouseListener.dispose();
+			mouseListener = null;
+		}
 	}
 
 	// helping methods
