@@ -27,6 +27,8 @@ import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
  */
 public class ModuleTitleBar extends EmbeddedTitleBar {
 
+	private TitlebarMouseListener mouseListener;
+
 	/**
 	 * @param parent
 	 * @param style
@@ -38,17 +40,35 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.EmbeddedTitleBar#addListeners()
+	 * {@inheritDoc}
+	 * <p>
+	 * Adds also all kinds of mouse listeners.
 	 */
 	@Override
 	protected void addListeners() {
 
 		super.addListeners();
 
-		TitlebarMouseListener mouseListener = new TitlebarMouseListener();
+		mouseListener = new TitlebarMouseListener();
 		addMouseListener(mouseListener);
 		addMouseMoveListener(mouseListener);
 		addMouseTrackListener(mouseListener);
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Removes also the mouse listener.
+	 */
+	@Override
+	protected void removeListeners() {
+
+		removeMouseListener(mouseListener);
+		removeMouseMoveListener(mouseListener);
+		removeMouseTrackListener(mouseListener);
+
+		super.removeListeners();
 
 	}
 

@@ -46,6 +46,7 @@ public class EmbeddedTitleBar extends Canvas {
 	private Collection<? extends IMarker> markers;
 
 	protected ListenerList<IEmbeddedTitleBarListener> titleBarListeners;
+	private PaintListener paintListener;
 
 	/**
 	 * Constructs a new instance of {@code EmbeddedTitleBar} given its parent
@@ -68,12 +69,20 @@ public class EmbeddedTitleBar extends Canvas {
 	 */
 	protected void addListeners() {
 
-		addPaintListener(new PaintListener() {
+		paintListener = new PaintListener() {
 			public void paintControl(PaintEvent e) {
 				onPaint(e);
 			}
-		});
+		};
+		addPaintListener(paintListener);
 
+	}
+
+	/**
+	 * Removes the paint listener from this {@code EmbeddedTitleBar}.
+	 */
+	protected void removeListeners() {
+		removePaintListener(paintListener);
 	}
 
 	/**
@@ -178,6 +187,9 @@ public class EmbeddedTitleBar extends Canvas {
 	 *            the pressed to set
 	 */
 	public void setPressed(boolean pressed) {
+		if (isDisposed()) {
+			return;
+		}
 		if (hasChanged(this.pressed, pressed)) {
 			this.pressed = pressed;
 			redraw();
@@ -196,6 +208,9 @@ public class EmbeddedTitleBar extends Canvas {
 	 *            the hover to set
 	 */
 	public void setHover(boolean hover) {
+		if (isDisposed()) {
+			return;
+		}
 		if (hasChanged(this.hover, hover)) {
 			this.hover = hover;
 			redraw();
@@ -311,6 +326,9 @@ public class EmbeddedTitleBar extends Canvas {
 	}
 
 	public void setCloseButtonPressed(boolean closeButtonPressed) {
+		if (isDisposed()) {
+			return;
+		}
 		if (hasChanged(this.closeButtonPressed, closeButtonPressed)) {
 			this.closeButtonPressed = closeButtonPressed;
 			redraw();
@@ -322,6 +340,9 @@ public class EmbeddedTitleBar extends Canvas {
 	}
 
 	public void setCloseButtonHover(boolean closeButtonHover) {
+		if (isDisposed()) {
+			return;
+		}
 		if (hasChanged(this.closeButtonHover, closeButtonHover) && !isDisposed()) {
 			this.closeButtonHover = closeButtonHover;
 			redraw();
@@ -330,6 +351,15 @@ public class EmbeddedTitleBar extends Canvas {
 
 	public boolean isCloseButtonHover() {
 		return closeButtonHover;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {
+		removeListeners();
+		super.dispose();
 	}
 
 }
