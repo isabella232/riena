@@ -37,6 +37,8 @@ public class RichString implements CharSequence {
 	// Parsing states
 	private static final int STATE_CHAR = 0;
 	private static final int STATE_BACK_SLASH = 1;
+	// Guess!
+	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	/**
 	 * Create a {@code RichString}.
@@ -45,8 +47,7 @@ public class RichString implements CharSequence {
 	 *            the original string
 	 */
 	public RichString(final String poorString) {
-		Assert.isLegal(poorString != null, "must not be null"); //$NON-NLS-1$
-		this.poorString = poorString;
+		this.poorString = poorString == null ? EMPTY_STRING : poorString;
 	}
 
 	/**
