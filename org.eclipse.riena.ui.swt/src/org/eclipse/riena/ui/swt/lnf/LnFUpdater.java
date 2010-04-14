@@ -187,8 +187,8 @@ public class LnFUpdater {
 	 *            UI control
 	 * @param property
 	 *            property to check
-	 * @return {@code true} if property should be ignored; otherwise {@code
-	 *         false}
+	 * @return {@code true} if property should be ignored; otherwise
+	 *         {@code false}
 	 */
 	private boolean ignoreProperty(Control control, PropertyDescriptor property) {
 
@@ -636,8 +636,8 @@ public class LnFUpdater {
 			defaultControl = ReflectionUtils.newInstanceHidden(controlClass, parent, style);
 		} catch (ReflectionFailure failure) {
 			try {
-				final Constructor<? extends Control>[] constructors = controlClass.getConstructors();
-				for (final Constructor<? extends Control> constructor : constructors) {
+				final Constructor<?>[] constructors = controlClass.getConstructors();
+				for (final Constructor<?> constructor : constructors) {
 					Class<?>[] paramTypes = constructor.getParameterTypes();
 					Object[] params = new Object[paramTypes.length];
 					boolean parentAssigned = false;
@@ -658,7 +658,7 @@ public class LnFUpdater {
 						}
 					}
 					try {
-						defaultControl = constructor.newInstance(params);
+						defaultControl = (Control) constructor.newInstance(params);
 					} catch (Exception e) {
 						defaultControl = null;
 					}
