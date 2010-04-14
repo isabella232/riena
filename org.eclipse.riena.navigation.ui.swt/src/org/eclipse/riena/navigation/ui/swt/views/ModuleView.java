@@ -702,12 +702,6 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		}
 
 		@Override
-		public void labelChanged(IModuleNode source) {
-			super.labelChanged(source);
-			updateModuleView();
-		}
-
-		@Override
 		public void markerChanged(IModuleNode source, IMarker marker) {
 			super.markerChanged(source, marker);
 			title.setMarkers(source.getMarkers());

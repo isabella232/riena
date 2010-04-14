@@ -180,6 +180,12 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 			fireUpdated(null);
 		}
 
+		@Override
+		public void labelChanged(IModuleNode source) {
+			super.labelChanged(source);
+			fireUpdated(null);
+		}
+
 	}
 
 	/**
