@@ -168,6 +168,9 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		setIcon(icon, IconSize.NONE);
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	public void setIcon(String icon, IconSize size) {
 		boolean oldUseRidgetIcon = useRidgetIcon;
 		useRidgetIcon = true;
@@ -258,6 +261,9 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		}
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	public void fireAction() {
 		if (isVisible() && isEnabled()) {
 			setSelected(!isSelected());
