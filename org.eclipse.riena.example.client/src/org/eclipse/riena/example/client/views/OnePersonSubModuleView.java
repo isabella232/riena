@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * This view displays the data of one person.
@@ -208,11 +209,23 @@ public class OnePersonSubModuleView extends SubModuleView {
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 
 		final Button nextButton = new Button(parent, SWT.NONE);
-		nextButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		nextButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		nextButton.setData("binding_property", "next"); //$NON-NLS-1$ //$NON-NLS-2$
 		nextButton.setText("Next Person"); //$NON-NLS-1$
+
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+
+		final Button jumpBackButton = UIControlsFactory.createButton(parent, "Jump Back", "jumpBack");
+		jumpBackButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+
 	}
 
 }

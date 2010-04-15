@@ -21,6 +21,7 @@ import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
@@ -146,8 +147,9 @@ public class OnePersonSubModuleController extends SubModuleController {
 		postalcode.setGrouping(false);
 		postalcode.addValidationRule(new MaxLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
 		town = (ITextRidget) getRidget("town"); //$NON-NLS-1$
-		IActionRidget show = (IActionRidget) getRidget("show"); //$NON-NLS-1$
-		IActionRidget next = (IActionRidget) getRidget("next"); //$NON-NLS-1$
+		final IActionRidget show = (IActionRidget) getRidget("show"); //$NON-NLS-1$
+		final IActionRidget next = (IActionRidget) getRidget("next"); //$NON-NLS-1$
+		final IActionRidget jumpBack = (IActionRidget) getRidget("jumpBack"); //$NON-NLS-1$
 
 		createPerson();
 		person.addPropertyChangeListener(new NameChangeListener());
@@ -167,6 +169,15 @@ public class OnePersonSubModuleController extends SubModuleController {
 		town.bindToModel(person.getAddress(), "town"); //$NON-NLS-1$
 		show.addListener(new ShowActionListener());
 		next.addListener(new NextActionListener());
+		jumpBack.addListener(new JumpBackActionListener());
+
+		getNavigationNode().addListener(new SubModuleNodeListener() {
+			@Override
+			public void afterActivated(ISubModuleNode source) {
+				super.afterActivated(source);
+				jumpBack.setEnabled(getNavigationNode().isJumpTarget());
+			}
+		});
 
 	}
 
@@ -202,6 +213,17 @@ public class OnePersonSubModuleController extends SubModuleController {
 			IModuleNode parent = (IModuleNode) getNavigationNode().getParent();
 			parent.addChild(nextSubModuleNode);
 
+		}
+
+	}
+
+	/**
+	 * Jumps back to the previous sub-module.
+	 */
+	private class JumpBackActionListener implements IActionListener {
+
+		public void callback() {
+			getNavigationNode().jumpBack();
 		}
 
 	}
