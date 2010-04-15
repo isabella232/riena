@@ -1346,58 +1346,182 @@ public class UIControlsFactory {
 		return tree;
 	}
 
+	/**
+	 * Create a {@link Spinner} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style bits; see {@link Spinner} for details
+	 * @param bindingId
+	 *            the binding property; never null; must not be empty. The given
+	 *            value will also be assigned to the Ridget that is paired to
+	 *            this control.
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.BORDER
+	 * @wbp.factory.parameter.source bindingId "mySpinnerId"
+	 */
 	public static Spinner createSpinner(Composite parent, int style, String bindingId) {
 		Spinner spinner = createSpinner(parent, style);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(spinner, bindingId);
 		return spinner;
 	}
 
+	/**
+	 * Create a {@link Spinner} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style bits; see {@link Spinner} for details
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.BORDER
+	 */
 	public static Spinner createSpinner(Composite parent, int style) {
 		return new Spinner(parent, style);
 	}
 
+	/**
+	 * Create a {@link Spinner} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 */
 	public static Spinner createSpinner(Composite parent) {
 		return createSpinner(parent, SWT.BORDER);
 	}
 
+	/**
+	 * Create a {@link Scale} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style bits; see {@link Scale} for details
+	 * @param bindingId
+	 *            the binding property; never null; must not be empty. The given
+	 *            value will also be assigned to the Ridget that is paired to
+	 *            this control.
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @wbp.factory.parameter.source bindingId "myScaleId"
+	 */
 	public static Scale createScale(Composite parent, int style, String bindingId) {
 		Scale scale = createScale(parent, style);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(scale, bindingId);
 		return scale;
 	}
 
+	/**
+	 * Create a {@link Scale} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style bits; see {@link Scale} for details
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 */
 	public static Scale createScale(Composite parent, int style) {
 		return new Scale(parent, style);
 	}
 
+	/**
+	 * Create a {@link Scale} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 */
 	public static Scale createScale(Composite parent) {
 		return createScale(parent, SWT.NONE);
 	}
 
+	/**
+	 * Create a {@link ProgressBar} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style bits; see {@link ProgressBar} for details
+	 * @param bindingId
+	 *            the binding property; never null; must not be empty. The given
+	 *            value will also be assigned to the Ridget that is paired to
+	 *            this control.
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
+	 * @wbp.factory.parameter.source bindingId "myProgressBarId"
+	 */
 	public static ProgressBar createProgressBar(Composite parent, int style, String bindingId) {
 		ProgressBar progressBar = createProgressBar(parent, style);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(progressBar, bindingId);
 		return progressBar;
 	}
 
+	/**
+	 * Create a {@link ProgressBar} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style bits; see {@link ProgressBar} for details
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
+	 */
 	public static ProgressBar createProgressBar(Composite parent, int style) {
 		return new ProgressBar(parent, style);
 	}
 
+	/**
+	 * Create a {@link ProgressBar} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 */
 	public static ProgressBar createProgressBar(Composite parent) {
 		return createProgressBar(parent, SWT.HORIZONTAL);
 	}
 
+	/**
+	 * Create a {@link Slider} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style bits; see {@link Slider} for details
+	 * @param bindingId
+	 *            the binding property; never null; must not be empty. The given
+	 *            value will also be assigned to the Ridget that is paired to
+	 *            this control.
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
+	 * @wbp.factory.parameter.source bindingId "mySliderId"
+	 */
 	public static Slider createSlider(Composite parent, int style, String bindingId) {
 		Slider slider = createSlider(parent, style);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(slider, bindingId);
 		return slider;
 	}
 
+	/**
+	 * Create a {@link Slider} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style bits; see {@link Slider} for details
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
+	 */
 	public static Slider createSlider(Composite parent, int style) {
 		return new Slider(parent, style);
 	}
 
+	/**
+	 * Create a {@link Slider} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 */
 	public static Slider createSlider(Composite parent) {
 		return createSlider(parent, SWT.HORIZONTAL);
 	}
