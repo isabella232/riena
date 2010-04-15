@@ -30,6 +30,7 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IAction;
+import org.eclipse.riena.navigation.IJumpTargetListener;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
@@ -1249,6 +1250,22 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 */
 	public boolean isJumpTarget() {
 		return getNavigationProcessor().isJumpTarget(this);
+	}
+
+	/**
+	 * @see INavigationNode#addJumpTargetListener(IJumpTargetListener)
+	 */
+	public void addJumpTargetListener(IJumpTargetListener listener) {
+		getNavigationProcessor().addJumpTargetListener(this, listener);
+
+	}
+
+	/**
+	 * @see INavigationNode#removeJumpTargetListener(IJumpTargetListener)
+	 */
+	public void removeJumpTargetListener(IJumpTargetListener listener) {
+		getNavigationProcessor().removeJumpTargetListener(this, listener);
+
 	}
 
 	/**

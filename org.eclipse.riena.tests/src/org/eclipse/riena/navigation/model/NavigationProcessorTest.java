@@ -20,6 +20,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
 import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.IJumpTargetListener;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
@@ -211,13 +212,41 @@ public class NavigationProcessorTest extends RienaTestCase {
 		}
 	}
 
-	public void testJump() throws Exception {
+	class DummyJumpTargetListener implements IJumpTargetListener {
 
+		IJumpTargetListener.JumpTargetState jumpTargetState;
+		INavigationNode<?> node;
+
+		DummyJumpTargetListener() {
+			reset();
+		}
+
+		public void jumpTargetStateChanged(INavigationNode<?> node, JumpTargetState jumpTargetState) {
+			this.jumpTargetState = jumpTargetState;
+			this.node = node;
+
+		}
+
+		void reset() {
+			jumpTargetState = null;
+			node = null;
+		}
+
+	}
+
+	public void testJump() throws Exception {
+		DummyJumpTargetListener listener = new DummyJumpTargetListener();
 		subModule1.activate();
+		subModule2.addJumpTargetListener(listener);
 		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2"));
+		assertSame(subModule2, listener.node);
+		assertSame(IJumpTargetListener.JumpTargetState.ENABLED, listener.jumpTargetState);
+		listener.reset();
 		assertTrue(subModule2.isActivated());
 		assertTrue(subModule2.isJumpTarget());
 		subModule2.jumpBack();
+		assertSame(subModule2, listener.node);
+		assertSame(IJumpTargetListener.JumpTargetState.DISABLED, listener.jumpTargetState);
 		assertFalse(subModule2.isJumpTarget());
 		assertTrue(subModule1.isActivated());
 		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2"));

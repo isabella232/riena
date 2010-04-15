@@ -31,6 +31,7 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.Trace;
 import org.eclipse.riena.internal.navigation.Activator;
+import org.eclipse.riena.navigation.IJumpTargetListener;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationHistory;
@@ -42,6 +43,7 @@ import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.IJumpTargetListener.JumpTargetState;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -342,6 +344,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 		if (NavigationType.JUMP == navigationType) {
 			registerJump(sourceNode, node);
+			fireJumpTargetStateChanged(node, JumpTargetState.ENABLED);
 		}
 
 		node.activate();
@@ -371,7 +374,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				;
 
 			if (entry.getValue().size() == 0) {
-				//fire event rejump deactivated for entry.key
+				fireJumpTargetStateChanged(entry.getKey(), JumpTargetState.DISABLED);
 				it.remove();
 			}
 		}
@@ -397,6 +400,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				backTarget.activate();
 			}
 			jumpTargets.remove(sourceNode);
+			fireJumpTargetStateChanged(sourceNode, JumpTargetState.DISABLED);
 		}
 	}
 
@@ -406,6 +410,46 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	public boolean isJumpTarget(INavigationNode<?> node) {
 		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(node);
 		return sourceStack != null && sourceStack.size() > 0;
+	}
+
+	private Map<INavigationNode<?>, List<IJumpTargetListener>> jumpTargetListeners = new HashMap<INavigationNode<?>, List<IJumpTargetListener>>();
+
+	/**
+	 * @see INavigationProcessor#addJumpTargetListener(INavigationNode,
+	 *      IJumpTargetListener)
+	 */
+	public void addJumpTargetListener(INavigationNode<?> node, IJumpTargetListener listener) {
+		List<IJumpTargetListener> listeners = jumpTargetListeners.get(node);
+		if (listeners == null) {
+			listeners = new LinkedList<IJumpTargetListener>();
+			jumpTargetListeners.put(node, listeners);
+		}
+		listeners.add(listener);
+	}
+
+	/**
+	 * @see INavigationProcessor#removeJumpTargetListener(INavigationNode,
+	 *      IJumpTargetListener)
+	 */
+	public void removeJumpTargetListener(INavigationNode<?> node, IJumpTargetListener listener) {
+		List<IJumpTargetListener> listeners = jumpTargetListeners.get(node);
+		if (listeners == null) {
+			return;
+		}
+		listeners.remove(listener);
+		if (listeners.size() == 0) {
+			jumpTargetListeners.remove(node);
+		}
+	}
+
+	private void fireJumpTargetStateChanged(INavigationNode<?> node, JumpTargetState jumpTargetState) {
+		List<IJumpTargetListener> listeners = jumpTargetListeners.get(node);
+		if (listeners == null) {
+			return;
+		}
+		for (IJumpTargetListener listener : listeners) {
+			listener.jumpTargetStateChanged(node, jumpTargetState);
+		}
 	}
 
 	/**

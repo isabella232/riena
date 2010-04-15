@@ -161,10 +161,32 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 
 	/**
 	 * 
+	 * @param node
+	 *            The source node.
 	 * @return True if the given {@link INavigationNode} has been jumped to.
 	 *         Otherwise false.
 	 */
 	boolean isJumpTarget(INavigationNode<?> node);
+
+	/**
+	 * Adds the given {@link IJumpTargetListener}
+	 * 
+	 * @param node
+	 *            The observed node
+	 * @param listener
+	 *            The {@link IJumpTargetListener} to add
+	 */
+	void addJumpTargetListener(INavigationNode<?> node, IJumpTargetListener listener);
+
+	/**
+	 * Removes the given {@link IJumpTargetListener}
+	 * 
+	 * @param node
+	 *            The observed node
+	 * @param listener
+	 *            The {@link IJumpTargetListener} to add
+	 */
+	void removeJumpTargetListener(INavigationNode<?> node, IJumpTargetListener listener);
 
 	/**
 	 * Answers the currently selected navigation node in the NavigationTree

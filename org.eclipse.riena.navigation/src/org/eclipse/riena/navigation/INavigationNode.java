@@ -701,6 +701,22 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	boolean isJumpTarget();
 
 	/**
+	 * Adds the given {@link IJumpTargetListener}
+	 * 
+	 * @param listener
+	 *            The {@link IJumpTargetListener} to add
+	 */
+	void addJumpTargetListener(IJumpTargetListener listener);
+
+	/**
+	 * Removes the given {@link IJumpTargetListener}
+	 * 
+	 * @param listener
+	 *            The {@link IJumpTargetListener} to add
+	 */
+	void removeJumpTargetListener(IJumpTargetListener listener);
+
+	/**
 	 * Called by a NavigationProcessor to add the given marker to the node
 	 * within an INavigationContext.
 	 * 
