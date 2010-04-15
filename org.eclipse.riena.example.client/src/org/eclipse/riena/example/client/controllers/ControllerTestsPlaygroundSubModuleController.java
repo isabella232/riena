@@ -324,11 +324,11 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 				multiTable.removeSelectionListener(multiTableSelectionListener);
 				if (selectAllToggleButton.isSelected()) {
 					selectAllToggleButton.setText("deselect"); //$NON-NLS-1$
-					int[] allIndeces = new int[multiTable.getOptionCount()];
+					int[] allIndices = new int[multiTable.getOptionCount()];
 					for (int i = 0; i < multiTable.getOptionCount(); i++) {
-						allIndeces[i] = i;
+						allIndices[i] = i;
 					}
-					multiTable.setSelection(allIndeces);
+					multiTable.setSelection(allIndices);
 				} else {
 					multiTable.clearSelection();
 					selectAllToggleButton.setText("select all"); //$NON-NLS-1$
