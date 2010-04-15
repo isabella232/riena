@@ -216,8 +216,9 @@ public class NavigationProcessorTest extends RienaTestCase {
 		subModule1.activate();
 		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2"));
 		assertTrue(subModule2.isActivated());
+		assertTrue(subModule2.isJumpTarget());
 		subModule2.jumpBack();
-
+		assertFalse(subModule2.isJumpTarget());
 		assertTrue(subModule1.isActivated());
 		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2"));
 		subModule2.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule3"));

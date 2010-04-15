@@ -401,6 +401,14 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
+	 * @see INavigationProcessor#isJumpTarget(INavigationNode)
+	 */
+	public boolean isJumpTarget(INavigationNode<?> node) {
+		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(node);
+		return sourceStack != null && sourceStack.size() > 0;
+	}
+
+	/**
 	 * Requests focus on given ridget. If the ridget is not found a
 	 * {@link RuntimeException} is thrown
 	 * 

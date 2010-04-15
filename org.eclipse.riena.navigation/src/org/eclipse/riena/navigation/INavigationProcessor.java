@@ -160,6 +160,13 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	void jumpBack(INavigationNode<?> sourceNode);
 
 	/**
+	 * 
+	 * @return True if the given {@link INavigationNode} has been jumped to.
+	 *         Otherwise false.
+	 */
+	boolean isJumpTarget(INavigationNode<?> node);
+
+	/**
 	 * Answers the currently selected navigation node in the NavigationTree
 	 * 
 	 * @return the currently selected SubModuleNode in the NavigationTree or

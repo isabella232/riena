@@ -1245,6 +1245,13 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#isJumpTarget()
+	 */
+	public boolean isJumpTarget() {
+		return getNavigationProcessor().isJumpTarget(this);
+	}
+
+	/**
 	 * @see org.eclipse.riena.navigation.INavigationHistory#historyBack()
 	 */
 	public void historyBack() {

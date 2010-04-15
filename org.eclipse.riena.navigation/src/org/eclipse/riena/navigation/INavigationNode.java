@@ -694,6 +694,13 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void jumpBack();
 
 	/**
+	 * 
+	 * @return True if this {@link INavigationNode} has been jumped to.
+	 *         Otherwise false.
+	 */
+	boolean isJumpTarget();
+
+	/**
 	 * Called by a NavigationProcessor to add the given marker to the node
 	 * within an INavigationContext.
 	 * 
