@@ -17,6 +17,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
@@ -34,8 +35,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Example of the {@link ITraverseRidget} used with SWT's Slider, Scale and
- * Spinner controls.
+ * Example of the {@link ITraverseRidget} used with SWT's Slider, Scale, Spinner
+ * and ProgressBar controls.
  */
 public final class SnippetTraverseRidget001 {
 
@@ -68,6 +69,12 @@ public final class SnippetTraverseRidget001 {
 			UIControlsFactory.createLabel(shell, "Spinner"); //$NON-NLS-1$
 			Spinner spinner = new Spinner(shell, SWT.HORIZONTAL);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(spinner);
+
+			// ProgressBar
+			UIControlsFactory.createLabel(shell, "Progress"); //$NON-NLS-1$
+			ProgressBar progressBar = new ProgressBar(shell, SWT.HORIZONTAL | SWT.SMOOTH);
+			progressBar.setState(SWT.PAUSED);
+			GridDataFactory.fillDefaults().grab(true, false).applyTo(progressBar);
 
 			/**
 			 * Create the ridgets
@@ -113,6 +120,15 @@ public final class SnippetTraverseRidget001 {
 
 			spinnerRidget.bindToModel(new IntegerBean(100), IntegerBean.PROP_VALUE);
 			spinnerRidget.updateFromModel();
+
+			// ProgressBar
+			ITraverseRidget progressBarRidget = (ITraverseRidget) SwtRidgetFactory.createRidget(progressBar);
+			progressBarRidget.setMaximum(MAXIMUM);
+			progressBarRidget.setMinimum(MINIMUM);
+			progressBarRidget.setToolTipText("Value of progress: [VALUE]"); //$NON-NLS-1$
+
+			progressBarRidget.bindToModel(new IntegerBean(100), IntegerBean.PROP_VALUE);
+			progressBarRidget.updateFromModel();
 
 			shell.setSize(270, 270);
 			shell.open();

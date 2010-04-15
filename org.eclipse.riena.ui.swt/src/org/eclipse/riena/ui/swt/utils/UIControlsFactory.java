@@ -33,7 +33,11 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Slider;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
@@ -1340,6 +1344,62 @@ public class UIControlsFactory {
 		Tree tree = createTree(parent, style);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(tree, bindingId);
 		return tree;
+	}
+
+	public static Spinner createSpinner(Composite parent, int style, String bindingId) {
+		Spinner spinner = createSpinner(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(spinner, bindingId);
+		return spinner;
+	}
+
+	public static Spinner createSpinner(Composite parent, int style) {
+		return new Spinner(parent, style);
+	}
+
+	public static Spinner createSpinner(Composite parent) {
+		return createSpinner(parent, SWT.BORDER);
+	}
+
+	public static Scale createScale(Composite parent, int style, String bindingId) {
+		Scale scale = createScale(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(scale, bindingId);
+		return scale;
+	}
+
+	public static Scale createScale(Composite parent, int style) {
+		return new Scale(parent, style);
+	}
+
+	public static Scale createScale(Composite parent) {
+		return createScale(parent, SWT.NONE);
+	}
+
+	public static ProgressBar createProgressBar(Composite parent, int style, String bindingId) {
+		ProgressBar progressBar = createProgressBar(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(progressBar, bindingId);
+		return progressBar;
+	}
+
+	public static ProgressBar createProgressBar(Composite parent, int style) {
+		return new ProgressBar(parent, style);
+	}
+
+	public static ProgressBar createProgressBar(Composite parent) {
+		return createProgressBar(parent, SWT.HORIZONTAL);
+	}
+
+	public static Slider createSlider(Composite parent, int style, String bindingId) {
+		Slider slider = createSlider(parent, style);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(slider, bindingId);
+		return slider;
+	}
+
+	public static Slider createSlider(Composite parent, int style) {
+		return new Slider(parent, style);
+	}
+
+	public static Slider createSlider(Composite parent) {
+		return createSlider(parent, SWT.HORIZONTAL);
 	}
 
 	/**

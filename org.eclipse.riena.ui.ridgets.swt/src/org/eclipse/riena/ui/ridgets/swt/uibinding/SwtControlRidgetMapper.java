@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
@@ -57,6 +58,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.MessageBoxRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ModuleTitleBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MultipleChoiceRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.NumericTextRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.ProgressBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ScaleRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.SingleChoiceRidget;
@@ -157,6 +159,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(Scale.class, ScaleRidget.class);
 		addMapping(Spinner.class, SpinnerRidget.class);
 		addMapping(Slider.class, SliderRidget.class);
+		addMapping(ProgressBar.class, ProgressBarRidget.class);
 		addMapping(InfoFlyout.class, InfoFlyoutRidget.class);
 	}
 

@@ -60,12 +60,23 @@ public class TraverseSubModuleController extends SubModuleController {
 		celsiusScale.updateFromModel();
 		celsiusScale.addListener(listener);
 
+		ITraverseRidget kelvinProgressBar = (ITraverseRidget) getRidget("kelvinProgressBar"); //$NON-NLS-1$
+		kelvinProgressBar.setIncrement(1);
+		kelvinProgressBar.setMaximum(323);
+		kelvinProgressBar.setMinimum(273);
+		kelvinProgressBar.bindToModel(BeansObservables.observeValue(temperature, Temperature.PROPERTY_KELVIN));
+		kelvinProgressBar.updateFromModel();
+
 	}
 
+	/**
+	 * Bean to store a temperature in different measuring units.
+	 */
 	private class Temperature extends AbstractBean {
 
 		static final String PROPERTY_DEGREE_CELSIUS = "degreeCelsius"; //$NON-NLS-1$
 		static final String PROPERTY_DEGREE_FAHRENHEITN = "degreeFahrenheit"; //$NON-NLS-1$
+		static final String PROPERTY_KELVIN = "kelvin"; //$NON-NLS-1$
 
 		private float kelvin;
 		private int degreeCelsius;
@@ -110,11 +121,12 @@ public class TraverseSubModuleController extends SubModuleController {
 			return degreeFahrenheit;
 		}
 
-		private void setKelvin(float kelvin) {
+		public void setKelvin(float kelvin) {
 			this.kelvin = kelvin;
+			System.out.println("TraverseSubModuleController.Temperature.setKelvin() " + kelvin);
 		}
 
-		private float getKelvin() {
+		public float getKelvin() {
 			return kelvin;
 		}
 
