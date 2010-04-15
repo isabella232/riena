@@ -114,6 +114,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 
 	public void clearSelection() {
 		singleSelectionObservable.setValue(null);
+		multiSelectionObservable.clear();
 	}
 
 	public boolean containsOption(Object option) {
@@ -232,6 +233,8 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	 * Implementation note: the method computes the subset of the current
 	 * selection that is available. If the subset is smaller that the current
 	 * selection, it will be applied and become the new current selection.
+	 * 
+	 * @since 2.0
 	 */
 	protected final void refreshSelection() {
 		List<?> rowObservables = getRowObservables();
