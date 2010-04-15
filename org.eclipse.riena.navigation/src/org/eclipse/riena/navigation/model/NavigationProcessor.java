@@ -58,6 +58,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	private Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
 	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
 	private Map<INavigationNode<?>, Stack<INavigationNode<?>>> jumpTargets = new HashMap<INavigationNode<?>, Stack<INavigationNode<?>>>();
+	private Map<INavigationNode<?>, List<IJumpTargetListener>> jumpTargetListeners = new HashMap<INavigationNode<?>, List<IJumpTargetListener>>();
 	private Map<INavigationNode<?>, INavigationNode<?>> navigationMap = new HashMap<INavigationNode<?>, INavigationNode<?>>();
 	private List<INavigationHistoryListener> navigationListener = new Vector<INavigationHistoryListener>();
 	private static boolean debugNaviProc = Trace.isOn(NavigationProcessor.class, "debug"); //$NON-NLS-1$
@@ -411,8 +412,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(node);
 		return sourceStack != null && sourceStack.size() > 0;
 	}
-
-	private Map<INavigationNode<?>, List<IJumpTargetListener>> jumpTargetListeners = new HashMap<INavigationNode<?>, List<IJumpTargetListener>>();
 
 	/**
 	 * @see INavigationProcessor#addJumpTargetListener(INavigationNode,
