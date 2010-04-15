@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.core.ping;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,7 +26,7 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 @NonUITestCase
 public class PingVisitorTest extends RienaTestCase {
 
-	protected static class PingMock extends DefaultPingable {
+	protected static class PingMock implements IPingable {
 		private boolean pingCalled;
 		private boolean expectPingCalled = true;
 		private boolean fail;
@@ -53,13 +52,25 @@ public class PingVisitorTest extends RienaTestCase {
 		/**
 		 * @see DefaultPingable#ping(PingVisitor)
 		 */
-		@Override
 		public PingVisitor ping(PingVisitor visitor) {
 			pingCalled = true;
 			if (fail) {
-				throw new RuntimeException("ping");
+				throw newException();
 			}
-			return super.ping(visitor);
+			return visitor.visit(this);
+		}
+
+		public static RuntimeException newException() {
+			return new RuntimeException("ping");
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.riena.core.ping.IPingable#getPingFingerprint()
+		 */
+		public PingFingerprint getPingFingerprint() {
+			return new PingFingerprint(this, false);
 		}
 	}
 
@@ -150,7 +161,7 @@ public class PingVisitorTest extends RienaTestCase {
 	 * Tests method {@link PingVisitor#visit(IPingable) visit()} with a failure
 	 * in method ping().
 	 */
-	public void testVisitWithFailureInPing() {
+	public void testVisitWithFailureInPing() throws Exception {
 		mock4 = new PingMock();
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
@@ -168,21 +179,45 @@ public class PingVisitorTest extends RienaTestCase {
 		};
 
 		mock4.letPingFail();
+		PingMethodAdapter mock3PingDB = new PingMethodAdapter(mock3, PingMockWithPingMethods.class
+				.getDeclaredMethod("pingDB"));
 
 		PingVisitor visitor = new PingVisitor();
-		try {
-			mock1.ping(visitor);
-			fail("Expected failure");
-		} catch (RuntimeException e) {
-			assertEquals("ping", e.getMessage());
-		}
+		visitor = visitor.ping(mock1);
+		assertNotNull(visitor);
+
+		Iterable<PingResult> pingResults = visitor.getPingResults();
+		assertResultContainsAll(pingResults, mock1);
+		PingResult mock1Result = getPingResultFor(mock1, pingResults);
+		assertNull(mock1Result.getPingFailure());
+		assertResultContainsAll(mock1Result.getNestedResults(), mock2, mock3);
+
+		PingResult mock2Result = getPingResultFor(mock2, mock1Result.getNestedResults());
+		assertNull(mock2Result.getPingFailure());
+		assertResultContainsAll(mock2Result.getNestedResults());
+
+		PingResult mock3Result = getPingResultFor(mock3, mock1Result.getNestedResults());
+		assertNull(mock3Result.getPingFailure());
+		assertResultContainsAll(mock3Result.getNestedResults(), mock4, mock5, mock3PingDB);
+
+		PingResult mock4Result = getPingResultFor(mock4, mock3Result.getNestedResults());
+		assertPingFailureContains(mock4Result, "RuntimeException", "ping");
+		assertResultContainsAll(mock4Result.getNestedResults());
+
+		PingResult mock5Result = getPingResultFor(mock5, mock3Result.getNestedResults());
+		assertNull(mock5Result.getPingFailure());
+		assertResultContainsAll(mock5Result.getNestedResults());
+
+		PingResult mock3PingDBResult = getPingResultFor(mock3PingDB, mock3Result.getNestedResults());
+		assertNull(mock3PingDBResult.getPingFailure());
+		assertResultContainsAll(mock3PingDBResult.getNestedResults());
 	}
 
 	/**
 	 * Tests method {@link PingVisitor#visit(IPingable) visit()} with a failure
 	 * in method pingDB().
 	 */
-	public void testVisitWithFailureInPingMethod() {
+	public void testVisitWithFailureInPingMethod() throws Exception {
 		mock4 = new PingMock();
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
@@ -201,14 +236,38 @@ public class PingVisitorTest extends RienaTestCase {
 
 		((PingMockWithPingMethods) mock3).letPingDBFail();
 
+		PingMethodAdapter mock3PingDB = new PingMethodAdapter(mock3, PingMockWithPingMethods.class
+				.getDeclaredMethod("pingDB"));
+
 		PingVisitor visitor = new PingVisitor();
-		try {
-			mock1.ping(visitor);
-			fail("Expected failure");
-		} catch (RuntimeException e) {
-			assertTrue(e.getCause().toString(), e.getCause() instanceof InvocationTargetException);
-			assertEquals("pingDB", ((InvocationTargetException) e.getCause()).getCause().getMessage());
-		}
+		visitor = visitor.ping(mock1);
+		assertNotNull(visitor);
+
+		Iterable<PingResult> pingResults = visitor.getPingResults();
+		assertResultContainsAll(pingResults, mock1);
+		PingResult mock1Result = getPingResultFor(mock1, pingResults);
+		assertNull(mock1Result.getPingFailure());
+		assertResultContainsAll(mock1Result.getNestedResults(), mock2, mock3);
+
+		PingResult mock2Result = getPingResultFor(mock2, mock1Result.getNestedResults());
+		assertNull(mock2Result.getPingFailure());
+		assertResultContainsAll(mock2Result.getNestedResults());
+
+		PingResult mock3Result = getPingResultFor(mock3, mock1Result.getNestedResults());
+		assertNull(mock3Result.getPingFailure());
+		assertResultContainsAll(mock3Result.getNestedResults(), mock4, mock5, mock3PingDB);
+
+		PingResult mock4Result = getPingResultFor(mock4, mock3Result.getNestedResults());
+		assertNull(mock4Result.getPingFailure());
+		assertResultContainsAll(mock4Result.getNestedResults());
+
+		PingResult mock5Result = getPingResultFor(mock5, mock3Result.getNestedResults());
+		assertNull(mock5Result.getPingFailure());
+		assertResultContainsAll(mock5Result.getNestedResults());
+
+		PingResult mock3PingDBResult = getPingResultFor(mock3PingDB, mock3Result.getNestedResults());
+		assertPingFailureContains(mock3PingDBResult, "RuntimeException", "pingDB");
+		assertResultContainsAll(mock3PingDBResult.getNestedResults());
 	}
 
 	/**
@@ -422,7 +481,7 @@ public class PingVisitorTest extends RienaTestCase {
 	 * Tests method {@link PingVisitor#getPingResults(IPingable)
 	 * getPingResults()}.
 	 */
-	public void testGetGetPingResults() {
+	public void testGetGetPingResults() throws Exception {
 		mock4 = new PingMock();
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
@@ -441,26 +500,79 @@ public class PingVisitorTest extends RienaTestCase {
 			@SuppressWarnings("unused")
 			private IPingable pingable1 = mock2;
 		};
+		PingMethodAdapter mock3PingDB = new PingMethodAdapter(mock3, PingMockWithPingMethods.class
+				.getDeclaredMethod("pingDB"));
 
 		PingVisitor visitor = new PingVisitor();
-		mock1.ping(visitor);
+		visitor = visitor.ping(mock1);
+		assertNotNull(visitor);
 
-		List<PingResult> pingResult = visitor.getPingResults();
-		assertNotNull(pingResult);
-		assertEquals(pingResult.toString(), 6, pingResult.size());
-		List<PingFingerprint> fingerprints = getFingerprints(pingResult);
-		assertTrue(fingerprints.remove(mock1.getPingFingerprint()));
-		assertTrue(fingerprints.remove(mock2.getPingFingerprint()));
-		assertTrue(fingerprints.remove(mock3.getPingFingerprint()));
-		assertTrue(fingerprints.remove(mock4.getPingFingerprint()));
-		assertTrue(fingerprints.remove(mock5.getPingFingerprint()));
-		assertTrue(fingerprints.get(0).toString().contains("#pingDB"));
+		Iterable<PingResult> pingResults = visitor.getPingResults();
+		assertResultContainsAll(pingResults, mock1);
+		PingResult mock1Result = getPingResultFor(mock1, pingResults);
+		assertNull(mock1Result.getPingFailure());
+		assertResultContainsAll(mock1Result.getNestedResults(), mock2, mock3);
+
+		PingResult mock2Result = getPingResultFor(mock2, mock1Result.getNestedResults());
+		assertNull(mock2Result.getPingFailure());
+		assertResultContainsAll(mock2Result.getNestedResults());
+
+		PingResult mock3Result = getPingResultFor(mock3, mock1Result.getNestedResults());
+		assertNull(mock3Result.getPingFailure());
+		assertResultContainsAll(mock3Result.getNestedResults(), mock4, mock5, mock3PingDB);
+
+		PingResult mock4Result = getPingResultFor(mock4, mock3Result.getNestedResults());
+		assertNull(mock4Result.getPingFailure());
+		assertResultContainsAll(mock4Result.getNestedResults());
+
+		PingResult mock5Result = getPingResultFor(mock5, mock3Result.getNestedResults());
+		assertNull(mock5Result.getPingFailure());
+		assertResultContainsAll(mock5Result.getNestedResults());
+
+		PingResult mock3PingDBResult = getPingResultFor(mock3PingDB, mock3Result.getNestedResults());
+		assertNull(mock3PingDBResult.getPingFailure());
+		assertResultContainsAll(mock3PingDBResult.getNestedResults());
 	}
 
-	private List<PingFingerprint> getFingerprints(List<PingResult> list) {
-		List<PingFingerprint> result = new ArrayList<PingFingerprint>();
+	private void assertResultContainsAll(Iterable<PingResult> resultList, IPingable... expected) {
+		assertNotNull(resultList);
+		int size = 0;
+		for (IPingable pingable : expected) {
+			++size;
+			assertResultContains(resultList, pingable);
+		}
+		assertEquals(expected.length, size);
+	}
+
+	private PingResult assertResultContains(Iterable<PingResult> resultList, IPingable expected) {
+		PingResult pingResult = getPingResultFor(expected, resultList);
+		if (pingResult == null) {
+			fail("Pingable " + expected + " not contained in " + resultList);
+		}
+		return pingResult;
+	}
+
+	private PingResult getPingResultFor(IPingable pingable, Iterable<PingResult> resultList) {
+		for (PingResult pingResult : resultList) {
+			if (pingResult.getPingableName().equals(pingable.getPingFingerprint().getName())) {
+				return pingResult;
+			}
+		}
+		return null;
+	}
+
+	private void assertPingFailureContains(PingResult pingResult, String... failureParts) {
+		assertNotNull("expected failures '" + failureParts + "' but is <null>", pingResult.getPingFailure());
+		for (String part : failureParts) {
+			assertTrue(part + " not contained in failure message '" + pingResult.getPingFailure() + "'", pingResult
+					.getPingFailure().contains(part));
+		}
+	}
+
+	private List<String> getFingerprintNames(List<PingResult> list) {
+		List<String> result = new ArrayList<String>();
 		for (PingResult pingResult : list) {
-			result.add(pingResult.getPingFingerprint());
+			result.add(pingResult.getPingableName());
 		}
 		return result;
 	}

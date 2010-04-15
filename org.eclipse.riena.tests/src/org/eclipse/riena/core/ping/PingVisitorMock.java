@@ -41,11 +41,6 @@ public class PingVisitorMock extends PingVisitor {
 	}
 
 	@Override
-	protected void logPing(IPingable pingable) {
-		super.logPing(pingable);
-	}
-
-	@Override
 	public Collection<IPingable> getChildPingablesOf(IPingable pingable) {
 		return super.getChildPingablesOf(pingable);
 	}

@@ -20,26 +20,21 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
-import org.osgi.service.log.LogService;
-
-import org.eclipse.equinox.log.Logger;
-
-import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.Nop;
-import org.eclipse.riena.internal.core.Activator;
 
 /**
  * The {@code PingVisitor} is responsible for crawling down the <i>hierarchy</i>
- * of pingable services.
+ * of pingable services. The entry point for starting a ping is method
+ * {@link #ping(IPingable) ping()}.
  */
 public class PingVisitor {
 
 	protected final List<PingFingerprint> cycleDectector = new ArrayList<PingFingerprint>();
 	protected final List<PingResult> pingResultList = new ArrayList<PingResult>();
+	protected final Stack<PingResult> resultStack = new Stack<PingResult>();
 	private final String name;
-
-	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), PingVisitor.class);
 
 	/**
 	 * Default Constructor
@@ -91,9 +86,6 @@ public class PingVisitor {
 		}
 
 		cycleDectector.add(fingerprint);
-		pingResultList.add(new PingResult(fingerprint));
-
-		// logPing( pingable );
 
 		// do not recurse on PingMethodAdapter
 		if (pingable instanceof PingMethodAdapter) {
@@ -103,23 +95,51 @@ public class PingVisitor {
 		try {
 			final Collection<IPingable> children = getChildPingablesOf(pingable);
 			for (final IPingable child : children) {
-				visitor = child.ping(visitor);
+				visitor = visitor.ping(child);
 			}
 		} finally {
-			cycleDectector.remove(fingerprint);
+			visitor.cycleDectector.remove(fingerprint);
 		}
 		return visitor;
 	}
 
 	/**
-	 * Log the visit.
+	 * This is the entry point to the pingable API. This method creates a
+	 * {@link PingResult PingResult}, calls {@link IPingable#ping(PingVisitor)
+	 * ping() } on the given pingable, catches any occurring Exception and
+	 * reports it in the PingResult.
 	 * 
 	 * @param pingable
+	 *            the {@link IPingable IPingable} to ping.
+	 * 
+	 * @return the PingVisitor. It might not be 'this' (e.g. in case of remote
+	 *         calls where the visitor is serialized), so always work on the one
+	 *         returned by this method.
 	 */
-	protected void logPing(final IPingable pingable) {
-		if (LOGGER.isLoggable(LogService.LOG_DEBUG)) {
-			LOGGER.log(LogService.LOG_DEBUG, "called ping() on " + pingable.getPingFingerprint()); //$NON-NLS-1$
+	public PingVisitor ping(IPingable pingable) {
+		PingVisitor visitor = this;
+		PingResult pingResult = new PingResult(getPingableName(pingable));
+
+		if (resultStack.isEmpty()) {
+			// root of a new ping, add to list
+			pingResultList.add(pingResult);
+		} else {
+			PingResult parent = resultStack.peek();
+			parent.addNestedResult(pingResult);
 		}
+		resultStack.push(pingResult);
+
+		Exception caughtException = null;
+		try {
+			visitor = pingable.ping(visitor);
+		} catch (Exception e) {
+			caughtException = e;
+		} finally {
+			pingResult = visitor.resultStack.pop();
+			pingResult.setPingFailure(caughtException);
+		}
+
+		return visitor;
 	}
 
 	/**
@@ -150,8 +170,8 @@ public class PingVisitor {
 	private void collectPingMethods(final Class<?> clazz, final IPingable pingable, final Set<IPingable> pingableList) {
 		final Method[] methods = clazz.getDeclaredMethods();
 		for (final Method method : methods) {
-			method.setAccessible(true);
 			if (isPingMethod(pingable, method)) {
+				setAccessible(method);
 				pingableList.add(new PingMethodAdapter(pingable, method));
 			}
 		}
@@ -174,11 +194,11 @@ public class PingVisitor {
 				continue;
 			}
 			try {
-				field.setAccessible(true);
+				setAccessible(field);
 				pingableList.add((IPingable) field.get(pingable));
 			} catch (final Exception e) {
-				throw new RuntimeException("Failed accessing IPingable field '" + field.getName() + "' within object " //$NON-NLS-1$ //$NON-NLS-2$
-						+ pingable.getClass().getName(), e);
+				pingableList.add(new UnavailablePingable(field.getName(),
+						"Pingable member " + field.getName() + " not accessible: " + e.getMessage())); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}
@@ -199,7 +219,7 @@ public class PingVisitor {
 			final Set<IPingable> pingableList) {
 		try {
 			final Method method = clazz.getDeclaredMethod("getAdditionalPingables", new Class[0]); //$NON-NLS-1$
-			method.setAccessible(true);
+			setAccessible(method);
 			final Type returnType = method.getGenericReturnType();
 			if (isIterableOfPingables(returnType)) {
 				final Iterable<IPingable> pingables = (Iterable<IPingable>) method.invoke(pingable, new Object[0]);
@@ -207,12 +227,31 @@ public class PingVisitor {
 					pingableList.add(additionalPingable);
 				}
 			}
+		} catch (NoSuchMethodException nsme) {
+			Nop.reason("no getAdditionalPingables() method"); //$NON-NLS-1$
 		} catch (final Exception e) {
-			Nop.reason("fall through"); //$NON-NLS-1$
+			pingableList.add(new UnavailablePingable("getAdditionalPingables", //$NON-NLS-1$
+					"Method getAdditionalPingables() not accessible: " + e.getMessage())); //$NON-NLS-1$
 		}
 		final Class<?> superClass = clazz.getSuperclass();
 		if (superClass != null) {
 			collectAdditionalPingables(superClass, pingable, pingableList);
+		}
+	}
+
+	private void setAccessible(Method method) {
+		try {
+			method.setAccessible(true);
+		} catch (final SecurityException e) {
+			Nop.reason("security restriction, hopefully it's public :-|"); //$NON-NLS-1$
+		}
+	}
+
+	private void setAccessible(Field field) {
+		try {
+			field.setAccessible(true);
+		} catch (final SecurityException e) {
+			Nop.reason("security restriction, hopefully it's public :-|"); //$NON-NLS-1$
 		}
 	}
 
@@ -271,6 +310,14 @@ public class PingVisitor {
 		}
 
 		return true;
+	}
+
+	private static String getPingableName(IPingable pingable) {
+		try {
+			return pingable.getPingFingerprint().getName();
+		} catch (Exception e) {
+			return pingable.toString();
+		}
 	}
 
 }
