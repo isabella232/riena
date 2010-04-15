@@ -165,9 +165,8 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 		assertTrue(selectAllToggleButton.isSelected());
 
 		selectAllToggleButton.fireAction();
-		//TODO cannot test this at the moment. Bug 298033: Make row selection in TableRidget independent of the UIControl
-		//https://bugs.eclipse.org/bugs/show_bug.cgi?id=298033 has to be fixed first
-		//		assertTrue(table.getSelection().isEmpty());
+		assertFalse(selectAllToggleButton.isSelected());
+		assertTrue(table.getSelection().isEmpty());
 
 		selectAllToggleButton.fireAction();
 		assertEquals(table.getObservableList().size(), table.getOptionCount());
