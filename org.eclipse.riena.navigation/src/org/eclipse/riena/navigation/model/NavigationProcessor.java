@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -51,12 +52,10 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
  */
 public class NavigationProcessor implements INavigationProcessor, INavigationHistory {
 
-	/**
-	 * 
-	 */
 	private static int maxStacksize = 40;
 	private Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
 	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
+	private Map<INavigationNode<?>, Stack<INavigationNode<?>>> jumpTargets = new HashMap<INavigationNode<?>, Stack<INavigationNode<?>>>();
 	private Map<INavigationNode<?>, INavigationNode<?>> navigationMap = new HashMap<INavigationNode<?>, INavigationNode<?>>();
 	private List<INavigationHistoryListener> navigationListener = new Vector<INavigationHistoryListener>();
 	private static boolean debugNaviProc = Trace.isOn(NavigationProcessor.class, "debug"); //$NON-NLS-1$
@@ -187,6 +186,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				}
 			}
 			cleanupHistory(nodeToDispose);
+			unregisterJumpSource(nodeToDispose);
 		}
 	}
 
@@ -311,15 +311,19 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		//		if (navigation != null && navigation.isNavigateAsync()) {
 		//			navigateAsync(sourceNode, targetId, navigation);
 		//		} else {
-		return navigateSync(sourceNode, targetId, navigation);
+		return navigateSync(sourceNode, targetId, navigation, NavigationType.DEFAULT);
 		//		}
+	}
+
+	private enum NavigationType {
+		DEFAULT, JUMP;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	private INavigationNode<?> navigateSync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
-			final NavigationArgument navigation) {
+			final NavigationArgument navigation, NavigationType navigationType) {
 		INavigationNode<?> targetNode = null;
 		try {
 			targetNode = provideNode(sourceNode, targetId, navigation);
@@ -335,6 +339,11 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			node = targetNode;
 		}
 		navigationMap.put(node, sourceNode);
+
+		if (NavigationType.JUMP == navigationType) {
+			registerJump(sourceNode, node);
+		}
+
 		node.activate();
 		try {
 			setFocusOnRidget(node, navigation);
@@ -343,6 +352,52 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 
 		return node;
+	}
+
+	private void registerJump(INavigationNode<?> source, INavigationNode<?> target) {
+		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(target);
+		if (sourceStack == null) {
+			sourceStack = new Stack<INavigationNode<?>>();
+			jumpTargets.put(target, sourceStack);
+		}
+		sourceStack.push(source);
+	}
+
+	private void unregisterJumpSource(INavigationNode<?> source) {
+		Iterator<Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>>> it = jumpTargets.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>> entry = it.next();
+			while (entry.getValue().remove(source))
+				;
+
+			if (entry.getValue().size() == 0) {
+				//fire event rejump deactivated for entry.key
+				it.remove();
+			}
+		}
+
+	}
+
+	/**
+	 * @see INavigationProcessor#jump(INavigationNode, NavigationNodeId,
+	 *      NavigationArgument)
+	 */
+	public void jump(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument) {
+		navigateSync(sourceNode, targetId, argument, NavigationType.JUMP);
+	}
+
+	/**
+	 * @see INavigationProcessor#jumpBack(INavigationNode, NavigationNodeId)
+	 */
+	public void jumpBack(INavigationNode<?> sourceNode) {
+		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(sourceNode);
+		if (sourceStack != null) {
+			if (sourceStack.size() > 0) {
+				INavigationNode<?> backTarget = sourceStack.pop();
+				backTarget.activate();
+			}
+			jumpTargets.remove(sourceNode);
+		}
 	}
 
 	/**

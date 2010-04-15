@@ -1224,6 +1224,27 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
+	 * @see INavigationNode#jump(NavigationNodeId)
+	 */
+	public void jump(NavigationNodeId targetId) {
+		jump(targetId, null);
+	}
+
+	/**
+	 * @see INavigationNode#jump(NavigationNodeId, NavigationArgument)
+	 */
+	public void jump(NavigationNodeId targetId, NavigationArgument argument) {
+		getNavigationProcessor().jump(this, targetId, argument);
+	}
+
+	/**
+	 * @see INavigationNode#jumpBack(NavigationNodeId)
+	 */
+	public void jumpBack() {
+		getNavigationProcessor().jumpBack(this);
+	}
+
+	/**
 	 * @see org.eclipse.riena.navigation.INavigationHistory#historyBack()
 	 */
 	public void historyBack() {

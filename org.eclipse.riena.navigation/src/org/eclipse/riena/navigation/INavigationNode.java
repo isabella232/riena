@@ -662,6 +662,38 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void navigateBack();
 
 	/**
+	 * Jumps to the specified navigation node (Creates it if does not already
+	 * exist). The source node of the jump is saved to allow later
+	 * {@link #jumpBack(NavigationNodeId, NavigationArgument)}
+	 * 
+	 * @param targetId
+	 *            ID of the node to jump to. Also refers to an extension point
+	 *            describing the target node that is used to create it if it
+	 *            does not exist.
+	 */
+	void jump(NavigationNodeId targetId);
+
+	/**
+	 * Jumps to the specified navigation node (Creates it if does not already
+	 * exist). The source node of the jump is saved to allow later
+	 * {@link #jumpBack(NavigationNodeId, NavigationArgument)}
+	 * 
+	 * @param targetId
+	 *            ID of the node to jump to. Also refers to an extension point
+	 *            describing the target node that is used to create it if it
+	 *            does not exist.
+	 * @param argument
+	 *            Contains information passed on to the target node and/or used
+	 *            during its creation.
+	 */
+	void jump(NavigationNodeId targetId, NavigationArgument argument);
+
+	/**
+	 * Jumps back to the source node of the last jump to this node.
+	 */
+	void jumpBack();
+
+	/**
 	 * Called by a NavigationProcessor to add the given marker to the node
 	 * within an INavigationContext.
 	 * 
