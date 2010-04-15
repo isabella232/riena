@@ -190,6 +190,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			}
 			cleanupHistory(nodeToDispose);
 			unregisterJumpSource(nodeToDispose);
+			cleanupJumpTargetListeners(nodeToDispose);
 		}
 	}
 
@@ -439,6 +440,10 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (listeners.size() == 0) {
 			jumpTargetListeners.remove(node);
 		}
+	}
+
+	private void cleanupJumpTargetListeners(INavigationNode<?> node) {
+		jumpTargetListeners.remove(node);
 	}
 
 	private void fireJumpTargetStateChanged(INavigationNode<?> node, JumpTargetState jumpTargetState) {
