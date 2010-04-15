@@ -83,7 +83,7 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 		}
 	}
 
-	@InjectService(useRanking = true)
+	@InjectService
 	public void bind(IServiceHook serviceHook) {
 		serviceHooks.add(serviceHook);
 	}
