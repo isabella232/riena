@@ -79,6 +79,21 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 		installDefaultBinding();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.application.WorkbenchAdvisor#preShutdown()
+	 */
+	@Override
+	public boolean preShutdown() {
+		boolean result = super.preShutdown();
+		if (result) {
+			controller.getNavigationNode().dispose();
+		}
+
+		return result;
+	}
+
 	// helping methods
 	//////////////////
 
