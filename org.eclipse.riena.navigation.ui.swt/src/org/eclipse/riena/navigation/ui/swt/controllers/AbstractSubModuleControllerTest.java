@@ -30,11 +30,10 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
- * package org.eclipse.riena.navigation.ui.swt.controllers;
+ * Abstract class for SubModuleController testing. All controller tests should
+ * use this as the super class
  * 
- * import org.easymock.EasyMock;
- * 
- * /** Abstract class for SubModuleController testing.
+ * @since 2.0
  */
 @NonUITestCase
 public abstract class AbstractSubModuleControllerTest<C extends SubModuleController> extends RienaTestCase {
