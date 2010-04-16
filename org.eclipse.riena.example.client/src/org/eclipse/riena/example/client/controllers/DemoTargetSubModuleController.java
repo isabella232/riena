@@ -17,7 +17,8 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
 /**
- * Controller demonstrating the use of {@link INavigationNode#jumpBack()}
+ * Controller demonstrating the use of {@link INavigationNode#jumpBack()} and
+ * {@link IJumpTargetListener}
  */
 public class DemoTargetSubModuleController extends SubModuleController {
 
