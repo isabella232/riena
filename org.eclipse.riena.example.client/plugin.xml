@@ -42,6 +42,11 @@
       </perspective>
    </extension>
    <extension point="org.eclipse.ui.views">
+   	  <view allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.DemoTargetSubModuleView"
+            id="org.eclipse.riena.example.client.views.DemoTargetSubModuleView"
+            name="org.eclipse.riena.example.client.views.DemoTargetSubModuleView">
+      </view>
       <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"
             id="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"
@@ -746,6 +751,12 @@
       <assembly2
             id="org.eclipse.riena.example.navigate.submoduleToModuleAtIndex2"
             assembler="org.eclipse.riena.example.client.navigation.model.AddSubmoduleToModuleAtIndexAssembler"
+            parentNodeId="org.eclipse.riena.example.navigate.module">
+      </assembly2>
+      
+      <assembly2
+            id="org.eclipse.riena.example.navigate.demotarget"
+            assembler="org.eclipse.riena.example.client.navigation.model.DemoTargetNodeAssembler"
             parentNodeId="org.eclipse.riena.example.navigate.module">
       </assembly2>
       

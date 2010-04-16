@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.example.client.navigation.model.DemoTargetNodeAssembler;
 import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
@@ -83,6 +84,10 @@ public class NavigateSubModuleController extends SubModuleController {
 		IActionRidget moveInActiveModule = getRidget(IActionRidget.class, "moveInActiveModule"); //$NON-NLS-1$
 		moveInActiveModule.setText("Move Inactive Module"); //$NON-NLS-1$
 		moveInActiveModule.addListener(new MoveInActiveModule());
+
+		IActionRidget demoTarget = getRidget(IActionRidget.class, "jumpToTarget"); //$NON-NLS-1$
+		demoTarget.setText("Jump To Target"); //$NON-NLS-1$
+		demoTarget.addListener(new JumpToTarget());
 
 		final PersonModificationBean bean = new PersonModificationBean();
 		bean.setPerson(new Person("Doe", "Jane")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -239,6 +244,17 @@ public class NavigateSubModuleController extends SubModuleController {
 			ModuleNode moduleNode = (ModuleNode) getNavigationNode().getParentOfType(SubApplicationNode.class)
 					.findNode(new NavigationNodeId("org.eclipse.riena.example.module.1.1.1")); //$NON-NLS-1$
 			moduleNode.moveTo(getNavigationNode().getParentOfType(ModuleGroupNode.class).getNodeId());
+
+		}
+	}
+
+	private class JumpToTarget implements IActionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void callback() {
+			getNavigationNode().jump(new NavigationNodeId(DemoTargetNodeAssembler.ID));
 
 		}
 	}
