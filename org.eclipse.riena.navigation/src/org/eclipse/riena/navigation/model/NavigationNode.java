@@ -789,6 +789,16 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 			context = new HashMap<String, Object>();
 		}
 		context.put(key, value);
+		checkForNavigationArgumentUpdate(key, value);
+	}
+
+	private void checkForNavigationArgumentUpdate(String key, Object value) {
+		if (NavigationArgument.CONTEXTKEY_ARGUMENT.equals(key) && getNavigationNodeController() != null) {
+			NavigationArgument oldArgument = (NavigationArgument) getContext(NavigationArgument.CONTEXTKEY_ARGUMENT);
+			if (oldArgument == null || !oldArgument.equals(value)) {
+				getNavigationNodeController().navigationArgumentChanged((NavigationArgument) value);
+			}
+		}
 	}
 
 	/**

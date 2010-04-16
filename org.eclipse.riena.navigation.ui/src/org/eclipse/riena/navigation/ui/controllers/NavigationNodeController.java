@@ -26,6 +26,7 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
+import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.common.TypecastingObject;
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 import org.eclipse.riena.ui.core.context.IContext;
@@ -92,7 +93,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * @param navigationNode
 	 *            the navigationNode to set
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings( { "rawtypes", "unchecked" })
 	public void setNavigationNode(N navigationNode) {
 		if (getNavigationNode() instanceof INavigationNodeListenerable) {
 			((INavigationNodeListenerable) getNavigationNode()).removeListener(nodeListener);
@@ -218,9 +219,10 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 					if (mappedRidgetClazz != null) {
 						ridget = mappedRidgetClazz.newInstance();
 					}
-					Assert.isNotNull(
-							ridget,
-							"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+					Assert
+							.isNotNull(
+									ridget,
+									"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
 					ridget = ridgetClazz.newInstance();
 				}
@@ -355,6 +357,12 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	public Object getContext(String key) {
 		Assert.isNotNull(getNavigationNode(), "NavigationNode may not be null"); //$NON-NLS-1$
 		return getNavigationNode().getContext(key);
+	}
+
+	/**
+	 * @see INavigationNodeController#navigationArgumentChanged(NavigationArgument)
+	 */
+	public void navigationArgumentChanged(NavigationArgument argument) {
 	}
 
 }

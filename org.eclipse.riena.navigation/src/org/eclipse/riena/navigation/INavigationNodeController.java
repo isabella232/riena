@@ -51,4 +51,13 @@ public interface INavigationNodeController extends ITypecastingAdaptable {
 	 */
 	boolean allowsDispose(INavigationNode<?> node, INavigationContext context);
 
+	/**
+	 * This method is called if the {@link NavigationArgument} of the node
+	 * changes while navigating.
+	 * 
+	 * @param argument
+	 *            The current {@link NavigationArgument}
+	 */
+	void navigationArgumentChanged(NavigationArgument argument);
+
 }
