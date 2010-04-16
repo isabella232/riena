@@ -190,8 +190,8 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView {
 		Label lblZero = new Label(composite, SWT.NONE);
 		lblZero.setText("0\u00B0"); //$NON-NLS-1$
 
-		Label label_1 = new Label(composite, SWT.NONE);
-		label_1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		Label label = new Label(composite, SWT.NONE);
+		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 
 		Label lblPlus50 = new Label(composite, SWT.NONE);
 		lblPlus50.setText("50\u00B0"); //$NON-NLS-1$
@@ -207,19 +207,15 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView {
 
 		Table multiTable = UIControlsFactory.createTable(parent, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION,
 				"multiTable"); //$NON-NLS-1$
-		GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.FILL).grab(true, false).applyTo(multiTable);
-		//		multiTable.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
+		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).span(2, 1).grab(true, false).applyTo(multiTable);
 
 		List tableList = UIControlsFactory.createList(parent, false, false, "tableList"); //$NON-NLS-1$
-		//		tableList.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
-		GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.FILL).grab(true, false).applyTo(tableList);
+		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).hint(120, 150).applyTo(tableList);
 
-		Button toggleButton = UIControlsFactory.createButtonToggle(parent, "", "toggleButton"); //$NON-NLS-1$ //$NON-NLS-2$
+		Button toggleButton = UIControlsFactory.createButtonToggle(parent, " select all ", "toggleButton"); //$NON-NLS-1$ //$NON-NLS-2$
 		toggleButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-
-		Button tableButton = UIControlsFactory.createButton(parent, "copy selection", "copySelectionButton"); //$NON-NLS-1$ //$NON-NLS-2$
-		tableButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		UIControlsFactory.createLabel(parent, "", "doubleClickLabel"); //$NON-NLS-1$ //$NON-NLS-2$
+		Button copySelectionButton = UIControlsFactory.createButton(parent, " copy selection ", "copySelectionButton"); //$NON-NLS-1$ //$NON-NLS-2$
+		GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(copySelectionButton);
 	}
 
 	/**
@@ -266,10 +262,7 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView {
 		Label label = UIControlsFactory.createLabel(parent, "Browser:"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(false, true).applyTo(label);
 		Browser browser = UIControlsFactory.createBrowser(parent, SWT.NONE, "browser"); //$NON-NLS-1$
-		GridData gd_browser = new GridData(SWT.LEFT, SWT.FILL, true, false, 1, 1);
-		gd_browser.widthHint = 150;
-		gd_browser.heightHint = 50;
-		browser.setLayoutData(gd_browser);
+		GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.FILL).grab(true, false).hint(150, 50).applyTo(browser);
 	}
 
 	// helping methods
@@ -308,9 +301,6 @@ public class ControllerTestsPlaygroundSubModuleView extends SubModuleView {
 		mdComposite.addUIControl(ccPets, "pets"); //$NON-NLS-1$
 
 		this.addUIControl(mdComposite, "master"); //$NON-NLS-1$
-
-		//DefaultButtonManager dbm = new DefaultButtonManager(parent.getShell());
-		//dbm.addButton(mdComposite.getButtonApply(), mdComposite);
 
 		return result;
 	}

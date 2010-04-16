@@ -34,7 +34,6 @@ public class ChoiceSubModuleControllerTest extends AbstractSubModuleControllerTe
 	}
 
 	public void testPriceAstonMartin() {
-
 		ISingleChoiceRidget compositeCarModel = getController().getRidget(ISingleChoiceRidget.class,
 				"compositeCarModel"); //$NON-NLS-1$
 		compositeCarModel.setSelection(CarModels.ASTON_MARTIN);

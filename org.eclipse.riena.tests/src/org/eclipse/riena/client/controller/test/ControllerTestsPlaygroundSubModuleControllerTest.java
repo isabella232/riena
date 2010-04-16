@@ -131,7 +131,7 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 
 	public void testTable() {
 		ITableRidget table = getController().getRidget(ITableRidget.class, "multiTable");
-		IActionRidget button = getController().getRidget(IActionRidget.class, "copySelectionButton");
+		IActionRidget copySelectionButton = getController().getRidget(IActionRidget.class, "copySelectionButton");
 		IListRidget list = getController().getRidget(IListRidget.class, "tableList");
 		IToggleButtonRidget selectAllToggleButton = getController()
 				.getRidget(IToggleButtonRidget.class, "toggleButton");
@@ -146,7 +146,7 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 		assertEquals(persons.get(2), table.getSelection().get(0));
 		assertTrue(selectAllToggleButton.isSelected());
 
-		button.fireAction();
+		copySelectionButton.fireAction();
 		assertEquals(persons.get(2), list.getObservableList().get(0));
 
 		int[] selection = { 0, 3, 5 };
@@ -159,7 +159,7 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 
 		assertEquals(selectedPersons, table.getSelection());
 
-		button.fireAction();
+		copySelectionButton.fireAction();
 		assertEquals(selectedPersons, list.getObservableList());
 
 		assertTrue(selectAllToggleButton.isSelected());
