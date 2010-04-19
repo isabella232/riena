@@ -24,6 +24,8 @@ public abstract class AbstractNavigationAssembler implements INavigationAssemble
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
 	public String getId() {
 		return id;
@@ -31,6 +33,8 @@ public abstract class AbstractNavigationAssembler implements INavigationAssemble
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -38,6 +42,8 @@ public abstract class AbstractNavigationAssembler implements INavigationAssemble
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
 	public String getParentNodeId() {
 		return parentNodeId;
@@ -45,6 +51,8 @@ public abstract class AbstractNavigationAssembler implements INavigationAssemble
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
 	public void setParentNodeId(String parentNodeId) {
 		this.parentNodeId = parentNodeId;
@@ -52,6 +60,8 @@ public abstract class AbstractNavigationAssembler implements INavigationAssemble
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
 	public int getStartOrder() {
 		return startOrder;
@@ -59,6 +69,8 @@ public abstract class AbstractNavigationAssembler implements INavigationAssemble
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
 	public void setStartOrder(int startOrder) {
 		this.startOrder = startOrder;
@@ -66,6 +78,8 @@ public abstract class AbstractNavigationAssembler implements INavigationAssemble
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
 	public INavigationAssembly2Extension getAssembly() {
 		return assembly;
@@ -73,6 +87,8 @@ public abstract class AbstractNavigationAssembler implements INavigationAssemble
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
 	public void setAssembly(INavigationAssembly2Extension assembly) {
 		this.assembly = assembly;
