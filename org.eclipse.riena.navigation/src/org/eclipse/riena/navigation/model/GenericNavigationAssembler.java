@@ -50,10 +50,16 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 	/** dynamic variable referencing navigation parameter */
 	public static final String VAR_NAVIGATION_PARAMETER = "riena.navigation.parameter"; //$NON-NLS-1$
 
+	/**
+	 * @since 2.0
+	 */
 	protected Set<String> acceptedTargetIds = null;
 	// the IAssemblyProvider that can be used to resolve assembly references
 	private IAssemblerProvider assemblerProvider;
 
+	/**
+	 * @since 2.0
+	 */
 	protected final void initializeAcceptedTargetIds() {
 
 		if (getAssembly() != null) {
@@ -123,6 +129,8 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
 	public INavigationNode<?>[] buildNode(final NavigationNodeId targetId, final NavigationArgument navigationArgument) {
 
@@ -183,6 +191,7 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 	 *            be null.
 	 * @param context
 	 * @return created sub-application node
+	 * @since 2.0
 	 */
 	protected ISubApplicationNode build(final ISubApplicationNode2Extension subApplicationDefinition,
 			final NavigationNodeId targetId, final NavigationArgument navigationArgument,
@@ -221,6 +230,7 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 	 *            be null.
 	 * @param context
 	 * @return created module group node
+	 * @since 2.0
 	 */
 	protected IModuleGroupNode build(final IModuleGroupNode2Extension groupDefinition, final NavigationNodeId targetId,
 			final NavigationArgument navigationArgument, final Map<String, Object> context) {
@@ -254,6 +264,7 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 	 *            be null.
 	 * @param context
 	 * @return created module node
+	 * @since 2.0
 	 */
 	protected IModuleNode build(final IModuleNode2Extension moduleDefinition, final NavigationNodeId targetId,
 			final NavigationArgument navigationArgument, final Map<String, Object> context) {
@@ -295,6 +306,7 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 	 *            be null.
 	 * @param context
 	 * @return created sub-module node
+	 * @since 2.0
 	 */
 	protected ISubModuleNode build(final ISubModuleNode2Extension subModuleDefinition, final NavigationNodeId targetId,
 			final NavigationArgument navigationArgument, final Map<String, Object> context) {
@@ -309,7 +321,8 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 			submodule = new SubModuleNode(createNavigationNodeIdFromTemplate(targetId, subModuleDefinition,
 					navigationArgument), subModuleDefinition.getName());
 			submodule.setIcon(subModuleDefinition.getIcon());
-
+			submodule.setVisible(subModuleDefinition.isVisible());
+			submodule.setExpanded(subModuleDefinition.isExpanded());
 			submodule.setSelectable(subModuleDefinition.isSelectable());
 
 			updateContext(submodule, navigationArgument);
@@ -338,6 +351,7 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 	 *            Optional argument passed on from the navigate(..) method. May
 	 *            be null. (<i>not used in this implementation.</i>)
 	 * @return create ID of a navigation node
+	 * @since 2.0
 	 */
 	protected NavigationNodeId createNavigationNodeIdFromTemplate(final NavigationNodeId template,
 			final INode2Extension nodeExtension, final NavigationArgument navigationArgument) {
@@ -386,6 +400,9 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 		return new HashSet<String>(acceptedTargetIds);
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	protected void updateAcceptedTargetIds(final String typeId) {
 		if (typeId != null) {
 			acceptedTargetIds.add(typeId);

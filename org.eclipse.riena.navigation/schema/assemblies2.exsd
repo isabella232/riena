@@ -292,6 +292,20 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="visible" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  Indicates whether the SubModule is visible in the navigation tree on system start.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="expanded" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  Indicates whether the SubModule is expanded by default.
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

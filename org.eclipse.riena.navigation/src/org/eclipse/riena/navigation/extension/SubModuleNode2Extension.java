@@ -17,6 +17,8 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
  * Implementation of the interface {@code ISubModuleNode2Extension}. This is
  * only used for conversion of the legacy extension
  * {@link ISubModuleNodeExtension}.
+ * 
+ * @since 2.0
  */
 public class SubModuleNode2Extension extends Node2Extension implements ISubModuleNode2Extension {
 
@@ -25,6 +27,8 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	private boolean sharedView;
 	private boolean selectable;
 	private boolean requiresPreparation;
+	private boolean visible;
+	private boolean expanded;
 
 	/**
 	 * Creates a new instance of {@code SubModuleNode2Extension} and sets the
@@ -32,6 +36,8 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	 */
 	public SubModuleNode2Extension() {
 		selectable = true;
+		visible = true;
+		expanded = false;
 	}
 
 	/**
@@ -138,6 +144,34 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	 */
 	public void setRequiresPreparation(boolean requiresPreparation) {
 		this.requiresPreparation = requiresPreparation;
+	}
+
+	public boolean isExpanded() {
+		return expanded;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	/**
+	 * Sets whether the SubModule should be expanded on system start.
+	 * 
+	 * @param expanded
+	 *            {@code true} should be expanded; otherwise {@code false}
+	 */
+	public void setExpanded(boolean expanded) {
+		this.expanded = expanded;
+	}
+
+	/**
+	 * Sets whether the SubModule should be visible on system start.
+	 * 
+	 * @param expanded
+	 *            {@code true} should be visible; otherwise {@code false}
+	 */
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 }

@@ -18,6 +18,8 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
 /**
  * Interface for a SubModuleNode extension that defines how to create a node or
  * a subtree in the application model tree.
+ * 
+ * @since 2.0
  */
 @ExtensionInterface
 public interface ISubModuleNode2Extension extends INode2Extension {
@@ -81,5 +83,23 @@ public interface ISubModuleNode2Extension extends INode2Extension {
 	 * @return {@code true} should be prepared; otherwise {@code false}
 	 */
 	boolean isRequiresPreparation();
+
+	/**
+	 * Indicates whether the SubModule is expanded by default. <br>
+	 * The default value is {@code false}
+	 * 
+	 * @return {@code true} is expanded; otherwise {@code false}
+	 */
+	boolean isExpanded();
+
+	/**
+	 * Indicates whether the SubModule is visible in the navigation tree on
+	 * system start. <br>
+	 * The default value is {@code true}
+	 * 
+	 * @return {@code true} is shown; otherwise {@code false}
+	 */
+	@DefaultValue("true")
+	boolean isVisible();
 
 }

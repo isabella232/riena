@@ -628,32 +628,40 @@
                   closable="true">
                <subModule
                      controller="org.eclipse.riena.example.client.controllers.SalaryController"
+                     expanded="false"
                      name="Salary"
+                     nodeId="org.eclipse.riena.example.selectablesubmodule.salary"
                      selectable="true"
                      sharedView="false"
-                     nodeId="org.eclipse.riena.example.selectablesubmodule.salary"
-                     viewId="org.eclipse.riena.example.client.views.SalaryView">
+                     viewId="org.eclipse.riena.example.client.views.SalaryView"
+                     visible="true">
                </subModule>
                <subModule
+                     expanded="true"
                      name="Contracts (not selectable)"
+                     nodeId="org.eclipse.riena.example.selectablesubmodule.contracts"
                      selectable="false"
                      sharedView="false"
-                     nodeId="org.eclipse.riena.example.selectablesubmodule.contracts">
+                     visible="true">
                   <subModule
                         controller="org.eclipse.riena.example.client.controllers.ServiceContractsController"
+                        expanded="false"
                         name="ServiceContracts"
+                        nodeId="org.eclipse.riena.example.selectablesubmodule.servicecontracts"
                         selectable="true"
                         sharedView="false"
-                        nodeId="org.eclipse.riena.example.selectablesubmodule.servicecontracts"
-                        viewId="org.eclipse.riena.example.client.views.ServiceContractsView">
+                        viewId="org.eclipse.riena.example.client.views.ServiceContractsView"
+                        visible="true">
                   </subModule>
                   <subModule
                         controller="org.eclipse.riena.example.client.controllers.OutlineContractsController"
+                        expanded="false"
                         name="OutlineContracts"
+                        nodeId="org.eclipse.riena.example.selectablesubmodule.outlinecontracts"
                         selectable="true"
                         sharedView="false"
-                        nodeId="org.eclipse.riena.example.selectablesubmodule.outlinecontracts"
-                        viewId="org.eclipse.riena.example.client.views.OutlineContractsView">
+                        viewId="org.eclipse.riena.example.client.views.OutlineContractsView"
+                        visible="true">
                   </subModule>
                </subModule>
             </module>
@@ -717,10 +725,12 @@
                   nodeId="logcollectorModule">
                <subModule
                      controller="org.eclipse.riena.example.client.controllers.LogCollectorSubModuleController"
+                     expanded="false"
                      name="Log Collector"
-                     requiresPreparation="true"
                      nodeId="org.eclipse.riena.example.logcollectorlog"
-                     viewId="org.eclipse.riena.example.client.views.LogCollectorSubModuleView"/>
+                     requiresPreparation="true"
+                     viewId="org.eclipse.riena.example.client.views.LogCollectorSubModuleView"
+                     visible="true"/>
             </module>
          </moduleGroup>
       </assembly2>
@@ -789,30 +799,36 @@
                   closable="true">
                <subModule
                      controller="org.eclipse.riena.example.client.controllers.TextSubModuleController"
+                     expanded="false"
                      name="Text"
+                     nodeId="textSubModuleView"
                      requiresPreparation="true"
                      selectable="true"
                      sharedView="false"
-                     nodeId="textSubModuleView"
-                     viewId="org.eclipse.riena.example.client.views.TextSubModuleView">
+                     viewId="org.eclipse.riena.example.client.views.TextSubModuleView"
+                     visible="true">
                </subModule>
                <subModule
                      controller="org.eclipse.riena.example.client.controllers.TextNumericSubModuleController"
+                     expanded="false"
                      name="Numeric Text"
+                     nodeId="textNumericSubModuleView"
                      requiresPreparation="true"
                      selectable="true"
                      sharedView="false"
-                     nodeId="textNumericSubModuleView"
-                     viewId="org.eclipse.riena.example.client.views.TextNumericSubModuleView">
+                     viewId="org.eclipse.riena.example.client.views.TextNumericSubModuleView"
+                     visible="true">
                </subModule>
                <subModule
                      controller="org.eclipse.riena.example.client.controllers.TextDateSubModuleController"
+                     expanded="false"
                      name="Date Text"
+                     nodeId=".textDateSubModuleView"
                      requiresPreparation="true"
                      selectable="true"
                      sharedView="false"
-                     nodeId=".textDateSubModuleView"
-                     viewId="org.eclipse.riena.example.client.views.TextDateSubModuleView">
+                     viewId="org.eclipse.riena.example.client.views.TextDateSubModuleView"
+                     visible="true">
                </subModule>
             </module>
          </moduleGroup>
