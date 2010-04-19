@@ -109,6 +109,14 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 					if (allowsActivate(navigationContext)) {
 						deactivate(navigationContext);
 						activate(navigationContext);
+					} else {
+						INavigationNode<?> currentActive = getActiveChild(toActivate.getParent());
+						toActivateList.clear();
+						toActivateList.add(currentActive);
+						toDeactivateList.clear();
+						navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
+						activate(navigationContext);
+						currentActive.onAfterActivate(navigationContext);
 					}
 				}
 			}

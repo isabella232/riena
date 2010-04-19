@@ -360,6 +360,20 @@
             name="org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.BeforeActivateSubModuleView"
+            id="org.eclipse.riena.example.client.views.BeforeActivateSubModuleView"
+            name="org.eclipse.riena.example.client.views.BeforeActivateSubModuleView"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.AllowActivateSubModuleView"
+            id="org.eclipse.riena.example.client.views.AllowActivateSubModuleView"
+            name="org.eclipse.riena.example.client.views.AllowActivateSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -829,6 +843,38 @@
                      sharedView="false"
                      viewId="org.eclipse.riena.example.client.views.TextDateSubModuleView"
                      visible="true">
+               </subModule>
+            </module>
+         </moduleGroup>
+      </assembly2>
+      <assembly2
+            id="org.eclipse.riena.example.beforeactivate.assembly"
+            parentNodeId="org.eclipse.riena.example.navigation.subapplication"
+            startOrder="2">
+         <moduleGroup
+               name="Before Activate"
+               nodeId="org.eclipse.riena.example.beforeactivate.mg">
+            <module
+                  closable="true"
+                  name="Before Activate"
+                  nodeId="org.eclipse.riena.example.beforeactivate.module">
+               <subModule
+                     controller="org.eclipse.riena.example.client.controllers.BeforeActivateSubModuleController"
+                     name="Before Activate"
+                     nodeId="org.eclipse.riena.example.client.subModule.beforeActivate"
+                     requiresPreparation="true"
+                     selectable="true"
+                     sharedView="false"
+                     viewId="org.eclipse.riena.example.client.views.BeforeActivateSubModuleView">
+               </subModule>
+               <subModule
+                     controller="org.eclipse.riena.example.client.controllers.AllowActivateSubModuleController"
+                     name="Allow Activate"
+                     nodeId="org.eclipse.riena.example.client.subModule.allowActivate"
+                     requiresPreparation="true"
+                     selectable="true"
+                     sharedView="false"
+                     viewId="org.eclipse.riena.example.client.views.AllowActivateSubModuleView">
                </subModule>
             </module>
          </moduleGroup>
