@@ -11,7 +11,8 @@
 package org.eclipse.riena.navigation.extension;
 
 /**
- *
+ * @since 2.0
+ * 
  */
 public abstract class Node2Extension implements INode2Extension {
 

@@ -16,6 +16,8 @@ import org.eclipse.riena.navigation.INavigationAssembler;
 
 /**
  * Interface with the common methods of an extension of a navigation assembly.
+ * 
+ * @since 2.0
  */
 @ExtensionInterface
 public interface ICommonNavigationAssemblyExtension {

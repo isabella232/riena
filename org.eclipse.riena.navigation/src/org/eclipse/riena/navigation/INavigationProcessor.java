@@ -42,6 +42,7 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 *            the node to prepare
 	 * 
 	 * @see INavigationNode#prepare()
+	 * @since 2.0
 	 */
 	void prepare(INavigationNode<?> toPrepare);
 
@@ -100,6 +101,7 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 *            An existing node in the application model tree.
 	 * @param targetId
 	 *            ID of the node where the sourceNode has to be added as child.
+	 * @since 2.0
 	 */
 	void move(INavigationNode<?> sourceNode, NavigationNodeId targetId);
 
@@ -119,6 +121,7 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 * @return target node
 	 * 
 	 * @see INavigationAssembler
+	 * @since 2.0
 	 */
 	INavigationNode<?> navigate(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
 
@@ -148,6 +151,7 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 * @param argument
 	 *            Contains information passed on to the target node and/or used
 	 *            during its creation.
+	 * @since 2.0
 	 */
 	void jump(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
 
@@ -156,6 +160,7 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 * 
 	 * @param sourceNode
 	 *            The source node.
+	 * @since 2.0
 	 */
 	void jumpBack(INavigationNode<?> sourceNode);
 
@@ -165,6 +170,7 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 *            The source node.
 	 * @return True if the given {@link INavigationNode} has been jumped to.
 	 *         Otherwise false.
+	 * @since 2.0
 	 */
 	boolean isJumpTarget(INavigationNode<?> node);
 
@@ -175,6 +181,7 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 *            The observed node
 	 * @param listener
 	 *            The {@link IJumpTargetListener} to add
+	 * @since 2.0
 	 */
 	void addJumpTargetListener(INavigationNode<?> node, IJumpTargetListener listener);
 
@@ -185,6 +192,7 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 *            The observed node
 	 * @param listener
 	 *            The {@link IJumpTargetListener} to add
+	 * @since 2.0
 	 */
 	void removeJumpTargetListener(INavigationNode<?> node, IJumpTargetListener listener);
 

@@ -16,6 +16,8 @@ import org.eclipse.riena.core.injector.extension.MapName;
 /**
  * Interface for a SubApplicationNode extension that defines how to create a
  * node or a subtree in the application model tree.
+ * 
+ * @since 2.0
  */
 @ExtensionInterface
 public interface ISubApplicationNode2Extension extends INode2Extension {
