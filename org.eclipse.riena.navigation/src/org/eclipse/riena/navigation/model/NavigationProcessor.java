@@ -32,6 +32,7 @@ import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.Trace;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IJumpTargetListener;
+import org.eclipse.riena.navigation.IJumpTargetListener.JumpTargetState;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationHistory;
@@ -43,7 +44,6 @@ import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.navigation.IJumpTargetListener.JumpTargetState;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -71,10 +71,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (toActivate != null) {
 			if (toActivate.isActivated()) {
 				if (debugNaviProc) {
-					LOGGER
-							.log(
-									LogService.LOG_DEBUG,
-									"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
+					LOGGER.log(
+							LogService.LOG_DEBUG,
+							"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
 				}
 				Nop.reason("see comment below."); //$NON-NLS-1$
 				// do nothing
@@ -88,10 +87,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				}
 				if (!toActivate.isVisible() || !toActivate.isEnabled()) {
 					if (debugNaviProc) {
-						LOGGER
-								.log(
-										LogService.LOG_DEBUG,
-										"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is not visible or not enabled --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
+						LOGGER.log(
+								LogService.LOG_DEBUG,
+								"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is not visible or not enabled --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
 					}
 
 					return;
@@ -119,6 +117,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
 	public void prepare(INavigationNode<?> toPrepare) {
 
@@ -308,6 +308,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 2.0
 	 */
 	public INavigationNode<?> navigate(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
 			final NavigationArgument navigation) {
@@ -386,6 +388,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	/**
 	 * @see INavigationProcessor#jump(INavigationNode, NavigationNodeId,
 	 *      NavigationArgument)
+	 * @since 2.0
 	 */
 	public void jump(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument) {
 		navigateSync(sourceNode, targetId, argument, NavigationType.JUMP);
@@ -393,6 +396,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	/**
 	 * @see INavigationProcessor#jumpBack(INavigationNode, NavigationNodeId)
+	 * @since 2.0
 	 */
 	public void jumpBack(INavigationNode<?> sourceNode) {
 		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(sourceNode);
@@ -408,6 +412,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	/**
 	 * @see INavigationProcessor#isJumpTarget(INavigationNode)
+	 * @since 2.0
 	 */
 	public boolean isJumpTarget(INavigationNode<?> node) {
 		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(node);
@@ -417,6 +422,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	/**
 	 * @see INavigationProcessor#addJumpTargetListener(INavigationNode,
 	 *      IJumpTargetListener)
+	 * @since 2.0
 	 */
 	public void addJumpTargetListener(INavigationNode<?> node, IJumpTargetListener listener) {
 		List<IJumpTargetListener> listeners = jumpTargetListeners.get(node);
@@ -430,6 +436,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	/**
 	 * @see INavigationProcessor#removeJumpTargetListener(INavigationNode,
 	 *      IJumpTargetListener)
+	 * @since 2.0
 	 */
 	public void removeJumpTargetListener(INavigationNode<?> node, IJumpTargetListener listener) {
 		List<IJumpTargetListener> listeners = jumpTargetListeners.get(node);
