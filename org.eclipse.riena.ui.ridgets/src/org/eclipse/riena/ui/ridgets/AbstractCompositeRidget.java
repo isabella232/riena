@@ -77,6 +77,9 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		return ridgets.get(id);
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	@SuppressWarnings("unchecked")
 	public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
 		R ridget = (R) getRidget(id);
