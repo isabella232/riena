@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.beans.common.AbstractBean;
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
@@ -912,17 +913,26 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setApplyTriggersNew(false);
 
 		assertFalse(ridget.isApplyTriggersNew());
+	}
 
-		IMasterDetailsRidget ridget2 = (IMasterDetailsRidget) createRidget();
-		ridget2.setUIControl(new MDWidget(getShell(), SWT.NONE) {
-			@Override
-			public Button createButtonNew(Composite parent) {
-				return null;
-			}
-		});
-		ridget2.setApplyTriggersNew(true);
+	public void testApplyTriggersNewWhenNewButtonDoesNotExist() {
+		boolean isTesting = RienaStatus.isTest();
+		// disable the ridget "auto-creation" for this test
+		System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false");
+		try {
+			IMasterDetailsRidget ridget = (IMasterDetailsRidget) createRidget();
+			ridget.setUIControl(new MDWidget(getShell(), SWT.NONE) {
+				@Override
+				public Button createButtonNew(Composite parent) {
+					return null;
+				}
+			});
+			ridget.setApplyTriggersNew(true);
 
-		assertFalse(ridget2.isApplyTriggersNew());
+			assertFalse(ridget.isApplyTriggersNew());
+		} finally {
+			System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, String.valueOf(isTesting));
+		}
 	}
 
 	// helping methods
