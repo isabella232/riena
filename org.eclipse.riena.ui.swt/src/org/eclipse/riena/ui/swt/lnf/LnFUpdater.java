@@ -30,6 +30,7 @@ import org.apache.oro.util.CacheLRU;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -37,6 +38,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.Nop;
@@ -45,6 +47,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -65,6 +68,8 @@ public class LnFUpdater {
 	private final static Map<Class<? extends Control>, List<PropertyDescriptor>> CONTROL_PROPERTIES = new Hashtable<Class<? extends Control>, List<PropertyDescriptor>>();
 	private final static Map<Class<? extends Control>, Map<String, Object>> DEFAULT_PROPERTY_VALUES = new Hashtable<Class<? extends Control>, Map<String, Object>>();
 	private final static List<Class<? extends Control>> CONTROLS_AFTER_BIND = new ArrayList<Class<? extends Control>>();
+
+	private Shell tmpShell;
 
 	public LnFUpdater() {
 		this(false);
@@ -100,11 +105,29 @@ public class LnFUpdater {
 	 * @param parent
 	 *            composite which children are updated.
 	 */
-	public void updateUIControls(Composite parent) {
+	public void updateUIControls(Composite parent, boolean updateLayout) {
 
 		if (!checkPropertyUpdateView()) {
 			return;
 		}
+
+		updateUIControlsRecursive(parent);
+		if (updateLayout) {
+			parent.layout(true, true);
+		}
+
+		SwtUtilities.disposeWidget(tmpShell);
+		tmpShell = null;
+
+	}
+
+	/**
+	 * Updates the properties of all children of the given composite.
+	 * 
+	 * @param parent
+	 *            composite which children are updated.
+	 */
+	private void updateUIControlsRecursive(Composite parent) {
 
 		Control[] controls = parent.getChildren();
 		for (Control uiControl : controls) {
@@ -112,7 +135,7 @@ public class LnFUpdater {
 			updateUIControl(uiControl);
 
 			if (uiControl instanceof Composite) {
-				updateUIControls((Composite) uiControl);
+				updateUIControlsRecursive((Composite) uiControl);
 			}
 
 		}
@@ -127,8 +150,17 @@ public class LnFUpdater {
 	 *            composite which children are updated.
 	 */
 	public void updateUIControlsAfterBind(Composite parent) {
-		updateAfterBind(parent);
+
+		if (!checkPropertyUpdateView()) {
+			return;
+		}
+
+		updateUIControlsAfterBindRecursie(parent);
 		parent.layout(true, true);
+
+		SwtUtilities.disposeWidget(tmpShell);
+		tmpShell = null;
+
 	}
 
 	/**
@@ -137,11 +169,7 @@ public class LnFUpdater {
 	 * @param parent
 	 *            composite which children are updated.
 	 */
-	private void updateAfterBind(Composite parent) {
-
-		if (!checkPropertyUpdateView()) {
-			return;
-		}
+	private void updateUIControlsAfterBindRecursie(Composite parent) {
 
 		Control[] controls = parent.getChildren();
 		for (Control uiControl : controls) {
@@ -151,7 +179,7 @@ public class LnFUpdater {
 			}
 
 			if (uiControl instanceof Composite) {
-				updateAfterBind((Composite) uiControl);
+				updateUIControlsAfterBindRecursie((Composite) uiControl);
 			}
 
 		}
@@ -424,7 +452,7 @@ public class LnFUpdater {
 
 		Class<? extends Control> controlClass = control.getClass();
 		if (!DEFAULT_PROPERTY_VALUES.containsKey(controlClass)) {
-			Control defaultControl = createDefaultControl(controlClass, control.getParent(), control.getStyle());
+			Control defaultControl = createDefaultControl(controlClass, control.getStyle());
 			if (defaultControl != null) {
 				List<PropertyDescriptor> properties = getProperties(control);
 				Map<String, Object> defaults = new Hashtable<String, Object>(properties.size());
@@ -698,17 +726,16 @@ public class LnFUpdater {
 	 * 
 	 * @param controlClass
 	 *            class of the UI control
-	 * @param parent
-	 *            a widget which will be the parent of the new instance
 	 * @param style
 	 *            the style of widget to construct
 	 * @return instance of UI control or {@code null} if no instance can be
 	 *         created
 	 */
-	private Control createDefaultControl(final Class<? extends Control> controlClass, final Composite parent, int style) {
+	private Control createDefaultControl(final Class<? extends Control> controlClass, int style) {
 
 		Control defaultControl = null;
 
+		Composite parent = getTmpShellComposite();
 		try {
 			defaultControl = ReflectionUtils.newInstanceHidden(controlClass, parent, style);
 		} catch (ReflectionFailure failure) {
@@ -750,6 +777,29 @@ public class LnFUpdater {
 
 		return defaultControl;
 
+	}
+
+	/**
+	 * Returns a temporary shell. This shell will be disposed after all controls
+	 * a updated.
+	 * 
+	 * @return temporary shell
+	 */
+	private Shell getTmpShell() {
+		if (tmpShell == null) {
+			tmpShell = new Shell();
+			new Composite(tmpShell, SWT.NONE);
+		}
+		return tmpShell;
+	}
+
+	/**
+	 * Returns the composite inside the temporary shell.
+	 * 
+	 * @return composite of temporary shell
+	 */
+	private Composite getTmpShellComposite() {
+		return (Composite) getTmpShell().getChildren()[0];
 	}
 
 }

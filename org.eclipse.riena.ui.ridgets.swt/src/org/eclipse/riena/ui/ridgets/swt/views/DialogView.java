@@ -136,7 +136,7 @@ public abstract class DialogView extends RienaDialog {
 		super.create();
 		addUIControls(getShell());
 		bindController();
-		LNF_UPDATER.updateUIControls(getShell());
+		LNF_UPDATER.updateUIControls(getShell(), true);
 
 		getShell().addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
@@ -151,7 +151,7 @@ public abstract class DialogView extends RienaDialog {
 	protected Control createDialogArea(Composite parent) {
 		Control dlgContente = buildView(parent);
 		addUIControl(getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
-		LNF_UPDATER.updateUIControls(parent);
+		LNF_UPDATER.updateUIControls(parent, true);
 		return dlgContente;
 	}
 }

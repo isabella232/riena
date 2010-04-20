@@ -334,7 +334,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		statusLine.setLayoutData(fd);
 		addUIControl(statusLine, "statusline"); //$NON-NLS-1$
 
-		new LnFUpdater().updateUIControls(statusLine);
+		new LnFUpdater().updateUIControls(statusLine, true);
 	}
 
 	/**

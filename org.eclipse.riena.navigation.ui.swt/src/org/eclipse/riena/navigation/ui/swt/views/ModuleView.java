@@ -468,7 +468,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		//		updateModuleView();
 
 		createBodyContent(body);
-		LNF_UPDATER.updateUIControls(body);
+		LNF_UPDATER.updateUIControls(body, true);
 	}
 
 	/**
