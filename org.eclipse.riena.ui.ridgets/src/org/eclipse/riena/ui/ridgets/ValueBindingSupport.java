@@ -240,16 +240,12 @@ public class ValueBindingSupport {
 			if ((targetOV.getValueType() == uiControlToModelConverter.getFromType())
 					&& (modelOV.getValueType() == uiControlToModelConverter.getToType())) {
 				uiControlToModelStrategy.setConverter(uiControlToModelConverter);
-			} else {
-				uiControlToModelStrategy.setConverter(new ConverterWrapper(uiControlToModelConverter));
 			}
 		}
 		if (modelToUIControlConverter != null) {
 			if ((targetOV.getValueType() == modelToUIControlConverter.getToType())
 					&& (modelOV.getValueType() == modelToUIControlConverter.getFromType())) {
 				modelToUIControlStrategy.setConverter(modelToUIControlConverter);
-			} else {
-				modelToUIControlStrategy.setConverter(new ConverterWrapper(modelToUIControlConverter));
 			}
 		}
 
@@ -491,45 +487,4 @@ public class ValueBindingSupport {
 	//		System.out.println(message); 
 	//	}
 
-	// helping classes
-	//////////////////
-
-	/**
-	 * Workaround for Bug 294527. When using generic, types are erased are
-	 * runtime (i.e. <Foo> is reported as Object) which causes some (too strict)
-	 * assertions in the databinding code to fail.
-	 * <p>
-	 * This class is used when this case is detected. It wraps a standard
-	 * IConverter and reports the correct types.
-	 */
-	private final class ConverterWrapper implements IConverter {
-
-		private final IConverter delegate;
-
-		public ConverterWrapper(IConverter delegate) {
-			Assert.isNotNull(delegate);
-			this.delegate = delegate;
-		}
-
-		public Object getFromType() {
-			Object result = null;
-			if (!(modelOV.getValueType() instanceof Object)) {
-				result = delegate.getFromType();
-			}
-			return result;
-		}
-
-		public Object getToType() {
-			Object result = null;
-			if (!(targetOV.getValueType() instanceof Object)) {
-				result = delegate.getToType();
-			}
-			return result;
-		}
-
-		public Object convert(Object fromObject) {
-			return delegate.convert(fromObject);
-		}
-
-	}
 }
