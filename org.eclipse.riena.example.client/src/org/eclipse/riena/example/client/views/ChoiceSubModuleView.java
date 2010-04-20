@@ -98,6 +98,15 @@ public class ChoiceSubModuleView extends SubModuleView {
 
 		// next row
 
+		UIControlsFactory.createLabel(group, "Color"); //$NON-NLS-1$
+
+		ChoiceComposite compositeColor = new ChoiceComposite(group, SWT.NONE, false);
+		compositeColor.setOrientation(SWT.VERTICAL);
+		choiceLayoutFactory.applyTo(compositeColor);
+		addUIControl(compositeColor, "compositeColor"); //$NON-NLS-1$
+
+		// next row
+
 		UIControlsFactory.createLabel(group, "Price"); //$NON-NLS-1$
 
 		Text txtPrice = UIControlsFactory.createText(group, SWT.RIGHT);

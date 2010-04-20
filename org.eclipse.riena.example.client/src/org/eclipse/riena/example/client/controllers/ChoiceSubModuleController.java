@@ -25,6 +25,7 @@ import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.example.client.views.ChoiceSubModuleView;
 import org.eclipse.riena.internal.ui.ridgets.swt.SingleChoiceRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -83,6 +84,10 @@ public class ChoiceSubModuleController extends SubModuleController {
 		compositeCarPlates.addMarker(new MandatoryMarker());
 		compositeCarPlates.updateFromModel();
 
+		final ISingleChoiceRidget compositeColor = getRidget(ISingleChoiceRidget.class, "compositeColor"); //$NON-NLS-1$
+		compositeColor.bindToModel(carConfig, "colors", carConfig, CarConfig.PROP_COLOR); //$NON-NLS-1$
+		compositeColor.updateFromModel();
+
 		ITextRidget txtPrice = getRidget(ITextRidget.class, "txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
 		DataBindingContext dbc = new DataBindingContext();
@@ -109,8 +114,20 @@ public class ChoiceSubModuleController extends SubModuleController {
 				compositeCarExtras.updateFromModel();
 				compositeCarWarranty.updateFromModel();
 				compositeCarPlates.updateFromModel();
+				compositeColor.updateFromModel();
 			}
 		});
+
+		getNavigationNode().addListener(new SubModuleNodeListener() {
+			@Override
+			public void beforeActivated(ISubModuleNode source) {
+				if (!carConfig.getColors().contains("white")) { //$NON-NLS-1$
+					carConfig.addColor("white"); //$NON-NLS-1$
+					compositeColor.updateFromModel();
+				}
+			}
+		});
+
 	}
 
 	private WritableList toList(Object[] values) {
@@ -130,11 +147,25 @@ public class ChoiceSubModuleController extends SubModuleController {
 		public static final String PROP_WARRANTY = "warranty"; //$NON-NLS-1$
 		public static final String PROP_PLATES = "plates"; //$NON-NLS-1$
 		public static final String PROP_PRICE = "price"; //$NON-NLS-1$
+		public static final String PROP_COLOR = "color"; //$NON-NLS-1$
 
 		private CarModels model;
 		private List<CarOptions> options = new ArrayList<CarOptions>();
 		private CarWarranties warranty;
 		private List<String> plates = new ArrayList<String>();
+		private List<String> colors = new ArrayList<String>();
+		private String color;
+
+		public CarConfig() {
+			addColor("red"); //$NON-NLS-1$
+			addColor("black"); //$NON-NLS-1$
+			addColor("blue"); //$NON-NLS-1$
+			setColor(getColors().get(0));
+		}
+
+		public void addColor(String color) {
+			getColors().add(color);
+		}
 
 		public CarModels getModel() {
 			return model;
@@ -177,6 +208,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 			setOptions(new ArrayList<CarOptions>());
 			setWarranty(null);
 			setPlates(new ArrayList<String>());
+			setColor(getColors().get(0));
 		}
 
 		public long getPrice() {
@@ -191,6 +223,19 @@ public class ChoiceSubModuleController extends SubModuleController {
 			price += plates.size() * 200L;
 			return price;
 		}
+
+		public void setColor(String color) {
+			this.color = color;
+		}
+
+		public String getColor() {
+			return color;
+		}
+
+		public List<String> getColors() {
+			return colors;
+		}
+
 	}
 
 	public enum CarModels {
