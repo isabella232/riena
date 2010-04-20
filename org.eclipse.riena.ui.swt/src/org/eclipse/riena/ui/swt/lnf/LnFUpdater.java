@@ -64,6 +64,7 @@ public class LnFUpdater {
 
 	private final static Map<Class<? extends Control>, List<PropertyDescriptor>> CONTROL_PROPERTIES = new Hashtable<Class<? extends Control>, List<PropertyDescriptor>>();
 	private final static Map<Class<? extends Control>, Map<String, Object>> DEFAULT_PROPERTY_VALUES = new Hashtable<Class<? extends Control>, Map<String, Object>>();
+	private final static List<Class<? extends Control>> CONTROLS_AFTER_BIND = new ArrayList<Class<? extends Control>>();
 
 	public LnFUpdater() {
 		this(false);
@@ -80,6 +81,17 @@ public class LnFUpdater {
 		if (clearCache) {
 			resourceCache = new CacheLRU(200);
 		}
+	}
+
+	/**
+	 * @since 1.2
+	 */
+	public static void addControlsAfterBind(Class<? extends Control> controlClass) {
+
+		if (!CONTROLS_AFTER_BIND.contains(controlClass)) {
+			CONTROLS_AFTER_BIND.add(controlClass);
+		}
+
 	}
 
 	/**
@@ -104,6 +116,71 @@ public class LnFUpdater {
 			}
 
 		}
+
+	}
+
+	/**
+	 * Updates the properties of all children of the given composite and updates
+	 * the layout of the given parent.
+	 * 
+	 * @param parent
+	 *            composite which children are updated.
+	 */
+	public void updateUIControlsAfterBind(Composite parent) {
+		updateAfterBind(parent);
+		parent.layout(true, true);
+	}
+
+	/**
+	 * Updates the properties of all children of the given composite.
+	 * 
+	 * @param parent
+	 *            composite which children are updated.
+	 */
+	private void updateAfterBind(Composite parent) {
+
+		if (!checkPropertyUpdateView()) {
+			return;
+		}
+
+		Control[] controls = parent.getChildren();
+		for (Control uiControl : controls) {
+
+			if (checkUpdateAfterBind(uiControl)) {
+				updateUIControl(uiControl);
+			}
+
+			if (uiControl instanceof Composite) {
+				updateAfterBind((Composite) uiControl);
+			}
+
+		}
+
+	}
+
+	/**
+	 * Checks is the given UI control must be updated after bind.
+	 * 
+	 * @param uiControl
+	 *            UI control
+	 * @return {@code true} if the control must be updated; otherwise {@code
+	 *         false}
+	 */
+	private boolean checkUpdateAfterBind(Control uiControl) {
+
+		if (uiControl == null) {
+			return false;
+		}
+
+		if (CONTROLS_AFTER_BIND.contains(uiControl.getClass())) {
+			return true;
+		}
+
+		if (uiControl.getParent() != null) {
+			return checkUpdateAfterBind(uiControl.getParent());
+		}
+
+		return false;
 
 	}
 
@@ -187,8 +264,8 @@ public class LnFUpdater {
 	 *            UI control
 	 * @param property
 	 *            property to check
-	 * @return {@code true} if property should be ignored; otherwise
-	 *         {@code false}
+	 * @return {@code true} if property should be ignored; otherwise {@code
+	 *         false}
 	 */
 	private boolean ignoreProperty(Control control, PropertyDescriptor property) {
 

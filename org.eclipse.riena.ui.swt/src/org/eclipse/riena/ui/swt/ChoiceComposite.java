@@ -18,6 +18,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
@@ -65,6 +66,7 @@ public class ChoiceComposite extends Composite {
 		this.orientation = SWT.VERTICAL;
 		applyOrientation();
 		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
+		LnFUpdater.addControlsAfterBind(this.getClass());
 	}
 
 	/**
