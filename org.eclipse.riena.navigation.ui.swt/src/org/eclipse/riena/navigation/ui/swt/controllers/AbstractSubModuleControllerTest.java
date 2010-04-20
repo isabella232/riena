@@ -67,6 +67,12 @@ public abstract class AbstractSubModuleControllerTest<C extends SubModuleControl
 
 	}
 
+	@Override
+	protected void tearDown() throws Exception {
+		System.getProperties().put(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false"); //$NON-NLS-1$
+		super.tearDown();
+	}
+
 	protected C getController() {
 		return controller;
 	}
