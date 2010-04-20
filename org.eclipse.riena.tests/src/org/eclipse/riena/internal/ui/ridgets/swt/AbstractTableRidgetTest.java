@@ -30,8 +30,8 @@ import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.ridgets.ISelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
-import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableRidget;
 import org.eclipse.riena.ui.tests.base.TestMultiSelectionBean;
@@ -591,7 +591,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
 		setUIControlRowSelectionInterval(0, 2);
 
-		multiSelectionBean.getSelectionList().clear();
+		multiSelectionBean.setSelectionList(new ArrayList<Object>());
 		multiSelectionBean.getSelectionList().add(getRowValue(1));
 		multiSelectionBean.getSelectionList().add(getRowValue(2));
 
@@ -624,7 +624,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
 		setUIControlRowSelectionInterval(0, 2);
 
-		multiSelectionBean.getSelectionList().clear();
+		multiSelectionBean.setSelectionList(new ArrayList<Object>());
 		multiSelectionBean.getSelectionList().add(getRowValue(1));
 		multiSelectionBean.getSelectionList().add(getRowValue(2));
 
