@@ -10,8 +10,17 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.hooks;
 
+/**
+ * Helper class to give access the ServiceMessageContext for this remote service
+ * call.
+ */
 public interface IServiceMessageContextAccessor {
 
+	/**
+	 * Returns the currently enabled ServiceMessageContext
+	 * 
+	 * @return
+	 */
 	IServiceMessageContext getMessageContext();
 
 }
