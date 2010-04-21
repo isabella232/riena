@@ -13,12 +13,14 @@ package org.eclipse.riena.ui.swt;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.riena.ui.swt.lnf.IgnoreLnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Composite of the status line.
  */
+@IgnoreLnFUpdater("background")
 public abstract class AbstractStatuslineComposite extends Composite {
 
 	private static final int LEFT_RIGHT_MARGIN = 5;

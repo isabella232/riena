@@ -247,7 +247,7 @@ public class LnFUpdater {
 		Iterator<PropertyDescriptor> iter = properties.iterator();
 		while (iter.hasNext()) {
 			PropertyDescriptor property = iter.next();
-			if (ignoreProperty(control, property)) {
+			if (ignoreProperty(control.getClass(), property)) {
 				continue;
 			}
 			Method setter = property.getWriteMethod();
@@ -295,9 +295,10 @@ public class LnFUpdater {
 	 * @return {@code true} if property should be ignored; otherwise {@code
 	 *         false}
 	 */
-	private boolean ignoreProperty(Control control, PropertyDescriptor property) {
+	@SuppressWarnings("unchecked")
+	private boolean ignoreProperty(Class<? extends Control> controlClass, PropertyDescriptor property) {
 
-		IgnoreLnFUpdater ignoreLnFUpdater = control.getClass().getAnnotation(IgnoreLnFUpdater.class);
+		IgnoreLnFUpdater ignoreLnFUpdater = controlClass.getAnnotation(IgnoreLnFUpdater.class);
 		if (ignoreLnFUpdater != null) {
 			String[] ignoreProps = ignoreLnFUpdater.value();
 			for (String ignoreProp : ignoreProps) {
@@ -307,6 +308,9 @@ public class LnFUpdater {
 					}
 				}
 			}
+		}
+		if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
+			return ignoreProperty((Class<? extends Control>) controlClass.getSuperclass(), property);
 		}
 
 		return false;

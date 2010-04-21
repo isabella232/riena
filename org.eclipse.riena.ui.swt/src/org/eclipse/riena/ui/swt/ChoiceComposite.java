@@ -18,6 +18,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.ui.swt.lnf.IgnoreLnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -27,6 +28,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  * a {@link org.eclipse.riena.ui.ridgets.ISingleChoiceRidget} or
  * {@link org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget}.
  */
+@IgnoreLnFUpdater("background")
 public class ChoiceComposite extends Composite {
 
 	private final boolean isMulti;
