@@ -15,21 +15,38 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Interface for encapsulating different types of attachments.
+ * Interface for encapsulating different types of attachments in remote
+ * services. This interface is implemented by a number of objects that can be
+ * the source of an Attachment object. Attachments are binary content that is
+ * transferred as parameter or return value in remote service calls.
  */
 public interface IDataSource {
 
 	/**
-	 * Returns the {@code InputStream} of this data source. The {@code
-	 * InputStream} is guaranteed to be right at the beginning.
+	 * Returns the {@code InputStream} of this data source. The
+	 * {@code InputStream} is guaranteed to be right at the beginning.
 	 * 
 	 * @return the {@code InputStream} of this data source
 	 * @throws IOException
 	 */
 	InputStream getInputStream() throws IOException;
 
+	/**
+	 * It seems that all implementation of IDataSource have no meaningful
+	 * implementation of getOutputStream(). Maybe we should remove this method
+	 * ????? TODO FIXME
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
 	OutputStream getOutputStream() throws IOException;
 
+	/**
+	 * A name that can be displayed for this datasource. Some implementation
+	 * however only show null for the name.
+	 * 
+	 * @return
+	 */
 	String getName();
 
 	/**

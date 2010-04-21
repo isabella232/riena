@@ -67,5 +67,13 @@ public interface IRemoteServiceFactory extends IRemoteServiceProtocol {
 	 */
 	IRemoteServiceReference createProxy(RemoteServiceDescription remoteServiceDesc);
 
+	/**
+	 * Returns the instance of the CallMessageContextAccessor for this Remote
+	 * Service Factory. The remote service Factory only has one instance that of
+	 * such an accessor which can then be used to retrieve the
+	 * CallMessageContext for an individual call at call time.
+	 * 
+	 * @return CallMessageContextAccessor
+	 */
 	ICallMessageContextAccessor getMessageContextAccessor();
 }
