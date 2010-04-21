@@ -52,10 +52,29 @@ import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor
  */
 public interface IServicePublisher extends IRemoteServiceProtocol {
 
+	/**
+	 * Publish Remote Service described in Remote Service Description
+	 * 
+	 * @param rsd
+	 *            Remote Service Description
+	 * @return url under which the service was published i.e.
+	 *         http://192.168.1.20/hessian/CustomerServiceWS
+	 */
 	String publishService(RemoteServiceDescription rsd);
 
+	/**
+	 * Unpublish a service described with a Remote ServiceDescription
+	 * 
+	 * @param rsd
+	 *            Remote Service Description
+	 */
 	void unpublishService(RemoteServiceDescription rsd);
 
+	/**
+	 * Returns ServiceMessageContextAccessor for this publisher
+	 * 
+	 * @return ServiceMessageContextAccessor
+	 */
 	IServiceMessageContextAccessor getMessageContextAccessor();
 
 }
