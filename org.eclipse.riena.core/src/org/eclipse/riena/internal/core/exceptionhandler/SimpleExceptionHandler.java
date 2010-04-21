@@ -15,7 +15,7 @@ import org.osgi.service.log.LogService;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.exception.IExceptionHandler;
-import org.eclipse.riena.core.exception.IExceptionHandlerManager.Action;
+import org.eclipse.riena.core.exception.IExceptionHandler.Action;
 
 /**
  * a very simple exception handler that logs the exception to the riena log is
@@ -23,12 +23,12 @@ import org.eclipse.riena.core.exception.IExceptionHandlerManager.Action;
  */
 public class SimpleExceptionHandler implements IExceptionHandler {
 
-	public Action handleException(Throwable t, String msg, Logger logger) {
+	public IExceptionHandler.Action handleException(Throwable t, String msg, Logger logger) {
 		if (logger != null) {
 			logger.log(LogService.LOG_ERROR, msg, t);
-			return Action.OK;
+			return IExceptionHandler.Action.OK;
 		}
-		return Action.NOT_HANDLED;
+		return IExceptionHandler.Action.NOT_HANDLED;
 	}
 
 }

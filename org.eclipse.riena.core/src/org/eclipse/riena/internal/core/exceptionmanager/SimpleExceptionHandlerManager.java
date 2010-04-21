@@ -53,34 +53,34 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Action handleException(final Throwable t) {
+	public IExceptionHandler.Action handleException(final Throwable t) {
 		return handleException(t, null, LOGGER);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Action handleException(final Throwable t, final Logger logger) {
+	public IExceptionHandler.Action handleException(final Throwable t, final Logger logger) {
 		return handleException(t, null, logger);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Action handleException(final Throwable t, final String msg) {
+	public IExceptionHandler.Action handleException(final Throwable t, final String msg) {
 		return handleException(t, msg, LOGGER);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Action handleException(final Throwable t, final String msg, final Logger logger) {
+	public IExceptionHandler.Action handleException(final Throwable t, final String msg, final Logger logger) {
 		for (final IExceptionHandler handler : handlers) {
-			final Action action = handler.handleException(t, msg, logger);
-			if (action != Action.NOT_HANDLED) {
+			final IExceptionHandler.Action action = handler.handleException(t, msg, logger);
+			if (action != IExceptionHandler.Action.NOT_HANDLED) {
 				return action;
 			}
 		}
-		return Action.NOT_HANDLED;
+		return IExceptionHandler.Action.NOT_HANDLED;
 	}
 }

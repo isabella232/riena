@@ -14,7 +14,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.core.exception.IExceptionHandler;
-import org.eclipse.riena.core.exception.IExceptionHandlerManager.Action;
+import org.eclipse.riena.core.exception.IExceptionHandler.Action;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget.MessageBoxOption;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget.Type;
@@ -23,7 +23,7 @@ import org.eclipse.riena.ui.swt.MessageBox;
 
 public class ExceptionMessageBox implements IExceptionHandler {
 
-	public Action handleException(Throwable t, String msg, Logger logger) {
+	public IExceptionHandler.Action handleException(Throwable t, String msg, Logger logger) {
 		MessageBox messageBox = new MessageBox(Display.getCurrent().getActiveShell());
 		final IMessageBoxRidget messageBoxRidget = (IMessageBoxRidget) SwtRidgetFactory.createRidget(messageBox);
 
@@ -42,12 +42,12 @@ public class ExceptionMessageBox implements IExceptionHandler {
 			t.printStackTrace();
 		}
 		if (show.equals(ignore)) {
-			return Action.NOT_HANDLED;
+			return IExceptionHandler.Action.NOT_HANDLED;
 		}
-		return Action.OK;
+		return IExceptionHandler.Action.OK;
 	}
 
-	public Action handleUncaught(Throwable t, String msg, Logger logger) {
-		return Action.NOT_HANDLED;
+	public IExceptionHandler.Action handleUncaught(Throwable t, String msg, Logger logger) {
+		return IExceptionHandler.Action.NOT_HANDLED;
 	}
 }

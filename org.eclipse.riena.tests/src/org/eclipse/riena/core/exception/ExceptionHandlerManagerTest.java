@@ -50,7 +50,7 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 	public void testAddHandlerChain() {
 		TestExceptionHandler testEH1 = new TestExceptionHandler("test.exception.handler1", null, null);
 		TestExceptionHandler testEH2 = new TestExceptionHandler("test.exception.handler2", "test.exception.handler1",
-				IExceptionHandlerManager.Action.OK);
+				IExceptionHandler.Action.OK);
 		manager.update(new IExceptionHandlerExtension[] { getTestDefinition(testEH1), getTestDefinition(testEH2) });
 
 		Exception exception = new Exception("test");
