@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
@@ -158,6 +159,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	}
 
 	public void testGetRidget() throws Exception {
+		System.getProperties().put(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "true"); //$NON-NLS-1$
 		IRidget ridget = controller.getRidget(MockRidget.class, "myMock");
 		assertEquals(MockRidget.class, ridget.getClass());
 
@@ -166,6 +168,8 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 			fail("BindingException expected");
 		} catch (BindingException e) {
 			ok("BindingException expected");
+		} finally {
+			System.getProperties().put(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false"); //$NON-NLS-1$
 		}
 	}
 
