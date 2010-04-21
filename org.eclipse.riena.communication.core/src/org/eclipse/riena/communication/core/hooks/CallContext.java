@@ -18,7 +18,14 @@ import java.util.Map;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 
 /**
- * CallContext that is available in beforeCall and afterCall to all CallHooks
+ * A CallContext is created for every remote service call on the client side. It
+ * contains meta information about the call or methods to retrieve these
+ * metainformation (not everything is stored in the CallContext.
+ * 
+ * A new CallContext is instantiated for each and every remote service call. The
+ * same instance is used for all CallHooks in the beforeCall and afterCall
+ * method of one remote service call. CallHooks can store their own metadata in
+ * the setProperty method and retrieve it in the getProperty method.
  */
 public class CallContext {
 

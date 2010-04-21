@@ -20,8 +20,15 @@ import javax.servlet.http.Cookie;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 
 /**
- * Allows a ServiceHook to access information associated with the current remote
- * service call
+ * A ServiceContext is used to give ServiceHooks metainformation about the
+ * remote service call that is currently in progress. A new ServiceContext
+ * object is instantiated for each and every remote service call.
+ * 
+ * The same ServiceContext instance is used for all ServiceHooks that are
+ * registered in the beforeService and afterService method. ServiceHooks can
+ * store their own information with setProperty and read it with getProperty
+ * between beforeService and afterService if required.
+ * 
  */
 public class ServiceContext {
 
