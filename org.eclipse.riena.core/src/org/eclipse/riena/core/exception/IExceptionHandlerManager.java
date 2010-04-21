@@ -12,38 +12,12 @@ package org.eclipse.riena.core.exception;
 
 import org.eclipse.equinox.log.Logger;
 
+import org.eclipse.riena.core.exception.IExceptionHandler.Action;
+
 /**
  * The ExceptionHandlerManager handles exception.
  */
 public interface IExceptionHandlerManager {
-
-	/**
-	 * Defines actions how to process after the exception was handled.
-	 */
-	public enum Action {
-
-		/**
-		 * Indicates that the exception handler has not handled the exception.
-		 * The exception handler manager might continue asking other handlers.
-		 */
-		NOT_HANDLED,
-
-		/**
-		 * Indicates that the exception handler has handled the exception. The
-		 * exception handler manager needs not to ask other handlers.
-		 */
-		OK,
-
-		/**
-		 * 
-		 */
-		RETRY,
-
-		/**
-		 * 
-		 */
-		CANCEL
-	}
 
 	/**
 	 * Check if the exception passed can be handled and return an {@link Action}

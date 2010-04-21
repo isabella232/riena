@@ -12,17 +12,56 @@ package org.eclipse.riena.core.exception;
 
 import org.eclipse.equinox.log.Logger;
 
-import org.eclipse.riena.core.exception.IExceptionHandlerManager.Action;
-
 /**
  * ExceptionHandler can handle exceptions
  */
 public interface IExceptionHandler {
 
 	/**
-	 * Check if the exception passed can be handled and return an {@link Action}
-	 * how might to process. This method should be used anywhere where
-	 * exceptions are caught directly.
+	 * Defines actions how to process after the exception was handled.
+	 * 
+	 * The semantic is that a return value of NOT_HANDLED means that the
+	 * IExceptionHandlerManager continues to ask other IExceptionHandler. All
+	 * other return values mean that the chain is interrupted and the Action is
+	 * returned to the application.
+	 * 
+	 * The concreate meaning of OK, CANCEL or RETRY is up to the calling
+	 * application.
+	 */
+	public enum Action {
+
+		/**
+		 * Indicates that the exception handler has not handled the exception.
+		 * The exception handler manager will continue asking other handlers.
+		 */
+		NOT_HANDLED,
+
+		/**
+		 * Indicates that the exception handler has handled the exception. The
+		 * exception handler manager does not ask others but returns this Action
+		 * to the call application.
+		 */
+		OK,
+
+		/**
+		 * Indicates that the exception handler has handled the exception. The
+		 * exception handler manager does not ask others but returns this Action
+		 * to the call application.
+		 */
+		RETRY,
+
+		/**
+		 * Indicates that the exception handler has handled the exception. The
+		 * exception handler manager does not ask others but returns this Action
+		 * to the call application.
+		 */
+		CANCEL
+	}
+
+	/**
+	 * Check if the exception passed can be handled and return an
+	 * {@link IExceptionHandler.Action} how might to process. This method should
+	 * be used anywhere where exceptions are caught directly.
 	 * 
 	 * @pre t != null
 	 * @post result != null
