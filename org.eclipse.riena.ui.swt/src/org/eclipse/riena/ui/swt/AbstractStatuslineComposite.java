@@ -27,8 +27,14 @@ public abstract class AbstractStatuslineComposite extends Composite {
 	private static final int TOP_BOTTOM_MARGIN = 0;
 
 	/**
+	 * Creates a new instance of {@code AbstractStatuslineComposite}.
+	 * <p>
+	 * Sets the layout of this composite and adds the content.
+	 * 
 	 * @param parent
+	 *            the parent Composite (non-null)
 	 * @param style
+	 *            the SWT style of the Composite
 	 */
 	public AbstractStatuslineComposite(Composite parent, int style) {
 		super(parent, style);
