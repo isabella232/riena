@@ -17,6 +17,7 @@ import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ContainerModel;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.security.common.authorization.PermissionCache;
 import org.eclipse.riena.internal.security.common.session.SimpleSessionHolder;
 import org.eclipse.riena.internal.security.common.session.SimpleThreadedSessionHolder;
@@ -57,7 +58,9 @@ public class Activator extends RienaPlugin {
 		context.registerService(ISessionHolder.class.getName(), ContainerModel.isClient() ? new SimpleSessionHolder()
 				: new SimpleThreadedSessionHolder(), null);
 
-		context.registerService(ICallHook.class.getName(), new SecurityCallHook(), null);
+		ICallHook hook = new SecurityCallHook();
+		Wire.instance(hook).andStart(context);
+		context.registerService(ICallHook.class.getName(), hook, null);
 
 		context.registerService(ISubjectHolder.class.getName(), ContainerModel.isClient() ? new SimpleSubjectHolder()
 				: new SimpleThreadedSubjectHolder(), null);
