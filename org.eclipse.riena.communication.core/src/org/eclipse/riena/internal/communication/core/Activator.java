@@ -16,11 +16,13 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
+import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorRegistry;
 import org.eclipse.riena.communication.core.progressmonitor.ProgressMonitorRegistryImpl;
 import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.communication.core.factory.OrderedCallHooksExecuter;
 import org.eclipse.riena.internal.communication.core.proxyselector.ProxySelectorConfiguration;
 import org.eclipse.riena.internal.communication.core.registry.RemoteServiceRegistry;
 import org.eclipse.riena.internal.communication.core.ssl.SSLConfiguration;
@@ -44,13 +46,13 @@ public class Activator extends RienaActivator {
 	private static Activator plugin;
 
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 		serviceRegistry = new RemoteServiceRegistry();
 		serviceRegistry.start();
 
-		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
+		final Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
 		regServiceRegistry = context.registerService(IRemoteServiceRegistry.class.getName(), serviceRegistry,
 				properties);
 
@@ -60,9 +62,16 @@ public class Activator extends RienaActivator {
 		// ProxySelector configuration
 		configureProxySelector();
 
-		context
-				.registerService(IRemoteProgressMonitorRegistry.class.getName(), new ProgressMonitorRegistryImpl(),
-						null);
+		// Ordered call hooks configuration 
+		configureOrderedCallHooks();
+
+		context.registerService(IRemoteProgressMonitorRegistry.class.getName(), new ProgressMonitorRegistryImpl(), null);
+	}
+
+	private void configureOrderedCallHooks() {
+		final ICallHook hook = new OrderedCallHooksExecuter();
+		Wire.instance(hook).andStart(getContext());
+		getContext().registerService(ICallHook.class.getName(), hook, null);
 	}
 
 	private void configureSSL() {
@@ -76,7 +85,7 @@ public class Activator extends RienaActivator {
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 
 		regServiceRegistry.unregister();
 		regServiceRegistry = null;
