@@ -27,6 +27,7 @@ import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.riena.internal.communication.publisher.Activator;
 import org.eclipse.riena.internal.communication.publisher.ServiceHooksProxy;
 
@@ -56,6 +57,7 @@ public class ServicePublishBinder implements IServicePublishBinder {
 		super();
 	}
 
+	@InjectService
 	public void bind(IServicePublisher publisher) {
 		servicePublishers.put(publisher.getProtocol(), publisher);
 		if (unpublishedServices.size() > 0) {
