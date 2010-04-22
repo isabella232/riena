@@ -28,6 +28,7 @@ import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
+import org.eclipse.riena.navigation.INavigationNodeController;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -230,6 +231,10 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		assertTrue(markers.contains(mandatoryMarker));
 	}
 
+	/**
+	 * Tests the method
+	 * {@link INavigationNodeController#navigationArgumentChanged(NavigationArgument)}
+	 */
 	public void testNavigationArgumentChanged() throws Exception {
 		ModuleNode module = new ModuleNode(new NavigationNodeId("myModuleNode"));
 		module.setNavigationProcessor(navigationProcessor);
