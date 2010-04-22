@@ -26,38 +26,39 @@ import org.eclipse.riena.communication.core.hooks.CallContext;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.wire.InjectService;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.communication.core.Activator;
 
 public class CallHooksProxy extends AbstractHooksProxy {
 
-	private HashSet<ICallHook> callHooks = new HashSet<ICallHook>();
+	private final HashSet<ICallHook> callHooks = new HashSet<ICallHook>();
 	private RemoteServiceDescription rsd;
 	private ICallMessageContextAccessor mca;
 
-	public CallHooksProxy(Object proxiedInstance) {
+	public CallHooksProxy(final Object proxiedInstance) {
 		super(proxiedInstance);
-		Inject.service(ICallHook.class).into(this).andStart(Activator.getDefault().getContext());
+		Wire.instance(this).andStart(Activator.getDefault().getContext());
 	}
 
 	@Override
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 		ICallMessageContext mc = null;
 		if (mca != null) {
 			mc = mca.createMessageContext(getProxiedInstance(), method.getName(), null);
 		}
 
-		CallContext context = new CallContext(rsd, method.getName(), mc);
+		final CallContext context = new CallContext(rsd, method.getName(), mc);
 		if (callHooks.size() > 0) {
 			// call before service hook
-			for (ICallHook sHook : callHooks) {
+			for (final ICallHook sHook : callHooks) {
 				sHook.beforeCall(context);
 			}
 		}
 
 		try {
 			return super.invoke(proxy, method, args);
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			// first check for specific Hessian exceptions
 			if (e.getTargetException() instanceof HessianRuntimeException
 					|| e.getTargetException() instanceof HessianProtocolException) {
@@ -75,7 +76,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 				throw e.getTargetException();
 			}
 			// throw exception if it is in the method signature
-			for (Class<?> exceptionType : method.getExceptionTypes()) {
+			for (final Class<?> exceptionType : method.getExceptionTypes()) {
 				if (exceptionType.isAssignableFrom(e.getTargetException().getClass())) {
 					throw e.getTargetException();
 				}
@@ -87,18 +88,19 @@ public class CallHooksProxy extends AbstractHooksProxy {
 			context.getMessageContext().fireEndCall();
 			// call hooks after the call
 			if (callHooks.size() > 0) {
-				for (ICallHook sHook : callHooks) {
+				for (final ICallHook sHook : callHooks) {
 					sHook.afterCall(context);
 				}
 			}
 		}
 	}
 
-	public void bind(ICallHook serviceHook) {
+	@InjectService
+	public void bind(final ICallHook serviceHook) {
 		callHooks.add(serviceHook);
 	}
 
-	public void unbind(ICallHook serviceHook) {
+	public void unbind(final ICallHook serviceHook) {
 		callHooks.remove(serviceHook);
 	}
 
@@ -106,11 +108,11 @@ public class CallHooksProxy extends AbstractHooksProxy {
 		return getProxiedInstance();
 	}
 
-	public void setRemoteServiceDescription(RemoteServiceDescription rsd) {
+	public void setRemoteServiceDescription(final RemoteServiceDescription rsd) {
 		this.rsd = rsd;
 	}
 
-	public void setMessageContextAccessor(ICallMessageContextAccessor mca) {
+	public void setMessageContextAccessor(final ICallMessageContextAccessor mca) {
 		this.mca = mca;
 	}
 
