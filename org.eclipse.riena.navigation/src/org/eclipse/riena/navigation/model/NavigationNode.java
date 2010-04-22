@@ -788,8 +788,8 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		if (context == null) {
 			context = new HashMap<String, Object>();
 		}
-		context.put(key, value);
 		checkForNavigationArgumentUpdate(key, value);
+		context.put(key, value);
 	}
 
 	private void checkForNavigationArgumentUpdate(String key, Object value) {

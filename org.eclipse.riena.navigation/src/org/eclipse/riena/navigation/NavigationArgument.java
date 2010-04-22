@@ -257,6 +257,13 @@ public class NavigationArgument {
 		} else if (!ridgetId.equals(other.ridgetId)) {
 			return false;
 		}
+		if (updateListener == null) {
+			if (other.updateListener != null) {
+				return false;
+			}
+		} else if (!updateListener.equals(other.updateListener)) {
+			return false;
+		}
 
 		return true;
 

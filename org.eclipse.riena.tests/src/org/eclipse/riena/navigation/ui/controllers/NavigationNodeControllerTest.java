@@ -29,6 +29,9 @@ import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationArgument;
+import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
@@ -50,6 +53,8 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	private MyNavigationNodeController controller;
 	private SubModuleNode node;
 	private Shell shell;
+	private NavigationProcessor navigationProcessor;
+	private final static String subModule1TypeId = "subModule1TypeId";
 
 	@Override
 	protected void setUp() throws Exception {
@@ -63,8 +68,9 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 
-		node = new SubModuleNode();
-		node.setNavigationProcessor(new NavigationProcessor());
+		node = new SubModuleNode(new NavigationNodeId(subModule1TypeId));
+		navigationProcessor = new NavigationProcessor();
+		node.setNavigationProcessor(navigationProcessor);
 		controller = new MyNavigationNodeController(node);
 	}
 
@@ -224,7 +230,25 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		assertTrue(markers.contains(mandatoryMarker));
 	}
 
+	public void testNavigationArgumentChanged() throws Exception {
+		ModuleNode module = new ModuleNode(new NavigationNodeId("myModuleNode"));
+		module.setNavigationProcessor(navigationProcessor);
+		module.addChild(node);
+		SubModuleNode node2 = new SubModuleNode();
+		module.addChild(node2);
+		node2.activate();
+		NavigationArgument arg = new NavigationArgument(new Object());
+
+		assertNull(controller.lastArgument);
+		node2.navigate(new NavigationNodeId(subModule1TypeId), arg);
+		assertTrue(node.isActivated());
+		assertSame(arg, controller.lastArgument);
+
+	}
+
 	public static class MyNavigationNodeController extends SubModuleController {
+
+		NavigationArgument lastArgument = null;
 
 		public MyNavigationNodeController(ISubModuleNode navigationNode) {
 			super(navigationNode);
@@ -233,6 +257,11 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		@Override
 		public void updateNavigationNodeMarkers() {
 			super.updateNavigationNodeMarkers();
+		}
+
+		@Override
+		public void navigationArgumentChanged(NavigationArgument argument) {
+			lastArgument = argument;
 		}
 
 	}
