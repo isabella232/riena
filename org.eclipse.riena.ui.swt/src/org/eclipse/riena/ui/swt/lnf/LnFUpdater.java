@@ -70,6 +70,7 @@ public class LnFUpdater {
 	private final static List<Class<? extends Control>> CONTROLS_AFTER_BIND = new ArrayList<Class<? extends Control>>();
 
 	private Shell tmpShell;
+	private boolean dirtyLayout;
 
 	public LnFUpdater() {
 		this(false);
@@ -111,14 +112,29 @@ public class LnFUpdater {
 			return;
 		}
 
+		setDirtyLayout(false);
 		updateUIControlsRecursive(parent);
 		if (updateLayout) {
-			parent.layout(true, true);
+			updateLayout(parent);
 		}
 
 		SwtUtilities.disposeWidget(tmpShell);
 		tmpShell = null;
 
+	}
+
+	/**
+	 * Updates the layout of the given composite only if it's necessary.
+	 * 
+	 * @param parent
+	 *            composite which children are updated.
+	 */
+	private void updateLayout(Composite parent) {
+		if (isDirtyLayout()) {
+			parent.layout(true, true);
+			setDirtyLayout(false);
+			LOGGER.log(LogService.LOG_INFO, "Layout updated."); //$NON-NLS-1$
+		}
 	}
 
 	/**
@@ -155,8 +171,9 @@ public class LnFUpdater {
 			return;
 		}
 
+		setDirtyLayout(false);
 		updateUIControlsAfterBindRecursie(parent);
-		parent.layout(true, true);
+		updateLayout(parent);
 
 		SwtUtilities.disposeWidget(tmpShell);
 		tmpShell = null;
@@ -264,11 +281,20 @@ public class LnFUpdater {
 			if (newValue == null) {
 				continue;
 			}
-			if (hasNoDefaultValue(control, property)) {
+			Method getter = property.getReadMethod();
+			if (getter == null) {
+				continue;
+			}
+			Object currentValue = getPropertyValue(control, property);
+			if (valuesEquals(currentValue, newValue)) {
+				continue;
+			}
+			if (hasNoDefaultValue(control, property, currentValue)) {
 				continue;
 			}
 			try {
 				setter.invoke(control, newValue);
+				setDirtyLayout(true);
 			} catch (IllegalArgumentException e) {
 				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(control, property), e);
 			} catch (IllegalAccessException e) {
@@ -414,32 +440,90 @@ public class LnFUpdater {
 	 * @return {@code true} if the current value of the property isn't equals
 	 *         the default value; otherwise {@code false}.
 	 */
-	private boolean hasNoDefaultValue(Control control, PropertyDescriptor property) {
+	private boolean hasNoDefaultValue(Control control, PropertyDescriptor property, Object currentValue) {
 
 		Method getter = property.getReadMethod();
 		if (getter != null) {
 			Object defaultValue = getDefaultPropertyValue(control, property);
-			Object currentValue = getPropertyValue(control, property);
-			if (defaultValue != null) {
-				if ((defaultValue instanceof FontData[])) {
-					FontData[] defaultFontData = (FontData[]) defaultValue;
-					FontData[] currentFontData = ((Font) currentValue).getFontData();
-					if (!Arrays.equals(defaultFontData, currentFontData)) {
-						return true;
-					}
-				} else if ((defaultValue instanceof RGB) && (currentValue instanceof Color)) {
-					RGB defaultRgb = (RGB) defaultValue;
-					RGB currentRgb = ((Color) currentValue).getRGB();
-					if (!defaultRgb.equals(currentRgb)) {
-						return true;
-					}
-				} else if (!defaultValue.equals(currentValue)) {
-					return true;
-				}
-			}
+			return !valuesEquals(defaultValue, currentValue);
 		}
 
 		return false;
+
+	}
+
+	/**
+	 * Compares two property values. For font or color the <i>description</i> of
+	 * the resource, {@link FontData} or {@link RGB}, is used for comparison.
+	 * 
+	 * @param value1
+	 *            first property value
+	 * @param value2
+	 *            second property value
+	 * @return {@code true} if the values are equals; otherwise {@code}
+	 */
+	private boolean valuesEquals(Object value1, Object value2) {
+
+		if (value1 != null) {
+			if ((getFontData(value1) != null) && (getFontData(value2) != null)) {
+				FontData[] fontData1 = getFontData(value1);
+				FontData[] fontData2 = getFontData(value2);
+				if (Arrays.equals(fontData1, fontData2)) {
+					return true;
+				}
+			} else if ((getRgb(value1) != null) && (getRgb(value2) != null)) {
+				RGB rgb1 = getRgb(value1);
+				RGB rgb2 = getRgb(value2);
+				if (rgb1.equals(rgb2)) {
+					return true;
+				}
+			} else if (value1.equals(value2)) {
+				return true;
+			}
+			return false;
+		}
+
+		return true;
+
+	}
+
+	/**
+	 * Returns the {@link FontData}s of the given value.
+	 * 
+	 * @param value
+	 *            property value
+	 * @return {@link FontData}s or {@code null} if the value has no
+	 */
+	private FontData[] getFontData(Object value) {
+
+		if (value instanceof FontData[]) {
+			return (FontData[]) value;
+		}
+		if (value instanceof Font) {
+			return ((Font) value).getFontData();
+		}
+
+		return null;
+
+	}
+
+	/**
+	 * Returns the {@link RGB} of the given value.
+	 * 
+	 * @param value
+	 *            property value
+	 * @return {@link RGB}s or {@code null} if the value has no
+	 */
+	private RGB getRgb(Object value) {
+
+		if (value instanceof RGB) {
+			return (RGB) value;
+		}
+		if (value instanceof Color) {
+			return ((Color) value).getRGB();
+		}
+
+		return null;
 
 	}
 
@@ -804,6 +888,14 @@ public class LnFUpdater {
 	 */
 	private Composite getTmpShellComposite() {
 		return (Composite) getTmpShell().getChildren()[0];
+	}
+
+	private void setDirtyLayout(boolean dirtyLayout) {
+		this.dirtyLayout = dirtyLayout;
+	}
+
+	private boolean isDirtyLayout() {
+		return dirtyLayout;
 	}
 
 }

@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
-import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.util.Map;
 
@@ -20,6 +18,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -70,7 +69,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 	 */
 	public void testGetErrorMessage() throws IntrospectionException {
 
-		PropertyDescriptor property = getProperty(Label.class, "foreground");
+		PropertyDescriptor property = new PropertyDescriptor("foreground", Label.class);
 		Label label = new Label(shell, SWT.NONE);
 		String message = ReflectionUtils.invokeHidden(lnFUpdater, "getErrorMessage", label, property);
 		assertNotNull(message);
@@ -94,7 +93,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 		try {
 			lnf.setTheme(new MyTheme());
 			Label label = new Label(shell, SWT.NONE);
-			PropertyDescriptor property = getProperty(Label.class, "foreground");
+			PropertyDescriptor property = new PropertyDescriptor("foreground", Label.class);
 			Object value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfValue", label, property);
 			SwtUtilities.disposeWidget(label);
 
@@ -133,7 +132,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 			lnf.setTheme(new MyTheme());
 			Label label = new Label(shell, SWT.NONE);
 			label.setData(UIControlsFactory.KEY_LNF_STYLE, "section");
-			PropertyDescriptor property = getProperty(Label.class, "foreground");
+			PropertyDescriptor property = new PropertyDescriptor("foreground", Label.class);
 			Object value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfStyleValue", label, property);
 			SwtUtilities.disposeWidget(label);
 
@@ -254,11 +253,11 @@ public class LnFUpdaterTest extends RienaTestCase {
 
 		Label label = new Label(shell, SWT.NONE);
 		PropertyDescriptor property = new PropertyDescriptor("text", Label.class);
-		Boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "hasNoDefaultValue", label, property);
+		Boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "hasNoDefaultValue", label, property, label.getText());
 		assertFalse(ret);
 
 		label.setText("Hello!");
-		ret = ReflectionUtils.invokeHidden(lnFUpdater, "hasNoDefaultValue", label, property);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "hasNoDefaultValue", label, property, label.getText());
 		assertTrue(ret);
 
 	}
@@ -346,26 +345,21 @@ public class LnFUpdaterTest extends RienaTestCase {
 	 */
 	public void testIgnoreProperty() throws IntrospectionException {
 
-		PropertyDescriptor property = getProperty(Label.class, "foreground");
-		Label label = new Label(shell, SWT.NONE);
-		boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreProperty", label, property);
-		assertFalse(ret);
-		label.dispose();
-
-		property = getProperty(MyComposite.class, "foreground");
-		MyComposite composite = new MyComposite(shell, SWT.NONE);
-		ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreProperty", composite, property);
+		PropertyDescriptor property = new PropertyDescriptor("foreground", Label.class);
+		boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreProperty", Label.class, property);
 		assertFalse(ret);
 
-		property = getProperty(MyComposite.class, "background");
-		ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreProperty", composite, property);
+		property = new PropertyDescriptor("foreground", MyComposite.class);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreProperty", MyComposite.class, property);
+		assertFalse(ret);
+
+		property = new PropertyDescriptor("background", MyComposite.class);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreProperty", MyComposite.class, property);
 		assertTrue(ret);
 
-		property = getProperty(Composite.class, "background");
-		ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreProperty", composite, property);
+		property = new PropertyDescriptor("background", Composite.class);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreProperty", MyComposite.class, property);
 		assertTrue(ret);
-
-		composite.dispose();
 
 	}
 
@@ -406,23 +400,81 @@ public class LnFUpdaterTest extends RienaTestCase {
 	 */
 	public void testGenerateLnfKey() throws IntrospectionException {
 
-		PropertyDescriptor property = getProperty(Label.class, "foreground");
+		PropertyDescriptor property = new PropertyDescriptor("foreground", Label.class);
 		String ret = ReflectionUtils.invokeHidden(lnFUpdater, "generateLnfKey", Label.class, property);
 		assertEquals("Label.foreground", ret);
 
 	}
 
-	private PropertyDescriptor getProperty(Class<?> clazz, String propertyName) throws IntrospectionException {
+	public void testValuesEquals() {
 
-		BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-		PropertyDescriptor[] properties = beanInfo.getPropertyDescriptors();
-		for (PropertyDescriptor property : properties) {
-			if (property.getName().equals(propertyName)) {
-				return property;
-			}
-		}
+		Object value1 = new Integer(1);
+		Object value2 = new Integer(1);
+		boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", value1, value2);
+		assertTrue(ret);
 
-		return null;
+		value2 = new Integer(4711);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", value1, value2);
+		assertFalse(ret);
+
+		// colors
+		Color color1 = new Color(null, 200, 10, 10);
+		Color color2 = new Color(null, 200, 10, 10);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", color1, color2);
+		assertTrue(ret);
+
+		Color color3 = new Color(null, 1, 20, 30);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", color1, color3);
+		assertFalse(ret);
+
+		value2 = new RGB(200, 10, 10);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", color1, value2);
+		assertTrue(ret);
+
+		value1 = new RGB(200, 10, 10);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", value1, value2);
+		assertTrue(ret);
+
+		value1 = new RGB(1, 20, 30);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", value1, value2);
+		assertFalse(ret);
+
+		value1 = new RGB(1, 20, 30);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", color3, value1);
+		assertTrue(ret);
+		color1.dispose();
+		color2.dispose();
+		color3.dispose();
+
+		// fonts
+		Font font1 = new Font(null, "arial", 12, SWT.BOLD);
+		Font font2 = new Font(null, "arial", 12, SWT.BOLD);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", font1, font2);
+		assertTrue(ret);
+
+		Font font3 = new Font(null, "arial", 72, SWT.BOLD);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", font1, font3);
+		assertFalse(ret);
+
+		value2 = new FontData[] { new FontData("arial", 12, SWT.BOLD) };
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", font1, value2);
+		assertTrue(ret);
+
+		value2 = new FontData[] { new FontData("arial", 12, SWT.BOLD) };
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", font3, value2);
+		assertFalse(ret);
+
+		value1 = new FontData[] { new FontData("helvetica", 12, SWT.BOLD) };
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", value1, value2);
+		assertFalse(ret);
+
+		value1 = new FontData[] { new FontData("arial", 12, SWT.BOLD) };
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "valuesEquals", value1, value2);
+		assertTrue(ret);
+
+		font1.dispose();
+		font2.dispose();
+		font3.dispose();
 
 	}
 

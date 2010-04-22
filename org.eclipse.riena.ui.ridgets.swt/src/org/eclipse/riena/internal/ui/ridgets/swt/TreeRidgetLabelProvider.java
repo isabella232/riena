@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
+import org.eclipse.riena.ui.swt.lnf.ILnfResource;
+import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
@@ -40,8 +42,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  * <li>expandable node - collapsed</li>
  * <li>expandable node - expanded</li>
  * <li>leaf (i.e. node with no children)</li>
- *</ul>
- *<p>
+ * </ul>
+ * <p>
  * In addition, nodes corresponding to 'disabled' model values will be colored
  * in a distinct color.
  */
@@ -287,10 +289,39 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		if (imageAttribute != null && openImageAttribute != null) {
 			result = isExpanded ? (String) openImageAttribute.get(element) : (String) imageAttribute.get(element);
 		}
+		if ((result == null) && (isSubModuleNode(element.getClass()))) {
+			ILnfResource lnfResource = null;
+			if (isExpanded) {
+				lnfResource = LnfManager.getLnf().getResourceTable().get(
+						LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON);
+			} else {
+				lnfResource = LnfManager.getLnf().getResourceTable().get(
+						LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON);
+			}
+			if (lnfResource instanceof ImageLnfResource) {
+				ImageLnfResource imageResource = (ImageLnfResource) lnfResource;
+				result = imageResource.getImagePath();
+			}
+		}
 		if (result == null || Activator.getSharedImage(result) == null) {
 			result = isExpanded ? SharedImages.IMG_NODE_EXPANDED : SharedImages.IMG_NODE_COLLAPSED;
 		}
 		return result;
+	}
+
+	private boolean isSubModuleNode(Class<?> elementClass) {
+
+		Class<?>[] interfaces = elementClass.getInterfaces();
+		for (Class<?> type : interfaces) {
+			if (type.getName().equals("org.eclipse.riena.navigation.ISubModuleNode")) {
+				return true;
+			}
+		}
+		if (elementClass.getSuperclass() != null) {
+			return isSubModuleNode(elementClass.getSuperclass());
+		}
+		return false;
+
 	}
 
 	private Image getImageForNode(Object element, boolean isExpanded) {
