@@ -33,7 +33,7 @@ requires.6.name = org.eclipse.rap.ui
 requires.6.optional = true
 requires.6.greedy = false
 
-requires.6.namespace = osgi.bundle
-requires.6.name = org.eclipse.rap.ui.workbench
-requires.6.optional = true
-requires.6.greedy = false
+requires.7.namespace = osgi.bundle
+requires.7.name = org.eclipse.rap.ui.workbench
+requires.7.optional = true
+requires.7.greedy = false
