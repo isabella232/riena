@@ -89,7 +89,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 			@Override
 			public void done(IJobChangeEvent event) {
 				super.done(event);
-				threadSwitcher.done();
+				jobDone();
 			}
 		});
 	}
@@ -128,6 +128,15 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 
 			@Override
 			public void done() {
+			}
+
+		};
+	}
+
+	private void jobDone() {
+		synchronize(new Runnable() {
+
+			public void run() {
 				for (IUIMonitor monitor : getMonitors()) {
 					try {
 						monitor.finalUpdateUI();
@@ -138,7 +147,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 
 				}
 			}
-		};
+		});
 	}
 
 	/**
@@ -149,8 +158,6 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	private final class ThreadSwitcher extends NullProgressMonitor {
 
 		private IProgressMonitor delegate;
-
-		private boolean done;
 
 		public ThreadSwitcher(IProgressMonitor wrappedMonitor) {
 			this.delegate = wrappedMonitor;
@@ -178,20 +185,12 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 
 		@Override
 		public void done() {
-			if (!done) {
-				synchronize(new Runnable() {
-
-					public void run() {
-						delegate.done();
-					}
-				});
-				done = true;
-			}
 		}
 
-		public void synchronize(Runnable runnable) {
-			syncher.syncExec(runnable);
-		}
+	}
+
+	private void synchronize(Runnable runnable) {
+		syncher.syncExec(runnable);
 	}
 
 }
