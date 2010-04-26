@@ -54,18 +54,18 @@ public class ComboAndChoiceSubModuleView extends SubModuleView {
 
 		Combo comboBoxWithModel = UIControlsFactory.createCombo(result, "comboBoxWithModel"); //$NON-NLS-1$
 		GridDataFactory.swtDefaults().hint(100, SWT.DEFAULT).applyTo(comboBoxWithModel);
-		Label label1 = UIControlsFactory.createLabel(result, "ComboBox with model", SWT.NONE, //$NON-NLS-1$
+		Label label1 = UIControlsFactory.createLabel(result, "Combo with model", SWT.NONE, //$NON-NLS-1$
 				"labelComboBoxWithModel"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(label1);
 
 		Combo comboBoxWithoutModel = UIControlsFactory.createCombo(result, "comboBoxWithoutModel"); //$NON-NLS-1$
 		GridDataFactory.swtDefaults().hint(100, SWT.DEFAULT).applyTo(comboBoxWithoutModel);
-		UIControlsFactory.createLabel(result, "ComboBox without model", //$NON-NLS-1$
+		UIControlsFactory.createLabel(result, "Combo without model", //$NON-NLS-1$
 				SWT.NONE, "myLabelId"); //$NON-NLS-1$
 		UIControlsFactory.createButton(result, "bind to model", "bindComboToModel"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		String msg = "click \"bind to model\" and \"update all ridgets from model\"\n" //$NON-NLS-1$
-				+ "to see the values of the \"ComboBox without model\""; //$NON-NLS-1$
+				+ "to see the values of the \"Combo without model\""; //$NON-NLS-1$
 		Label label2 = UIControlsFactory.createLabel(result, msg);
 		GridDataFactory.fillDefaults().grab(true, false).span(3, 1).applyTo(label2);
 
