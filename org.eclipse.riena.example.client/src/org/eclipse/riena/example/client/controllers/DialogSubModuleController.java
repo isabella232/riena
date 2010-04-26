@@ -30,7 +30,7 @@ public class DialogSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		IActionRidget openShellAction = (IActionRidget) getRidget(RIDGET_ID_OPEN_DIALOG);
+		IActionRidget openShellAction = getRidget(IActionRidget.class, RIDGET_ID_OPEN_DIALOG);
 		openShellAction.setText("&Open dialog"); //$NON-NLS-1$
 		openShellAction.addListener(new IActionListener() {
 
