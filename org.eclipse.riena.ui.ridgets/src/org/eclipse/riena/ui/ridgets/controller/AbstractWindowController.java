@@ -62,8 +62,8 @@ public abstract class AbstractWindowController implements IController, IContext 
 	}
 
 	/**
-	 * Make {@code action} the default action while the focus is within {@code
-	 * focusRidget} including it's children.
+	 * Make {@code action} the default action while the focus is within
+	 * {@code focusRidget} including it's children.
 	 * <p>
 	 * If a default action is available and enabled, it will be invoked whenever
 	 * the user presses ENTER within the window.
@@ -112,6 +112,9 @@ public abstract class AbstractWindowController implements IController, IContext 
 		return ridgets.get(id);
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	@SuppressWarnings("unchecked")
 	public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
 		return (R) getRidget(id);
