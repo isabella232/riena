@@ -56,14 +56,14 @@ public class ContextMenuSubModuleView extends SubModuleView {
 
 		Label label1 = UIControlsFactory.createLabel(groupSystem, "Text:"); //$NON-NLS-1$
 		labelGDF.applyTo(label1);
-		UIControlsFactory.createText(groupSystem, SWT.None, "textFieldSystem"); //$NON-NLS-1$
+		UIControlsFactory.createText(groupSystem, SWT.NONE, "textFieldSystem"); //$NON-NLS-1$
 
 		Group groupText = UIControlsFactory.createGroup(parent, "Text with Context Menu:"); //$NON-NLS-1$
 		groupGLF.applyTo(groupText);
 		groupGDF.applyTo(groupText);
 
 		UIControlsFactory.createLabel(groupText, "Text:"); //$NON-NLS-1$
-		Text textField = UIControlsFactory.createText(groupText, SWT.None, "textField"); //$NON-NLS-1$
+		Text textField = UIControlsFactory.createText(groupText, SWT.NONE, "textField"); //$NON-NLS-1$
 		textField.setMenu(createMenuWithFactory(textField));
 		Label label2 = UIControlsFactory.createLabel(groupText, "Hide 'Clear':"); //$NON-NLS-1$
 		labelGDF.applyTo(label2);
