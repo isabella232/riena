@@ -222,7 +222,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.client.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.server"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.server.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -446,6 +460,13 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.client.communication.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.client.ridgets"
          download-size="0"
          install-size="0"
@@ -453,7 +474,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.client.ridgets.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.apache.commons.logging"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.logging.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
