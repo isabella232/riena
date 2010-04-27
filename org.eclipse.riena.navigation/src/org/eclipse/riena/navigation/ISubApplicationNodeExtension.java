@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.core.injector.extension.DoNotReplaceSymbols;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 
@@ -25,6 +26,7 @@ public interface ISubApplicationNodeExtension extends INodeExtension {
 	 * 
 	 * @return label of the sub application
 	 */
+	@DoNotReplaceSymbols
 	String getLabel();
 
 	/**
@@ -32,6 +34,7 @@ public interface ISubApplicationNodeExtension extends INodeExtension {
 	 * 
 	 * @return icon ID
 	 */
+	@DoNotReplaceSymbols
 	String getIcon();
 
 	/**

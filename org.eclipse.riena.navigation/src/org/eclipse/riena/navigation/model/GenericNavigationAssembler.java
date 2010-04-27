@@ -18,7 +18,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 
+import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.navigation.AbstractNavigationAssembler;
 import org.eclipse.riena.navigation.IAssemblerProvider;
 import org.eclipse.riena.navigation.IGenericNavigationAssembler;
@@ -34,6 +36,7 @@ import org.eclipse.riena.navigation.extension.IModuleNode2Extension;
 import org.eclipse.riena.navigation.extension.INode2Extension;
 import org.eclipse.riena.navigation.extension.ISubApplicationNode2Extension;
 import org.eclipse.riena.navigation.extension.ISubModuleNode2Extension;
+import org.eclipse.riena.navigation.extension.Node2Extension;
 
 /**
  * This assembler builds navigation nodes according to the definition stored in
@@ -274,8 +277,14 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 		try {
 			startVariableResolver(mapping);
 			// create module node with label (and icon)
+			String label = moduleDefinition.getName();
+			if (moduleDefinition instanceof Node2Extension) {
+				// it's only necessary for converted assembly nodes
+				// (not converted nodes are proxies)
+				label = resolveVariables(label);
+			}
 			module = new ModuleNode(createNavigationNodeIdFromTemplate(targetId, moduleDefinition, navigationArgument),
-					moduleDefinition.getName());
+					label);
 			module.setIcon(moduleDefinition.getIcon());
 			module.setClosable(moduleDefinition.isClosable());
 			updateContext(module, navigationArgument);
@@ -317,9 +326,15 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 
 		try {
 			startVariableResolver(mapping);
+			String label = subModuleDefinition.getName();
+			if (subModuleDefinition instanceof Node2Extension) {
+				// it's only necessary for converted assembly nodes
+				// (not converted nodes are proxies)
+				label = resolveVariables(label);
+			}
 			// create submodule node with label (and icon)
 			submodule = new SubModuleNode(createNavigationNodeIdFromTemplate(targetId, subModuleDefinition,
-					navigationArgument), subModuleDefinition.getName());
+					navigationArgument), label);
 			submodule.setIcon(subModuleDefinition.getIcon());
 			submodule.setVisible(subModuleDefinition.isVisible());
 			submodule.setExpanded(subModuleDefinition.isExpanded());
@@ -438,6 +453,16 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 
 	protected void cleanupVariableResolver() {
 		ThreadLocalMapResolver.cleanup();
+	}
+
+	protected String resolveVariables(String string) {
+
+		try {
+			return VariableManagerUtil.substitute(string);
+		} catch (CoreException ex) {
+			ex.printStackTrace();
+			return string;
+		}
 	}
 
 }

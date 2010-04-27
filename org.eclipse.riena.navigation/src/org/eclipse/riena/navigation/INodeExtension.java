@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.core.injector.extension.DoNotReplaceSymbols;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 
@@ -26,6 +27,7 @@ public interface INodeExtension {
 	 * @return the type part of the ID
 	 * @see NavigationNodeId#getTypeId()
 	 */
+	@DoNotReplaceSymbols
 	String getTypeId();
 
 	/**
@@ -34,6 +36,7 @@ public interface INodeExtension {
 	 * @return the instance part of the ID
 	 * @see NavigationNodeId#getInstanceId()
 	 */
+	@DoNotReplaceSymbols
 	String getInstanceId();
 
 	/**

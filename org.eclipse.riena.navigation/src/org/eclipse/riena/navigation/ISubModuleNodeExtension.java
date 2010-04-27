@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation;
 
 import org.eclipse.riena.core.injector.extension.DefaultValue;
+import org.eclipse.riena.core.injector.extension.DoNotReplaceSymbols;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 
@@ -26,6 +27,7 @@ public interface ISubModuleNodeExtension extends INodeExtension {
 	 * 
 	 * @return label of the sub module
 	 */
+	@DoNotReplaceSymbols
 	String getLabel();
 
 	/**
@@ -33,6 +35,7 @@ public interface ISubModuleNodeExtension extends INodeExtension {
 	 * 
 	 * @return icon ID
 	 */
+	@DoNotReplaceSymbols
 	String getIcon();
 
 	/**
