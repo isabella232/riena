@@ -29,7 +29,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
  */
 class CompletionCombo extends Composite {
 
-	private Text text;
+	private Text filterText;
 	private FilteredList filteredList;
 	private LabelProvider labelProvider;
 
@@ -37,11 +37,11 @@ class CompletionCombo extends Composite {
 		super(parent, style);
 		GridLayoutFactory.fillDefaults().numColumns(1).spacing(0, 0).applyTo(this);
 
-		text = new Text(this, SWT.BORDER | SWT.SINGLE);
-		GridDataFactory.fillDefaults().applyTo(text);
+		filterText = new Text(this, SWT.BORDER | SWT.SINGLE);
+		GridDataFactory.fillDefaults().applyTo(filterText);
 
 		int flags = SWT.V_SCROLL | SWT.H_SCROLL | SWT.SINGLE;
-		labelProvider = new LabelProvider(); // new WorkbenchLabelProvider();
+		labelProvider = new LabelProvider(); // WorkbenchLabelProvider(); //  new LabelProvider(); 
 		filteredList = new FilteredList(this, flags, labelProvider, true, true, true);
 		filteredList.setFilter(""); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(filteredList);
@@ -58,8 +58,8 @@ class CompletionCombo extends Composite {
 
 	private void addListeners() {
 		CompletionListener listener = new CompletionListener();
-		text.addKeyListener(listener);
-		text.addModifyListener(listener);
+		filterText.addKeyListener(listener);
+		filterText.addModifyListener(listener);
 
 	}
 
@@ -70,8 +70,8 @@ class CompletionCombo extends Composite {
 				String proposal = labelProvider.getText(selection[0]);
 				if (proposal != null && prefix.length() < proposal.length()) {
 					// System.out.println("complete: " + prefix + " -> " + proposal);
-					text.setText(proposal);
-					text.setSelection(prefix.length(), proposal.length());
+					filterText.setText(proposal);
+					filterText.setSelection(prefix.length(), proposal.length());
 				}
 			}
 		}
@@ -92,16 +92,18 @@ class CompletionCombo extends Composite {
 			ignore = !Character.isLetterOrDigit(e.character);
 			if (e.keyCode == SWT.ARROW_DOWN) {
 				filteredList.setFocus();
+			} else if (e.keyCode == 13) {
+				int end = filterText.getText().length();
+				filterText.setSelection(end, end);
 			}
 		}
 
 		public void modifyText(ModifyEvent e) {
-			if (ignore) {
-				return;
+			String text = filterText.getText();
+			filteredList.setFilter(text);
+			if (!ignore) {
+				completeText(text);
 			}
-			String filterText = text.getText();
-			filteredList.setFilter(filterText);
-			completeText(filterText);
 		}
 	}
 

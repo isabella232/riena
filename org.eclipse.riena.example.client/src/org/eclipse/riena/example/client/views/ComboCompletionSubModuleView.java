@@ -31,6 +31,8 @@ public class ComboCompletionSubModuleView extends SubModuleView {
 	private static String[] DATA = new String[] { "Aachen", "Athens", "Austin", "Arkansas", "Ashland", "London", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 			"Moskow", "New York", "Paris", "Portland", "Potzdam" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
+	private Combo combo1;
+
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 		GridLayoutFactory.swtDefaults().numColumns(1).applyTo(parent);
@@ -50,19 +52,25 @@ public class ComboCompletionSubModuleView extends SubModuleView {
 		createCustom(grpCustom);
 	}
 
+	@Override
+	public void setFocus() {
+		combo1.forceFocus();
+	}
+
 	// helping methods
 	//////////////////
 
 	private void createCombos(Composite parent) {
 		UIControlsFactory.createLabel(parent, "SWT.READ_ONLY - type first letter for completion"); //$NON-NLS-1$
-		Combo combo1 = new Combo(parent, SWT.READ_ONLY);
+		combo1 = new Combo(parent, SWT.READ_ONLY);
 
-		UIControlsFactory.createLabel(parent, "SWT.NONE - prefix will autocomplete when match is found\n" //$NON-NLS-1$
-				+ "\t-ENTER will add element to list"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "SWT.NONE - matching prefix = autocomplete, ENTER = add"); //$NON-NLS-1$
 		Combo combo2 = new Combo(parent, SWT.NONE);
+		new ComboAutocompleter(combo2);
 
-		UIControlsFactory.createLabel(parent, "SWT.SIMPLE - prefix will autocomplete when match is found"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "SWT.SIMPLE - matching prefix = autocomplete, ENTER = add"); //$NON-NLS-1$
 		Combo combo3 = new Combo(parent, SWT.SIMPLE | SWT.V_SCROLL);
+		new ComboAutocompleter(combo3);
 
 		for (Combo combo : new Combo[] { combo1, combo2, combo3 }) {
 			GridDataFactory.fillDefaults().hint(-1, 50).applyTo(combo);
@@ -71,12 +79,12 @@ public class ComboCompletionSubModuleView extends SubModuleView {
 	}
 
 	private void createCCombos(Composite parent) {
-		UIControlsFactory.createLabel(parent, "SWT.READ_ONLY - type 1st letter for completion (when list is open!)"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "SWT.READ_ONLY - 1st letter = autocomplete (when list is open!)"); //$NON-NLS-1$
 		CCombo cCombo1 = new CCombo(parent, SWT.READ_ONLY | SWT.BORDER);
 
-		UIControlsFactory.createLabel(parent, "SWT.NONE - prefix will autocomplete when match is found\n" //$NON-NLS-1$
-				+ "\t- ENTER will add element to list"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "SWT.NONE - matching prefix = autocomplete, ENTER = add"); //$NON-NLS-1$
 		CCombo cCombo2 = new CCombo(parent, SWT.BORDER);
+		new ComboAutocompleter(cCombo2);
 
 		for (CCombo combo : new CCombo[] { cCombo1, cCombo2 }) {
 			GridDataFactory.fillDefaults().applyTo(combo);
@@ -85,8 +93,7 @@ public class ComboCompletionSubModuleView extends SubModuleView {
 	}
 
 	private void createCustom(Composite parent) {
-		UIControlsFactory.createLabel(parent, "- prefix will autocomplete when match is found\n" //$NON-NLS-1$
-				+ "- ENTER will add element to list"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "matching prefix = autocomplete, ENTER = add"); //$NON-NLS-1$
 		CompletionCombo combo = new CompletionCombo(parent, SWT.BORDER);
 		GridDataFactory.fillDefaults().applyTo(combo);
 		combo.setElements(DATA);
@@ -98,5 +105,4 @@ public class ComboCompletionSubModuleView extends SubModuleView {
 		result.setText(title);
 		return result;
 	}
-
 }
