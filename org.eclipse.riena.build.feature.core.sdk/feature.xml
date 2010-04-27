@@ -58,7 +58,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.communication.console.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.communication.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.communication.core.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -72,7 +86,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.communication.discovery.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.communication.factory.hessian"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.communication.factory.hessian.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -86,7 +114,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.communication.publisher.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.communication.publisher.hessian"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.communication.publisher.hessian.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -114,7 +156,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.security.common.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.security.server"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.security.server.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -142,7 +198,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.objecttransaction.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.security.services"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.security.services.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -170,7 +240,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.security.client.startup.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.navigation"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.navigation.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -184,7 +268,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.navigation.ui.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.navigation.ui.swt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.navigation.ui.swt.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -198,7 +296,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.ui.core.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.ui.ridgets"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.ui.ridgets.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -212,7 +324,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.ui.ridgets.swt.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.ui.swt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.ui.swt.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -233,7 +359,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.ui.filter.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.ui.workarea"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.ui.workarea.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -247,7 +387,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.monitor.client.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.monitor.common"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.monitor.common.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -261,6 +415,13 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.ui.common.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.beans.common"
          download-size="0"
          install-size="0"
@@ -268,7 +429,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.beans.common.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.nebula.widgets.compositetable"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.nebula.widgets.compositetable.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -330,7 +505,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.tests.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.sample.app.common"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.sample.app.common.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -344,6 +533,13 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.security.simpleservices.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.ui.ridgets.swt.optional"
          download-size="0"
          install-size="0"
@@ -351,7 +547,21 @@ v1.0
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.riena.ui.ridgets.swt.optional.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.riena.ui.swt.rcp"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.ui.swt.rcp.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
