@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -33,6 +36,8 @@ class CompletionCombo extends Composite {
 	private FilteredList filteredList;
 	private LabelProvider labelProvider;
 
+	private List<String> elements;
+
 	public CompletionCombo(Composite parent, int style) {
 		super(parent, style);
 		GridLayoutFactory.fillDefaults().numColumns(1).spacing(0, 0).applyTo(this);
@@ -47,10 +52,16 @@ class CompletionCombo extends Composite {
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(filteredList);
 
 		addListeners();
+
+		elements = new ArrayList<String>();
 	}
 
-	public void setElements(Object[] elements) {
-		filteredList.setElements(elements);
+	public void setElements(String[] newElements) {
+		elements.clear();
+		for (String element : newElements) {
+			elements.add(element);
+		}
+		filteredList.setElements(elements.toArray(new String[elements.size()]));
 	}
 
 	// helping methods
@@ -60,7 +71,13 @@ class CompletionCombo extends Composite {
 		CompletionListener listener = new CompletionListener();
 		filterText.addKeyListener(listener);
 		filterText.addModifyListener(listener);
+	}
 
+	private void addText(String text) {
+		if (!elements.contains(text)) {
+			elements.add(text);
+			filteredList.setElements(elements.toArray(new String[elements.size()]));
+		}
 	}
 
 	private void completeText(String prefix) {
@@ -93,6 +110,7 @@ class CompletionCombo extends Composite {
 			if (e.keyCode == SWT.ARROW_DOWN) {
 				filteredList.setFocus();
 			} else if (e.keyCode == 13) {
+				addText(filterText.getText());
 				int end = filterText.getText().length();
 				filterText.setSelection(end, end);
 			}
