@@ -32,12 +32,19 @@ v1.0
       %license
    </license>
 
-   <includes
+<!--   <includes
          id="org.eclipse.riena.build.feature.core.source"
-         version="0.0.0"/>
+         version="0.0.0"/>-->
 
    <plugin
          id="com.caucho.hessian"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.caucho.hessian.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -87,6 +94,13 @@ v1.0
 
    <plugin
          id="org.eclipse.riena.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.core.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
