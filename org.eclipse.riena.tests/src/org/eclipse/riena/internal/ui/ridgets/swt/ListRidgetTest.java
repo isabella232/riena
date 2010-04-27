@@ -31,8 +31,8 @@ import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
-import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
@@ -858,6 +858,55 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		assertEquals("riena", control.getItem(1));
 	}
 
+	public void testGetOptionWithSorting() {
+		IListRidget ridget = getRidget();
+		ridget.bindToModel(manager, "persons", Person.class, "lastname");
+		ridget.updateFromModel();
+
+		assertEquals(0, ridget.indexOfOption(person1));
+		assertEquals(person1, ridget.getOption(0));
+
+		ridget.setComparator(0, new StringComparator());
+		ridget.setSortedColumn(0); // sort by last name
+		ridget.setSortedAscending(false);
+
+		final int last = ridget.getOptionCount() - 1;
+		assertEquals(last, ridget.indexOfOption(person1));
+		assertEquals(person1, ridget.getOption(last));
+
+		ridget.setSortedAscending(true);
+
+		assertEquals(0, ridget.indexOfOption(person1));
+		assertEquals(person1, ridget.getOption(0));
+	}
+
+	public void testSetSelectionWithSorting() {
+		IListRidget ridget = getRidget();
+		ridget.bindToModel(manager, "persons", Person.class, "lastname");
+		ridget.updateFromModel();
+
+		assertEquals(-1, ridget.getSelectionIndex());
+		assertTrue(ridget.getSelection().isEmpty());
+
+		ridget.setSelection(0);
+
+		assertEquals(0, ridget.getSelectionIndex());
+		assertEquals(person1, ridget.getSelection().get(0));
+
+		ridget.setComparator(0, new StringComparator());
+		ridget.setSortedColumn(0); // sort by last name
+		ridget.setSortedAscending(false);
+
+		final int last = ridget.getOptionCount() - 1;
+		assertEquals(last, ridget.getSelectionIndex());
+		assertEquals(person1, ridget.getSelection().get(0));
+
+		ridget.setSortedAscending(true);
+
+		assertEquals(0, ridget.getSelectionIndex());
+		assertEquals(person1, ridget.getSelection().get(0));
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -939,10 +988,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		}
 	}
 
-	// test methods
-	// /////////////
-
-	private class SimplifiedModel {
+	private static final class SimplifiedModel {
 		private java.util.List<String> values;
 		private final static String NAME_ONE = "Janet";
 		private final static String NAME_TWO = "Jermaine";
@@ -954,6 +1000,14 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 		public java.util.List<String> getValues() {
 			return values;
+		}
+	}
+
+	private static final class StringComparator implements Comparator<Object> {
+		public int compare(Object o1, Object o2) {
+			String s1 = (String) o1;
+			String s2 = (String) o2;
+			return s1.compareTo(s2);
 		}
 	}
 

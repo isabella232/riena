@@ -197,6 +197,17 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		return viewerObservables;
 	}
 
+	public Object getOption(int index) {
+		if (getRowObservables() == null || index < 0 || index >= getOptionCount()) {
+			throw new IllegalArgumentException("index: " + index); //$NON-NLS-1$
+		}
+		AbstractListViewer viewer = getViewer();
+		if (viewer != null) {
+			return viewer.getElementAt(index); // sorted
+		}
+		return getRowObservables().get(index); // unsorted
+	}
+
 	@Override
 	public int getSelectionIndex() {
 		return getUIControl() == null ? -1 : getUIControlSelectionIndex();

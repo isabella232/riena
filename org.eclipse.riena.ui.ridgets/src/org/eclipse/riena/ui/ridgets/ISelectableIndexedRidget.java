@@ -26,10 +26,15 @@ public interface ISelectableIndexedRidget extends ISelectableRidget {
 
 	/**
 	 * Returns one of the options among which to select.
+	 * <p>
+	 * If the ridget is sorted, the index refers to the sorted order. The index
+	 * should not be stored since it will change when the sort order is
+	 * modified.
 	 * 
 	 * @param index
-	 *            the index of the option
-	 * @return An option.
+	 *            the index of the option. If the ridget is sorted, the index
+	 *            refers to the sorted order.
+	 * @return the option at the given index
 	 * @throws RuntimeException
 	 *             if the index is out of bounds (index &lt; 0 || index &gt;=
 	 *             getOptionCount())
@@ -47,8 +52,13 @@ public interface ISelectableIndexedRidget extends ISelectableRidget {
 	 * Return the index of the first selected item or -1 if none.
 	 * <p>
 	 * If no control is bound to the ridget, the method always returns -1.
+	 * <p>
+	 * If the ridget is sorted, the index refers to the sorted order. The index
+	 * should not be stored since it will change when the sort order is
+	 * modified.
 	 * 
-	 * @return index of the first selected item or -1 if none
+	 * @return index of the first selected item or -1 if none. If the ridget is
+	 *         sorted, the index refers to the sorted order.
 	 */
 	int getSelectionIndex();
 
@@ -56,8 +66,13 @@ public interface ISelectableIndexedRidget extends ISelectableRidget {
 	 * Returns an array of indices of the selected items. *
 	 * <p>
 	 * If no control is bound to the ridget, the method always returns -1.
+	 * <p>
+	 * If the ridget is sorted, the indices refer to the sorted order. The
+	 * indices should not be stored since they will change when the sort order
+	 * is modified.
 	 * 
-	 * @return indices of the selected items; never null; may be empty
+	 * @return indices of the selected items; never null; may be empty. If the
+	 *         ridget is sorted, the indices refer to the sorted order.
 	 */
 	int[] getSelectionIndices();
 
@@ -65,11 +80,16 @@ public interface ISelectableIndexedRidget extends ISelectableRidget {
 	 * Index of the option among the selectable options.
 	 * <p>
 	 * If no control is bound to the ridget, the method always returns -1.
+	 * <p>
+	 * If the ridget is sorted, the index refers to the sorted order. The index
+	 * should not be stored since it will change when the sort order is
+	 * modified.
 	 * 
 	 * @param option
 	 *            An option.
 	 * @return The index of the option or -1 if the given option is not amongst
-	 *         the selectable options.
+	 *         the selectable options. If the ridget is sorted, the index refers
+	 *         to the sorted order.
 	 */
 	int indexOfOption(Object option);
 
@@ -77,7 +97,8 @@ public interface ISelectableIndexedRidget extends ISelectableRidget {
 	 * Selects the item of the given row.
 	 * 
 	 * @param index
-	 *            a 0-based index of the row to select.
+	 *            a 0-based index of the row to select. If the ridget is sorted,
+	 *            the index refers to the current sort order.
 	 * @throws RuntimeException
 	 *             (a) if the index is out of bounds (index &lt; 0 || index &ge;
 	 *             getOptionCount()); (b) when there is no bound model to select
@@ -89,7 +110,8 @@ public interface ISelectableIndexedRidget extends ISelectableRidget {
 	 * Selects the items of the given rows.
 	 * 
 	 * @param indices
-	 *            indices of the rows to select.
+	 *            indices of the rows to select. If the ridget is sorted, the
+	 *            indices refer to the current sort order.
 	 * @throws RuntimeException
 	 *             (a) if the index is out of bounds (index &lt; 0 || index &ge;
 	 *             getOptionCount()); (b) when there is no bound model to select

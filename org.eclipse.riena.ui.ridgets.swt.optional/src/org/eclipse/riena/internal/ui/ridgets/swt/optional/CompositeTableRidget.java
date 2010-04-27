@@ -170,9 +170,15 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 	}
 
-	@Override
 	protected List<?> getRowObservables() {
 		return modelObservables != null ? Arrays.asList(rowValues) : null;
+	}
+
+	public Object getOption(int index) {
+		if (getRowObservables() == null || index < 0 || index >= getOptionCount()) {
+			throw new IllegalArgumentException("index: " + index); //$NON-NLS-1$
+		}
+		return rowValues[index];
 	}
 
 	public void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass,

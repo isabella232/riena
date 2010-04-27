@@ -524,7 +524,51 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 		} catch (UnsupportedOperationException npe) {
 			ok();
 		}
+	}
 
+	public void testGetOptionWithSorting() {
+		ICompositeTableRidget ridget = getRidget();
+
+		assertEquals(0, ridget.indexOfOption(person1));
+		assertEquals(person1, ridget.getOption(0));
+
+		ridget.setComparator(1, new LastNameComparator());
+		ridget.setSortedColumn(1); // sort by last name
+		ridget.setSortedAscending(false);
+
+		final int last = ridget.getOptionCount() - 1;
+		assertEquals(last, ridget.indexOfOption(person1));
+		assertEquals(person1, ridget.getOption(last));
+
+		ridget.setSortedAscending(true);
+
+		assertEquals(0, ridget.indexOfOption(person1));
+		assertEquals(person1, ridget.getOption(0));
+	}
+
+	public void testSetSelectionWithSorting() {
+		ICompositeTableRidget ridget = getRidget();
+
+		assertEquals(-1, ridget.getSelectionIndex());
+		assertTrue(ridget.getSelection().isEmpty());
+
+		ridget.setSelection(0);
+
+		assertEquals(0, ridget.getSelectionIndex());
+		assertEquals(person1, ridget.getSelection().get(0));
+
+		ridget.setComparator(1, new LastNameComparator());
+		ridget.setSortedColumn(1); // sort by last name
+		ridget.setSortedAscending(false);
+
+		final int last = ridget.getOptionCount() - 1;
+		assertEquals(last, ridget.getSelectionIndex());
+		assertEquals(person1, ridget.getSelection().get(0));
+
+		ridget.setSortedAscending(true);
+
+		assertEquals(0, ridget.getSelectionIndex());
+		assertEquals(person1, ridget.getSelection().get(0));
 	}
 
 	// helping methods
@@ -688,7 +732,6 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	 * @see Row
 	 */
 	public static class RowRidget extends AbstractCompositeRidget implements IRowRidget {
-
 		private Person rowData;
 
 		public void setData(Object rowData) {

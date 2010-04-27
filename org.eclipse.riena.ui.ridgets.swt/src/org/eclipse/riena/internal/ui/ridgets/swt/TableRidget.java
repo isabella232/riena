@@ -266,13 +266,21 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return viewerObservables;
 	}
 
-	@Override
+	public Object getOption(int index) {
+		if (getRowObservables() == null || index < 0 || index >= getOptionCount()) {
+			throw new IllegalArgumentException("index: " + index); //$NON-NLS-1$
+		}
+		if (viewer != null) {
+			return viewer.getElementAt(index); // sorted
+		}
+		return getRowObservables().get(index); // unsorted
+	}
+
 	public int getSelectionIndex() {
 		Table control = getUIControl();
 		return control == null ? -1 : control.getSelectionIndex();
 	}
 
-	@Override
 	public int[] getSelectionIndices() {
 		Table control = getUIControl();
 		return control == null ? new int[0] : control.getSelectionIndices();

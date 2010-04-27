@@ -27,12 +27,11 @@ import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 public abstract class AbstractSelectableIndexedRidget extends AbstractSelectableRidget implements
 		ISelectableIndexedRidget {
 
-	public final Object getOption(int index) {
-		if (getRowObservables() == null || index < 0 || index >= getOptionCount()) {
-			throw new IllegalArgumentException("index: " + index); //$NON-NLS-1$
-		}
-		return getRowObservables().get(index);
-	}
+	/*
+	 * this method should be provided by subclasses, since it requires access to
+	 * the specific control instance (i.e. List, Table, etc.)
+	 */
+	public abstract Object getOption(int index);
 
 	public final int getOptionCount() {
 		if (getRowObservables() == null) {

@@ -1065,6 +1065,51 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		assertFalse(ridget.isErrorMarked());
 	}
 
+	public void testGetOptionWithSorting() {
+		ITableRidget ridget = getRidget();
+
+		assertEquals(0, ridget.indexOfOption(person1));
+		assertEquals(person1, ridget.getOption(0));
+
+		ridget.setComparator(1, new StringComparator());
+		ridget.setSortedColumn(1); // sort by last name
+		ridget.setSortedAscending(false);
+
+		final int last = ridget.getOptionCount() - 1;
+		assertEquals(last, ridget.indexOfOption(person1));
+		assertEquals(person1, ridget.getOption(last));
+
+		ridget.setSortedAscending(true);
+
+		assertEquals(0, ridget.indexOfOption(person1));
+		assertEquals(person1, ridget.getOption(0));
+	}
+
+	public void testSetSelectionWithSorting() {
+		ITableRidget ridget = getRidget();
+
+		assertEquals(-1, ridget.getSelectionIndex());
+		assertTrue(ridget.getSelection().isEmpty());
+
+		ridget.setSelection(0);
+
+		assertEquals(0, ridget.getSelectionIndex());
+		assertEquals(person1, ridget.getSelection().get(0));
+
+		ridget.setComparator(1, new StringComparator());
+		ridget.setSortedColumn(1); // sort by last name
+		ridget.setSortedAscending(false);
+
+		final int last = ridget.getOptionCount() - 1;
+		assertEquals(last, ridget.getSelectionIndex());
+		assertEquals(person1, ridget.getSelection().get(0));
+
+		ridget.setSortedAscending(true);
+
+		assertEquals(0, ridget.getSelectionIndex());
+		assertEquals(person1, ridget.getSelection().get(0));
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -1124,6 +1169,17 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	@Override
 	protected boolean supportsMulti() {
 		return true;
+	}
+
+	// helping classes
+	//////////////////
+
+	private static final class StringComparator implements Comparator<Object> {
+		public int compare(Object o1, Object o2) {
+			String s1 = (String) o1;
+			String s2 = (String) o2;
+			return s1.compareTo(s2);
+		}
 	}
 
 }
