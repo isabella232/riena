@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.ui.swt.facades.GCFacade;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -157,8 +158,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			return;
 		}
 
-		gc.setAdvanced(true);
-		gc.setAntialias(SWT.ON);
+		GCFacade gcFacade = GCFacade.getDefault();
+		gcFacade.setAdvanced(gc, true);
+		gcFacade.setAntialias(gc, SWT.ON);
 
 		Font font = getTitlebarFont();
 		gc.setFont(font);

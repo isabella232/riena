@@ -20,6 +20,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.ui.swt.facades.GCFacade;
 
 /**
  * Renderer of a widget or a part of a widget.
@@ -96,10 +97,9 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 	 * @since 1.2
 	 */
 	protected void initGC(GC gc) {
-
-		gc.setAdvanced(true);
-		gc.setAntialias(SWT.ON);
-
+		GCFacade gcFacade = GCFacade.getDefault();
+		gcFacade.setAdvanced(gc, true);
+		gcFacade.setAntialias(gc, SWT.ON);
 	}
 
 }
