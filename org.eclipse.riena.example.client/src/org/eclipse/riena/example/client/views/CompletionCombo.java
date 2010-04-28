@@ -42,6 +42,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TypedListener;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.core.util.StringUtils;
+
 /**
  * TODO [ev] move to appropriate plugin / package
  */
@@ -57,6 +59,8 @@ public class CompletionCombo extends Composite {
 	private Color foreground, background;
 	private Font font;
 	private Shell _shell;
+	private boolean autoCompletion;
+	private boolean isTextSelected;
 
 	static final String PACKAGE_PREFIX = "org.eclipse.swt.custom."; //$NON-NLS-1$
 
@@ -197,6 +201,8 @@ public class CompletionCombo extends Composite {
 
 		createPopup(null, -1);
 		initAccessible();
+		autoCompletion = false;
+		isTextSelected = false;
 	}
 
 	static int checkStyle(int style) {
@@ -2108,7 +2114,11 @@ public class CompletionCombo extends Composite {
 				dropDown(false);
 				break;
 			}
-			event.doit = keyEvent.doit;
+			if (event.character == SWT.DEL && isAutoCompletion()) {
+				event.doit = false;
+			} else {
+				event.doit = keyEvent.doit;
+			}
 			if (!event.doit) {
 				break;
 			}
@@ -2154,7 +2164,9 @@ public class CompletionCombo extends Composite {
 			e.stateMask = event.stateMask;
 			notifyListeners(SWT.KeyUp, e);
 			event.doit = e.doit;
-			handleAutoCompletion(event);
+			if (isAutoCompletion()) {
+				handleAutoCompletion(event);
+			}
 			break;
 		}
 		case SWT.MenuDetect: {
@@ -2317,25 +2329,31 @@ public class CompletionCombo extends Composite {
 		return super.traverse(event);
 	}
 
-	/**
-	 * @param event
-	 */
 	private void handleAutoCompletion(Event event) {
-		if (Character.isLetterOrDigit(event.character)) {
+		if (Character.isLetterOrDigit(event.character) || event.character == SWT.BS) {
 			dropDown(true);
 			text.setFocus();
 			String prefix = text.getText();
+			if (isTextSelected && event.character == SWT.BS && !StringUtils.isDeepEmpty(prefix)) {
+				text.setText(prefix.substring(0, prefix.length() - 1));
+				prefix = text.getText();
+			}
+			if (StringUtils.isDeepEmpty(prefix)) {
+				return;
+			}
 			String[] items = list.getItems();
 			int counter = 0;
 			for (String item : items) {
 				if (matchesWord(prefix, item)) {
-					list.setSelection(counter);
 					text.setText(item);
 					setSelection(new Point(prefix.length(), item.length()));
+					isTextSelected = true;
+					list.setSelection(counter);
 					return;
 				}
 				counter++;
 			}
+			isTextSelected = false;
 		}
 
 	}
@@ -2344,16 +2362,27 @@ public class CompletionCombo extends Composite {
 		if (prefix == null || word == null) {
 			return false;
 		}
-		int length = prefix.length();
-		if (word.length() < length) {
-			return false;
-		}
 
 		if (word.toLowerCase().startsWith(prefix.toLowerCase())) {
 			return true;
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param autoCompletion
+	 *            the autoCompletion to set
+	 */
+	public void setAutoCompletion(boolean autoCompletion) {
+		this.autoCompletion = autoCompletion;
+	}
+
+	/**
+	 * @return the autoCompletion
+	 */
+	public boolean isAutoCompletion() {
+		return autoCompletion;
 	}
 
 }

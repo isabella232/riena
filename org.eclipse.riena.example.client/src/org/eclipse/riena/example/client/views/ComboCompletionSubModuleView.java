@@ -97,6 +97,7 @@ public class ComboCompletionSubModuleView extends SubModuleView {
 		CompletionCombo combo = new CompletionCombo(parent, SWT.BORDER);
 		GridDataFactory.fillDefaults().applyTo(combo);
 		combo.setItems(DATA);
+		combo.setAutoCompletion(true);
 	}
 
 	private Group createGroup(Composite parent, String title) {
