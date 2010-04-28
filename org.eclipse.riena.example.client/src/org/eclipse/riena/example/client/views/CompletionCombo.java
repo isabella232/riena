@@ -733,7 +733,7 @@ public class CompletionCombo extends Composite {
 		popup.setBounds(x, y, width, height);
 		popup.setVisible(true);
 		if (isFocusControl()) {
-			list.setFocus();
+			text.setFocus();
 		}
 	}
 
@@ -1460,8 +1460,8 @@ public class CompletionCombo extends Composite {
 			 * selection event to be disappear.
 			 */
 			if (!"carbon".equals(SWT.getPlatform())) {
-				Point point = arrow.toControl(getDisplay().getCursorLocation());
-				Point size = arrow.getSize();
+				Point point = toControl(getDisplay().getCursorLocation());
+				Point size = getSize();
 				Rectangle rect = new Rectangle(0, 0, size.x, size.y);
 				if (!rect.contains(point)) {
 					dropDown(false);
@@ -2099,10 +2099,7 @@ public class CompletionCombo extends Composite {
 			break;
 		}
 		case SWT.KeyDown: {
-			if (event.character == SWT.ESC) {
-				// Escape key cancels popup list
-				dropDown(false);
-			}
+
 			Event keyEvent = new Event();
 			keyEvent.time = event.time;
 			keyEvent.character = event.character;
@@ -2111,6 +2108,11 @@ public class CompletionCombo extends Composite {
 			keyEvent.stateMask = event.stateMask;
 			notifyListeners(SWT.KeyDown, keyEvent);
 			if (isDisposed()) {
+				break;
+			}
+			if (event.character == SWT.ESC) {
+				// Escape key cancels popup list
+				dropDown(false);
 				break;
 			}
 			event.doit = keyEvent.doit;
@@ -2329,7 +2331,7 @@ public class CompletionCombo extends Composite {
 	private void handleAutoCompletion(Event event) {
 		if (Character.isLetterOrDigit(event.character)) {
 			dropDown(true);
-			//			text.setFocus();
+			text.setFocus();
 		}
 		//		ignore = !Character.isLetterOrDigit(event.character);
 		//		if (event.keyCode == SWT.ARROW_DOWN) {
