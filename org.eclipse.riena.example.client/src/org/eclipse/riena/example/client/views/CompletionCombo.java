@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    compeople AG - initial API and implementation
+ *     IBM Corporation - initial API and implementation (CCombo)
+ *     compeople AG    - adjustments for autocompletion
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
@@ -46,6 +47,27 @@ import org.eclipse.riena.core.util.StringUtils;
 
 /**
  * TODO [ev] move to appropriate plugin / package
+ * 
+ * The CompletionCombo class represents a selectable user interface object that
+ * combines a text field and a list and issues notification when an item is
+ * selected from the list. The list will automatically pop-up when the text
+ * widget is focused and the user is typing.
+ * <p>
+ * CompletionCombo was written to work around certain limitations in the native
+ * combo box. There is no is no strict requirement that CompletionCombo look or
+ * behave the same as the native combo box.
+ * </p>
+ * <p>
+ * Note that although this class is a subclass of <code>Composite</code>, it
+ * does not make sense to add children to it, or set a layout on it.
+ * </p>
+ * <dl>
+ * <dt><b>Styles:</b>
+ * <dd>BORDER, READ_ONLY, FLAT</dd>
+ * <dt><b>Events:</b>
+ * <dd>DefaultSelection, Modify, Selection, Verify</dd>
+ * </dl>
+ * 
  */
 public class CompletionCombo extends Composite {
 
@@ -97,23 +119,6 @@ public class CompletionCombo extends Composite {
 	 * @see SWT#FLAT
 	 * @see Widget#getStyle()
 	 */
-	//	public CompletionCombo(Composite parent, int style) {
-	//		super(parent, style);
-	//		GridLayoutFactory.fillDefaults().numColumns(1).spacing(0, 0).applyTo(this);
-	//
-	//		filterText = new Text(this, SWT.BORDER | SWT.SINGLE);
-	//		GridDataFactory.fillDefaults().applyTo(filterText);
-	//
-	//		int flags = SWT.V_SCROLL | SWT.H_SCROLL | SWT.SINGLE;
-	//		labelProvider = new LabelProvider(); // WorkbenchLabelProvider(); //  new LabelProvider(); 
-	//		filteredList = new FilteredList(this, flags, labelProvider, true, true, true);
-	//		filteredList.setFilter(""); //$NON-NLS-1$
-	//		GridDataFactory.fillDefaults().grab(true, true).applyTo(filteredList);
-	//
-	//		addListeners();
-	//
-	//		elements = new ArrayList<String>();
-	//	}
 	public CompletionCombo(Composite parent, int style) {
 		super(parent, style = checkStyle(style));
 		_shell = super.getShell();
@@ -181,7 +186,7 @@ public class CompletionCombo extends Composite {
 			}
 		};
 
-		int[] comboEvents = { SWT.Dispose, SWT.FocusIn, SWT.Move, SWT.Resize };
+		int[] comboEvents = { SWT.Dispose, SWT.FocusIn, SWT.FocusOut, SWT.Move, SWT.Resize };
 		for (int i = 0; i < comboEvents.length; i++) {
 			this.addListener(comboEvents[i], listener);
 		}
@@ -502,10 +507,14 @@ public class CompletionCombo extends Composite {
 			if (focusControl == arrow || focusControl == list) {
 				return;
 			}
+			if (!isDropped()) {
+				dropDown(true);
+			}
+			text.setFocus();
+			break;
+		case SWT.FocusOut:
 			if (isDropped()) {
-				list.setFocus();
-			} else {
-				text.setFocus();
+				popup.setVisible(false);
 			}
 			break;
 		case SWT.Move:
@@ -1458,7 +1467,7 @@ public class CompletionCombo extends Composite {
 			 * deactivate causes the deactivate to be called twice and the
 			 * selection event to be disappear.
 			 */
-			if (!"carbon".equals(SWT.getPlatform())) {
+			if (!"carbon".equals(SWT.getPlatform())) { //$NON-NLS-1$
 				Point point = toControl(getDisplay().getCursorLocation());
 				Point size = getSize();
 				Rectangle rect = new Rectangle(0, 0, size.x, size.y);
