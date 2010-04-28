@@ -15,6 +15,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -110,6 +111,8 @@ public abstract class AbstractDialogView extends Dialog {
 		// after binding the controller it is necessary to calculate the bounds of the dialog again
 		// because the controller can add some data that influences the size of some widgets (e.g. ChoiceComposite)
 		initializeBounds();
+
+		centerWindow(getShell());
 
 		getShell().addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
@@ -234,6 +237,16 @@ public abstract class AbstractDialogView extends Dialog {
 	private void bindController() {
 		controlledView.initialize(getController());
 		controlledView.bind(getController());
+	}
+
+	private void centerWindow(Shell dialogShell) {
+		if (dialogShell != null && dialogShell.getParent() != null) {
+			Rectangle parentShellBounds = dialogShell.getParent().getBounds();
+			Rectangle dialogShellBounds = dialogShell.getBounds();
+			int leftMargin = parentShellBounds.x + (parentShellBounds.width - dialogShellBounds.width) / 2;
+			int topMargin = parentShellBounds.y + (parentShellBounds.height - dialogShellBounds.height) / 2;
+			dialogShell.setLocation(leftMargin, topMargin);
+		}
 	}
 
 	// helping classes
