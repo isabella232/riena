@@ -47,13 +47,6 @@ import org.eclipse.swt.widgets.Widget;
  */
 public class CompletionCombo extends Composite {
 
-	//	private Text filterText;
-	//	private FilteredList filteredList;
-	//	private LabelProvider labelProvider;
-
-	//	private List<String> elements;
-	//	private boolean ignore;
-
 	private Text text;
 	private org.eclipse.swt.widgets.List list;
 	private int visibleItemCount = 5;
@@ -2146,8 +2139,6 @@ public class CompletionCombo extends Composite {
 				if (isDisposed()) {
 					break;
 				}
-			} else {
-				handleAutoCompletion(event);
 			}
 
 			// Further work : Need to add support for incremental search in 
@@ -2163,6 +2154,7 @@ public class CompletionCombo extends Composite {
 			e.stateMask = event.stateMask;
 			notifyListeners(SWT.KeyUp, e);
 			event.doit = e.doit;
+			handleAutoCompletion(event);
 			break;
 		}
 		case SWT.MenuDetect: {
@@ -2332,78 +2324,36 @@ public class CompletionCombo extends Composite {
 		if (Character.isLetterOrDigit(event.character)) {
 			dropDown(true);
 			text.setFocus();
+			String prefix = text.getText();
+			String[] items = list.getItems();
+			int counter = 0;
+			for (String item : items) {
+				if (matchesWord(prefix, item)) {
+					list.setSelection(counter);
+					text.setText(item);
+					setSelection(new Point(prefix.length(), item.length()));
+					return;
+				}
+				counter++;
+			}
 		}
-		//		ignore = !Character.isLetterOrDigit(event.character);
-		//		if (event.keyCode == SWT.ARROW_DOWN) {
-		//			filteredList.setFocus();
-		//		} else if (event.keyCode == 13) {
-		//			addText(filterText.getText());
-		//			int end = filterText.getText().length();
-		//			filterText.setSelection(end, end);
-		//		}
 
 	}
 
-	//	public void setElements(String[] newElements) {
-	//		elements.clear();
-	//		for (String element : newElements) {
-	//			elements.add(element);
-	//		}
-	//		filteredList.setElements(elements.toArray(new String[elements.size()]));
-	//	}
-	//
-	//	private void addListeners() {
-	//		CompletionListener listener = new CompletionListener();
-	//		filterText.addKeyListener(listener);
-	//		filterText.addModifyListener(listener);
-	//	}
-	//
-	//	private void addText(String text) {
-	//		if (!elements.contains(text)) {
-	//			elements.add(text);
-	//			filteredList.setElements(elements.toArray(new String[elements.size()]));
-	//		}
-	//	}
-	//
-	//	private void completeText(String prefix) {
-	//		if (getItemCount() == 1) {
-	//			Object[] selection = filteredList.getSelection();
-	//			if (selection.length == 1) {
-	//				String proposal = labelProvider.getText(selection[0]);
-	//				if (proposal != null && prefix.length() < proposal.length()) {
-	//					// System.out.println("complete: " + prefix + " -> " + proposal);
-	//					filterText.setText(proposal);
-	//					filterText.setSelection(prefix.length(), proposal.length());
-	//				}
-	//			}
-	//		}
-	//	}
+	private boolean matchesWord(String prefix, String word) {
+		if (prefix == null || word == null) {
+			return false;
+		}
+		int length = prefix.length();
+		if (word.length() < length) {
+			return false;
+		}
 
-	// helping classes
-	//////////////////
+		if (word.toLowerCase().startsWith(prefix.toLowerCase())) {
+			return true;
+		}
 
-	//	private final class CompletionListener extends KeyAdapter implements ModifyListener {
-	//
-	//		private boolean ignore;
-	//
-	//		public void keyPressed(KeyEvent e) {
-	//			ignore = !Character.isLetterOrDigit(e.character);
-	//			if (e.keyCode == SWT.ARROW_DOWN) {
-	//				filteredList.setFocus();
-	//			} else if (e.keyCode == 13) {
-	//				addText(filterText.getText());
-	//				int end = filterText.getText().length();
-	//				filterText.setSelection(end, end);
-	//			}
-	//		}
-	//
-	//		public void modifyText(ModifyEvent e) {
-	//			String text = filterText.getText();
-	//			filteredList.setFilter(text);
-	//			if (!ignore) {
-	//				completeText(text);
-	//			}
-	//		}
-	//	}
+		return false;
+	}
 
 }
