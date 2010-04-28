@@ -93,7 +93,7 @@ public class ComboCompletionSubModuleView extends SubModuleView {
 	}
 
 	private void createCustom(Composite parent) {
-		UIControlsFactory.createLabel(parent, "matching prefix = autocomplete, ENTER = add"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "matching prefix = autocomplete"); //$NON-NLS-1$
 		CompletionCombo combo = new CompletionCombo(parent, SWT.BORDER);
 		GridDataFactory.fillDefaults().applyTo(combo);
 		combo.setItems(DATA);
