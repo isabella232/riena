@@ -133,7 +133,7 @@ public class LnFUpdater {
 		if (isDirtyLayout()) {
 			parent.layout(true, true);
 			setDirtyLayout(false);
-			LOGGER.log(LogService.LOG_INFO, "Layout updated."); //$NON-NLS-1$
+			// LOGGER.log(LogService.LOG_INFO, "Layout updated."); //$NON-NLS-1$
 		}
 	}
 
