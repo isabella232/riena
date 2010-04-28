@@ -51,6 +51,8 @@ import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
@@ -239,9 +241,27 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			Integer id = Integer.valueOf(getControllerId());
 			Control lastFocusedControl = focusControlMap.get(id);
 			lastFocusedControl.setFocus();
+		} else if (canFocusOnRidget()) {
+			getFocusRidget().requestFocus();
 		} else {
 			contentComposite.setFocus();
 		}
+	}
+
+	private boolean canFocusOnRidget() {
+		boolean result = false;
+		IRidget ridget = getFocusRidget();
+		if (ridget != null) {
+			result = ridget.isFocusable() && ridget.isEnabled() && ridget.isVisible();
+			if (ridget instanceof IMarkableRidget) {
+				result &= !((IMarkableRidget) ridget).isOutputOnly();
+			}
+		}
+		return result;
+	}
+
+	private IRidget getFocusRidget() {
+		return currentController != null ? currentController.getInitialFocus() : null;
 	}
 
 	public void unbind() {

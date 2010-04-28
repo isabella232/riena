@@ -46,6 +46,11 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubModuleController.class);
 
 	private IDefaultActionManager actionManager;
+	/**
+	 * The ridget the should get the focus, the very first time this controller
+	 * is activated. May be null.
+	 */
+	private IRidget initialFocus;
 
 	public SubModuleController() {
 		this(null);
@@ -56,8 +61,8 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * Make {@code action} the default action while the focus is within {@code
-	 * focusRidget} including it's children.
+	 * Make {@code action} the default action while the focus is within
+	 * {@code focusRidget} including it's children.
 	 * <p>
 	 * If a default action is available and enabled, it will be invoked whenever
 	 * the user presses ENTER within the window. The mapping is enabled when the
@@ -101,6 +106,16 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
+	 * TODO [ev] docs
+	 * 
+	 * @return
+	 * @since 2.0
+	 */
+	public IRidget getInitialFocus() {
+		return initialFocus;
+	}
+
+	/**
 	 * Returns the controller of the parent module.
 	 * 
 	 * @return module controller or {@code null} if not parent module controller
@@ -131,6 +146,15 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		ApplicationController appController = (ApplicationController) getNavigationNode().getParentOfType(
 				IApplicationNode.class).getNavigationNodeController();
 		return appController.getInfoFlyout();
+	}
+
+	/**
+	 * TODO [ev] docs
+	 * 
+	 * @since 2.0
+	 */
+	public void setInitialFocus(IRidget ridget) {
+		this.initialFocus = ridget;
 	}
 
 	@Override
