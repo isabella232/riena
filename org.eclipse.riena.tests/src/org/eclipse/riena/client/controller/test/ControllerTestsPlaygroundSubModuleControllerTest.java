@@ -169,8 +169,7 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 		assertTrue(table.getSelection().isEmpty());
 
 		selectAllToggleButton.fireAction();
-		assertEquals(table.getObservableList().size(), table.getOptionCount());
-
+		assertEquals(persons.size(), table.getOptionCount());
 	}
 
 	public void testMasterDetails() {
