@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -23,6 +24,7 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 /**
  * Test of the class {@link SWTModuleController}.
  */
+@NonUITestCase
 public class SWTModuleControllerTest extends TestCase {
 
 	private SWTModuleController controller;
