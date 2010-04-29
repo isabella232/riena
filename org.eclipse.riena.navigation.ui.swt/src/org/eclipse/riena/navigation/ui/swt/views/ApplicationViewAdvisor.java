@@ -588,7 +588,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	// helping classes
 	//////////////////
 
-	private static class MyApplicationNodeListener extends ApplicationNodeListener {
+	private class MyApplicationNodeListener extends ApplicationNodeListener {
 
 		@Override
 		public void filterAdded(IApplicationNode source, IUIFilter filter) {
@@ -601,6 +601,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 
 		private void show() {
+			if (controller == null || controller.getNavigationNode() == null
+					|| controller.getNavigationNode().isDisposed()) {
+				return;
+			}
 			try {
 				IViewPart vp = getNavigationViewPart();
 				if (vp == null) {
