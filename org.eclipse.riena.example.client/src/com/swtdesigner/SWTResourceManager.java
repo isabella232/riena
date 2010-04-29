@@ -6,9 +6,6 @@
  */
 package com.swtdesigner;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -17,12 +14,9 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
@@ -138,101 +132,6 @@ public class SWTResourceManager {
 	private static HashMap<Image, HashMap<Image, Image>> m_ImageToDecoratorMap = new HashMap<Image, HashMap<Image, Image>>();
 
 	/**
-	 * Returns an image encoded by the specified input stream
-	 * 
-	 * @param is
-	 *            InputStream The input stream encoding the image data
-	 * @return Image The image encoded by the specified input stream
-	 */
-	protected static Image getImage(InputStream is) {
-		Display display = Display.getCurrent();
-		ImageData data = new ImageData(is);
-		if (data.transparentPixel > 0)
-			return new Image(display, data, data.getTransparencyMask());
-		return new Image(display, data);
-	}
-
-	/**
-	 * Returns an image stored in the file at the specified path
-	 * 
-	 * @param path
-	 *            String The path to the image file
-	 * @return Image The image stored in the file at the specified path
-	 */
-	public static Image getImage(String path) {
-		return getImage("default", path); //$NON-NLS-1$
-	}
-
-	/**
-	 * Returns an image stored in the file at the specified path
-	 * 
-	 * @param section
-	 *            The section to which belongs specified image
-	 * @param path
-	 *            String The path to the image file
-	 * @return Image The image stored in the file at the specified path
-	 */
-	public static Image getImage(String section, String path) {
-		String key = section + '|' + SWTResourceManager.class.getName() + '|' + path;
-		Image image = m_ClassImageMap.get(key);
-		if (image == null) {
-			try {
-				FileInputStream fis = new FileInputStream(path);
-				image = getImage(fis);
-				m_ClassImageMap.put(key, image);
-				fis.close();
-			} catch (Exception e) {
-				image = getMissingImage();
-				m_ClassImageMap.put(key, image);
-			}
-		}
-		return image;
-	}
-
-	/**
-	 * Returns an image stored in the file at the specified path relative to the
-	 * specified class
-	 * 
-	 * @param clazz
-	 *            Class The class relative to which to find the image
-	 * @param path
-	 *            String The path to the image file
-	 * @return Image The image stored in the file at the specified path
-	 */
-	public static Image getImage(Class<?> clazz, String path) {
-		String key = clazz.getName() + '|' + path;
-		Image image = m_ClassImageMap.get(key);
-		if (image == null) {
-			try {
-				if (path.length() > 0 && path.charAt(0) == '/') {
-					String newPath = path.substring(1, path.length());
-					image = getImage(new BufferedInputStream(clazz.getClassLoader().getResourceAsStream(newPath)));
-				} else {
-					image = getImage(clazz.getResourceAsStream(path));
-				}
-				m_ClassImageMap.put(key, image);
-			} catch (Exception e) {
-				image = getMissingImage();
-				m_ClassImageMap.put(key, image);
-			}
-		}
-		return image;
-	}
-
-	private static final int MISSING_IMAGE_SIZE = 10;
-
-	private static Image getMissingImage() {
-		Image image = new Image(Display.getCurrent(), MISSING_IMAGE_SIZE, MISSING_IMAGE_SIZE);
-		//
-		GC gc = new GC(image);
-		gc.setBackground(getColor(SWT.COLOR_RED));
-		gc.fillRectangle(0, 0, MISSING_IMAGE_SIZE, MISSING_IMAGE_SIZE);
-		gc.dispose();
-		//
-		return image;
-	}
-
-	/**
 	 * Style constant for placing decorator image in top left corner of base
 	 * image.
 	 */
@@ -252,60 +151,6 @@ public class SWTResourceManager {
 	 * image.
 	 */
 	public static final int BOTTOM_RIGHT = 4;
-
-	/**
-	 * Returns an image composed of a base image decorated by another image
-	 * 
-	 * @param baseImage
-	 *            Image The base image that should be decorated
-	 * @param decorator
-	 *            Image The image to decorate the base image
-	 * @return Image The resulting decorated image
-	 */
-	public static Image decorateImage(Image baseImage, Image decorator) {
-		return decorateImage(baseImage, decorator, BOTTOM_RIGHT);
-	}
-
-	/**
-	 * Returns an image composed of a base image decorated by another image
-	 * 
-	 * @param baseImage
-	 *            Image The base image that should be decorated
-	 * @param decorator
-	 *            Image The image to decorate the base image
-	 * @param corner
-	 *            The corner to place decorator image
-	 * @return Image The resulting decorated image
-	 */
-	public static Image decorateImage(final Image baseImage, final Image decorator, final int corner) {
-		HashMap<Image, Image> decoratedMap = m_ImageToDecoratorMap.get(baseImage);
-		if (decoratedMap == null) {
-			decoratedMap = new HashMap<Image, Image>();
-			m_ImageToDecoratorMap.put(baseImage, decoratedMap);
-		}
-		Image result = decoratedMap.get(decorator);
-		if (result == null) {
-			Rectangle bid = baseImage.getBounds();
-			Rectangle did = decorator.getBounds();
-			result = new Image(Display.getCurrent(), bid.width, bid.height);
-			GC gc = new GC(result);
-			gc.drawImage(baseImage, 0, 0);
-			//
-			if (corner == TOP_LEFT) {
-				gc.drawImage(decorator, 0, 0);
-			} else if (corner == TOP_RIGHT) {
-				gc.drawImage(decorator, bid.width - did.width - 1, 0);
-			} else if (corner == BOTTOM_LEFT) {
-				gc.drawImage(decorator, 0, bid.height - did.height - 1);
-			} else if (corner == BOTTOM_RIGHT) {
-				gc.drawImage(decorator, bid.width - did.width - 1, bid.height - did.height - 1);
-			}
-			//
-			gc.dispose();
-			decoratedMap.put(decorator, result);
-		}
-		return result;
-	}
 
 	/**
 	 * Dispose all of the cached images
