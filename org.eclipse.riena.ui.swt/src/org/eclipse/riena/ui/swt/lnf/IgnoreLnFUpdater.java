@@ -11,15 +11,17 @@
 package org.eclipse.riena.ui.swt.lnf;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
+ * Defines a property that should no be manipulated by the {@code LnFUpdater}.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE })
+@Target( { ElementType.TYPE })
+@Inherited
 public @interface IgnoreLnFUpdater {
 
 	String[] value();

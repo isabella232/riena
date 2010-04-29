@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
@@ -264,9 +263,6 @@ public class LnFUpdater {
 		Iterator<PropertyDescriptor> iter = properties.iterator();
 		while (iter.hasNext()) {
 			PropertyDescriptor property = iter.next();
-			if (ignoreProperty(control.getClass(), property)) {
-				continue;
-			}
 			Method setter = property.getWriteMethod();
 			if (setter == null) {
 				toRemove.add(property);
@@ -290,6 +286,9 @@ public class LnFUpdater {
 				continue;
 			}
 			if (hasNoDefaultValue(control, property, currentValue)) {
+				continue;
+			}
+			if (ignoreProperty(control.getClass(), property)) {
 				continue;
 			}
 			try {
@@ -321,10 +320,9 @@ public class LnFUpdater {
 	 * @return {@code true} if property should be ignored; otherwise {@code
 	 *         false}
 	 */
-	@SuppressWarnings("unchecked")
-	private boolean ignoreProperty(Class<? extends Control> controlClass, PropertyDescriptor property) {
+	private boolean ignoreProperty(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
 
-		IgnoreLnFUpdater ignoreLnFUpdater = controlClass.getAnnotation(IgnoreLnFUpdater.class);
+		final IgnoreLnFUpdater ignoreLnFUpdater = controlClass.getAnnotation(IgnoreLnFUpdater.class);
 		if (ignoreLnFUpdater != null) {
 			String[] ignoreProps = ignoreLnFUpdater.value();
 			for (String ignoreProp : ignoreProps) {
@@ -335,9 +333,10 @@ public class LnFUpdater {
 				}
 			}
 		}
-		if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
-			return ignoreProperty((Class<? extends Control>) controlClass.getSuperclass(), property);
-		}
+		//		final Class<?> superclass = controlClass.getSuperclass();
+		//		if (Control.class.isAssignableFrom(superclass)) {
+		//			return ignoreProperty((Class<? extends Control>) superclass, property);
+		//		}
 
 		return false;
 
@@ -398,8 +397,9 @@ public class LnFUpdater {
 			}
 		}
 
-		if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
-			return checkLnfClassKeys((Class<? extends Control>) controlClass.getSuperclass());
+		final Class<?> superclass = controlClass.getSuperclass();
+		if (Control.class.isAssignableFrom(superclass)) {
+			return checkLnfClassKeys((Class<? extends Control>) superclass);
 		}
 
 		return false;
@@ -667,14 +667,14 @@ public class LnFUpdater {
 		final Class<? extends Control> controlClass = control.getClass();
 		List<PropertyDescriptor> propertyDescriptors = CONTROL_PROPERTIES.get(controlClass);
 		if (propertyDescriptors == null) {
-			propertyDescriptors = new ArrayList<PropertyDescriptor>();
 			try {
 				PropertyDescriptor[] descriptors = Introspector.getBeanInfo(controlClass).getPropertyDescriptors();
+				propertyDescriptors = new ArrayList<PropertyDescriptor>(descriptors.length);
 				for (PropertyDescriptor pd : descriptors) {
 					propertyDescriptors.add(pd);
 				}
 			} catch (IntrospectionException e) {
-				Nop.reason("ignore"); //$NON-NLS-1$
+				propertyDescriptors = new ArrayList<PropertyDescriptor>(0);
 			}
 			CONTROL_PROPERTIES.put(controlClass, propertyDescriptors);
 		}
@@ -716,8 +716,8 @@ public class LnFUpdater {
 	 * @return value of LnF
 	 */
 	@SuppressWarnings("unchecked")
-	private Object getLnfValue(Class<? extends Control> controlClass, PropertyDescriptor property) {
-		String lnfKey = generateLnfKey(controlClass, property);
+	private Object getLnfValue(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
+		final String lnfKey = generateLnfKey(controlClass, property);
 		Object lnfValue = resourceCache.getElement(lnfKey);
 		if (lnfValue != null) {
 			return lnfValue == NULL_RESOURCE ? null : lnfValue;
@@ -725,8 +725,9 @@ public class LnFUpdater {
 
 		lnfValue = LnfManager.getLnf().getResource(lnfKey);
 		if (lnfValue == null) {
-			if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
-				lnfValue = getLnfValueInternal((Class<? extends Control>) controlClass.getSuperclass(), property);
+			final Class<?> superclass = controlClass.getSuperclass();
+			if (Control.class.isAssignableFrom(superclass)) {
+				lnfValue = getLnfValueInternal((Class<? extends Control>) superclass, property);
 			}
 		}
 		/*
@@ -755,12 +756,13 @@ public class LnFUpdater {
 	 * @return value of LnF
 	 */
 	@SuppressWarnings("unchecked")
-	private Object getLnfValueInternal(Class<? extends Control> controlClass, PropertyDescriptor property) {
-		String lnfKey = generateLnfKey(controlClass, property);
+	private Object getLnfValueInternal(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
+		final String lnfKey = generateLnfKey(controlClass, property);
 		Object lnfValue = LnfManager.getLnf().getResource(lnfKey);
 		if (lnfValue == null) {
-			if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
-				lnfValue = getLnfValueInternal((Class<? extends Control>) controlClass.getSuperclass(), property);
+			final Class<?> superclass = controlClass.getSuperclass();
+			if (Control.class.isAssignableFrom(superclass)) {
+				lnfValue = getLnfValueInternal((Class<? extends Control>) superclass, property);
 			}
 		}
 		return lnfValue;
@@ -775,11 +777,11 @@ public class LnFUpdater {
 	 *            description of one property
 	 * @return LnF key
 	 */
-	private String generateLnfKey(Class<? extends Control> controlClass, PropertyDescriptor property) {
+	private String generateLnfKey(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
 
-		String controlName = getSimpleClassName(controlClass);
+		final String controlName = getSimpleClassName(controlClass);
 		StringBuilder lnfKey = new StringBuilder(controlName);
-		lnfKey.append("."); //$NON-NLS-1$
+		lnfKey.append('.');
 		lnfKey.append(property.getName());
 
 		return lnfKey.toString();
@@ -796,14 +798,14 @@ public class LnFUpdater {
 	 *            property
 	 * @return value of Lnf or {@code null} if not style exists
 	 */
-	private Object getLnfStyleValue(Control control, PropertyDescriptor property) {
+	private Object getLnfStyleValue(final Control control, final PropertyDescriptor property) {
 
-		String style = (String) control.getData(UIControlsFactory.KEY_LNF_STYLE);
+		final String style = (String) control.getData(UIControlsFactory.KEY_LNF_STYLE);
 		if (StringUtils.isEmpty(style)) {
 			return null;
 		}
 
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		String lnfKey = style + "." + property.getName(); //$NON-NLS-1$
 		return lnf.getResource(lnfKey);
 
