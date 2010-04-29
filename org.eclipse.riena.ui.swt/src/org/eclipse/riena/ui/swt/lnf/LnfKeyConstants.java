@@ -786,6 +786,12 @@ public final class LnfKeyConstants {
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH = "SubApplicationSwitcher.tabMinWidth"; //$NON-NLS-1$
 
+	/**
+	 * Only one ({@code true}) or more ({@code false}) than one sub-trees inside
+	 * a module can be expanded at the same time.
+	 */
+	public static final String SUB_MODULE_TREE_SHOW_ONE_SUB_TREE = "SubModuleTree.showOneSubTree"; //$NON-NLS-1$
+
 	public static final String SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY = "SubModuleItemToolTip.popupDelay"; //$NON-NLS-1$
 
 	/**

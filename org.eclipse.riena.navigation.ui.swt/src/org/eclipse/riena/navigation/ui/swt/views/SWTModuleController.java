@@ -23,6 +23,9 @@ import org.eclipse.riena.navigation.ui.controllers.ModuleController;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer;
 
 /**
@@ -36,12 +39,16 @@ public class SWTModuleController extends ModuleController {
 	private final static String PROPERTY_IMAGE = "icon"; //$NON-NLS-1$
 	private final static String PROPERTY_EXPANDED = "expanded"; //$NON-NLS-1$
 
+	private boolean showOneSubTree;
+
 	/**
 	 * @param navigationNode
 	 */
 	public SWTModuleController(IModuleNode navigationNode) {
 		super(navigationNode);
 		addListeners();
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		showOneSubTree = lnf.getBooleanSetting(LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE, false);
 	}
 
 	/**
@@ -122,6 +129,46 @@ public class SWTModuleController extends ModuleController {
 	}
 
 	/**
+	 * Ensures that only the sub-tree with the given node is expanded; all other
+	 * trees are collapsed.
+	 * 
+	 * @param activeNode
+	 *            active sub-module node
+	 */
+	private void showOneSubTree(ISubModuleNode activeNode) {
+
+		if (isShowOneSubTree()) {
+			collapseSibling(activeNode);
+			if (!activeNode.isExpanded()) {
+				activeNode.setExpanded(true);
+			}
+		}
+
+	}
+
+	/**
+	 * Collapses all sibling nodes; also in upper levels.
+	 * <p>
+	 * At the end only the sub-tree with the given node is expanded.
+	 * 
+	 * @param node
+	 *            sub-module node
+	 */
+	private void collapseSibling(ISubModuleNode node) {
+
+		INavigationNode<?> parent = node.getParent();
+		for (INavigationNode<?> sibling : parent.getChildren()) {
+			if ((sibling != node) && (sibling.isExpanded())) {
+				sibling.setExpanded(false);
+			}
+			if (parent instanceof ISubModuleNode) {
+				collapseSibling((ISubModuleNode) parent);
+			}
+		}
+
+	}
+
+	/**
 	 * Selects the active sub-module in the tree.
 	 * 
 	 * @param node
@@ -144,6 +191,17 @@ public class SWTModuleController extends ModuleController {
 		}
 	}
 
+	/**
+	 * Returns whether only one sub-tree inside the module is expanded at the
+	 * same time.
+	 * 
+	 * @return {@code true} only one sub-tree can be expanded; {@code false}
+	 *         more than one sub-tree can be expanded
+	 */
+	private boolean isShowOneSubTree() {
+		return showOneSubTree;
+	}
+
 	// helping classes
 	//////////////////
 
@@ -162,55 +220,51 @@ public class SWTModuleController extends ModuleController {
 			runAsync(new Runnable() {
 				public void run() {
 					selectActiveNode();
+					showOneSubTree(source);
 				}
 			});
 		}
 
-		/*
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#
-		 * expandedChanged(org.eclipse.riena.navigation.INavigationNode)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public void expandedChanged(ISubModuleNode source) {
 			super.expandedChanged(source);
-			if (source.isExpanded()) {
-				tree.expand(source);
-			} else {
-				tree.collapse(source);
+			if (tree != null) {
+				if (source.isExpanded()) {
+					tree.expand(source);
+				} else {
+					tree.collapse(source);
+				}
 			}
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#childRemoved
-		 * (org.eclipse.riena.navigation.INavigationNode,
-		 * org.eclipse.riena.navigation.INavigationNode)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public void childRemoved(ISubModuleNode source, ISubModuleNode childRemoved) {
 			super.childRemoved(source, childRemoved);
-			if (source.getChildren().size() == 0) {
-				tree.collapse(source);
-				return;
+			if (tree != null) {
+				if (source.getChildren().size() == 0) {
+					tree.collapse(source);
+					return;
+				}
+				tree.updateFromModel();
 			}
-			tree.updateFromModel();
 
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#childAdded
-		 * (org.eclipse.riena.navigation.INavigationNode,
-		 * org.eclipse.riena.navigation.INavigationNode)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public void childAdded(ISubModuleNode source, ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
-			tree.updateFromModel();
+			if (tree != null) {
+				tree.updateFromModel();
+			}
 		}
 	}
 
@@ -218,18 +272,15 @@ public class SWTModuleController extends ModuleController {
 	 * updates the tree whenever submodule are added
 	 */
 	private class ModuleListener extends ModuleNodeListener {
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#childAdded
-		 * (org.eclipse.riena.navigation.INavigationNode,
-		 * org.eclipse.riena.navigation.INavigationNode)
+		/**
+		 * {@inheritDoc}
 		 */
 		@Override
 		public void childAdded(IModuleNode source, ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
-			tree.updateFromModel();
+			if (tree != null) {
+				tree.updateFromModel();
+			}
 		}
 
 	}
