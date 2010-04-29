@@ -181,8 +181,19 @@ public class CompletionCombo extends Composite {
 				}
 				Shell shell = ((Control) event.widget).getShell();
 				if (shell == CompletionCombo.this.getShell()) {
-					handleFocus(SWT.FocusOut);
+					if (event.type == SWT.MouseDown && !isClickedInCombo()) {
+						dropDown(false);
+					} else {
+						handleFocus(SWT.FocusOut);
+					}
 				}
+			}
+
+			private boolean isClickedInCombo() {
+				Point point = toControl(getDisplay().getCursorLocation());
+				Point size = getSize();
+				Rectangle rect = new Rectangle(0, 0, size.x, size.y);
+				return rect.contains(point);
 			}
 		};
 
@@ -388,26 +399,24 @@ public class CompletionCombo extends Composite {
 
 	void arrowEvent(Event event) {
 		switch (event.type) {
-		case SWT.FocusIn: {
+		case SWT.FocusIn:
 			handleFocus(SWT.FocusIn);
 			break;
-		}
 		case SWT.DragDetect:
 		case SWT.MouseDown:
 		case SWT.MouseUp:
 		case SWT.MouseMove:
 		case SWT.MouseEnter:
 		case SWT.MouseExit:
-		case SWT.MouseHover: {
+		case SWT.MouseHover:
 			Point pt = getDisplay().map(arrow, this, event.x, event.y);
 			event.x = pt.x;
 			event.y = pt.y;
 			notifyListeners(event.type, event);
 			event.type = SWT.None;
 			break;
-		}
-		case SWT.MouseWheel: {
-			Point pt = getDisplay().map(arrow, this, event.x, event.y);
+		case SWT.MouseWheel:
+			pt = getDisplay().map(arrow, this, event.x, event.y);
 			event.x = pt.x;
 			event.y = pt.y;
 			notifyListeners(SWT.MouseWheel, event);
@@ -437,12 +446,10 @@ public class CompletionCombo extends Composite {
 				}
 			}
 			break;
-		}
-		case SWT.Selection: {
+		case SWT.Selection:
 			text.setFocus();
 			dropDown(!isDropped());
 			break;
-		}
 		default:
 			break;
 		}
@@ -507,14 +514,22 @@ public class CompletionCombo extends Composite {
 			if (focusControl == arrow || focusControl == list) {
 				return;
 			}
-			if (!isDropped()) {
-				dropDown(true);
+			if (isAutoCompletion()) {
+				if (!isDropped()) {
+					dropDown(true);
+				}
+				text.setFocus();
+			} else {
+				if (isDropped()) {
+					list.setFocus();
+				} else {
+					text.setFocus();
+				}
 			}
-			text.setFocus();
 			break;
 		case SWT.FocusOut:
 			if (isDropped()) {
-				popup.setVisible(false);
+				dropDown(false);
 			}
 			break;
 		case SWT.Move:
@@ -741,7 +756,11 @@ public class CompletionCombo extends Composite {
 		popup.setBounds(x, y, width, height);
 		popup.setVisible(true);
 		if (isFocusControl()) {
-			text.setFocus();
+			if (isAutoCompletion()) {
+				text.setFocus();
+			} else {
+				list.setFocus();
+			}
 		}
 	}
 
@@ -1072,7 +1091,7 @@ public class CompletionCombo extends Composite {
 
 	void handleFocus(int type) {
 		switch (type) {
-		case SWT.FocusIn: {
+		case SWT.FocusIn:
 			if (hasFocus) {
 				return;
 			}
@@ -1086,11 +1105,12 @@ public class CompletionCombo extends Composite {
 			Display display = getDisplay();
 			display.removeFilter(SWT.FocusIn, filter);
 			display.addFilter(SWT.FocusIn, filter);
+			display.removeFilter(SWT.MouseDown, filter);
+			display.addFilter(SWT.MouseDown, filter);
 			Event e = new Event();
 			notifyListeners(SWT.FocusIn, e);
 			break;
-		}
-		case SWT.FocusOut: {
+		case SWT.FocusOut:
 			if (!hasFocus) {
 				return;
 			}
@@ -1099,14 +1119,14 @@ public class CompletionCombo extends Composite {
 				return;
 			}
 			hasFocus = false;
-			Shell shell = getShell();
+			shell = getShell();
 			shell.removeListener(SWT.Deactivate, listener);
-			Display display = getDisplay();
+			display = getDisplay();
 			display.removeFilter(SWT.FocusIn, filter);
-			Event e = new Event();
+			display.removeFilter(SWT.MouseDown, filter);
+			e = new Event();
 			notifyListeners(SWT.FocusOut, e);
 			break;
-		}
 		default:
 			break;
 		}
@@ -1188,9 +1208,9 @@ public class CompletionCombo extends Composite {
 				String shortcut = null;
 				Label label = getAssociatedLabel();
 				if (label != null) {
-					String text = label.getText();
-					if (text != null) {
-						char mnemonic = _findMnemonic(text);
+					String labelText = label.getText();
+					if (labelText != null) {
+						char mnemonic = _findMnemonic(labelText);
 						if (mnemonic != '\0') {
 							shortcut = "Alt+" + mnemonic; //$NON-NLS-1$
 						}
@@ -1315,18 +1335,16 @@ public class CompletionCombo extends Composite {
 				createPopup(items, selectionIndex);
 			}
 			break;
-		case SWT.FocusIn: {
+		case SWT.FocusIn:
 			handleFocus(SWT.FocusIn);
 			break;
-		}
-		case SWT.MouseUp: {
+		case SWT.MouseUp:
 			if (event.button != 1) {
 				return;
 			}
 			dropDown(false);
 			break;
-		}
-		case SWT.Selection: {
+		case SWT.Selection:
 			int index = list.getSelectionIndex();
 			if (index == -1) {
 				return;
@@ -1341,8 +1359,7 @@ public class CompletionCombo extends Composite {
 			notifyListeners(SWT.Selection, e);
 			event.doit = e.doit;
 			break;
-		}
-		case SWT.Traverse: {
+		case SWT.Traverse:
 			switch (event.detail) {
 			case SWT.TRAVERSE_RETURN:
 			case SWT.TRAVERSE_ESCAPE:
@@ -1361,7 +1378,7 @@ public class CompletionCombo extends Composite {
 			default:
 				break;
 			}
-			Event e = new Event();
+			e = new Event();
 			e.time = event.time;
 			e.detail = event.detail;
 			e.doit = event.doit;
@@ -1372,9 +1389,8 @@ public class CompletionCombo extends Composite {
 			event.doit = e.doit;
 			event.detail = e.detail;
 			break;
-		}
-		case SWT.KeyUp: {
-			Event e = new Event();
+		case SWT.KeyUp:
+			e = new Event();
 			e.time = event.time;
 			e.character = event.character;
 			e.keyCode = event.keyCode;
@@ -1383,8 +1399,7 @@ public class CompletionCombo extends Composite {
 			notifyListeners(SWT.KeyUp, e);
 			event.doit = e.doit;
 			break;
-		}
-		case SWT.KeyDown: {
+		case SWT.KeyDown:
 			if (event.character == SWT.ESC) {
 				// Escape key cancels popup list
 				dropDown(false);
@@ -1395,7 +1410,7 @@ public class CompletionCombo extends Composite {
 			if (event.character == SWT.CR) {
 				// Enter causes default selection
 				dropDown(false);
-				Event e = new Event();
+				e = new Event();
 				e.time = event.time;
 				e.stateMask = event.stateMask;
 				notifyListeners(SWT.DefaultSelection, e);
@@ -1405,7 +1420,7 @@ public class CompletionCombo extends Composite {
 			if (isDisposed()) {
 				break;
 			}
-			Event e = new Event();
+			e = new Event();
 			e.time = event.time;
 			e.character = event.character;
 			e.keyCode = event.keyCode;
@@ -1414,8 +1429,6 @@ public class CompletionCombo extends Composite {
 			notifyListeners(SWT.KeyDown, e);
 			event.doit = e.doit;
 			break;
-
-		}
 		default:
 			break;
 		}
@@ -1468,8 +1481,8 @@ public class CompletionCombo extends Composite {
 			 * selection event to be disappear.
 			 */
 			if (!"carbon".equals(SWT.getPlatform())) { //$NON-NLS-1$
-				Point point = toControl(getDisplay().getCursorLocation());
-				Point size = getSize();
+				Point point = arrow.toControl(getDisplay().getCursorLocation());
+				Point size = arrow.getSize();
 				Rectangle rect = new Rectangle(0, 0, size.x, size.y);
 				if (!rect.contains(point)) {
 					dropDown(false);
@@ -2081,33 +2094,29 @@ public class CompletionCombo extends Composite {
 
 	void textEvent(Event event) {
 		switch (event.type) {
-		case SWT.FocusIn: {
+		case SWT.FocusIn:
 			handleFocus(SWT.FocusIn);
 			break;
-		}
-		case SWT.DefaultSelection: {
+		case SWT.DefaultSelection:
 			dropDown(false);
 			Event e = new Event();
 			e.time = event.time;
 			e.stateMask = event.stateMask;
 			notifyListeners(SWT.DefaultSelection, e);
 			break;
-		}
 		case SWT.DragDetect:
 		case SWT.MouseDoubleClick:
 		case SWT.MouseMove:
 		case SWT.MouseEnter:
 		case SWT.MouseExit:
-		case SWT.MouseHover: {
+		case SWT.MouseHover:
 			Point pt = getDisplay().map(text, this, event.x, event.y);
 			event.x = pt.x;
 			event.y = pt.y;
 			notifyListeners(event.type, event);
 			event.type = SWT.None;
 			break;
-		}
-		case SWT.KeyDown: {
-
+		case SWT.KeyDown:
 			Event keyEvent = new Event();
 			keyEvent.time = event.time;
 			keyEvent.character = event.character;
@@ -2150,7 +2159,7 @@ public class CompletionCombo extends Composite {
 					select(Math.min(oldIndex + 1, getItemCount() - 1));
 				}
 				if (oldIndex != getSelectionIndex()) {
-					Event e = new Event();
+					e = new Event();
 					e.time = event.time;
 					e.stateMask = event.stateMask;
 					notifyListeners(SWT.Selection, e);
@@ -2159,13 +2168,11 @@ public class CompletionCombo extends Composite {
 					break;
 				}
 			}
-
 			// Further work : Need to add support for incremental search in 
 			// pop up list as characters typed in text widget
 			break;
-		}
-		case SWT.KeyUp: {
-			Event e = new Event();
+		case SWT.KeyUp:
+			e = new Event();
 			e.time = event.time;
 			e.character = event.character;
 			e.keyCode = event.keyCode;
@@ -2177,22 +2184,19 @@ public class CompletionCombo extends Composite {
 				handleAutoCompletion(event);
 			}
 			break;
-		}
-		case SWT.MenuDetect: {
-			Event e = new Event();
+		case SWT.MenuDetect:
+			e = new Event();
 			e.time = event.time;
 			notifyListeners(SWT.MenuDetect, e);
 			break;
-		}
-		case SWT.Modify: {
+		case SWT.Modify:
 			list.deselectAll();
-			Event e = new Event();
+			e = new Event();
 			e.time = event.time;
 			notifyListeners(SWT.Modify, e);
 			break;
-		}
-		case SWT.MouseDown: {
-			Point pt = getDisplay().map(text, this, event.x, event.y);
+		case SWT.MouseDown:
+			pt = getDisplay().map(text, this, event.x, event.y);
 			Event mouseEvent = new Event();
 			mouseEvent.button = event.button;
 			mouseEvent.count = event.count;
@@ -2208,6 +2212,12 @@ public class CompletionCombo extends Composite {
 			if (!event.doit) {
 				break;
 			}
+			if (isAutoCompletion()) {
+				if (!isDropped()) {
+					dropDown(true);
+				}
+				text.setFocus();
+			}
 			if (event.button != 1) {
 				return;
 			}
@@ -2221,10 +2231,9 @@ public class CompletionCombo extends Composite {
 			}
 			dropDown(!dropped);
 			break;
-		}
-		case SWT.MouseUp: {
-			Point pt = getDisplay().map(text, this, event.x, event.y);
-			Event mouseEvent = new Event();
+		case SWT.MouseUp:
+			pt = getDisplay().map(text, this, event.x, event.y);
+			mouseEvent = new Event();
 			mouseEvent.button = event.button;
 			mouseEvent.count = event.count;
 			mouseEvent.stateMask = event.stateMask;
@@ -2247,8 +2256,7 @@ public class CompletionCombo extends Composite {
 			}
 			text.selectAll();
 			break;
-		}
-		case SWT.MouseWheel: {
+		case SWT.MouseWheel:
 			notifyListeners(SWT.MouseWheel, event);
 			event.type = SWT.None;
 			if (isDisposed()) {
@@ -2266,7 +2274,7 @@ public class CompletionCombo extends Composite {
 					select(Math.min(oldIndex + 1, getItemCount() - 1));
 				}
 				if (oldIndex != getSelectionIndex()) {
-					Event e = new Event();
+					e = new Event();
 					e.time = event.time;
 					e.stateMask = event.stateMask;
 					notifyListeners(SWT.Selection, e);
@@ -2276,8 +2284,7 @@ public class CompletionCombo extends Composite {
 				}
 			}
 			break;
-		}
-		case SWT.Traverse: {
+		case SWT.Traverse:
 			switch (event.detail) {
 			case SWT.TRAVERSE_ARROW_PREVIOUS:
 			case SWT.TRAVERSE_ARROW_NEXT:
@@ -2293,7 +2300,7 @@ public class CompletionCombo extends Composite {
 			default:
 				break;
 			}
-			Event e = new Event();
+			e = new Event();
 			e.time = event.time;
 			e.detail = event.detail;
 			e.doit = event.doit;
@@ -2304,9 +2311,8 @@ public class CompletionCombo extends Composite {
 			event.doit = e.doit;
 			event.detail = e.detail;
 			break;
-		}
-		case SWT.Verify: {
-			Event e = new Event();
+		case SWT.Verify:
+			e = new Event();
 			e.text = event.text;
 			e.start = event.start;
 			e.end = event.end;
@@ -2318,7 +2324,6 @@ public class CompletionCombo extends Composite {
 			event.text = e.text;
 			event.doit = e.doit;
 			break;
-		}
 		default:
 			break;
 		}
@@ -2380,8 +2385,12 @@ public class CompletionCombo extends Composite {
 	}
 
 	/**
+	 * Sets a flag which indicates that the CCombo should autocomplete entries
+	 * in the Textfield. This autocompletion matches a prefix to the dropdown
+	 * list and focuses on the list entry matching this prefix.
+	 * 
 	 * @param autoCompletion
-	 *            the autoCompletion to set
+	 *            true if autocompletion should be turned on, false is default
 	 */
 	public void setAutoCompletion(boolean autoCompletion) {
 		this.autoCompletion = autoCompletion;
