@@ -49,14 +49,35 @@ public class SwtUISynchronizer implements IUISynchronizer {
 			waitForDisplay(15000);
 		}
 		Display display = getDisplay();
-		if (null != display) {
-			if (!display.isDisposed()) {
-				executor.execute(display, runnable);
+		if (executeOnDisplay(executor, runnable, display)) {
+			return;
+		}
+		getLogger()
+				.log(
+						LogService.LOG_DEBUG,
+						"Platform display not available for execution. " + display != null ? " Display is disposed" : " Display is null"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		if (Display.getDefault() != display) {
+			if (executeOnDisplay(executor, runnable, Display.getDefault())) {
 				return;
 			}
 		}
+
+		getLogger()
+				.log(
+						LogService.LOG_DEBUG,
+						"Default display not available for execution. " + display != null ? " Display is disposed" : " Display is null"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
 		getLogger().log(LogService.LOG_ERROR, "Could not obtain display for runnable"); //$NON-NLS-1$
 
+	}
+
+	private boolean executeOnDisplay(Executor executor, Runnable runnable, Display display) {
+		if (null != display && !display.isDisposed()) {
+			executor.execute(display, runnable);
+			return true;
+		}
+		return false;
 	}
 
 	public Display getDisplay() {
