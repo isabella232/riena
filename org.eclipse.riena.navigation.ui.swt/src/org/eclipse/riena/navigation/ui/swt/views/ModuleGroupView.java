@@ -79,7 +79,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 	protected ModuleNode getNodeForView(ModuleView view) {
 		for (ModuleNode node : registeredModuleViews.keySet()) {
 			ModuleView moduleView = registeredModuleViews.get(node);
-			if (moduleView.equals(view)) {
+			if (view.equals(moduleView)) {
 				return node;
 			}
 		}
@@ -340,8 +340,10 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 	 */
 	public void unregisterModuleView(ModuleView moduleView) {
 		ModuleNode node = getNodeForView(moduleView);
-		node.removeListener(moduleListener);
-		registeredModuleViews.remove(node);
+		if (node != null) {
+			node.removeListener(moduleListener);
+			registeredModuleViews.remove(node);
+		}
 	}
 
 	private class ModuleViewObserver implements IComponentUpdateListener {
