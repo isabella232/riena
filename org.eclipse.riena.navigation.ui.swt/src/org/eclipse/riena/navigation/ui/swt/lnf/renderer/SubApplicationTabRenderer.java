@@ -190,7 +190,8 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		// Text
 		Color textColor = getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_FOREGROUND,
 				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND,
-				LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND, null);
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND,
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND);
 		gc.setForeground(textColor);
 		y = getBounds().y + BORDER_TOP_WIDTH + getTextTopInset();
 
