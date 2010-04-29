@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
+import org.eclipse.riena.example.client.views.CompletionCombo.ComboAutoCompletionMode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -48,6 +49,7 @@ public class ComboCompletionSubModuleView extends SubModuleView {
 		createCCombos(grpCCombo);
 
 		Group grpCustom = createGroup(parent, "Custom Widget"); //$NON-NLS-1$
+		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(true).applyTo(grpCustom);
 		gdfFill.applyTo(grpCustom);
 		createCustom(grpCustom);
 	}
@@ -93,11 +95,16 @@ public class ComboCompletionSubModuleView extends SubModuleView {
 	}
 
 	private void createCustom(Composite parent) {
-		UIControlsFactory.createLabel(parent, "matching prefix = autocomplete"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "autocomplete, allow missmatch"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "autocomplete, don't allow missmatch"); //$NON-NLS-1$
 		CompletionCombo combo = new CompletionCombo(parent, SWT.BORDER);
-		GridDataFactory.fillDefaults().applyTo(combo);
+		GridDataFactory.fillDefaults().grab(true, false).align(SWT.FILL, SWT.CENTER).applyTo(combo);
 		combo.setItems(DATA);
-		combo.setAutoCompletion(true);
+		combo.setAutoCompletion(true, ComboAutoCompletionMode.ALLOW_MISSMATCH);
+		CompletionCombo combo2 = new CompletionCombo(parent, SWT.BORDER);
+		GridDataFactory.fillDefaults().grab(true, false).align(SWT.FILL, SWT.CENTER).applyTo(combo2);
+		combo2.setItems(DATA);
+		combo2.setAutoCompletion(true);
 	}
 
 	private Group createGroup(Composite parent, String title) {
