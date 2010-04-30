@@ -252,146 +252,140 @@
       </handler>
    </extension>
      <extension
-         point="org.eclipse.riena.navigation.assemblies">
-         <assembly
-               id="riena.demo.client.customer.assembly"
+         point="org.eclipse.riena.navigation.assemblies2">
+         <assembly2
+               id="riena.demo.client.customer.assembly2"
                name="customer"
-               autostartsequence="100"
-               parentTypeId="application">
-            <subapplication
-                  label="Customer"
+               startOrder="100"
+               parentNodeId="application">
+            <subApplication
+                  name="Customer"
                   icon="0457_a_a00.png"
-                  typeId="riena.demo.client.customer"
-                  view="customer"/>
-         </assembly>
-         <assembly
-               id="riena.demo.client.mail.assembly"
+                  nodeId="riena.demo.client.customer"
+                  perspectiveId="customer"/>
+         </assembly2>
+         <assembly2
+               id="riena.demo.client.mail.assembly2"
                name="mail SubApp"
-               autostartsequence="200"
-               parentTypeId="application">
-            <subapplication
-                  label="Mail"
-                  typeId="riena.demo.client.mail"
-                  view="pim">
-            </subapplication>
-         </assembly>
+               startOrder="200"
+               parentNodeId="application">
+            <subApplication
+                  name="Mail"
+                  nodeId="riena.demo.client.mail"
+                  perspectiveId="pim">
+            </subApplication>
+         </assembly2>
       
-         <assembly
-            id="riena.demo.client.customersearch.assembly"
-            autostartsequence="110"
+         <assembly2
+            id="riena.demo.client.customersearch.assembly2"
+            startOrder="110"
             name="customerSearch"
-            parentTypeId="riena.demo.client.customer">
-         <modulegroup
+            parentNodeId="riena.demo.client.customer">
+         <moduleGroup
                name="customer search module group"
-               typeId="riena.demo.client.customersearch.group">
+               nodeId="riena.demo.client.customersearch.group">
             <module
-                  label="Customersearch"
-                  name="customer search module"
-                  unclosable="true">
-               <submodule
-                     typeId="riena.demo.client.customersearch"
-                     name="customersearch"
-                     label="Search"
+            	  nodeId="riena.demo.client.customersearch.module"
+                  name="Customersearch"
+                  closable="false">
+               <subModule
+                     nodeId="riena.demo.client.customersearch"
+                     name="Search"
                      icon="ledlightgreen.png"
-                     view="riena.demo.customersearch"
+                     viewId="riena.demo.customersearch"
                      controller="org.eclipse.riena.demo.client.controllers.CustomerSearchController"/>
             </module>
-         </modulegroup>
-      </assembly>
-      <assembly
-            id="riena.demo.client.customerrecord.assembly"
+         </moduleGroup>
+      </assembly2>
+      <assembly2
+            id="riena.demo.client.customerrecord.assembly2"
             name="customerRecord"
-            parentTypeId="riena.demo.client.customer">
-         <modulegroup
-               typeId="riena.demo.client.customerrecord.group">
+            parentNodeId="riena.demo.client.customer">
+         <moduleGroup
+               nodeId="riena.demo.client.customerrecord.group">
             <module
-                  label="${riena.navigation.parameter:firstName} ${riena.navigation.parameter:lastName}"
-                  typeId="riena.demo.client.CustomerRecord">
-               <submodule
+                  name="${riena.navigation.parameter:firstName} ${riena.navigation.parameter:lastName}"
+                  nodeId="riena.demo.client.CustomerRecord">
+               <subModule
                      controller="org.eclipse.riena.demo.client.controllers.CustomerOverviewController"
-                     label="Overview"
-                     shared="false"
-                     typeId="riena.demo.client.customer.overview"
-                     view="org.eclipse.riena.demo.customerRecordOverview">
-               </submodule>
-               <submodule
+                     name="Overview"
+                     sharedView="false"
+                     nodeId="riena.demo.client.customer.overview"
+                     viewId="org.eclipse.riena.demo.customerRecordOverview">
+               </subModule>
+               <subModule
                      controller="org.eclipse.riena.demo.client.controllers.CustomerContractController"
-                     label="Contracts"
-                     shared="false"
-                     typeId="riena.demo.client.customer.contracts"
-                     view="org.eclipse.riena.demo.customerRecordContract">
-               </submodule>
+                     name="Contracts"
+                     sharedView="false"
+                     nodeId="riena.demo.client.customer.contracts"
+                     viewId="org.eclipse.riena.demo.customerRecordContract">
+               </subModule>
             </module>
-         </modulegroup>
-      </assembly>
-      <assembly
-            id="riena.demo.client.order.assembly"
+         </moduleGroup>
+      </assembly2>
+      <assembly2
+            id="riena.demo.client.order.assembly2"
             name="order subapp"
-            autostartsequence="300"
-            parentTypeId="application">
-         <subapplication
-               label="Order"
-               typeId="org.eclipse.riena.demo.client.customer.order"
-               view="order">
-         </subapplication>
-      </assembly>
-      <assembly
-            autostartsequence="210"
-            id="riena.demo.client.mailfolders.assembly"
+            startOrder="300"
+            parentNodeId="application">
+         <subApplication
+               name="Order"
+               nodeId="org.eclipse.riena.demo.client.customer.order"
+               perspectiveId="order">
+         </subApplication>
+      </assembly2>
+      <assembly2
+            startOrder="210"
+            id="riena.demo.client.mailfolders.assembly2"
             name="E-Mail"
-            parentTypeId="riena.demo.client.mail">
-         <modulegroup
+            parentNodeId="riena.demo.client.mail">
+         <moduleGroup
                name="E-Mail folders module group"
-               typeId="riena.demo.client.mailfolders.modulegroup">
+               nodeId="riena.demo.client.mailfolders.moduleGroup">
             <module
-                  label="E-Mails"
-                  name="E-Mail folders module"
-                  typeId="riena.demo.client.mailfolders.module"
-                  unclosable="true">
-               <submodule
+                  name="E-Mails"
+                  nodeId="riena.demo.client.mailfolders.module"
+                  closable="false">
+               <subModule
                      controller="org.eclipse.riena.demo.client.controllers.EmailInboxController"
-                     label="Inbox"
-                     name="inbox"
-                     typeId="riena.demo.client.mailfolders.inbox"
-                     view="riena.demo.client.mail.folder">
-               </submodule>
-               <submodule
+                     name="Inbox"
+                     nodeId="riena.demo.client.mailfolders.inbox"
+                     viewId="riena.demo.client.mail.folder">
+               </subModule>
+               <subModule
                      controller="org.eclipse.riena.demo.client.controllers.EmailSentController"
-                     label="Sent"
-                     name="sent"
-                     typeId="riena.demo.client.mailfolders.sent"
-                     view="riena.demo.client.mail.folder">
-               </submodule>
-               <submodule
+                     name="Sent"
+                     nodeId="riena.demo.client.mailfolders.sent"
+                     viewId="riena.demo.client.mail.folder">
+               </subModule>
+               <subModule
                      controller="org.eclipse.riena.demo.client.controllers.EmailDraftController"
-                     label="Draft"
-                     name="draft"
-                     typeId="riena.demo.client.mailfolders.draft"
-                     view="riena.demo.client.mail.folder">
-               </submodule>
+                     name="Draft"
+                     nodeId="riena.demo.client.mailfolders.draft"
+                     viewId="riena.demo.client.mail.folder">
+               </subModule>
             </module>
-         </modulegroup>
-      </assembly>
-      <assembly
-            id="riena.demo.client.customermailfolders.assembly"
+         </moduleGroup>
+      </assembly2>
+      <assembly2
+            id="riena.demo.client.customermailfolders.assembly2"
             name="Customer E-Mail"
-            parentTypeId="riena.demo.client.mail">
-         <modulegroup
+            parentNodeId="riena.demo.client.mail">
+         <moduleGroup
                name="Customer E-Mail folders module group"
-               typeId="riena.demo.client.customermailfolders.modulegroup">
+               nodeId="riena.demo.client.customermailfolders.moduleGroup">
             <module
-                  label="${riena.navigation.parameter:emailAddress}"
-                  typeId="riena.demo.client.customermailfolders.module">
-               <submodule
+                  name="${riena.navigation.parameter:emailAddress}"
+                  nodeId="riena.demo.client.customermailfolders.module">
+               <subModule
                      controller="org.eclipse.riena.demo.client.controllers.EmailCustomerController"
-                     label="Inbox"
-                     name="customerEmails"
-                     typeId="riena.demo.client.customermailfolders.mails"
-                     view="riena.demo.client.mail.folder2">
-               </submodule>
+                     name="Inbox"
+                     nodeId="riena.demo.client.customermailfolders.mails"
+                     viewId="riena.demo.client.mail.folder2">
+               </subModule>
             </module>
-         </modulegroup>
-      </assembly>
+         </moduleGroup>
+      </assembly2>
      </extension>
      <extension
            point="org.eclipse.riena.ui.filter.uiFilters">
