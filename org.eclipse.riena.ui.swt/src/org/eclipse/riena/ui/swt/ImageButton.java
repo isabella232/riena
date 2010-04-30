@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -25,6 +28,7 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
@@ -40,6 +44,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.TypedListener;
+
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 
 /**
  * A button with only an image. (No (button) border, no text). If the button has
@@ -62,22 +68,27 @@ public class ImageButton extends Composite {
 	private static final int DISABLED_IMAGE_INDEX = 3; // d
 	private static final int HOVER_IMAGE_INDEX = 4; // h
 	private static final int HOVER_FOCUSED_IMAGE_INDEX = 5; // hp
-	private Image[] images = { null, null, null, null, null, null };
 
 	private static int idealHeight = -1;
+
+	private Image[] images = { null, null, null, null, null, null };
 
 	private boolean useIdealHeight;
 	private boolean pressed;
 	private boolean hover;
 	private boolean focused;
+
 	private DisposeListener disposeListener;
 	private PaintListener paintListener;
 	private ButtonMouseListener mouseListener;
 	private FocusListener focusListener;
 	private TraverseListener traverseListener;
 	private ButtonKeyListener keyListener;
+
 	private Button hoverButton;
-	private Point horizontalMargin = DEF_HORIZONTAL_MARGIN;
+	private Point horizontalMargin;
+
+	private List<SelectionListener> selectionListeners;
 
 	/**
 	 * Creates a new instance of {@code ImageButton}, initializes the button
@@ -92,22 +103,197 @@ public class ImageButton extends Composite {
 	 *            pointer is over the {@code ImageButton}.
 	 */
 	public ImageButton(Composite parent, int style) {
-
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 
-		useIdealHeight = false;
-		pressed = false;
-		hover = false;
-		focused = false;
-
 		if (hasHotStyle()) {
-			setHorizontalMargin(DEF_HOVER_BUTTON_HORIZONTAL_MARGIN);
+			horizontalMargin = DEF_HOVER_BUTTON_HORIZONTAL_MARGIN;
 			setLayout(new FormLayout());
 			addHoverButton();
+		} else {
+			horizontalMargin = DEF_HORIZONTAL_MARGIN;
 		}
 
 		addListeners();
+	}
 
+	/**
+	 * Adds the given to the collection of listeners who will be notified when
+	 * this {@code ImageButton} was selected.
+	 * 
+	 * @param listener
+	 *            listener to add
+	 */
+	public void addSelectionListener(SelectionListener listener) {
+		Assert.isNotNull(listener);
+		if (selectionListeners == null) {
+			selectionListeners = new ArrayList<SelectionListener>();
+			TypedListener delegate = createSelectionDelegate();
+			addListener(SWT.Selection, delegate);
+			addListener(SWT.DefaultSelection, delegate);
+		}
+		selectionListeners.add(listener);
+	}
+
+	/**
+	 * Computes the size of this {@code ImageButton} according the size of the
+	 * image (the maximal widths and height of the images).
+	 * 
+	 * @param wHint
+	 *            hint for width
+	 * @param hHint
+	 *            hint for height
+	 * @param changed
+	 *            <i><i/>
+	 * 
+	 * @return button size
+	 */
+	@Override
+	public Point computeSize(int wHint, int hHint, boolean changed) {
+		checkWidget();
+
+		Point size = new Point(0, 0);
+		if (isUseIdealHeight()) {
+			size.y = getIdealHeight();
+		}
+		for (Image oneImage : images) {
+			if ((oneImage != null) && (!oneImage.isDisposed())) {
+				Rectangle bounds = oneImage.getBounds();
+				size.x = Math.max(size.x, bounds.width);
+				size.y = Math.max(size.y, bounds.height);
+			}
+		}
+
+		if (hoverButton != null) {
+			Point btnSize = hoverButton.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			if (size.x < btnSize.x) {
+				size.x = btnSize.x;
+			}
+			if (size.y < btnSize.y) {
+				size.y = btnSize.y;
+			}
+		}
+
+		size.x += horizontalMargin.x;
+		size.x += horizontalMargin.y;
+
+		if (wHint != SWT.DEFAULT) {
+			size.x = wHint;
+		}
+		if (hHint != SWT.DEFAULT) {
+			size.y = hHint;
+		}
+
+		return size;
+	}
+
+	/**
+	 * Returns the image of the button, if it is disabled.
+	 * 
+	 * @return disabled image
+	 */
+	public Image getDisabledImage() {
+		return images[DISABLED_IMAGE_INDEX];
+	}
+
+	/**
+	 * Returns the image of the button, if it has the focus.
+	 * 
+	 * @return focused image
+	 */
+	public Image getFocusedImage() {
+		return images[FOCUSED_IMAGE_INDEX];
+	}
+
+	/**
+	 * Returns the left and right margin between button border and image.
+	 * 
+	 * @return left and right margin
+	 */
+	public Point getHorizontalMargin() {
+		return new Point(horizontalMargin.x, horizontalMargin.y);
+	}
+
+	/**
+	 * Returns the image of the button, if the mouse pointer is over it and the
+	 * it has the focus.
+	 * 
+	 * @return hover and focused image
+	 */
+	public Image getHoverFocusedImage() {
+		return images[HOVER_FOCUSED_IMAGE_INDEX];
+	}
+
+	/**
+	 * Returns the image of the button, if the mouse pointer is over it.
+	 * 
+	 * @return hover image
+	 */
+	public Image getHoverImage() {
+		return images[HOVER_IMAGE_INDEX];
+	}
+
+	/**
+	 * Returns the standard image of the button.
+	 * 
+	 * @return standard image
+	 */
+	public Image getImage() {
+		return images[IMAGE_INDEX];
+	}
+
+	/**
+	 * Returns the image of the button, if it is pressed.
+	 * 
+	 * @return pressed image
+	 */
+	public Image getPressedImage() {
+		return images[PRESSED_IMAGE_INDEX];
+	}
+
+	/**
+	 * Returns whether the ideal height should or shouldn't be used for this
+	 * {@code ImageButton}. The {@code ImageButton} will have the same height as
+	 * other push buttons.
+	 * 
+	 * @return useIdealHight {@code true} use ideal height; otherwise
+	 *         {@code false}
+	 */
+	public boolean isUseIdealHeight() {
+		return useIdealHeight;
+	}
+
+	/**
+	 * Removes the given from the collection of listeners who will be notified
+	 * when this {@code ImageButton} was selected.
+	 * 
+	 * @param listener
+	 *            listener to remove
+	 */
+	public void removeSelectionListener(SelectionListener listener) {
+		if (selectionListeners != null) {
+			selectionListeners.remove(listener);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setBackground(Color color) {
+		super.setBackground(color);
+		if (hoverButton != null) {
+			hoverButton.setBackground(color);
+		}
+	}
+
+	/**
+	 * Sets the image of the button, if it is disabled.
+	 * 
+	 * @param image
+	 *            the image to set
+	 */
+	public void setDisabledImage(Image image) {
+		images[DISABLED_IMAGE_INDEX] = image;
 	}
 
 	@Override
@@ -119,15 +305,84 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Returns whether the style of the button has {@code SWT.HOT}.
+	 * Sets the image of the button, if it has the focus.
 	 * 
-	 * @return {@code true} if style has {@code SWT.HOT}; otherwise
-	 *         {@code false}
+	 * @param image
+	 *            the image to set
 	 */
-	private boolean hasHotStyle() {
-		int style = getStyle();
-		return (style & SWT.HOT) == SWT.HOT;
+	public void setFocusedImage(Image image) {
+		images[FOCUSED_IMAGE_INDEX] = image;
 	}
+
+	/**
+	 * Sets the left and right margin between button border and image.
+	 * 
+	 * @param horizontalMargin
+	 *            left and right margin
+	 * 
+	 */
+	public void setHorizontalMargin(Point horizontalMargin) {
+		this.horizontalMargin = new Point(horizontalMargin.x, horizontalMargin.y);
+	}
+
+	/**
+	 * Sets the image of the button, if the mouse pointer is over it and the it
+	 * has the focus.
+	 * 
+	 * @param image
+	 *            the image to set
+	 */
+	public void setHoverFocusedImage(Image image) {
+		images[HOVER_FOCUSED_IMAGE_INDEX] = image;
+	}
+
+	/**
+	 * Sets the image of the button, if the mouse pointer is over it.
+	 * 
+	 * @param image
+	 *            the image to set
+	 */
+	public void setHoverImage(Image image) {
+		images[HOVER_IMAGE_INDEX] = image;
+	}
+
+	/**
+	 * Sets the standard image of the button
+	 * 
+	 * @param image
+	 *            the image to set
+	 */
+	public void setImage(Image image) {
+		if (image != this.images[IMAGE_INDEX]) {
+			images[IMAGE_INDEX] = image;
+			redraw();
+		}
+	}
+
+	/**
+	 * Sets the image of the button, if it is pressed.
+	 * 
+	 * @param image
+	 *            the image to set
+	 */
+	public void setPressedImage(Image image) {
+		images[PRESSED_IMAGE_INDEX] = image;
+	}
+
+	/**
+	 * Sets whether the ideal height should or shouldn't be used for this
+	 * {@code ImageButton}. The {@code ImageButton} will have the same height as
+	 * other push buttons.<br>
+	 * 
+	 * @param useIdealHeight
+	 *            {@code true} use ideal height; otherwise {@code false}
+	 */
+	public void setUseIdealHeight(boolean useIdealHeight) {
+		this.useIdealHeight = useIdealHeight;
+	}
+
+	// helping methods
+	//////////////////
 
 	/**
 	 * Adds the "hover" button. The hover button is only visible if the mouse
@@ -149,18 +404,19 @@ public class ImageButton extends Composite {
 	 * exists).
 	 */
 	private void addListeners() {
+		SWTFacade swtFacade = SWTFacade.getDefault();
 
 		paintListener = new PaintDelegation();
-		addPaintListener(paintListener);
+		swtFacade.addPaintListener(this, paintListener);
 
 		mouseListener = new ButtonMouseListener();
 		addMouseListener(mouseListener);
-		addMouseTrackListener(mouseListener);
-		addMouseMoveListener(mouseListener);
+		swtFacade.addMouseTrackListener(this, mouseListener);
+		swtFacade.addMouseMoveListener(this, mouseListener);
 		if (hoverButton != null) {
 			hoverButton.addMouseListener(mouseListener);
-			hoverButton.addMouseTrackListener(mouseListener);
-			hoverButton.addMouseMoveListener(mouseListener);
+			swtFacade.addMouseTrackListener(hoverButton, mouseListener);
+			swtFacade.addMouseMoveListener(hoverButton, mouseListener);
 		}
 
 		focusListener = new ButtonFocusListener();
@@ -182,90 +438,6 @@ public class ImageButton extends Composite {
 			}
 		};
 		addDisposeListener(disposeListener);
-
-	}
-
-	/**
-	 * Removes all listeners form this {@code ImageButton} and from the "hover"
-	 * button (if exists).
-	 */
-	private void removeListeners() {
-
-		if (disposeListener != null) {
-			removeDisposeListener(disposeListener);
-			disposeListener = null;
-		}
-
-		if (traverseListener != null) {
-			removeTraverseListener(traverseListener);
-			traverseListener = null;
-		}
-
-		if (paintListener != null) {
-			removePaintListener(paintListener);
-			paintListener = null;
-		}
-
-		if (focusListener != null) {
-			removeFocusListener(focusListener);
-			focusListener = null;
-		}
-
-		if (mouseListener != null) {
-			if (hoverButton != null) {
-				hoverButton.removeMouseListener(mouseListener);
-				hoverButton.removeMouseTrackListener(mouseListener);
-				hoverButton.removeMouseMoveListener(mouseListener);
-			}
-			removeMouseListener(mouseListener);
-			removeMouseTrackListener(mouseListener);
-			removeMouseMoveListener(mouseListener);
-			mouseListener = null;
-		}
-
-		if (keyListener != null) {
-			removeKeyListener(keyListener);
-			keyListener = null;
-		}
-
-	}
-
-	/**
-	 * After the widget was disposed all listeners will be removed and the array
-	 * with the images will be cleared.
-	 * 
-	 * @param event
-	 *            an event containing information about the dispose
-	 */
-	private void onDispose(DisposeEvent event) {
-
-		if (event.widget != this) {
-			return;
-		}
-		removeListeners();
-		Arrays.fill(images, null);
-
-	}
-
-	/**
-	 * Paints the image of this {@code ImageButton}.
-	 * 
-	 * @param event
-	 *            e an event containing information about the paint
-	 */
-	private void onPaint(PaintEvent event) {
-
-		if (hoverButton != null && hoverButton.isVisible()) {
-			return;
-		}
-
-		Image image = getImageToDraw();
-		if (image != null) {
-			Point pos = computeImagePos(event, image);
-			GC gc = event.gc;
-			gc.drawImage(image, pos.x, pos.y);
-		}
-
 	}
 
 	/**
@@ -278,7 +450,6 @@ public class ImageButton extends Composite {
 	 * @return position of image
 	 */
 	private Point computeImagePos(PaintEvent event, Image image) {
-
 		int x = 0;
 		int y = 0;
 
@@ -298,7 +469,37 @@ public class ImageButton extends Composite {
 		}
 
 		return new Point(x, y);
+	}
 
+	private TypedListener createSelectionDelegate() {
+		return new TypedListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				for (SelectionListener sl : selectionListeners) {
+					sl.widgetSelected(e);
+				}
+			}
+	
+			public void widgetDefaultSelected(SelectionEvent e) {
+				for (SelectionListener sl : selectionListeners) {
+					sl.widgetDefaultSelected(e);
+				}
+			}
+		});
+	}
+
+	/**
+	 * Returns the ideal height of an image button according to the height of a
+	 * push button.
+	 * 
+	 * @return ideal height
+	 */
+	private int getIdealHeight() {
+		if (idealHeight < 0) {
+			Button button = new Button(this, SWT.PUSH);
+			idealHeight = button.computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
+			button.dispose();
+		}
+		return idealHeight;
 	}
 
 	/**
@@ -308,7 +509,6 @@ public class ImageButton extends Composite {
 	 * @return image to draw
 	 */
 	private Image getImageToDraw() {
-
 		Image imageToDraw = null;
 
 		if (!isEnabled()) {
@@ -349,291 +549,36 @@ public class ImageButton extends Composite {
 		}
 
 		return imageToDraw;
-
 	}
 
 	/**
-	 * Computes the size of this {@code ImageButton} according the size of the
-	 * image (the maximal widths and height of the images).
+	 * Returns whether the style of the button has {@code SWT.HOT}.
 	 * 
-	 * @param wHint
-	 *            hint for width
-	 * @param hHint
-	 *            hint for height
-	 * @param changed
-	 *            <i><i/>
-	 * 
-	 * @return button size
-	 */
-	@Override
-	public Point computeSize(int wHint, int hHint, boolean changed) {
-
-		checkWidget();
-
-		Point size = new Point(0, 0);
-		if (isUseIdealHeight()) {
-			size.y = getIdealHeight();
-		}
-		for (Image oneImage : images) {
-			if ((oneImage != null) && (!oneImage.isDisposed())) {
-				Rectangle bounds = oneImage.getBounds();
-				size.x = Math.max(size.x, bounds.width);
-				size.y = Math.max(size.y, bounds.height);
-			}
-		}
-
-		if (hoverButton != null) {
-			Point btnSize = hoverButton.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-			if (size.x < btnSize.x) {
-				size.x = btnSize.x;
-			}
-			if (size.y < btnSize.y) {
-				size.y = btnSize.y;
-			}
-		}
-
-		size.x += getHorizontalMargin().x;
-		size.x += getHorizontalMargin().y;
-
-		if (wHint != SWT.DEFAULT) {
-			size.x = wHint;
-		}
-		if (hHint != SWT.DEFAULT) {
-			size.y = hHint;
-		}
-
-		return size;
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setBackground(Color color) {
-		super.setBackground(color);
-		if (hoverButton != null) {
-			hoverButton.setBackground(color);
-		}
-	}
-
-	/**
-	 * Shows or hides the "hover" button depending in the hover state.
-	 */
-	private void updateHoverButton() {
-		if (hoverButton != null) {
-			boolean visible = isHover() || isPressed();
-			if (visible != hoverButton.isVisible()) {
-				hoverButton.setVisible(visible);
-			}
-			if (hoverButton.isVisible()) {
-				hoverButton.setImage(getImageToDraw());
-			}
-		}
-	}
-
-	/**
-	 * Adds the given to the collection of listeners who will be notified when
-	 * this {@code ImageButton} was selected.
-	 * 
-	 * @param listener
-	 *            listener to add
-	 */
-	public void addSelectionListener(SelectionListener listener) {
-		checkWidget();
-		if (listener == null) {
-			SWT.error(SWT.ERROR_NULL_ARGUMENT);
-		}
-		TypedListener typedListener = new TypedListener(listener);
-		addListener(SWT.Selection, typedListener);
-		addListener(SWT.DefaultSelection, typedListener);
-	}
-
-	/**
-	 * Removes the given from the collection of listeners who will be notified
-	 * when this {@code ImageButton} was selected.
-	 * 
-	 * @param listener
-	 *            listener to remove
-	 */
-	public void removeSelectionListener(SelectionListener listener) {
-		checkWidget();
-		if (listener == null) {
-			SWT.error(SWT.ERROR_NULL_ARGUMENT);
-		}
-		removeListener(SWT.Selection, listener);
-		removeListener(SWT.DefaultSelection, listener);
-	}
-
-	/**
-	 * Returns the ideal height of an image button according to the height of a
-	 * push button.
-	 * 
-	 * @return ideal height
-	 */
-	private int getIdealHeight() {
-		if (idealHeight < 0) {
-			Button button = new Button(this, SWT.PUSH);
-			idealHeight = button.computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
-			button.dispose();
-		}
-		return idealHeight;
-	}
-
-	/**
-	 * Sets whether the ideal height should or shouldn't be used for this
-	 * {@code ImageButton}. The {@code ImageButton} will have the same height as
-	 * other push buttons.<br>
-	 * 
-	 * @param useIdealHeight
-	 *            {@code true} use ideal height; otherwise {@code false}
-	 */
-	public void setUseIdealHight(boolean useIdealHeight) {
-		this.useIdealHeight = useIdealHeight;
-	}
-
-	/**
-	 * Returns whether the ideal height should or shouldn't be used for this
-	 * {@code ImageButton}. The {@code ImageButton} will have the same height as
-	 * other push buttons.
-	 * 
-	 * @return useIdealHight {@code true} use ideal height; otherwise
+	 * @return {@code true} if style has {@code SWT.HOT}; otherwise
 	 *         {@code false}
 	 */
-	public boolean isUseIdealHeight() {
-		return useIdealHeight;
+	private boolean hasHotStyle() {
+		int style = getStyle();
+		return (style & SWT.HOT) == SWT.HOT;
 	}
 
 	/**
-	 * Returns the standard image of the button.
+	 * Returns whether the button has the focus or hasn't the focus.
 	 * 
-	 * @return standard image
+	 * @return {@code true} if the button has the focus; otherwise {@code false}
 	 */
-	public Image getImage() {
-		return images[IMAGE_INDEX];
+	private boolean isFocused() {
+		return focused;
 	}
 
 	/**
-	 * Sets the standard image of the button
+	 * Returns whether the mouse pointer is or isn't over the button.
 	 * 
-	 * @param image
-	 *            the image to set
+	 * @return {@code true} if the mouse point is over the button; otherwise
+	 *         {@code false}
 	 */
-	public void setImage(Image image) {
-		if (image != this.images[IMAGE_INDEX]) {
-			images[IMAGE_INDEX] = image;
-			redraw();
-		}
-	}
-
-	/**
-	 * Returns the image of the button, if it is pressed.
-	 * 
-	 * @return pressed image
-	 */
-	public Image getPressedImage() {
-		return images[PRESSED_IMAGE_INDEX];
-	}
-
-	/**
-	 * Sets the image of the button, if it is pressed.
-	 * 
-	 * @param image
-	 *            the image to set
-	 */
-	public void setPressedImage(Image image) {
-		images[PRESSED_IMAGE_INDEX] = image;
-	}
-
-	/**
-	 * Returns the image of the button, if it has the focus.
-	 * 
-	 * @return focused image
-	 */
-	public Image getFocusedImage() {
-		return images[FOCUSED_IMAGE_INDEX];
-	}
-
-	/**
-	 * Sets the image of the button, if it has the focus.
-	 * 
-	 * @param image
-	 *            the image to set
-	 */
-	public void setFocusedImage(Image image) {
-		images[FOCUSED_IMAGE_INDEX] = image;
-	}
-
-	/**
-	 * Returns the image of the button, if it is disabled.
-	 * 
-	 * @return disabled image
-	 */
-	public Image getDisabledImage() {
-		return images[DISABLED_IMAGE_INDEX];
-	}
-
-	/**
-	 * Sets the image of the button, if it is disabled.
-	 * 
-	 * @param image
-	 *            the image to set
-	 */
-	public void setDisabledImage(Image image) {
-		images[DISABLED_IMAGE_INDEX] = image;
-	}
-
-	/**
-	 * Returns the image of the button, if the mouse pointer is over it.
-	 * 
-	 * @return hover image
-	 */
-	public Image getHoverImage() {
-		return images[HOVER_IMAGE_INDEX];
-	}
-
-	/**
-	 * Sets the image of the button, if the mouse pointer is over it.
-	 * 
-	 * @param image
-	 *            the image to set
-	 */
-	public void setHoverImage(Image image) {
-		images[HOVER_IMAGE_INDEX] = image;
-	}
-
-	/**
-	 * Returns the image of the button, if the mouse pointer is over it and the
-	 * it has the focus.
-	 * 
-	 * @return hover and focused image
-	 */
-	public Image getHoverFocusedImage() {
-		return images[HOVER_FOCUSED_IMAGE_INDEX];
-	}
-
-	/**
-	 * Sets the image of the button, if the mouse pointer is over it and the it
-	 * has the focus.
-	 * 
-	 * @param image
-	 *            the image to set
-	 */
-	public void setHoverFocusedImage(Image image) {
-		images[HOVER_FOCUSED_IMAGE_INDEX] = image;
-	}
-
-	/**
-	 * Sets whether the button is pressed.
-	 * 
-	 * @param pressed
-	 *            {@code true} if button is pressed; otherwise {@code false}
-	 */
-	private void setPressed(boolean pressed) {
-		if (this.pressed != pressed) {
-			this.pressed = pressed;
-			redraw();
-		}
+	private boolean isHover() {
+		return hover;
 	}
 
 	/**
@@ -643,6 +588,99 @@ public class ImageButton extends Composite {
 	 */
 	private boolean isPressed() {
 		return pressed;
+	}
+
+	/**
+	 * After the widget was disposed all listeners will be removed and the array
+	 * with the images will be cleared.
+	 * 
+	 * @param event
+	 *            an event containing information about the dispose
+	 */
+	private void onDispose(DisposeEvent event) {
+		if (event.widget != this) {
+			return;
+		}
+		removeListeners();
+		Arrays.fill(images, null);
+	}
+
+	/**
+	 * Paints the image of this {@code ImageButton}.
+	 * 
+	 * @param event
+	 *            e an event containing information about the paint
+	 */
+	private void onPaint(PaintEvent event) {
+		if (hoverButton != null && hoverButton.isVisible()) {
+			return;
+		}
+
+		Image image = getImageToDraw();
+		if (image != null) {
+			Point pos = computeImagePos(event, image);
+			GC gc = event.gc;
+			gc.drawImage(image, pos.x, pos.y);
+		}
+	}
+
+	/**
+	 * Removes all listeners form this {@code ImageButton} and from the "hover"
+	 * button (if exists).
+	 */
+	private void removeListeners() {
+		SWTFacade swtFacade = SWTFacade.getDefault();
+
+		if (disposeListener != null) {
+			removeDisposeListener(disposeListener);
+			disposeListener = null;
+		}
+
+		if (traverseListener != null) {
+			removeTraverseListener(traverseListener);
+			traverseListener = null;
+		}
+
+		if (paintListener != null) {
+			swtFacade.removePaintListener(this, paintListener);
+			paintListener = null;
+		}
+
+		if (focusListener != null) {
+			removeFocusListener(focusListener);
+			focusListener = null;
+		}
+
+		if (mouseListener != null) {
+			if (hoverButton != null) {
+				hoverButton.removeMouseListener(mouseListener);
+				swtFacade.removeMouseTrackListener(hoverButton, mouseListener);
+				swtFacade.removeMouseMoveListener(hoverButton, mouseListener);
+			}
+			removeMouseListener(mouseListener);
+			swtFacade.removeMouseTrackListener(this, mouseListener);
+			swtFacade.removeMouseMoveListener(this, mouseListener);
+			mouseListener = null;
+		}
+
+		if (keyListener != null) {
+			removeKeyListener(keyListener);
+			keyListener = null;
+		}
+	}
+
+	/**
+	 * Sets whether the button has the focus or hasn't the focus.
+	 * 
+	 * @param focused
+	 *            {@code true} if the button has the focus; otherwise
+	 *            {@code false}
+	 */
+	private void setFocused(boolean focused) {
+		if (isFocused() != focused) {
+			this.focused = focused;
+			redraw();
+		}
 	}
 
 	/**
@@ -661,56 +699,57 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Returns whether the mouse pointer is or isn't over the button.
+	 * Sets whether the button is pressed.
 	 * 
-	 * @return {@code true} if the mouse point is over the button; otherwise
-	 *         {@code false}
+	 * @param pressed
+	 *            {@code true} if button is pressed; otherwise {@code false}
 	 */
-	private boolean isHover() {
-		return hover;
-	}
-
-	/**
-	 * Sets whether the button has the focus or hasn't the focus.
-	 * 
-	 * @param focused
-	 *            {@code true} if the button has the focus; otherwise
-	 *            {@code false}
-	 */
-	private void setFocused(boolean focused) {
-		if (isFocused() != focused) {
-			this.focused = focused;
+	private void setPressed(boolean pressed) {
+		if (this.pressed != pressed) {
+			this.pressed = pressed;
 			redraw();
 		}
 	}
 
 	/**
-	 * Returns whether the button has the focus or hasn't the focus.
-	 * 
-	 * @return {@code true} if the button has the focus; otherwise {@code false}
+	 * Shows or hides the "hover" button depending in the hover state.
 	 */
-	private boolean isFocused() {
-		return focused;
+	private void updateHoverButton() {
+		if (hoverButton != null) {
+			boolean visible = isHover() || isPressed();
+			if (visible != hoverButton.isVisible()) {
+				hoverButton.setVisible(visible);
+			}
+			if (hoverButton.isVisible()) {
+				hoverButton.setImage(getImageToDraw());
+			}
+		}
 	}
 
-	/**
-	 * Sets the left and right margin between button border and image.
-	 * 
-	 * @param horizontalMargin
-	 *            left and right margin
-	 * 
-	 */
-	public void setHorizontalMargin(Point horizontalMargin) {
-		this.horizontalMargin = horizontalMargin;
-	}
+	// helping classes
+	//////////////////
 
 	/**
-	 * Returns the left and right margin between button border and image.
-	 * 
-	 * @return left and right margin
+	 * Registers whether the {@code ImageButton} has or hasn't the focus.
 	 */
-	public Point getHorizontalMargin() {
-		return horizontalMargin;
+	private final class ButtonFocusListener implements FocusListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void focusGained(FocusEvent e) {
+			setFocused(true);
+			updateHoverButton();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void focusLost(FocusEvent e) {
+			setFocused(false);
+			updateHoverButton();
+		}
+
 	}
 
 	/**
@@ -760,46 +799,15 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * This listener paints the {@code ImageButton} after a paint event was
-	 * fired.
-	 */
-	private class PaintDelegation implements PaintListener {
-
-		/**
-		 * {@inheritDoc}
-		 * <p>
-		 * Paints the {@code ImageButton}.
-		 */
-		public void paintControl(PaintEvent e) {
-			onPaint(e);
-		}
-
-	}
-
-	/**
 	 * Listener of all mouse events.
 	 */
-	private class ButtonMouseListener implements MouseListener, MouseTrackListener, MouseMoveListener {
+	private final class ButtonMouseListener implements MouseListener, MouseTrackListener, MouseMoveListener {
 
 		/**
 		 * {@inheritDoc}
-		 * <p>
-		 * Fires a selection event if the button is pressed and the mouse
-		 * pointer is over the button.<br>
-		 * Removes the pressed state of the button.
 		 */
-		public void mouseUp(MouseEvent e) {
-			if (!isEnabled()) {
-				return;
-			}
-			if (!ignoreMouseButton(e) && !ignoreWidget(e)) {
-				if (isPressed() && isHover() && isOverButton(new Point(e.x, e.y))) {
-					Event event = new Event();
-					notifyListeners(SWT.Selection, event);
-				}
-				setPressed(false);
-				updateHoverButton();
-			}
+		public void mouseDoubleClick(MouseEvent e) {
+			// do nothing
 		}
 
 		/**
@@ -815,13 +823,6 @@ public class ImageButton extends Composite {
 				setPressed(true);
 				updateHoverButton();
 			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public void mouseDoubleClick(MouseEvent e) {
-			// do nothing
 		}
 
 		/**
@@ -894,6 +895,27 @@ public class ImageButton extends Composite {
 		}
 
 		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * Fires a selection event if the button is pressed and the mouse
+		 * pointer is over the button.<br>
+		 * Removes the pressed state of the button.
+		 */
+		public void mouseUp(MouseEvent e) {
+			if (!isEnabled()) {
+				return;
+			}
+			if (!ignoreMouseButton(e) && !ignoreWidget(e)) {
+				if (isPressed() && isHover() && isOverButton(new Point(e.x, e.y))) {
+					Event event = new Event();
+					notifyListeners(SWT.Selection, event);
+				}
+				setPressed(false);
+				updateHoverButton();
+			}
+		}
+
+		/**
 		 * Ignores mouse events if the event is not associated with the left
 		 * mouse button.
 		 * 
@@ -939,26 +961,17 @@ public class ImageButton extends Composite {
 	}
 
 	/**
-	 * Registers whether the {@code ImageButton} has or hasn't the focus.
+	 * This listener paints the {@code ImageButton} after a paint event was
+	 * fired.
 	 */
-	private class ButtonFocusListener implements FocusListener {
-
+	private final class PaintDelegation implements PaintListener {
 		/**
 		 * {@inheritDoc}
+		 * <p>
+		 * Paints the {@code ImageButton}.
 		 */
-		public void focusGained(FocusEvent e) {
-			setFocused(true);
-			updateHoverButton();
+		public void paintControl(PaintEvent e) {
+			onPaint(e);
 		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public void focusLost(FocusEvent e) {
-			setFocused(false);
-			updateHoverButton();
-		}
-
 	}
-
 }
