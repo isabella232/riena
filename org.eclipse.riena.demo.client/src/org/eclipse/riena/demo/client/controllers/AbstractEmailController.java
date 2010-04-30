@@ -92,26 +92,39 @@ public class AbstractEmailController extends SubModuleController {
 			}
 		});
 
-		((IActionRidget) getRidget("openCustomer")).addListener(new IActionListener() { //$NON-NLS-1$
-					public void callback() {
-						if (selectedEmail != null) {
-							String selectedEmailAddress = openCustomerWithEmailAddress();
-							if (selectedEmailAddress != null) {
-								Customer customer = customerDemoService
-										.findCustomerWithEmailAddress(selectedEmailAddress);
+		if (getNavigationNode().isJumpTarget()) {
+			final IActionRidget openCustomerAction = (IActionRidget) getRidget("openCustomer");
+			openCustomerAction.setText("Back to Customer");
+			openCustomerAction.addListener(new IActionListener() { //$NON-NLS-1$
+						public void callback() {
+							getNavigationNode().jumpBack();
+							getNavigationNode().dispose();
+						}
+					});
 
-								System.out.println("customer " + customer); //$NON-NLS-1$
+		} else {
 
-								if (customer != null) {
-									getNavigationNode().navigate(
-											new NavigationNodeId(
-													"riena.demo.client.CustomerRecord", selectedEmailAddress), //$NON-NLS-1$
-											new NavigationArgument(customer));
+			((IActionRidget) getRidget("openCustomer")).addListener(new IActionListener() { //$NON-NLS-1$
+						public void callback() {
+							if (selectedEmail != null) {
+								String selectedEmailAddress = openCustomerWithEmailAddress();
+								if (selectedEmailAddress != null) {
+									Customer customer = customerDemoService
+											.findCustomerWithEmailAddress(selectedEmailAddress);
+
+									System.out.println("customer " + customer); //$NON-NLS-1$
+
+									if (customer != null) {
+										getNavigationNode().navigate(
+												new NavigationNodeId(
+														"riena.demo.client.CustomerRecord", selectedEmailAddress), //$NON-NLS-1$
+												new NavigationArgument(customer));
+									}
 								}
 							}
 						}
-					}
-				});
+					});
+		}
 
 	}
 

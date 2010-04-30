@@ -77,8 +77,8 @@ public class CustomerOverviewController extends SubModuleController {
 		((IActionRidget) getRidget("openEmails_action")).addListener(new IActionListener() { //$NON-NLS-1$
 					public void callback() {
 						String emailAddress = customer.getEmailAddress();
-						getNavigationNode().navigate(
-								new NavigationNodeId("riena.demo.client.customermailfolders.module", emailAddress), //$NON-NLS-1$
+						getNavigationNode().jump(
+								new NavigationNodeId("riena.demo.client.customermailfolders.mails", emailAddress), //$NON-NLS-1$
 								new NavigationArgument(customer));
 
 					}
