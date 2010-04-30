@@ -28,6 +28,9 @@ public abstract class GCFacade {
 		return INSTANCE;
 	}
 
+	/**
+	 * @deprecated - RAP's GC now supports this directly TODO [ev] remove
+	 */
 	public abstract void drawLine(GC gc, int x1, int y1, int x2, int y2);
 
 	/**
@@ -50,11 +53,47 @@ public abstract class GCFacade {
 	 *            the width of the arc
 	 * @param arcHeight
 	 *            the height of the arc
+	 * @deprecated - RAP's GC now supports this directly TODO [ev] remove
 	 */
 	public abstract void drawRoundRectangle(GC gc, int x, int y, int width, int height, int arcWidth, int arcHeight);
 
+	/**
+	 * Compute the horizontal distance, in pixels, the cursor should move after
+	 * printing the character in the current font.
+	 * <p>
+	 * Implementation note: on the RAP-Platform the returned value may be an
+	 * approximation.
+	 * 
+	 * @param gc
+	 *            a GC instance; never null
+	 * @param ch
+	 *            a character
+	 * @return an amount in pixels (greater or equal to zero)
+	 */
+	public abstract int getAdvanceWidth(GC gc, char ch);
+
+	/**
+	 * Enable or disable use of the OS's advanced graphics subsystem for
+	 * drawing. If advanced graphics are not available, this operation does
+	 * nothing.
+	 * 
+	 * @param gc
+	 *            the GC instance, never null
+	 * @param isEnabled
+	 *            true of false
+	 */
 	public abstract void setAdvanced(GC gc, boolean isEnabled);
 
+	/**
+	 * Enable or disable the user of anti-aliasing for all non-text drawing
+	 * operations. This requires advanced graphics support in the OS. If
+	 * advanced graphics are not available, this operations does nothing.
+	 * 
+	 * @param gc
+	 *            the GC instance, never null
+	 * @param option
+	 *            one of the following values: SWT.DEFAULT, SWT.OFF, SWT.ON
+	 */
 	public abstract void setAntialias(GC gc, int option);
 
 }

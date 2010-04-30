@@ -29,6 +29,11 @@ public class GCFacadeRCP extends GCFacade {
 	}
 
 	@Override
+	public int getAdvanceWidth(GC gc, char ch) {
+		return gc.getAdvanceWidth(ch);
+	}
+
+	@Override
 	public void setAdvanced(GC gc, boolean isEnabled) {
 		gc.setAdvanced(isEnabled);
 	}

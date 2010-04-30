@@ -15,8 +15,11 @@ import java.util.EventListener;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
@@ -126,6 +129,23 @@ public abstract class SWTFacade {
 	public abstract EventListener createDisabledPainter();
 
 	/**
+	 * Create a custom cursor from the given {@code cursorImage}. If the image
+	 * is null, or custom cursors are not supported, create a standard cursor
+	 * with the given {@code alternateStyle}.
+	 * 
+	 * @param display
+	 *            a Display instance; never null
+	 * @param cursorImage
+	 *            the Image to be used for the cursor; may be null
+	 * @param alternateStyle
+	 *            an alternate style for the cursor; must be one of the
+	 *            SWT.CURSOR_XYZ constants
+	 * @return a Cursor instance; never null. Clients must dispose the returned
+	 *         instance once no longer needed.
+	 */
+	public abstract Cursor createCursor(Display display, Image cursorImage, int alternateStyle);
+
+	/**
 	 * Returns an SWT.EraseItem / SWT.PaintItem listener, that will paint all
 	 * tree cells empty when the tree is disabled.
 	 * 
@@ -133,7 +153,19 @@ public abstract class SWTFacade {
 	 */
 	public abstract Listener createTreeItemEraserAndPainter();
 
+	/**
+	 * TODO [ev] remove
+	 * 
+	 * @deprecated - RAP now supports display.getCursorControl();
+	 */
 	public abstract Control getCursorControl(Display display);
+
+	/**
+	 * Posts the given event on the display.
+	 * 
+	 * @return true if the event was generated, false otherwise
+	 */
+	public abstract boolean postEvent(Display display, Event event);
 
 	/**
 	 * Removes an SWT.EraseItem listener from the given table.

@@ -17,12 +17,13 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
@@ -173,7 +174,6 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 				control.redraw(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, false);
 			}
 		}
-
 	}
 
 	private void updateCursor(MouseEvent e) {
@@ -196,15 +196,10 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		}
 	}
 
-	/**
-	 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
-	 */
 	public void mouseDoubleClick(MouseEvent e) {
+		// unused
 	}
 
-	/**
-	 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
-	 */
 	public void mouseDown(MouseEvent e) {
 		mouseDownOnButton = true;
 		updateButtonStates(e);
@@ -252,12 +247,8 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		updateButtonStates(e);
 		move = false;
 		updateCursor(e);
-
 	}
 
-	/**
-	 * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter(org.eclipse.swt.events.MouseEvent)
-	 */
 	public void mouseEnter(MouseEvent e) {
 		updateButtonStates(e);
 		moveInside = true;
@@ -265,9 +256,6 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		updateCursor(e);
 	}
 
-	/**
-	 * @see org.eclipse.swt.events.MouseTrackListener#mouseExit(org.eclipse.swt.events.MouseEvent)
-	 */
 	public void mouseExit(MouseEvent e) {
 		updateButtonStates(e);
 		moveInside = false;
@@ -275,16 +263,10 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		updateCursor(e);
 	}
 
-	/**
-	 * @see org.eclipse.swt.events.MouseTrackListener#mouseHover(org.eclipse.swt.events.MouseEvent)
-	 */
 	public void mouseHover(MouseEvent e) {
 		// unused
 	}
 
-	/**
-	 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
-	 */
 	public void mouseMove(MouseEvent e) {
 		updateButtonStates(e);
 		if (move) {
@@ -323,7 +305,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 */
 	private void showHandCursor(Control control) {
 		if (handCursor == null) {
-			handCursor = createCursor(control, LnfKeyConstants.TITLELESS_SHELL_HAND_IMAGE);
+			handCursor = createHandCursor(control.getDisplay());
 		}
 		setCursor(control, handCursor);
 	}
@@ -335,10 +317,9 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 */
 	private void showGrabCursor(Control control) {
 		if (grabCursor == null) {
-			grabCursor = createCursor(control, LnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE);
+			grabCursor = createGrabCursor(control.getDisplay());
 		}
 		setCursor(control, grabCursor);
-
 	}
 
 	/**
@@ -368,29 +349,16 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		}
 	}
 
-	/**
-	 * Creates a cursor there for the corresponding image of the look and feel
-	 * is used.
-	 * 
-	 * @param control
-	 * @param lnfKey
-	 *            look and feel key of the cursor image
-	 * @return cursor
-	 */
-	private Cursor createCursor(Control control, String lnfKey) {
+	private Cursor createHandCursor(Display display) {
+		String key = LnfKeyConstants.TITLELESS_SHELL_HAND_IMAGE;
+		Image image = LnfManager.getLnf().getImage(key);
+		return SWTFacade.getDefault().createCursor(display, image, SWT.CURSOR_HAND);
+	}
 
-		Cursor cursor = null;
-
-		Image cursorImage = LnfManager.getLnf().getImage(lnfKey);
-		if (cursorImage != null) {
-			Rectangle imageBounds = cursorImage.getBounds();
-			int x = imageBounds.width / 2;
-			int y = imageBounds.height / 2;
-			ImageData imageData = cursorImage.getImageData();
-			cursor = new Cursor(control.getDisplay(), imageData, x, y);
-		}
-		return cursor;
-
+	private Cursor createGrabCursor(Display display) {
+		String key = LnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE;
+		Image image = LnfManager.getLnf().getImage(key);
+		return SWTFacade.getDefault().createCursor(display, image, SWT.CURSOR_HAND);
 	}
 
 	public void dispose() {

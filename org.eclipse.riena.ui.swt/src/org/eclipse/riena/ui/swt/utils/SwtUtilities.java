@@ -17,6 +17,8 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.ui.swt.facades.GCFacade;
+
 /**
  * A collection of utility methods for SWT.
  */
@@ -90,11 +92,12 @@ public final class SwtUtilities {
 	 */
 	public static int calcTextWidth(final GC gc, final StringBuffer text) {
 		int width = 0;
-		if (text == null) {
-			return width;
-		}
-		for (int i = 0; i < text.length(); i++) {
-			width += gc.getAdvanceWidth(text.charAt(i));
+		if (text != null) {
+			GCFacade gcFacade = GCFacade.getDefault();
+			for (int i = 0; i < text.length(); i++) {
+				char ch = text.charAt(i);
+				width += gcFacade.getAdvanceWidth(gc, ch);
+			}
 		}
 		return width;
 	}

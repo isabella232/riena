@@ -18,6 +18,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
@@ -46,14 +47,13 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 	 */
 	@Override
 	protected void addListeners() {
-
 		super.addListeners();
 
 		mouseListener = new TitlebarMouseListener();
 		addMouseListener(mouseListener);
-		addMouseMoveListener(mouseListener);
-		addMouseTrackListener(mouseListener);
-
+		SWTFacade swtFacade = SWTFacade.getDefault();
+		swtFacade.addMouseMoveListener(this, mouseListener);
+		swtFacade.addMouseTrackListener(this, mouseListener);
 	}
 
 	/**
@@ -63,16 +63,15 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 	 */
 	@Override
 	protected void removeListeners() {
-
 		if (mouseListener != null) {
 			removeMouseListener(mouseListener);
-			removeMouseMoveListener(mouseListener);
-			removeMouseTrackListener(mouseListener);
+			SWTFacade swtFacade = SWTFacade.getDefault();
+			swtFacade.removeMouseMoveListener(this, mouseListener);
+			swtFacade.removeMouseTrackListener(this, mouseListener);
 			mouseListener = null;
 		}
 
 		super.removeListeners();
-
 	}
 
 	/**

@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.util.Nop;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 
 /**
  * Utility class for UI tests.
@@ -109,17 +110,20 @@ public final class UITestHelper {
 		private final Display display;
 		private final int keyCode;
 		private final String message;
+		private final SWTFacade swtFacade;
 
 		EventSender(Display display, int keyCode) {
 			this.display = display;
 			this.keyCode = keyCode;
 			this.message = null;
+			this.swtFacade = SWTFacade.getDefault();
 		}
 
 		EventSender(Display display, String message) {
 			this.display = display;
 			this.keyCode = 0;
 			this.message = message;
+			this.swtFacade = SWTFacade.getDefault();
 		}
 
 		public void run() {
@@ -201,7 +205,7 @@ public final class UITestHelper {
 		}
 
 		private boolean post(final Event event) {
-			return display.post(event);
+			return swtFacade.postEvent(display, event);
 		}
 
 		private void doSleep(int millis) {

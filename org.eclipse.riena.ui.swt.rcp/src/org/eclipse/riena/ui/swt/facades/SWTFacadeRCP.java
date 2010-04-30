@@ -18,8 +18,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
@@ -64,6 +69,21 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	@Override
+	public Cursor createCursor(Display display, Image cursorImage, int alternateStyle) {
+		Cursor result;
+		if (cursorImage != null) {
+			Rectangle imageBounds = cursorImage.getBounds();
+			int hotspotX = imageBounds.width / 2;
+			int hotspotY = imageBounds.height / 2;
+			ImageData imageData = cursorImage.getImageData();
+			result = new Cursor(display, imageData, hotspotX, hotspotY);
+		} else {
+			result = new Cursor(display, alternateStyle);
+		}
+		return result;
+	}
+
+	@Override
 	public EventListener createDisabledPainter() {
 		return new DisabledPainter();
 	}
@@ -76,6 +96,11 @@ public final class SWTFacadeRCP extends SWTFacade {
 	@Override
 	public Control getCursorControl(Display display) {
 		return null;
+	}
+
+	@Override
+	public boolean postEvent(Display display, Event event) {
+		return display.post(event);
 	}
 
 	@Override

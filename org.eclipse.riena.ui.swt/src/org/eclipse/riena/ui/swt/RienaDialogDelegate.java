@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.internal.ui.swt.Activator;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfRendererExtension;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -81,37 +82,6 @@ public class RienaDialogDelegate {
 		updateDialogStyle();
 	}
 
-	/**
-	 * Updates the style of the dialog shell.
-	 */
-	private void updateDialogStyle() {
-
-		boolean hide = LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER);
-		setHideOsBorder(hide);
-
-		int style = dialog.getShellStyle();
-		if (isHideOsBorder()) {
-			if ((style & SWT.DIALOG_TRIM) == SWT.DIALOG_TRIM) {
-				style ^= SWT.DIALOG_TRIM;
-			}
-			style |= SWT.NO_TRIM;
-		} else {
-			if ((style & SWT.NO_TRIM) == SWT.NO_TRIM) {
-				style ^= SWT.NO_TRIM;
-			}
-			style |= SWT.DIALOG_TRIM;
-		}
-		if (isApplicationModal()) {
-			style |= SWT.APPLICATION_MODAL;
-		} else {
-			if ((style & SWT.APPLICATION_MODAL) == SWT.APPLICATION_MODAL) {
-				style ^= SWT.APPLICATION_MODAL;
-			}
-		}
-		dialog.setShellStyle(style);
-
-	}
-
 	public Control createContents(Composite parent) {
 
 		int padding = 0;
@@ -119,24 +89,21 @@ public class RienaDialogDelegate {
 		Composite contentsComposite = new Composite(parent, SWT.NONE);
 		contentsComposite.setLayout(new FormLayout());
 		if (isHideOsBorder()) {
-			contentsComposite.addPaintListener(new DialogBorderPaintListener());
-			DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
-					LnfKeyConstants.DIALOG_BORDER_RENDERER);
-			padding = borderRenderer.getBorderWidth();
+			SWTFacade.getDefault().addPaintListener(contentsComposite, new DialogBorderPaintListener());
+			padding = getBorderWidth();
 		}
 		contentsComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		int titleBarHeight = 0;
 		topComposite = new Composite(contentsComposite, SWT.NONE);
 		if (isHideOsBorder()) {
-			topComposite.addPaintListener(new DialogPaintListener());
-			DialogTitleBarRenderer titleBarRenderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(
-					LnfKeyConstants.DIALOG_RENDERER);
-			titleBarHeight = titleBarRenderer.getHeight();
+			titleBarHeight = getTitleBarHeight();
+			SWTFacade.getDefault().addPaintListener(topComposite, new DialogPaintListener());
+
 			mouseListener = new DialogTitleBarMouseListener();
 			topComposite.addMouseListener(mouseListener);
-			topComposite.addMouseMoveListener(mouseListener);
-			topComposite.addMouseTrackListener(mouseListener);
+			SWTFacade.getDefault().addMouseMoveListener(topComposite, mouseListener);
+			SWTFacade.getDefault().addMouseTrackListener(topComposite, mouseListener);
 		}
 		FormData formData = new FormData();
 		formData.left = new FormAttachment(0, padding);
@@ -171,24 +138,113 @@ public class RienaDialogDelegate {
 	}
 
 	public void removeDialogTitleBarMouseListener() {
-
 		if ((topComposite != null) && (mouseListener != null)) {
 			topComposite.removeMouseListener(mouseListener);
-			topComposite.removeMouseMoveListener(mouseListener);
-			topComposite.removeMouseTrackListener(mouseListener);
+			SWTFacade.getDefault().removeMouseMoveListener(topComposite, mouseListener);
+			SWTFacade.getDefault().removeMouseTrackListener(topComposite, mouseListener);
 			mouseListener.dispose();
 			mouseListener = null;
 		}
 	}
 
+	public boolean isCloseable() {
+		return closeable;
+	}
+
+	public boolean isMaximizeable() {
+		return maximizeable;
+	}
+
+	public boolean isMinimizeable() {
+		return minimizeable;
+	}
+
+	public boolean isResizeable() {
+		return resizeable;
+	}
+
+	public boolean isApplicationModal() {
+		return applicationModal;
+	}
+
+	public Composite getCenterComposite() {
+		return centerComposite;
+	}
+
+	// helping methods
+	//////////////////
+
+	private int getBorderWidth() {
+		DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
+				LnfKeyConstants.DIALOG_BORDER_RENDERER);
+		return borderRenderer != null ? borderRenderer.getBorderWidth() : 0;
+	}
+
+	private int getTitleBarHeight() {
+		DialogTitleBarRenderer titleBarRenderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(
+				LnfKeyConstants.DIALOG_RENDERER);
+		return titleBarRenderer != null ? titleBarRenderer.getHeight() : 0;
+	}
+
+	private void setApplicationModal(boolean applicationModal) {
+		this.applicationModal = applicationModal;
+	}
+
+	private void setCloseable(boolean closeable) {
+		this.closeable = closeable;
+	}
+
+	private void setMaximizeable(boolean maximizeable) {
+		this.maximizeable = maximizeable;
+	}
+
+	private void setMinimizeable(boolean minimizeable) {
+		this.minimizeable = minimizeable;
+	}
+
+	private void setResizeable(boolean resizeable) {
+		this.resizeable = resizeable;
+	}
+
+	/**
+	 * Updates the style of the dialog shell.
+	 */
+	private void updateDialogStyle() {
+
+		boolean hide = LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER);
+		setHideOsBorder(hide);
+
+		int style = dialog.getShellStyle();
+		if (isHideOsBorder()) {
+			if ((style & SWT.DIALOG_TRIM) == SWT.DIALOG_TRIM) {
+				style ^= SWT.DIALOG_TRIM;
+			}
+			style |= SWT.NO_TRIM;
+		} else {
+			if ((style & SWT.NO_TRIM) == SWT.NO_TRIM) {
+				style ^= SWT.NO_TRIM;
+			}
+			style |= SWT.DIALOG_TRIM;
+		}
+		if (isApplicationModal()) {
+			style |= SWT.APPLICATION_MODAL;
+		} else {
+			if ((style & SWT.APPLICATION_MODAL) == SWT.APPLICATION_MODAL) {
+				style ^= SWT.APPLICATION_MODAL;
+			}
+		}
+		dialog.setShellStyle(style);
+
+	}
+
+	// helping classes
+	//////////////////
+
 	/**
 	 * This listener paints the dialog (the border of the shell).
 	 */
-	private static class DialogBorderPaintListener implements PaintListener {
+	private static final class DialogBorderPaintListener implements PaintListener {
 
-		/**
-		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
-		 */
 		public void paintControl(final PaintEvent e) {
 			onPaint(e);
 		}
@@ -221,11 +277,8 @@ public class RienaDialogDelegate {
 	/**
 	 * This listener paints the dialog (the border of the shell).
 	 */
-	private class DialogPaintListener implements PaintListener {
+	private final class DialogPaintListener implements PaintListener {
 
-		/**
-		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
-		 */
 		public void paintControl(final PaintEvent e) {
 			onPaint(e);
 		}
@@ -237,7 +290,6 @@ public class RienaDialogDelegate {
 		 *            event
 		 */
 		private void onPaint(final PaintEvent e) {
-
 			if (e.getSource() instanceof Control) {
 
 				final Control control = (Control) e.getSource();
@@ -252,62 +304,14 @@ public class RienaDialogDelegate {
 				renderer.setMaximizable(dialog.isMaximizeable());
 				renderer.setMinimizable(dialog.isMinimizeable());
 				renderer.paint(e.gc, control);
-
 			}
-
 		}
 	}
 
-	private static class DialogTitleBarMouseListener extends AbstractTitleBarMouseListener {
-
+	private static final class DialogTitleBarMouseListener extends AbstractTitleBarMouseListener {
 		@Override
 		protected AbstractTitleBarRenderer getTitleBarRenderer() {
 			return (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.DIALOG_RENDERER);
 		}
-
-	}
-
-	public boolean isCloseable() {
-		return closeable;
-	}
-
-	private void setCloseable(boolean closeable) {
-		this.closeable = closeable;
-	}
-
-	public boolean isMaximizeable() {
-		return maximizeable;
-	}
-
-	private void setMaximizeable(boolean maximizeable) {
-		this.maximizeable = maximizeable;
-	}
-
-	public boolean isMinimizeable() {
-		return minimizeable;
-	}
-
-	private void setMinimizeable(boolean minimizeable) {
-		this.minimizeable = minimizeable;
-	}
-
-	public boolean isResizeable() {
-		return resizeable;
-	}
-
-	private void setResizeable(boolean resizeable) {
-		this.resizeable = resizeable;
-	}
-
-	public boolean isApplicationModal() {
-		return applicationModal;
-	}
-
-	private void setApplicationModal(boolean applicationModal) {
-		this.applicationModal = applicationModal;
-	}
-
-	public Composite getCenterComposite() {
-		return centerComposite;
 	}
 }

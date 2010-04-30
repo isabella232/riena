@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.ui.swt.Activator;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
@@ -243,7 +244,7 @@ public class BorderControlDecoration {
 	 */
 	private void installCompositeListeners(Composite c) {
 		if (!c.isDisposed()) {
-			c.addPaintListener(paintListener);
+			SWTFacade.getDefault().addPaintListener(c, paintListener);
 			c.addControlListener(controlListener);
 		}
 	}
@@ -254,7 +255,7 @@ public class BorderControlDecoration {
 	private void removeCompositeListeners(Composite c) {
 		if (!c.isDisposed()) {
 			c.removeControlListener(controlListener);
-			c.removePaintListener(paintListener);
+			SWTFacade.getDefault().removePaintListener(c, paintListener);
 		}
 	}
 

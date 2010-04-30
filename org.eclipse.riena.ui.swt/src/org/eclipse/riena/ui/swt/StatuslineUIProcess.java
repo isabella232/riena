@@ -25,6 +25,7 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
@@ -37,6 +38,7 @@ import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.nls.Messages;
@@ -103,14 +105,14 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 		Control grabCorner = locateGrabCorner();
 		if (grabCorner != null) {
-			grabCorner.addMouseTrackListener(new MouseTrackAdapter() {
-
+			MouseTrackListener trackListener = new MouseTrackAdapter() {
 				@Override
 				public void mouseExit(MouseEvent e) {
 					super.mouseExit(e);
 					configureShell();
 				}
-			});
+			};
+			SWTFacade.getDefault().addMouseTrackListener(grabCorner, trackListener);
 		}
 	}
 
