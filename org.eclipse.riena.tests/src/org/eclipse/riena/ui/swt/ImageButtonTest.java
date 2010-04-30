@@ -195,7 +195,7 @@ public class ImageButtonTest extends RienaTestCase {
 		size = button.computeSize(SWT.DEFAULT, SWT.DEFAULT, false);
 		assertEquals(new Point(1, 1), size);
 
-		button.setUseIdealHight(true);
+		button.setUseIdealHeight(true);
 		size = button.computeSize(SWT.DEFAULT, SWT.DEFAULT, false);
 		assertTrue(size.y > 1);
 		assertEquals(1, size.x);
