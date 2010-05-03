@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.riena.build.feature.samples.sdk"
-      label="Riena SDK Samples (TP Only)"
+      label="Riena Samples Target Platform"
       version="2.0.0.qualifier">
 
    <description>
