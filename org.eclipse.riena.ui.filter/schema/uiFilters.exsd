@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.riena.ui.filter" id="uiFilter" name="uiFilter"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         A collection of rules for manipulate the UI of a Riena application.
       </documentation>
    </annotation>
 
@@ -67,6 +67,12 @@
    </element>
 
    <element name="nodeId">
+      <annotation>
+         <documentation>
+            ID of the navigation node to which the filter will be added.
+&lt;i&gt;(The application developer must add the filter to the correct node.)&lt;/i&gt;
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>
@@ -82,6 +88,11 @@ e.g.: /app1/subApp2
    </element>
 
    <element name="ruleMarkerRidget">
+      <annotation>
+         <documentation>
+            Rule to add a marker to a Ridget.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="ridgetId" type="string" use="required">
             <annotation>
@@ -116,6 +127,11 @@ e.g.: /app1/subApp2/modGroup3/mod4/subMod4711/ridget0815
    </element>
 
    <element name="ruleMarkerMenuItem">
+      <annotation>
+         <documentation>
+            Rule to add a marker to a menu item (or tool bar item).
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="itemId" type="string" use="required">
             <annotation>
@@ -143,6 +159,11 @@ e.g.: /app1/subApp2/modGroup3/mod4/subMod4711/ridget0815
    </element>
 
    <element name="ruleMarkerNavigation">
+      <annotation>
+         <documentation>
+            Rule to add a marker to a navigation node.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="nodeId" type="string" use="required">
             <annotation>
@@ -173,6 +194,11 @@ e.g.: /app1/subApp2/modGroup3/mod4/subMod4711
    </element>
 
    <element name="ruleValidatorRidget">
+      <annotation>
+         <documentation>
+            Rule to add a validator to a Ridget.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="ridgetId" type="string" use="required">
             <annotation>
