@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.riena.ui.swt" id="imagePaths" name="Image paths"/>
       </appInfo>
       <documentation>
-         Defines the pathes of images so that the ImageStore can load this images form other bundles.
+         Defines the pathes of images so that the ImageStore can load this images from other bundles.
       </documentation>
    </annotation>
 
@@ -15,6 +15,9 @@
          <appInfo>
             <meta.element />
          </appInfo>
+         <documentation>
+            Pathes where images of this bundle are stored.
+         </documentation>
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
@@ -57,7 +60,7 @@
          <attribute name="path" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  path of images
                </documentation>
             </annotation>
          </attribute>
