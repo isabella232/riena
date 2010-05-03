@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.riena.ui.swt" id="lnfRenderers" name="Lnf renderers"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         Renderers of the Riena Look&amp;Feel that are drawing Riena widgets (or parts of them).
       </documentation>
    </annotation>
 
@@ -50,7 +50,7 @@
    <element name="renderer">
       <annotation>
          <documentation>
-            For a number of Riena widget it is possible to define who it (or a part of it) will be drawn. For these widgets a renderer exists. These renderer can be replaced by another renderer.
+            For a number of Riena widget it is possible to define how it (or a part of it) will be drawn. For these widgets a renderer exists. These renderer can be replaced by another renderer.
          </documentation>
       </annotation>
       <complexType>
