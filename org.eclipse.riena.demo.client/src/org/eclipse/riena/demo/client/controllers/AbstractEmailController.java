@@ -98,7 +98,7 @@ public class AbstractEmailController extends SubModuleController {
 			openCustomerAction.addListener(new IActionListener() { //$NON-NLS-1$
 						public void callback() {
 							getNavigationNode().jumpBack();
-							getNavigationNode().dispose();
+							getNavigationNode().getParent().dispose();
 						}
 					});
 
