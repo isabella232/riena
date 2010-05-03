@@ -22,6 +22,8 @@ import org.eclipse.riena.ui.swt.InfoFlyout;
  * <p>
  * Some keys are in a special Wiki page of Eclipsepedia: <a
  * href="http://wiki.eclipse.org/Riena_Look_and_Feel">Riena Look and Feel</a>
+ * 
+ * @since 2.0
  */
 public final class LnfKeyConstants {
 
@@ -427,7 +429,13 @@ public final class LnfKeyConstants {
 
 	public static final String DIALOG_FONT = "Dialog.font"; //$NON-NLS-1$
 
+	/**
+	 * @since 2.0
+	 */
 	public static final String MENUBAR_FONT = "Menubar.font"; //$NON-NLS-1$
+	/**
+	 * @since 2.0
+	 */
 	public static final String TOOLBAR_FONT = "Toolbar.font"; //$NON-NLS-1$
 
 	public static final String SUB_APPLICATION_SWITCHER_FONT = "SubApplicationSwitcher.font"; //$NON-NLS-1$
@@ -737,8 +745,8 @@ public final class LnfKeyConstants {
 	 */
 	public static final String DISABLED_MARKER_COMPLEX_ALPHA = "DisabledMarker.complexAlpha"; //$NON-NLS-1$
 	/**
-	 * This constants turns the advanced disabled marker rendering on ( {@code
-	 * true}) or off ({@code false}).<br>
+	 * This constants turns the advanced disabled marker rendering on (
+	 * {@code true}) or off ({@code false}).<br>
 	 * Is advanced rendering turned off for disabled UI control only the method
 	 * setEnabled is called. Is advanced rendering turned off the widgets are
 	 * renderer in a spacial way (@see DisabledMarkerVisualizer).
@@ -789,6 +797,8 @@ public final class LnfKeyConstants {
 	/**
 	 * Only one ({@code true}) or more ({@code false}) than one sub-trees inside
 	 * a module can be expanded at the same time.
+	 * 
+	 * @since 2.0
 	 */
 	public static final String SUB_MODULE_TREE_SHOW_ONE_SUB_TREE = "SubModuleTree.showOneSubTree"; //$NON-NLS-1$
 
@@ -829,6 +839,7 @@ public final class LnfKeyConstants {
 	 * @see <a
 	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Embedded_Title_Bar">
 	 *      Riena Wiki</a>
+	 * @since 2.0
 	 */
 	public static final String EMBEDDED_TITLEBAR_HOVER_BORDER_MARGIN = "EmbeddedTitlebar.hoverBorderMargin"; //$NON-NLS-1$
 
@@ -907,6 +918,9 @@ public final class LnfKeyConstants {
 
 	public static final String SUB_MODULE_TREE_ITEM_MARKER_RENDERER = "SubModuleTreeItemMarker.renderer"; //$NON-NLS-1$
 
+	/**
+	 * @since 2.0
+	 */
 	public static final String MODULE_VIEW_TITLEBAR_RENDERER = "ModuleView.titlebarRenderer"; //$NON-NLS-1$
 
 	public static final String SUB_MODULE_VIEW_RENDERER = "SubModuleView.renderer"; //$NON-NLS-1$
