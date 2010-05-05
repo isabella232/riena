@@ -203,38 +203,21 @@ public class ServiceInjectorTest extends RienaTestCase {
 		reg3.unregister();
 	}
 
-	public void testInjectMostSpecifBindMethod() {
-		printTestName();
-		Target target = new Target();
-
-		DepOne depOne = new DepOneOne();
-		ServiceRegistration reg = getContext().registerService(DepOne.class.getName(), depOne, null);
-
-		ServiceInjector shot = Inject.service(DepOne.class.getName()).into(target).andStart(getContext());
-		assertEquals(1, target.count("bind", DepOneOne.class));
-		assertEquals(0, target.count("bind", DepOne.class));
-
-		shot.stop();
-		assertEquals(0, target.count("bind", DepOneOne.class));
-
-		reg.unregister();
-	}
-
 	public void testFilterTest() {
 		printTestName();
 		Target target = new Target();
 
-		DepOne depOne = new DepOneOne();
+		DepOne depOne = new DepOne();
 		Hashtable<String, String> props = new Hashtable<String, String>();
 		props.put("x", "y");
 		ServiceRegistration reg = getContext().registerService(DepOne.class.getName(), depOne, props);
 
 		ServiceInjector shot = Inject.service(DepOne.class.getName()).useFilter("(x=y)").into(target).andStart(
 				getContext());
-		assertEquals(1, target.count("bind", DepOneOne.class));
+		assertEquals(1, target.count("bind", DepOne.class));
 
 		shot.stop();
-		assertEquals(0, target.count("bind", DepOneOne.class));
+		assertEquals(0, target.count("bind", DepOne.class));
 
 		reg.unregister();
 	}

@@ -64,16 +64,6 @@ public class Target {
 		remove("bind", IRanking.class);
 	}
 
-	public void bind(DepOneOne dep) {
-		called("bind", DepOneOne.class, dep);
-		add("bind", DepOneOne.class);
-	}
-
-	public void unbind(DepOneOne dep) {
-		called("unbind", DepOneOne.class, dep);
-		remove("bind", DepOneOne.class);
-	}
-
 	/**
 	 * @param string
 	 * @param object

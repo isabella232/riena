@@ -38,10 +38,11 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		assertEquals(0, getMin(injector));
 		assertEquals(1, getMax(injector));
 		assertTrue(getHomogenious(injector));
-		assertSame(this, getBean(injector));
-		assertEquals("update1", getUpdate(injector));
+		assertSame(this, getTarget(injector));
+		assertEquals("update1", getUpdateMethodName(injector));
 		assertFalse(getDoNotReplaceSymbols(injector));
 		assertFalse(getSpecific(injector));
+		assertFalse(getOnceOnly(injector));
 	}
 
 	@InjectExtension(id = "testA")
@@ -59,10 +60,11 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		assertEquals(0, getMin(injector));
 		assertEquals(Integer.MAX_VALUE, getMax(injector));
 		assertTrue(getHomogenious(injector));
-		assertSame(this, getBean(injector));
-		assertEquals("update1Array", getUpdate(injector));
+		assertSame(this, getTarget(injector));
+		assertEquals("update1Array", getUpdateMethodName(injector));
 		assertFalse(getDoNotReplaceSymbols(injector));
 		assertFalse(getSpecific(injector));
+		assertFalse(getOnceOnly(injector));
 	}
 
 	@InjectExtension(id = "testA[]")
@@ -80,10 +82,11 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		assertEquals(2, getMin(injector));
 		assertEquals(5, getMax(injector));
 		assertFalse(getHomogenious(injector));
-		assertSame(this, getBean(injector));
-		assertEquals("update2", getUpdate(injector));
+		assertSame(this, getTarget(injector));
+		assertEquals("update2", getUpdateMethodName(injector));
 		assertTrue(getDoNotReplaceSymbols(injector));
 		assertTrue(getSpecific(injector));
+		assertFalse(getOnceOnly(injector));
 	}
 
 	@InjectExtension(id = "testB", doNotReplaceSymbols = true, heterogeneous = true, specific = true, min = 2, max = 5)
@@ -101,10 +104,11 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		assertEquals(0, getMin(injector));
 		assertEquals(1, getMax(injector));
 		assertFalse(getHomogenious(injector));
-		assertSame(this, getBean(injector));
-		assertEquals("update3", getUpdate(injector));
+		assertSame(this, getTarget(injector));
+		assertEquals("update3", getUpdateMethodName(injector));
 		assertFalse(getDoNotReplaceSymbols(injector));
 		assertTrue(getSpecific(injector));
+		assertFalse(getOnceOnly(injector));
 	}
 
 	@InjectExtension(id = "testC", heterogeneous = true, specific = true, min = 0, max = 1)
@@ -128,10 +132,11 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		assertEquals(0, getMin(injector));
 		assertEquals(1, getMax(injector));
 		assertFalse(getHomogenious(injector));
-		assertSame(this, getBean(injector));
-		assertEquals("updateWithID", getUpdate(injector));
+		assertSame(this, getTarget(injector));
+		assertEquals("updateWithID", getUpdateMethodName(injector));
 		assertFalse(getDoNotReplaceSymbols(injector));
 		assertTrue(getSpecific(injector));
+		assertFalse(getOnceOnly(injector));
 	}
 
 	@InjectExtension(heterogeneous = true, specific = true, min = 0, max = 1)
@@ -155,14 +160,73 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		assertEquals(0, getMin(injector));
 		assertEquals(1, getMax(injector));
 		assertFalse(getHomogenious(injector));
-		assertSame(this, getBean(injector));
-		assertEquals("updateWithIDinAnnotation", getUpdate(injector));
+		assertSame(this, getTarget(injector));
+		assertEquals("updateWithIDinAnnotation", getUpdateMethodName(injector));
 		assertFalse(getDoNotReplaceSymbols(injector));
 		assertTrue(getSpecific(injector));
+		assertFalse(getOnceOnly(injector));
 	}
 
 	@InjectExtension(heterogeneous = true, specific = true, min = 0, max = 1)
 	public void updateWithIDinAnnotation(IDataWithIDinAnnotation data) {
+	}
+
+	public void testBuildForUpdate4WithAnExtensionInterfaceWithIDinAnnotationAndWithOnceOnlyViaStatic()
+			throws NoSuchMethodException {
+		Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("update4WithIDinAnnotation",
+				new Class[] { IDataWithIDinAnnotation.class });
+		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		ExtensionInjector injector = builder.build();
+		assertNotNull(injector);
+		String expectedId = getContext().getBundle().getSymbolicName() + ".testWithIDinAnnotation";
+		try {
+			injector.andStart(getContext());
+		} catch (IllegalArgumentException e) {
+			assertTrue(e.getMessage().contains(expectedId));
+		}
+		assertEquals(expectedId, firstNormalizedId(injector));
+		assertEquals(IDataWithIDinAnnotation.class, useType(injector));
+		assertEquals(0, getMin(injector));
+		assertEquals(1, getMax(injector));
+		assertFalse(getHomogenious(injector));
+		assertSame(this, getTarget(injector));
+		assertEquals("update4WithIDinAnnotation", getUpdateMethodName(injector));
+		assertFalse(getDoNotReplaceSymbols(injector));
+		assertTrue(getSpecific(injector));
+		assertTrue(getOnceOnly(injector));
+	}
+
+	@InjectExtension(heterogeneous = true, specific = true, min = 0, max = 1)
+	public static void update4WithIDinAnnotation(IDataWithIDinAnnotation data) {
+	}
+
+	public void testBuildForUpdate5WithAnExtensionInterfaceWithIDinAnnotationAndWithOnceOnlyViaAnnotation()
+			throws NoSuchMethodException {
+		Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("update5WithIDinAnnotation",
+				new Class[] { IDataWithIDinAnnotation.class });
+		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		ExtensionInjector injector = builder.build();
+		assertNotNull(injector);
+		String expectedId = getContext().getBundle().getSymbolicName() + ".testWithIDinAnnotation";
+		try {
+			injector.andStart(getContext());
+		} catch (IllegalArgumentException e) {
+			assertTrue(e.getMessage().contains(expectedId));
+		}
+		assertEquals(expectedId, firstNormalizedId(injector));
+		assertEquals(IDataWithIDinAnnotation.class, useType(injector));
+		assertEquals(0, getMin(injector));
+		assertEquals(1, getMax(injector));
+		assertFalse(getHomogenious(injector));
+		assertSame(this, getTarget(injector));
+		assertEquals("update5WithIDinAnnotation", getUpdateMethodName(injector));
+		assertFalse(getDoNotReplaceSymbols(injector));
+		assertTrue(getSpecific(injector));
+		assertTrue(getOnceOnly(injector));
+	}
+
+	@InjectExtension(heterogeneous = true, specific = true, min = 0, max = 1, onceOnly = true)
+	public void update5WithIDinAnnotation(IDataWithIDinAnnotation data) {
 	}
 
 	private String rawId(ExtensionInjector injector) {
@@ -198,12 +262,12 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 		return ReflectionUtils.getHidden(extensionDescriptor, "homogeneous");
 	}
 
-	private Object getBean(ExtensionInjector injector) {
+	private Object getTarget(ExtensionInjector injector) {
 		WeakRef<?> ref = ReflectionUtils.getHidden(injector, "targetRef");
 		return ref.get();
 	}
 
-	private String getUpdate(ExtensionInjector injector) {
+	private String getUpdateMethodName(ExtensionInjector injector) {
 		return ReflectionUtils.getHidden(injector, "updateMethodName");
 	}
 
@@ -213,6 +277,10 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 
 	private boolean getSpecific(ExtensionInjector injector) {
 		return !(Boolean) ReflectionUtils.getHidden(injector, "nonSpecific");
+	}
+
+	private boolean getOnceOnly(ExtensionInjector injector) {
+		return ReflectionUtils.getHidden(injector, "onceOnly");
 	}
 
 }
