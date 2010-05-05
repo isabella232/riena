@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,28 +20,15 @@ import org.osgi.framework.ServiceReference;
  */
 public class FilterInjector extends ServiceInjector {
 
-	private List<ServiceReference> trackedServiceRefs = null;
+	private List<ServiceReference> trackedServiceRefs = new ArrayList<ServiceReference>(1);
 
-	/**
-	 * @param serviceId
-	 * @param target
-	 */
 	FilterInjector(final ServiceDescriptor serviceId, final Object target) {
 		super(serviceId, target);
 	}
 
-	/*
-	 * @see org.eclipse.riena.core.service.ServiceInjector#doStart()
-	 */
 	@Override
 	protected void doStart() {
-		trackedServiceRefs = new ArrayList<ServiceReference>(1);
 		final ServiceReference[] serviceRefs = getServiceReferences();
-
-		// register service listener early because its very likely that no
-		// service is registered between getServiceReferences and
-		// registerServiceListener()
-		registerServiceListener();
 		if (serviceRefs != null) {
 			for (final ServiceReference serviceRef : serviceRefs) {
 				doBind(serviceRef);
@@ -49,13 +36,9 @@ public class FilterInjector extends ServiceInjector {
 		}
 	}
 
-	/*
-	 * @see org.eclipse.riena.core.service.ServiceInjector#doStop()
-	 */
 	@Override
 	protected void doStop() {
-		// copy list to array so that I iterate through array and still
-		// remove entries from List concurrently
+		// copy list to temporary array so that adding/removing entries from the list can be concurrently
 		final ServiceReference[] serviceRefs;
 		synchronized (trackedServiceRefs) {
 			serviceRefs = trackedServiceRefs.toArray(new ServiceReference[trackedServiceRefs.size()]);
@@ -66,11 +49,6 @@ public class FilterInjector extends ServiceInjector {
 		trackedServiceRefs = null;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.riena.core.service.ServiceInjector#doBind(org.osgi.framework
-	 * .ServiceReference)
-	 */
 	@Override
 	protected void doBind(final ServiceReference serviceRef) {
 		synchronized (trackedServiceRefs) {
@@ -82,11 +60,6 @@ public class FilterInjector extends ServiceInjector {
 		}
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.riena.core.service.ServiceInjector#doUnbind(org.osgi.framework
-	 * .ServiceReference)
-	 */
 	@Override
 	protected void doUnbind(final ServiceReference serviceRef) {
 		synchronized (trackedServiceRefs) {

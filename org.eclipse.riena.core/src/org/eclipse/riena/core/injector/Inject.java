@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,12 +25,12 @@ public final class Inject {
 	/**
 	 * @see ServiceDescriptor
 	 * 
-	 * @param clazz
+	 * @param className
 	 *            class name
 	 * @return
 	 */
-	public static ServiceDescriptor service(final String clazz) {
-		return new ServiceDescriptor(clazz);
+	public static ServiceDescriptor service(final String className) {
+		return new ServiceDescriptor(className);
 	}
 
 	/**
@@ -41,7 +41,7 @@ public final class Inject {
 	 * @return
 	 */
 	public static ServiceDescriptor service(final Class<?> clazz) {
-		return new ServiceDescriptor(clazz.getName());
+		return new ServiceDescriptor(clazz);
 	}
 
 	/**

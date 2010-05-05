@@ -13,6 +13,7 @@ package org.eclipse.riena.core.injector.extension;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.IStoppable;
 import org.eclipse.riena.core.injector.InjectionFailure;
 import org.eclipse.riena.core.util.WeakRef;
+import org.eclipse.riena.internal.core.injector.ObjectCounter;
 import org.eclipse.riena.internal.core.injector.extension.ExtensionMapper;
 
 /**
@@ -40,8 +42,8 @@ import org.eclipse.riena.internal.core.injector.extension.ExtensionMapper;
 public class ExtensionInjector implements IStoppable {
 
 	/**
-	 * When this system property is set to {@code true} then the {@code
-	 * ExtensionInjector} will not wire created executable extension.
+	 * When this system property is set to {@code true} then the
+	 * {@code ExtensionInjector} will not wire created executable extension.
 	 */
 	public static final String RIENA_EXTENSIONS_DONOTWIRE_SYSTEM_PROPERTY = "riena.extensions.donotwire"; //$NON-NLS-1$
 
@@ -58,6 +60,9 @@ public class ExtensionInjector implements IStoppable {
 	private Method updateMethod;
 	private boolean isArray;
 	private Class<?> componentType;
+	private boolean onceOnly;
+
+	private static final ObjectCounter<Method> ONCE_ONLY_METHODS = new ObjectCounter<Method>();
 
 	private static final String DEFAULT_UPDATE_METHOD_NAME = "update"; //$NON-NLS-1$
 	private static final Logger LOGGER = Log4r.getLogger(ExtensionInjector.class);
@@ -96,6 +101,12 @@ public class ExtensionInjector implements IStoppable {
 		// the formal parameter type of the update method will be used.
 		componentType = extensionDesc.getInterfaceType() != null ? extensionDesc.getInterfaceType()
 				: isArray ? parameterType.getComponentType() : parameterType;
+
+		onceOnly = Modifier.isStatic(updateMethod.getModifiers()) || onceOnly;
+		if (onceOnly && ONCE_ONLY_METHODS.incrementAndGetCount(updateMethod) > 1) {
+			// prevent another extension registry listener
+			return this;
+		}
 
 		// Fix the extension point descriptor
 		extensionDesc.getExtensionPointId().normalize(componentType);
@@ -152,10 +163,31 @@ public class ExtensionInjector implements IStoppable {
 	}
 
 	/**
+	 * Defines that the 'update' method will only be called once for instances
+	 * of the same class. This can also be forced by declaring the 'update'
+	 * method static.
+	 * <p>
+	 * This can be used for instances that share configuration data to avoid
+	 * multiple injection of the same data. This reduces the amount of listeners
+	 * and memory footprint.
+	 * 
+	 * @return this
+	 */
+	public ExtensionInjector onceOnly() {
+		Assert.isTrue(!started, "ExtensionInjector already started."); //$NON-NLS-1$
+		onceOnly = true;
+		return this;
+	}
+
+	/**
 	 * Stop the extension injector.
 	 */
 	public void stop() {
 		if (!started) {
+			return;
+		}
+
+		if (onceOnly && ONCE_ONLY_METHODS.decrementAndGetCount(updateMethod) > 0) {
 			return;
 		}
 
@@ -167,11 +199,10 @@ public class ExtensionInjector implements IStoppable {
 				extensionRegistry.removeListener(injectorListener);
 			}
 		}
+		injectorListeners.clear();
 
-		// cleanup
 		final Object emptyExtensions = isArray ? Array.newInstance(componentType, 0) : null;
 		update(new Object[] { emptyExtensions });
-		injectorListeners.clear();
 	}
 
 	private Method findUpdateMethod() {

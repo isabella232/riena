@@ -25,10 +25,10 @@ public @interface InjectExtension {
 	/**
 	 * The extension point id.
 	 * <p>
-	 * <b>Note: </b>If not given, it is expected that the {@code
-	 * ExtensionInterface} has either set the {@code id()} parameter or that the
-	 * extension interface has a {@code String} field named {@code ID} that
-	 * contains the extension point id.
+	 * <b>Note: </b>If not given, it is expected that the
+	 * {@code ExtensionInterface} has either set the {@code id()} parameter or
+	 * that the extension interface has a {@code String} field named {@code ID}
+	 * that contains the extension point id.
 	 */
 	String id() default "";
 
@@ -56,4 +56,18 @@ public @interface InjectExtension {
 	 * If {@code true} symbols (VariablManager) will not be replaced
 	 */
 	boolean doNotReplaceSymbols() default false;
+
+	/**
+	 * Defines that the 'update' method will only be called once for instances
+	 * of the same class. This can also be forced by declaring the 'update'
+	 * method static.<br>
+	 * <b>Note: </b>If the 'update' method is not static but annotated with
+	 * 'oneOnly' you have to take care that the 'update' method keeps the
+	 * configuration data in shared space (e.g. at the class level).
+	 * <p>
+	 * This can be used for instances that share configuration data to avoid
+	 * multiple injection of the same data. This reduces the amount of listeners
+	 * (better performance and less memory.
+	 */
+	boolean onceOnly() default false;
 }

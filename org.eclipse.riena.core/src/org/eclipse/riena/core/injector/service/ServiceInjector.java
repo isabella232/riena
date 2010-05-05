@@ -12,8 +12,9 @@ package org.eclipse.riena.core.injector.service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -33,6 +34,7 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.IStoppable;
 import org.eclipse.riena.core.injector.InjectionFailure;
 import org.eclipse.riena.core.util.WeakRef;
+import org.eclipse.riena.internal.core.injector.ObjectCounter;
 
 /**
  * The is the abstract base class for the specialized service injectors. See
@@ -57,9 +59,10 @@ public abstract class ServiceInjector implements IStoppable {
 	private BundleContext context;
 	private final String filter;
 	private String bindMethodName;
-	private List<Method> bindMethodProspects;
 	private String unbindMethodName;
-	private List<Method> unbindMethodProspects;
+	private Method bindMethod;
+	private Method unbindMethod;
+	private boolean onceOnly;
 	private State state;
 	private ServiceListener serviceListener;
 	private BundleListener bundleListener;
@@ -67,6 +70,8 @@ public abstract class ServiceInjector implements IStoppable {
 	private enum State {
 		INITIAL, STARTING, STARTED, STOPPING, STOPPED
 	};
+
+	private static final OnceOnlyTracker ONCE_ONLY_METHODS = new OnceOnlyTracker();
 
 	private final static Logger LOGGER = Log4r.getLogger(ServiceInjector.class);
 
@@ -87,7 +92,7 @@ public abstract class ServiceInjector implements IStoppable {
 		});
 		this.targetClass = target.getClass();
 		final StringBuilder bob = new StringBuilder().append("(").append(Constants.OBJECTCLASS).append("=").append( //$NON-NLS-1$ //$NON-NLS-2$
-				serviceDesc.getServiceClazz()).append(")"); //$NON-NLS-1$
+				serviceDesc.getServiceClassName()).append(")"); //$NON-NLS-1$
 		if (serviceDesc.getFilter() != null) {
 			bob.insert(0, "(&"); //$NON-NLS-1$
 			bob.append(serviceDesc.getFilter());
@@ -114,22 +119,96 @@ public abstract class ServiceInjector implements IStoppable {
 		Assert.isTrue(state == State.INITIAL, "ServiceInjector already started or stopped!"); //$NON-NLS-1$
 		this.state = State.STARTING;
 		this.context = context;
-		if (bindMethodName == null) {
-			bindMethodName = DEFAULT_BIND_METHOD_NAME;
+
+		retrieveBindAndUnbindMethods();
+
+		onceOnly = (Modifier.isStatic(bindMethod.getModifiers()) && Modifier.isStatic(unbindMethod.getModifiers()))
+				|| onceOnly;
+		if (onceOnly && ONCE_ONLY_METHODS.registerAndGetCount(this, bindMethod) > 1) {
+			// prevent another service/bundle listener
+			state = State.STARTED;
+			return this;
 		}
-		bindMethodProspects = collectMethods("Bind method", bindMethodName); //$NON-NLS-1$
-		if (unbindMethodName == null) {
-			unbindMethodName = DEFAULT_UNBIND_METHOD_NAME;
-		}
-		unbindMethodProspects = collectMethods("Unbind method", unbindMethodName); //$NON-NLS-1$
 
 		doStart();
-		// for sure
-		registerServiceListener();
 		registerBundleListener();
 
 		state = State.STARTED;
 		return this;
+	}
+
+	protected boolean isOnceOnly() {
+		return onceOnly;
+	}
+
+	private void retrieveBindAndUnbindMethods() {
+		Class<?> serviceClass;
+		if (bindMethod != null) {
+			if (bindMethod.getParameterTypes().length != 1) {
+				throw new InjectionFailure("Specified bind method '" + bindMethod + "' expects exactly one parameter."); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			serviceClass = bindMethod.getParameterTypes()[0];
+		} else {
+			if (bindMethodName == null) {
+				bindMethodName = DEFAULT_BIND_METHOD_NAME;
+			}
+			if (serviceDesc.getServiceClass() != null) {
+				serviceClass = serviceDesc.getServiceClass();
+				bindMethod = findBestMethod(targetClass, bindMethodName, serviceClass);
+			} else {
+				bindMethod = findBestMethod(targetClass, bindMethodName, serviceDesc.getServiceClassName());
+				serviceClass = bindMethod.getParameterTypes()[0];
+			}
+		}
+		if (unbindMethodName == null) {
+			unbindMethodName = DEFAULT_UNBIND_METHOD_NAME;
+		}
+		unbindMethod = findBestMethod(targetClass, unbindMethodName, serviceClass);
+	}
+
+	private Method findBestMethod(final Class<?> targetClass, final String methodName, final String serviceClassName) {
+		try {
+			return findBestMethod(targetClass, methodName, targetClass.getClassLoader().loadClass(serviceClassName));
+		} catch (final ClassNotFoundException e) {
+			for (final Method method : targetClass.getMethods()) {
+				if (method.getName().equals(methodName) && method.getParameterTypes().length == 1
+						&& method.getParameterTypes()[0].getName().equals(serviceClassName)) {
+					return method;
+				}
+			}
+			throw new InjectionFailure("Could not find specified un/bind method: " + targetClass.getName() + "#" //$NON-NLS-1$ //$NON-NLS-2$
+					+ methodName + "(" + serviceClassName + ") by service class name."); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
+
+	private Method findBestMethod(final Class<?> targetClass, final String methodName, final Class<?> serviceClass) {
+		Class<?> superWalker = serviceClass;
+		while (superWalker != null) {
+			Method result = findMethod(targetClass, methodName, superWalker);
+			if (result != null) {
+				return result;
+			}
+			for (final Class<?> interfaceWalker : superWalker.getInterfaces()) {
+				result = findMethod(targetClass, methodName, interfaceWalker);
+				if (result != null) {
+					return result;
+				}
+			}
+			superWalker = superWalker.getSuperclass();
+		}
+		throw new InjectionFailure("Could not find specified un/bind method: " + targetClass.getName() + "#" //$NON-NLS-1$ //$NON-NLS-2$
+				+ methodName + "(" + serviceClass.getName() + ") by service class."); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	private Method findMethod(final Class<?> targetClass, final String methodName, final Class<?> serviceClass) {
+		try {
+			return targetClass.getMethod(methodName, new Class<?>[] { serviceClass });
+		} catch (final SecurityException e) {
+			throw new InjectionFailure("Could not find specified un/bind method: " + targetClass.getName() + "#" //$NON-NLS-1$ //$NON-NLS-2$
+					+ methodName + "(" + serviceClass.getName() + ") by service class.", e); //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (final NoSuchMethodException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -149,11 +228,28 @@ public abstract class ServiceInjector implements IStoppable {
 			return;
 		}
 		state = State.STOPPING;
+
+		if (onceOnly) {
+			final ServiceInjector firstInjector = ONCE_ONLY_METHODS.unregisterAndGetFirstInjector(bindMethod);
+			if (firstInjector == null) {
+				state = State.STOPPED;
+				return;
+			}
+			if (firstInjector != this) {
+				firstInjector.stopContinue();
+				state = State.STOPPED;
+				return;
+			}
+		}
+
+		stopContinue();
+	}
+
+	private void stopContinue() {
 		unregisterBundleListener();
 		unregisterServiceListener();
 		doStop();
-		bindMethodProspects = null;
-		unbindMethodProspects = null;
+
 		state = State.STOPPED;
 	}
 
@@ -179,6 +275,38 @@ public abstract class ServiceInjector implements IStoppable {
 	}
 
 	/**
+	 * Specify the bind method. If not specified
+	 * {@link #DEFAULT_BIND_METHOD_NAME} will be used.
+	 * 
+	 * @throws some_kind_of_unchecked_exception
+	 *             if injector has already been started or stopped.
+	 * @param bindMethod
+	 * @return this injector
+	 */
+	public ServiceInjector bind(final Method bindMethod) {
+		Assert.isTrue(state == State.INITIAL, "ServiceInjector already started or stopped!"); //$NON-NLS-1$
+		this.bindMethod = bindMethod;
+		return this;
+	}
+
+	/**
+	 * Defines that the 'un/bind' methods will only be called once for instances
+	 * of the same class. This can also be forced by declaring the 'un/bind'
+	 * methods static.
+	 * <p>
+	 * This can be used for instances that share configuration data to avoid
+	 * multiple injection of the same data. This reduces the amount of listeners
+	 * and memory footprint.
+	 * 
+	 * @return this
+	 */
+	public ServiceInjector onceOnly() {
+		Assert.isTrue(state == State.INITIAL, "ServiceInjector already started or stopped!"); //$NON-NLS-1$
+		onceOnly = true;
+		return this;
+	}
+
+	/**
 	 * Specify the un-bind method. If not specified
 	 * {@link #DEFAULT_UNBIND_METHOD_NAME} will be used.
 	 * 
@@ -194,15 +322,13 @@ public abstract class ServiceInjector implements IStoppable {
 	}
 
 	/**
-	 * Registers the listener for service events. Can be called by subclasses
-	 * within their {@link #doStart()} method for be timely closer to some other
-	 * actions. However, if this is not done it will be called by this base
-	 * class.
+	 * Registers the listener for service events.
 	 */
-	protected void registerServiceListener() {
-		if (serviceListener == null) {
-			serviceListener = new InjectorServiceListener();
+	private void registerServiceListener() {
+		if (serviceListener != null) {
+			return;
 		}
+		serviceListener = new InjectorServiceListener();
 		try {
 			context.addServiceListener(serviceListener, filter);
 		} catch (final InvalidSyntaxException e) {
@@ -220,9 +346,6 @@ public abstract class ServiceInjector implements IStoppable {
 		context.removeServiceListener(serviceListener);
 	}
 
-	/**
-	 * 
-	 */
 	private void registerBundleListener() {
 		if (bundleListener == null) {
 			bundleListener = new InjectorBundleListener();
@@ -230,31 +353,11 @@ public abstract class ServiceInjector implements IStoppable {
 		context.addBundleListener(bundleListener);
 	}
 
-	/**
-	 * 
-	 */
 	private void unregisterBundleListener() {
 		if (bundleListener != null) {
 			context.removeBundleListener(bundleListener);
 			bundleListener = null;
 		}
-	}
-
-	private List<Method> collectMethods(final String message, final String methodName) {
-		final List<Method> prospects = new ArrayList<Method>();
-		final Method[] methods = targetClass.getMethods();
-		for (final Method method : methods) {
-			if (method.getName().equals(methodName) && method.getParameterTypes().length == 1) {
-				prospects.add(method);
-			}
-		}
-
-		if (prospects.size() != 0) {
-			return prospects;
-		}
-
-		throw new InjectionFailure(message + " '" + methodName + "' does not exist in target class '" //$NON-NLS-1$ //$NON-NLS-2$
-				+ targetClass.getName());
 	}
 
 	protected void handleEvent(final ServiceEvent event) {
@@ -282,7 +385,10 @@ public abstract class ServiceInjector implements IStoppable {
 	 */
 	protected ServiceReference[] getServiceReferences() {
 		try {
-			return context.getServiceReferences(serviceDesc.getServiceClazz(), filter);
+			final ServiceReference[] serviceReferences = context.getServiceReferences(
+					serviceDesc.getServiceClassName(), filter);
+			registerServiceListener();
+			return serviceReferences;
 		} catch (final InvalidSyntaxException e) {
 			throw new InjectionFailure("The specified filter has syntax errors.", e); //$NON-NLS-1$
 		}
@@ -303,7 +409,7 @@ public abstract class ServiceInjector implements IStoppable {
 		if (service == null) {
 			return;
 		}
-		invokeMethod(bindMethodProspects, service);
+		invoke(bindMethod, service);
 	}
 
 	/**
@@ -316,69 +422,18 @@ public abstract class ServiceInjector implements IStoppable {
 		if (serviceRef == null) {
 			return;
 		}
-		// need to get the service object, increments the use count, now it is
-		// ´2´
+		// need to get the service object, increments the use count, now it is ´2´
 		final Object service = context.getService(serviceRef);
 		if (service == null) {
 			return;
 		}
-		invokeMethod(unbindMethodProspects, service);
+		invoke(unbindMethod, service);
 		// decrement the use count from prior getService(), now it is ´1´
 		context.ungetService(serviceRef);
 		// decrement the use count from from prior bind, now it is ´0´
 		context.ungetService(serviceRef);
 	}
 
-	private void invokeMethod(final List<Method> methods, final Object service) {
-		Assert.isNotNull(service);
-
-		final Method method = findMatchingMethod(methods, service);
-		if (method == null) {
-			return;
-		}
-		invoke(method, service);
-	}
-
-	private Method findMatchingMethod(final List<Method> methods, final Object service) {
-		Assert.isNotNull(methods);
-		Assert.isNotNull(service);
-
-		final Class<?> parameterType = service.getClass();
-		final List<Method> targetedMethods = new ArrayList<Method>(1);
-		for (final Method method : methods) {
-			final Class<?>[] parameterTypes = method.getParameterTypes();
-			if (parameterTypes[0].isAssignableFrom(parameterType)) {
-				targetedMethods.add(method);
-			}
-		}
-
-		if (targetedMethods.size() == 1) {
-			return targetedMethods.get(0);
-		}
-
-		if (targetedMethods.isEmpty()) {
-			LOGGER.log(LogService.LOG_ERROR, "Could not find a matching Bind/Unbind method from '" + methods //$NON-NLS-1$
-					+ "' for target class '" + targetClass.getName() + "'."); //$NON-NLS-1$ //$NON-NLS-2$
-			return null;
-		}
-		// find most specific method
-		Class<?> superType = parameterType;
-		while (superType != null) {
-			for (final Method method : targetedMethods) {
-				if (!method.getParameterTypes()[0].isAssignableFrom(superType)) {
-					return method;
-				}
-			}
-			superType = superType.getSuperclass();
-		}
-
-		return targetedMethods.get(0);
-	}
-
-	/**
-	 * @param method
-	 * @param service
-	 */
 	private void invoke(final Method method, final Object service) {
 		Assert.isNotNull(method);
 		Assert.isNotNull(service);
@@ -435,6 +490,38 @@ public abstract class ServiceInjector implements IStoppable {
 				stop();
 			}
 		}
+	}
+
+	/**
+	 * The {@code OnceOnlyTracker} remembers the first {@code ServiceInjector}
+	 * associated with a bindMethod.<br>
+	 * The first {@code ServiceInjector} is the only {@code ServiceInjector}
+	 * that has all the necessary information to properly unbind the currently
+	 * bound services. All other {@code ServiceInjector}s are not capable of
+	 * unbinding!
+	 * <p>
+	 * This implementation is thread safe.
+	 */
+	private static class OnceOnlyTracker {
+
+		private final ObjectCounter<Method> counter = new ObjectCounter<Method>();
+		private final Map<Method, ServiceInjector> firstInjectors = new HashMap<Method, ServiceInjector>();
+
+		public synchronized int registerAndGetCount(final ServiceInjector serviceInjector, final Method bindMethod) {
+			final int count = counter.incrementAndGetCount(bindMethod);
+			if (count == 1) {
+				firstInjectors.put(bindMethod, serviceInjector);
+			}
+			return count;
+		}
+
+		public synchronized ServiceInjector unregisterAndGetFirstInjector(final Method bindMethod) {
+			if (counter.decrementAndGetCount(bindMethod) == 0) {
+				return firstInjectors.remove(bindMethod);
+			}
+			return null;
+		}
+
 	}
 
 }

@@ -55,7 +55,7 @@ public class ServiceInjectorBuilder {
 		} else if (annotation.service() != Void.class) {
 			descriptor = Inject.service(annotation.service());
 		} else {
-			Class<?>[] types = method.getParameterTypes();
+			final Class<?>[] types = method.getParameterTypes();
 			Assert.isLegal(types.length == 1, "only one parameter allowed on ´bind´ method: " + method); //$NON-NLS-1$
 			descriptor = Inject.service(types[0]);
 		}
@@ -64,8 +64,12 @@ public class ServiceInjectorBuilder {
 		} else if (annotation.useFilter().length() != 0) {
 			descriptor = descriptor.useFilter(annotation.useFilter());
 		}
-		ServiceInjector injector = descriptor.into(bean).bind(method.getName());
-		String unbind = annotation.unbind().length() != 0 ? annotation.unbind() : "un" + method.getName(); //$NON-NLS-1$
-		return injector.unbind(unbind);
+		final ServiceInjector injector = descriptor.into(bean).bind(method);
+		final String unbind = annotation.unbind().length() != 0 ? annotation.unbind() : "un" + method.getName(); //$NON-NLS-1$
+		injector.unbind(unbind);
+		if (annotation.onceOnly()) {
+			injector.onceOnly();
+		}
+		return injector;
 	}
 }

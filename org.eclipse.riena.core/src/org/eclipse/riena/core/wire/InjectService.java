@@ -52,4 +52,19 @@ public @interface InjectService {
 	 * Should ranking be used. Default is {@code false}.
 	 */
 	boolean useRanking() default false;
+
+	/**
+	 * Defines that the 'un/bind' methods will only be called once for instances
+	 * of the same class. This can also be forced by declaring both 'bind' and
+	 * 'unbind' methods static.<br>
+	 * <b>Note: </b>If the 'un/bind' method is not static but annotated with
+	 * 'oneOnly' you have to take care that the 'un/bind' method keeps the
+	 * service in shared space (e.g. at the class level).
+	 * <p>
+	 * This can be used for instances that share services to avoid multiple
+	 * injection of the same services. This reduces the amount of listeners
+	 * (better performance and less memory.
+	 */
+	boolean onceOnly() default false;
+
 }

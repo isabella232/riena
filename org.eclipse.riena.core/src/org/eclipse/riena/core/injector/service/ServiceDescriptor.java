@@ -56,20 +56,35 @@ import org.eclipse.core.runtime.Assert;
  */
 public class ServiceDescriptor {
 
-	private String clazz;
+	private final String className;
+	private final Class<?> clazz;
 	private boolean ranking;
 	private String filter;
 
 	/**
 	 * Create a service descriptor.
 	 * 
+	 * @param className
 	 * @throws some_kind_of_unchecked_exception
 	 *             if service descriptor is null.
-	 * @param clazz
 	 */
-	public ServiceDescriptor(final String clazz) {
+	public ServiceDescriptor(final String className) {
+		Assert.isNotNull(className, "Service className must not be null."); //$NON-NLS-1$
+		this.className = className;
+		this.clazz = null;
+	}
+
+	/**
+	 * Create a service descriptor.
+	 * 
+	 * @param clazz
+	 * @throws some_kind_of_unchecked_exception
+	 *             if service descriptor is null.
+	 */
+	public ServiceDescriptor(final Class<?> clazz) {
 		Assert.isNotNull(clazz, "Service clazz must not be null."); //$NON-NLS-1$
 		this.clazz = clazz;
+		this.className = null;
 	}
 
 	/**
@@ -114,16 +129,14 @@ public class ServiceDescriptor {
 		return ranking ? new RankingInjector(this, target) : new FilterInjector(this, target);
 	}
 
-	/**
-	 * @return
-	 */
-	String getServiceClazz() {
+	String getServiceClassName() {
+		return className == null ? clazz.getName() : className;
+	}
+
+	Class<?> getServiceClass() {
 		return clazz;
 	}
 
-	/**
-	 * @return the filter
-	 */
 	String getFilter() {
 		return filter;
 	}

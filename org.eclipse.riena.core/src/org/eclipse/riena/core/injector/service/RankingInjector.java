@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,38 +19,22 @@ public class RankingInjector extends ServiceInjector {
 
 	private ServiceReference trackedServiceRef = null;
 
-	/**
-	 * @param serviceId
-	 * @param target
-	 */
 	RankingInjector(final ServiceDescriptor serviceId, final Object target) {
 		super(serviceId, target);
 	}
 
-	/*
-	 * @see org.eclipse.riena.core.service.ServiceInjector#doStart()
-	 */
 	@Override
 	protected void doStart() {
 		final ServiceReference serviceRef = getCurrentHighest();
-		registerServiceListener();
 		doBind(serviceRef);
 	}
 
-	/*
-	 * @see org.eclipse.riena.core.service.ServiceInjector#doStop()
-	 */
 	@Override
 	protected void doStop() {
 		invokeUnbindMethod(trackedServiceRef);
 		trackedServiceRef = null;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.riena.core.service.ServiceInjector#bind(org.osgi.framework
-	 * .ServiceReference)
-	 */
 	@Override
 	protected void doBind(final ServiceReference serviceRef) {
 		if (serviceRef == null) {
@@ -65,11 +49,6 @@ public class RankingInjector extends ServiceInjector {
 		trackedServiceRef = serviceRef;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.riena.core.service.ServiceInjector#unbind(org.osgi.framework
-	 * .ServiceReference)
-	 */
 	@Override
 	protected void doUnbind(final ServiceReference serviceRef) {
 		if (serviceRef == null) {
@@ -88,18 +67,11 @@ public class RankingInjector extends ServiceInjector {
 		trackedServiceRef = highest;
 	}
 
-	/**
-	 * @return
-	 */
 	private ServiceReference getCurrentHighest() {
 		final ServiceReference[] serviceRefs = getServiceReferences();
 		return highestServiceRef(serviceRefs);
 	}
 
-	/**
-	 * @param serviceRefs
-	 * @return
-	 */
 	private static ServiceReference highestServiceRef(final ServiceReference[] serviceRefs) {
 		if (serviceRefs == null || serviceRefs.length == 0) {
 			return null;
