@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.uiprocess;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
@@ -25,6 +31,10 @@ import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
  * 
  */
 public class SwtUISynchronizer implements IUISynchronizer {
+
+	private List<FutureSyncLatch> syncJobs = Collections.synchronizedList(new ArrayList<FutureSyncLatch>());
+	private List<Runnable> asyncJobs = Collections.synchronizedList(new ArrayList<Runnable>());
+	private static Thread displayObserver;
 
 	/**
 	 * @see IUISynchronizer#syncExec(Runnable)
@@ -52,23 +62,98 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		if (executeOnDisplay(executor, runnable, display)) {
 			return;
 		}
-		getLogger()
-				.log(
-						LogService.LOG_DEBUG,
-						"Platform display not available for execution. " + display != null ? " Display is disposed" : " Display is null"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		if (Display.getDefault() != display) {
-			if (executeOnDisplay(executor, runnable, Display.getDefault())) {
-				return;
+		if (display == null || getDisplay().isDisposed()) {
+			if (isSyncExecutor(executor)) {
+				waitForDisplayInitialisation(runnable);
+			} else {
+				queueRunnable(executor, runnable);
 			}
+
 		}
 
-		getLogger()
-				.log(
-						LogService.LOG_DEBUG,
-						"Default display not available for execution. " + display != null ? " Display is disposed" : " Display is null"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	}
 
-		getLogger().log(LogService.LOG_ERROR, "Could not obtain display for runnable"); //$NON-NLS-1$
+	private synchronized void startObserver() {
+		if (displayObserver == null) {
+			displayObserver = new DisplayObserver();
+			displayObserver.start();
+		}
+	}
+
+	private synchronized void queueRunnable(Executor executor, Runnable runnable) {
+		asyncJobs.add(runnable);
+		startObserver();
+	}
+
+	private class DisplayObserver extends Thread {
+
+		@Override
+		public void run() {
+
+			while (getDisplay() == null || getDisplay().isDisposed()) {
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					getLogger().log(LogService.LOG_ERROR, e.getMessage());
+				}
+			}
+
+			synchronized (SwtUISynchronizer.this) {
+
+				// notify job waiters (syncExec)
+				Iterator<FutureSyncLatch> syncIter = syncJobs.iterator();
+				while (syncIter.hasNext()) {
+					SwtUISynchronizer.FutureSyncLatch futureSyncLatch = (SwtUISynchronizer.FutureSyncLatch) syncIter
+							.next();
+					futureSyncLatch.countDown();
+					syncIter.remove();
+				}
+
+				// execute jobs (asyncExec)
+				Iterator<Runnable> asyncIter = asyncJobs.iterator();
+				while (asyncIter.hasNext()) {
+					new ASyncExecutor().execute(getDisplay(), (Runnable) asyncIter.next());
+					asyncIter.remove();
+
+				}
+				displayObserver = null;
+			}
+
+		}
+	}
+
+	private void waitForDisplayInitialisation(Runnable job) {
+		FutureSyncLatch latch = new FutureSyncLatch(1, job);
+		synchronized (this) {
+			syncJobs.add(latch);
+		}
+		startObserver();
+		try {
+			latch.await();
+		} catch (InterruptedException e) {
+			getLogger().log(LogService.LOG_ERROR, e.getMessage());
+		}
+	}
+
+	private boolean isSyncExecutor(Executor executor) {
+		return executor instanceof SyncExecutor;
+	}
+
+	private class FutureSyncLatch extends CountDownLatch {
+
+		private Runnable job;
+
+		public FutureSyncLatch(int count, Runnable job) {
+			super(count);
+			this.job = job;
+		}
+
+		@Override
+		public void await() throws InterruptedException {
+			super.await();
+			new SyncExecutor().execute(getDisplay(), job);
+		}
 
 	}
 
@@ -102,8 +187,11 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	 *            time out in ms (positive)
 	 */
 	private void waitForDisplay(int timeoutMs) {
+
 		Assert.isTrue(timeoutMs >= 0);
+
 		int time = 0;
+
 		do {
 			try {
 				Thread.sleep(500);
