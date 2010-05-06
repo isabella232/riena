@@ -32,8 +32,8 @@ import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
  */
 public class SwtUISynchronizer implements IUISynchronizer {
 
-	private List<FutureSyncLatch> syncJobs = Collections.synchronizedList(new ArrayList<FutureSyncLatch>());
-	private List<Runnable> asyncJobs = Collections.synchronizedList(new ArrayList<Runnable>());
+	private static List<FutureSyncLatch> syncJobs = Collections.synchronizedList(new ArrayList<FutureSyncLatch>());
+	private static List<Runnable> asyncJobs = Collections.synchronizedList(new ArrayList<Runnable>());
 	private static Thread displayObserver;
 
 	/**
@@ -74,15 +74,19 @@ public class SwtUISynchronizer implements IUISynchronizer {
 
 	}
 
-	private synchronized void startObserver() {
-		if (displayObserver == null) {
-			displayObserver = new DisplayObserver();
-			displayObserver.start();
+	private void startObserver() {
+		synchronized (SwtUISynchronizer.class) {
+			if (displayObserver == null) {
+				displayObserver = new DisplayObserver();
+				displayObserver.start();
+			}
 		}
 	}
 
-	private synchronized void queueRunnable(Executor executor, Runnable runnable) {
-		asyncJobs.add(runnable);
+	private void queueRunnable(Executor executor, Runnable runnable) {
+		synchronized (SwtUISynchronizer.class) {
+			asyncJobs.add(runnable);
+		}
 		startObserver();
 	}
 
@@ -99,7 +103,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 				}
 			}
 
-			synchronized (SwtUISynchronizer.this) {
+			synchronized (SwtUISynchronizer.class) {
 
 				// notify job waiters (syncExec)
 				Iterator<FutureSyncLatch> syncIter = syncJobs.iterator();
@@ -125,7 +129,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 
 	private void waitForDisplayInitialisation(Runnable job) {
 		FutureSyncLatch latch = new FutureSyncLatch(1, job);
-		synchronized (this) {
+		synchronized (SwtUISynchronizer.class) {
 			syncJobs.add(latch);
 		}
 		startObserver();
