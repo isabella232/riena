@@ -36,7 +36,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	private static List<FutureSyncLatch> syncJobs = Collections.synchronizedList(new ArrayList<FutureSyncLatch>());
 	private static List<Runnable> asyncJobs = Collections.synchronizedList(new ArrayList<Runnable>());
 	private static Thread displayObserver;
-	public static AtomicBoolean workbenchShutdown = new AtomicBoolean(false);
+	private static AtomicBoolean workbenchShutdown = new AtomicBoolean(false);
 
 	/**
 	 * @see IUISynchronizer#syncExec(Runnable)
@@ -57,7 +57,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	 * a display available.
 	 */
 	private void execute(Executor executor, Runnable runnable) {
-		if (workbenchShutdown.get()) {
+		if (isWorkbenchShutdown()) {
 			return;
 		}
 		if (!hasDisplay()) {
@@ -123,7 +123,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 				Iterator<Runnable> asyncIter = asyncJobs.iterator();
 				while (asyncIter.hasNext()) {
 					Runnable next = (Runnable) asyncIter.next();
-					if (!workbenchShutdown.get()) {
+					if (!isWorkbenchShutdown()) {
 						new ASyncExecutor().execute(getDisplay(), next);
 					}
 					asyncIter.remove();
@@ -165,7 +165,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		@Override
 		public void await() throws InterruptedException {
 			super.await();
-			if (!workbenchShutdown.get()) {
+			if (!isWorkbenchShutdown()) {
 				new SyncExecutor().execute(getDisplay(), job);
 			}
 		}
@@ -231,5 +231,20 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		public void execute(Display display, Runnable runnable) {
 			display.asyncExec(runnable);
 		}
+	}
+
+	/**
+	 * @return if true if the workbench has been shutdown
+	 */
+	public static boolean isWorkbenchShutdown() {
+		return workbenchShutdown.get();
+	}
+
+	/**
+	 * @param workbenchShutdown
+	 *            the workbenchShutdown to set
+	 */
+	public static void setWorkbenchShutdown(boolean workbenchShutdown) {
+		SwtUISynchronizer.workbenchShutdown.set(workbenchShutdown);
 	}
 }

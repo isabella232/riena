@@ -91,7 +91,7 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 		if (result) {
 			controller.getNavigationNode().dispose();
 		}
-		SwtUISynchronizer.workbenchShutdown.set(true);
+		SwtUISynchronizer.setWorkbenchShutdown(true);
 		return result;
 	}
 
