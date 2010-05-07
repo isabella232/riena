@@ -29,15 +29,15 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
  */
 public class CorrespondingLabelMapper {
 	private final IRidgetContainer ridgetContainer;
-	private String labelPrefix = "label"; //$NON-NLS-1$
-	private ILabelFinderStrategy labelFinderStrategy;
+	private static String labelPrefix = "label"; //$NON-NLS-1$
+	private static ILabelFinderStrategy labelFinderStrategy = new DefaultLabelFinderStrategy();
 
 	// private Logger logger = Log4r.getLogger(Activator.getDefault(), CorrespondingLabelMapper.class);
 
 	public CorrespondingLabelMapper(IRidgetContainer ridgetContainer) {
 		super();
 		this.ridgetContainer = ridgetContainer;
-		this.labelFinderStrategy = new DefaultLabelFinderStrategy();
+		//		this.labelFinderStrategy = new DefaultLabelFinderStrategy();
 	}
 
 	/**
@@ -46,23 +46,25 @@ public class CorrespondingLabelMapper {
 	 * @param labelProperties
 	 */
 	@InjectExtension(min = 0, max = 1)
-	public void setCorrespondingLabelConfig(ICorrespondingLabelExtension labelProperties) {
+	public static void setCorrespondingLabelConfig(ICorrespondingLabelExtension labelProperties) {
+		// Note: this static method uses the extension injector's "onceOnly" feature!
 		if (null != labelProperties) {
 			if (null != labelProperties.getLabelPrefix()) {
 				labelPrefix = labelProperties.getLabelPrefix();
-				// logger.log(LogService.LOG_INFO, "Using extensionpoint labelPrefix: " + labelPrefix); //$NON-NLS-1$
+				// logger.log(LogService.LOG_INFO, "Using extension point labelPrefix: " + labelPrefix); //$NON-NLS-1$
 			}
 		}
 	}
 
 	@InjectExtension(min = 0, max = 1)
-	public void setLabelFinderStrategy(ILabelFinderStrategyExtension strategyProperties) {
-		// logger.log(LogService.LOG_INFO, "Using extensionpoint labelFinderStrategy: " + strategyProperties); //$NON-NLS-1$
+	public static void setLabelFinderStrategy(ILabelFinderStrategyExtension strategyProperties) {
+		// Note: this static method uses the extension injector's "onceOnly" feature!
+		// logger.log(LogService.LOG_INFO, "Using extension point labelFinderStrategy: " + strategyProperties); //$NON-NLS-1$
 
 		if (null != strategyProperties) {
 			ILabelFinderStrategy customLabelFinderStrategy = strategyProperties.createFinderStrategy();
 			if (null != customLabelFinderStrategy) {
-				this.labelFinderStrategy = customLabelFinderStrategy;
+				labelFinderStrategy = customLabelFinderStrategy;
 				return;
 			}
 		}
@@ -96,7 +98,7 @@ public class CorrespondingLabelMapper {
 		return true;
 	}
 
-	private class DefaultLabelFinderStrategy implements ILabelFinderStrategy {
+	private static class DefaultLabelFinderStrategy implements ILabelFinderStrategy {
 		public ILabelRidget findLabelRidget(final IRidgetContainer iridgetContainer, String ridgetID) {
 			String labelID = labelPrefix + ridgetID;
 			IRidget labelRidget = iridgetContainer.getRidget(labelID);
