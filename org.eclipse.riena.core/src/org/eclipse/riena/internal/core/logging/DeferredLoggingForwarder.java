@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,8 +32,9 @@ public class DeferredLoggingForwarder extends Thread {
 	 * @param loggerProvider
 	 * @param queue
 	 */
-	public DeferredLoggingForwarder(final LoggerProvider loggerProvider, BlockingQueue<DeferredLogEvent> queue) {
+	public DeferredLoggingForwarder(final LoggerProvider loggerProvider, final BlockingQueue<DeferredLogEvent> queue) {
 		super("DeferredLoggingForwarder"); //$NON-NLS-1$
+		setDaemon(true);
 		this.loggerProvider = loggerProvider;
 		this.queue = queue;
 	}
@@ -44,7 +45,7 @@ public class DeferredLoggingForwarder extends Thread {
 			DeferredLogEvent logEvent = null;
 			try {
 				logEvent = queue.take();
-			} catch (InterruptedException e1) {
+			} catch (final InterruptedException e1) {
 				Thread.currentThread().interrupt();
 				break;
 			}
@@ -52,15 +53,15 @@ public class DeferredLoggingForwarder extends Thread {
 			while (!loggerProvider.hasReadyLoggerMill()) {
 				try {
 					Thread.sleep(10);
-				} catch (InterruptedException e) {
+				} catch (final InterruptedException e) {
 					Thread.currentThread().interrupt();
 					break;
 				}
 			}
 			try {
-				Logger logger = Log4r.getLogger(Activator.getDefault(), logEvent.getLoggerName());
+				final Logger logger = Log4r.getLogger(Activator.getDefault(), logEvent.getLoggerName());
 				logger.log(logEvent.getLevel(), logEvent.toString());
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				new ConsoleLogger(DeferredLoggingForwarder.class.getName()).log(LogService.LOG_ERROR,
 						"Could not deliver defered log message.", e); //$NON-NLS-1$
 			}
