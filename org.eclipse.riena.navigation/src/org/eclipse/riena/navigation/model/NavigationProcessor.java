@@ -378,13 +378,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 */
 	private void notifyNodeWithSuccessors(INavigationNode<?> node, JumpTargetState enabled) {
 		fireJumpTargetStateChanged(node, enabled);
-
 		if (!(node instanceof ModuleNode)) {
 			return;
 		}
 		//Only notify direct children
 		for (INavigationNode<?> child : node.getChildren()) {
-			fireJumpTargetStateChanged(child, enabled);
+			notifyDeep(child, enabled);
 		}
 	}
 
@@ -447,8 +446,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	public void jumpBack(INavigationNode<?> sourceNode) {
 		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(sourceNode);
 		if (sourceStack == null) {
-			if (sourceNode.getParent() instanceof ModuleNode) {
-				sourceNode.getParent().jumpBack();
+			ModuleNode module = sourceNode.getParentOfType(ModuleNode.class);
+			if (module != null) {
+				module.jumpBack();
 				return;
 			}
 		}
