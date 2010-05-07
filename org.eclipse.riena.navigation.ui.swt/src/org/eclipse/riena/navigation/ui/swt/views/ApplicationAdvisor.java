@@ -34,6 +34,7 @@ import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentationFactory;
 import org.eclipse.riena.ui.swt.facades.BindingServiceFacade;
+import org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer;
 
 public class ApplicationAdvisor extends WorkbenchAdvisor {
 
@@ -90,7 +91,7 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 		if (result) {
 			controller.getNavigationNode().dispose();
 		}
-
+		SwtUISynchronizer.workbenchShutdown.set(true);
 		return result;
 	}
 

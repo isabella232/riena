@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.osgi.service.log.LogService;
 
@@ -35,6 +36,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	private static List<FutureSyncLatch> syncJobs = Collections.synchronizedList(new ArrayList<FutureSyncLatch>());
 	private static List<Runnable> asyncJobs = Collections.synchronizedList(new ArrayList<Runnable>());
 	private static Thread displayObserver;
+	public static AtomicBoolean workbenchShutdown = new AtomicBoolean(false);
 
 	/**
 	 * @see IUISynchronizer#syncExec(Runnable)
@@ -55,6 +57,9 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	 * a display available.
 	 */
 	private void execute(Executor executor, Runnable runnable) {
+		if (workbenchShutdown.get()) {
+			return;
+		}
 		if (!hasDisplay()) {
 			waitForDisplay(15000);
 		}
@@ -95,9 +100,9 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		@Override
 		public void run() {
 
-			while (getDisplay() == null || getDisplay().isDisposed()) {
+			while (PlatformUI.isWorkbenchRunning() && getDisplay() == null || getDisplay().isDisposed()) {
 				try {
-					Thread.sleep(200);
+					Thread.sleep(50);
 				} catch (InterruptedException e) {
 					getLogger().log(LogService.LOG_ERROR, e.getMessage());
 				}
@@ -117,7 +122,10 @@ public class SwtUISynchronizer implements IUISynchronizer {
 				// execute jobs (asyncExec)
 				Iterator<Runnable> asyncIter = asyncJobs.iterator();
 				while (asyncIter.hasNext()) {
-					new ASyncExecutor().execute(getDisplay(), (Runnable) asyncIter.next());
+					Runnable next = (Runnable) asyncIter.next();
+					if (!workbenchShutdown.get()) {
+						new ASyncExecutor().execute(getDisplay(), next);
+					}
 					asyncIter.remove();
 
 				}
@@ -134,6 +142,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		}
 		startObserver();
 		try {
+
 			latch.await();
 		} catch (InterruptedException e) {
 			getLogger().log(LogService.LOG_ERROR, e.getMessage());
@@ -156,7 +165,9 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		@Override
 		public void await() throws InterruptedException {
 			super.await();
-			new SyncExecutor().execute(getDisplay(), job);
+			if (!workbenchShutdown.get()) {
+				new SyncExecutor().execute(getDisplay(), job);
+			}
 		}
 
 	}
