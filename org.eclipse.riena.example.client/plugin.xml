@@ -786,7 +786,7 @@
       <assembly2
             id="org.eclipse.riena.example.navigate.demotarget"
             assembler="org.eclipse.riena.example.client.navigation.model.DemoTargetNodeAssembler"
-            parentNodeId="org.eclipse.riena.example.navigate.module">
+            parentNodeId="org.eclipse.riena.example.navigation.subapplication">
       </assembly2>
       
       <assembly2

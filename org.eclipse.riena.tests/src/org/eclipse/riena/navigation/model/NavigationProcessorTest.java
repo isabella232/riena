@@ -51,6 +51,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 	private ISubModuleNode subModule1;
 	private ISubModuleNode subModule2;
 	private ISubModuleNode subModule3;
+	private ISubModuleNode subModule4;
 
 	private ModuleGroupNode moduleGroup2;
 	private ModuleNode module2;
@@ -83,6 +84,8 @@ public class NavigationProcessorTest extends RienaTestCase {
 		module.addChild(subModule2);
 		subModule3 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule3"));
 		module.addChild(subModule3);
+		subModule4 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule4"));
+		module2.addChild(subModule4);
 	}
 
 	@Override
@@ -234,7 +237,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	}
 
-	public void testJump() throws Exception {
+	public void testDefaultJump() throws Exception {
 		DummyJumpTargetListener listener = new DummyJumpTargetListener();
 		subModule1.activate();
 		subModule2.addJumpTargetListener(listener);
@@ -266,6 +269,18 @@ public class NavigationProcessorTest extends RienaTestCase {
 		subModule2.jumpBack();
 		assertTrue(subModule3.isActivated());
 
+	}
+
+	public void testDeepJump() throws Exception {
+		subModule1.activate();
+		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.module.2"));
+		assertTrue(module2.isJumpTarget());
+		assertTrue(subModule4.isJumpTarget());
+		assertTrue(subModule4.isActivated());
+		subModule4.jumpBack();
+		assertTrue(subModule1.isActivated());
+		assertFalse(subModule4.isJumpTarget());
+		assertFalse(module2.isJumpTarget());
 	}
 
 	/**

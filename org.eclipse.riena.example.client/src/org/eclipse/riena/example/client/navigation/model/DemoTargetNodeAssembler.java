@@ -15,13 +15,18 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.example.client.controllers.DemoTargetSubModuleController;
 import org.eclipse.riena.example.client.views.DemoTargetSubModuleView;
 import org.eclipse.riena.navigation.AbstractNavigationAssembler;
+import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.model.ModuleGroupNode;
+import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
@@ -45,11 +50,21 @@ public class DemoTargetNodeAssembler extends AbstractNavigationAssembler {
 	}
 
 	public INavigationNode<?>[] buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
-		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(ID), "Target"); //$NON-NLS-1$
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId(
+				"org.eclipse.riena.example.navigate.target.moduleGroup")); //$NON-NLS-1$
+		moduleGroup.setPresentWithSingleModule(false);
+
+		IModuleNode module = new ModuleNode(new NavigationNodeId(ID), "Target Module"); //$NON-NLS-1$ //$NON-NLS-2$
+		module.setIcon(ExampleIcons.ICON_GREEN_LED);
+		moduleGroup.addChild(module);
+
+		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.navigate.target.submodule"), "Target"); //$NON-NLS-1$ //$NON-NLS-2$
 		IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule,
 				DemoTargetSubModuleController.class, DemoTargetSubModuleView.ID);
 		def.setRequiredPreparation(true);
-		return new INavigationNode<?>[] { subModule };
+		module.addChild(subModule);
+		return new INavigationNode<?>[] { moduleGroup };
 	}
 
 }

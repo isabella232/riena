@@ -186,6 +186,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		// than no other module has to be activated
 		INavigationNode<?> nodeToDispose = getNodeToDispose(toDispose);
 		if (nodeToDispose != null && !nodeToDispose.isDisposed()) {
+			unregisterJumpSource(nodeToDispose);
 			List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToDispose);
 			List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToDispose);
 			INavigationContext navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
@@ -199,7 +200,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				}
 			}
 			cleanupHistory(nodeToDispose);
-			unregisterJumpSource(nodeToDispose);
 			cleanupJumpTargetListeners(nodeToDispose);
 		}
 	}
@@ -251,9 +251,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			histBack.remove(toDispose);
 			bhc = true;
 		}
-		if (bhc) {
-			fireBackHistoryChangedEvent();
-		}
+		//		if (bhc) {
+		fireBackHistoryChangedEvent();
+		//		}
 		boolean fhc = false;
 		while (histForward.contains(toDispose)) {
 			histForward.remove(toDispose);
@@ -358,7 +358,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 		if (NavigationType.JUMP == navigationType) {
 			registerJump(sourceNode, node);
-			fireJumpTargetStateChanged(node, JumpTargetState.ENABLED);
+			notifyNodeWithSuccessors(node, JumpTargetState.ENABLED);
+
 		}
 
 		node.activate();
@@ -371,28 +372,63 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		return node;
 	}
 
+	/**
+	 * @param node
+	 * @param enabled
+	 */
+	private void notifyNodeWithSuccessors(INavigationNode<?> node, JumpTargetState enabled) {
+		fireJumpTargetStateChanged(node, enabled);
+
+		if (!(node instanceof ModuleNode)) {
+			return;
+		}
+		//Only notify direct children
+		for (INavigationNode<?> child : node.getChildren()) {
+			fireJumpTargetStateChanged(child, enabled);
+		}
+	}
+
 	private void registerJump(INavigationNode<?> source, INavigationNode<?> target) {
 		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(target);
 		if (sourceStack == null) {
 			sourceStack = new Stack<INavigationNode<?>>();
 			jumpTargets.put(target, sourceStack);
 		}
-		sourceStack.push(source);
+		if (sourceStack.size() == 0 || !sourceStack.peek().equals(source)) {
+			sourceStack.push(source);
+		}
 	}
 
 	private void unregisterJumpSource(INavigationNode<?> source) {
 		Iterator<Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>>> it = jumpTargets.entrySet().iterator();
+
 		while (it.hasNext()) {
 			Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>> entry = it.next();
 			while (entry.getValue().remove(source))
 				;
 
 			if (entry.getValue().size() == 0) {
-				fireJumpTargetStateChanged(entry.getKey(), JumpTargetState.DISABLED);
+				INavigationNode<?> node = entry.getKey();
+				notifyDeep(node, JumpTargetState.DISABLED);
 				it.remove();
 			}
 		}
 
+		for (INavigationNode<?> child : source.getChildren()) {
+			unregisterJumpSource(child);
+		}
+
+	}
+
+	/**
+	 * @param node
+	 * @param disabled
+	 */
+	private void notifyDeep(INavigationNode<?> node, JumpTargetState enabled) {
+		fireJumpTargetStateChanged(node, enabled);
+		for (INavigationNode<?> child : node.getChildren()) {
+			notifyDeep(child, enabled);
+		}
 	}
 
 	/**
@@ -410,13 +446,19 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 */
 	public void jumpBack(INavigationNode<?> sourceNode) {
 		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(sourceNode);
+		if (sourceStack == null) {
+			if (sourceNode.getParent() instanceof ModuleNode) {
+				sourceNode.getParent().jumpBack();
+				return;
+			}
+		}
 		if (sourceStack != null) {
 			if (sourceStack.size() > 0) {
 				INavigationNode<?> backTarget = sourceStack.pop();
 				backTarget.activate();
 			}
 			jumpTargets.remove(sourceNode);
-			fireJumpTargetStateChanged(sourceNode, JumpTargetState.DISABLED);
+			notifyNodeWithSuccessors(sourceNode, JumpTargetState.DISABLED);
 		}
 	}
 
@@ -426,7 +468,14 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 */
 	public boolean isJumpTarget(INavigationNode<?> node) {
 		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(node);
-		return sourceStack != null && sourceStack.size() > 0;
+		if (sourceStack != null && sourceStack.size() > 0) {
+			return true;
+		}
+		INavigationNode<?> parent = node.getParent();
+		if (node instanceof SubModuleNode && parent instanceof ModuleNode) {
+			return isJumpTarget(node.getParent());
+		}
+		return false;
 	}
 
 	/**
@@ -461,6 +510,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	private void cleanupJumpTargetListeners(INavigationNode<?> node) {
 		jumpTargetListeners.remove(node);
+		for (INavigationNode<?> child : node.getChildren()) {
+			cleanupJumpTargetListeners(child);
+		}
 	}
 
 	private void fireJumpTargetStateChanged(INavigationNode<?> node, JumpTargetState jumpTargetState) {
