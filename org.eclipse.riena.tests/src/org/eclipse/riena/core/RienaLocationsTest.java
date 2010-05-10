@@ -28,13 +28,14 @@ public class RienaLocationsTest extends TestCase {
 	public void testGetDataArea() {
 		File dataArea = RienaLocations.getDataArea();
 		assertTrue(dataArea.isDirectory());
-		assertEquals(new File(Platform.getInstallLocation().getURL().getFile(), RienaLocations.RIENA_NAME), dataArea);
+		File expected = new File(Platform.getInstanceLocation().getURL().getFile(), RienaLocations.RIENA_NAME);
+		assertEquals(expected, dataArea);
 	}
 
 	public void testGetDataAreaForBundle() {
 		File dataArea = RienaLocations.getDataArea(Activator.getDefault().getBundle());
 		assertTrue(dataArea.isDirectory());
-		assertEquals(new File(new File(Platform.getInstallLocation().getURL().getFile(), RienaLocations.RIENA_NAME),
+		assertEquals(new File(new File(Platform.getInstanceLocation().getURL().getFile(), RienaLocations.RIENA_NAME),
 				Activator.getDefault().getBundle().getSymbolicName()), dataArea);
 	}
 }
