@@ -67,6 +67,8 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
+
 		IRidgetContainer ridgetContainer = new StubRidgetContainer();
 
 		shell = new Shell();
@@ -100,6 +102,9 @@ public class CorrespondingLabelManagerTest extends TestCase {
 		ridgetContainer.addRidget(AGE_LABEL_ID, lblAge);
 		ridgetContainer.addRidget(AGE_TEXT_ID, txtAge);
 
+		CorrespondingLabelMapper.setCorrespondingLabelConfig(null);
+		CorrespondingLabelMapper.setLabelFinderStrategy(null);
+
 		labelMapper = new CorrespondingLabelMapper(ridgetContainer);
 	}
 
@@ -114,6 +119,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 			shell.dispose();
 			shell = null;
 		}
+		super.tearDown();
 	}
 
 	public void testConnectCorrespondingLabel() throws Exception {
@@ -139,7 +145,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	public void testCustomLabelFinderStrategy() throws Exception {
 		lblDummyFinder = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "Dummy",
 				SWT.BORDER, LASTNAME_TEXT_ID));
-		labelMapper.setLabelFinderStrategy(new StubLabelFinderStrategyProperties());
+		CorrespondingLabelMapper.setLabelFinderStrategy(new StubLabelFinderStrategyProperties());
 
 		boolean foundLabel = labelMapper.connectCorrespondingLabel(txtLastName, LASTNAME_TEXT_ID);
 		assertTrue(foundLabel);
@@ -157,7 +163,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	}
 
 	public void testCustomLabelPrefix() throws Exception {
-		labelMapper.setCorrespondingLabelConfig(new ICorrespondingLabelExtension() {
+		CorrespondingLabelMapper.setCorrespondingLabelConfig(new ICorrespondingLabelExtension() {
 			public String getLabelPrefix() {
 				return "foo";
 			}
