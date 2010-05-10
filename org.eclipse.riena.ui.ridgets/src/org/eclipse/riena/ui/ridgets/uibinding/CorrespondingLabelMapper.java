@@ -28,16 +28,19 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
  * 
  */
 public class CorrespondingLabelMapper {
+	private static final String DEFAULT_LABEL_PREFIX = "label"; //$NON-NLS-1$
+	private static final ILabelFinderStrategy DEFAULT_LABEL_FINDER_STRATEGY = new DefaultLabelFinderStrategy();
+
 	private final IRidgetContainer ridgetContainer;
-	private static String labelPrefix = "label"; //$NON-NLS-1$
-	private static ILabelFinderStrategy labelFinderStrategy = new DefaultLabelFinderStrategy();
+
+	private static String labelPrefix = DEFAULT_LABEL_PREFIX;
+	private static ILabelFinderStrategy labelFinderStrategy = DEFAULT_LABEL_FINDER_STRATEGY;
 
 	// private Logger logger = Log4r.getLogger(Activator.getDefault(), CorrespondingLabelMapper.class);
 
 	public CorrespondingLabelMapper(IRidgetContainer ridgetContainer) {
 		super();
 		this.ridgetContainer = ridgetContainer;
-		//		this.labelFinderStrategy = new DefaultLabelFinderStrategy();
 	}
 
 	/**
@@ -52,8 +55,10 @@ public class CorrespondingLabelMapper {
 			if (null != labelProperties.getLabelPrefix()) {
 				labelPrefix = labelProperties.getLabelPrefix();
 				// logger.log(LogService.LOG_INFO, "Using extension point labelPrefix: " + labelPrefix); //$NON-NLS-1$
+				return;
 			}
 		}
+		labelPrefix = DEFAULT_LABEL_PREFIX;
 	}
 
 	@InjectExtension(min = 0, max = 1)
@@ -68,7 +73,7 @@ public class CorrespondingLabelMapper {
 				return;
 			}
 		}
-		labelFinderStrategy = new DefaultLabelFinderStrategy();
+		labelFinderStrategy = DEFAULT_LABEL_FINDER_STRATEGY;
 	}
 
 	/**
@@ -99,9 +104,9 @@ public class CorrespondingLabelMapper {
 	}
 
 	private static class DefaultLabelFinderStrategy implements ILabelFinderStrategy {
-		public ILabelRidget findLabelRidget(final IRidgetContainer iridgetContainer, String ridgetID) {
-			String labelID = labelPrefix + ridgetID;
-			IRidget labelRidget = iridgetContainer.getRidget(labelID);
+		public ILabelRidget findLabelRidget(final IRidgetContainer iridgetContainer, final String ridgetID) {
+			final String labelID = labelPrefix + ridgetID;
+			final IRidget labelRidget = iridgetContainer.getRidget(labelID);
 			if (null != labelRidget && labelRidget instanceof ILabelRidget) {
 				return (ILabelRidget) labelRidget;
 			}
