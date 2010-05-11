@@ -15,38 +15,47 @@ import java.util.Set;
 
 /**
  * The ObjectTransaction contains all the information about registered objects,
- * changed properties. Existing Instances can be RootTransactions or
- * SubObjectTransactions. SubObjectTransactions transfer their changes to the
- * next higher level, if they are committed. RootTransactions cannot be
- * committed but rather have to be passed on to the Persistant Layer which will
- * read out the recorded changes. It is possible to have more than one
- * RootTransaction. Only the currently activated ObjectTransaction will record
- * changes in the ITransactedObjects.
+ * changed properties and relationships to other registered objects.
+ * Relationships can be 1:1 relationships and 1:n relationships.
+ * 
+ * Instances can be RootTransactions or SubObjectTransactions.
+ * SubObjectTransactions transfer their changes to the next higher level, if
+ * they are committed.
+ * 
+ * RootTransactions cannot be committed but rather have to be passed on to the
+ * Persistent Layer which will read out the recorded changes. It is possible to
+ * have more than one RootTransaction. Only the currently activated
+ * ObjectTransaction will record changes in the ITransactedObjects.
  * 
  */
 public interface IObjectTransaction {
 
 	/**
-	 * register an ITransactedObject as CLEAN and not modified object
+	 * Registers an ITransactedObject as CLEAN and not modified object
 	 * 
 	 * @param object
 	 *            transactedobject that should be registered
+	 * 
 	 * @pre !isInvalid() && object!=null && ((object.getObjectId()!=null &&
 	 *      !isRegistered(object)) || object.getObjectId()==null)
 	 */
 	void register(ITransactedObject object);
 
 	/**
+	 * Registers an ITransactedObject as a NEW object
 	 * 
 	 * @param object
+	 *            transactedobject that should be registered
+	 * 
 	 * @pre !isInvalid() && object!=null && object.getObjectId()!=null &&
 	 *      !isRegistered(object)
 	 */
 	void registerNew(ITransactedObject object);
 
 	/**
-	 * register an ITransactedObject in the ObjectTransaction as being deleted,
-	 * requires that the object exists on the database.
+	 * Register an ITransactedObject in the ObjectTransaction as being deleted,
+	 * requires that the object was already registered in the ObjectTransaction.
+	 * A call to registerAsDeleted modifies its state to "toBeDeleted".
 	 * 
 	 * @param object
 	 *            transactedobject that was deleted
@@ -56,12 +65,13 @@ public interface IObjectTransaction {
 
 	/**
 	 * Is the transacted Object in the parameter already registered in this
-	 * object transaction ? This method also checks out transactions. So if this
-	 * is a subtransaction and the transactedobject was registered in the
-	 * rootTransactions, it returns true.
+	 * object transaction ? This method also checks out parent transactions. So
+	 * if this is a subtransaction and the transactedobject was registered in
+	 * the rootTransactions, it returns true.
 	 * 
 	 * @param object
-	 *            transactedobject that must be checked
+	 *            transactedobject that should be checked
+	 * 
 	 * @return true if registered
 	 * @pre !isInvalid() && object!=null && object.getObjectId()!=null
 	 */
@@ -109,7 +119,8 @@ public interface IObjectTransaction {
 	/**
 	 * Imports a previously exported extract. It requires that all transacted
 	 * object in the extract were previously loaded (somehow) and registered
-	 * with this ObjectTransaction.
+	 * with this ObjectTransaction. If that was not done an
+	 * InvalidTransactionFailure is thrown.
 	 * 
 	 * @param extract
 	 * @pre !isInvalid() && !isCleanModus() && isRootTransaction()
@@ -137,7 +148,8 @@ public interface IObjectTransaction {
 	void setCleanModus(boolean cleanModus);
 
 	/**
-	 * is the CleanModus flag set to "true" ? then return "true" here
+	 * is the CleanModus flag set to "true" ? then return "true" here In
+	 * CleanModus="true", changes to registered objects are not tracked.
 	 * 
 	 * @return value of the cleanModus flag
 	 */
@@ -151,7 +163,7 @@ public interface IObjectTransaction {
 	void setStrictModus(boolean strictModus);
 
 	/**
-	 * if strict modus is true, every object must be registered even in clean
+	 * If strict modus is true, every object must be registered even in clean
 	 * modus that means that even if you use an object without a
 	 * objectTransaction, you have to register an object. If false, only when
 	 * cleanmodus is false, must object be registered before use.
@@ -181,8 +193,8 @@ public interface IObjectTransaction {
 	 *            old value of the reference
 	 * @param refValue
 	 *            value that was set for the reference
-	 * @pre object!=null && object.getObjectId()!=null && isRegistered(object) &&
-	 *      !(refValue instanceof ITransactedObject)
+	 * @pre object!=null && object.getObjectId()!=null && isRegistered(object)
+	 *      && !(refValue instanceof ITransactedObject)
 	 */
 	void setReference(ITransactedObject object, String referenceName, Object refValue);
 

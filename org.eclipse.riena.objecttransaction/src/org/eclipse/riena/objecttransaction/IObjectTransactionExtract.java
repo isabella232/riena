@@ -14,7 +14,14 @@ import org.eclipse.riena.objecttransaction.delta.TransactionDelta;
 
 /**
  * The interface for an extract that the ObjectTransaction imports and exports
- * and which contains the modififactions of the transactedObjects.
+ * and which contains the modifications of the transactedObjects.
+ * 
+ * The extract contains a list of transactedObjects participating in the
+ * objectTransaction and list of modification of the properties and list of
+ * changed/added/removed relations to other objects.
+ * 
+ * The extract can be retrieved as an array of TransactionDelta object that
+ * describe the changes in the ObjectTransaction.
  * 
  */
 public interface IObjectTransactionExtract {

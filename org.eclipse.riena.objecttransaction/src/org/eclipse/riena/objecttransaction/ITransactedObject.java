@@ -18,28 +18,40 @@ package org.eclipse.riena.objecttransaction;
 public interface ITransactedObject {
 
 	/**
-	 * Returns the object id of the transacted object
+	 * Returns the object id of the transacted object. This id must be universal
+	 * unique as described in IObjectId. It is used as key for hashMaps.
 	 * 
-	 * @return IObjectId
+	 * @return IObjectId of this object
 	 */
 	IObjectId getObjectId();
 
 	/**
-	 * changes the object id of the transacted object to the new object id
+	 * changes the object id of the transacted object to the new object id. If
+	 * you like to set a new objectid to an object, you should not call this
+	 * method directly but rather call @see
+	 * IObjectTransaction.setObjectIdUpdate(). This will call this method
+	 * internally but makes sure that the modification of the object id is
+	 * tracked (and exported in an extract if necessary).
 	 * 
 	 * @param objectId
+	 *            new ObjectId of this object
 	 */
 	void setObjectId(IObjectId objectId);
 
 	/**
-	 * Returns the current version of the transacted object
+	 * Returns the current version of the transacted object.
 	 * 
 	 * @return String version String
 	 */
 	String getVersion();
 
 	/**
-	 * Sets a new version string for a transacted object
+	 * Sets a new version string for a transacted object. If you like to set a
+	 * new (higher) version to an object, you should not call this method
+	 * directly but call @see IObjectTransaction.setVersion(). This will then
+	 * call this setVersion internally, but make sure that the version change is
+	 * tracked as a modification to object (and exported in an extract if
+	 * necessary).
 	 * 
 	 * @param versionString
 	 *            version String

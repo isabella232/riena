@@ -29,8 +29,8 @@ public interface IObjectTransactionFactory {
 	 * transaction passed as parameter
 	 * 
 	 * @param parentObjectTransaction
-	 * @pre parentObjectTransaction != null
 	 * @return newly create objectTransaction
+	 * @pre parentObjectTransaction != null
 	 */
 	IObjectTransaction createSubObjectTransaction(IObjectTransaction parentObjectTransaction);
 

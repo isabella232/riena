@@ -19,15 +19,16 @@ package org.eclipse.riena.objecttransaction;
  * java.lang.Object for this. - equals must be implemented to return TRUE if two
  * IObjectId are logically equal. This must also be true, if they are two
  * instances of the same object. - hashCode must work as specified in
- * java.lang.Object. However it must create the hashCode for any two objects
- * that represent logically the same Object or in other words where the equals
- * method returns TRUE.
+ * java.lang.Object. However it must create the same hashCode for any two
+ * objects that represent logically the same Object or in other words where the
+ * equals method returns TRUE.
  * 
  */
 public interface IObjectId {
 
 	/**
-	 * Returns a type for which this IObjectId is used
+	 * Must return a string that identifies the type of object that is
+	 * identified by this type of ObjectId.
 	 * 
 	 * @return
 	 */
