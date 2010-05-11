@@ -41,7 +41,6 @@ import org.eclipse.riena.ui.swt.lnf.ILnfRendererExtension;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Default Look and Feel of Riena.
@@ -50,7 +49,6 @@ public class RienaDefaultLnf {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RienaDefaultLnf.class);
 
-	private static final String DEFAULT_THEME_CLASSNAME = RienaDefaultTheme.class.getName();
 	private static final String SYSTEM_PROPERTY_LNF_SETTING_PREFIX = "riena.lnf.setting."; //$NON-NLS-1$
 	private final Map<String, ILnfResource> resourceTable = new Hashtable<String, ILnfResource>();
 	private final Map<String, Object> settingTable = new Hashtable<String, Object>();
@@ -525,34 +523,13 @@ public class RienaDefaultLnf {
 	}
 
 	/**
-	 * Loads the theme specified by the given class name.
-	 * 
-	 * @param themeClassName
-	 *            a string specifying the name of the class that implements the
-	 *            theme
-	 * @return theme
-	 * @throws ClassNotFoundException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 */
-	private static ILnfTheme createTheme(String themeClassName) {
-		try {
-			ClassLoader classLoader = LnfManager.class.getClassLoader();
-			Class<?> themeClass = classLoader.loadClass(themeClassName);
-			return (ILnfTheme) themeClass.newInstance();
-		} catch (Exception e) {
-			throw new Error("can't load theme " + themeClassName, e); //$NON-NLS-1$
-		}
-	}
-
-	/**
 	 * Returns the current theme of the Look and Feel.
 	 * 
 	 * @return theme
 	 */
 	public ILnfTheme getTheme() {
 		if (theme == null) {
-			theme = createTheme(DEFAULT_THEME_CLASSNAME);
+			theme = new RienaDefaultTheme();
 		}
 		if (!isInitialized()) {
 			initialize();
