@@ -11,14 +11,20 @@
 package org.eclipse.riena.objecttransaction.context;
 
 /**
- * Interface marking object beeing deliverers of a Context
+ * All objects that are implementing this interface can hold an IContext
  * 
  */
-public interface IContextProvider {
+public interface IContextHolder {
 
 	/**
-	 * @return the context of this UIRepresentation.
+	 * @return the context that is set in this contextHolder
 	 */
 	IContext getContext();
+
+	/**
+	 * @param context
+	 *            The context to be set in the contextHolder
+	 */
+	void setContext(IContext context);
 
 }

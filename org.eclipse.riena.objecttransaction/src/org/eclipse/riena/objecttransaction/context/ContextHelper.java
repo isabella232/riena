@@ -46,9 +46,9 @@ public final class ContextHelper {
 	}
 
 	/**
-	 * Ascertains the right context to set to a Context carrier. Possibly the
-	 * setted context has to be activated, dependent on the state of the old
-	 * context. This shuld be then done on this central place
+	 * Makes sure the right context to set to a Context Holder. Possibly the set
+	 * context has to be activated, dependent on the state of the old context.
+	 * This should be then done on this central place
 	 * 
 	 * @param pContext
 	 *            context

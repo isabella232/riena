@@ -13,8 +13,8 @@ package org.eclipse.riena.objecttransaction.context;
 import org.eclipse.riena.core.exception.Failure;
 
 /**
- * This failure signifies a fatal error on the management of the context.
- * 
+ * This failure is thrown if a fatal error on the management of the context
+ * happens.
  */
 
 public class ContextFailure extends Failure {

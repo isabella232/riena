@@ -18,32 +18,29 @@ import org.eclipse.riena.objecttransaction.ObjectTransactionManager;
 /**
  * This class describes an object Transaction Context, which can be passed to
  * different places in the application to work on. At one time can only one
- * Instace of a Transaction be activated, to check this. The TransactionContext
- * must always be activated and deactivated! If any other transaction is
+ * Instance of a Transaction be activated, to check this. The TransactionContext
+ * must always be activated and passivated! If any other transaction is
  * activated on the same thread, when calling activated on this context, the
  * context throws an exception! The object transaction context implies, that
- * activate and passivate on it are always called in pairs!! the calls to
+ * activate and passivate on it are always called in pairs!! The calls to
  * activate an passivate build a stack! The Transaction is only than set to null
  * if the call stack is 0;
  * 
  */
 public class ObjectTransactionContext implements IObjectTransactionContext {
 
-	// private static final ILogger LOGGER = LoggerAccessor.fetchLogger(
-	// ObjectTransactionContext.class );
-
 	private Stack<IObjectTransaction> replaced = new Stack<IObjectTransaction>();
 	private IObjectTransaction objectTransaction;
 
 	/**
-	 * Creates a new ObjectTransactionContext on the passe object transaction
+	 * Creates a new ObjectTransactionContext on the passed object transaction
 	 */
 	public ObjectTransactionContext() {
 		super();
 	}
 
 	/**
-	 * Creates a new ObjectTransactionContext on the passe object transaction
+	 * Creates a new ObjectTransactionContext on the passed object transaction
 	 * 
 	 * @param transaction
 	 *            the Transaction to activate
@@ -53,8 +50,10 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 		objectTransaction = transaction;
 	}
 
-	/**
-	 * Activates the contained Transaction
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.objecttransaction.context.IContext#activate()
 	 */
 	public void activate() {
 		replaced.push(ObjectTransactionManager.getInstance().getCurrent());
@@ -63,8 +62,8 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 
 	/**
 	 * Passivates the contained transaction. Every activate() must follow a
-	 * deactivate() bevore the next activate on the same thread follows. The
-	 * deactivation is necessary to oversee the transaction management.
+	 * passivate() before the next activate on the same thread follows. The
+	 * passivation is necessary to oversee the transaction management.
 	 */
 	public void passivate() {
 		if (isActivated()) {
@@ -75,16 +74,24 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 
 	}
 
-	/**
-	 * @return the objectTransaction.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.objecttransaction.context.IObjectTransactionContext
+	 * #getObjectTransaction()
 	 */
 	public IObjectTransaction getObjectTransaction() {
 		return objectTransaction;
 	}
 
-	/**
-	 * @param objectTransaction
-	 *            The objectTransaction to set.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.objecttransaction.context.IObjectTransactionContext
+	 * #setObjectTransaction
+	 * (org.eclipse.riena.objecttransaction.IObjectTransaction)
 	 */
 	public void setObjectTransaction(IObjectTransaction pObjectTransaction) {
 		this.objectTransaction = pObjectTransaction;
@@ -93,7 +100,9 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 		}
 	}
 
-	/**
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.riena.objecttransaction.context.IContext#isActivated()
 	 */
 	public boolean isActivated() {

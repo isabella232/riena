@@ -11,23 +11,24 @@
 package org.eclipse.riena.objecttransaction.context;
 
 /**
- * Any action can/must be done in a context of something else. This interface
- * desribes a hook beening submitted to different places in the application
- * which must work in a context. A context mus be able to manage a replace of
- * another context, or build a context stack, when passivated than set the old
- * from the stact back.
+ * The interface IContext defines hook methods that are invoked to set a context
+ * before an action is invoked. Contexts can be activated and passivated and
+ * tested if they are active. The IContext is used for ObjectTransaction in
+ * 
+ * @see IObjectTransactionContext where an objectTransaction is activated before
+ *      a business method is called on an object.
  * 
  */
 
 public interface IContext {
 
 	/**
-	 * Activates the related context
+	 * Activates the context instance
 	 */
 	void activate();
 
 	/**
-	 * Passivate the related context
+	 * Passivates the context instance
 	 */
 	void passivate();
 

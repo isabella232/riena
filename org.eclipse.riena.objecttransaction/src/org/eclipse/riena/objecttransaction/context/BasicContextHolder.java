@@ -11,11 +11,11 @@
 package org.eclipse.riena.objecttransaction.context;
 
 /**
- * A standard-implementation of the IContextCarrier, which, can be used to proxy
- * objects not beeing a context carrier!
+ * A standard-implementation of the IContextHolder, which, can be used to proxy
+ * objects not being a contextHolder!
  * 
  */
-public class BasicContextCarrier implements IContextCarrier {
+public class BasicContextHolder implements IContextHolder {
 
 	private IContext context;
 
@@ -24,7 +24,7 @@ public class BasicContextCarrier implements IContextCarrier {
 	 * 
 	 * @param context
 	 */
-	public BasicContextCarrier() {
+	public BasicContextHolder() {
 		super();
 	}
 
@@ -34,7 +34,7 @@ public class BasicContextCarrier implements IContextCarrier {
 	 * @param context
 	 *            the context to work on
 	 */
-	public BasicContextCarrier(IContext context) {
+	public BasicContextHolder(IContext context) {
 		super();
 		this.context = context;
 	}

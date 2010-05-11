@@ -20,29 +20,26 @@ import org.eclipse.core.runtime.Assert;
 /**
  * A Proxy for the management of a Context on the contained Object. All public
  * methods will be encapsulated by activating and passivating the corresponding
- * context. If the encapsulated object is a Context carrier, the context of this
+ * context. If the encapsulated object is a Context holder, the context of this
  * object is used, otherwise is the context stored in the proxy is used. -> the
  * context of the object, if any there, has the higher priority
  * 
- * (It does not make sence to extend the manufactured proxy with an extra
+ * (It does not make sense to extend the manufactured proxy with an extra
  * interface. because it is not possible to access the corresponding methods)
  * 
  */
 
 public final class ContextProxy implements InvocationHandler {
 
-	// private final static ILogger LOGGER = LoggerAccessor.fetchLogger(
-	// ContextProxy.class );
-
-	private IContextProvider contextProvider;
+	private IContextHolder contextHolder;
 	private Object service;
 
 	/**
 	 * Create a Context Proxy
 	 */
-	private ContextProxy(Object pService, IContextProvider pContextProvider) {
+	private ContextProxy(Object pService, IContextHolder pContextProvider) {
 		service = pService;
-		contextProvider = pContextProvider;
+		contextHolder = pContextProvider;
 	}
 
 	/**
@@ -51,7 +48,7 @@ public final class ContextProxy implements InvocationHandler {
 	 */
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		try {
-			ContextHelper.activateContext(contextProvider.getContext());
+			ContextHelper.activateContext(contextHolder.getContext());
 			// TODO not sure why accessible has to be true, fix some day
 			method.setAccessible(true);
 
@@ -59,19 +56,19 @@ public final class ContextProxy implements InvocationHandler {
 		} catch (InvocationTargetException e) {
 			throw e.getTargetException();
 		} finally {
-			ContextHelper.passivateContext(contextProvider.getContext());
+			ContextHelper.passivateContext(contextHolder.getContext());
 		}
 	}
 
 	/**
-	 * Creates a new Proxy on the passed object. The return typ is created
-	 * automatically depending on the passed interface type. The genrics are
-	 * checking the consystency of the passe object and interface automatically.
+	 * Creates a new Proxy on the passed object. The return type is created
+	 * automatically depending on the passed interface type. The generics are
+	 * checking the consistency of the passe object and interface automatically.
 	 * The created proxy covers automatically the whole public interface of the
 	 * passed object
 	 * 
 	 * @param <T>
-	 *            the expected interface typ equal also the type expected
+	 *            the expected interface type equal also the type expected
 	 * @param pObject
 	 *            the Object to create proxy on
 	 * @param pContext
@@ -79,7 +76,7 @@ public final class ContextProxy implements InvocationHandler {
 	 * @return the Proxy
 	 */
 	@SuppressWarnings({ "unchecked" })
-	public static <T> T cover(T pObject, IContextProvider pContextProvider) {
+	public static <T> T cover(T pObject, IContextHolder pContextProvider) {
 		Assert.isNotNull(pObject, "The object to proxy must not be null"); //$NON-NLS-1$
 		Assert.isNotNull(pContextProvider, "The context carrier must not be null"); //$NON-NLS-1$
 		return (T) Proxy.newProxyInstance(pObject.getClass().getClassLoader(), getInterfaces(pObject.getClass()),
@@ -88,8 +85,8 @@ public final class ContextProxy implements InvocationHandler {
 
 	/**
 	 * Creates a new Proxy on the passed object. The return typ is created
-	 * automatically depending on the passed interface type. The genrics are
-	 * checking the consystency of the passe object and interface automatically.
+	 * automatically depending on the passed interface type. The generics are
+	 * checking the consistency of the passe object and interface automatically.
 	 * The created proxy covers automatically the whole public interface of the
 	 * passed object
 	 * 
@@ -100,10 +97,10 @@ public final class ContextProxy implements InvocationHandler {
 	 * @return the Proxy
 	 */
 	@SuppressWarnings({ "unchecked" })
-	public static <T extends IContextProvider> T cover(T pContextProvider) {
+	public static <T extends IContextHolder> T cover(T pContextProvider) {
 		Assert.isNotNull(pContextProvider, "The context carrier must not be null"); //$NON-NLS-1$
-		return (T) Proxy.newProxyInstance(pContextProvider.getClass().getClassLoader(), getInterfaces(pContextProvider
-				.getClass()), new ContextProxy(pContextProvider, pContextProvider));
+		return (T) Proxy.newProxyInstance(pContextProvider.getClass().getClassLoader(),
+				getInterfaces(pContextProvider.getClass()), new ContextProxy(pContextProvider, pContextProvider));
 	}
 
 	/**

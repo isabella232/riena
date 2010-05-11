@@ -13,7 +13,7 @@ package org.eclipse.riena.objecttransaction.context;
 import org.eclipse.riena.objecttransaction.ObjectTransactionFailure;
 
 /**
- * Failure indicating, that somethin goes wrong while managing the transaction
+ * Failure indicating, that something goes wrong while managing the transaction
  * in the current context
  * 
  */
