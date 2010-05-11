@@ -12,7 +12,10 @@ package org.eclipse.riena.communication.core.progressmonitor;
 
 /**
  * Interface for a registry that maintains the list of progress monitors that
- * are interested in monitoring remote service progress
+ * are interested in monitoring remote service progress (a proxy object). At
+ * runtime the proxy can ask the registry for all monitors that are monitoring
+ * this proxy and send them an event about the progress. Monitor can either
+ * deregister itself, or all monitors for a proxies are deregistered.
  */
 public interface IRemoteProgressMonitorRegistry {
 
