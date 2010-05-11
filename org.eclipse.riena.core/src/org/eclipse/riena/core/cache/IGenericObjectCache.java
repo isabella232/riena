@@ -22,7 +22,9 @@ package org.eclipse.riena.core.cache;
  * can remove any entry in the GenericObjectCache.</li>
  * <li>minSize: minSize specifies a number of minimum entries that are held in
  * the cache even if garbage collection occurs. However these minSize entries
- * will still be checked against the timeout.</li>
+ * will still be checked against the timeout. This check only occurs on get(..).
+ * The minSize entries contains the objects that were last accessed by put or
+ * get.</li>
  * </ul>
  */
 public interface IGenericObjectCache<K, V> {
@@ -34,45 +36,39 @@ public interface IGenericObjectCache<K, V> {
 	 * @param key
 	 *            the key to look up object.
 	 * @return the object looked up.
-	 * @pre (isGlobalCache()==false)
 	 */
 	V get(K key);
 
-	/**
-	 * Get an object by key in the context of the calling class
-	 * 
-	 * @param key
-	 * @param callingClass
-	 * @return
-	 */
-	//	Object get(K key, Class callingClass);
 	/**
 	 * Put some object <code>value</code> with <code>key</code> into the cache.
 	 * 
 	 * @param key
 	 *            the key for looking up the object.
+	 * 
 	 * @param value
-	 *            the value. If this is a globalCache the value must implement
-	 *            Serializable
-	 * @pre !isGlobalCache() || value instanceof Serializable
+	 *            the value that is stored in the cache.
 	 */
 	void put(K key, V value);
 
 	/**
-	 * Remove object with <code>key</code> from the cache.
+	 * Remove object with <code>key</code> explicitly (rather than waiting for
+	 * timeout) from the cache.
 	 * 
 	 * @param key
-	 *            the key.
+	 *            the key for the value to be removed
 	 */
 	void remove(K key);
 
 	/**
-	 * Clear the cache.
+	 * Clear the complete cache including soft and hard references
+	 * 
+	 * @post size()==0;
 	 */
 	void clear();
 
 	/**
-	 * Set the timeout for cached objects.
+	 * Set the timeout for cached objects. After the timeout objects can not be
+	 * found with get, even if the GC has not yet cleaned them from the cache.
 	 * 
 	 * @param milliseconds
 	 *            the timeout in milliseconds.
@@ -80,14 +76,21 @@ public interface IGenericObjectCache<K, V> {
 	void setTimeout(int milliseconds);
 
 	/**
-	 * Return mumber of cached objects.
+	 * Return number of all cached objects. Some objects in this count might
+	 * already be beyond their expiration.
 	 * 
-	 * @return the mumber of cached objects.
+	 * @return the number of all cached objects.
 	 */
 	int size();
 
 	/**
-	 * Set the minimum number of entries that are held in the cache.
+	 * Set the minimum number of entries that are held in the cache. This is the
+	 * number of objects that are held in the cache as minimum even if there is
+	 * a low-memory situation. There is no guarantee that there are minSize
+	 * objects in the cache because objects are also removed if a timeout
+	 * occurs. However objects are not automatically garbagecollected if they
+	 * are in the pool of minSize objects but only when the application tries to
+	 * get them and the expiration of the entry is detected.
 	 * 
 	 * @param minSize
 	 *            the minimum number of entries.
@@ -108,14 +111,6 @@ public interface IGenericObjectCache<K, V> {
 	 */
 	int getMinimumSize();
 
-	//	/**
-	//	 * Sets a global HashMap resource that is used for this GenericObjectCache.
-	//	 * A type is required for Caches with global HashMap
-	//	 * 
-	//	 * @param map
-	//	 */
-	//	void setHashMap(HashMap<K, V> map);
-
 	/**
 	 * Descriptive name for this cache (shown in logs)
 	 * 
@@ -124,11 +119,16 @@ public interface IGenericObjectCache<K, V> {
 	void setName(String name);
 
 	/**
-	 * Returns the current size of the GenericObjectCache
+	 * Return number of all cached objects.
 	 * 
 	 * @return
 	 */
 	int getSize();
 
+	/**
+	 * @return An arbitrary string which is dependent on the cache
+	 *         implementation that can be used for log entries to show the
+	 *         usage, hit/miss ratio etc. for the cache in use
+	 */
 	String getStatistic();
 }

@@ -25,8 +25,12 @@ import org.eclipse.riena.internal.core.cache.ICacheEntry;
 import org.eclipse.riena.internal.core.cache.SoftCacheEntry;
 
 /**
- * Class implements a generic object cache.
+ * Class implements a generic object cache. For a detailed description @see
+ * IGenericObjectCache
  * 
+ * Beyond the interface description, this implementation uses SoftReferences to
+ * keep objects beyond the minSize as long the JVM memory allows it (no
+ * GarbageCollection) and no timeout for an entry occurred.
  * 
  */
 public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {

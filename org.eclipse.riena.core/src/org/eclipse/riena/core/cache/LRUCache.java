@@ -27,6 +27,9 @@ import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
  * LRU=(Last Recently Used) Implementation for IGenericObjectCache (alternative
  * to GenericObjectCache)
  * 
+ * Beyond the description in the interface, this implementation has no more
+ * entries than minSize. So minSize is also the maxSize. The oldest (last
+ * recently used) entry is removed once minSize/maxSize is reached.
  */
 public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 
