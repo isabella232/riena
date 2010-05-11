@@ -37,15 +37,6 @@ public interface ISessionService {
 	 */
 	Session generateSession(Principal[] principals);
 
-	//	/**
-	//	 * Checks and registers the given security ticket for the session controller
-	//	 * 
-	//	 * @param ticket
-	//	 *            security ticket which should be checked and registerd for this
-	//	 *            session controller
-	//	 * @return true if registration was successful
-	//	 */
-	// boolean registerSession(ISecurityTicket ticket);
 	/**
 	 * Finds a userid for a specific session
 	 * 
