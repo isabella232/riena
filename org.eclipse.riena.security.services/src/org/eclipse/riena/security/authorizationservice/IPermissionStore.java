@@ -14,12 +14,14 @@ import java.security.Permissions;
 import java.security.Principal;
 
 /**
- * Interface used for accessing Java permissions from the AuthorizationService
+ * Implementations of IPermissionStore are used by the AuthorizationService to
+ * retrieve the Permissions for a specific Principal
+ * 
  */
 public interface IPermissionStore {
 
 	/**
-	 * Loads the permissions for one principal
+	 * Returns the permissions for one principal
 	 * 
 	 * @param principal
 	 * @return

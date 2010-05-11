@@ -16,6 +16,9 @@ import java.security.Principal;
 import org.eclipse.riena.security.authorizationservice.IPermissionStore;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 
+/**
+ * The default implementation for IAuthorizationService
+ */
 public class AuthorizationService implements IAuthorizationService {
 
 	private IPermissionStore permStore;
@@ -34,6 +37,13 @@ public class AuthorizationService implements IAuthorizationService {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.security.common.authorization.IAuthorizationService
+	 * #getPermissions(java.security.Principal[])
+	 */
 	public Permissions[] getPermissions(Principal[] principals) {
 		if (permStore != null) {
 			Permissions[] allPerms = new Permissions[principals.length];

@@ -15,7 +15,14 @@ import java.security.Principal;
 import org.eclipse.riena.security.common.session.Session;
 
 /**
- * Store for sessions
+ * The implementation of ISessionStore stores the session (preferable
+ * persistently). Riena supplies a simple default implementation which store the
+ * session objects in the JVM memory.
+ * 
+ * Its better to replace this default implementation with a custom
+ * implementation that store the data in a persistent store so that they can be
+ * retrieved again when the server has to be restarted and so that they can be
+ * shared servers (if there is more than one).
  * 
  */
 public interface ISessionStore {
@@ -23,11 +30,13 @@ public interface ISessionStore {
 	String SESSION_STORE_ID = "spirit.securityimplementation.server.SessionStore"; //$NON-NLS-1$
 
 	/**
-	 * reads the sessions for one principal from the store
+	 * reads the sessions for one principal from the store TODO should be
+	 * Subject see bug 312640
 	 * 
 	 * @param principal
 	 *            principal for which sessions should be read
 	 * @return an array of session objects
+	 * @deprecated
 	 */
 	Session[] read(Principal principal);
 
@@ -58,6 +67,7 @@ public interface ISessionStore {
 	 * deletes the session entries for a principal
 	 * 
 	 * @param principal
+	 * @deprecated
 	 */
 	void delete(Principal principal);
 

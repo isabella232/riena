@@ -24,14 +24,16 @@ import org.eclipse.riena.security.common.session.Session;
 public interface ISessionProvider {
 
 	/**
-	 * The interface should allow to return any instance of the interface
-	 * <code>ISession</code>. However other parts of the Framework construct
-	 * explicit the Session from the id. Hence only the original Session
-	 * Implementation is currently allowed.
+	 * The method returns an Session object for the list of Principal instances
+	 * that are supplied. The Session instance must be unique in the
+	 * application. If a custom implementation of ISessionProvider is provided
+	 * you can add your own algorithm to calculate a unique sessionId for the
+	 * Session instance.
 	 * 
 	 * @param principals
-	 * @param principalLocation
-	 * @return session
+	 *            list of Principal object for which the Session object is
+	 *            created
+	 * @return session session object that is created.
 	 */
 	Session createSession(Principal[] principals);
 
