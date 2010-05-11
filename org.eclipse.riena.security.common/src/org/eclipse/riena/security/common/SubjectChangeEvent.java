@@ -10,41 +10,40 @@
  *******************************************************************************/
 package org.eclipse.riena.security.common;
 
-
 import javax.security.auth.Subject;
 
 /**
- * SubjectChangeEvent notify that the principal is changed
+ * SubjectChangeEvent notify that the subject is changed
  * 
  */
 public class SubjectChangeEvent {
-    private Subject oldSubject;
-    private Subject newSubject;
+	private Subject oldSubject;
+	private Subject newSubject;
 
-    /**
-     * Creates an SubjectChangeEvent with the new and old Principal
-     * 
-     * @param newSubject
-     * @param oldSubject
-     */
-    public SubjectChangeEvent(Subject newSubject, Subject oldSubject) {
-        super();
-        this.newSubject = newSubject;
-        this.oldSubject = oldSubject;
-    }
+	/**
+	 * Creates an SubjectChangeEvent with the new and old Principal
+	 * 
+	 * @param newSubject
+	 * @param oldSubject
+	 */
+	public SubjectChangeEvent(Subject newSubject, Subject oldSubject) {
+		super();
+		this.newSubject = newSubject;
+		this.oldSubject = oldSubject;
+	}
 
-    /**
-     * @return the newSubject.
-     */
-    public Subject getNewPrincipal() {
-        return newSubject;
-    }
+	/**
+	 * @return the newSubject.
+	 */
+	public Subject getNewSubject() {
+		return newSubject;
+	}
 
-    /**
-     * @return the oldSubject.
-     */
-    public Subject getOldPrincipal() {
-        return oldSubject;
-    }
+	/**
+	 * @return the oldSubject.
+	 */
+	public Subject getOldSubject() {
+		return oldSubject;
+	}
 
 }

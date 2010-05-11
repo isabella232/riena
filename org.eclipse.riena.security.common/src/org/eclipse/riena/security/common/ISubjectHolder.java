@@ -13,22 +13,22 @@ package org.eclipse.riena.security.common;
 import javax.security.auth.Subject;
 
 /**
- * A <code>ISubjectHolder</code> implementation retrieves the current principal,
- * i.e. on the client the currently logged on user and on the server the user
- * bound to the current session.
+ * A <code>ISubjectHolder</code> implementation holds the current subject, i.e.
+ * on the client the currently logged on user and on the server the user bound
+ * to the current session.
  * 
  */
 public interface ISubjectHolder {
 
 	/**
-	 * Get the current principal
+	 * Return the current subject (logged in user)
 	 * 
-	 * @return current principal
+	 * @return current subject
 	 */
 	Subject getSubject();
 
 	/**
-	 * Set the current principal
+	 * Set the current subject (logged in user)
 	 * 
 	 * @param subject
 	 *            current subject
@@ -36,14 +36,14 @@ public interface ISubjectHolder {
 	void setSubject(Subject subject);
 
 	/**
-	 * Adds the given principal change listener
+	 * Adds the subject change listener
 	 * 
 	 * @param listener
 	 */
 	void addSubjectChangeListener(ISubjectChangeListener listener);
 
 	/**
-	 * Removes the given principal change listener
+	 * Removes the subject change listener
 	 * 
 	 * @param listener
 	 */

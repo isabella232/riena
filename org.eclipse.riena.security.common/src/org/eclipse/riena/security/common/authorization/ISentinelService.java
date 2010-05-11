@@ -19,6 +19,15 @@ import java.security.Permission;
  */
 public interface ISentinelService {
 
+	/**
+	 * Checks that the currently logged in user (identified by the Subject in
+	 * the SubjectHolder) @see ISubjectHolder has the rights for the permission
+	 * passed as parameter.
+	 * 
+	 * @param permission
+	 *            permission to check for the user
+	 * @return true if the user has enough access right, otherwise false
+	 */
 	boolean checkAccess(Permission permission);
 
 }

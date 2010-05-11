@@ -13,7 +13,15 @@ package org.eclipse.riena.security.common.authentication;
 import org.eclipse.riena.security.common.authentication.credentials.AbstractCredential;
 
 /**
- * The authentication interface.
+ * The IAuthenticationService interface is a wrapper for the
+ * AuthenticationService sitting remote on the server testing the login
+ * credentials. Riena supplies an implementation with @see AuthenticationService
+ * which will work well for most cases (where you can replace it with your own
+ * implementation).
+ * 
+ * Behind the AuthenticationService the IAuthenticationStore which will be in
+ * most cases a custom implementation which accesses the store with the
+ * credentials.
  * 
  */
 public interface IAuthenticationService {

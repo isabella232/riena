@@ -11,21 +11,29 @@
 package org.eclipse.riena.security.common.session;
 
 /**
- * Stores the session and the principal location in the Webservice (axis)
- * context
+ * Implementation of ISessionHolder hold the Session object which identfies a
+ * unique sessionId for the currently logged in user (subject).
+ * 
+ * The implementation of ISessionHolder is a singleton on the client and set
+ * once when the user logs in (and is modified when prinicpals are added or
+ * removed).
+ * 
+ * When doing remote service calls the Session is passed transparently to the
+ * server where the ISessionHolder implementation is a threadlocal and keeps its
+ * own session for each executing thread running.
  * 
  */
 public interface ISessionHolder {
 
 	/**
-	 * Returns the current session
+	 * Returns the current Session object
 	 * 
 	 * @return current session
 	 */
 	Session getSession();
 
 	/**
-	 * Sets the current session
+	 * Sets the current Session
 	 * 
 	 * @param session
 	 *            current session.
