@@ -12,7 +12,6 @@ package org.eclipse.riena.communication.core.attachment;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import org.eclipse.riena.core.util.Nop;
 
@@ -57,13 +56,8 @@ public class InputStreamDataSource implements IDataSource {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.riena.communication.core.attachment.IDataSource#getOutputStream
-	 * ()
+	 * org.eclipse.riena.communication.core.attachment.IDataSource#checkValid()
 	 */
-	public OutputStream getOutputStream() throws IOException {
-		throw new UnsupportedOperationException();
-	}
-
 	public void checkValid() throws IOException {
 		if (inputStream.markSupported()) {
 			inputStream.reset();

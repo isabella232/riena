@@ -15,7 +15,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import org.eclipse.core.runtime.Assert;
 
@@ -49,17 +48,6 @@ public class FileDataSource implements IDataSource {
 	 * @see org.eclipse.riena.communication.core.attachment.DataSource#getName()
 	 */
 	public String getName() {
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.communication.core.attachment.DataSource#getOutputStream
-	 * ()
-	 */
-	public OutputStream getOutputStream() throws IOException {
 		return null;
 	}
 

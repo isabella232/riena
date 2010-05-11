@@ -12,7 +12,6 @@ package org.eclipse.riena.communication.core.attachment;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -65,13 +64,6 @@ public class HttpURLDataSource implements IDataSource {
 	 */
 	public String getName() {
 		return httpUrlConnection.getURL().toString();
-	}
-
-	/**
-	 * @see javax.IDataSource.DataSource#getOutputStream()
-	 */
-	public OutputStream getOutputStream() throws IOException {
-		return null;
 	}
 
 	/*

@@ -12,7 +12,6 @@ package org.eclipse.riena.communication.core.attachment;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * internal class used for serializing attachments. this class is only used for
@@ -66,13 +65,6 @@ public class ByteArrayDataSource implements IDataSource {
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @see javax.IDataSource.DataSource#getOutputStream()
-	 */
-	public OutputStream getOutputStream() throws IOException {
-		throw new IOException("not supported"); //$NON-NLS-1$
 	}
 
 	public void checkValid() {

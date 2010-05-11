@@ -12,7 +12,6 @@ package org.eclipse.riena.communication.core.attachment;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Interface for encapsulating different types of attachments in remote
@@ -30,16 +29,6 @@ public interface IDataSource {
 	 * @throws IOException
 	 */
 	InputStream getInputStream() throws IOException;
-
-	/**
-	 * It seems that all implementation of IDataSource have no meaningful
-	 * implementation of getOutputStream(). Maybe we should remove this method
-	 * ????? TODO FIXME
-	 * 
-	 * @return
-	 * @throws IOException
-	 */
-	OutputStream getOutputStream() throws IOException;
 
 	/**
 	 * A name that can be displayed for this datasource. Some implementation
