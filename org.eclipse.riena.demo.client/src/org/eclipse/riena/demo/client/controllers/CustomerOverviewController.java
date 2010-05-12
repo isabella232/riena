@@ -74,7 +74,7 @@ public class CustomerOverviewController extends SubModuleController {
 
 		updateAllRidgetsFromModel();
 
-		((IActionRidget) getRidget("openEmails_action")).addListener(new IActionListener() { //$NON-NLS-1$
+		((IActionRidget) getRidget("openEmailsAction")).addListener(new IActionListener() { //$NON-NLS-1$
 					public void callback() {
 						String emailAddress = customer.getEmailAddress();
 						getNavigationNode().jump(
