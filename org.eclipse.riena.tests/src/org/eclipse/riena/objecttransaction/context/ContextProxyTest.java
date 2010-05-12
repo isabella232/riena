@@ -29,17 +29,16 @@ public class ContextProxyTest extends TestCase {
 	 */
 	public void testContextManagementOnNotContextCarrier() {
 
-		IContextCarrier contextCarrier = new BasicContextCarrier(null);
+		IContextHolder contextCarrier = new BasicContextHolder(null);
 
 		IContext context1 = new ContextProxyTestContext();
 		IContext context2 = new ContextProxyTestContext();
 		assertFalse(context1.equals(context2));
 
-		ContextProxyTestNonContextCarrier nonContextCarrier = new ContextProxyTestNonContextCarrier();
+		IContextProxyTestInterface nonContextCarrier = new ContextProxyTestNonContextCarrier();
 
 		// test creating proxy on null and setting
-		IContextProxyTestInterface nonContextCarrierProxy = ContextProxy.cover(
-				(IContextProxyTestInterface) nonContextCarrier, contextCarrier);
+		IContextProxyTestInterface nonContextCarrierProxy = ContextProxy.cover(nonContextCarrier, contextCarrier);
 
 		activatedContext = null;
 		passivatedContext = null;
@@ -67,7 +66,7 @@ public class ContextProxyTest extends TestCase {
 
 		contextCarrier.setContext(context1);
 
-		nonContextCarrierProxy = ContextProxy.cover((IContextProxyTestInterface) nonContextCarrier, contextCarrier);
+		nonContextCarrierProxy = ContextProxy.cover(nonContextCarrier, contextCarrier);
 		assertEquals(context1, contextCarrier.getContext());
 		assertNull(activatedContext);
 		assertNull(passivatedContext);
@@ -79,7 +78,7 @@ public class ContextProxyTest extends TestCase {
 
 	/**
 	 * Test the management of the context with the contextProxy, when creating
-	 * the proxy on an object implementing IContextCarrier
+	 * the proxy on an object implementing IContextHolder
 	 */
 	public void testContextManagementOnContextCarrier() {
 
@@ -87,11 +86,10 @@ public class ContextProxyTest extends TestCase {
 		IContext context2 = new ContextProxyTestContext();
 		assertFalse(context1.equals(context2));
 
-		ContextProxyTestContextCarrier contextCarrier = new ContextProxyTestContextCarrier();
+		IContextProxyTestInterfaceHolder contextCarrier = new ContextProxyTestContextHolder();
 
 		// test creating proxy on null and setting
-		IContextProxyTestInterfaceCarrier contextCarrierProxy = ContextProxy
-				.cover((IContextProxyTestInterfaceCarrier) contextCarrier);
+		IContextProxyTestInterfaceHolder contextCarrierProxy = ContextProxy.cover(contextCarrier);
 
 		activatedContext = null;
 		passivatedContext = null;
@@ -118,7 +116,7 @@ public class ContextProxyTest extends TestCase {
 		void doSomething();
 	}
 
-	private interface IContextProxyTestInterfaceCarrier extends IContextCarrier {
+	private interface IContextProxyTestInterfaceHolder extends IContextHolder {
 		/**
 		 * A dummy method
 		 */
@@ -127,33 +125,33 @@ public class ContextProxyTest extends TestCase {
 
 	private static class ContextProxyTestNonContextCarrier implements IContextProxyTestInterface {
 		/**
-		 * @see de.compeople.scp.objecttransaction.context.ContextProxyTest.IContextProxyTestInterface#doSomething()
+		 * @see org.eclipse.riena.objecttransaction.context.ContextProxyTest.IContextProxyTestInterface#doSomething()
 		 */
 		public void doSomething() {
 			return;
 		}
 	}
 
-	private static class ContextProxyTestContextCarrier implements IContextProxyTestInterfaceCarrier {
+	private static class ContextProxyTestContextHolder implements IContextProxyTestInterfaceHolder {
 
 		private IContext context;
 
 		/**
-		 * @see de.compeople.scp.objecttransaction.context.ContextProxyTest.IContextProxyTestInterface#doSomething()
+		 * @see org.eclipse.riena.objecttransaction.context.ContextProxyTest.IContextProxyTestInterface#doSomething()
 		 */
 		public void doSomething() {
 			return;
 		}
 
 		/**
-		 * @see de.compeople.scp.objecttransaction.context.IContextCarrier#getContext()
+		 * @see org.eclipse.riena.objecttransaction.context.IContextHolder#getContext()
 		 */
 		public IContext getContext() {
 			return context;
 		}
 
 		/**
-		 * @see de.compeople.scp.objecttransaction.context.IContextCarrier#setContext(de.compeople.scp.objecttransaction.context.IContext)
+		 * @see org.eclipse.riena.objecttransaction.context.IContextHolder#setContext(org.eclipse.riena.objecttransaction.context.IContext)
 		 */
 		public void setContext(IContext pContext) {
 			context = pContext;
@@ -164,21 +162,21 @@ public class ContextProxyTest extends TestCase {
 	private class ContextProxyTestContext implements IContext {
 
 		/**
-		 * @see de.compeople.scp.objecttransaction.context.IContext#activate()
+		 * @see org.eclipse.riena.objecttransaction.context.IContext#activate()
 		 */
 		public void activate() {
 			activatedContext = this;
 		}
 
 		/**
-		 * @see de.compeople.scp.objecttransaction.context.IContext#isActivated()
+		 * @see org.eclipse.riena.objecttransaction.context.IContext#isActivated()
 		 */
 		public boolean isActivated() {
 			return this.equals(activatedContext);
 		}
 
 		/**
-		 * @see de.compeople.scp.objecttransaction.context.IContext#passivate()
+		 * @see org.eclipse.riena.objecttransaction.context.IContext#passivate()
 		 */
 		public void passivate() {
 			passivatedContext = this;

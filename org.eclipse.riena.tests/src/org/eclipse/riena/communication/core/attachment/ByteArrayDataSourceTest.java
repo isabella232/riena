@@ -106,22 +106,6 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 	 * 
 	 * @throws Exception
 	 */
-	public void testGetOutputStreamFail() throws Exception {
-		setUpDataSourceMock(10);
-		ByteArrayDataSource dataSource = new ByteArrayDataSource(dataSourceMock);
-		try {
-			dataSource.getOutputStream();
-			fail("Should throw an IOException!");
-		} catch (IOException ioe) {
-			ok("IOException expected.");
-		}
-	}
-
-	/**
-	 * Nomen est Omen!
-	 * 
-	 * @throws Exception
-	 */
 	public void testNullDataSource() throws Exception {
 		// This creation should not fail!
 		ByteArrayDataSource dataSource = new ByteArrayDataSource(null);

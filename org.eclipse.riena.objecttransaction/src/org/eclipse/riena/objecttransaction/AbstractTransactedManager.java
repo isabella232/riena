@@ -12,9 +12,9 @@ package org.eclipse.riena.objecttransaction;
 
 import java.lang.reflect.Proxy;
 
-import org.eclipse.riena.objecttransaction.context.BasicContextCarrier;
+import org.eclipse.riena.objecttransaction.context.BasicContextHolder;
 import org.eclipse.riena.objecttransaction.context.ContextProxy;
-import org.eclipse.riena.objecttransaction.context.IContextProvider;
+import org.eclipse.riena.objecttransaction.context.IContextHolder;
 import org.eclipse.riena.objecttransaction.context.IObjectTransactionContext;
 import org.eclipse.riena.objecttransaction.context.ObjectTransactionContext;
 
@@ -39,7 +39,7 @@ import org.eclipse.riena.objecttransaction.context.ObjectTransactionContext;
  */
 public abstract class AbstractTransactedManager {
 
-	private IContextProvider contextProvider;
+	private IContextHolder contextHolder;
 	private IObjectTransactionContext objectTransactionContext;
 
 	/**
@@ -51,7 +51,7 @@ public abstract class AbstractTransactedManager {
 	protected AbstractTransactedManager() {
 		super();
 		this.objectTransactionContext = new ObjectTransactionContext();
-		this.contextProvider = new BasicContextCarrier(objectTransactionContext);
+		this.contextHolder = new BasicContextHolder(objectTransactionContext);
 	}
 
 	/**
@@ -128,7 +128,7 @@ public abstract class AbstractTransactedManager {
 	 * @return a Context Proxy on any concrete Manager
 	 */
 	public final <T> T cover(T pObject) {
-		return ContextProxy.cover(pObject, contextProvider);
+		return ContextProxy.cover(pObject, contextHolder);
 	}
 
 	/**
