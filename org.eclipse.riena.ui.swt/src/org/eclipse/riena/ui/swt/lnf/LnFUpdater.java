@@ -20,6 +20,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
@@ -42,12 +43,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.util.ReflectionFailure;
-import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -56,7 +53,6 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class LnFUpdater {
 
-	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), LnFUpdater.class);
 	private static CacheLRU resourceCache = new CacheLRU(200);
 	private static final Object NULL_RESOURCE = new Object();
 
@@ -65,15 +61,19 @@ public class LnFUpdater {
 	 */
 	private static final String PROPERTY_RIENA_LNF_UPDATE_VIEW = "riena.lnf.update.view"; //$NON-NLS-1$
 
-	private final static Map<Class<? extends Control>, List<PropertyDescriptor>> CONTROL_PROPERTIES = new Hashtable<Class<? extends Control>, List<PropertyDescriptor>>();
-	private final static Map<Class<? extends Control>, Map<String, Object>> DEFAULT_PROPERTY_VALUES = new Hashtable<Class<? extends Control>, Map<String, Object>>();
+	private final static Map<Class<? extends Control>, List<PropertyDescriptor>> CONTROL_PROPERTIES = new HashMap<Class<? extends Control>, List<PropertyDescriptor>>();
+	private final static Map<Class<? extends Control>, Map<String, Object>> DEFAULT_PROPERTY_VALUES = new HashMap<Class<? extends Control>, Map<String, Object>>();
 	private final static Set<Class<? extends Control>> CONTROLS_AFTER_BIND = new HashSet<Class<? extends Control>>();
 
 	private final static List<PropertyDescriptor> EMPTY_DESCRIPTORS = Collections.emptyList();
 
-	private Shell tmpShell;
+	//	private Shell tmpShell;
+	private static final Composite SHELL_COMPOSITE = new Composite(new Shell(), SWT.NONE);
+
 	private boolean dirtyLayout;
-	private static final Map<Class<? extends Control>, String> SIMPLE_NAMES = new Hashtable<Class<? extends Control>, String>();
+	private static final Map<Class<? extends Control>, String> SIMPLE_NAMES = new HashMap<Class<? extends Control>, String>();
+
+	private static final Logger LOGGER = Log4r.getLogger(LnFUpdater.class);
 
 	public LnFUpdater() {
 		this(false);
@@ -106,7 +106,6 @@ public class LnFUpdater {
 	 *            composite which children are updated.
 	 */
 	public void updateUIControls(Composite parent, boolean updateLayout) {
-
 		if (!checkPropertyUpdateView()) {
 			return;
 		}
@@ -117,9 +116,8 @@ public class LnFUpdater {
 			updateLayout(parent);
 		}
 
-		SwtUtilities.disposeWidget(tmpShell);
-		tmpShell = null;
-
+		//		SwtUtilities.disposeWidget(tmpShell);
+		//		tmpShell = null;
 	}
 
 	/**
@@ -171,11 +169,11 @@ public class LnFUpdater {
 		}
 
 		setDirtyLayout(false);
-		updateUIControlsAfterBindRecursie(parent);
+		updateUIControlsAfterBindRecursive(parent);
 		updateLayout(parent);
 
-		SwtUtilities.disposeWidget(tmpShell);
-		tmpShell = null;
+		//		SwtUtilities.disposeWidget(tmpShell);
+		//		tmpShell = null;
 
 	}
 
@@ -185,7 +183,7 @@ public class LnFUpdater {
 	 * @param parent
 	 *            composite which children are updated.
 	 */
-	private void updateUIControlsAfterBindRecursie(Composite parent) {
+	private void updateUIControlsAfterBindRecursive(Composite parent) {
 
 		Control[] controls = parent.getChildren();
 		for (Control uiControl : controls) {
@@ -195,7 +193,7 @@ public class LnFUpdater {
 			}
 
 			if (uiControl instanceof Composite) {
-				updateUIControlsAfterBindRecursie((Composite) uiControl);
+				updateUIControlsAfterBindRecursive((Composite) uiControl);
 			}
 
 		}
@@ -328,7 +326,6 @@ public class LnFUpdater {
 	 * @return {@code true} if latest one key exists; otherwise {@code false}
 	 */
 	private boolean checkLnfKeys(Control control) {
-
 		Class<? extends Control> controlClass = control.getClass();
 		if (checkLnfClassKeys(controlClass)) {
 			return true;
@@ -336,7 +333,7 @@ public class LnFUpdater {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		String style = (String) control.getData(UIControlsFactory.KEY_LNF_STYLE);
-		if (!StringUtils.isEmpty(style)) {
+		if (StringUtils.isGiven(style)) {
 			style += "."; //$NON-NLS-1$
 			Set<String> keys = lnf.getResourceTable().keySet();
 			for (String key : keys) {
@@ -361,11 +358,10 @@ public class LnFUpdater {
 	@SuppressWarnings("unchecked")
 	private boolean checkLnfClassKeys(Class<? extends Control> controlClass) {
 
-		RienaDefaultLnf lnf = LnfManager.getLnf();
-
 		String className = getSimpleClassName(controlClass);
-		if (!StringUtils.isEmpty(className)) {
+		if (className.length() != 0) {
 			className += "."; //$NON-NLS-1$
+			RienaDefaultLnf lnf = LnfManager.getLnf();
 			Set<String> keys = lnf.getResourceTable().keySet();
 			for (String key : keys) {
 				if (key.startsWith(className)) {
@@ -451,22 +447,17 @@ public class LnFUpdater {
 	private boolean valuesEquals(Object value1, Object value2) {
 
 		if (value1 != null) {
-			if ((getFontData(value1) != null) && (getFontData(value2) != null)) {
-				FontData[] fontData1 = getFontData(value1);
-				FontData[] fontData2 = getFontData(value2);
-				if (Arrays.equals(fontData1, fontData2)) {
-					return true;
-				}
-			} else if ((getRgb(value1) != null) && (getRgb(value2) != null)) {
-				RGB rgb1 = getRgb(value1);
-				RGB rgb2 = getRgb(value2);
-				if (rgb1.equals(rgb2)) {
-					return true;
-				}
-			} else if (value1.equals(value2)) {
-				return true;
+			FontData[] fontData1 = getFontData(value1);
+			FontData[] fontData2 = getFontData(value2);
+			if (fontData1 != null && fontData2 != null) {
+				return Arrays.equals(fontData1, fontData2);
 			}
-			return false;
+			RGB rgb1 = getRgb(value1);
+			RGB rgb2 = getRgb(value2);
+			if ((rgb1 != null) && (rgb2 != null)) {
+				return rgb1.equals(rgb2);
+			}
+			return value1.equals(value2);
 		}
 
 		return true;
@@ -604,6 +595,7 @@ public class LnFUpdater {
 			return null;
 		}
 		try {
+			// TODO is this necessary?
 			if (!getter.isAccessible()) {
 				getter.setAccessible(true);
 			}
@@ -825,74 +817,110 @@ public class LnFUpdater {
 	 */
 	private Control createDefaultControl(final Class<? extends Control> controlClass, int style) {
 
-		Control defaultControl = null;
+		//		Composite parent = getTmpShellComposite();
+		Composite parent = SHELL_COMPOSITE;
 
-		Composite parent = getTmpShellComposite();
+		// this is the most likely case
+		Control defaultControl = getControl(controlClass, parent, style);
+		if (defaultControl != null) {
+			return defaultControl;
+		}
+
+		// this is the second most likely case
+		defaultControl = getControl(controlClass, parent);
+		if (defaultControl != null) {
+			return defaultControl;
+		}
+
+		// try hard
 		try {
-			defaultControl = ReflectionUtils.newInstanceHidden(controlClass, parent, style);
-		} catch (ReflectionFailure failure) {
-			try {
-				final Constructor<?>[] constructors = controlClass.getConstructors();
-				for (final Constructor<?> constructor : constructors) {
-					Class<?>[] paramTypes = constructor.getParameterTypes();
-					Object[] params = new Object[paramTypes.length];
-					boolean parentAssigned = false;
-					boolean styleAssigned = false;
-					for (int i = 0; i < paramTypes.length; i++) {
-						if (paramTypes[i].isAssignableFrom(parent.getClass()) && !parentAssigned) {
-							params[i] = parent;
-							parentAssigned = true;
-						} else if (paramTypes[i].isAssignableFrom(Integer.class) && !styleAssigned) {
-							params[i] = style;
-							styleAssigned = true;
-						} else {
-							try {
-								params[i] = paramTypes[i].newInstance();
-							} catch (Exception e) {
-								params[i] = null;
-							}
+			final Constructor<?>[] constructors = controlClass.getConstructors();
+			for (final Constructor<?> constructor : constructors) {
+				Class<?>[] paramTypes = constructor.getParameterTypes();
+				Object[] params = new Object[paramTypes.length];
+				boolean parentAssigned = false;
+				boolean styleAssigned = false;
+				for (int i = 0; i < paramTypes.length; i++) {
+					if (paramTypes[i].isAssignableFrom(parent.getClass()) && !parentAssigned) {
+						params[i] = parent;
+						parentAssigned = true;
+					} else if (paramTypes[i].isAssignableFrom(Integer.TYPE) && !styleAssigned) {
+						params[i] = style;
+						styleAssigned = true;
+					} else {
+						try {
+							params[i] = paramTypes[i].newInstance();
+						} catch (Exception e) {
+							params[i] = null;
 						}
 					}
-					try {
-						defaultControl = (Control) constructor.newInstance(params);
-					} catch (Exception e) {
-						defaultControl = null;
-					}
-					if (defaultControl != null) {
-						break;
-					}
 				}
-			} catch (SecurityException e) {
-				e.printStackTrace();
+				try {
+					defaultControl = (Control) constructor.newInstance(params);
+				} catch (Exception e) {
+					defaultControl = null;
+				}
+				if (defaultControl != null) {
+					break;
+				}
 			}
+		} catch (SecurityException e) {
+			LOGGER.log(LogService.LOG_WARNING, "Exception while creating default control the hard way for " //$NON-NLS-1$
+					+ controlClass, e);
 		}
 
 		return defaultControl;
 
 	}
 
-	/**
-	 * Returns a temporary shell. This shell will be disposed after all controls
-	 * a updated.
-	 * 
-	 * @return temporary shell
-	 */
-	private Shell getTmpShell() {
-		if (tmpShell == null) {
-			tmpShell = new Shell();
-			new Composite(tmpShell, SWT.NONE);
+	private Control getControl(final Class<? extends Control> controlClass, Composite parent, int style) {
+		try {
+			Constructor<? extends Control> constructor = controlClass.getConstructor(Composite.class, Integer.TYPE);
+			return constructor.newInstance(parent, style);
+		} catch (NoSuchMethodException e) {
+			return null;
+		} catch (Exception e) {
+			LOGGER.log(LogService.LOG_WARNING, "Exception while creating default control with composite and style for " //$NON-NLS-1$
+					+ controlClass, e);
+			return null;
 		}
-		return tmpShell;
 	}
 
-	/**
-	 * Returns the composite inside the temporary shell.
-	 * 
-	 * @return composite of temporary shell
-	 */
-	private Composite getTmpShellComposite() {
-		return (Composite) getTmpShell().getChildren()[0];
+	private Control getControl(final Class<? extends Control> controlClass, Composite parent) {
+		try {
+			Constructor<? extends Control> constructor = controlClass.getConstructor(Composite.class);
+			return constructor.newInstance(parent);
+		} catch (NoSuchMethodException e) {
+			return null;
+		} catch (Exception e) {
+			LOGGER.log(LogService.LOG_WARNING, "Exception while creating default control with composite for " //$NON-NLS-1$
+					+ controlClass, e);
+			return null;
+		}
 	}
+
+	//	/**
+	//	 * Returns a temporary shell. This shell will be disposed after all controls
+	//	 * a updated.
+	//	 * 
+	//	 * @return temporary shell
+	//	 */
+	//	private Shell getTmpShell() {
+	//		if (tmpShell == null) {
+	//			tmpShell = new Shell();
+	//			new Composite(tmpShell, SWT.NONE);
+	//		}
+	//		return tmpShell;
+	//	}
+	//
+	//	/**
+	//	 * Returns the composite inside the temporary shell.
+	//	 * 
+	//	 * @return composite of temporary shell
+	//	 */
+	//	private Composite getTmpShellComposite() {
+	//		return (Composite) getTmpShell().getChildren()[0];
+	//	}
 
 	private void setDirtyLayout(boolean dirtyLayout) {
 		this.dirtyLayout = dirtyLayout;
