@@ -178,55 +178,6 @@ public class LnFUpdater {
 	}
 
 	/**
-	 * Updates the properties of all children of the given composite.
-	 * 
-	 * @param parent
-	 *            composite which children are updated.
-	 */
-	private void updateUIControlsAfterBindRecursive(Composite parent) {
-
-		Control[] controls = parent.getChildren();
-		for (Control uiControl : controls) {
-
-			if (checkUpdateAfterBind(uiControl)) {
-				updateUIControl(uiControl);
-			}
-
-			if (uiControl instanceof Composite) {
-				updateUIControlsAfterBindRecursive((Composite) uiControl);
-			}
-
-		}
-
-	}
-
-	/**
-	 * Checks is the given UI control must be updated after bind.
-	 * 
-	 * @param uiControl
-	 *            UI control
-	 * @return {@code true} if the control must be updated; otherwise {@code
-	 *         false}
-	 */
-	private boolean checkUpdateAfterBind(Control uiControl) {
-
-		if (uiControl == null) {
-			return false;
-		}
-
-		if (CONTROLS_AFTER_BIND.contains(uiControl.getClass())) {
-			return true;
-		}
-
-		if (uiControl.getParent() != null) {
-			return checkUpdateAfterBind(uiControl.getParent());
-		}
-
-		return false;
-
-	}
-
-	/**
 	 * Checks the value of the system property "riena.lnf.update.view".
 	 * 
 	 * @return value of system property
@@ -296,8 +247,8 @@ public class LnFUpdater {
 	 *            UI control
 	 * @param property
 	 *            property to check
-	 * @return {@code true} if property should be ignored; otherwise {@code
-	 *         false}
+	 * @return {@code true} if property should be ignored; otherwise
+	 *         {@code false}
 	 */
 	private boolean ignoreProperty(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
 
