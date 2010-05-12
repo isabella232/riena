@@ -11,8 +11,6 @@
 package org.eclipse.riena.ui.ridgets.databinding;
 
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.conversion.IConverter;
@@ -21,8 +19,6 @@ import org.eclipse.core.databinding.conversion.IConverter;
  * 
  */
 public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
-
-	private static Map<TypePair, IConverter> converterMap;
 
 	public RidgetUpdateValueStrategy() {
 		super();
@@ -52,73 +48,17 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 				return StringToNumberAllowingNullConverter.toPrimitiveLong();
 			} else if (toType == Integer.TYPE) {
 				return StringToNumberAllowingNullConverter.toPrimitiveInteger();
+			} else if (toType == GregorianCalendar.class) {
+				return new StringToGregorianCalendarConverter();
 			}
 		}
-
-		if ((fromType instanceof Class<?>) && (toType instanceof Class<?>)) {
-			String fromTypeClassName = ((Class<?>) fromType).getName();
-			String toTypeClassName = ((Class<?>) toType).getName();
-			TypePair pair = new TypePair(fromTypeClassName, toTypeClassName);
-			IConverter converter = getConverterMap().get(pair);
-			if (converter != null) {
-				return converter;
+		if (fromType == GregorianCalendar.class) {
+			if (toType == String.class) {
+				return new GregorianCalendarToStringConverter();
 			}
 		}
 
 		return super.createConverter(fromType, toType);
-	}
-
-	private Map<TypePair, IConverter> getConverterMap() {
-
-		if (converterMap == null) {
-			converterMap = new HashMap<TypePair, IConverter>();
-		}
-		converterMap.put(new TypePair(String.class.getName(), GregorianCalendar.class.getName()),
-				new StringToGregorianCalendarConverter());
-		converterMap.put(new TypePair(GregorianCalendar.class.getName(), String.class.getName()),
-				new GregorianCalendarToStringConverter());
-
-		return converterMap;
-	}
-
-	/**
-	 * A pair of to types.
-	 */
-	private static class TypePair {
-
-		private final Object fromType;
-		private final Object toType;
-
-		/**
-		 * Construct a pair with from- and to-type.
-		 * 
-		 * @param fromType
-		 * @param toType
-		 */
-		public TypePair(Object fromType, Object toType) {
-			this.fromType = fromType;
-			this.toType = toType;
-		}
-
-		/**
-		 * @see java.lang.Object#equals(java.lang.Object)
-		 */
-		@Override
-		public boolean equals(Object obj) {
-			if (obj == null || obj.getClass() != this.getClass()) {
-				return false;
-			}
-			TypePair other = (TypePair) obj;
-			return fromType.equals(other.fromType) && toType.equals(other.toType);
-		}
-
-		/**
-		 * @see java.lang.Object#hashCode()
-		 */
-		@Override
-		public int hashCode() {
-			return fromType.hashCode() + toType.hashCode();
-		}
 	}
 
 }
