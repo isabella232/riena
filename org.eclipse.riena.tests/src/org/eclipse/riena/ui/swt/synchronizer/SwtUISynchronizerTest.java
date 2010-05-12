@@ -24,6 +24,7 @@ import org.easymock.EasyMock;
 
 import org.eclipse.swt.graphics.DeviceData;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
@@ -103,6 +104,10 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 	}
 
 	public void testDelayedDisplayAsync() {
+		if (!PlatformUI.isWorkbenchRunning()) {
+			System.out.println("Skipping SwtUISynchronizerTest.testDelayedDisplayAsync() - requires PDEJUnit");
+			return;
+		}
 		final MockDisplay mockDisplay = new MockDisplay();
 		DummyJob job = new DummyJob();
 		job.sleepTime = 4000;
@@ -158,6 +163,10 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 	}
 
 	public void testDelayedDisplaySync() {
+		if (!PlatformUI.isWorkbenchRunning()) {
+			System.out.println("Skipping SwtUISynchronizerTest.testDelayedDisplaySync() - requires PDEJunit");
+			return;
+		}
 		final MockDisplay mockDisplay = new MockDisplay();
 		DummyJob job = new DummyJob();
 		job.sleepTime = 4000;
@@ -201,11 +210,15 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 	}
 
 	public void testDelayedDisplayMultiple() {
+		if (!PlatformUI.isWorkbenchRunning()) {
+			System.out.println("Skipping SwtUISynchronizerTest.testDelayedDisplayMultiple() - requires PDEJunit");
+			return;
+		}
+
 		final MockDisplay mockDisplay = new MockDisplay();
 		provideDisplay.set(false);
 
 		SwtUISynchronizer synchronizer = new SwtUISynchronizer() {
-
 			@Override
 			public Display getDisplay() {
 				return provideDisplay.get() ? mockDisplay : null;
@@ -215,7 +228,6 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 			protected boolean hasDisplay() {
 				return true;
 			}
-
 		};
 
 		provideDisplay.set(false);
