@@ -106,9 +106,13 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Returns the ridget that should get the focus, when this controller's view
+	 * is opened for the first time. If null, then the first focusable widget
+	 * will get the focus (i.e. same behavior as in standard RCP).
+	 * <p>
+	 * The default value is null.
 	 * 
-	 * @return
+	 * @return a IRidget instance or null.
 	 * @since 2.0
 	 */
 	public IRidget getInitialFocus() {
@@ -149,7 +153,16 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Set the ridget that should get the focus, when this controller's view is
+	 * opened for the first time.
+	 * <p>
+	 * If the value is null or if the ridget cannot receive the focus (because
+	 * it is not enabled / not visible / not focusable) then the first
+	 * ridget/widget that can receive the focus will ge the focus (i.e. same
+	 * behavior as in standard RCP).
+	 * 
+	 * @param ridget
+	 *            an IRidget instance or null
 	 * 
 	 * @since 2.0
 	 */
