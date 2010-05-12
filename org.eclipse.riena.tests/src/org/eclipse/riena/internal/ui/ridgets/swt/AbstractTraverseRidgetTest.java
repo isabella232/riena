@@ -15,12 +15,11 @@ import java.beans.PropertyChangeEvent;
 
 import org.easymock.EasyMock;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.beans.common.TypedBean;
+import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 
 /**
@@ -957,22 +956,30 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("my value is: 5", control.getToolTipText());
 
 		ridget.setValue(6);
+
 		assertEquals("my value is: 6", ridget.getToolTipText());
 		assertEquals("my value is: 6", control.getToolTipText());
 
 		// special case -> If the given tooltip matches the normalized
 		// patternTooltip, the patternToolTip is used further.
 		ridget.setToolTipText("my value is: 6");
+
 		assertEquals("my value is: 6", ridget.getToolTipText());
 		assertEquals("my value is: 6", control.getToolTipText());
+
 		ridget.setValue(7);
+
 		assertEquals("my value is: 7", ridget.getToolTipText());
 		assertEquals("my value is: 7", control.getToolTipText());
+
 		// resets the pattern
 		ridget.setToolTipText("my value is: 9");
+
 		assertEquals("my value is: 9", ridget.getToolTipText());
 		assertEquals("my value is: 9", control.getToolTipText());
+
 		ridget.setValue(1);
+
 		assertEquals("my value is: 9", control.getToolTipText());
 		// special case end
 
@@ -994,32 +1001,41 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		 * Test 3 - changing the value using the control
 		 */
 		setValue(control, 5);
-		fireSelectionEvent(control);
+		UITestHelper.fireSelectionEvent(control);
 		pat1 = "my value is: " + ITraverseRidget.VALUE_PATTERN;
 		ridget.setToolTipText(pat1);
+
 		assertEquals("my value is: 5", ridget.getToolTipText());
 		assertEquals("my value is: 5", control.getToolTipText());
 
 		setValue(control, 6);
-		fireSelectionEvent(control);
+		UITestHelper.fireSelectionEvent(control);
+
 		assertEquals("my value is: 6", ridget.getToolTipText());
 		assertEquals("my value is: 6", control.getToolTipText());
 
 		// special case -> If the given tooltip matches the normalized
 		// patternTooltip, the patternToolTip is used further.
 		ridget.setToolTipText("my value is: 6");
+
 		assertEquals("my value is: 6", ridget.getToolTipText());
 		assertEquals("my value is: 6", control.getToolTipText());
+
 		setValue(control, 7);
-		fireSelectionEvent(control);
+		UITestHelper.fireSelectionEvent(control);
+
 		assertEquals("my value is: 7", ridget.getToolTipText());
 		assertEquals("my value is: 7", control.getToolTipText());
+
 		// resets the pattern
 		ridget.setToolTipText("my value is: 9");
+
 		assertEquals("my value is: 9", ridget.getToolTipText());
 		assertEquals("my value is: 9", control.getToolTipText());
+
 		setValue(control, 1);
-		fireSelectionEvent(control);
+		UITestHelper.fireSelectionEvent(control);
+
 		assertEquals("my value is: 9", control.getToolTipText());
 		// special case end
 	}
@@ -1076,7 +1092,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		assertPropertiesEqual(ridget, control);
 
 		setValue(control, 40);
-		fireSelectionEvent(control);
+		UITestHelper.fireSelectionEvent(control);
 
 		assertEquals(40, bean.getValue().intValue());
 		assertEquals(40, ridget.getValue());
@@ -1106,38 +1122,28 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		// if the same instance is already added
 		ridget.addListener(listener2);
 
-		fireSelectionEvent(control);
+		UITestHelper.fireSelectionEvent(control);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(1, listener2.getCount());
 
 		ridget.removeListener(listener1);
-		fireSelectionEvent(control);
+		UITestHelper.fireSelectionEvent(control);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(2, listener2.getCount());
 
 		ridget.removeListener(listener2);
-		fireSelectionEvent(control);
+		UITestHelper.fireSelectionEvent(control);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(2, listener2.getCount());
 
 		ridget.removeListener(listener2);
-		fireSelectionEvent(control);
+		UITestHelper.fireSelectionEvent(control);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(2, listener2.getCount());
-	}
-
-	// helping methods
-	// ////////////////
-
-	protected void fireSelectionEvent(Widget control) {
-		Event event = new Event();
-		event.type = SWT.Selection;
-		event.widget = control;
-		control.notifyListeners(SWT.Selection, event);
 	}
 
 }

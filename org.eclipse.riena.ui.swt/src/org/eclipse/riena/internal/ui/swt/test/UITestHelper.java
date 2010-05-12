@@ -14,7 +14,6 @@ import java.util.Locale;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
@@ -43,11 +42,11 @@ public final class UITestHelper {
 		// prevent instantiation
 	}
 
-	public static void fireSelectionEvent(Control control) {
+	public static void fireSelectionEvent(Widget widget) {
 		Event event = new Event();
 		event.type = SWT.Selection;
-		event.widget = control;
-		control.notifyListeners(SWT.Selection, event);
+		event.widget = widget;
+		widget.notifyListeners(SWT.Selection, event);
 	}
 
 	public static void readAndDispatch(Widget control) {

@@ -22,8 +22,6 @@ import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
@@ -976,10 +974,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	 * fires a selection event manually - control.setXXX does not fire events
 	 */
 	protected final void fireSelectionEvent() {
-		Event event = new Event();
-		event.widget = getWidget();
-		event.type = SWT.Selection;
-		getWidget().notifyListeners(SWT.Selection, event);
+		UITestHelper.fireSelectionEvent(getWidget());
 	}
 
 	private Collection<Person> createPersonList() {

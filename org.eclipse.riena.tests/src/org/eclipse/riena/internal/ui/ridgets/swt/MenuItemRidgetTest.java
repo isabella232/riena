@@ -13,11 +13,11 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
@@ -209,25 +209,25 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 		// if the same instance is already added
 		ridget.addListener(listener2);
 
-		fireSelectionEvent(widget);
+		UITestHelper.fireSelectionEvent(widget);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(1, listener2.getCount());
 
 		ridget.removeListener(listener1);
-		fireSelectionEvent(widget);
+		UITestHelper.fireSelectionEvent(widget);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(2, listener2.getCount());
 
 		ridget.removeListener(listener2);
-		fireSelectionEvent(widget);
+		UITestHelper.fireSelectionEvent(widget);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(2, listener2.getCount());
 
 		ridget.removeListener(listener2);
-		fireSelectionEvent(widget);
+		UITestHelper.fireSelectionEvent(widget);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(2, listener2.getCount());
@@ -249,16 +249,6 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(ridget.isEnabled());
 		assertTrue(item.isEnabled());
 		assertEquals(0, ((IBasicMarkableRidget) ridget).getMarkersOfType(DisabledMarker.class).size());
-	}
-
-	// helping methods
-	// ////////////////
-
-	private void fireSelectionEvent(MenuItem control) {
-		Event event = new Event();
-		event.type = SWT.Selection;
-		event.widget = control;
-		control.notifyListeners(SWT.Selection, event);
 	}
 
 }

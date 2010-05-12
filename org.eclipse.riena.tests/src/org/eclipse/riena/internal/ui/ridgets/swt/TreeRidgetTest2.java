@@ -27,7 +27,6 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -95,16 +94,6 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	@Override
 	protected final Tree getWidget() {
 		return (Tree) super.getWidget();
-	}
-
-	/**
-	 * fires a selection event manually - control.setXXX does not fire events
-	 */
-	protected final void fireSelectionEvent() {
-		Event event = new Event();
-		event.widget = getWidget();
-		event.type = SWT.Selection;
-		getWidget().notifyListeners(SWT.Selection, event);
 	}
 
 	// test methods
@@ -295,7 +284,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 		TreeItem[] items = { getUIControlItem(0), getUIControlItem(2) };
 		getWidget().setSelection(items);
-		fireSelectionEvent();
+		UITestHelper.fireSelectionEvent(getWidget());
 
 		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
 		assertEquals(2, multiSelectionBean.getSelectionList().size());
@@ -1172,8 +1161,9 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	 * Clears the selection in the control
 	 */
 	private void clearUIControlRowSelection() {
-		getWidget().deselectAll();
-		fireSelectionEvent();
+		Tree tree = getWidget();
+		tree.deselectAll();
+		UITestHelper.fireSelectionEvent(tree);
 	}
 
 	private Collection<Person> createPersonList() {
@@ -1307,7 +1297,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 			items[i] = getUIControlItem(i + start);
 		}
 		control.setSelection(items);
-		fireSelectionEvent();
+		UITestHelper.fireSelectionEvent(control);
 	}
 
 }

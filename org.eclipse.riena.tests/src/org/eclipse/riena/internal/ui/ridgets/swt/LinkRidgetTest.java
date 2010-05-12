@@ -17,8 +17,6 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Widget;
 
@@ -246,25 +244,25 @@ public class LinkRidgetTest extends AbstractSWTRidgetTest {
 		// listener2 will not be added again, if the same instance is already added
 		ridget.addSelectionListener(listener2);
 
-		fireSelectionEvent(control);
+		UITestHelper.fireSelectionEvent(control);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(1, listener2.getCount());
 
 		ridget.removeSelectionListener(listener1);
-		fireSelectionEvent(control);
+		UITestHelper.fireSelectionEvent(control);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(2, listener2.getCount());
 
 		ridget.removeSelectionListener(listener2);
-		fireSelectionEvent(control);
+		UITestHelper.fireSelectionEvent(control);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(2, listener2.getCount());
 
 		ridget.removeSelectionListener(listener2);
-		fireSelectionEvent(control);
+		UITestHelper.fireSelectionEvent(control);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(2, listener2.getCount());
@@ -296,16 +294,6 @@ public class LinkRidgetTest extends AbstractSWTRidgetTest {
 		getRidget().setText("<a>need text to receive focus</a>");
 		getShell().layout();
 		super.testSetFocusable();
-	}
-
-	// helping methods
-	// ////////////////
-
-	private void fireSelectionEvent(Control control) {
-		Event event = new Event();
-		event.type = SWT.Selection;
-		event.widget = control;
-		control.notifyListeners(SWT.Selection, event);
 	}
 
 	// helping classes
