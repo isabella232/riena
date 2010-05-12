@@ -306,7 +306,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 				});
 			}
 			updateSelection(control);
-			//LNF_UPDATER.updateUIControlsAfterBind(control);
+			LNF_UPDATER.updateUIControlsAfterBind(control);
 		}
 	}
 
