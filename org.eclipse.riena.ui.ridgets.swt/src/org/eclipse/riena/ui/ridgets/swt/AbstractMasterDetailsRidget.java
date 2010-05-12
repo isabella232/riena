@@ -78,7 +78,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		addPropertyChangeListener(null, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				String propertyName = evt.getPropertyName();
-				if (isDirectWriting
+				if (!hasApplyButton()
+						|| isDirectWriting
 						|| ignoreChanges
 						|| delegate == null
 						|| editable == null
@@ -138,13 +139,15 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			});
 		}
 
-		getApplyButtonRidget().addListener(new IActionListener() {
-			public void callback() {
-				if (canApply()) {
-					handleApply();
+		if (hasApplyButton()) {
+			getApplyButtonRidget().addListener(new IActionListener() {
+				public void callback() {
+					if (canApply()) {
+						handleApply();
+					}
 				}
-			}
-		});
+			});
+		}
 
 		detailRidgets = new DetailRidgetContainer();
 		setEnabled(false, false);
@@ -252,7 +255,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	public void setDirectWriting(boolean directWriting) {
 		if (directWriting != isDirectWriting) {
 			isDirectWriting = directWriting;
-			getApplyButtonRidget().setVisible(!directWriting);
+			if (hasApplyButton()) {
+				getApplyButtonRidget().setVisible(!directWriting);
+			}
 		}
 	}
 
@@ -280,6 +285,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	public final void updateApplyButton() {
+		if (!hasApplyButton()) {
+			return;
+		}
 		if (applyRequiresNoErrors || applyRequiresNoMandatories) {
 			// inlined for performance
 			// isEnabled = areDetailsChanged() && noErrors && noMandatories
@@ -513,10 +521,16 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return getRemoveButtonRidget() != null;
 	}
 
+	private boolean hasApplyButton() {
+		return getApplyButtonRidget() != null;
+	}
+
 	private void setEnabled(boolean applyEnabled, boolean detailsEnabled) {
 		ignoreChanges = true;
 		try {
-			getApplyButtonRidget().setEnabled(applyEnabled);
+			if (hasApplyButton()) {
+				getApplyButtonRidget().setEnabled(applyEnabled);
+			}
 			this.detailsEnabled = detailsEnabled;
 			for (IRidget ridget : detailRidgets.getRidgets()) {
 				ridget.setEnabled(detailsEnabled);

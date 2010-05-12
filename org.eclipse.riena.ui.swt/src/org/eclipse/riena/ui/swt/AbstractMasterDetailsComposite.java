@@ -172,7 +172,8 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	/**
 	 * Return the 'Apply' control.
 	 * 
-	 * @return a Button or ImageButton instance; never null.
+	 * @return a Button or ImageButton instance; may be null if 'Apply' is
+	 *         unsupported.
 	 */
 	public final Control getButtonApply() {
 		Control result = getUIControl(BIND_ID_APPLY);
