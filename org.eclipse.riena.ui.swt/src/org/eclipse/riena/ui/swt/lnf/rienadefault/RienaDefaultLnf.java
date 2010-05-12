@@ -11,10 +11,11 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.rienadefault;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.service.log.LogService;
 
@@ -50,9 +51,9 @@ public class RienaDefaultLnf {
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RienaDefaultLnf.class);
 
 	private static final String SYSTEM_PROPERTY_LNF_SETTING_PREFIX = "riena.lnf.setting."; //$NON-NLS-1$
-	private final Map<String, ILnfResource> resourceTable = new Hashtable<String, ILnfResource>();
-	private final Map<String, Object> settingTable = new Hashtable<String, Object>();
-	private final Map<String, ILnfRenderer> rendererTable = new Hashtable<String, ILnfRenderer>();
+	private final Map<String, ILnfResource> resourceTable = new HashMap<String, ILnfResource>();
+	private final Map<String, Object> settingTable = new ConcurrentHashMap<String, Object>();
+	private final Map<String, ILnfRenderer> rendererTable = new HashMap<String, ILnfRenderer>();
 	private ILnfMarkerSupportExtension[] markerSupportList = new ILnfMarkerSupportExtension[0];
 	private ILnfTheme theme;
 	private boolean initialized;
@@ -96,7 +97,7 @@ public class RienaDefaultLnf {
 			if (propKeyName.startsWith(SYSTEM_PROPERTY_LNF_SETTING_PREFIX)) {
 				String lnfKey = propKeyName.substring(SYSTEM_PROPERTY_LNF_SETTING_PREFIX.length());
 				Object lnfValue = sysProps.get(propKeyName);
-				getSettingTable().put(lnfKey, lnfValue);
+				settingTable.put(lnfKey, lnfValue);
 			}
 		}
 
@@ -108,9 +109,9 @@ public class RienaDefaultLnf {
 	 */
 	public void uninitialize() {
 		disposeAllResources();
-		getResourceTable().clear();
-		getRendererTable().clear();
-		getSettingTable().clear();
+		resourceTable.clear();
+		rendererTable.clear();
+		settingTable.clear();
 		setInitialized(false);
 		defaultColorsInitialized = false;
 	}
@@ -134,16 +135,16 @@ public class RienaDefaultLnf {
 	 */
 	@InjectExtension
 	public void update(ILnfRendererExtension[] rendererExtensions) {
-		getRendererTable().clear();
+		rendererTable.clear();
 		for (ILnfRendererExtension rendererExtension : rendererExtensions) {
 			String id = rendererExtension.getLnfId();
 			if (StringUtils.isEmpty(id) || id.equals(getLnfId())) {
 				if (StringUtils.isEmpty(id)) {
-					if (getRendererTable().get(rendererExtension.getLnfKey()) != null) {
+					if (rendererTable.get(rendererExtension.getLnfKey()) != null) {
 						continue;
 					}
 				}
-				getRendererTable().put(rendererExtension.getLnfKey(), rendererExtension.createRenderer());
+				rendererTable.put(rendererExtension.getLnfKey(), rendererExtension.createRenderer());
 			}
 		}
 
@@ -211,8 +212,8 @@ public class RienaDefaultLnf {
 			return;
 		}
 
-		getResourceTable().put("black", new ColorLnfResource(0, 0, 0)); //$NON-NLS-1$
-		getResourceTable().put("white", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
+		resourceTable.put("black", new ColorLnfResource(0, 0, 0)); //$NON-NLS-1$
+		resourceTable.put("white", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
 
 		if (getTheme() != null) {
 			getTheme().addCustomColors(getResourceTable());
@@ -251,12 +252,8 @@ public class RienaDefaultLnf {
 	 * Disposes all resources of the Look and Feel.
 	 */
 	private void disposeAllResources() {
-		Set<String> keys = getResourceTable().keySet();
-		for (String key : keys) {
-			ILnfResource value = getResourceTable().get(key);
-			if (value != null) {
-				value.dispose();
-			}
+		for (ILnfResource resource : resourceTable.values()) {
+			resource.dispose();
 		}
 	}
 
@@ -269,7 +266,7 @@ public class RienaDefaultLnf {
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
 	public Resource getResource(String key) {
-		ILnfResource value = getResourceTable().get(key);
+		ILnfResource value = resourceTable.get(key);
 		if (value != null) {
 			return value.getResource();
 		} else {
@@ -381,7 +378,7 @@ public class RienaDefaultLnf {
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
 	public ILnfRenderer getRenderer(String key) {
-		return getRendererTable().get(key);
+		return rendererTable.get(key);
 	}
 
 	/**
@@ -393,7 +390,7 @@ public class RienaDefaultLnf {
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
 	public Object getSetting(String key) {
-		return getSettingTable().get(key);
+		return settingTable.get(key);
 	}
 
 	/**
