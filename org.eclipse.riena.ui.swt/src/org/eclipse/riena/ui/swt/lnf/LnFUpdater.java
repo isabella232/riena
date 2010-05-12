@@ -106,12 +106,13 @@ public class LnFUpdater {
 	 *            composite which children are updated.
 	 */
 	public void updateUIControls(Composite parent, boolean updateLayout) {
-		if (!checkPropertyUpdateView()) {
-			return;
-		}
 
-		setDirtyLayout(false);
-		updateUIControlsRecursive(parent);
+		if (checkPropertyUpdateView()) {
+			setDirtyLayout(false);
+			updateUIControlsRecursive(parent);
+		} else {
+			setDirtyLayout(true);
+		}
 		if (updateLayout) {
 			updateLayout(parent);
 		}
@@ -128,9 +129,8 @@ public class LnFUpdater {
 	 */
 	private void updateLayout(Composite parent) {
 		if (isDirtyLayout()) {
-			parent.layout(true, true);
+			parent.layout(true, false);
 			setDirtyLayout(false);
-			// LOGGER.log(LogService.LOG_INFO, "Layout updated."); //$NON-NLS-1$
 		}
 	}
 
@@ -164,12 +164,12 @@ public class LnFUpdater {
 	 */
 	public void updateUIControlsAfterBind(Composite parent) {
 
-		if (!checkPropertyUpdateView()) {
-			return;
+		if (checkPropertyUpdateView()) {
+			setDirtyLayout(false);
+			updateUIControlsRecursive(parent);
+		} else {
+			setDirtyLayout(true);
 		}
-
-		setDirtyLayout(false);
-		updateUIControlsAfterBindRecursive(parent);
 		updateLayout(parent);
 
 		//		SwtUtilities.disposeWidget(tmpShell);
@@ -205,8 +205,8 @@ public class LnFUpdater {
 	 * 
 	 * @param uiControl
 	 *            UI control
-	 * @return {@code true} if the control must be updated; otherwise
-	 *         {@code false}
+	 * @return {@code true} if the control must be updated; otherwise {@code
+	 *         false}
 	 */
 	private boolean checkUpdateAfterBind(Control uiControl) {
 
@@ -245,7 +245,11 @@ public class LnFUpdater {
 	 * @param control
 	 *            UI control
 	 */
-	private void updateUIControl(Control control) {
+	public void updateUIControl(Control control) {
+
+		if (!checkPropertyUpdateView()) {
+			return;
+		}
 
 		int classModifiers = control.getClass().getModifiers();
 		if (!Modifier.isPublic(classModifiers)) {
@@ -292,8 +296,8 @@ public class LnFUpdater {
 	 *            UI control
 	 * @param property
 	 *            property to check
-	 * @return {@code true} if property should be ignored; otherwise
-	 *         {@code false}
+	 * @return {@code true} if property should be ignored; otherwise {@code
+	 *         false}
 	 */
 	private boolean ignoreProperty(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
 
