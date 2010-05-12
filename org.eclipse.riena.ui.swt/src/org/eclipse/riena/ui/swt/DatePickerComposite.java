@@ -37,7 +37,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -52,7 +51,8 @@ public class DatePickerComposite extends Composite {
 
 	private final Text textfield;
 	private final Button pickerButton;
-	private final DatePicker datePicker;
+
+	private DatePicker datePicker;
 	private IDateConverterStrategy dateConverterStrategy;
 
 	public DatePickerComposite(Composite parent, int textStyles) {
@@ -64,31 +64,23 @@ public class DatePickerComposite extends Composite {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(textfield);
 
 		pickerButton = new Button(this, SWT.ARROW | SWT.DOWN);
+		GridDataFactory.fillDefaults().grab(false, false).align(SWT.RIGHT, SWT.FILL).hint(BUTTON_WIDTH, BUTTON_HEIGHT)
+				.applyTo(pickerButton);
 		pickerButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (!(textfield.isEnabled() && textfield.getEditable())) {
-					return;
-				}
-				if (!datePicker.isVisible()) {
-					Point p = textfield.toDisplay(textfield.getLocation().x, textfield.getLocation().y);
-					datePicker.setLocation(p.x, p.y + textfield.getBounds().height);
-					datePicker.open(parseDate(textfield.getText()));
-				} else {
-					datePicker.close();
-				}
+				handleClick();
 			}
 		});
 
-		GridDataFactory.fillDefaults().grab(false, false).align(SWT.RIGHT, SWT.FILL).hint(BUTTON_WIDTH, BUTTON_HEIGHT)
-				.applyTo(pickerButton);
-		datePicker = new DatePicker(this);
 		dateConverterStrategy = new RegexDateConverterStrategy(textfield);
 	}
 
 	@Override
 	public void dispose() {
-		datePicker.dispose();
+		if (datePicker != null) {
+			datePicker.dispose();
+		}
 		super.dispose();
 	}
 
@@ -133,6 +125,22 @@ public class DatePickerComposite extends Composite {
 		return style;
 	}
 
+	private void handleClick() {
+		if (!(textfield.isEnabled() && textfield.getEditable())) {
+			return;
+		}
+		if (datePicker == null || datePicker.isDisposed()) {
+			datePicker = new DatePicker(this);
+		}
+		if (!datePicker.isVisible()) {
+			Point p = textfield.toDisplay(textfield.getLocation().x, textfield.getLocation().y);
+			datePicker.setLocation(p.x, p.y + textfield.getBounds().height);
+			datePicker.open(parseDate(textfield.getText()));
+		} else {
+			datePicker.close();
+		}
+	}
+
 	private Button getPickerButton() {
 		return pickerButton;
 	}
@@ -171,9 +179,11 @@ public class DatePickerComposite extends Composite {
 	}
 
 	/**
-	 * This class shows and hides a DateTime "date picker" on request.
+	 * This class shows and hides a DateTime "date picker" on request. *
+	 * <p>
+	 * This class is NOT API - do not reference. Public for testing only.
 	 */
-	private static final class DatePicker {
+	public static final class DatePicker {
 
 		/**
 		 * Height of the widget's header on windows. Don't close when clicked
@@ -198,8 +208,7 @@ public class DatePickerComposite extends Composite {
 		 */
 		protected DatePicker(final DatePickerComposite datePicker) {
 			this.datePicker = datePicker;
-			Shell parentShell = datePicker.getPickerButton().getShell();
-			shell = new Shell(parentShell, SWT.NO_TRIM | SWT.ON_TOP);
+			shell = new Shell(datePicker.getShell(), SWT.NO_TRIM | SWT.ON_TOP);
 			shell.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 			GridLayoutFactory.fillDefaults().margins(1, 1).applyTo(shell);
 
@@ -249,7 +258,7 @@ public class DatePickerComposite extends Composite {
 				@Override
 				public void focusLost(FocusEvent e) {
 					Display display = e.widget.getDisplay();
-					Control focusControl = SWTFacade.getDefault().getCursorControl(display);
+					Control focusControl = display.getCursorControl();
 					if (focusControl != datePicker.getPickerButton()) {
 						close();
 					}
@@ -265,6 +274,10 @@ public class DatePickerComposite extends Composite {
 
 		public void setLocation(int x, int y) {
 			shell.setLocation(x, y);
+		}
+
+		public boolean isDisposed() {
+			return shell == null || shell.isDisposed();
 		}
 
 		public boolean isVisible() {
