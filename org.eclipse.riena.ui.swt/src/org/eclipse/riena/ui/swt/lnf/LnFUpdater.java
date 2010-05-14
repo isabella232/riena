@@ -55,6 +55,7 @@ public class LnFUpdater {
 
 	private static CacheLRU resourceCache = new CacheLRU(200);
 	private static final Object NULL_RESOURCE = new Object();
+	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	/**
 	 * System property defining if properties of views are updated.
@@ -67,7 +68,6 @@ public class LnFUpdater {
 
 	private final static List<PropertyDescriptor> EMPTY_DESCRIPTORS = Collections.emptyList();
 
-	//	private Shell tmpShell;
 	private static final Composite SHELL_COMPOSITE = new Composite(new Shell(), SWT.NONE);
 
 	private boolean dirtyLayout;
@@ -117,8 +117,6 @@ public class LnFUpdater {
 			updateLayout(parent);
 		}
 
-		//		SwtUtilities.disposeWidget(tmpShell);
-		//		tmpShell = null;
 	}
 
 	/**
@@ -171,9 +169,6 @@ public class LnFUpdater {
 			setDirtyLayout(true);
 		}
 		updateLayout(parent);
-
-		//		SwtUtilities.disposeWidget(tmpShell);
-		//		tmpShell = null;
 
 	}
 
@@ -247,8 +242,8 @@ public class LnFUpdater {
 	 *            UI control
 	 * @param property
 	 *            property to check
-	 * @return {@code true} if property should be ignored; otherwise
-	 *         {@code false}
+	 * @return {@code true} if property should be ignored; otherwise {@code
+	 *         false}
 	 */
 	private boolean ignoreProperty(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
 
@@ -289,7 +284,7 @@ public class LnFUpdater {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		String style = (String) control.getData(UIControlsFactory.KEY_LNF_STYLE);
 		if (StringUtils.isGiven(style)) {
-			style += "."; //$NON-NLS-1$
+			style += '.';
 			Set<String> keys = lnf.getResourceTable().keySet();
 			for (String key : keys) {
 				if (key.startsWith(style)) {
@@ -315,7 +310,7 @@ public class LnFUpdater {
 
 		String className = getSimpleClassName(controlClass);
 		if (className.length() != 0) {
-			className += "."; //$NON-NLS-1$
+			className += '.';
 			RienaDefaultLnf lnf = LnfManager.getLnf();
 			Set<String> keys = lnf.getResourceTable().keySet();
 			for (String key : keys) {
@@ -350,8 +345,6 @@ public class LnFUpdater {
 		}
 		return simpleName;
 	}
-
-	private final static String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	private String getSimpleClassNameBasic(final Class<? extends Control> controlClass) {
 		String simpleName;
@@ -550,10 +543,6 @@ public class LnFUpdater {
 			return null;
 		}
 		try {
-			// TODO is this necessary?
-			if (!getter.isAccessible()) {
-				getter.setAccessible(true);
-			}
 			return getter.invoke(control);
 		} catch (Exception failure) {
 			// TODO This is a workaround of a nebula "bug"
@@ -610,12 +599,16 @@ public class LnFUpdater {
 					if (setter == null) {
 						continue;
 					}
-					int setterModifiers = setter.getModifiers();
-					if (!Modifier.isPublic(setterModifiers)) {
+					int modifiers = setter.getModifiers();
+					if (!Modifier.isPublic(modifiers)) {
 						continue;
 					}
 					Method getter = descriptor.getReadMethod();
 					if (getter == null) {
+						continue;
+					}
+					modifiers = getter.getModifiers();
+					if (!Modifier.isPublic(modifiers)) {
 						continue;
 					}
 					if (ignoreProperty(controlClass, descriptor)) {
@@ -755,8 +748,10 @@ public class LnFUpdater {
 		}
 
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
-		String lnfKey = style + "." + property.getName(); //$NON-NLS-1$
-		return lnf.getResource(lnfKey);
+		StringBuilder lnfKey = new StringBuilder(style);
+		lnfKey.append('.');
+		lnfKey.append(property.getName());
+		return lnf.getResource(lnfKey.toString());
 
 	}
 
@@ -772,7 +767,6 @@ public class LnFUpdater {
 	 */
 	private Control createDefaultControl(final Class<? extends Control> controlClass, int style) {
 
-		//		Composite parent = getTmpShellComposite();
 		Composite parent = SHELL_COMPOSITE;
 
 		// this is the most likely case
@@ -796,7 +790,7 @@ public class LnFUpdater {
 				boolean parentAssigned = false;
 				boolean styleAssigned = false;
 				for (int i = 0; i < paramTypes.length; i++) {
-					if (paramTypes[i].isAssignableFrom(parent.getClass()) && !parentAssigned) {
+					if (paramTypes[i].isAssignableFrom(Composite.class) && !parentAssigned) {
 						params[i] = parent;
 						parentAssigned = true;
 					} else if (paramTypes[i].isAssignableFrom(Integer.TYPE) && !styleAssigned) {
@@ -853,29 +847,6 @@ public class LnFUpdater {
 			return null;
 		}
 	}
-
-	//	/**
-	//	 * Returns a temporary shell. This shell will be disposed after all controls
-	//	 * a updated.
-	//	 * 
-	//	 * @return temporary shell
-	//	 */
-	//	private Shell getTmpShell() {
-	//		if (tmpShell == null) {
-	//			tmpShell = new Shell();
-	//			new Composite(tmpShell, SWT.NONE);
-	//		}
-	//		return tmpShell;
-	//	}
-	//
-	//	/**
-	//	 * Returns the composite inside the temporary shell.
-	//	 * 
-	//	 * @return composite of temporary shell
-	//	 */
-	//	private Composite getTmpShellComposite() {
-	//		return (Composite) getTmpShell().getChildren()[0];
-	//	}
 
 	private void setDirtyLayout(boolean dirtyLayout) {
 		this.dirtyLayout = dirtyLayout;
