@@ -46,10 +46,9 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 
 	}
 
-	private class MockDisplay extends Display {
+	private static class MockDisplay extends Display {
 
 		private int syncExecCalls = 0;
-
 		private int asyncExecCalls = 0;
 
 		@Override
@@ -86,10 +85,10 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 
 	}
 
-	class DummyJob implements Runnable {
-		AtomicBoolean done = new AtomicBoolean(false);
-		long sleepTime = 0;
-		CountDownLatch latch = new CountDownLatch(1);
+	private static class DummyJob implements Runnable {
+		private AtomicBoolean done = new AtomicBoolean(false);
+		private long sleepTime = 0;
+		private CountDownLatch latch = new CountDownLatch(1);
 
 		public void run() {
 			try {

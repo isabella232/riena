@@ -197,8 +197,10 @@ public class LnFUpdaterTest extends RienaTestCase {
 	 * Tests the <i>private</i> method {@code updateUIControl}.
 	 */
 	public void testUpdateUIControl() {
+		String oldUpdateValue = System.getProperty("riena.lnf.update.view", "");
 		RienaDefaultLnf oldLnf = LnfManager.getLnf();
 		try {
+			System.setProperty("riena.lnf.update.view", "true");
 			RienaDefaultLnf lnf = new RienaDefaultLnf();
 			LnfManager.setLnf(lnf);
 			lnf.setTheme(new MyTheme());
@@ -209,6 +211,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 			assertEquals(themeColor, labelColor);
 		} finally {
 			LnfManager.setLnf(oldLnf);
+			System.setProperty("riena.lnf.update.view", oldUpdateValue);
 		}
 	}
 
