@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.riena.navigation.ui.swt" id="moduleGroupView" name="Module group view"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         This extension point allows to replace the &quot;standard&quot; module group view/controller with a &quot;custom&quot; module group view/controller.
       </documentation>
    </annotation>
 
