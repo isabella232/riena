@@ -497,7 +497,6 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		if (number.length() > 0 && number.charAt(0) == MINUS_SIGN) {
 			length -= 1;
 		}
-		System.out.println("number= " + number + ", len: " + length); //$NON-NLS-1$ //$NON-NLS-2$
 		if (maxLength < length) {
 			String msg = String.format("Length (%d) exceeded: %s", maxLength, number); //$NON-NLS-1$
 			throw new NumberFormatException(msg);
