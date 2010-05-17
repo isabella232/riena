@@ -62,7 +62,7 @@ public final class SnippetDecimalTextRidget001 {
 			rInput.bindToModel(new DoubleBean(1234.56), DoubleBean.PROP_VALUE);
 			rInput.updateFromModel();
 
-			shell.setSize(270, 270);
+			shell.setSize(300, 200);
 			shell.open();
 			while (!shell.isDisposed()) {
 				if (!display.readAndDispatch()) {
