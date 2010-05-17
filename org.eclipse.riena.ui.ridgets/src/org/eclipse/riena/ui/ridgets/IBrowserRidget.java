@@ -28,24 +28,24 @@ public interface IBrowserRidget extends IValueRidget {
 	String PROPERTY_URL = "url"; //$NON-NLS-1$
 
 	/**
-	 * Sets the url.
-	 * 
-	 * @param newUrl
-	 *            a String that conforms to the constraints dictated by the
-	 *            underlying widget (for example an SWT Browser with IE or
-	 *            Mozilla underneath). May be null, empty, or browser specific,
-	 *            such as 'about:blank'.
-	 */
-	void setUrl(String newUrl);
-
-	/**
-	 * Return the url of this ridget.
+	 * Return the url of this ridget or null.
+	 * <p>
+	 * The default value is null.
 	 * 
 	 * @return the url as a String. It is not guaranteed that the return value
 	 *         is a valid url. For example it may be null, empty or browser
 	 *         specific, such as 'about:blank'.
 	 */
 	String getUrl();
+
+	/**
+	 * Return the text last set into the ridget or null.
+	 * <p>
+	 * The default value is null.
+	 * 
+	 * @since 2.0
+	 */
+	String getText();
 
 	/**
 	 * Returns true, if an OutputMarker was added.
@@ -66,4 +66,29 @@ public interface IBrowserRidget extends IValueRidget {
 	 *            (=cannot be edited), <code>false</code> otherwise.
 	 */
 	void setOutputOnly(boolean outputOnly);
+
+	/**
+	 * A html String to show in the ridget.
+	 * <p>
+	 * Setting the text will also set the url value to null or 'about:blank'.
+	 * 
+	 * @param text
+	 *            a String of HTML content.
+	 * 
+	 * @since 2.0
+	 */
+	void setText(String text);
+
+	/**
+	 * Sets the url.
+	 * <p>
+	 * Setting the url will also set the text value to null.
+	 * 
+	 * @param newUrl
+	 *            a String that conforms to the constraints dictated by the
+	 *            underlying widget (for example an SWT Browser with IE or
+	 *            Mozilla underneath). May be null, empty, or browser specific,
+	 *            such as 'about:blank'.
+	 */
+	void setUrl(String newUrl);
 }

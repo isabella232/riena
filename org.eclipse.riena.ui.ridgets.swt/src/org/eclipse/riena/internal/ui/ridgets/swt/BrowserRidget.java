@@ -18,6 +18,7 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationEvent;
 import org.eclipse.swt.browser.LocationListener;
 
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
@@ -36,7 +37,9 @@ import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
 public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget {
 
 	private final BrowserUrlListener locationListener;
+
 	private String url;
+	private String text;
 
 	public BrowserRidget() {
 		locationListener = new BrowserUrlListener();
@@ -51,7 +54,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	protected void bindUIControl() {
 		Browser control = getUIControl();
 		if (control != null) {
-			updateURL();
+			updateUIControl();
 			control.addLocationListener(locationListener);
 		}
 	}
@@ -80,6 +83,10 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		return (Browser) super.getUIControl();
 	}
 
+	public String getText() {
+		return text;
+	}
+
 	public String getUrl() {
 		return url;
 	}
@@ -93,26 +100,44 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		return true;
 	}
 
+	public void setText(String text) {
+		if (!StringUtils.equals(this.text, text)) {
+			this.text = text;
+			String oldUrl = this.url;
+			this.url = null;
+			updateUIControl();
+			firePropertyChange(IBrowserRidget.PROPERTY_URL, oldUrl, this.url);
+		}
+	}
+
 	public void setUrl(String url) {
-		String oldValue = this.getUrl();
-		this.url = url;
-		updateURL();
-		firePropertyChange(IBrowserRidget.PROPERTY_URL, oldValue, this.url);
+		if (!StringUtils.equals(this.url, url)) {
+			String oldUrl = this.getUrl();
+			this.text = null;
+			this.url = url;
+			updateUIControl();
+			firePropertyChange(IBrowserRidget.PROPERTY_URL, oldUrl, this.url);
+		}
 	}
 
 	// helping methods
 	//////////////////
 
-	private void updateURL() {
+	private String convertNullToEmpty(String string) {
+		return string != null ? string : ""; //$NON-NLS-1$
+	}
+
+	private void updateUIControl() {
 		Browser control = getUIControl();
 		if (control != null) {
-			String theUrl = getUrl() != null ? getUrl() : ""; //$NON-NLS-1$
-			if (!control.getUrl().equals(theUrl)) {
-				locationListener.setBlock(false);
-				try {
-					control.setUrl(theUrl);
-				} finally {
-					locationListener.setBlock(true);
+			if (text != null) {
+				if (!text.equals(control.getText())) {
+					control.setText(text);
+				}
+			} else {
+				String url = convertNullToEmpty(this.url);
+				if (!url.equals(control.getUrl())) {
+					control.setUrl(url);
 				}
 			}
 		}
@@ -126,26 +151,30 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	 * Ridget's URL if necessary.
 	 */
 	private final class BrowserUrlListener implements LocationListener {
-
-		private boolean canBlock = true;
-
-		public void setBlock(boolean canBlock) {
-			this.canBlock = canBlock;
-		}
-
 		public void changing(LocationEvent event) {
-			if (isOutputOnly() && canBlock) {
-				// this will prevent the browser from following the link
+			if (isOutputOnly() && blockUrl(event)) {
 				event.doit = false;
 			}
 		}
 
 		public void changed(LocationEvent event) {
-			if (event.top) {
+			// System.out.println("changed: " + event);
+			if (event.top && BrowserRidget.this.text == null) {
 				setUrl(event.location);
 			}
 		}
 
+		private boolean blockUrl(LocationEvent event) {
+			boolean hasText = BrowserRidget.this.text != null;
+			boolean hasNoUrl = event.location == null || "about:blank".equals(event.location); //$NON-NLS-1$
+			if (hasText && hasNoUrl) {
+				return false;
+			}
+			String targetUrl = BrowserRidget.this.url;
+			// check for substring - not equality - because the event.location 
+			// url may have been 'formatted' by the browser
+			return event.location == null || targetUrl == null || !event.location.contains(targetUrl);
+		}
 	}
 
 }

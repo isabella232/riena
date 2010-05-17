@@ -10,16 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
@@ -30,7 +27,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 
 	@Override
-	protected Widget createWidget(Composite parent) {
+	protected Browser createWidget(Composite parent) {
 		return new Browser(parent, SWT.NONE);
 	}
 
@@ -97,6 +94,51 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(url1, ridget.getUrl());
 	}
 
+	public void testSetText() {
+		IBrowserRidget ridget = getRidget();
+		final String text = "<html><body><h1>Riena</h1></body></html>";
+
+		ridget.setText(text);
+
+		assertEquals(text, ridget.getText());
+
+		ridget.setText("");
+
+		assertEquals("", ridget.getText());
+
+		ridget.setText(null);
+
+		assertEquals(null, ridget.getText());
+	}
+
+	public void testSetTextClearsUrl() {
+		IBrowserRidget ridget = getRidget();
+		final String text = "<html><body><p>riena</p></body></html>";
+
+		ridget.setUrl("http://eclipse.org");
+		ridget.setText(text);
+
+		assertEquals(null, ridget.getUrl());
+		assertEquals(text, ridget.getText());
+	}
+
+	public void testSetTextOnOutputOnly() {
+		IBrowserRidget ridget = getRidget();
+		Browser control = getWidget();
+
+		assertNull(ridget.getText());
+
+		// allow ridget.setText() on output only
+		ridget.setOutputOnly(true);
+		final String text = "<hmtl><body><h2>Riena</h2></body></html>";
+		ridget.setText(text);
+		UITestHelper.readAndDispatch(control);
+
+		assertEquals(text, ridget.getText());
+		// browser may add line breaks - just check if 'Riena' is in the output
+		assertTrue("control.text:" + control.getText(), control.getText().contains("Riena"));
+	}
+
 	public void testSetUrl() {
 		IBrowserRidget ridget = getRidget();
 
@@ -123,7 +165,37 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("about:blank", ridget.getUrl());
 	}
 
-	public void testSetUrlFiresEvents() {
+	public void testSetUrlClearsText() {
+		IBrowserRidget ridget = getRidget();
+
+		ridget.setText("riena");
+		ridget.setUrl("http://eclipse.org");
+
+		assertEquals("http://eclipse.org", ridget.getUrl());
+		assertEquals(null, ridget.getText());
+	}
+
+	public void testSetUrlOnOutputOnly() {
+		IBrowserRidget ridget = getRidget();
+
+		assertNull(ridget.getUrl());
+
+		// allow ridget.setUrl() on output only
+		ridget.setOutputOnly(true);
+		ridget.setUrl("http://www.redview.org");
+		// ridget.addPropertyChangeListener(new PropertyChangeListener() {
+		//	public void propertyChange(PropertyChangeEvent evt) {
+		//		System.out.println(evt.getPropertyName() + " " + evt.getNewValue());
+		//	}
+		// });
+
+		assertEquals("http://www.redview.org", ridget.getUrl());
+
+		// disallow widget.setUrl() on output only - can't test this because
+		// widget.getUrl() is not reliable because of timing + network access
+	}
+
+	public void testSettersFireUrlEvents() {
 		IBrowserRidget ridget = getRidget();
 		final String newValue = "http://www.redview.org";
 		final String oldValue = ridget.getUrl();
@@ -137,25 +209,32 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		expectNoPropertyChangeEvent();
 		ridget.setUrl(newValue);
 		verifyPropertyChangeEvents();
+
+		expectPropertyChangeEvent(IBrowserRidget.PROPERTY_URL, newValue, null);
+		ridget.setText("<html><body><h1>h1</h1></body></html>");
+		verifyPropertyChangeEvents();
+
+		expectNoPropertyChangeEvent();
+		ridget.setText("<html><body><h1>h1</h1></body></html>");
+		verifyPropertyChangeEvents();
 	}
 
-	public void testSetUrlOnOutputOnly() {
+	public void testApplyTextOnRebind() {
 		IBrowserRidget ridget = getRidget();
+		Browser control1 = getWidget();
 
-		assertNull(ridget.getUrl());
+		final String text = "<html><body><h1>Riena</h1></body></html>";
+		ridget.setText(text);
+		UITestHelper.readAndDispatch(control1);
 
-		// allow ridget.setUrl() on output only
-		ridget.setOutputOnly(true);
-		ridget.setUrl("http://www.redview.org");
-		ridget.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				System.out.println(evt.getPropertyName() + " " + evt.getNewValue());
-			}
-		});
+		// browser may add line breaks - just check if 'Riena' is in the output
+		assertTrue("control1.text:" + control1.getText(), control1.getText().contains("Riena"));
 
-		assertEquals("http://www.redview.org", ridget.getUrl());
+		Browser control2 = createWidget(getShell());
+		ridget.setUIControl(control2);
+		UITestHelper.readAndDispatch(control2);
 
-		// disallow widget.setUrl() on output only - can't test this because
-		// widget.getUrl() is not reliable because of timing + network access
+		// browser may add line breaks - just check if 'Riena' is in the output
+		assertTrue("control2.text:" + control2.getText(), control2.getText().contains("Riena"));
 	}
 }
