@@ -132,11 +132,13 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		if (control != null) {
 			if (text != null) {
 				if (!text.equals(control.getText())) {
+					locationListener.unblock();
 					control.setText(text);
 				}
 			} else {
 				String url = convertNullToEmpty(this.url);
 				if (!url.equals(control.getUrl())) {
+					locationListener.unblock();
 					control.setUrl(url);
 				}
 			}
@@ -151,29 +153,44 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	 * Ridget's URL if necessary.
 	 */
 	private final class BrowserUrlListener implements LocationListener {
+
+		private boolean block;
+
+		/**
+		 * Allow the next url-change, even if output-only marker is set.
+		 * <p>
+		 * This is used by updateUIControl() to permit updating a widget on
+		 * rebind, setText, setUrl.
+		 * <p>
+		 * Implementation notes: {@link #changing(LocationEvent)} is invoked an
+		 * undefined time after {@link #unblock()}, since the page load happens
+		 * asynchronously. Currently there is no synchronisation build in - we
+		 * simply allow the next change. This is not likely to cause problems,
+		 * however it could allow another change to happen, if it is processed
+		 * before the intended LocationEvent. The event.location value is
+		 * formatted by the browser and may have things added (parameters,
+		 * http://www prefix) so checking for BrowserRidget.url equality is not
+		 * an option for identifying which url to unblock.
+		 */
+		public void unblock() {
+			block = false;
+		}
+
 		public void changing(LocationEvent event) {
-			if (isOutputOnly() && blockUrl(event)) {
+			if (isOutputOnly() && block) {
 				event.doit = false;
 			}
+			block = true;
 		}
 
 		public void changed(LocationEvent event) {
-			// System.out.println("changed: " + event);
-			if (event.top && BrowserRidget.this.text == null) {
+			if (event.top && !isNullOrAboutBlank(event.location)) {
 				setUrl(event.location);
 			}
 		}
 
-		private boolean blockUrl(LocationEvent event) {
-			boolean hasText = BrowserRidget.this.text != null;
-			boolean hasNoUrl = event.location == null || "about:blank".equals(event.location); //$NON-NLS-1$
-			if (hasText && hasNoUrl) {
-				return false;
-			}
-			String targetUrl = BrowserRidget.this.url;
-			// check for substring - not equality - because the event.location 
-			// url may have been 'formatted' by the browser
-			return event.location == null || targetUrl == null || !event.location.contains(targetUrl);
+		private boolean isNullOrAboutBlank(String url) {
+			return url == null || "about:blank".equals(url); //$NON-NLS-1$
 		}
 	}
 
