@@ -104,6 +104,8 @@ public class LnFUpdater {
 	 * 
 	 * @param parent
 	 *            composite which children are updated.
+	 * @param updateLayout
+	 *            on {@code true} update the layout; otherwise not
 	 */
 	public void updateUIControls(Composite parent, boolean updateLayout) {
 
@@ -242,8 +244,8 @@ public class LnFUpdater {
 	 *            UI control
 	 * @param property
 	 *            property to check
-	 * @return {@code true} if property should be ignored; otherwise {@code
-	 *         false}
+	 * @return {@code true} if property should be ignored; otherwise
+	 *         {@code false}
 	 */
 	private boolean ignoreProperty(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
 
