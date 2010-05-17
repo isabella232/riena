@@ -392,11 +392,11 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), localize("123456,12345\r"));
+		UITestHelper.sendString(control.getDisplay(), localize("123456,12345-\r"));
 
-		assertEquals(localize("123.456,123"), control.getText());
-		assertEquals(localize("123.456,123"), ridget.getText());
-		assertEquals(localize("123.456,123"), bean.getValue());
+		assertEquals(localize("-123.456,123"), control.getText());
+		assertEquals(localize("-123.456,123"), ridget.getText());
+		assertEquals(localize("-123.456,123"), bean.getValue());
 	}
 
 	public void testGetSetMaxLength() {
@@ -549,14 +549,14 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			assertEquals(localize("123,00"), control.getText());
 		}
 
-		ridget.setText(localize("321"));
+		ridget.setText(localize("-321"));
 		try {
 			ridget.setText(localize("1234"));
 			fail();
 		} catch (RuntimeException rex) {
 			// expected
-			assertEquals(localize("321"), ridget.getText());
-			assertEquals(localize("321,00"), control.getText());
+			assertEquals(localize("-321"), ridget.getText());
+			assertEquals(localize("-321,00"), control.getText());
 		}
 	}
 
@@ -582,7 +582,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			assertEquals(localize("123,00"), control.getText());
 		}
 
-		value.setValue(321d);
+		value.setValue(-321d);
 		ridget.updateFromModel();
 		try {
 			value.setValue(1234d);
@@ -590,8 +590,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			fail();
 		} catch (RuntimeException rex) {
 			// expected
-			assertEquals(localize("321"), ridget.getText());
-			assertEquals(localize("321,00"), control.getText());
+			assertEquals(localize("-321"), ridget.getText());
+			assertEquals(localize("-321,00"), control.getText());
 		}
 	}
 

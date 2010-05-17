@@ -12,12 +12,18 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import com.ibm.icu.text.NumberFormat;
+
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.core.databinding.conversion.IConverter;
+import org.eclipse.core.databinding.conversion.NumberToStringConverter;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -33,6 +39,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -171,7 +178,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 
 	protected static final char DECIMAL_SEPARATOR = new DecimalFormatSymbols().getDecimalSeparator();
 	protected static final char GROUPING_SEPARATOR = new DecimalFormatSymbols().getGroupingSeparator();
-	private static final char MINUS_SIGN = new DecimalFormatSymbols().getMinusSign();
+	protected static final char MINUS_SIGN = new DecimalFormatSymbols().getMinusSign();
 	protected static final char ZERO = '0';
 	protected static final String ZERO_DEC = String.valueOf('0') + DECIMAL_SEPARATOR;
 	private static final String MINUS_ZERO = String.valueOf(MINUS_SIGN) + ZERO;
@@ -188,6 +195,11 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	private NegativeMarker negativeMarker;
 	private int maxLength;
 	private int precision;
+
+	/**
+	 * True, if this ridget has a custom model-to-control converter
+	 */
+	private boolean hasCustomConverter;
 
 	public NumericTextRidget() {
 		super("0"); //$NON-NLS-1$
@@ -221,6 +233,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		if (!"".equals(number)) { //$NON-NLS-1$
 			BigInteger bigInteger = checkIsNumber(number);
 			checkSigned(bigInteger);
+			checkMaxLength(number);
 		}
 	}
 
@@ -245,14 +258,48 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		super.addListeners(control);
 	}
 
+	protected IConverter getConverter(Class<?> type, int precision) {
+		IConverter result = null;
+		if (hasCustomConverter) {
+			result = getValueBindingSupport().getModelToUIControlConverter();
+		} else {
+			NumberFormat nf = NumberFormat.getNumberInstance();
+			nf.setMaximumFractionDigits(precision);
+			if (BigDecimal.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromBigDecimal(nf);
+			} else if (BigInteger.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromBigInteger(nf);
+			} else if (Byte.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromByte(nf, false);
+			} else if (Double.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromDouble(nf, false);
+			} else if (Float.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromFloat(nf, false);
+			} else if (Integer.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromInteger(nf, false);
+			} else if (Long.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromLong(nf, false);
+			} else if (Short.class.isAssignableFrom(type)) {
+				result = NumberToStringConverter.fromShort(nf, false);
+			}
+		}
+		return result;
+	}
+
 	protected synchronized int getPrecision() {
 		return precision;
 	}
 
-	protected synchronized int getMaxLength() {
-		return maxLength;
-	}
-
+	/**
+	 * Converts text to BigInteger and checks if it is less than zero.
+	 * <p>
+	 * Subclasses may override and adjust to their needs without calling
+	 * super().
+	 * 
+	 * @param text
+	 *            a String representing a numeric value; never null
+	 * @return true if text is negative, false otherwise.
+	 */
 	protected boolean isNegative(String text) {
 		BigInteger value = new BigInteger(text);
 		return (value.compareTo(BigInteger.ZERO) < 0);
@@ -276,10 +323,6 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		}
 	}
 
-	protected synchronized void setMaxLength(int maxLength) {
-		this.maxLength = maxLength;
-	}
-
 	@Override
 	protected void setUIText(String text) {
 		if (isDecimal() && text.length() > 0) {
@@ -289,8 +332,27 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		}
 	}
 
+	@Override
+	public void setUIControlToModelConverter(IConverter converter) {
+		hasCustomConverter = converter != null;
+		super.setUIControlToModelConverter(converter);
+	}
+
 	// API methods
 	//////////////
+
+	public final synchronized int getMaxLength() {
+		return maxLength;
+	}
+
+	@Override
+	public synchronized String getText() {
+		String result = super.getText();
+		if (isDecimal()) {
+			result = removeTrailingPadding(result);
+		}
+		return result;
+	}
 
 	public synchronized boolean isGrouping() {
 		return isGrouping;
@@ -318,6 +380,15 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		}
 	}
 
+	public final synchronized void setMaxLength(int maxLength) {
+		Assert.isLegal(maxLength > 0, "maxLength must be greater than zero: " + maxLength); //$NON-NLS-1$
+		int oldValue = this.maxLength;
+		if (oldValue != maxLength) {
+			this.maxLength = maxLength;
+			firePropertyChange(INumericTextRidget.PROPERTY_MAXLENGTH, oldValue, maxLength);
+		}
+	}
+
 	public final synchronized void setSigned(boolean signed) {
 		if (isSigned != signed) {
 			boolean oldValue = isSigned;
@@ -329,8 +400,9 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * If decimal and/or grouping separators are contained in the given {@code
-	 * text} value, they must follow the convention of the current locale.
+	 * If decimal and/or grouping separators are contained in the given
+	 * {@code text} value, they must follow the convention of the current
+	 * locale.
 	 * <p>
 	 * Examples:
 	 * <ul>
@@ -349,17 +421,18 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		super.setText(group(ungroup(value), isGrouping, isDecimal()));
 	}
 
-	@Override
-	public synchronized String getText() {
-		String result = super.getText();
-		if (isDecimal()) {
-			result = removeTrailingPadding(result);
-		}
-		return result;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * 
+	 * @throws RuntimeException
+	 *             if the value obtain from model exceeds the specified maximum
+	 *             length or precision. It is responsibility of application to
+	 *             handle this.
+	 */
 	@Override
 	public synchronized void updateFromModel() {
+		checkValue();
 		super.updateFromModel();
 	}
 
@@ -416,11 +489,34 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		}
 	}
 
+	private void checkMaxLength(String number) {
+		if (maxLength == -1) {
+			return;
+		}
+		int length = number.length() - StringUtils.count(number, GROUPING_SEPARATOR);
+		if (number.length() > 0 && number.charAt(0) == MINUS_SIGN) {
+			length -= 1;
+		}
+		System.out.println("number= " + number + ", len: " + length); //$NON-NLS-1$ //$NON-NLS-2$
+		if (maxLength < length) {
+			String msg = String.format("Length (%d) exceeded: %s", maxLength, number); //$NON-NLS-1$
+			throw new NumberFormatException(msg);
+		}
+	}
+
 	private void checkSigned(BigInteger value) {
 		if (!isSigned() && value.compareTo(BigInteger.ZERO) == -1) {
 			throw new NumberFormatException("Negative numbers not allowed: " + value); //$NON-NLS-1$
 		}
+	}
 
+	private void checkValue() {
+		Object value = getValueBindingSupport().getModelObservable().getValue();
+		Class<?> type = (Class<?>) getValueBindingSupport().getModelObservable().getValueType();
+		IConverter converter = getConverter(type, Integer.MAX_VALUE);
+		if (converter != null) {
+			checkNumber((String) converter.convert(value));
+		}
 	}
 
 	private void startModifyListener() {
@@ -440,12 +536,12 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 				result = String.format("%c?", MINUS_SIGN) + result; //$NON-NLS-1$
 			}
 		} else {
-			int length = input.length();
+			// -1 => no length limit
+			int length = getMaxLength() == -1 ? input.length() : getMaxLength();
 			if (isSigned) {
-				int min = Math.max(0, length - 1);
-				result = String.format("%c?\\d{%d,%d}", MINUS_SIGN, min, length); //$NON-NLS-1$
+				result = String.format("%c?\\d{0,%d}", MINUS_SIGN, length); //$NON-NLS-1$
 			} else {
-				result = String.format("\\d{%d}", length); //$NON-NLS-1$
+				result = String.format("\\d{0,%d}", length); //$NON-NLS-1$
 			}
 		}
 		// System.out.println("pattern: " + result);

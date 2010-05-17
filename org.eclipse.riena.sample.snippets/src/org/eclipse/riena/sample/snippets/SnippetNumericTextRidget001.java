@@ -15,22 +15,22 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.beans.common.IntegerBean;
-import org.eclipse.riena.ui.core.marker.ValidationTime;
-import org.eclipse.riena.ui.ridgets.INumericTextRidget;
-import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
-import org.eclipse.riena.ui.ridgets.validation.MaxNumberLength;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.beans.common.IntegerBean;
+import org.eclipse.riena.ui.ridgets.INumericTextRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
+
 /**
- * Demonstrates how to use a {@link INumericTextRidget} with a
- * {@link MaxNumberLength} validation rule.
+ * Demonstrates how to use a {@link INumericTextRidget} with a length limit.
  */
 public final class SnippetNumericTextRidget001 {
 
@@ -38,6 +38,7 @@ public final class SnippetNumericTextRidget001 {
 		Display display = Display.getDefault();
 		try {
 			Shell shell = new Shell();
+			shell.setText(SnippetNumericTextRidget001.class.getSimpleName());
 			shell.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
@@ -49,22 +50,22 @@ public final class SnippetNumericTextRidget001 {
 			Text txtOutput = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtOutput);
 
-			INumericTextRidget rInput = (INumericTextRidget) SwtRidgetFactory
-					.createRidget(txtInput);
+			INumericTextRidget rInput = (INumericTextRidget) SwtRidgetFactory.createRidget(txtInput);
 			rInput.setDirectWriting(true);
-			rInput.addValidationRule(new MaxNumberLength(6), ValidationTime.ON_UI_CONTROL_EDIT);
+			rInput.setMaxLength(6);
 
 			ITextRidget rOutput = (ITextRidget) SwtRidgetFactory.createRidget(txtOutput);
 			rOutput.setOutputOnly(true);
 
 			DataBindingContext dbc = new DataBindingContext();
-			dbc.bindValue(BeansObservables.observeValue(rOutput, ITextRidget.PROPERTY_TEXT), BeansObservables
-					.observeValue(rInput, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
-					UpdateValueStrategy.POLICY_NEVER), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+			dbc.bindValue(BeansObservables.observeValue(rOutput, ITextRidget.PROPERTY_TEXT),
+					BeansObservables.observeValue(rInput, ITextRidget.PROPERTY_TEXT), null, new UpdateValueStrategy());
 			rInput.bindToModel(new IntegerBean(12345), IntegerBean.PROP_VALUE);
 			rInput.updateFromModel();
 
-			shell.setSize(200, 200);
+			Button b = new Button(shell, SWT.PUSH);
+
+			shell.setSize(300, 200);
 			shell.open();
 			while (!shell.isDisposed()) {
 				if (!display.readAndDispatch()) {

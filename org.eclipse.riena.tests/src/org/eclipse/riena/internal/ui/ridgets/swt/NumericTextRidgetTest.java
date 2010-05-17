@@ -27,7 +27,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.beans.common.DoubleBean;
 import org.eclipse.riena.beans.common.IntegerBean;
+import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
@@ -978,7 +980,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(INTEGER_ONE, bean.getValue());
 	}
 
-	public void testMaxLength() throws Exception {
+	public void testMaxLengthWithRule() throws Exception {
 		ITextRidget ridget = getRidget();
 		Text control = getWidget();
 
@@ -1145,6 +1147,106 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.setMandatory(false);
 
 		TestUtils.assertMandatoryMarker(ridget, 0, false);
+	}
+
+	public void testGetSetMaxLength() {
+		INumericTextRidget ridget = getRidget();
+
+		try {
+			ridget.setMaxLength(0);
+			fail();
+		} catch (RuntimeException rex) {
+			ok();
+		}
+
+		try {
+			ridget.setMaxLength(-1);
+			fail();
+		} catch (RuntimeException rex) {
+			ok();
+		}
+
+		Integer oldValue = Integer.valueOf(ridget.getMaxLength());
+		expectPropertyChangeEvent(INumericTextRidget.PROPERTY_MAXLENGTH, oldValue, Integer.valueOf(5));
+		ridget.setMaxLength(5);
+
+		verifyPropertyChangeEvents();
+		assertEquals(5, ridget.getMaxLength());
+
+		expectNoPropertyChangeEvent();
+		ridget.setMaxLength(5);
+
+		verifyPropertyChangeEvents();
+	}
+
+	public void testMaxLength() {
+		INumericTextRidget ridget = getRidget();
+		Text control = getWidget();
+		ridget.setMaxLength(6);
+		StringBean bean = new StringBean();
+		ridget.bindToModel(bean, StringBean.PROP_VALUE);
+
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), localize("12345678-\r"));
+
+		assertEquals(localize("-123.456"), control.getText());
+		assertEquals(localize("-123.456"), ridget.getText());
+		assertEquals(localize("-123.456"), bean.getValue());
+	}
+
+	public void testExceedMaxLengthWithSetText() {
+		INumericTextRidget ridget = getRidget();
+		Text control = getWidget();
+
+		ridget.setMaxLength(3);
+
+		assertEquals(3, ridget.getMaxLength());
+
+		ridget.setText(localize("-123"));
+
+		try {
+			ridget.setText(localize("1234"));
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+			assertEquals(localize("-123"), ridget.getText());
+			assertEquals(localize("-123"), control.getText());
+		}
+	}
+
+	public void testExceedMaxLengthWithUpdate() {
+		INumericTextRidget ridget = getRidget();
+		Text control = getWidget();
+
+		ridget.setMaxLength(3);
+
+		assertEquals(3, ridget.getMaxLength());
+
+		DoubleBean value = new DoubleBean(123.00d);
+		ridget.bindToModel(value, DoubleBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		try {
+			value.setValue(1234.12d);
+			ridget.updateFromModel();
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+			assertEquals(localize("123"), ridget.getText());
+			assertEquals(localize("123"), control.getText());
+		}
+
+		value.setValue(-321d);
+		ridget.updateFromModel();
+		try {
+			value.setValue(1234d);
+			ridget.updateFromModel();
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+			assertEquals(localize("-321"), ridget.getText());
+			assertEquals(localize("-321"), control.getText());
+		}
 	}
 
 	// helping methods

@@ -32,11 +32,6 @@ public interface IDecimalTextRidget extends INumericTextRidget {
 	String PROPERTY_PRECISION = "precision"; //$NON-NLS-1$
 
 	/**
-	 * Name of the property <i>maxLength</i>.
-	 */
-	String PROPERTY_MAXLENGTH = "maxLength"; //$NON-NLS-1$
-
-	/**
 	 * Sets the number of fractional digits of this text field, that is the
 	 * number of digits behind the decimal-separator.
 	 * <p>
@@ -55,25 +50,5 @@ public interface IDecimalTextRidget extends INumericTextRidget {
 	 * @return the number of fraction digits
 	 */
 	int getPrecision();
-
-	/**
-	 * Sets the number of allowed decimal digits, that it , the number of digits
-	 * before the comma separator. Note that the grouping separators ( i.e. the
-	 * dots between "1.034.235.123" ) do not count towards reaching this limit.
-	 * <p>
-	 * Note that {@link #setText(String)} and {@link #updateFromModel()} will
-	 * throw a RuntimeException when the number of decimal digits is exceeded.
-	 * 
-	 * @param maxLength
-	 *            a value greater than 0
-	 */
-	void setMaxLength(int maxLength);
-
-	/**
-	 * Returns the number of decimal digits.
-	 * 
-	 * @return the number of decimal digits.
-	 */
-	int getMaxLength();
 
 }

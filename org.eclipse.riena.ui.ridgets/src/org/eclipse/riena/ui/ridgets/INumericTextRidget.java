@@ -23,8 +23,17 @@ package org.eclipse.riena.ui.ridgets;
  */
 public interface INumericTextRidget extends ITextRidget {
 
-	/** Property name of the singed property ("signed"). */
+	/**
+	 * Property name of the singed property ("signed").
+	 */
 	String PROPERTY_SIGNED = "signed"; //$NON-NLS-1$
+
+	/**
+	 * Property name of the max length property ("maxLength").
+	 * 
+	 * @since 2.0
+	 */
+	String PROPERTY_MAXLENGTH = "maxLength"; //$NON-NLS-1$
 
 	/**
 	 * @return Indicates whether grouping is used to separate thousands.
@@ -51,8 +60,8 @@ public interface INumericTextRidget extends ITextRidget {
 	 * Sets whether negative values are allowed.
 	 * <p>
 	 * Note that {@link #setText(String)} and {@link #updateFromModel()} will
-	 * throw a RuntimeException with negative values after {@code
-	 * setSigned(false)} has been called.
+	 * throw a RuntimeException with negative values after
+	 * {@code setSigned(false)} has been called.
 	 * 
 	 * @param signed
 	 *            The new signed state.
@@ -69,4 +78,27 @@ public interface INumericTextRidget extends ITextRidget {
 	 *            whether to mark or not a negative value
 	 */
 	void setMarkNegative(boolean mustBeMarked);
+
+	/**
+	 * Sets the number of allowed decimal digits, that it , the number of digits
+	 * before the comma separator. Note that the grouping separators ( i.e. the
+	 * dots between "1.034.235.123" ) do not count towards reaching this limit.
+	 * <p>
+	 * Note that {@link #setText(String)} and {@link #updateFromModel()} will
+	 * throw a RuntimeException when the number of decimal digits is exceeded.
+	 * 
+	 * @param maxLength
+	 *            a value greater than 0
+	 * @since 2.0
+	 */
+	void setMaxLength(int maxLength);
+
+	/**
+	 * Returns the maximum number of decimal digits (excluding separators and
+	 * the minus sign). May be -1 if no limit is set.
+	 * 
+	 * @return the number of decimal digits
+	 * @since 2.0
+	 */
+	int getMaxLength();
 }

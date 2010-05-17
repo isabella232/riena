@@ -45,7 +45,7 @@ public class TextNumericSubModuleView extends SubModuleView {
 		addUIControl(UIControlsFactory.createTextNumeric(parent), "inStringNum"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createText(parent), "outStringNum"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "Integer:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "Integer (5):"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextNumeric(parent), "inInteger"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createText(parent), "outInteger"); //$NON-NLS-1$
 
