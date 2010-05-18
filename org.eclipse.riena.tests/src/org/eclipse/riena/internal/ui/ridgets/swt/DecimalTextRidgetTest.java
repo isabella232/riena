@@ -849,6 +849,39 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("0,123456789"), control.getText());
 	}
 
+	/**
+	 * As per Bug 313255
+	 */
+	public void testHideEmptyValueWhenOutputOnly() {
+		IDecimalTextRidget ridget = getRidget();
+		Text control = getWidget();
+
+		ridget.setText("");
+
+		assertEquals(false, ridget.isOutputOnly());
+		assertEquals("", ridget.getText());
+		assertEquals(localize(","), control.getText());
+
+		ridget.setOutputOnly(true);
+
+		assertEquals(true, ridget.isOutputOnly());
+		assertEquals("", ridget.getText());
+		assertEquals("", control.getText());
+
+		ridget.setOutputOnly(false);
+
+		assertEquals(false, ridget.isOutputOnly());
+		assertEquals("", ridget.getText());
+		assertEquals(localize(","), control.getText());
+
+		ridget.setText(localize("1.234,56"));
+		ridget.setOutputOnly(true);
+
+		assertEquals(true, ridget.isOutputOnly());
+		assertEquals(localize("1.234,56"), ridget.getText());
+		assertEquals(localize("1.234,56"), control.getText());
+	}
+
 	// helping methods
 	//////////////////
 

@@ -49,6 +49,20 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The 'empty' value will be replaced with the empty string, if the ridget
+	 * is in output only mode. Otherwise same behavior as super.
+	 */
+	@Override
+	protected final String getTextBasedOnMarkerState(String value) {
+		if (isOutputOnly() && !isNotEmpty(value)) {
+			return ""; //$NON-NLS-1$
+		}
+		return super.getTextBasedOnMarkerState(value);
+	}
+
 	@Override
 	protected boolean isNegative(String text) {
 		BigDecimal value = new BigDecimal(localStringToBigDecimal(text));

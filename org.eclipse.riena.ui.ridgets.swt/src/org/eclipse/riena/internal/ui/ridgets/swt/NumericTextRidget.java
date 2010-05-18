@@ -721,6 +721,9 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			String oldText = control.getText();
 			boolean isDecimal = isDecimal();
 			String newText = group(removeLeadingCruft(ungroup(oldText)), isGrouping(), isDecimal);
+			if (isOutputOnly() && newText.equals(String.valueOf(DECIMAL_SEPARATOR))) {
+				newText = ""; //$NON-NLS-1$
+			}
 			if (isDecimal && newText.startsWith(String.valueOf(DECIMAL_SEPARATOR)) && newText.length() > 1) {
 				newText = ZERO + newText;
 			}
@@ -740,7 +743,6 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 * This listener controls which key strokes are allowed by the text control.
 	 * Additionally some keystrokes replaced with special behavior. Currently
 	 * those key strokes are:
-	 * <ol>
 	 * <ol>
 	 * <li>Left & Right arrow - will jump over grouping separators</li>
 	 * <li>
