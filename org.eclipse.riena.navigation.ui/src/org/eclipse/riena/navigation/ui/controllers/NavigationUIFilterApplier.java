@@ -34,7 +34,7 @@ import org.eclipse.riena.ui.ridgets.IToolItemRidget;
  * @param <N>
  *            type of the navigation node
  */
-@SuppressWarnings("rawtypes")
+@SuppressWarnings("unchecked")
 public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 
 	private final static IUIFilterRuleClosure APPLY_CLOSURE = new ApplyClosure();
