@@ -53,7 +53,6 @@ public final class LnfManager {
 	public static final String RIENA_LNF_SYSTEM_PROPERTY = "riena.lnf"; //$NON-NLS-1$
 
 	private static RienaDefaultLnf defaultLnf = new RienaDefaultLnf();
-	private static String currentLnfClassName;
 	private static RienaDefaultLnf currentLnf;
 
 	private LnfManager() {
@@ -82,8 +81,7 @@ public final class LnfManager {
 	 *            look and feel
 	 */
 	public static void setLnf(String currentLnfClassName) {
-		LnfManager.currentLnf = null;
-		LnfManager.currentLnfClassName = currentLnfClassName;
+		setLnf(createLnf(currentLnfClassName));
 	}
 
 	/**
@@ -96,8 +94,16 @@ public final class LnfManager {
 	 *            new look and feel to install.
 	 */
 	public static void setLnf(RienaDefaultLnf currentLnf) {
+		if (LnfManager.currentLnf == currentLnf) {
+			return;
+		}
+		if (LnfManager.currentLnf != null) {
+			LnfManager.currentLnf.uninitialize();
+		}
 		LnfManager.currentLnf = currentLnf;
-		LnfManager.currentLnfClassName = currentLnf == null ? null : currentLnf.getClass().getName();
+		if (LnfManager.currentLnf != null) {
+			LnfManager.currentLnf.initialize();
+		}
 	}
 
 	/**
@@ -108,11 +114,13 @@ public final class LnfManager {
 	 */
 	public static RienaDefaultLnf getLnf() {
 		if (currentLnf == null) {
-			String className = currentLnfClassName == null ? System.getProperty(RIENA_LNF_SYSTEM_PROPERTY)
-					: currentLnfClassName;
-			setLnf(className != null ? createLnf(className) : defaultLnf);
+			final String className = System.getProperty(RIENA_LNF_SYSTEM_PROPERTY);
+			if (className != null) {
+				setLnf(className);
+			} else {
+				setLnf(defaultLnf);
+			}
 		}
-		currentLnf.initialize();
 		return currentLnf;
 	}
 
@@ -120,7 +128,10 @@ public final class LnfManager {
 	 * Return the current L&F class name.
 	 * 
 	 * @return the lnfClassName
+	 * 
+	 * @deprecated This was only needed for unit tests!! We should abandon it.
 	 */
+	@Deprecated
 	public static String getLnfClassName() {
 		return getLnf().getClass().getName();
 	}
