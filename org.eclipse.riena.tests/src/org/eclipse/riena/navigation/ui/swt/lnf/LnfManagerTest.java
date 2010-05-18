@@ -44,27 +44,27 @@ public class LnfManagerTest extends TestCase {
 	 */
 	public void testGetLnfClassNameAndGetLnfUnderDifferentConfigurations() {
 		// check for riena default L&F
-		assertEquals(RienaDefaultLnf.class.getName(), LnfManager.getLnfClassName());
+		assertEquals(RienaDefaultLnf.class.getName(), LnfManager.getLnf().getClass().getName());
 		assertEquals(RienaDefaultLnf.class, LnfManager.getLnf().getClass());
 
 		// check for some other default L&F
 		RienaDefaultLnf otherDefaultLnf = new OtherDefaultTestLnf();
 		LnfManager.setDefaultLnf(otherDefaultLnf);
 
-		assertEquals(otherDefaultLnf.getClass().getName(), LnfManager.getLnfClassName());
+		assertEquals(otherDefaultLnf.getClass().getName(), LnfManager.getLnf().getClass().getName());
 		assertEquals(otherDefaultLnf.getClass(), LnfManager.getLnf().getClass());
 
 		// check for non-default L&F set
 		LnfManager.setLnf(FrameworkUtil.getBundle(LnfManagerTest.class).getSymbolicName() + ":"
 				+ TestLnf1.class.getName());
 
-		assertEquals(TestLnf1.class.getName(), LnfManager.getLnfClassName());
+		assertEquals(TestLnf1.class.getName(), LnfManager.getLnf().getClass().getName());
 		assertEquals(TestLnf1.class, LnfManager.getLnf().getClass());
 
 		// check for clearing non-default L&F
 		LnfManager.setLnf((String) null);
 
-		assertEquals(otherDefaultLnf.getClass().getName(), LnfManager.getLnfClassName());
+		assertEquals(otherDefaultLnf.getClass().getName(), LnfManager.getLnf().getClass().getName());
 		assertEquals(otherDefaultLnf.getClass(), LnfManager.getLnf().getClass());
 	}
 
@@ -79,13 +79,13 @@ public class LnfManagerTest extends TestCase {
 			// check for system property L&F setting
 			System.setProperty("riena.lnf", bundle.getSymbolicName() + ":" + TestLnf1.class.getName());
 
-			assertEquals(TestLnf1.class.getName(), LnfManager.getLnfClassName());
+			assertEquals(TestLnf1.class.getName(), LnfManager.getLnf().getClass().getName());
 			assertEquals(TestLnf1.class, LnfManager.getLnf().getClass());
 
 			// check for non-override of system property
 			LnfManager.setLnf(new TestLnf2());
 
-			assertEquals(TestLnf2.class.getName(), LnfManager.getLnfClassName());
+			assertEquals(TestLnf2.class.getName(), LnfManager.getLnf().getClass().getName());
 			assertEquals(TestLnf2.class, LnfManager.getLnf().getClass());
 		} finally {
 			System.clearProperty("riena.lnf");
