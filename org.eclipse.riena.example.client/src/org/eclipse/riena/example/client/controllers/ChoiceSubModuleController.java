@@ -41,6 +41,7 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 public class ChoiceSubModuleController extends SubModuleController {
 
 	private CarConfig carConfig = new CarConfig();
+	private String[] additionalColors = new String[] { "white", "silver", "gray", "yellow" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 	public ChoiceSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
@@ -60,8 +61,8 @@ public class ChoiceSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 
 		final SingleChoiceRidget compositeCarModel = getRidget(SingleChoiceRidget.class, "compositeCarModel"); //$NON-NLS-1$
-		compositeCarModel.bindToModel(toList(CarModels.values()), BeansObservables.observeValue(carConfig,
-				CarConfig.PROP_MODEL));
+		compositeCarModel.bindToModel(toList(CarModels.values()),
+				BeansObservables.observeValue(carConfig, CarConfig.PROP_MODEL));
 		compositeCarModel.addMarker(new MandatoryMarker());
 		compositeCarModel.updateFromModel();
 
@@ -73,8 +74,8 @@ public class ChoiceSubModuleController extends SubModuleController {
 		compositeCarExtras.updateFromModel();
 
 		final ISingleChoiceRidget compositeCarWarranty = getRidget(ISingleChoiceRidget.class, "compositeCarWarranty"); //$NON-NLS-1$
-		compositeCarWarranty.bindToModel(toList(CarWarranties.values()), BeansObservables.observeValue(carConfig,
-				CarConfig.PROP_WARRANTY));
+		compositeCarWarranty.bindToModel(toList(CarWarranties.values()),
+				BeansObservables.observeValue(carConfig, CarConfig.PROP_WARRANTY));
 		compositeCarWarranty.addMarker(new MandatoryMarker());
 		compositeCarWarranty.updateFromModel();
 
@@ -91,8 +92,8 @@ public class ChoiceSubModuleController extends SubModuleController {
 		ITextRidget txtPrice = getRidget(ITextRidget.class, "txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
 		DataBindingContext dbc = new DataBindingContext();
-		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextRidget.PROPERTY_TEXT), BeansObservables
-				.observeValue(carConfig, CarConfig.PROP_PRICE), null, null);
+		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextRidget.PROPERTY_TEXT),
+				BeansObservables.observeValue(carConfig, CarConfig.PROP_PRICE), null, null);
 
 		IActionRidget buttonPreset = getRidget(IActionRidget.class, "buttonPreset"); //$NON-NLS-1$
 		buttonPreset.setText("&Quick Config"); //$NON-NLS-1$
@@ -121,9 +122,13 @@ public class ChoiceSubModuleController extends SubModuleController {
 		getNavigationNode().addListener(new SubModuleNodeListener() {
 			@Override
 			public void beforeActivated(ISubModuleNode source) {
-				if (!carConfig.getColors().contains("white")) { //$NON-NLS-1$
-					carConfig.addColor("white"); //$NON-NLS-1$
-					compositeColor.updateFromModel();
+
+				for (String color : additionalColors) {
+					if (!carConfig.getColors().contains(color)) {
+						carConfig.addColor(color);
+						compositeColor.updateFromModel();
+						break;
+					}
 				}
 			}
 		});

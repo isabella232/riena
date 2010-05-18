@@ -99,8 +99,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 	@Override
 	protected void unbindUIControl() {
 		super.unbindUIControl();
-		Composite control = getUIControl();
-		disposeChildren(control);
+		disposeChildren(getUIControl());
 	}
 
 	// public methods
@@ -146,8 +145,15 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		Object oldSelection = selectionObservable.getValue();
 		selectionBinding.updateModelToTarget();
 		ChoiceComposite control = getUIControl();
+		int oldCount = getChildrenCount(control);
 		disposeChildren(control);
 		createChildren(control);
+		int newCount = getChildrenCount(control);
+		if (oldCount != newCount) {
+			// if the number of children has changed
+			// update the layout of the parent composite
+			control.getParent().layout(true, false);
+		}
 		// remove unavailable element and re-apply selection
 		Object newSelection = oldSelection;
 		if (newSelection != null && !optionsObservable.contains(newSelection)) {
@@ -155,6 +161,24 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 			newSelection = null;
 		}
 		firePropertyChange(PROPERTY_SELECTION, oldSelection, newSelection);
+	}
+
+	/**
+	 * Returns the number of the children of the given UI control.
+	 * 
+	 * @param control
+	 *            UI control
+	 * 
+	 * @return number of children
+	 */
+	private int getChildrenCount(final Composite control) {
+
+		if ((control != null) && (!control.isDisposed())) {
+			return control.getChildren().length;
+		}
+
+		return 0;
+
 	}
 
 	public Object getSelection() {
@@ -286,7 +310,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 				});
 			}
 			updateSelection(control);
-			LNF_UPDATER.updateUIControlsAfterBind(control);
+			LNF_UPDATER.updateUIControls(control, true);
 		}
 	}
 

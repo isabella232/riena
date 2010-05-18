@@ -145,8 +145,15 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		List<?> oldSelection = new ArrayList<Object>(selectionObservable);
 		selectionBinding.updateModelToTarget();
 		ChoiceComposite control = getUIControl();
+		int oldCount = getChildrenCount(control);
 		disposeChildren(control);
 		createChildren(control);
+		int newCount = getChildrenCount(control);
+		if (oldCount != newCount) {
+			// if the number of children has changed
+			// update the layout of the parent composite
+			control.getParent().layout(true, false);
+		}
 		// remove unavailable elements and re-apply selection
 		for (Object candidate : oldSelection) {
 			if (!optionsObservable.contains(candidate)) {
@@ -154,6 +161,24 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 			}
 		}
 		firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
+	}
+
+	/**
+	 * Returns the number of the children of the given UI control.
+	 * 
+	 * @param control
+	 *            UI control
+	 * 
+	 * @return number of children
+	 */
+	private int getChildrenCount(final Composite control) {
+
+		if ((control != null) && (!control.isDisposed())) {
+			return control.getChildren().length;
+		}
+
+		return 0;
+
 	}
 
 	public IObservableList getObservableSelectionList() {
@@ -306,7 +331,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 				});
 			}
 			updateSelection(control);
-			LNF_UPDATER.updateUIControlsAfterBind(control);
+			LNF_UPDATER.updateUIControls(control, true);
 		}
 	}
 
