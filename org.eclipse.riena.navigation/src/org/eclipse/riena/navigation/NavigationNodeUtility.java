@@ -46,14 +46,12 @@ public final class NavigationNodeUtility {
 	private static void addToNodeLongId(StringBuilder builder, INavigationNode<?> node) {
 
 		if (node != null) {
-			String id = null;
 			if (node.getNodeId() != null) {
-				id = node.getNodeId().getTypeId();
+				final String id = node.getNodeId().getTypeId();
+				if (id != null) {
+					builder.insert(0, id);
+				}
 			}
-			if (id == null) {
-				id = ""; //$NON-NLS-1$
-			}
-			builder.insert(0, id);
 			builder.insert(0, "/"); //$NON-NLS-1$
 			addToNodeLongId(builder, node.getParent());
 		}

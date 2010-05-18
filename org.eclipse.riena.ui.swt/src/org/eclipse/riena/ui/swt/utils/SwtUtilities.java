@@ -72,29 +72,12 @@ public final class SwtUtilities {
 	 *            text
 	 * @return width of text
 	 */
-	public static int calcTextWidth(final GC gc, final String text) {
-		int result = 0;
-		if (text != null) {
-			result = calcTextWidth(gc, new StringBuffer(text));
-		}
-		return result;
-	}
-
-	/**
-	 * Calculates the width of the given text based on the current settings of
-	 * the given graphics context.
-	 * 
-	 * @param gc
-	 *            graphics context
-	 * @param text
-	 *            text
-	 * @return width of text
-	 */
-	public static int calcTextWidth(final GC gc, final StringBuffer text) {
+	public static int calcTextWidth(final GC gc, final CharSequence text) {
 		int width = 0;
 		if (text != null) {
-			GCFacade gcFacade = GCFacade.getDefault();
-			for (int i = 0; i < text.length(); i++) {
+			final GCFacade gcFacade = GCFacade.getDefault();
+			final int length = text.length();
+			for (int i = 0; i < length; i++) {
 				char ch = text.charAt(i);
 				width += gcFacade.getAdvanceWidth(gc, ch);
 			}

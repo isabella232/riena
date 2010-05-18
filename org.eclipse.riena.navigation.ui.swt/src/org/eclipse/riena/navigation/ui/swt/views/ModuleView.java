@@ -487,8 +487,10 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		String longText = getItemText(item);
 		if (longText != null) {
 			String text = SwtUtilities.clipText(gc, longText, maxWidth);
-			item.setText(text);
 			clipped = !longText.equals(text);
+			if (clipped) {
+				item.setText(text);
+			}
 		}
 
 		return clipped;
