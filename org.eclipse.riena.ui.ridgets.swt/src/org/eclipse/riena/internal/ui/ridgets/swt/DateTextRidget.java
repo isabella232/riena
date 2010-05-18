@@ -104,6 +104,20 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The 'empty' value will be replaced with the empty string, if the ridget
+	 * is in output only mode. Otherwise same behavior as super.
+	 */
+	@Override
+	protected final String getTextBasedOnMarkerState(String value) {
+		if (isOutputOnly() && !isNotEmpty(value)) {
+			return ""; //$NON-NLS-1$
+		}
+		return super.getTextBasedOnMarkerState(value);
+	}
+
+	/**
 	 * This ridget is bound to Text or DatePickerComposite controls. In the
 	 * second case this method will return the Text component of the
 	 * DatePickerComposite.

@@ -69,8 +69,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				updateEditable();
+				forceTextToControl(getTextInternal());
 			}
-
 		});
 	}
 
@@ -109,7 +109,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	protected final synchronized void bindUIControl() {
 		Text control = getTextWidget();
 		if (control != null) {
-			setUIText(getTextBasedOnEnablement(textValue));
+			setUIText(getTextBasedOnMarkerState(textValue));
 			updateEditable();
 			addListeners(control);
 		}
@@ -274,7 +274,16 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	// helping methods
 	// ////////////////
 
-	private String getTextBasedOnEnablement(String value) {
+	/**
+	 * Given an input {@value} , compute an output value for the UI control,
+	 * based on the current marker state. The method is called when any of the
+	 * following markers changes state: output, read-only.
+	 * <p>
+	 * Subclasses may override, but should call super.
+	 * 
+	 * @since 2.0
+	 */
+	protected String getTextBasedOnMarkerState(String value) {
 		boolean hideValue = !isEnabled() && MarkerSupport.isHideDisabledRidgetContent();
 		return hideValue ? EMPTY_STRING : value;
 	}
@@ -286,7 +295,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 			for (Listener listener : listeners) {
 				control.removeListener(SWT.Verify, listener);
 			}
-			TextRidget.this.setUIText(getTextBasedOnEnablement(newValue));
+			TextRidget.this.setUIText(getTextBasedOnMarkerState(newValue));
 			for (Listener listener : listeners) {
 				control.addListener(SWT.Verify, listener);
 			}

@@ -507,6 +507,31 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(colorWhite, control.getTextfield().getBackground());
 	}
 
+	/**
+	 * As per Bug 313254
+	 */
+	public void testHideEmptyValueWhenOutputOnly() {
+		IDateTextRidget ridget = getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+		Text control = getWidget();
+
+		assertEquals(false, ridget.isOutputOnly());
+		assertEquals("  .  .    ", ridget.getText());
+		assertEquals("  .  .    ", control.getText());
+
+		ridget.setOutputOnly(true);
+
+		assertEquals(true, ridget.isOutputOnly());
+		assertEquals("  .  .    ", ridget.getText());
+		assertEquals("", control.getText());
+
+		ridget.setOutputOnly(false);
+
+		assertEquals(false, ridget.isOutputOnly());
+		assertEquals("  .  .    ", ridget.getText());
+		assertEquals("  .  .    ", control.getText());
+	}
+
 	// helping methods
 	//////////////////
 
