@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.rienadefault;
 
+import java.beans.Beans;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -404,7 +405,11 @@ public class RienaDefaultLnf {
 	public Integer getIntegerSetting(String key) {
 		Object value = getSetting(key);
 		if (value == null) {
-			return null;
+			if (Beans.isDesignTime()) { // in case of design time we return a "0" so that dependent code does not fail
+				return new Integer(0);
+			} else {
+				return null;
+			}
 		}
 		if (value instanceof Integer) {
 			return (Integer) value;
@@ -413,7 +418,11 @@ public class RienaDefaultLnf {
 			try {
 				return new Integer(strgValue);
 			} catch (NumberFormatException e) {
-				return null;
+				if (Beans.isDesignTime()) { // in case of design time we return a "0" so that dependent code does not fail
+					return new Integer(0);
+				} else {
+					return null;
+				}
 			}
 		}
 	}
