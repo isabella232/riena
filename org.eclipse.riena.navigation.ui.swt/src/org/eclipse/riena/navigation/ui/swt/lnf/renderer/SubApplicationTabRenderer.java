@@ -34,7 +34,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
-	private static Color defaultColor = null;
+	private Color defaultColor = null;
 
 	public final static int ACTIVE_Y_OFFSET = 2;
 	private final static int BORDER_TOP_WIDTH = 3;
@@ -363,6 +363,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	public void dispose() {
 		SwtUtilities.disposeResource(selStartColor);
 		SwtUtilities.disposeResource(selEndColor);
+		SwtUtilities.disposeResource(defaultColor);
 	}
 
 	/**
@@ -532,7 +533,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	private Color getDefaultColor() {
 		// this was added so that the class loading no longer accesses the UIThread
 		if (defaultColor == null) {
-			defaultColor = LnfManager.getLnf().getColor("black"); //$NON-NLS-1$
+			defaultColor = new Color(null, 0, 0, 0); // black
 		}
 		return defaultColor;
 	}

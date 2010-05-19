@@ -35,11 +35,11 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
-	private static Color defaultColor = null;
 	protected final static int TITLEBAR_LABEL_PADDING_LEFT = 5;
 	private final static int TITLEBAR_LABEL_PADDING = 4;
 	protected final static int TITLEBAR_ICON_TEXT_GAP = 4;
 
+	private Color defaultColor = null;
 	private Control control;
 	private Image image;
 	private String title;
@@ -71,7 +71,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 */
 	public void dispose() {
 		SwtUtilities.disposeResource(getImage());
-		// SwtUtilities.disposeResource(edgeColor);
+		SwtUtilities.disposeResource(defaultColor);
 		control = null;
 	}
 
@@ -489,8 +489,8 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @param activeColorKey
 	 * @param passiveColorKey
 	 * @param disabeldColorKey
-	 * @return color
-	 * @TODO same code in SubApplicationTabRenderer Returns according to the
+	 * @return color TODO same code in SubApplicationTabRenderer Returns
+	 *         according to the
 	 */
 	protected Color getColor(String activeColorKey, String passiveColorKey, String disabeldColorKey) {
 
@@ -514,7 +514,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	private Color getDefaultColor() {
 		// this was added so that the class loading no longer accesses the UIThread
 		if (defaultColor == null) {
-			defaultColor = LnfManager.getLnf().getColor("black"); //$NON-NLS-1$
+			defaultColor = new Color(null, 0, 0, 0); // black
 		}
 		return defaultColor;
 	}
@@ -525,11 +525,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @param activeKey
 	 * @param passiveKey
-	 * @param disabeldKey
+	 * @param disabledKey
 	 * @return key
 	 * @TODO same code in SubApplicationTabRenderer Returns according to the
 	 */
-	private String getKey(String activeKey, String passiveKey, String disabeldKey) {
+	private String getKey(String activeKey, String passiveKey, String disabledKey) {
 
 		String key = null;
 		if (isEnabled()) {
@@ -539,7 +539,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 				key = passiveKey;
 			}
 		} else {
-			key = disabeldKey;
+			key = disabledKey;
 		}
 
 		if (key == null) {
@@ -549,7 +549,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			key = passiveKey;
 		}
 		if (key == null) {
-			key = disabeldKey;
+			key = disabledKey;
 		}
 
 		return key;
