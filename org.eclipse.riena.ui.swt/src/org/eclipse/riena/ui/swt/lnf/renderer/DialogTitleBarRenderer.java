@@ -33,10 +33,10 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 			LnfKeyConstants.DIALOG_MIN_ICON, LnfKeyConstants.DIALOG_RESTORE_ICON };
 	private String[] btnHoverSelectedImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_HOVER_SELECTED_ICON,
 			LnfKeyConstants.DIALOG_MAX_HOVER_SELECTED_ICON, LnfKeyConstants.DIALOG_MIN_HOVER_SELECTED_ICON,
-			LnfKeyConstants.DIALOG_RESTORE_HOVER_ICON };
+			LnfKeyConstants.DIALOG_RESTORE_HOVER_SELECTED_ICON };
 	private String[] btnHoverImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_HOVER_ICON,
 			LnfKeyConstants.DIALOG_MAX_HOVER_ICON, LnfKeyConstants.DIALOG_MIN_HOVER_ICON,
-			LnfKeyConstants.DIALOG_RESTORE_HOVER_SELECTED_ICON };
+			LnfKeyConstants.DIALOG_RESTORE_HOVER_ICON };
 	private String[] btnInactiveImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_INACTIVE_ICON,
 			LnfKeyConstants.DIALOG_MAX_INACTIVE_ICON, LnfKeyConstants.DIALOG_MIN_INACTIVE_ICON,
 			LnfKeyConstants.DIALOG_RESTORE_INACTIVE_ICON };

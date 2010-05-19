@@ -39,10 +39,11 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 	private String[] btnHoverSelectedImageKeys = new String[] {
 			LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON,
-			LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON, LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_ICON };
+			LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON,
+			LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON };
 	private String[] btnHoverImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_ICON, LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_ICON,
-			LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON };
+			LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_ICON };
 	private String[] btnInactiveImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_INACTIVE_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_MAX_INACTIVE_ICON, LnfKeyConstants.TITLELESS_SHELL_MIN_INACTIVE_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_RESTORE_INACTIVE_ICON };
