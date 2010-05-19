@@ -375,38 +375,32 @@ public class ScrollingSupport {
 
 			ScrollDelegation delegationAdaper = new ScrollDelegation();
 
-			/*
-			 * TODO The background of the buttons cannot be set on windows. See
-			 * platform bug 64957. Awaiting Riena Button styling..
-			 */
 			upButton = new Button(this, SWT.NONE);
+			upButton.setBackground(this.getBackground());
 			upButton.setImage(LnfManager.getLnf().getImage(LnfKeyConstants.NAVIGATION_SCROLL_UP_ICON));
 			upButton.addSelectionListener(delegationAdaper);
 			layoutUpButton();
 
 			downButton = new Button(this, SWT.NONE);
+			downButton.setBackground(this.getBackground());
 			downButton.setImage(LnfManager.getLnf().getImage(LnfKeyConstants.NAVIGATION_SCROLL_DOWN_ICON));
 			downButton.addSelectionListener(delegationAdaper);
 			layoutDownButton();
 		}
 
 		private void layoutDownButton() {
-			downButton.setText(""); //$NON-NLS-1$
-
 			FormData fd = new FormData();
-			fd.left = new FormAttachment(upButton, 2);
+			fd.left = new FormAttachment(upButton, 1);
+			fd.right = new FormAttachment(100, -2);
 			fd.height = 12;
-			fd.width = 80;
 			downButton.setLayoutData(fd);
 		}
 
 		private void layoutUpButton() {
-			upButton.setText(""); //$NON-NLS-1$
-
 			FormData fd = new FormData();
-			fd.left = new FormAttachment(0, 4);
+			fd.left = new FormAttachment(0, 2);
+			fd.right = new FormAttachment(50, 0);
 			fd.height = 12;
-			fd.width = 80;
 			upButton.setLayoutData(fd);
 		}
 

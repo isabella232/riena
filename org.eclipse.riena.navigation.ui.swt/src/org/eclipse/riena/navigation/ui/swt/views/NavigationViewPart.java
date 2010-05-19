@@ -122,6 +122,8 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 		formData = new FormData();
 		formData.top = new FormAttachment(navigationMainComposite, 0);
+		formData.left = new FormAttachment(0, 0);
+		formData.right = new FormAttachment(100, 0);
 		scrollingSupport.getScrollComposite().setLayoutData(formData);
 	}
 
