@@ -26,6 +26,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Manages the default button state for one or more ridgets. See
@@ -150,13 +151,13 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 
 	private void updateDefaultButton(Control control) {
 		Button button = findDefaultButton(control);
+		if (SwtUtilities.isDisposed(button)) {
+			clearDefaultButton(shell);
+			return;
+		}
 		if (button != shell.getDefaultButton()) {
 			// System.out.println("Focus on: " + event.widget + ", " + button);
-			if (button != null) {
-				shell.setDefaultButton(button);
-			} else {
-				clearDefaultButton(shell);
-			}
+			shell.setDefaultButton(button);
 		}
 	}
 
