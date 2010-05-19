@@ -105,9 +105,7 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 			display = null;
 		}
 		if (shell != null) {
-			if (!shell.isDisposed()) {
-				clearDefaultButton(shell);
-			}
+			clearDefaultButton(shell);
 			shell = null;
 		}
 		control2button = null;
@@ -132,11 +130,13 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 	//////////////////
 
 	private void clearDefaultButton(Shell shell) {
-		// the setDefaultButton(...) API is strange! The first call
-		// will just reset the saved button to null, the second call will 
-		// make null the default button
-		shell.setDefaultButton(null);
-		shell.setDefaultButton(null);
+		if (SwtUtilities.isDisposed(shell)) {
+			// the setDefaultButton(...) API is strange! The first call
+			// will just reset the saved button to null, the second call will 
+			// make null the default button
+			shell.setDefaultButton(null);
+			shell.setDefaultButton(null);
+		}
 	}
 
 	private Button findDefaultButton(Control start) {
