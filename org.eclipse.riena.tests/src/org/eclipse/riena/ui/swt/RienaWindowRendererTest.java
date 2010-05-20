@@ -78,9 +78,9 @@ public class RienaWindowRendererTest extends TestCase {
 	private class MyLnf extends RienaDefaultLnf {
 
 		@Override
-		protected void initSettingsDefaults() {
-			super.initSettingsDefaults();
-			getSettingTable().put(LnfKeyConstants.DIALOG_HIDE_OS_BORDER, Boolean.TRUE);
+		protected void initializeTheme() {
+			super.initializeTheme();
+			putLnfSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER, Boolean.TRUE);
 		}
 
 	}

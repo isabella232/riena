@@ -292,11 +292,9 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		if ((result == null) && (isSubModuleNode(element.getClass()))) {
 			ILnfResource lnfResource = null;
 			if (isExpanded) {
-				lnfResource = LnfManager.getLnf().getResourceTable().get(
-						LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON);
+				lnfResource = LnfManager.getLnf().getLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON);
 			} else {
-				lnfResource = LnfManager.getLnf().getResourceTable().get(
-						LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON);
+				lnfResource = LnfManager.getLnf().getLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON);
 			}
 			if (lnfResource instanceof ImageLnfResource) {
 				ImageLnfResource imageResource = (ImageLnfResource) lnfResource;

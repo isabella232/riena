@@ -11,14 +11,13 @@
 package org.eclipse.riena.ui.swt.lnf;
 
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Resource;
 
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
  * Wrapper for resource image.
  */
-public class ImageLnfResource extends AbstractLnfResource {
+public class ImageLnfResource extends AbstractLnfResource<Image> {
 
 	private String imagePath;
 
@@ -32,17 +31,9 @@ public class ImageLnfResource extends AbstractLnfResource {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfResource#getResource()
-	 */
-	@Override
-	public Image getResource() {
-		return (Image) super.getResource();
-	}
-
-	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#createResource()
 	 */
-	public Resource createResource() {
+	public Image createResource() {
 		return ImageStore.getInstance().getImage(imagePath);
 	}
 

@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.swt.lnf.rienadefault;
 
 import java.beans.Beans;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -31,12 +32,11 @@ import org.eclipse.swt.graphics.Resource;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.InjectExtension;
-import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
 import org.eclipse.riena.ui.swt.lnf.FontDescriptor;
+import org.eclipse.riena.ui.swt.lnf.ILnfCustomizer;
 import org.eclipse.riena.ui.swt.lnf.ILnfMarkerSupportExtension;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfRendererExtension;
@@ -47,29 +47,41 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 /**
  * Default Look and Feel of Riena.
  */
-public class RienaDefaultLnf {
+public class RienaDefaultLnf implements ILnfCustomizer {
 
-	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RienaDefaultLnf.class);
+	private static final Logger LOGGER = Log4r.getLogger(RienaDefaultLnf.class);
 
 	private static final String SYSTEM_PROPERTY_LNF_SETTING_PREFIX = "riena.lnf.setting."; //$NON-NLS-1$
-	private final Map<String, ILnfResource> resourceTable = new HashMap<String, ILnfResource>();
+	private final Map<String, ILnfResource<?>> resourceTable = new HashMap<String, ILnfResource<?>>();
+	private final Set<String> resourcePrefixes = new HashSet<String>();
 	private final Map<String, Object> settingTable = new ConcurrentHashMap<String, Object>();
 	private final Map<String, ILnfRenderer> rendererTable = new HashMap<String, ILnfRenderer>();
 	private ILnfMarkerSupportExtension[] markerSupportList = new ILnfMarkerSupportExtension[0];
 	private ILnfTheme theme;
 	private boolean initialized;
-	private boolean defaultColorsInitialized = false;
 
-	public Map<String, ILnfResource> getResourceTable() {
-		return resourceTable;
+	public ILnfResource<?> getLnfResource(String key) {
+		return resourceTable.get(key);
 	}
 
-	protected Map<String, ILnfRenderer> getRendererTable() {
-		return rendererTable;
+	public ILnfResource<?> putLnfResource(String key, ILnfResource<?> resource) {
+		int dot = key.indexOf('.');
+		if (dot != -1) {
+			resourcePrefixes.add(key.substring(0, dot));
+		}
+		return resourceTable.put(key, resource);
 	}
 
-	protected Map<String, Object> getSettingTable() {
-		return settingTable;
+	public boolean containsLnfResourcePrefix(String prefix) {
+		return resourcePrefixes.contains(prefix);
+	}
+
+	public Object getLnfSetting(String key) {
+		return settingTable.get(key);
+	}
+
+	public Object putLnfSetting(String key, Object setting) {
+		return settingTable.put(key, setting);
 	}
 
 	/**
@@ -80,8 +92,7 @@ public class RienaDefaultLnf {
 		if (!isInitialized()) {
 			uninitialize();
 			setInitialized(true);
-			initWidgetRendererDefaults();
-			initResourceDefaults();
+			initializeTheme();
 			readSystemProperties();
 		}
 	}
@@ -98,7 +109,7 @@ public class RienaDefaultLnf {
 			if (propKeyName.startsWith(SYSTEM_PROPERTY_LNF_SETTING_PREFIX)) {
 				String lnfKey = propKeyName.substring(SYSTEM_PROPERTY_LNF_SETTING_PREFIX.length());
 				Object lnfValue = sysProps.get(propKeyName);
-				settingTable.put(lnfKey, lnfValue);
+				putLnfSetting(lnfKey, lnfValue);
 			}
 		}
 
@@ -109,22 +120,10 @@ public class RienaDefaultLnf {
 	 * of resources and renderers.
 	 */
 	public void uninitialize() {
-		disposeAllResources();
 		resourceTable.clear();
-		rendererTable.clear();
+		resourcePrefixes.clear();
 		settingTable.clear();
 		setInitialized(false);
-		defaultColorsInitialized = false;
-	}
-
-	/**
-	 * Initializes the table with the renderers.<br>
-	 * Injects the renderers of the extension into the table of renderers.
-	 */
-	protected void initWidgetRendererDefaults() {
-		if (Activator.getDefault() != null) {
-			Wire.instance(this).andStart(Activator.getDefault().getContext());
-		}
 	}
 
 	/**
@@ -148,7 +147,6 @@ public class RienaDefaultLnf {
 				rendererTable.put(rendererExtension.getLnfKey(), rendererExtension.createRenderer());
 			}
 		}
-
 	}
 
 	/**
@@ -195,66 +193,14 @@ public class RienaDefaultLnf {
 	}
 
 	/**
-	 * Initializes the table with the resources.
+	 * Initializes the theme.
 	 */
-	protected void initResourceDefaults() {
-		initColorDefaults();
-		initFontDefaults();
-		initImageDefaults();
-		initSettingsDefaults();
-	}
-
-	/**
-	 * Puts the colors to resource table.
-	 */
-	protected void initColorDefaults() {
-
-		if (defaultColorsInitialized) {
-			return;
-		}
-
-		resourceTable.put("black", new ColorLnfResource(0, 0, 0)); //$NON-NLS-1$
-		resourceTable.put("white", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
+	protected void initializeTheme() {
+		putLnfResource("black", new ColorLnfResource(0, 0, 0)); //$NON-NLS-1$
+		putLnfResource("white", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
 
 		if (getTheme() != null) {
-			getTheme().addCustomColors(getResourceTable());
-		}
-		defaultColorsInitialized = true;
-	}
-
-	/**
-	 * Puts the fonts to resource table.
-	 */
-	protected void initFontDefaults() {
-		if (getTheme() != null) {
-			getTheme().addCustomFonts(getResourceTable());
-		}
-	}
-
-	/**
-	 * Puts the images to resource table.
-	 */
-	protected void initImageDefaults() {
-		if (getTheme() != null) {
-			getTheme().addCustomImages(getResourceTable());
-		}
-	}
-
-	/**
-	 * Puts settings to the table.
-	 */
-	protected void initSettingsDefaults() {
-		if (getTheme() != null) {
-			getTheme().addCustomSettings(getSettingTable());
-		}
-	}
-
-	/**
-	 * Disposes all resources of the Look and Feel.
-	 */
-	private void disposeAllResources() {
-		for (ILnfResource resource : resourceTable.values()) {
-			resource.dispose();
+			getTheme().customizeLnf(this);
 		}
 	}
 
@@ -267,7 +213,7 @@ public class RienaDefaultLnf {
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
 	public Resource getResource(String key) {
-		ILnfResource value = resourceTable.get(key);
+		ILnfResource<?> value = resourceTable.get(key);
 		if (value != null) {
 			return value.getResource();
 		} else {
@@ -284,13 +230,7 @@ public class RienaDefaultLnf {
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
 	public Color getColor(String key) {
-		initColorDefaults();
-		Resource value = getResource(key);
-		if (value instanceof Color) {
-			return (Color) value;
-		} else {
-			return null;
-		}
+		return getColor(key, null);
 	}
 
 	/**
@@ -304,7 +244,6 @@ public class RienaDefaultLnf {
 	 * @since 2.0
 	 */
 	public Color getColor(String key, Color defaultValue) {
-		initColorDefaults();
 		Resource value = getResource(key);
 		if (value instanceof Color) {
 			return (Color) value;
@@ -536,8 +475,6 @@ public class RienaDefaultLnf {
 	public ILnfTheme getTheme() {
 		if (theme == null) {
 			theme = new RienaDefaultTheme();
-		}
-		if (!isInitialized()) {
 			initialize();
 		}
 		return theme;
@@ -553,7 +490,7 @@ public class RienaDefaultLnf {
 		if (theme != newTheme) {
 			theme = newTheme;
 			setInitialized(false);
-			defaultColorsInitialized = false;
+			initialize();
 		}
 	}
 

@@ -11,21 +11,19 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.rienadefault;
 
-import java.util.Map;
-
-import junit.framework.TestCase;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.BorderMarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
-import org.eclipse.riena.ui.swt.lnf.ILnfResource;
+import org.eclipse.riena.ui.swt.lnf.ILnfCustomizer;
+import org.eclipse.riena.ui.swt.lnf.ILnfMarkerSupportExtension;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 
@@ -33,7 +31,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
  * Tests of the class <code>RienaDefaultLnf</code>.
  */
 @NonUITestCase
-public class RienaDefaultLnfTest extends TestCase {
+public class RienaDefaultLnfTest extends RienaTestCase {
 
 	private static final boolean BOOLEAN_VALUE = true;
 	private static final Integer INTEGER_VALUE = 4;
@@ -47,6 +45,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
 		lnf = new RienaDefaultLnf();
 		lnf.initialize();
 	}
@@ -59,6 +58,7 @@ public class RienaDefaultLnfTest extends TestCase {
 		lnf.setTheme(null);
 		lnf.uninitialize();
 		lnf = null;
+		super.tearDown();
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class RienaDefaultLnfTest extends TestCase {
 
 		assertNull(lnf.getRenderer(LnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
 		assertNull(lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
-		assertNotNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
+		assertNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
 
 		lnf.initialize();
 
@@ -100,8 +100,8 @@ public class RienaDefaultLnfTest extends TestCase {
 		assertTrue(font.isDisposed());
 		assertNull(lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
 		assertTrue(color.isDisposed());
-		assertNotNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
-		assertNotSame(color, lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
+		assertNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND));
+		assertNotSame(color, lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND)); // TODO Could be removed
 
 	}
 
@@ -234,6 +234,24 @@ public class RienaDefaultLnfTest extends TestCase {
 	 */
 	public void testGetMarkerSupport() {
 
+		lnf.update(new ILnfMarkerSupportExtension[] { new ILnfMarkerSupportExtension() {
+			public String getId() {
+				return "defaultMarkerSupport";
+			}
+
+			public AbstractMarkerSupport createMarkerSupport() {
+				return new MarkerSupport();
+			}
+		}, new ILnfMarkerSupportExtension() {
+			public String getId() {
+				return "borderMarkerSupport";
+			}
+
+			public AbstractMarkerSupport createMarkerSupport() {
+				return new BorderMarkerSupport();
+			}
+		} });
+
 		AbstractMarkerSupport markerSupport = lnf.getMarkerSupport(null);
 		assertNotNull(markerSupport);
 		assertTrue(markerSupport.getClass() == MarkerSupport.class);
@@ -271,48 +289,24 @@ public class RienaDefaultLnfTest extends TestCase {
 	 */
 	private static class DummyTheme implements ILnfTheme {
 
-		/**
-		 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomColors(java.util.Map)
-		 */
-		public void addCustomColors(Map<String, ILnfResource> table) {
-		}
-
-		/**
-		 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomFonts(java.util.Map)
-		 */
-		public void addCustomFonts(Map<String, ILnfResource> table) {
-		}
-
-		/**
-		 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomImages(java.util.Map)
-		 */
-		public void addCustomImages(Map<String, ILnfResource> table) {
-		}
-
-		/**
-		 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomSettings(java.util.Map)
-		 */
-		public void addCustomSettings(Map<String, Object> table) {
-			table.put(INTEGER_KEY, INTEGER_VALUE);
-			table.put(BOOLEAN_KEY, BOOLEAN_VALUE);
-			table.put(LnfKeyConstants.MARKER_SUPPORT_ID, "0815");
+		public void customizeLnf(ILnfCustomizer customizer) {
+			customizer.putLnfSetting(INTEGER_KEY, INTEGER_VALUE);
+			customizer.putLnfSetting(BOOLEAN_KEY, BOOLEAN_VALUE);
+			customizer.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "0815");
 		}
 
 	}
 
 	/**
-	 * A simple look and feel theme thats overwrites settings of the {@code
-	 * DummyTheme}.
+	 * A simple look and feel theme thats overwrites settings of the
+	 * {@code DummyTheme}.
 	 */
 	private static class DummyTheme2 extends DummyTheme {
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
-		public void addCustomSettings(Map<String, Object> table) {
-			super.addCustomSettings(table);
-			table.put(LnfKeyConstants.MARKER_SUPPORT_ID, "borderMarkerSupport");
+		public void customizeLnf(ILnfCustomizer customizer) {
+			super.customizeLnf(customizer);
+			customizer.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "borderMarkerSupport");
 		}
 
 	}

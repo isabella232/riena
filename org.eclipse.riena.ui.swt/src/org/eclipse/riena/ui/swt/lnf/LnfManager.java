@@ -16,7 +16,8 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;
 
 import org.eclipse.riena.core.exception.Failure;
-import org.eclipse.riena.core.util.Nop;
+import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.BundleUtil;
 
@@ -102,6 +103,9 @@ public final class LnfManager {
 		}
 		LnfManager.currentLnf = currentLnf;
 		if (LnfManager.currentLnf != null) {
+			if (Activator.getDefault() != null) {
+				Wire.instance(LnfManager.currentLnf).andStart(Activator.getDefault().getContext());
+			}
 			LnfManager.currentLnf.initialize();
 		}
 	}
@@ -182,15 +186,16 @@ public final class LnfManager {
 		try {
 			return LnfManager.class.getClassLoader().loadClass(className);
 		} catch (ClassNotFoundException e) {
-			Nop.reason("try next"); //$NON-NLS-1$
+			throw new LnfManagerFailure("can't load LnfClass '" + className //$NON-NLS-1$
+					+ "'. Please use the class format specified in the LnfManager or change your bundle dependencies."); //$NON-NLS-1$
 		}
-		try {
-			return Thread.currentThread().getContextClassLoader().loadClass(className);
-		} catch (Exception e) {
-			Nop.reason("try next"); //$NON-NLS-1$
-		}
-
-		throw new LnfManagerFailure("can't load LnfClass '" + className + "."); //$NON-NLS-1$ //$NON-NLS-2$
+		//		try {
+		//			return Thread.currentThread().getContextClassLoader().loadClass(className);
+		//		} catch (Exception e) {
+		//			Nop.reason("try next"); //$NON-NLS-1$
+		//		}
+		//
+		//		throw new LnfManagerFailure("can't load LnfClass '" + className + "."); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@SuppressWarnings("serial")

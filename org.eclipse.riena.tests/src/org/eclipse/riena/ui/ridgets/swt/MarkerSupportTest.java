@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Map;
 
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.swt.SWT;
@@ -34,6 +35,7 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -222,10 +224,11 @@ public class MarkerSupportTest extends RienaTestCase {
 	 */
 	private static class MyLnf extends RienaDefaultLnf {
 		@Override
-		protected void initSettingsDefaults() {
-			getSettingTable().put(LnfKeyConstants.ERROR_MARKER_MARGIN, 100);
-			getSettingTable().put(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.RIGHT);
-			getSettingTable().put(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.BOTTOM);
+		protected void initializeTheme() {
+			super.initializeTheme();
+			putLnfSetting(LnfKeyConstants.ERROR_MARKER_MARGIN, 100);
+			putLnfSetting(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.RIGHT);
+			putLnfSetting(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.BOTTOM);
 		}
 	}
 
@@ -234,14 +237,14 @@ public class MarkerSupportTest extends RienaTestCase {
 	 */
 	private static class MyNonsenseLnf extends RienaDefaultLnf {
 		@Override
-		protected void initSettingsDefaults() {
-			getSettingTable().clear();
+		protected void initializeTheme() {
+			super.initializeTheme();
+			Map<String, ILnfResource> resourceTable = ReflectionUtils.getHidden(MyNonsenseLnf.this, "resourceTable");
+			resourceTable.clear();
+			Map<String, Object> settingTable = ReflectionUtils.getHidden(MyNonsenseLnf.this, "settingTable");
+			settingTable.clear();
 		}
 
-		@Override
-		protected void initImageDefaults() {
-			getResourceTable().clear();
-		}
 	}
 
 	/**

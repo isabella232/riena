@@ -12,12 +12,11 @@ package org.eclipse.riena.ui.swt.lnf;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.graphics.Resource;
 
 /**
  * Wrapper for resource color.
  */
-public class ColorLnfResource extends AbstractLnfResource {
+public class ColorLnfResource extends AbstractLnfResource<Color> {
 
 	private RGB rgb;
 
@@ -55,17 +54,9 @@ public class ColorLnfResource extends AbstractLnfResource {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfResource#getResource()
-	 */
-	@Override
-	public Color getResource() {
-		return (Color) super.getResource();
-	}
-
-	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#createResource()
 	 */
-	public Resource createResource() {
+	public Color createResource() {
 		if (rgb == null) {
 			return null;
 		}

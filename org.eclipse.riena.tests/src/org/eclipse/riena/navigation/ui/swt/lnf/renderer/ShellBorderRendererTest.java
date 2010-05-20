@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
+import java.util.Map;
+
 import junit.framework.TestCase;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -58,11 +61,12 @@ public class ShellBorderRendererTest extends TestCase {
 	private static class MyLnf extends RienaDefaultLnf {
 
 		public void removePadding() {
-			getSettingTable().remove(LnfKeyConstants.TITLELESS_SHELL_PADDING);
+			Map<String, Object> settingTable = ReflectionUtils.getHidden(LnfManager.getLnf(), "settingTable");
+			settingTable.remove(LnfKeyConstants.TITLELESS_SHELL_PADDING);
 		}
 
 		public void setPadding(Object padding) {
-			getSettingTable().put(LnfKeyConstants.TITLELESS_SHELL_PADDING, padding);
+			putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_PADDING, padding);
 		}
 
 	}

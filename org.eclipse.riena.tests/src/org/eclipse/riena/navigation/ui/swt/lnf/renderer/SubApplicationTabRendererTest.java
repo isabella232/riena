@@ -93,7 +93,7 @@ public class SubApplicationTabRendererTest extends TestCase {
 	private class MyLnf extends RienaDefaultLnf {
 
 		public void setShowIcon(boolean show) {
-			getSettingTable().put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, show);
+			putLnfSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, show);
 		}
 
 	}

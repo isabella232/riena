@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt;
 
+import java.util.Map;
+
 import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
@@ -22,6 +24,7 @@ import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.ui.swt.BorderControlDecoration;
 import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
+import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -67,6 +70,7 @@ public class BorderMarkerSupportTest extends TestCase {
 			assertNotNull(deco.getBorderColor());
 
 			LnfManager.setLnf(new MyNonsenseLnf());
+
 			deco = ReflectionUtils.invokeHidden(support, "createErrorDecoration", text);
 			assertEquals(1, deco.getBorderWidth());
 			assertNull(deco.getBorderColor());
@@ -85,13 +89,10 @@ public class BorderMarkerSupportTest extends TestCase {
 	 */
 	private static class MyLnf extends RienaDefaultLnf {
 		@Override
-		protected void initColorDefaults() {
-			getResourceTable().put(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR, new ColorLnfResource(0, 250, 0));
-		}
-
-		@Override
-		protected void initSettingsDefaults() {
-			getSettingTable().put(LnfKeyConstants.ERROR_MARKER_BORDER_WIDTH, 3);
+		protected void initializeTheme() {
+			super.initializeTheme();
+			putLnfResource(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR, new ColorLnfResource(0, 250, 0));
+			putLnfSetting(LnfKeyConstants.ERROR_MARKER_BORDER_WIDTH, 3);
 		}
 	}
 
@@ -100,13 +101,12 @@ public class BorderMarkerSupportTest extends TestCase {
 	 */
 	private static class MyNonsenseLnf extends RienaDefaultLnf {
 		@Override
-		protected void initSettingsDefaults() {
-			getResourceTable().clear();
-		}
-
-		@Override
-		protected void initImageDefaults() {
-			getSettingTable().clear();
+		protected void initializeTheme() {
+			super.initializeTheme();
+			Map<String, ILnfResource> resourceTable = ReflectionUtils.getHidden(MyNonsenseLnf.this, "resourceTable");
+			resourceTable.clear();
+			Map<String, Object> settingTable = ReflectionUtils.getHidden(MyNonsenseLnf.this, "settingTable");
+			settingTable.clear();
 		}
 	}
 

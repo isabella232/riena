@@ -186,14 +186,14 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 	private static class TitleBarLnf extends RienaDefaultLnf {
 
 		@Override
-		protected void initImageDefaults() {
-			super.initImageDefaults();
-			getResourceTable().put("Image1", new ImageLnfResource(ICON_ECLIPSE));
-			getResourceTable().put("Image2", new ImageLnfResource(ICON_ECLIPSE));
-			getResourceTable().put("Image3", new ImageLnfResource(ICON_ECLIPSE));
-			getResourceTable().put("InactiveImage1", new ImageLnfResource(ICON_ECLIPSE));
-			getResourceTable().put("InactiveImage2", new ImageLnfResource(ICON_ECLIPSE));
-			getResourceTable().put("InactiveImage3", new ImageLnfResource(ICON_ECLIPSE));
+		protected void initializeTheme() {
+			super.initializeTheme();
+			putLnfResource("Image1", new ImageLnfResource(ICON_ECLIPSE));
+			putLnfResource("Image2", new ImageLnfResource(ICON_ECLIPSE));
+			putLnfResource("Image3", new ImageLnfResource(ICON_ECLIPSE));
+			putLnfResource("InactiveImage1", new ImageLnfResource(ICON_ECLIPSE));
+			putLnfResource("InactiveImage2", new ImageLnfResource(ICON_ECLIPSE));
+			putLnfResource("InactiveImage3", new ImageLnfResource(ICON_ECLIPSE));
 		}
 
 	}

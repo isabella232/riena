@@ -25,6 +25,8 @@ import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
+import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.ILnfRendererExtension;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -103,12 +105,21 @@ public class ModuleGroupViewTest extends TestCase {
 	}
 
 	private static class MyLnF extends RienaDefaultLnf {
+		{
+			update(new ILnfRendererExtension[] { new ILnfRendererExtension() {
+				public String getLnfKey() {
+					return LnfKeyConstants.MODULE_GROUP_RENDERER;
+				}
 
-		@Override
-		protected void initWidgetRendererDefaults() {
-			getRendererTable().put(LnfKeyConstants.MODULE_GROUP_RENDERER, new ModuleGroupRenderer());
+				public String getLnfId() {
+					return "";
+				}
+
+				public ILnfRenderer createRenderer() {
+					return new ModuleGroupRenderer();
+				}
+			} });
 		}
-
 	}
 
 }

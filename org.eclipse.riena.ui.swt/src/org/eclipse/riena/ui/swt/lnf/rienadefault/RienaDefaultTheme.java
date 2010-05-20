@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.rienadefault;
 
-import java.util.Map;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
@@ -20,7 +18,7 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
 import org.eclipse.riena.ui.swt.lnf.FontLnfResource;
-import org.eclipse.riena.ui.swt.lnf.ILnfResource;
+import org.eclipse.riena.ui.swt.lnf.ILnfCustomizer;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -76,365 +74,392 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private ColorLnfResource primaryForeground;
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomColors(java.util.Map)
+	 * {@inheritDoc}
 	 */
-	public void addCustomColors(Map<String, ILnfResource> table) {
+	public void customizeLnf(ILnfCustomizer lnf) {
+		customizeColors(lnf);
+		customizeSWTControls(lnf);
+		customizeFonts(lnf);
+		customizeImages(lnf);
+		customizeSettings(lnf);
+	}
 
-		table.put(LnfKeyConstants.TITLELESS_SHELL_FOREGROUND, new ColorLnfResource(255, 255, 255));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_PASSIVE_FOREGROUND, new ColorLnfResource(128, 128, 128));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND, getPrimaryBackground());
-		table.put(LnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(83, 85, 94));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(121, 124, 137));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(173, 180, 205));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(161, 168, 190));
+	private void customizeColors(ILnfCustomizer lnf) {
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_FOREGROUND, new ColorLnfResource(255, 255, 255));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_PASSIVE_FOREGROUND, new ColorLnfResource(128, 128, 128));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(83, 85, 94));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(121, 124, 137));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(173, 180,
+				205));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(161,
+				168, 190));
 
-		table.put(LnfKeyConstants.COOLBAR_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.COOLBAR_BACKGROUND, getPrimaryBackground());
 
-		table.put(LnfKeyConstants.DIALOG_FOREGROUND, new ColorLnfResource(255, 255, 255));
-		table.put(LnfKeyConstants.DIALOG_PASSIVE_FOREGROUND, new ColorLnfResource(128, 128, 128));
-		table.put(LnfKeyConstants.DIALOG_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(83, 85, 94));
-		table.put(LnfKeyConstants.DIALOG_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(121, 124, 137));
-		table.put(LnfKeyConstants.DIALOG_INNER_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(173, 180, 205));
-		table.put(LnfKeyConstants.DIALOG_INNER_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(161, 168, 190));
-		table.put(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_START_COLOR, new ColorLnfResource(161, 176, 218));
-		table.put(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_END_COLOR, new ColorLnfResource(124, 153, 205));
-		table.put(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_1, new ColorLnfResource(188, 201, 229));
-		table.put(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_2, new ColorLnfResource(158, 178, 218));
-		table.put(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_3, new ColorLnfResource(139, 163, 210));
-		table.put(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_1, new ColorLnfResource(99, 126, 175));
-		table.put(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_2, new ColorLnfResource(139, 163, 210));
-		table.put(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_3, new ColorLnfResource(164, 183, 220));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_FOREGROUND, new ColorLnfResource(255, 255, 255));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_PASSIVE_FOREGROUND, new ColorLnfResource(128, 128, 128));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(83, 85, 94));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(121, 124, 137));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_INNER_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(173, 180, 205));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_INNER_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(161, 168, 190));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_START_COLOR, new ColorLnfResource(161, 176, 218));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_END_COLOR, new ColorLnfResource(124, 153, 205));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_1, new ColorLnfResource(188, 201, 229));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_2, new ColorLnfResource(158, 178, 218));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_3, new ColorLnfResource(139, 163, 210));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_1,
+				new ColorLnfResource(99, 126, 175));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_2, new ColorLnfResource(139, 163,
+				210));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_3, new ColorLnfResource(164, 183,
+				220));
 
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND, new ColorLnfResource(170, 170, 170));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR, new ColorLnfResource(233, 233, 238));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND, getPrimaryForeground());
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(196, 225, 244));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(100, 153, 186));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR, new ColorLnfResource(171, 171, 174));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND, getPrimaryForeground());
-		table
-				.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(244, 244,
-						245));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(220, 220, 220));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(213, 213, 216));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND, new ColorLnfResource(170, 170, 170));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR, new ColorLnfResource(233, 233, 238));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND, getPrimaryForeground());
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(196,
+				225, 244));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(100,
+				153, 186));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR, new ColorLnfResource(171, 171, 174));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND, getPrimaryForeground());
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(244,
+				244, 245));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(220,
+				220, 220));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(213, 213, 216));
 
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_TOP_COLOR, new ColorLnfResource(251, 233, 168));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_BOTTOM_COLOR, new ColorLnfResource(192, 151, 1));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_START_COLOR, new ColorLnfResource(255, 207, 32));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_END_COLOR, new ColorLnfResource(255, 176, 1));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_TOP_COLOR,
+				new ColorLnfResource(251, 233, 168));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_BOTTOM_COLOR, new ColorLnfResource(192, 151,
+				1));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_START_COLOR, new ColorLnfResource(255, 207,
+				32));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_END_COLOR, new ColorLnfResource(255, 176, 1));
 
-		table.put(LnfKeyConstants.NAVIGATION_BACKGROUND, getPrimaryBackground());
-		table.put(LnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND, getPrimaryBackground());
-		table.put(LnfKeyConstants.SUB_MODULE_TREE_BACKGROUND, getPrimaryBackground());
-		table.put(LnfKeyConstants.SUB_MODULE_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.NAVIGATION_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_BACKGROUND, getPrimaryBackground());
 
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_FOREGROUND, getPrimaryForeground());
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND, getPrimaryForeground());
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND, new ColorLnfResource(170, 170, 170));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR, new ColorLnfResource(64, 132, 191));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(255,
-				255, 255));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(255, 255,
-				255));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_START_COLOR,
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_FOREGROUND, getPrimaryForeground());
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND, getPrimaryForeground());
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND, new ColorLnfResource(170, 170,
+				170));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR, new ColorLnfResource(64, 132,
+				191));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR,
 				new ColorLnfResource(255, 255, 255));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_END_COLOR, new ColorLnfResource(
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(
 				255, 255, 255));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(245,
-				245, 245));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(229, 229,
-				229));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR, new ColorLnfResource(245, 245, 245));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_COLOR, new ColorLnfResource(206, 206, 206));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR,
-				new ColorLnfResource(183, 183, 183));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR, new ColorLnfResource(245, 245,
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_START_COLOR,
+				new ColorLnfResource(255, 255, 255));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PROCESS_FINISHED_BACKGROUND_END_COLOR,
+				new ColorLnfResource(255, 255, 255));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR,
+				new ColorLnfResource(245, 245, 245));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(
+				229, 229, 229));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR, new ColorLnfResource(245, 245,
 				245));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR, new ColorLnfResource(
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_COLOR, new ColorLnfResource(206,
+				206, 206));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR, new ColorLnfResource(183,
+				183, 183));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR, new ColorLnfResource(
 				245, 245, 245));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_TOP_RIGHT_COLOR, new ColorLnfResource(226,
-				226, 226));
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_BOTTOM_LEFT_COLOR, new ColorLnfResource(203,
-				203, 203));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_PROCESS_FINISHED_BORDER_COLOR,
+				new ColorLnfResource(245, 245, 245));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_TOP_RIGHT_COLOR,
+				new ColorLnfResource(226, 226, 226));
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_BOTTOM_LEFT_COLOR,
+				new ColorLnfResource(203, 203, 203));
 
-		table.put(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
-		table.put(LnfKeyConstants.MODULE_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.MODULE_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
 
-		table.put(LnfKeyConstants.STATUSLINE_BACKGROUND, getPrimaryBackground());
-		table.put(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND, new ColorLnfResource(183, 216, 236));
+		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND, new ColorLnfResource(183, 216, 236));
 
-		table.put(LnfKeyConstants.GRAB_CORNER_BACKGROUND, getPrimaryBackground());
-		table.put(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND, new ColorLnfResource(255, 255, 175));
-		table.put(LnfKeyConstants.MANDATORY_OUTPUT_MARKER_BACKGROUND, new ColorLnfResource(255, 249, 216));
-		table.put(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR, new ColorLnfResource(200, 0, 0));
+		lnf.putLnfResource(LnfKeyConstants.GRAB_CORNER_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND, new ColorLnfResource(255, 255, 175));
+		lnf.putLnfResource(LnfKeyConstants.MANDATORY_OUTPUT_MARKER_BACKGROUND, new ColorLnfResource(255, 249, 216));
+		lnf.putLnfResource(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR, new ColorLnfResource(200, 0, 0));
 
-		table.put(LnfKeyConstants.OUTPUT_MARKER_BACKGROUND, new ColorLnfResource(231, 233, 245));
+		lnf.putLnfResource(LnfKeyConstants.OUTPUT_MARKER_BACKGROUND, new ColorLnfResource(231, 233, 245));
 
-		table.put(LnfKeyConstants.DISABLED_MARKER_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.DISABLED_MARKER_BACKGROUND, getPrimaryBackground());
 
-		table.put(LnfKeyConstants.MASTER_DETAILS_WIDGET_SEPARATOR_FOREGROUND, new ColorLnfResource(171, 173, 179));
+		lnf.putLnfResource(LnfKeyConstants.MASTER_DETAILS_WIDGET_SEPARATOR_FOREGROUND, new ColorLnfResource(171, 173,
+				179));
 
-		table.put(LnfKeyConstants.INFO_FLYOUT_BACKGROUND_COLOR, new ColorLnfResource(222, 237, 244));
+		lnf.putLnfResource(LnfKeyConstants.INFO_FLYOUT_BACKGROUND_COLOR, new ColorLnfResource(222, 237, 244));
 
-		table.put(LnfKeyConstants.INFO_FLYOUT_BORDER_COLOR, new ColorLnfResource(150, 165, 170));
+		lnf.putLnfResource(LnfKeyConstants.INFO_FLYOUT_BORDER_COLOR, new ColorLnfResource(150, 165, 170));
+	}
 
+	private void customizeSWTControls(ILnfCustomizer lnf) {
 		// Standard SWT controls
-		table.put("Button.background", getPrimaryBackground()); //$NON-NLS-1$
-		table.put("Button.foreground", getPrimaryForeground()); // Windows: no effect //$NON-NLS-1$
+		lnf.putLnfResource("Button.background", getPrimaryBackground()); //$NON-NLS-1$
+		lnf.putLnfResource("Button.foreground", getPrimaryForeground()); // Windows: no effect //$NON-NLS-1$
 
-		table.put("CLabel.background", getPrimaryBackground()); //$NON-NLS-1$
-		table.put("CLabel.foreground", getPrimaryForeground()); //$NON-NLS-1$
+		lnf.putLnfResource("CLabel.background", getPrimaryBackground()); //$NON-NLS-1$
+		lnf.putLnfResource("CLabel.foreground", getPrimaryForeground()); //$NON-NLS-1$
 
-		table.put("Combo.background", getPrimaryBackground()); //$NON-NLS-1$
-		table.put("Combo.foreground", getPrimaryForeground()); //$NON-NLS-1$
+		lnf.putLnfResource("Combo.background", getPrimaryBackground()); //$NON-NLS-1$
+		lnf.putLnfResource("Combo.foreground", getPrimaryForeground()); //$NON-NLS-1$
 
-		table.put("Composite.background", getPrimaryBackground()); //$NON-NLS-1$
-		table.put("Composite.foreground", getPrimaryForeground()); //$NON-NLS-1$
+		lnf.putLnfResource("Composite.background", getPrimaryBackground()); //$NON-NLS-1$
+		lnf.putLnfResource("Composite.foreground", getPrimaryForeground()); //$NON-NLS-1$
 
-		table.put("DateTime.background", getPrimaryBackground()); // no effect //$NON-NLS-1$
-		table.put("DateTime.foreground", getPrimaryForeground()); // no effect //$NON-NLS-1$
+		lnf.putLnfResource("DateTime.background", getPrimaryBackground()); // no effect //$NON-NLS-1$
+		lnf.putLnfResource("DateTime.foreground", getPrimaryForeground()); // no effect //$NON-NLS-1$
 
-		table.put("Group.background", getPrimaryBackground()); //$NON-NLS-1$
-		table.put("Group.foreground", getPrimaryForeground()); //$NON-NLS-1$
+		lnf.putLnfResource("Group.background", getPrimaryBackground()); //$NON-NLS-1$
+		lnf.putLnfResource("Group.foreground", getPrimaryForeground()); //$NON-NLS-1$
 
-		table.put("Label.background", getPrimaryBackground()); //$NON-NLS-1$
-		table.put("Label.foreground", getPrimaryForeground()); //$NON-NLS-1$
+		lnf.putLnfResource("Label.background", getPrimaryBackground()); //$NON-NLS-1$
+		lnf.putLnfResource("Label.foreground", getPrimaryForeground()); //$NON-NLS-1$
 
-		table.put("List.background", getPrimaryBackground()); // no effect //$NON-NLS-1$
-		table.put("List.foreground", getPrimaryForeground()); //$NON-NLS-1$
+		lnf.putLnfResource("List.background", getPrimaryBackground()); // no effect //$NON-NLS-1$
+		lnf.putLnfResource("List.foreground", getPrimaryForeground()); //$NON-NLS-1$
 
-		table.put("Slider.background", getPrimaryBackground()); // no effect //$NON-NLS-1$
-		table.put("Slider.foreground", getPrimaryForeground()); //$NON-NLS-1$
+		lnf.putLnfResource("Slider.background", getPrimaryBackground()); // no effect //$NON-NLS-1$
+		lnf.putLnfResource("Slider.foreground", getPrimaryForeground()); //$NON-NLS-1$
 
-		table.put("Table.background", getPrimaryBackground()); //$NON-NLS-1$
-		table.put("Table.foreground", getPrimaryForeground()); //$NON-NLS-1$
+		lnf.putLnfResource("Table.background", getPrimaryBackground()); //$NON-NLS-1$
+		lnf.putLnfResource("Table.foreground", getPrimaryForeground()); //$NON-NLS-1$
 
-		table.put("Text.background", new ColorLnfResource(null)); //$NON-NLS-1$
-		table.put("Text.foreground", getPrimaryForeground()); //$NON-NLS-1$
+		lnf.putLnfResource("Text.background", new ColorLnfResource(null)); //$NON-NLS-1$
+		lnf.putLnfResource("Text.foreground", getPrimaryForeground()); //$NON-NLS-1$
 
-		table.put("Tree.background", getPrimaryBackground()); //$NON-NLS-1$
-		table.put("Tree.foreground", getPrimaryForeground()); //$NON-NLS-1$
+		lnf.putLnfResource("Tree.background", getPrimaryBackground()); //$NON-NLS-1$
+		lnf.putLnfResource("Tree.foreground", getPrimaryForeground()); //$NON-NLS-1$
 
-		table.put("white", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
-		table.put("lightGray", new ColorLnfResource(192, 192, 192)); //$NON-NLS-1$
-		table.put("gray", new ColorLnfResource(128, 128, 128)); //$NON-NLS-1$
-		table.put("darkGray", new ColorLnfResource(64, 64, 64)); //$NON-NLS-1$
-		table.put("black", new ColorLnfResource(0, 0, 0)); //$NON-NLS-1$
-		table.put("red", new ColorLnfResource(255, 0, 0)); //$NON-NLS-1$
-		table.put("pink", new ColorLnfResource(255, 175, 175)); //$NON-NLS-1$
-		table.put("orange", new ColorLnfResource(255, 200, 0)); //$NON-NLS-1$
-		table.put("yellow", new ColorLnfResource(255, 255, 0)); //$NON-NLS-1$
-		table.put("green", new ColorLnfResource(0, 255, 0)); //$NON-NLS-1$
-		table.put("magenta", new ColorLnfResource(255, 0, 255)); //$NON-NLS-1$
-		table.put("cyan", new ColorLnfResource(0, 255, 255)); //$NON-NLS-1$
-		table.put("blue", new ColorLnfResource(0, 0, 255)); //$NON-NLS-1$
+		lnf.putLnfResource("white", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
+		lnf.putLnfResource("lightGray", new ColorLnfResource(192, 192, 192)); //$NON-NLS-1$
+		lnf.putLnfResource("gray", new ColorLnfResource(128, 128, 128)); //$NON-NLS-1$
+		lnf.putLnfResource("darkGray", new ColorLnfResource(64, 64, 64)); //$NON-NLS-1$
+		lnf.putLnfResource("black", new ColorLnfResource(0, 0, 0)); //$NON-NLS-1$
+		lnf.putLnfResource("red", new ColorLnfResource(255, 0, 0)); //$NON-NLS-1$
+		lnf.putLnfResource("pink", new ColorLnfResource(255, 175, 175)); //$NON-NLS-1$
+		lnf.putLnfResource("orange", new ColorLnfResource(255, 200, 0)); //$NON-NLS-1$
+		lnf.putLnfResource("yellow", new ColorLnfResource(255, 255, 0)); //$NON-NLS-1$
+		lnf.putLnfResource("green", new ColorLnfResource(0, 255, 0)); //$NON-NLS-1$
+		lnf.putLnfResource("magenta", new ColorLnfResource(255, 0, 255)); //$NON-NLS-1$
+		lnf.putLnfResource("cyan", new ColorLnfResource(0, 255, 255)); //$NON-NLS-1$
+		lnf.putLnfResource("blue", new ColorLnfResource(0, 0, 255)); //$NON-NLS-1$
 
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomFonts(java.util.Map)
-	 */
-	public void addCustomFonts(Map<String, ILnfResource> table) {
+	private void customizeFonts(ILnfCustomizer lnf) {
 
-		table.put(LnfKeyConstants.TITLELESS_SHELL_FONT, getPrimaryFont());
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_FONT, getPrimaryFont());
 
-		table.put(LnfKeyConstants.DIALOG_FONT, getPrimaryFont());
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_FONT, getPrimaryFont());
 
-		table.put(LnfKeyConstants.MENUBAR_FONT, getPrimaryFont());
-		// table.put(LnfKeyConstants.TOOLBAR_FONT, getPrimaryFont());
+		lnf.putLnfResource(LnfKeyConstants.MENUBAR_FONT, getPrimaryFont());
+		// lnf.putLnfResource(LnfKeyConstants.TOOLBAR_FONT, getPrimaryFont());
 
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_FONT, getPrimaryFont());
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_FONT, getPrimaryFont());
 
-		table.put(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT, getPrimaryFont());
+		lnf.putLnfResource(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT, getPrimaryFont());
 
-		table.put(LnfKeyConstants.SUB_MODULE_ITEM_FONT, getPrimaryFont());
-		table.put(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FONT, getPrimaryFont());
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_ITEM_FONT, getPrimaryFont());
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FONT, getPrimaryFont());
 
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, getPrimaryFont());
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, getPrimaryFont());
 
-		table.put(LnfKeyConstants.INFO_FLYOUT_FONT, new FontLnfResource(getPrimaryFont().getFontData().getName(), 8,
-				SWT.BOLD));
+		lnf.putLnfResource(LnfKeyConstants.INFO_FLYOUT_FONT, new FontLnfResource(getPrimaryFont().getFontData()
+				.getName(), 8, SWT.BOLD));
 
 		// Standard SWT controls
-		table.put("Button.font", getPrimaryFont()); //$NON-NLS-1$
+		lnf.putLnfResource("Button.font", getPrimaryFont()); //$NON-NLS-1$
 
-		table.put("CLabel.font", getPrimaryFont()); //$NON-NLS-1$
+		lnf.putLnfResource("CLabel.font", getPrimaryFont()); //$NON-NLS-1$
 
-		table.put("Combo.font", getPrimaryFont()); //$NON-NLS-1$
+		lnf.putLnfResource("Combo.font", getPrimaryFont()); //$NON-NLS-1$
 
-		table.put("Composite.font", getPrimaryFont()); //$NON-NLS-1$
+		lnf.putLnfResource("Composite.font", getPrimaryFont()); //$NON-NLS-1$
 
-		table.put("DateTime.font", getPrimaryFont()); //$NON-NLS-1$
+		lnf.putLnfResource("DateTime.font", getPrimaryFont()); //$NON-NLS-1$
 
-		table.put("Group.font", getPrimaryFont()); //$NON-NLS-1$
+		lnf.putLnfResource("Group.font", getPrimaryFont()); //$NON-NLS-1$
 
-		table.put("Label.font", getPrimaryFont()); //$NON-NLS-1$
+		lnf.putLnfResource("Label.font", getPrimaryFont()); //$NON-NLS-1$
 
-		table.put("List.font", getPrimaryFont()); //$NON-NLS-1$
+		lnf.putLnfResource("List.font", getPrimaryFont()); //$NON-NLS-1$
 
-		table.put("Slider.font", getPrimaryFont()); //$NON-NLS-1$
+		lnf.putLnfResource("Slider.font", getPrimaryFont()); //$NON-NLS-1$
 
-		table.put("Table.font", getPrimaryFont()); //$NON-NLS-1$
+		lnf.putLnfResource("Table.font", getPrimaryFont()); //$NON-NLS-1$
 
-		table.put("Text.font", getPrimaryFont()); //$NON-NLS-1$
+		lnf.putLnfResource("Text.font", getPrimaryFont()); //$NON-NLS-1$
 
-		table.put("Tree.font", getPrimaryFont()); //$NON-NLS-1$
+		lnf.putLnfResource("Tree.font", getPrimaryFont()); //$NON-NLS-1$
 
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomImages(java.util.Map)
-	 */
-	public void addCustomImages(Map<String, ILnfResource> table) {
+	private void customizeImages(ILnfCustomizer lnf) {
 
-		table.put(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(IMAGE_BACKGROUND));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(IMAGE_LOGO));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_CLOSE_ICON, new ImageLnfResource(IMAGE_CLOSE));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_ICON, new ImageLnfResource(IMAGE_CLOSE_HOVER));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(IMAGE_BACKGROUND));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(IMAGE_LOGO));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_CLOSE_ICON, new ImageLnfResource(IMAGE_CLOSE));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_ICON, new ImageLnfResource(IMAGE_CLOSE_HOVER));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(
 				IMAGE_CLOSE_HOVER_SELECTED));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_CLOSE_INACTIVE_ICON, new ImageLnfResource(IMAGE_CLOSE_INACTIVE));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_MAX_ICON, new ImageLnfResource(IMAGE_MAX));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_ICON, new ImageLnfResource(IMAGE_MAX_HOVER));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON, new ImageLnfResource(
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_CLOSE_INACTIVE_ICON, new ImageLnfResource(
+				IMAGE_CLOSE_INACTIVE));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MAX_ICON, new ImageLnfResource(IMAGE_MAX));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_ICON, new ImageLnfResource(IMAGE_MAX_HOVER));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON, new ImageLnfResource(
 				IMAGE_MAX_HOVER_SELECTED));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_MAX_INACTIVE_ICON, new ImageLnfResource(IMAGE_MAX_INACTIVE));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_MIN_ICON, new ImageLnfResource(IMAGE_MIN));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_ICON, new ImageLnfResource(IMAGE_MIN_HOVER));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON, new ImageLnfResource(
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MAX_INACTIVE_ICON, new ImageLnfResource(IMAGE_MAX_INACTIVE));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MIN_ICON, new ImageLnfResource(IMAGE_MIN));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_ICON, new ImageLnfResource(IMAGE_MIN_HOVER));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON, new ImageLnfResource(
 				IMAGE_MIN_HOVER_SELECTED));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_MIN_INACTIVE_ICON, new ImageLnfResource(IMAGE_MIN_INACTIVE));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON, new ImageLnfResource(IMAGE_RESTORE));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_ICON, new ImageLnfResource(IMAGE_RESTORE_HOVER));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON, new ImageLnfResource(
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_MIN_INACTIVE_ICON, new ImageLnfResource(IMAGE_MIN_INACTIVE));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON, new ImageLnfResource(IMAGE_RESTORE));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_ICON,
+				new ImageLnfResource(IMAGE_RESTORE_HOVER));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON, new ImageLnfResource(
 				IMAGE_RESTORE_HOVER_SELECTED));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_RESTORE_INACTIVE_ICON, new ImageLnfResource(
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_RESTORE_INACTIVE_ICON, new ImageLnfResource(
 				IMAGE_RESTORE_INACTIVE_ICON));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_HAND_IMAGE, new ImageLnfResource(IMAGE_HAND));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE, new ImageLnfResource(IMAGE_GRAB));
-		table.put(LnfKeyConstants.TITLELESS_SHELL_GRAB_CORNER_IMAGE, new ImageLnfResource(IMAGE_GRAB_CORNER));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_HAND_IMAGE, new ImageLnfResource(IMAGE_HAND));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE, new ImageLnfResource(IMAGE_GRAB));
+		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_GRAB_CORNER_IMAGE, new ImageLnfResource(IMAGE_GRAB_CORNER));
 
-		table.put(LnfKeyConstants.DIALOG_CLOSE_ICON, new ImageLnfResource(IMAGE_CLOSE));
-		table.put(LnfKeyConstants.DIALOG_CLOSE_HOVER_ICON, new ImageLnfResource(IMAGE_CLOSE_HOVER));
-		table.put(LnfKeyConstants.DIALOG_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_CLOSE_HOVER_SELECTED));
-		table.put(LnfKeyConstants.DIALOG_CLOSE_INACTIVE_ICON, new ImageLnfResource(IMAGE_CLOSE_INACTIVE));
-		table.put(LnfKeyConstants.DIALOG_MAX_ICON, new ImageLnfResource(IMAGE_MAX));
-		table.put(LnfKeyConstants.DIALOG_MAX_HOVER_ICON, new ImageLnfResource(IMAGE_MAX_HOVER));
-		table.put(LnfKeyConstants.DIALOG_MAX_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_MAX_HOVER_SELECTED));
-		table.put(LnfKeyConstants.DIALOG_MAX_INACTIVE_ICON, new ImageLnfResource(IMAGE_MAX_INACTIVE));
-		table.put(LnfKeyConstants.DIALOG_MIN_ICON, new ImageLnfResource(IMAGE_MIN));
-		table.put(LnfKeyConstants.DIALOG_MIN_HOVER_ICON, new ImageLnfResource(IMAGE_MIN_HOVER));
-		table.put(LnfKeyConstants.DIALOG_MIN_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_MIN_HOVER_SELECTED));
-		table.put(LnfKeyConstants.DIALOG_MIN_INACTIVE_ICON, new ImageLnfResource(IMAGE_MIN_INACTIVE));
-		table.put(LnfKeyConstants.DIALOG_RESTORE_ICON, new ImageLnfResource(IMAGE_RESTORE));
-		table.put(LnfKeyConstants.DIALOG_RESTORE_HOVER_ICON, new ImageLnfResource(IMAGE_RESTORE_HOVER));
-		table.put(LnfKeyConstants.DIALOG_RESTORE_HOVER_SELECTED_ICON,
-				new ImageLnfResource(IMAGE_RESTORE_HOVER_SELECTED));
-		table.put(LnfKeyConstants.DIALOG_RESTORE_INACTIVE_ICON, new ImageLnfResource(IMAGE_RESTORE_INACTIVE_ICON));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_CLOSE_ICON, new ImageLnfResource(IMAGE_CLOSE));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_CLOSE_HOVER_ICON, new ImageLnfResource(IMAGE_CLOSE_HOVER));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(
+				IMAGE_CLOSE_HOVER_SELECTED));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_CLOSE_INACTIVE_ICON, new ImageLnfResource(IMAGE_CLOSE_INACTIVE));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_MAX_ICON, new ImageLnfResource(IMAGE_MAX));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_MAX_HOVER_ICON, new ImageLnfResource(IMAGE_MAX_HOVER));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_MAX_HOVER_SELECTED_ICON, new ImageLnfResource(
+				IMAGE_MAX_HOVER_SELECTED));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_MAX_INACTIVE_ICON, new ImageLnfResource(IMAGE_MAX_INACTIVE));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_MIN_ICON, new ImageLnfResource(IMAGE_MIN));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_MIN_HOVER_ICON, new ImageLnfResource(IMAGE_MIN_HOVER));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_MIN_HOVER_SELECTED_ICON, new ImageLnfResource(
+				IMAGE_MIN_HOVER_SELECTED));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_MIN_INACTIVE_ICON, new ImageLnfResource(IMAGE_MIN_INACTIVE));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_RESTORE_ICON, new ImageLnfResource(IMAGE_RESTORE));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_RESTORE_HOVER_ICON, new ImageLnfResource(IMAGE_RESTORE_HOVER));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_RESTORE_HOVER_SELECTED_ICON, new ImageLnfResource(
+				IMAGE_RESTORE_HOVER_SELECTED));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_RESTORE_INACTIVE_ICON, new ImageLnfResource(
+				IMAGE_RESTORE_INACTIVE_ICON));
 
-		table.put(LnfKeyConstants.DEFAULT_NODE_ICON, new ImageLnfResource(IMAGE_DEFAULT_NODE_ICON));
-		table.put(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(IMAGE_EMPTY_DOCUMENT));
-		table.put(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(IMAGE_FOLDER_CLOSED));
-		table.put(LnfKeyConstants.SUB_MODULE_TREE_ERROR_MARKER_ICON, new ImageLnfResource(IMAGE_ERROR_MARKER));
-		table.put(LnfKeyConstants.SUB_MODULE_TREE_MANDATORY_MARKER_ICON, new ImageLnfResource(IMAGE_MANDATORY_MARKER));
-		table.put(LnfKeyConstants.SUB_MODULE_TREE_ATTENTION_MARKER_ICON, new ImageLnfResource(IMAGE_ATTENTION_MARKER));
-		table.put(LnfKeyConstants.SUB_MODULE_TREE_PROCESSED_FINISHED_MARKER_ICON, new ImageLnfResource(
+		lnf.putLnfResource(LnfKeyConstants.DEFAULT_NODE_ICON, new ImageLnfResource(IMAGE_DEFAULT_NODE_ICON));
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(
+				IMAGE_EMPTY_DOCUMENT));
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON,
+				new ImageLnfResource(IMAGE_FOLDER_CLOSED));
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_ERROR_MARKER_ICON, new ImageLnfResource(IMAGE_ERROR_MARKER));
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_MANDATORY_MARKER_ICON, new ImageLnfResource(
+				IMAGE_MANDATORY_MARKER));
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_ATTENTION_MARKER_ICON, new ImageLnfResource(
+				IMAGE_ATTENTION_MARKER));
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_PROCESSED_FINISHED_MARKER_ICON, new ImageLnfResource(
 				IMAGE_PROCESS_FINISHED_MARKER));
-		// table.put(LnfKeyConstants."treeFolderOpen.icon",
+		// lnf.putLnfResource(LnfKeyConstants."treeFolderOpen.icon",
 		// getSharedImageResource(ISharedImages.IMG_OBJ_FOLDER));
-		table.put(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON, new ImageLnfResource(IMAGE_CLOSE_MODULE));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_ICON, new ImageLnfResource(IMAGE_CLOSE_MODULE_HOVER));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_INACTIVE_ICON, new ImageLnfResource(
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON, new ImageLnfResource(IMAGE_CLOSE_MODULE));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_ICON, new ImageLnfResource(
+				IMAGE_CLOSE_MODULE_HOVER));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_INACTIVE_ICON, new ImageLnfResource(
 				IMAGE_CLOSE_MODULE_INACTIVE));
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(
 				IMAGE_CLOSE_MODULE_HOVER_SELECTED));
 
-		table.put(LnfKeyConstants.STATUSLINE_SPACER_ICON, new ImageLnfResource(IMAGE_SPACER));
-		table.put(LnfKeyConstants.STATUSLINE_ERROR_ICON, new ImageLnfResource(IMAGE_ERROR));
-		table.put(LnfKeyConstants.STATUSLINE_WARNING_ICON, new ImageLnfResource(IMAGE_WARNING));
-		table.put(LnfKeyConstants.STATUSLINE_INFO_ICON, new ImageLnfResource(IMAGE_INFO));
-		table.put(LnfKeyConstants.STATUSLINE_UI_PROCESS_ICON, new ImageLnfResource(IMAGE_STATUSLINE_UI_PROCESS_ICON));
+		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_SPACER_ICON, new ImageLnfResource(IMAGE_SPACER));
+		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_ERROR_ICON, new ImageLnfResource(IMAGE_ERROR));
+		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_WARNING_ICON, new ImageLnfResource(IMAGE_WARNING));
+		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_INFO_ICON, new ImageLnfResource(IMAGE_INFO));
+		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_UI_PROCESS_ICON, new ImageLnfResource(
+				IMAGE_STATUSLINE_UI_PROCESS_ICON));
 
-		table.put(LnfKeyConstants.NAVIGATION_SCROLL_UP_ICON, new ImageLnfResource(IMAGE_SCROLL_UP));
-		table.put(LnfKeyConstants.NAVIGATION_SCROLL_DOWN_ICON, new ImageLnfResource(IMAGE_SCROLL_DOWN));
+		lnf.putLnfResource(LnfKeyConstants.NAVIGATION_SCROLL_UP_ICON, new ImageLnfResource(IMAGE_SCROLL_UP));
+		lnf.putLnfResource(LnfKeyConstants.NAVIGATION_SCROLL_DOWN_ICON, new ImageLnfResource(IMAGE_SCROLL_DOWN));
 
-		table.put(LnfKeyConstants.ERROR_MARKER_ICON, new ImageLnfResource(IMAGE_ERROR_MARKER));
+		lnf.putLnfResource(LnfKeyConstants.ERROR_MARKER_ICON, new ImageLnfResource(IMAGE_ERROR_MARKER));
 
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomSettings(java.util.Map)
-	 */
-	public void addCustomSettings(Map<String, Object> table) {
+	private void customizeSettings(ILnfCustomizer lnf) {
 
-		table.put(LnfKeyConstants.SHELL_HIDE_OS_BORDER, hideOsBorder());
+		lnf.putLnfSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER, hideOsBorder());
 
-		table.put(LnfKeyConstants.TITLELESS_SHELL_PADDING, 2);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_NAVIGATION_HORIZONTAL_GAP, 5);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_SUB_MODULE_HORIZONTAL_GAP, 5);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.LEFT);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.CENTER);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_MARGIN, 17);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 4);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_TEXT_POSITION, SWT.RIGHT);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE, true);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, true);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_SHOW_MIN, true);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_RESIZEABLE, true);
+		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_PADDING, 2);
+		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_NAVIGATION_HORIZONTAL_GAP, 5);
+		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_SUB_MODULE_HORIZONTAL_GAP, 5);
+		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.LEFT);
+		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.CENTER);
+		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_MARGIN, 17);
+		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 4);
+		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_TEXT_POSITION, SWT.RIGHT);
+		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE, true);
+		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, true);
+		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_MIN, true);
+		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_RESIZEABLE, true);
 
-		//		table.put(LnfKeyConstants.SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION,
+		//		lnf.putLnfSetting(LnfKeyConstants.SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION,
 		//				IIconizableMarker.MarkerPosition.BOTTOM_RIGHT);
 
-		table.put(LnfKeyConstants.APPLICATION_MIN_SIZE, new Point(800, 600));
+		lnf.putLnfSetting(LnfKeyConstants.APPLICATION_MIN_SIZE, new Point(800, 600));
 
-		table.put(LnfKeyConstants.TOOLBAR_WORK_AREA_VERTICAL_GAP, 5);
+		lnf.putLnfSetting(LnfKeyConstants.TOOLBAR_WORK_AREA_VERTICAL_GAP, 5);
 
-		table.put(LnfKeyConstants.NAVIGATION_WIDTH, 165);
+		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_WIDTH, 165);
 
-		table.put(LnfKeyConstants.STATUSLINE_HEIGHT, 20);
+		lnf.putLnfSetting(LnfKeyConstants.STATUSLINE_HEIGHT, 20);
 
-		table.put(LnfKeyConstants.DIALOG_HIDE_OS_BORDER, hideOsBorder());
+		lnf.putLnfSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER, hideOsBorder());
 
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN, 22);
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT, 40);
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.CENTER);
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, false);
-		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH, 0);
+		lnf.putLnfSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN, 22);
+		lnf.putLnfSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT, 40);
+		lnf.putLnfSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.CENTER);
+		lnf.putLnfSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, false);
+		lnf.putLnfSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH, 0);
 
-		table.put(LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE, false);
+		lnf.putLnfSetting(LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE, false);
 
-		table.put(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY, 0);
-		table.put(LnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY, 500);
+		lnf.putLnfSetting(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY, 0);
+		lnf.putLnfSetting(LnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY, 500);
 
-		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_MARGIN, 0);
+		lnf.putLnfSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_MARGIN, 0);
 
-		table.put(LnfKeyConstants.NAVIGATION_SUB_MODULE_GAP, 5);
-		table.put(LnfKeyConstants.MENUBAR_TOP_MARGIN, 0);
-		table.put(LnfKeyConstants.TOOLBAR_TOP_MARGIN, 0);
+		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_SUB_MODULE_GAP, 5);
+		lnf.putLnfSetting(LnfKeyConstants.MENUBAR_TOP_MARGIN, 0);
+		lnf.putLnfSetting(LnfKeyConstants.TOOLBAR_TOP_MARGIN, 0);
 
-		table.put(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
-		table.put(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);
-		table.put(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
+		lnf.putLnfSetting(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
+		lnf.putLnfSetting(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);
+		lnf.putLnfSetting(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
 
-		table.put(LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT, 8);
+		lnf.putLnfSetting(LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT, 8);
 
-		table.put(LnfKeyConstants.DISABLED_MARKER_ADVANCED, true);
-		table.put(LnfKeyConstants.DISABLED_MARKER_STANDARD_ALPHA, 90);
-		// table.put(LnfKeyConstants.DISABLED_MARKER_COMPLEX_ALPHA, 190);
-		table.put(LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT, true);
+		lnf.putLnfSetting(LnfKeyConstants.DISABLED_MARKER_ADVANCED, true);
+		lnf.putLnfSetting(LnfKeyConstants.DISABLED_MARKER_STANDARD_ALPHA, 90);
+		// lnf.putLnfSetting(LnfKeyConstants.DISABLED_MARKER_COMPLEX_ALPHA, 190);
+		lnf.putLnfSetting(LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT, true);
 
-		table.put(LnfKeyConstants.MARKER_SUPPORT_ID, "defaultMarkerSupport"); //$NON-NLS-1$
+		lnf.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "defaultMarkerSupport"); //$NON-NLS-1$
 
-		table.put(LnfKeyConstants.INFO_FLYOUT_PAUSE_ANIMATION_TIME, 1000);
-		table.put(LnfKeyConstants.INFO_FLYOUT_SHOW_AND_HIDE_ANIMATION_TIME, 1500);
-		table.put(LnfKeyConstants.INFO_FLYOUT_WAIT_ANIMATION_TIME, 2500);
-		table.put(LnfKeyConstants.INFO_FLYOUT_WIDTH, 300);
-		table.put(LnfKeyConstants.INFO_FLYOUT_HEIGHT, 46);
-		table.put(LnfKeyConstants.INFO_FLYOUT_ICON_TEXT_GAP, 3);
-		table.put(LnfKeyConstants.INFO_FLYOUT_LEFT_MARGIN, 13);
-		table.put(LnfKeyConstants.INFO_FLYOUT_RIGHT_MARGIN, 50);
-		table.put(LnfKeyConstants.INFO_FLYOUT_RIGHT_INDENT, 21);
+		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_PAUSE_ANIMATION_TIME, 1000);
+		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_SHOW_AND_HIDE_ANIMATION_TIME, 1500);
+		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_WAIT_ANIMATION_TIME, 2500);
+		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_WIDTH, 300);
+		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_HEIGHT, 46);
+		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_ICON_TEXT_GAP, 3);
+		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_LEFT_MARGIN, 13);
+		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_RIGHT_MARGIN, 50);
+		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_RIGHT_INDENT, 21);
 	}
 
 	//

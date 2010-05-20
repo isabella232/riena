@@ -54,13 +54,13 @@ public class ModuleViewTest extends RienaTestCase {
 	private SubModuleNode subSubNode;
 	private SubModuleNode subSubSubNode;
 	private Shell shell;
-	private MyLnf currentLnf;
+	private RienaDefaultLnf currentLnf;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		currentLnf = new MyLnf();
+		currentLnf = new RienaDefaultLnf();
 		LnfManager.setLnf(currentLnf);
 
 		shell = new Shell();
@@ -206,7 +206,8 @@ public class ModuleViewTest extends RienaTestCase {
 	public void testPaintTreeItem() {
 
 		SubModuleTreeItemMarkerRenderer renderer = new SubModuleTreeItemMarkerRenderer();
-		currentLnf.getRendererTable().put(LnfKeyConstants.SUB_MODULE_TREE_ITEM_MARKER_RENDERER, renderer);
+		Map<String, ILnfRenderer> rendererTable = ReflectionUtils.getHidden(currentLnf, "rendererTable");
+		rendererTable.put(LnfKeyConstants.SUB_MODULE_TREE_ITEM_MARKER_RENDERER, renderer);
 
 		IMarker em1 = new ErrorMarker();
 		subNode.addMarker(em1);
@@ -269,17 +270,6 @@ public class ModuleViewTest extends RienaTestCase {
 			return super.getTree();
 		}
 
-	}
-
-	/**
-	 * This Look&Feel makes the visibility of the method {@code
-	 * getRendererTable()} public for testing.
-	 */
-	private class MyLnf extends RienaDefaultLnf {
-		@Override
-		public Map<String, ILnfRenderer> getRendererTable() {
-			return super.getRendererTable();
-		}
 	}
 
 	/**

@@ -285,17 +285,7 @@ public class LnFUpdater {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		String style = (String) control.getData(UIControlsFactory.KEY_LNF_STYLE);
-		if (StringUtils.isGiven(style)) {
-			style += '.';
-			Set<String> keys = lnf.getResourceTable().keySet();
-			for (String key : keys) {
-				if (key.startsWith(style)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
+		return lnf.containsLnfResourcePrefix(style);
 
 	}
 
@@ -312,13 +302,9 @@ public class LnFUpdater {
 
 		String className = getSimpleClassName(controlClass);
 		if (className.length() != 0) {
-			className += '.';
 			RienaDefaultLnf lnf = LnfManager.getLnf();
-			Set<String> keys = lnf.getResourceTable().keySet();
-			for (String key : keys) {
-				if (key.startsWith(className)) {
-					return true;
-				}
+			if (lnf.containsLnfResourcePrefix(className)) {
+				return true;
 			}
 		}
 

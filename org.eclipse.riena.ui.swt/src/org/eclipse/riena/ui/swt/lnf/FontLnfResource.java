@@ -12,13 +12,12 @@ package org.eclipse.riena.ui.swt.lnf;
 
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrapper for resource font.
  */
-public class FontLnfResource extends AbstractLnfResource {
+public class FontLnfResource extends AbstractLnfResource<Font> {
 
 	private FontData fontData;
 
@@ -45,17 +44,9 @@ public class FontLnfResource extends AbstractLnfResource {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfResource#getResource()
-	 */
-	@Override
-	public Font getResource() {
-		return (Font) super.getResource();
-	}
-
-	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#createResource()
 	 */
-	public Resource createResource() {
+	public Font createResource() {
 		return new Font(Display.getCurrent(), fontData);
 	}
 

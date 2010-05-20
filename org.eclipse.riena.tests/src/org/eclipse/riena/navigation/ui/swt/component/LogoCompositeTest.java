@@ -86,7 +86,7 @@ public class LogoCompositeTest extends TestCase {
 	private static class MyLnf extends RienaDefaultLnf {
 
 		public void setLogo(String logo) {
-			getResourceTable().put(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(logo));
+			putLnfResource(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(logo));
 		}
 
 	}

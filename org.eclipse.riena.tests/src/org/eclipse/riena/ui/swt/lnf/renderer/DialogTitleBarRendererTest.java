@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.tests.Activator;
@@ -122,13 +125,14 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 	private static class DialogLnf extends RienaDefaultLnf {
 
 		@Override
-		protected void initFontDefaults() {
-			super.initFontDefaults();
-			getResourceTable().put(LnfKeyConstants.DIALOG_FONT, new FontLnfResource("Arial", 12, SWT.NONE));
+		protected void initializeTheme() {
+			super.initializeTheme();
+			putLnfResource(LnfKeyConstants.DIALOG_FONT, new FontLnfResource("Arial", 12, SWT.NONE));
 		}
 
 		public void setHideOsBorder(boolean hide) {
-			getSettingTable().put(LnfKeyConstants.DIALOG_HIDE_OS_BORDER, hide);
+			Map<String, Object> settingTable = ReflectionUtils.getHidden(DialogLnf.this, "settingTable");
+			settingTable.put(LnfKeyConstants.DIALOG_HIDE_OS_BORDER, hide);
 		}
 
 	}

@@ -164,9 +164,11 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 	public void testPaintMarkersHierarchically() throws Exception {
 
 		LnfManager.setLnf(new MyLnf() {
+
 			@Override
-			protected void initSettingsDefaults() {
-				getSettingTable().put(LnfKeyConstants.SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION,
+			protected void initializeTheme() {
+				super.initializeTheme();
+				putLnfSetting(LnfKeyConstants.SUB_MODULE_TREE_MARKER_HIERARCHIC_ORDER_POSITION,
 						IIconizableMarker.MarkerPosition.BOTTOM_RIGHT);
 			}
 		});

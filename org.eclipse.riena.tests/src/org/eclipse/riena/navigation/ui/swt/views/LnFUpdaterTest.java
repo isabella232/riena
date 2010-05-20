@@ -12,7 +12,6 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
-import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -29,7 +28,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
-import org.eclipse.riena.ui.swt.lnf.ILnfResource;
+import org.eclipse.riena.ui.swt.lnf.ILnfCustomizer;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.ui.swt.lnf.IgnoreLnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
@@ -486,19 +485,10 @@ public class LnFUpdaterTest extends RienaTestCase {
 	 */
 	private static class MyTheme implements ILnfTheme {
 
-		public void addCustomColors(Map<String, ILnfResource> table) {
-			table.put("Composite.background", new ColorLnfResource(47, 11, 15));
-			table.put("Label.foreground", new ColorLnfResource(1, 2, 3));
-			table.put("section.foreground", new ColorLnfResource(111, 22, 3));
-		}
-
-		public void addCustomFonts(Map<String, ILnfResource> table) {
-		}
-
-		public void addCustomImages(Map<String, ILnfResource> table) {
-		}
-
-		public void addCustomSettings(Map<String, Object> table) {
+		public void customizeLnf(ILnfCustomizer lnf) {
+			lnf.putLnfResource("Composite.background", new ColorLnfResource(47, 11, 15));
+			lnf.putLnfResource("Label.foreground", new ColorLnfResource(1, 2, 3));
+			lnf.putLnfResource("section.foreground", new ColorLnfResource(111, 22, 3));
 		}
 
 	}

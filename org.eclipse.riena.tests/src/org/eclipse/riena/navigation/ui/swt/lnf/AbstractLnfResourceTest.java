@@ -12,11 +12,11 @@ package org.eclipse.riena.navigation.ui.swt.lnf;
 
 import junit.framework.TestCase;
 
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfResource;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Resource;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * Tests of the class <code>AbstractLnfResource</code>.
@@ -75,6 +75,7 @@ public class AbstractLnfResourceTest extends TestCase {
 		assertFalse(color1.isDisposed());
 
 		lnfResource.dispose();
+		color1.dispose();
 
 		Color color2 = (Color) lnfResource.getResource();
 		assertNotNull(color2);
@@ -83,14 +84,13 @@ public class AbstractLnfResourceTest extends TestCase {
 
 	}
 
-	private static class MockLnfResource extends AbstractLnfResource {
+	private static class MockLnfResource extends AbstractLnfResource<Color> {
 
 		/**
 		 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#createResource()
 		 */
-		public Resource createResource() {
-			Color color = new Color(Display.getDefault(), 1, 1, 1);
-			return color;
+		public Color createResource() {
+			return new Color(Display.getDefault(), 1, 1, 1);
 		}
 
 	}
