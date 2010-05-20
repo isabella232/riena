@@ -27,23 +27,28 @@ public abstract class AbstractLnfResource<T extends Resource> implements ILnfRes
 	 */
 	public T getResource() {
 		if (resourceRef == null) {
-			return createRefedResource();
+			return createResourceRefAndReturnResource();
 		}
 		T resource = resourceRef.get();
 		if (SwtUtilities.isDisposed(resource)) {
-			return createRefedResource();
+			return createResourceRefAndReturnResource();
 		}
 		return resource;
 	}
 
-	private T createRefedResource() {
+	private T createResourceRefAndReturnResource() {
 		final T resource = createResource();
 		resourceRef = new WeakRef<T>(resource, new Runnable() {
 			public void run() {
-				SwtUtilities.disposeResource(resource);
+				dispose();
 			}
 		});
 		return resource;
 	}
 
+	private void dispose() {
+		if (resourceRef != null) {
+			SwtUtilities.disposeResource(resourceRef.get());
+		}
+	}
 }
