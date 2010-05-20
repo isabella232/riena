@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,6 @@ public class AbstractLnfResourceTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		lnfResource.dispose();
 		lnfResource = null;
 	}
 
@@ -57,8 +56,7 @@ public class AbstractLnfResourceTest extends TestCase {
 		assertNotNull(color);
 		assertFalse(color.isDisposed());
 
-		lnfResource.dispose();
-		assertTrue(color.isDisposed());
+		assertFalse(color.isDisposed());
 
 	}
 
@@ -74,7 +72,6 @@ public class AbstractLnfResourceTest extends TestCase {
 		assertNotNull(color1);
 		assertFalse(color1.isDisposed());
 
-		lnfResource.dispose();
 		color1.dispose();
 
 		Color color2 = (Color) lnfResource.getResource();
