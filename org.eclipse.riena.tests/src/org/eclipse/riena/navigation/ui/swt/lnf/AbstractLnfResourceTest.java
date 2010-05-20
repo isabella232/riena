@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import junit.framework.TestCase;
 
 import org.eclipse.swt.graphics.Color;
@@ -81,15 +85,57 @@ public class AbstractLnfResourceTest extends TestCase {
 
 	}
 
+	public void testThatTheResourceWillNotBeDisposedIfStillInUse() throws IOException {
+		Color color1 = lnfResource.getResource();
+		assertFalse(color1.isDisposed());
+		assertEquals(1, color1.getRed());
+
+		runOutOfMemory();
+
+		lnfResource.setRed(255);
+		Color color2 = lnfResource.getResource();
+		assertEquals(1, color2.getRed());
+		assertSame(color1, color2);
+	}
+
+	public void testThatTheResourceWillBeDisposedIfNoLongerInUse() throws IOException {
+		Color color1 = lnfResource.getResource();
+		assertFalse(color1.isDisposed());
+		assertEquals(1, color1.getRed());
+		color1 = null;
+
+		runOutOfMemory();
+
+		lnfResource.setRed(255);
+		Color color2 = lnfResource.getResource();
+		assertEquals(255, color2.getRed());
+	}
+
 	private static class MockLnfResource extends AbstractLnfResource<Color> {
+
+		private int red = 1;
+
+		public void setRed(int red) {
+			this.red = red;
+		}
 
 		/**
 		 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#createResource()
 		 */
 		public Color createResource() {
-			return new Color(Display.getDefault(), 1, 1, 1);
+			return new Color(Display.getDefault(), red, 1, 1);
 		}
 
 	}
 
+	private void runOutOfMemory() throws IOException {
+		try {
+			OutputStream os = new ByteArrayOutputStream();
+			while (true) {
+				os.write(new byte[1024 * 1024]);
+			}
+		} catch (OutOfMemoryError e) {
+			System.gc();
+		}
+	}
 }
