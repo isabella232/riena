@@ -58,8 +58,8 @@ public class ChoiceSubModuleView extends SubModuleView {
 		Group group = UIControlsFactory.createGroup(parent, "James' Car Configurator:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).spacing(20, 20).applyTo(group);
 
-		GridDataFactory choiceLayoutFactory = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).grab(true,
-				false);
+		GridDataFactory choiceLayoutFactory = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING)
+				.grab(true, false);
 
 		// next row
 
@@ -95,6 +95,15 @@ public class ChoiceSubModuleView extends SubModuleView {
 		compositeCarPlates.setOrientation(SWT.HORIZONTAL);
 		choiceLayoutFactory.applyTo(compositeCarPlates);
 		addUIControl(compositeCarPlates, "compositeCarPlates"); //$NON-NLS-1$
+
+		// next row
+
+		UIControlsFactory.createLabel(group, "Sun Roof"); //$NON-NLS-1$
+
+		ChoiceComposite compositeSunRoof = new ChoiceComposite(group, SWT.NONE, false);
+		compositeSunRoof.setOrientation(SWT.HORIZONTAL);
+		choiceLayoutFactory.applyTo(compositeSunRoof);
+		addUIControl(compositeSunRoof, "compositeSunroof"); //$NON-NLS-1$
 
 		// next row
 

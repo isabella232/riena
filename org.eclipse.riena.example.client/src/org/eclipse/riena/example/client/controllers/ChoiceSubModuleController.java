@@ -89,6 +89,12 @@ public class ChoiceSubModuleController extends SubModuleController {
 		compositeColor.bindToModel(carConfig, "colors", carConfig, CarConfig.PROP_COLOR); //$NON-NLS-1$
 		compositeColor.updateFromModel();
 
+		final ISingleChoiceRidget compositeSunroof = getRidget(ISingleChoiceRidget.class, "compositeSunroof"); //$NON-NLS-1$
+		String[] roofLabels = { "yes", "no" }; //$NON-NLS-1$ //$NON-NLS-2$
+		compositeSunroof.bindToModel(toList(new Boolean[] { true, false }), toList(roofLabels), carConfig,
+				CarConfig.PROP_SUNROOF);
+		compositeSunroof.updateFromModel();
+
 		ITextRidget txtPrice = getRidget(ITextRidget.class, "txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
 		DataBindingContext dbc = new DataBindingContext();
@@ -115,6 +121,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 				compositeCarExtras.updateFromModel();
 				compositeCarWarranty.updateFromModel();
 				compositeCarPlates.updateFromModel();
+				compositeSunroof.updateFromModel();
 				compositeColor.updateFromModel();
 			}
 		});
@@ -153,6 +160,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 		public static final String PROP_PLATES = "plates"; //$NON-NLS-1$
 		public static final String PROP_PRICE = "price"; //$NON-NLS-1$
 		public static final String PROP_COLOR = "color"; //$NON-NLS-1$
+		public static final String PROP_SUNROOF = "sunroof"; //$NON-NLS-1$
 
 		private CarModels model;
 		private List<CarOptions> options = new ArrayList<CarOptions>();
@@ -160,12 +168,14 @@ public class ChoiceSubModuleController extends SubModuleController {
 		private List<String> plates = new ArrayList<String>();
 		private List<String> colors = new ArrayList<String>();
 		private String color;
+		private boolean sunroof;
 
 		public CarConfig() {
 			addColor("red"); //$NON-NLS-1$
 			addColor("black"); //$NON-NLS-1$
 			addColor("blue"); //$NON-NLS-1$
 			setColor(getColors().get(0));
+			setSunroof(false);
 		}
 
 		public void addColor(String color) {
@@ -214,6 +224,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 			setWarranty(null);
 			setPlates(new ArrayList<String>());
 			setColor(getColors().get(0));
+			setSunroof(false);
 		}
 
 		public long getPrice() {
@@ -224,6 +235,9 @@ public class ChoiceSubModuleController extends SubModuleController {
 			price += options.size() * 25000L;
 			if (warranty == CarWarranties.EXTENDED) {
 				price += 10000;
+			}
+			if (isSunroof()) {
+				price += 899;
 			}
 			price += plates.size() * 200L;
 			return price;
@@ -239,6 +253,15 @@ public class ChoiceSubModuleController extends SubModuleController {
 
 		public List<String> getColors() {
 			return colors;
+		}
+
+		public void setSunroof(boolean sunroof) {
+			firePropertyChanged(PROP_SUNROOF, this.sunroof, this.sunroof = sunroof);
+			firePropertyChanged(PROP_PRICE, null, getPrice());
+		}
+
+		public boolean isSunroof() {
+			return sunroof;
 		}
 
 	}
