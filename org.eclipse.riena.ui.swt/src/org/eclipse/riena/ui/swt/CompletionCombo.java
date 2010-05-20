@@ -1744,13 +1744,14 @@ public class CompletionCombo extends Composite {
 	public void setBackground(Color color) {
 		super.setBackground(color);
 		background = color;
-		if (text != null) {
+		// fix for 304869
+		if (text != null && !text.isDisposed()) {
 			text.setBackground(color);
 		}
-		if (list != null) {
+		if (list != null && !list.isDisposed()) {
 			list.setBackground(color);
 		}
-		if (arrow != null) {
+		if (arrow != null && !arrow.isDisposed()) {
 			arrow.setBackground(color);
 		}
 	}
@@ -1811,13 +1812,14 @@ public class CompletionCombo extends Composite {
 	public void setForeground(Color color) {
 		super.setForeground(color);
 		foreground = color;
-		if (text != null) {
+		// fix for 304869
+		if (text != null && !text.isDisposed()) {
 			text.setForeground(color);
 		}
-		if (list != null) {
+		if (list != null && !list.isDisposed()) {
 			list.setForeground(color);
 		}
-		if (arrow != null) {
+		if (arrow != null && !arrow.isDisposed()) {
 			arrow.setForeground(color);
 		}
 	}
