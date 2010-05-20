@@ -91,7 +91,7 @@ public class WeakRef<T> {
 						try {
 							runnable.run();
 						} catch (final Throwable t) {
-							LOGGER.log(LogService.LOG_ERROR, "Got exception executing remove notifiaction.", t); //$NON-NLS-1$
+							LOGGER.log(LogService.LOG_ERROR, "Got exception executing remove notification.", t); //$NON-NLS-1$
 						}
 					}
 				}
