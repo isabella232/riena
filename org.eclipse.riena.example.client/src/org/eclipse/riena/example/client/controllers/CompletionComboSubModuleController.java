@@ -10,13 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
-import org.eclipse.riena.example.client.views.ComboCompletionSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 
 /**
  * Controller for the {@link ComboCompletionSubModuleView} example.
  */
-public class ComboCompletionSubModuleController extends SubModuleController {
+public class CompletionComboSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {

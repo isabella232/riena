@@ -83,9 +83,9 @@
             name="org.eclipse.riena.example.client.views.ComboSubModuleView">
       </view>
       <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ComboCompletionSubModuleView"
-            id="org.eclipse.riena.example.client.views.ComboCompletionSubModuleView"
-            name="org.eclipse.riena.example.client.views.ComboCompletionSubModuleView">
+            class="org.eclipse.riena.example.client.views.CompletionComboSubModuleView"
+            id="org.eclipse.riena.example.client.views.CompletionComboSubModuleView"
+            name="org.eclipse.riena.example.client.views.CompletionComboSubModuleView">
       </view>
       <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.DateTimeSubModuleView"

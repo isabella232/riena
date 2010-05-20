@@ -19,8 +19,8 @@ import org.eclipse.riena.example.client.controllers.BlockingSubModuleController;
 import org.eclipse.riena.example.client.controllers.CComboSubModuleController;
 import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboAndChoiceSubModuleController;
-import org.eclipse.riena.example.client.controllers.ComboCompletionSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
+import org.eclipse.riena.example.client.controllers.CompletionComboSubModuleController;
 import org.eclipse.riena.example.client.controllers.CompositeTableSubModuleController;
 import org.eclipse.riena.example.client.controllers.ContextMenuSubModuleController;
 import org.eclipse.riena.example.client.controllers.ControllerTestsPlaygroundSubModuleController;
@@ -53,8 +53,8 @@ import org.eclipse.riena.example.client.views.BlockingSubModuleView;
 import org.eclipse.riena.example.client.views.CComboSubModuleView;
 import org.eclipse.riena.example.client.views.ChoiceSubModuleView;
 import org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView;
-import org.eclipse.riena.example.client.views.ComboCompletionSubModuleView;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
+import org.eclipse.riena.example.client.views.CompletionComboSubModuleView;
 import org.eclipse.riena.example.client.views.CompositeTableSubModuleView;
 import org.eclipse.riena.example.client.views.ContextMenuSubModuleView;
 import org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView;
@@ -133,8 +133,8 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 		ISubModuleNode choiceSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.choice"), "Choice"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(choiceSubModule, ChoiceSubModuleController.class, ChoiceSubModuleView.class
-				.getName(), false);
+		workarea.registerDefinition(choiceSubModule, ChoiceSubModuleController.class,
+				ChoiceSubModuleView.class.getName(), false);
 		playgroundModule.addChild(choiceSubModule);
 
 		ISubModuleNode comboSubModule = new SubModuleNode(
@@ -149,9 +149,9 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		playgroundModule.addChild(ccomboSubModule);
 
 		ISubModuleNode comboCompletionSubModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.combocompletion"), "Combo Completion"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(comboCompletionSubModule, ComboCompletionSubModuleController.class,
-				ComboCompletionSubModuleView.ID, false);
+				"org.eclipse.riena.example.completioncombo"), "CompletionCombo"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(comboCompletionSubModule, CompletionComboSubModuleController.class,
+				CompletionComboSubModuleView.ID, false);
 		playgroundModule.addChild(comboCompletionSubModule);
 
 		ISubModuleNode comboAndChoiceSubModule = new SubModuleNode(new NavigationNodeId(

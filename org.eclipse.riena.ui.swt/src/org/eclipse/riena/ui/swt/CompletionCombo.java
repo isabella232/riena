@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation (CCombo)
  *     compeople AG    - adjustments for autocompletion
  *******************************************************************************/
-package org.eclipse.riena.example.client.views;
+package org.eclipse.riena.ui.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -46,8 +46,6 @@ import org.eclipse.swt.widgets.Widget;
 import org.eclipse.riena.core.util.StringUtils;
 
 /**
- * TODO [ev] move to appropriate plugin / package
- * 
  * The CompletionCombo class represents a selectable user interface object that
  * combines a text field and a list and issues notification when an item is
  * selected from the list. The list will automatically pop-up when the text
@@ -56,11 +54,9 @@ import org.eclipse.riena.core.util.StringUtils;
  * CompletionCombo was written to work around certain limitations in the native
  * combo box. There is no is no strict requirement that CompletionCombo look or
  * behave the same as the native combo box.
- * </p>
  * <p>
  * Note that although this class is a subclass of <code>Composite</code>, it
  * does not make sense to add children to it, or set a layout on it.
- * </p>
  * <dl>
  * <dt><b>Styles:</b>
  * <dd>BORDER, READ_ONLY, FLAT</dd>
@@ -68,6 +64,7 @@ import org.eclipse.riena.core.util.StringUtils;
  * <dd>DefaultSelection, Modify, Selection, Verify</dd>
  * </dl>
  * 
+ * @since 2.0
  */
 public class CompletionCombo extends Composite {
 
@@ -83,8 +80,6 @@ public class CompletionCombo extends Composite {
 	private Shell _shell;
 	private boolean autoCompletion;
 	private ComboAutoCompletionMode autoCompletionMode;
-
-	//	static final String PACKAGE_PREFIX = "org.eclipse.swt.custom."; //$NON-NLS-1$
 
 	/**
 	 * This enumeration is used to configure the the way the autocompletion
@@ -472,14 +467,6 @@ public class CompletionCombo extends Composite {
 			break;
 		}
 	}
-
-	//	protected void checkSubclass() {
-	//		String name = getClass().getName();
-	//		int index = name.lastIndexOf('.');
-	//		if (!name.substring(0, index + 1).equals(PACKAGE_PREFIX)) {
-	//			SWT.error(SWT.ERROR_INVALID_SUBCLASS);
-	//		}
-	//	}
 
 	/**
 	 * Sets the selection in the receiver's text field to an empty selection
