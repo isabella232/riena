@@ -25,7 +25,6 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -44,6 +43,7 @@ import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
+import org.eclipse.riena.ui.swt.CompletionCombo;
 
 /**
  * Tests of the class {@link ComboRidget}.
@@ -145,13 +145,6 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		try {
 			ridget.setUIControl(getShell());
-			fail();
-		} catch (BindingException bex) {
-			ok();
-		}
-
-		try {
-			ridget.setUIControl(createWidget(getShell(), SWT.NONE));
 			fail();
 		} catch (BindingException bex) {
 			ok();
@@ -1215,6 +1208,9 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		if (control instanceof CCombo) {
 			return ((CCombo) control).getItem(index);
 		}
+		if (control instanceof CompletionCombo) {
+			return ((CompletionCombo) control).getItem(index);
+		}
 		throw new IllegalArgumentException("unknown widget type: " + control);
 	}
 
@@ -1225,6 +1221,9 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		if (control instanceof CCombo) {
 			return ((CCombo) control).getItemCount();
 		}
+		if (control instanceof CompletionCombo) {
+			return ((CompletionCombo) control).getItemCount();
+		}
 		throw new IllegalArgumentException("unknown widget type: " + control);
 	}
 
@@ -1234,6 +1233,9 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		}
 		if (control instanceof CCombo) {
 			return ((CCombo) control).getSelectionIndex();
+		}
+		if (control instanceof CompletionCombo) {
+			return ((CompletionCombo) control).getSelectionIndex();
 		}
 		throw new IllegalArgumentException("unknown widget type: " + control);
 	}
@@ -1250,6 +1252,9 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		if (control instanceof CCombo) {
 			return ((CCombo) control).getText();
 		}
+		if (control instanceof CompletionCombo) {
+			return ((CompletionCombo) control).getText();
+		}
 		throw new IllegalArgumentException("unknown widget type: " + control);
 	}
 
@@ -1258,6 +1263,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 			((Combo) control).select(index);
 		} else if (control instanceof CCombo) {
 			((CCombo) control).select(index);
+		} else if (control instanceof CompletionCombo) {
+			((CompletionCombo) control).select(index);
 		} else {
 			throw new IllegalArgumentException("unknown widget type: " + control);
 		}
@@ -1269,6 +1276,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 			UITestHelper.sendString(display, "A");
 		} else if (control instanceof CCombo) {
 			UITestHelper.sendKeyAction(display, UITestHelper.KC_ARROW_DOWN);
+		} else if (control instanceof CompletionCombo) {
+			UITestHelper.sendString(display, "A");
 		} else {
 			throw new IllegalArgumentException("unknown widget type: " + control);
 		}

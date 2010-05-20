@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.core.databinding.BindingException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -43,4 +44,18 @@ public class ComboRidgetTest extends AbstractComboRidgetTest {
 		assertTrue(getWidget() instanceof Combo);
 		assertSame(ComboRidget.class, mapper.getRidgetClass(getWidget()));
 	}
+
+	// testing methods
+	//////////////////
+
+	public void testRequireReadOnlyUIControl() {
+		try {
+			// not SWT.READ_ONLY => exception 
+			getRidget().setUIControl(createWidget(getShell(), SWT.NONE));
+			fail();
+		} catch (BindingException bex) {
+			ok();
+		}
+	}
+
 }
