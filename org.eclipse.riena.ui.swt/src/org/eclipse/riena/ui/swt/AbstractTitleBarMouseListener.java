@@ -56,6 +56,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		resetBtnStates();
 		mouseDownOnButton = false;
 		move = false;
+		updateRenderer();
 	}
 
 	/**
@@ -127,46 +128,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 			mouseDownOnButton = false;
 		}
 
-		boolean redraw = false;
-		for (int i = 0; i < btnStates.length; i++) {
-			boolean hover = btnStates[i] == BtnState.HOVER;
-			boolean pressed = btnStates[i] == BtnState.HOVER_SELECTED && mouseDownOnButton;
-			switch (i) {
-			case CLOSE_BTN_INDEX:
-				if (getTitleBarRenderer().isCloseButtonHover() != hover) {
-					getTitleBarRenderer().setCloseButtonHover(hover);
-					redraw = true;
-				}
-				if (getTitleBarRenderer().isCloseButtonPressed() != pressed) {
-					getTitleBarRenderer().setCloseButtonPressed(pressed);
-					redraw = true;
-				}
-				break;
-			case MAX_BTN_INDEX:
-				if (getTitleBarRenderer().isMaximizedButtonHover() != hover) {
-					getTitleBarRenderer().setMaximizedButtonHover(hover);
-					redraw = true;
-				}
-				if (getTitleBarRenderer().isMaximizedButtonPressed() != pressed) {
-					getTitleBarRenderer().setMaximizedButtonPressed(pressed);
-					redraw = true;
-				}
-				break;
-			case MIN_BTN_INDEX:
-				if (getTitleBarRenderer().isMinimizedButtonHover() != hover) {
-					getTitleBarRenderer().setMinimizedButtonHover(hover);
-					redraw = true;
-				}
-				if (getTitleBarRenderer().isMinimizedButtonPressed() != pressed) {
-					getTitleBarRenderer().setMinimizedButtonPressed(pressed);
-					redraw = true;
-				}
-				break;
-			default:
-				throw new AssertionError("Illegal button index: " + i); //$NON-NLS-1$
-			}
-		}
-
+		boolean redraw = updateRenderer();
 		if (redraw) {
 			Control control = (Control) e.getSource();
 			if (!control.isDisposed()) {
@@ -174,6 +136,51 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 				control.redraw(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, false);
 			}
 		}
+	}
+
+	private boolean updateRenderer() {
+
+		boolean changed = false;
+
+		for (int i = 0; i < btnStates.length; i++) {
+			boolean hover = btnStates[i] == BtnState.HOVER;
+			boolean pressed = btnStates[i] == BtnState.HOVER_SELECTED && mouseDownOnButton;
+			switch (i) {
+			case CLOSE_BTN_INDEX:
+				if (getTitleBarRenderer().isCloseButtonHover() != hover) {
+					getTitleBarRenderer().setCloseButtonHover(hover);
+					changed = true;
+				}
+				if (getTitleBarRenderer().isCloseButtonPressed() != pressed) {
+					getTitleBarRenderer().setCloseButtonPressed(pressed);
+					changed = true;
+				}
+				break;
+			case MAX_BTN_INDEX:
+				if (getTitleBarRenderer().isMaximizedButtonHover() != hover) {
+					getTitleBarRenderer().setMaximizedButtonHover(hover);
+					changed = true;
+				}
+				if (getTitleBarRenderer().isMaximizedButtonPressed() != pressed) {
+					getTitleBarRenderer().setMaximizedButtonPressed(pressed);
+					changed = true;
+				}
+				break;
+			case MIN_BTN_INDEX:
+				if (getTitleBarRenderer().isMinimizedButtonHover() != hover) {
+					getTitleBarRenderer().setMinimizedButtonHover(hover);
+					changed = true;
+				}
+				if (getTitleBarRenderer().isMinimizedButtonPressed() != pressed) {
+					getTitleBarRenderer().setMinimizedButtonPressed(pressed);
+					changed = true;
+				}
+				break;
+			default:
+				throw new AssertionError("Illegal button index: " + i); //$NON-NLS-1$
+			}
+		}
+		return changed;
 	}
 
 	private void updateCursor(MouseEvent e) {
