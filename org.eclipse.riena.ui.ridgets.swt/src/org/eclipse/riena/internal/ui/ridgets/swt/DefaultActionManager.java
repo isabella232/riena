@@ -130,7 +130,7 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 	//////////////////
 
 	private void clearDefaultButton(Shell shell) {
-		if (SwtUtilities.isDisposed(shell)) {
+		if (!SwtUtilities.isDisposed(shell)) {
 			// the setDefaultButton(...) API is strange! The first call
 			// will just reset the saved button to null, the second call will 
 			// make null the default button
