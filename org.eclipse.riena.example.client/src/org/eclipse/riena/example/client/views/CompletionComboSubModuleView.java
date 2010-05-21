@@ -41,7 +41,8 @@ public class CompletionComboSubModuleView extends SubModuleView {
 		GridDataFactory gdfFill = GridDataFactory.fillDefaults().grab(true, false);
 
 		Group grpCustom = createGroup(parent, "CompletionCombo (custom widget)"); //$NON-NLS-1$
-		GridLayoutFactory.swtDefaults().numColumns(4).equalWidth(false).margins(20, 20).applyTo(grpCustom);
+		GridLayoutFactory.swtDefaults().numColumns(4).spacing(15, 5).equalWidth(false).margins(20, 20)
+				.applyTo(grpCustom);
 		gdfFill.applyTo(grpCustom);
 		createCustom(grpCustom);
 	}
