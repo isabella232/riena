@@ -6,7 +6,8 @@
          <meta.schema plugin="org.eclipse.riena.ui.ridgets.swt" id="org.eclipse.riena.ui.ridgets.swt.processdetail" name="org.eclipse.riena.ui.ridgets.swt.processdetail"/>
       </appInfo>
       <documentation>
-         This extension point provides a way to control the order of the UIProcesses visualized in the StatusLine.
+         This extension point is @Deprecated. Please use the functional identical extension point &quot;processDetailComparator&quot;.
+This extension point provides a way to control the order of the UIProcesses visualized in the StatusLine.
 An Comparator&lt;ProcessDetail&gt; has to be contributed using the instance attribute of element ProcessDetailComparator.
 If there is no contribution for this extension point, riena´s standard implementation DefaultProcessDetailComparator will be used as default.
       </documentation>
