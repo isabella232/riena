@@ -76,7 +76,7 @@ public class CompletionComboSubModuleView extends SubModuleView {
 
 		UIControlsFactory.createText(parent, SWT.BORDER, "text1"); //$NON-NLS-1$ 
 
-		// ro2
+		// row 2
 
 		UIControlsFactory.createLabel(parent, "autocomplete, no missmatch:"); //$NON-NLS-1$
 		CompletionCombo combo2 = UIControlsFactory.createCompletionCombo(parent, "combo2"); //$NON-NLS-1$
