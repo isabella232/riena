@@ -360,7 +360,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	///////////////////
 
 	/**
-	 * TODO [ev] docs
+	 * Attach a text modify listener to the combo. The listener must invoke
+	 * {@code ridget.setText(...)} if the control's text is modified.
 	 */
 	protected abstract void addTextModifyListener();
 
@@ -385,10 +386,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	protected abstract ISWTObservableValue getUIControlSelectionObservable();
 
 	/**
-	 * TODO [ev] docs
+	 * Return the current text in the combo.
 	 * 
-	 * @return
-	 * @since 1.2
+	 * @return a String; never null; may be empty
+	 * @since 2.0
 	 */
 	protected abstract String getUIControlText();
 
@@ -410,7 +411,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	protected abstract void removeAllFromUIControl();
 
 	/**
-	 * TODO [ev] docs
+	 * Remove the text modify listener from the combo.
+	 * 
+	 * @see #addTextModifyListener()
+	 * @since 2.0
 	 */
 	protected abstract void removeTextModifyListener();
 
@@ -424,9 +428,11 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	protected abstract void setItemsToControl(String[] arrItems);
 
 	/**
-	 * TODO [ev] docs
+	 * Set the given {@code text} to the combo.
 	 * 
-	 * @since 1.2
+	 * @param text
+	 *            a String; never null; may be empty
+	 * @since 2.0
 	 */
 	protected abstract void setTextToControl(String text);
 
