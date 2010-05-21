@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -244,15 +243,16 @@ public class InfoFlyout implements IPropertyNameProvider {
 
 	private void updateLayoutData() {
 		int topIndent = (HEIGHT - rightLabel.getBounds().height) / 2;
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(ICON_LEFT_MARGIN, topIndent).applyTo(
-				leftLabel);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(TEXT_LEFT_MARGIN, topIndent).hint(WIDTH - 50,
-				SWT.DEFAULT).applyTo(rightLabel);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(ICON_LEFT_MARGIN, topIndent)
+				.applyTo(leftLabel);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(TEXT_LEFT_MARGIN, topIndent)
+				.hint(WIDTH - 50, SWT.DEFAULT).applyTo(rightLabel);
 
 	}
 
 	private void updateLocation() {
-		topLevelShellBounds = PlatformUI.getWorkbench().getDisplay().getShells()[0].getBounds();
+		Shell topLevelShell = parent.getShell();
+		topLevelShellBounds = topLevelShell.getBounds();
 		xPosition = topLevelShellBounds.x + topLevelShellBounds.width - WIDTH - SHELL_RIGHT_INDENT;
 		startY = parent.getDisplay().map(parent.getParent(), null, parent.getBounds()).y;
 		endY = startY - HEIGHT;
