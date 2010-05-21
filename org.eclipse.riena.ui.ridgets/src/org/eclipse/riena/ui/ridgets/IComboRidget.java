@@ -24,6 +24,12 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 * The name of the bound read-write <em>selection</em> property.
 	 */
 	String PROPERTY_SELECTION = "selection"; //$NON-NLS-1$
+	/**
+	 * The name of the bound <em>text</em> property.
+	 * 
+	 * @since 2.0
+	 */
+	String PROPERTY_TEXT = "text"; //$NON-NLS-1$
 
 	/**
 	 * Binds the combo to the given model data and specifies which value is
@@ -101,7 +107,24 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	int getSelectionIndex();
 
 	/**
-	 * TODO [ev] javadoc
+	 * Return the text value in the combo. Note that this may or may not
+	 * correspond to a valid choice from the combo.
+	 * <p>
+	 * To get the currently selected value use {@link #getSelection()}.
+	 * 
+	 * @return a String; never null
+	 * @since 2.0
+	 */
+	String getText();
+
+	/**
+	 * Return true if the mark-on-selection mode is on. When enabled, an error
+	 * marker is shown when the text in the combo does not match any of the
+	 * available choices in the combo.
+	 * <p>
+	 * The default value is false.
+	 * 
+	 * @since 2.0
 	 */
 	boolean isMarkSelectionMismatch();
 
@@ -118,7 +141,16 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	void setEmptySelectionItem(Object emptySelection);
 
 	/**
-	 * TODO [ev] javadoc
+	 * Enable or disable the mark-on-selection-mismatch mode. When enabled, an
+	 * error marker is shown when the text in the combo does not match any of
+	 * the available choices in the combo.
+	 * <p>
+	 * The default value is false.
+	 * 
+	 * @param mark
+	 *            true to enable, false to disable
+	 * 
+	 * @since 2.0
 	 */
 	void setMarkSelectionMismatch(boolean mark);
 
@@ -151,6 +183,19 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 * @param newSelection
 	 */
 	void setSelection(Object newSelection);
+
+	/**
+	 * Set the text value in the combo.
+	 * <p>
+	 * Note that this may or may not correspond to a valid choice from the
+	 * combo. If text corresponds to a choice in the combo, this choice will be
+	 * selected. Otherwise the selection will be cleared.
+	 * 
+	 * @param text
+	 *            a String; never null
+	 * @since 2.0
+	 */
+	void setText(String text);
 
 	/**
 	 * Sets the converter used when updating from the UI-control to the model.

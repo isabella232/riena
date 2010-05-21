@@ -15,6 +15,8 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Combo;
 
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
@@ -24,6 +26,12 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
  * Ridget for {@link Combo} widgets.
  */
 public class ComboRidget extends AbstractComboRidget {
+
+	private ModifyListener modifyListener = new ModifyListener() {
+		public void modifyText(ModifyEvent e) {
+			setText(getUIControlText());
+		}
+	};
 
 	@Override
 	protected void checkUIControl(Object uiControl) {
@@ -79,5 +87,25 @@ public class ComboRidget extends AbstractComboRidget {
 	@Override
 	protected void setItemsToControl(String[] arrItems) {
 		getUIControl().setItems(arrItems);
+	}
+
+	@Override
+	protected void addTextModifyListener() {
+		getUIControl().addModifyListener(modifyListener);
+	}
+
+	@Override
+	protected void removeTextModifyListener() {
+		getUIControl().removeModifyListener(modifyListener);
+	}
+
+	@Override
+	protected String getUIControlText() {
+		return getUIControl().getText();
+	}
+
+	@Override
+	protected void setTextToControl(String text) {
+		getUIControl().setText(text);
 	}
 }

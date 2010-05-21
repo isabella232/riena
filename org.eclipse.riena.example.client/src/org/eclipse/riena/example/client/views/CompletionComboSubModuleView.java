@@ -15,10 +15,11 @@ import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.CompletionCombo;
-import org.eclipse.riena.ui.swt.CompletionCombo.ComboAutoCompletionMode;
+import org.eclipse.riena.ui.swt.CompletionCombo.AutoCompletionMode;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -26,11 +27,10 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * type).
  */
 public class CompletionComboSubModuleView extends SubModuleView {
+	public CompletionComboSubModuleView() {
+	}
 
 	public static final String ID = CompletionComboSubModuleView.class.getName();
-
-	private static String[] DATA = new String[] { "Aachen", "Athens", "Austin", "Arkansas", "Ashland", "London", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Moskow", "New York", "Paris", "Portland", "Potzdam" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 	private CompletionCombo combo1;
 
@@ -41,7 +41,7 @@ public class CompletionComboSubModuleView extends SubModuleView {
 		GridDataFactory gdfFill = GridDataFactory.fillDefaults().grab(true, false);
 
 		Group grpCustom = createGroup(parent, "CompletionCombo (custom widget)"); //$NON-NLS-1$
-		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(true).applyTo(grpCustom);
+		GridLayoutFactory.swtDefaults().numColumns(4).equalWidth(false).margins(20, 20).applyTo(grpCustom);
 		gdfFill.applyTo(grpCustom);
 		createCustom(grpCustom);
 	}
@@ -55,18 +55,36 @@ public class CompletionComboSubModuleView extends SubModuleView {
 	//////////////////
 
 	private void createCustom(Composite parent) {
-		UIControlsFactory.createLabel(parent, "autocomplete, allow missmatch"); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, "autocomplete, don't allow missmatch"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "CompletionCombo"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "Selection"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "Text"); //$NON-NLS-1$
 
-		combo1 = new CompletionCombo(parent, SWT.BORDER);
-		GridDataFactory.fillDefaults().grab(true, false).align(SWT.FILL, SWT.CENTER).applyTo(combo1);
-		combo1.setItems(DATA);
-		combo1.setAutoCompletion(true, ComboAutoCompletionMode.ALLOW_MISSMATCH);
+		GridDataFactory grabFill = GridDataFactory.fillDefaults().grab(true, false);
+		GridDataFactory fill = GridDataFactory.fillDefaults();
 
-		CompletionCombo combo2 = new CompletionCombo(parent, SWT.BORDER);
-		GridDataFactory.fillDefaults().grab(true, false).align(SWT.FILL, SWT.CENTER).applyTo(combo2);
-		combo2.setItems(DATA);
-		combo2.setAutoCompletion(true);
+		// row 1
+
+		UIControlsFactory.createLabel(parent, "autocomplete, allow missmatch:"); //$NON-NLS-1$
+		combo1 = UIControlsFactory.createCompletionCombo(parent, "combo1"); //$NON-NLS-1$
+		grabFill.applyTo(combo1);
+		combo1.setAutoCompletionMode(AutoCompletionMode.ALLOW_MISSMATCH);
+
+		Text selection1 = UIControlsFactory.createText(parent, SWT.BORDER, "selection1"); //$NON-NLS-1$ 
+		grabFill.applyTo(selection1);
+
+		UIControlsFactory.createText(parent, SWT.BORDER, "text1"); //$NON-NLS-1$ 
+
+		// ro2
+
+		UIControlsFactory.createLabel(parent, "autocomplete, no missmatch:"); //$NON-NLS-1$
+		CompletionCombo combo2 = UIControlsFactory.createCompletionCombo(parent, "combo2"); //$NON-NLS-1$
+		fill.applyTo(combo2);
+
+		Text selection2 = UIControlsFactory.createText(parent, SWT.BORDER, "selection2"); //$NON-NLS-1$ 
+		fill.applyTo(selection2);
+
+		UIControlsFactory.createText(parent, SWT.BORDER, "text2"); //$NON-NLS-1$ 
 	}
 
 	private Group createGroup(Composite parent, String title) {

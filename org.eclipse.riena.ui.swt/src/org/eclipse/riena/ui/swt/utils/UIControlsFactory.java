@@ -43,6 +43,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.ImageButton;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
@@ -376,6 +377,41 @@ public class UIControlsFactory {
 	 */
 	public static CCombo createCCombo(Composite parent, String bindingId) {
 		CCombo combo = createCCombo(parent);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
+		return combo;
+	}
+
+	/**
+	 * Creates a {@link CompletionCombo} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @return a {@link CompletionCombo} instance with the SWT.BORDER style
+	 * 
+	 * @since 2.0
+	 */
+	public static CompletionCombo createCompletionCombo(Composite parent) {
+		CompletionCombo result = new CompletionCombo(parent, SWT.BORDER);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
+	}
+
+	/**
+	 * Creates a {@link CompletionCombo} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param bindingId
+	 *            the binding property; never null; must not be empty. The given
+	 *            value will also be assigned to the Ridget that is paired to
+	 *            this control.
+	 * @return a {@link CCombo} instance with the SWT.BORDER style
+	 * 
+	 * @wbp.factory.parameter.source bindingId "myComboId"
+	 * @since 2.0
+	 */
+	public static CompletionCombo createCompletionCombo(Composite parent, String bindingId) {
+		CompletionCombo combo = createCompletionCombo(parent);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
 		return combo;
 	}

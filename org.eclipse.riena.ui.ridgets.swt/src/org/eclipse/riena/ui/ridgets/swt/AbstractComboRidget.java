@@ -38,6 +38,7 @@ import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
@@ -78,9 +79,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * renderingMethod.
 	 */
 	private IConverter objToStrConverter;
-	/** Convers from strings (Combo) to objects (rowObservables). */
+	/**
+	 * Converts from strings (Combo) to objects (rowObservables).
+	 */
 	private IConverter strToObjConverter;
-
 	/**
 	 * The list of items to show in the combo. These entries are created from
 	 * the optionValues by applying the current conversion stategy to them.
@@ -101,7 +103,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * May be null, when there is no model.
 	 */
 	private Binding selectionBindingExternal;
-
 	/**
 	 * If true, it will cause an error marker to be shown, once the selected
 	 * value in the combo is no longer available in the list of selectable
@@ -117,6 +118,11 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * The {@link ErrorMarker} used when a 'selection mismatch' occurs
 	 */
 	private ErrorMarker selectionMismatchMarker;
+	/**
+	 * The text value shown in the combo. Note: this is not necessarily a valid
+	 * selection. Use {@link #getSelection()} to get the current selection.
+	 */
+	String text;
 
 	public AbstractComboRidget() {
 		super();
@@ -132,10 +138,15 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 				applyEnabled();
 			}
 		});
+		this.text = ""; //$NON-NLS-1$
 	}
 
 	@Override
 	protected void bindUIControl() {
+		if (getUIControl() != null) {
+			applyText();
+			addTextModifyListener();
+		}
 		if (optionValues != null) {
 			// These bindings are only necessary when we have a model
 			DataBindingContext dbc = new DataBindingContext();
@@ -161,6 +172,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	@Override
 	protected void unbindUIControl() {
 		super.unbindUIControl();
+		if (getUIControl() != null) {
+			removeTextModifyListener();
+		}
 		disposeBinding(listBindingExternal);
 		listBindingExternal = null;
 		disposeBinding(selectionBindingInternal);
@@ -231,6 +245,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return rowObservables;
 	}
 
+	public String getText() {
+		return text;
+	}
+
 	public Object getSelection() {
 		Object selection = selectionObservable.getValue();
 		return selection == emptySelection ? null : selection;
@@ -298,6 +316,16 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
+	public void setText(String text) {
+		Assert.isNotNull(text);
+		if (!StringUtils.equals(text, this.text)) {
+			String oldText = this.text;
+			this.text = text;
+			firePropertyChange(PROPERTY_TEXT, oldText, this.text);
+			applyText();
+		}
+	}
+
 	public void setModelToUIControlConverter(IConverter converter) {
 		objToStrConverter = (converter != null) ? converter : new ObjectToStringConverter();
 	}
@@ -305,9 +333,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	public void setUIControlToModelConverter(IConverter converter) {
 		strToObjConverter = (converter != null) ? converter : new StringToObjectConverter();
 	}
-
-	// abstract methods
-	///////////////////
 
 	@Override
 	public void updateFromModel() {
@@ -331,6 +356,14 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		applyMarkSelectionMismatch();
 	}
 
+	// abstract methods
+	///////////////////
+
+	/**
+	 * TODO [ev] docs
+	 */
+	protected abstract void addTextModifyListener();
+
 	/**
 	 * Deselects all selected items in the controls list.
 	 */
@@ -352,6 +385,14 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	protected abstract ISWTObservableValue getUIControlSelectionObservable();
 
 	/**
+	 * TODO [ev] docs
+	 * 
+	 * @return
+	 * @since 1.2
+	 */
+	protected abstract String getUIControlText();
+
+	/**
 	 * Selects the item in the controls list.
 	 */
 	protected abstract void selectInUIControl(int index);
@@ -369,6 +410,11 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	protected abstract void removeAllFromUIControl();
 
 	/**
+	 * TODO [ev] docs
+	 */
+	protected abstract void removeTextModifyListener();
+
+	/**
 	 * Make the given array the list of selectable items in the combo.
 	 * 
 	 * @param arrItems
@@ -376,6 +422,13 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * @since 1.2
 	 */
 	protected abstract void setItemsToControl(String[] arrItems);
+
+	/**
+	 * TODO [ev] docs
+	 * 
+	 * @since 1.2
+	 */
+	protected abstract void setTextToControl(String text);
 
 	// helping methods
 	//////////////////
@@ -385,6 +438,14 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			bindControlToSelectionAndUpdate();
 		} else {
 			unbindControlFromSelectionAndClear();
+		}
+	}
+
+	private void applyText() {
+		if (getUIControl() != null) {
+			if (!StringUtils.equals(text, getUIControlText())) {
+				setTextToControl(text);
+			}
 		}
 	}
 
@@ -417,10 +478,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			/* re-create selectionBinding */
 			ISWTObservableValue controlSelection = getUIControlSelectionObservable();
 			DataBindingContext dbc = new DataBindingContext();
-			selectionBindingInternal = dbc.bindValue(controlSelection, selectionObservable, new UpdateValueStrategy(
-					UpdateValueStrategy.POLICY_UPDATE).setConverter(strToObjConverter).setAfterGetValidator(
-					selectionValidator), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
-					.setConverter(objToStrConverter));
+			selectionBindingInternal = dbc.bindValue(controlSelection, selectionObservable,
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).setConverter(strToObjConverter)
+							.setAfterGetValidator(selectionValidator), new UpdateValueStrategy(
+							UpdateValueStrategy.POLICY_UPDATE).setConverter(objToStrConverter));
 			/* update selection in combo */
 			selectionBindingInternal.updateModelToTarget();
 		}

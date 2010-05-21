@@ -323,7 +323,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.updateFromModel();
 
-		expectPropertyChangeEvents(new SelectionPropertyChangeEvent(selection1, selection2));
+		expectPropertyChangeEvents(new TextPropertyChangeEvent(selection1, selection2),
+				new SelectionPropertyChangeEvent(selection1, selection2));
 		select(control, 1);
 		verifyPropertyChangeEvents();
 
@@ -331,8 +332,9 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		select(control, 1);
 		verifyPropertyChangeEvents();
 
-		expectPropertyChangeEvents(new SelectionPropertyChangeEvent(selection2, selection3),
-				new SelectionPropertyChangeEvent(selection3, selection1));
+		expectPropertyChangeEvents(new TextPropertyChangeEvent(selection2, selection3),
+				new SelectionPropertyChangeEvent(selection2, selection3), new TextPropertyChangeEvent(selection3,
+						selection1), new SelectionPropertyChangeEvent(selection3, selection1));
 		select(control, 2);
 		select(control, 0);
 		verifyPropertyChangeEvents();
@@ -1293,6 +1295,16 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		public SelectionPropertyChangeEvent(Object oldValue, Object newValue) {
 			super(getRidget(), IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
+		}
+	}
+
+	private final class TextPropertyChangeEvent extends PropertyChangeEvent {
+
+		private static final long serialVersionUID = 4711L;
+
+		public TextPropertyChangeEvent(Object oldValue, Object newValue) {
+			super(getRidget(), IComboRidget.PROPERTY_TEXT, ((Person) oldValue).getListEntry(), ((Person) newValue)
+					.getListEntry());
 		}
 	}
 

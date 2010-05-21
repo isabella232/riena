@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.accessibility.ACC;
@@ -79,13 +80,13 @@ public class CompletionCombo extends Composite {
 	private Font font;
 	private Shell _shell;
 	private boolean autoCompletion;
-	private ComboAutoCompletionMode autoCompletionMode;
+	private AutoCompletionMode autoCompletionMode;
 
 	/**
 	 * This enumeration is used to configure the the way the autocompletion
 	 * works.
 	 */
-	public enum ComboAutoCompletionMode {
+	public enum AutoCompletionMode {
 		/**
 		 * The Combo accepts all typed words and and just stops tracking the
 		 * list entries if no match is found.
@@ -95,7 +96,7 @@ public class CompletionCombo extends Composite {
 		 * The Combo rejects typed characters that would make the String in the
 		 * textfield not match any of the entries in the list.
 		 */
-		NO_ALLOW_MISSMATCH
+		NO_MISSMATCH
 	}
 
 	/**
@@ -230,8 +231,8 @@ public class CompletionCombo extends Composite {
 
 		createPopup(null, -1);
 		initAccessible();
-		autoCompletion = false;
-		autoCompletionMode = ComboAutoCompletionMode.NO_ALLOW_MISSMATCH;
+		autoCompletion = true;
+		autoCompletionMode = AutoCompletionMode.NO_MISSMATCH;
 	}
 
 	static int checkStyle(int style) {
@@ -2466,9 +2467,11 @@ public class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Sets a flag which indicates that the CCombo should autocomplete entries
-	 * in the Textfield. This autocompletion matches a prefix to the dropdown
-	 * list and focuses on the list entry matching this prefix.
+	 * Sets a flag which indicates that the CompletionCombo should autocomplete
+	 * entries in the Textfield. This autocompletion matches a prefix to the
+	 * dropdown list and focuses on the list entry matching this prefix.
+	 * <p>
+	 * The default value is true.
 	 * 
 	 * @param autoCompletion
 	 *            true if autocompletion should be turned on, false is default
@@ -2477,20 +2480,31 @@ public class CompletionCombo extends Composite {
 		this.autoCompletion = autoCompletion;
 	}
 
-	public void setAutoCompletion(boolean autoCompletion, ComboAutoCompletionMode autoCompletionMode) {
-		this.autoCompletion = autoCompletion;
+	/**
+	 * Set's the strategy for autocompletion. See {@link AutoCompletionMode} for
+	 * details.
+	 * <p>
+	 * The default value is {@link AutoCompletionMode#NO_MISSMATCH}.
+	 * 
+	 * @param autoCompletionMode
+	 *            an {@link AutoCompletionMode} instance; never null
+	 */
+	public void setAutoCompletionMode(AutoCompletionMode autoCompletionMode) {
+		Assert.isNotNull(autoCompletionMode);
 		this.autoCompletionMode = autoCompletionMode;
 	}
 
 	/**
-	 * @return the autoCompletion
+	 * Returns true, when autocompletion is on. The default value is true.
+	 * 
+	 * @return true if autocompletion is on, false otherwise
 	 */
 	public boolean isAutoCompletion() {
 		return autoCompletion;
 	}
 
 	private boolean isAllowMissmatch() {
-		return autoCompletionMode == ComboAutoCompletionMode.ALLOW_MISSMATCH;
+		return autoCompletionMode == AutoCompletionMode.ALLOW_MISSMATCH;
 	}
 
 }

@@ -16,6 +16,8 @@ import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
@@ -24,6 +26,12 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
  * Ridget for {@link CCombo} widgets.
  */
 public class CComboRidget extends AbstractComboRidget {
+
+	private ModifyListener modifyListener = new ModifyListener() {
+		public void modifyText(ModifyEvent e) {
+			setText(getUIControlText());
+		}
+	};
 
 	@Override
 	protected void checkUIControl(Object uiControl) {
@@ -92,4 +100,25 @@ public class CComboRidget extends AbstractComboRidget {
 	protected void setItemsToControl(String[] arrItems) {
 		getUIControl().setItems(arrItems);
 	}
+
+	@Override
+	protected void addTextModifyListener() {
+		getUIControl().addModifyListener(modifyListener);
+	}
+
+	@Override
+	protected void removeTextModifyListener() {
+		getUIControl().removeModifyListener(modifyListener);
+	}
+
+	@Override
+	protected String getUIControlText() {
+		return getUIControl().getText();
+	}
+
+	@Override
+	protected void setTextToControl(String text) {
+		getUIControl().setText(text);
+	}
+
 }

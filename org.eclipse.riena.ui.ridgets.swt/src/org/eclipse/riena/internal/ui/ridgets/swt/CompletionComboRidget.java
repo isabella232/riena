@@ -14,6 +14,8 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
@@ -24,9 +26,25 @@ import org.eclipse.riena.ui.swt.CompletionCombo;
  */
 public class CompletionComboRidget extends AbstractComboRidget {
 
+	private ModifyListener modifyListener = new ModifyListener() {
+		public void modifyText(ModifyEvent e) {
+			setText(getUIControlText());
+		}
+	};
+
 	@Override
 	protected void checkUIControl(Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, CompletionCombo.class);
+	}
+
+	@Override
+	protected void addTextModifyListener() {
+		getUIControl().addModifyListener(modifyListener);
+	}
+
+	@Override
+	protected void removeTextModifyListener() {
+		getUIControl().removeModifyListener(modifyListener);
 	}
 
 	@Override
@@ -69,6 +87,11 @@ public class CompletionComboRidget extends AbstractComboRidget {
 	}
 
 	@Override
+	protected String getUIControlText() {
+		return getUIControl().getText();
+	}
+
+	@Override
 	protected void removeAllFromUIControl() {
 		getUIControl().removeAll();
 	}
@@ -86,5 +109,10 @@ public class CompletionComboRidget extends AbstractComboRidget {
 	@Override
 	protected void setItemsToControl(String[] arrItems) {
 		getUIControl().setItems(arrItems);
+	}
+
+	@Override
+	protected void setTextToControl(String text) {
+		getUIControl().setText(text);
 	}
 }
