@@ -12,43 +12,21 @@ package org.eclipse.riena.ui.swt.lnf;
 
 import org.eclipse.swt.graphics.Resource;
 
-import org.eclipse.riena.core.util.WeakRef;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-
 /**
  * Abstract wrapper for resources of look and feel.
  */
 public abstract class AbstractLnfResource<T extends Resource> implements ILnfResource<T> {
 
-	private WeakRef<T> resourceRef;
+	private T resource;
 
 	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#getResource()
 	 */
 	public T getResource() {
-		if (resourceRef == null) {
-			return createResourceRefAndReturnResource();
-		}
-		T resource = resourceRef.get();
-		if (SwtUtilities.isDisposed(resource)) {
-			return createResourceRefAndReturnResource();
+		if (resource == null) {
+			resource = createResource();
 		}
 		return resource;
 	}
 
-	private T createResourceRefAndReturnResource() {
-		final T resource = createResource();
-		resourceRef = new WeakRef<T>(resource, new Runnable() {
-			public void run() {
-				dispose();
-			}
-		});
-		return resource;
-	}
-
-	private void dispose() {
-		if (resourceRef != null) {
-			SwtUtilities.disposeResource(resourceRef.get());
-		}
-	}
 }
