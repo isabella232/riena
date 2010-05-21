@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.swt.lnf;
 
 import org.eclipse.swt.graphics.Resource;
 
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+
 /**
  * Abstract wrapper for resources of look and feel.
  */
@@ -23,7 +25,7 @@ public abstract class AbstractLnfResource<T extends Resource> implements ILnfRes
 	 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#getResource()
 	 */
 	public T getResource() {
-		if (resource == null) {
+		if (SwtUtilities.isDisposed(resource)) {
 			resource = createResource();
 		}
 		return resource;
