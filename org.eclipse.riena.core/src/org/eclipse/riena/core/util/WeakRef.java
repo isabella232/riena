@@ -43,6 +43,9 @@ public class WeakRef<T> {
 	/**
 	 * Create a {@code WeakRef} for the given {@code referent} with the given
 	 * {@code Runnable} for notification.
+	 * <p>
+	 * <b>Note:</b> Within the {@code Runnable} calling {@code WeakRef.get()}
+	 * will always return {@code null}!
 	 * 
 	 * @param referent
 	 *            the instance to track for garbage collection
