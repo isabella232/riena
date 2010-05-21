@@ -25,7 +25,10 @@ import org.eclipse.riena.core.Log4r;
 /**
  * A {@code WeakRef} tracks instances with a {@code WeakReference}. When the
  * instance gets garbage collected it executes a {@code Runnable} for
- * notification.
+ * notification.<br>
+ * However, when the notification gets called, the {@code referent} has already
+ * been garbage collected and therefore {@code WeakRef.get()} will return
+ * {@code null}.
  */
 public class WeakRef<T> {
 
