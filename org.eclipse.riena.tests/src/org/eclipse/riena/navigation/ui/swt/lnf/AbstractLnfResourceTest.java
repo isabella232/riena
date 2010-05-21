@@ -98,19 +98,6 @@ public class AbstractLnfResourceTest extends TestCase {
 		assertSame(color1, color2);
 	}
 
-	public void testThatTheResourceWillBeDisposedIfNoLongerInUse() throws IOException {
-		Color color1 = lnfResource.getResource();
-		assertFalse(color1.isDisposed());
-		assertEquals(1, color1.getRed());
-		color1 = null;
-
-		runOutOfMemory();
-
-		lnfResource.setRed(255);
-		Color color2 = lnfResource.getResource();
-		assertEquals(255, color2.getRed());
-	}
-
 	private static class MockLnfResource extends AbstractLnfResource<Color> {
 
 		private int red = 1;
