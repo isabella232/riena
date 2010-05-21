@@ -30,6 +30,9 @@ import org.eclipse.riena.ui.swt.utils.BundleUtil;
  * default L&F may also be overridden by frameworks based on Riena. That allows
  * them to define their own default L&F.
  * <p>
+ * <b>Note:</b> Changing the L&F within a running application might result in
+ * system resources such as colors, fonts and images which will not be disposed.
+ * <p>
  * However, applications can again override the default L&F. This can be done by
  * either setting the system property "riena.lnf" or by specifying their L&F
  * with the methods {@code LnfManager.setLnf()}.
@@ -42,7 +45,9 @@ import org.eclipse.riena.ui.swt.utils.BundleUtil;
  * </pre>
  * 
  * Where Bundle-Symbolic-Name allows to load the L&F class from the bundle with
- * this symbolic name.
+ * this symbolic name.<br>
+ * If the Bundle-Symbolic-Name is omitted the {@code LnfManager} tries to load
+ * the Lnf class with the {LnfMangager}'s class loader.
  */
 public final class LnfManager {
 
@@ -76,6 +81,10 @@ public final class LnfManager {
 	/**
 	 * Set the new look and feel specified by the given class name (see class
 	 * header JavaDoc).
+	 * <p>
+	 * <b>Note:</b> Changing the L&F in a running application might result in
+	 * system resources such as colors, fonts and images which will not be
+	 * disposed.
 	 * 
 	 * @param currentLnfClassName
 	 *            a string specifying the name of the class that implements the
@@ -90,6 +99,10 @@ public final class LnfManager {
 	 * <p>
 	 * If this is set, it will override the default look and feel. See class
 	 * header JavaDoc for details.
+	 * <p>
+	 * <b>Note:</b> Changing the L&F in a running application might result in
+	 * system resources such as colors, fonts and images which will not be
+	 * disposed.
 	 * 
 	 * @param currentLnf
 	 *            new look and feel to install.
@@ -186,9 +199,13 @@ public final class LnfManager {
 		try {
 			return LnfManager.class.getClassLoader().loadClass(className);
 		} catch (ClassNotFoundException e) {
-			throw new LnfManagerFailure("can't load LnfClass '" + className //$NON-NLS-1$
-					+ "'. Please use the class format specified in the LnfManager or change your bundle dependencies."); //$NON-NLS-1$
+			throw new LnfManagerFailure("Can't load LnfClass '" + className //$NON-NLS-1$
+					+ "'. Please use the class format specified in the LnfManager or change your bundle dependencies.", //$NON-NLS-1$
+					e);
 		}
+		//
+		// This code has been ´removed´ because it is likely the cause for sporadic errors - which is not good!
+		// 
 		//		try {
 		//			return Thread.currentThread().getContextClassLoader().loadClass(className);
 		//		} catch (Exception e) {
