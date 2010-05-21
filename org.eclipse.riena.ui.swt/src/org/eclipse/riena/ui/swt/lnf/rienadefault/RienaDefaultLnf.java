@@ -60,6 +60,23 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	private ILnfTheme theme;
 	private boolean initialized;
 
+	/**
+	 * Create a look and feel with the given theme.
+	 * 
+	 * @param theme
+	 *            the theme this look and feel will use
+	 */
+	public RienaDefaultLnf(ILnfTheme theme) {
+		setTheme(theme);
+	}
+
+	/**
+	 * Create a look and feel with no theme.
+	 */
+	public RienaDefaultLnf() {
+		this(null);
+	}
+
 	public ILnfResource<?> getLnfResource(String key) {
 		return resourceTable.get(key);
 	}
@@ -482,6 +499,9 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 
 	/**
 	 * Sets the theme to be used by the Look and Feel.
+	 * <p>
+	 * <b>Note:</b> Setting (changing) a new theme might result in system
+	 * resources such as colors, fonts and images which will not be disposed.
 	 * 
 	 * @param newTheme
 	 *            the theme to be used
