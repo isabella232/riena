@@ -27,8 +27,7 @@ public class ExampleLnf extends RienaDefaultLnf {
 	 * Creates a new instance of {@code ExampleLnf}
 	 */
 	public ExampleLnf() {
-		super();
-		setTheme(new ExampleTheme());
+		super(new ExampleTheme());
 	}
 
 	/**

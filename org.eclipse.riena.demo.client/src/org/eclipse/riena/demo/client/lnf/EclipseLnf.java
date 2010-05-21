@@ -26,8 +26,7 @@ public class EclipseLnf extends RienaDefaultLnf {
 	 * Creates a new instance of {@code ExampleLnf}
 	 */
 	public EclipseLnf() {
-		super();
-		setTheme(new EclipseTheme());
+		super(new EclipseTheme());
 	}
 
 	/**
