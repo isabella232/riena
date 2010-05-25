@@ -14,6 +14,8 @@ import org.eclipse.core.databinding.conversion.IConverter;
 
 /**
  * A column formatter for numbers (convenience class).
+ * 
+ * @since 2.0
  */
 public abstract class NumberColumnFormatter extends ColumnFormatter {
 

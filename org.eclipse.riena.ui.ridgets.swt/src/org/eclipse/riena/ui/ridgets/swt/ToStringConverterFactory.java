@@ -21,6 +21,8 @@ import org.eclipse.core.databinding.conversion.NumberToStringConverter;
 /**
  * A factory for converters (implementing interface <code>IConverter</code>) of
  * some type to a string value.
+ * 
+ * @since 2.0
  */
 public final class ToStringConverterFactory {
 
