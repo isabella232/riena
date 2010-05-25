@@ -31,8 +31,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.riena.core.ping.IPingable;
 import org.eclipse.riena.core.ping.PingResult;
 import org.eclipse.riena.core.ping.PingVisitor;
-import org.eclipse.riena.core.ping.UnavailablePingable;
 import org.eclipse.riena.core.util.Nop;
+import org.eclipse.riena.example.ping.client.model.NoPingableFound;
 import org.eclipse.riena.example.ping.client.model.PingResultTreeNode;
 import org.eclipse.riena.example.ping.client.model.PingableTreeNode;
 import org.eclipse.riena.example.ping.client.nls.Messages;
@@ -256,6 +256,9 @@ public class SonarController extends SubModuleController {
 	private PingResultTreeNode getFailureNode(SearchDirection searchDirection) {
 		PingResultTreeNode selectedTreeNode = getSelectedTreeNode();
 		List<PingResultTreeNode> nodes = flattenTree();
+		if (nodes.size() == 0) {
+			return null;
+		}
 		int end = nodes.size();
 		int increment = 1;
 		if (searchDirection == SearchDirection.previous) {
@@ -386,7 +389,7 @@ public class SonarController extends SubModuleController {
 			}
 		}
 		if (result.isEmpty()) {
-			result.add(new UnavailablePingable("Unavailable pingables", "No pingables available - sorry")); //$NON-NLS-1$ //$NON-NLS-2$
+			result.add(new NoPingableFound());
 		}
 		return result;
 	}
