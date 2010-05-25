@@ -50,6 +50,10 @@ public class WordNode extends AbstractBean {
 		return result;
 	}
 
+	public float getAQuota() {
+		return ((float) getACount()) / word.length() * 100;
+	}
+
 	public List<WordNode> getChildren() {
 		return new ArrayList<WordNode>(children);
 	}

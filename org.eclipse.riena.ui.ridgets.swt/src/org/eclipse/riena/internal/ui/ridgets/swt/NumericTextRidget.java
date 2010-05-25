@@ -12,17 +12,13 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-import com.ibm.icu.text.NumberFormat;
-
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.conversion.IConverter;
-import org.eclipse.core.databinding.conversion.NumberToStringConverter;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -44,6 +40,7 @@ import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.ridgets.swt.ToStringConverterFactory;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -259,31 +256,11 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	protected IConverter getConverter(Class<?> type, int precision) {
-		IConverter result = null;
 		if (hasCustomConverter) {
-			result = getValueBindingSupport().getModelToUIControlConverter();
+			return getValueBindingSupport().getModelToUIControlConverter();
 		} else {
-			NumberFormat nf = NumberFormat.getNumberInstance();
-			nf.setMaximumFractionDigits(precision);
-			if (BigDecimal.class.isAssignableFrom(type)) {
-				result = NumberToStringConverter.fromBigDecimal(nf);
-			} else if (BigInteger.class.isAssignableFrom(type)) {
-				result = NumberToStringConverter.fromBigInteger(nf);
-			} else if (Byte.class.isAssignableFrom(type)) {
-				result = NumberToStringConverter.fromByte(nf, false);
-			} else if (Double.class.isAssignableFrom(type)) {
-				result = NumberToStringConverter.fromDouble(nf, false);
-			} else if (Float.class.isAssignableFrom(type)) {
-				result = NumberToStringConverter.fromFloat(nf, false);
-			} else if (Integer.class.isAssignableFrom(type)) {
-				result = NumberToStringConverter.fromInteger(nf, false);
-			} else if (Long.class.isAssignableFrom(type)) {
-				result = NumberToStringConverter.fromLong(nf, false);
-			} else if (Short.class.isAssignableFrom(type)) {
-				result = NumberToStringConverter.fromShort(nf, false);
-			}
+			return ToStringConverterFactory.createNumberConverter(type, precision);
 		}
-		return result;
 	}
 
 	protected synchronized int getPrecision() {

@@ -37,6 +37,7 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
+import org.eclipse.riena.ui.ridgets.swt.NumberColumnFormatter;
 
 /**
  * Controller for the {@link TableSubModuleView} example.
@@ -66,12 +67,18 @@ public class TableSubModuleController extends SubModuleController {
 
 	private void bindModel() {
 		input = createInput();
-		String[] columnPropertyNames = { "word", "upperCase", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		String[] columnHeaders = { "Word", "Uppercase", "A Count" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String[] columnPropertyNames = { "word", "upperCase", "ACount", "AQuota" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		String[] columnHeaders = { "Word", "Uppercase", "A Count", "A Quota [%]" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		table.bindToModel(new WritableList(input, WordNode.class), WordNode.class, columnPropertyNames, columnHeaders);
 		table.updateFromModel();
 		table.setComparator(0, new TypedComparator<String>());
 		table.setComparator(1, new TypedComparator<Boolean>());
+		table.setColumnFormatter(3, new NumberColumnFormatter(Float.class, 2) {
+			@Override
+			protected Number getValue(Object element) {
+				return ((WordNode) element).getAQuota();
+			}
+		});
 		table.setColumnSortable(2, false);
 		table.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		table.setSelection(0);

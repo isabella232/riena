@@ -62,11 +62,13 @@ public class TableSubModuleView extends SubModuleView {
 		TableColumn columnWord = new TableColumn(table, SWT.LEFT);
 		TableColumn columnUppercase = new TableColumn(table, SWT.LEFT);
 		TableColumn columnACount = new TableColumn(table, SWT.LEFT);
+		TableColumn columnAQuota = new TableColumn(table, SWT.LEFT);
 
 		TableColumnLayout layout = new TableColumnLayout();
-		layout.setColumnData(columnWord, new ColumnWeightData(30));
-		layout.setColumnData(columnUppercase, new ColumnWeightData(30));
-		layout.setColumnData(columnACount, new ColumnWeightData(30));
+		layout.setColumnData(columnWord, new ColumnWeightData(25));
+		layout.setColumnData(columnUppercase, new ColumnWeightData(25));
+		layout.setColumnData(columnACount, new ColumnWeightData(25));
+		layout.setColumnData(columnAQuota, new ColumnWeightData(25));
 		tableComposite.setLayout(layout);
 
 		Composite buttonComposite = createButtonComposite(group);
@@ -80,8 +82,8 @@ public class TableSubModuleView extends SubModuleView {
 		GridLayoutFactory.fillDefaults().numColumns(4).equalWidth(false).applyTo(buttonComposite);
 
 		Button buttonPrintSelection = UIControlsFactory.createButtonCheck(buttonComposite, "", "buttonPrintSelection"); //$NON-NLS-1$ //$NON-NLS-2$
-		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.CENTER).hint(120, SWT.DEFAULT).applyTo(
-				buttonPrintSelection);
+		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.CENTER).hint(120, SWT.DEFAULT)
+				.applyTo(buttonPrintSelection);
 
 		UIControlsFactory.createButton(buttonComposite, "", "buttonAddSibling"); //$NON-NLS-1$ //$NON-NLS-2$
 
