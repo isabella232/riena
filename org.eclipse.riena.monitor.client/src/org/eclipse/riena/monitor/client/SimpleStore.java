@@ -38,6 +38,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.SynchronousBundleListener;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
@@ -387,30 +391,39 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * Perform cleanup of the store as defined by the configuration properties.
 	 */
 	private class Cleaner extends Job {
-		/**
-		 * @param name
-		 */
+
+		private boolean canceled;
+
 		public Cleaner() {
 			super("SimpleStoreCleaner"); //$NON-NLS-1$
 			setUser(true);
+			Bundle bundle = FrameworkUtil.getBundle(Cleaner.class);
+			if (bundle != null) {
+				bundle.getBundleContext().addBundleListener(new StoppingListener(bundle));
+			}
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @seeorg.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.
-		 * IProgressMonitor)
-		 */
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
+			if (canceled) {
+				return Status.OK_STATUS;
+			}
 			LOGGER.log(LogService.LOG_DEBUG, "Store Cleaner started"); //$NON-NLS-1$
 			monitor.beginTask("Cleanup", IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 			clean();
 			monitor.done();
-			// reschedule for periodic work
-			schedule(cleanupDelay);
+			if (!canceled) {
+				// reschedule for periodic work
+				schedule(cleanupDelay);
+			}
 			LOGGER.log(LogService.LOG_DEBUG, "Store Cleaner ended"); //$NON-NLS-1$
 			return Status.OK_STATUS;
+		}
+
+		@Override
+		protected void canceling() {
+			super.canceling();
+			canceled = true;
 		}
 
 		private void clean() {
@@ -457,6 +470,22 @@ public class SimpleStore implements IStore, IExecutableExtension {
 				delete(files.get(i));
 			}
 		}
+
+		private class StoppingListener implements SynchronousBundleListener {
+			private final Bundle bundle;
+
+			public StoppingListener(Bundle bundle) {
+				this.bundle = bundle;
+			}
+
+			public void bundleChanged(BundleEvent event) {
+				if (event.getBundle() == bundle && event.getType() == BundleEvent.STOPPING) {
+					bundle.getBundleContext().removeBundleListener(this);
+					cancel();
+				}
+			}
+		}
+
 	}
 
 	/**
