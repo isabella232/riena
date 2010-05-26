@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.core.util.StringUtils;
+
 /**
  * An ID that identifies a node in the application model tree. The ID is used to
  * find navigate targets and to associated sub module nodes with their views.<br>
@@ -59,20 +61,26 @@ public class NavigationNodeId {
 	}
 
 	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object other) {
-		if (other instanceof NavigationNodeId) {
-			if (!getClass().equals(other.getClass())) {
-				return false;
-			}
-			NavigationNodeId otherId = (NavigationNodeId) other;
-			return equals(typeId, otherId.getTypeId()) && equals(instanceId, otherId.getInstanceId());
+		if (this == other) {
+			return true;
 		}
-		return false;
+		if (other == null) {
+			return false;
+		}
+		if (NavigationNodeId.class != other.getClass()) {
+			return false;
+		}
+		NavigationNodeId otherId = (NavigationNodeId) other;
+		return StringUtils.equals(typeId, otherId.typeId) && StringUtils.equals(instanceId, otherId.instanceId);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("NavNodeId:"); //$NON-NLS-1$
@@ -92,7 +100,7 @@ public class NavigationNodeId {
 	}
 
 	/**
-	 * @see java.lang.Object#hashCode()
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
@@ -105,10 +113,6 @@ public class NavigationNodeId {
 			}
 		}
 		return hash;
-	}
-
-	private boolean equals(String string1, String string2) {
-		return (string1 == null && string2 == null) || (string1 != null && string1.equals(string2));
 	}
 
 	/**
@@ -124,13 +128,13 @@ public class NavigationNodeId {
 			return true;
 		}
 
-		if (id.contains("*")) { //$NON-NLS-1$
+		if (id.indexOf('*') != -1) {
 			return false;
 		}
-		if (id.contains("?")) { //$NON-NLS-1$
+		if (id.indexOf('?') != -1) {
 			return false;
 		}
-		if (id.contains("/")) { //$NON-NLS-1$
+		if (id.indexOf('/') != -1) {
 			return false;
 		}
 

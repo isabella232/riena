@@ -42,4 +42,29 @@ public class NavigationNodeIdTest extends TestCase {
 
 	}
 
+	/**
+	 * Tests the method {@code equals(Object)}.
+	 */
+	public void testEquals() {
+
+		NavigationNodeId nodeId = new NavigationNodeId("1", "2");
+		assertFalse(nodeId.equals(null));
+		assertFalse(nodeId.equals(new Object()));
+
+		NavigationNodeId nodeId2 = new NavigationNodeId("1", "2");
+		assertTrue(nodeId.equals(nodeId2));
+		assertTrue(nodeId.equals(nodeId));
+
+		nodeId = new NavigationNodeId("1");
+		nodeId2 = new NavigationNodeId("1");
+		assertTrue(nodeId.equals(nodeId2));
+
+		nodeId2 = new NavigationNodeId("2");
+		assertFalse(nodeId.equals(nodeId2));
+
+		nodeId2 = new NavigationNodeId("1", "2");
+		assertFalse(nodeId.equals(nodeId2));
+
+	}
+
 }

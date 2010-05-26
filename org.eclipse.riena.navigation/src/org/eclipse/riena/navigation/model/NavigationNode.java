@@ -1423,7 +1423,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((getNodeId() == null) ? 0 : getNodeId().hashCode());
+		result = prime * result + ((nodeId == null) ? 0 : nodeId.hashCode());
 		//result = prime * result + ((getLabel() == null) ? 0 : getLabel().hashCode());
 		return result;
 	}
@@ -1439,7 +1439,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		NavigationNode<?, ?, ?> other = (NavigationNode<?, ?, ?>) obj;
+		final NavigationNode<?, ?, ?> other = (NavigationNode<?, ?, ?>) obj;
 		//		if (getLabel() == null) {
 		//			if (other.getLabel() != null) {
 		//				return false;
@@ -1447,14 +1447,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		//		} else if (!getLabel().equals(other.getLabel())) {
 		//			return false;
 		//		}
-		if (getNodeId() == null) {
-			if (other.getNodeId() != null) {
-				return false;
-			}
-		} else if (!getNodeId().equals(other.getNodeId())) {
-			return false;
+		if (nodeId == null) {
+			return (other.nodeId == null);
 		}
-		return true;
+		return nodeId.equals(other.nodeId);
 	}
-
 }
