@@ -282,19 +282,16 @@ public class ScrollingSupport {
 	 *            the new vertical offset of the scrolled composite
 	 */
 	private void setBodyCompositeOffset(int yScrolledOffset) {
-		scrolledCompositeOffset = yScrolledOffset;
-		updateUI();
+		if (yScrolledOffset != scrolledCompositeOffset) {
+			scrolledCompositeOffset = yScrolledOffset;
+			updateUI();
+		}
 	}
 
 	private void updateUI() {
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(0, scrolledCompositeOffset);
 		getScrolledComponent().setLayoutData(formData);
-		updateLayout();
-	}
-
-	private void updateLayout() {
-		//		getScrolledComponent().layout();
 		getScrolledComponent().getParent().layout();
 	}
 
