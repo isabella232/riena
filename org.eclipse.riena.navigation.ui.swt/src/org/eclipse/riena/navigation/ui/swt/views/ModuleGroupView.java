@@ -258,13 +258,105 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 		positionHint += p.y;
 		fd.width = p.x;
 		fd.bottom = new FormAttachment(0, positionHint);
-		setLayoutData(fd);
-		layout();
-		update();
+		if (!equals(fd, getCurrentFormData())) {
+			setLayoutData(fd);
+			layout();
+		}
 		if (p.y > 0) {
 			positionHint += MODULE_GROUP_GAP;
 		}
 		return positionHint;
+	}
+
+	/**
+	 * Compares the to given {@code FormData}s.
+	 * 
+	 * @param fd1
+	 *            first {@code FormData}
+	 * @param fd2
+	 *            second {@code FormData}
+	 * @return {@code true} if equals; otherwise false
+	 */
+	private boolean equals(FormData fd1, FormData fd2) {
+
+		if (fd1 == fd2) {
+			return true;
+		}
+		if ((fd1 == null) || (fd2 == null)) {
+			return false;
+		}
+		if (fd1.height != fd2.height) {
+			return false;
+		}
+		if (fd1.width != fd2.width) {
+			return false;
+		}
+		if (!equals(fd1.bottom, fd2.bottom)) {
+			return false;
+		}
+		if (!equals(fd1.left, fd2.left)) {
+			return false;
+		}
+		if (!equals(fd1.right, fd2.right)) {
+			return false;
+		}
+		if (!equals(fd1.top, fd2.top)) {
+			return false;
+		}
+
+		return true;
+
+	}
+
+	/**
+	 * Compares the to given {@code FormAttachment}s.
+	 * 
+	 * @param fd1
+	 *            first {@code FormAttachment}
+	 * @param fd2
+	 *            second {@code FormAttachment}
+	 * @return {@code true} if equals; otherwise false
+	 */
+	private boolean equals(FormAttachment fa1, FormAttachment fa2) {
+
+		if (fa1 == fa2) {
+			return true;
+		}
+		if ((fa1 == null) || (fa2 == null)) {
+			return false;
+		}
+		if (fa1.alignment != fa2.alignment) {
+			return false;
+		}
+		if (fa1.denominator != fa2.denominator) {
+			return false;
+		}
+		if (fa1.numerator != fa2.numerator) {
+			return false;
+		}
+		if (fa1.offset != fa2.offset) {
+			return false;
+		}
+
+		return true;
+
+	}
+
+	/**
+	 * Returns the current layout data of this view.
+	 * 
+	 * @return current layout data; {@code null} if layout data is not a {@code
+	 *         FormData}
+	 */
+	private FormData getCurrentFormData() {
+
+		Object data = getLayoutData();
+		if (data instanceof FormData) {
+			return (FormData) data;
+		} else {
+			return null;
+		}
+
 	}
 
 	@Override

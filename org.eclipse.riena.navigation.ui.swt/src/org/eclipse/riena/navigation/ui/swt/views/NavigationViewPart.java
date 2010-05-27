@@ -204,7 +204,9 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		@Override
 		public void childRemoved(ISubApplicationNode source, IModuleGroupNode child) {
 			unregisterModuleGroupView(child);
-			updateNavigationSize();
+			if (source.isSelected()) {
+				updateNavigationSize();
+			}
 		}
 
 		@Override
@@ -249,7 +251,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		public void disposed(IModuleGroupNode source) {
 			super.disposed(source);
 			unregisterModuleGroupView(source);
-			updateNavigationSize();
+			// updateNavigationSize();
 		}
 
 		@Override

@@ -71,10 +71,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	private boolean hover;
 	private ModuleTitleBar title;
 	private BlockManager blockManager;
-
-	//performance tweaking
-	//private boolean cachedActivityState = true;
-	//private boolean treeDirty = true;
+	private boolean doNotResize;
 
 	private NavigationTreeObserver navigationTreeObserver;
 
@@ -292,6 +289,12 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	public void updateModuleView() {
+		prepareUpdate();
+		getParent().layout();
+	}
+
+	public void prepareUpdate() {
+
 		boolean currentActiveState = false;
 		if (getNavigationNode() != null) {
 			currentActiveState = getNavigationNode().isActivated();
@@ -299,6 +302,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 		if (!SwtUtilities.isDisposed(title)) {
 			layoutTitle();
+			title.setWindowActive(currentActiveState);
 		}
 
 		if (!SwtUtilities.isDisposed(getBody())) {
@@ -315,16 +319,6 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 				getBody().setLayoutData(formData);
 			}
 		}
-
-		// TODO performance activation disabled because UIFilter didnt work anymore properly, hidden submodule nodes didnt get visible because of redraw problems
-		getParent().layout();
-		// Performance: Only layout if the activity of the ModuleNode or the tree inside has changed
-		//		if (currentActiveState != cachedActivityState || treeDirty) {
-		//			getParent().layout();
-		//			cachedActivityState = currentActiveState;
-		//			treeDirty = false;
-		//		}
-		title.setWindowActive(currentActiveState);
 
 	}
 
@@ -373,7 +367,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		}
 	}
 
-	protected Composite getParent() {
+	public Composite getParent() {
 		return parent;
 	}
 
@@ -396,6 +390,9 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	protected void resize() {
+		if (doNotResize) {
+			return;
+		}
 		fireUpdated(null);
 	}
 
@@ -737,7 +734,9 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 		@Override
 		public void activated(ISubModuleNode source) {
+			doNotResize = true;
 			updateExpanded(source); // fix for bug 269221
+			doNotResize = false;
 			resize();
 			getTree().setFocus();
 		}

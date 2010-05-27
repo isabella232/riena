@@ -19,6 +19,7 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.ui.swt.views.ModuleGroupView;
@@ -26,6 +27,7 @@ import org.eclipse.riena.navigation.ui.swt.views.ModuleView;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Renderer of the module group inside the navigation.
@@ -40,8 +42,9 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	private ModuleGroupNode navigationNode;
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
-	 *      java.lang.Object)
+	 * {@inheritDoc}
+	 * <p>
+	 * Use a renderer to draw the border of the module group.
 	 */
 	@Override
 	public void paint(GC gc, Object value) {
@@ -49,10 +52,9 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		super.paint(gc, value);
 
 		// border of module group
-		Point size = computeSize(gc, getBounds().width, 0);
 		EmbeddedBorderRenderer borderRenderer = getLnfBorderRenderer();
 		borderRenderer.setMarkers(getMarkers());
-		borderRenderer.setBounds(getBounds().x, getBounds().y, getBounds().width, size.y);
+		borderRenderer.setBounds(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
 		borderRenderer.setActive(isActive());
 		borderRenderer.paint(gc, null);
 
@@ -90,6 +92,12 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		List<ModuleView> modules = getItems();
 		int h = 0;
 		if (modules.size() > 0) {
+
+			Composite parent = modules.get(0).getParent();
+			if (SwtUtilities.isDisposed(parent)) {
+				return new Point(w, h);
+			}
+
 			h = getModuleGroupPadding();
 			Collections.sort(modules, new ModuleCompartor());
 			for (Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
@@ -97,7 +105,17 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 				if (moduleView.getNavigationNode() == null || moduleView.getNavigationNode().isDisposed()) {
 					break;
 				}
-				moduleView.updateModuleView();
+				moduleView.prepareUpdate();
+			}
+
+			parent.layout();
+
+			Collections.sort(modules, new ModuleCompartor());
+			for (Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
+				ModuleView moduleView = iterator.next();
+				if (moduleView.getNavigationNode() == null || moduleView.getNavigationNode().isDisposed()) {
+					break;
+				}
 				h += moduleView.getBounds().height;
 				if (iterator.hasNext()) {
 					h += getModuleModuleGap();
