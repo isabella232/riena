@@ -15,6 +15,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Shell;
 
@@ -102,6 +103,125 @@ public class ModuleGroupViewTest extends TestCase {
 		node.dispose();
 
 		assertTrue(listeners.isEmpty());
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code equals(FormData, FormData)}.
+	 */
+	public void testEqualsFormDatat() {
+
+		FormData fd1 = new FormData();
+		boolean ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd1);
+		assertTrue(ret);
+
+		FormData fd2 = new FormData();
+		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
+		assertTrue(ret);
+
+		fd1.width = 25;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
+		assertFalse(ret);
+
+		fd2.width = 25;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
+		assertTrue(ret);
+
+		fd1.height = 25;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
+		assertFalse(ret);
+
+		fd2.height = 25;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
+		assertTrue(ret);
+
+		FormAttachment fa1 = new FormAttachment(1, 2);
+		FormAttachment fa2 = new FormAttachment(11, 22);
+		FormAttachment fa3 = new FormAttachment(1, 2);
+
+		fd1.bottom = fa1;
+		fd2.bottom = fa2;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
+		assertFalse(ret);
+
+		fd2.bottom = fa3;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
+		assertTrue(ret);
+
+		fd1.left = fa1;
+		fd2.left = fa2;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
+		assertFalse(ret);
+
+		fd2.left = fa3;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
+		assertTrue(ret);
+
+		fd1.right = fa1;
+		fd2.right = fa2;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
+		assertFalse(ret);
+
+		fd2.right = fa3;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
+		assertTrue(ret);
+
+		fd1.top = fa1;
+		fd2.top = fa2;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
+		assertFalse(ret);
+
+		fd2.top = fa3;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
+		assertTrue(ret);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method
+	 * {@code equals(FormAttachment, FormAttachment)}.
+	 */
+	public void testEqualsFormAttachment() {
+
+		FormAttachment fa1 = new FormAttachment();
+		boolean ret = ReflectionUtils.invokeHidden(view, "equals", fa1, fa1);
+		assertTrue(ret);
+
+		FormAttachment fa2 = new FormAttachment();
+		ret = ReflectionUtils.invokeHidden(view, "equals", fa1, fa2);
+		assertTrue(ret);
+
+		fa1.alignment = SWT.RIGHT;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fa1, fa2);
+		assertFalse(ret);
+
+		fa2.alignment = SWT.RIGHT;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fa1, fa2);
+		assertTrue(ret);
+
+		fa1.denominator = 50;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fa1, fa2);
+		assertFalse(ret);
+
+		fa2.denominator = 50;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fa1, fa2);
+		assertTrue(ret);
+
+		fa1.numerator = 11;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fa1, fa2);
+		assertFalse(ret);
+
+		fa2.numerator = 11;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fa1, fa2);
+		assertTrue(ret);
+
+		fa1.offset = 12;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fa1, fa2);
+		assertFalse(ret);
+
+		fa2.offset = 12;
+		ret = ReflectionUtils.invokeHidden(view, "equals", fa1, fa2);
+		assertTrue(ret);
+
 	}
 
 	private static class MyLnF extends RienaDefaultLnf {
