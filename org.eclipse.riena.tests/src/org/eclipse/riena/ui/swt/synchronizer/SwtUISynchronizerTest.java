@@ -96,8 +96,8 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			latch.countDown();
 			done.set(true);
+			latch.countDown();
 			System.out.println("Job done");
 		}
 	}
