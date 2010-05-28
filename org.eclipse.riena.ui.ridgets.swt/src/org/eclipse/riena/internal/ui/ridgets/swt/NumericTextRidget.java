@@ -494,6 +494,9 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		}
 		Object value = modelObservable.getValue();
 		Class<?> type = (Class<?>) modelObservable.getValueType();
+		if (type == null) {
+			return;
+		}
 		IConverter converter = getConverter(type, Integer.MAX_VALUE);
 		if (converter != null) {
 			checkNumber((String) converter.convert(value));
