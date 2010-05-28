@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -50,7 +51,9 @@ public class LnFUpdaterTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		shell = new Shell();
-		lnFUpdater = new LnFUpdater(true);
+		lnFUpdater = new LnFUpdater();
+		Map<String, Object> resourceCache = ReflectionUtils.getHidden(lnFUpdater, "RESOURCE_CACHE");
+		resourceCache.clear();
 	}
 
 	@Override
