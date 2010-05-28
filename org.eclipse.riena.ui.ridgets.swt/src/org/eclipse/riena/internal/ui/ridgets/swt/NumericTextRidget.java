@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.conversion.IConverter;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -487,8 +488,12 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	private void checkValue() {
-		Object value = getValueBindingSupport().getModelObservable().getValue();
-		Class<?> type = (Class<?>) getValueBindingSupport().getModelObservable().getValueType();
+		IObservableValue modelObservable = getValueBindingSupport().getModelObservable();
+		if (modelObservable == null) {
+			return;
+		}
+		Object value = modelObservable.getValue();
+		Class<?> type = (Class<?>) modelObservable.getValueType();
 		IConverter converter = getConverter(type, Integer.MAX_VALUE);
 		if (converter != null) {
 			checkNumber((String) converter.convert(value));
