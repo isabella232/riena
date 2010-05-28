@@ -77,8 +77,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 			IColumnFormatter formatter = this.formatters[columnIndex];
 			if (formatter != null) {
 				result = (Image) formatter.getImage(element);
-			}
-			if (result == null) {
+			} else {
 				Object value = attributeMap[columnIndex].get(element);
 				if (value instanceof Boolean) {
 					String key = ((Boolean) value).booleanValue() ? SharedImages.IMG_CHECKED
