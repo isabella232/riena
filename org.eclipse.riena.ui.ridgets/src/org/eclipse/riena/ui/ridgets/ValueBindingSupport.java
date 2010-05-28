@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
@@ -221,7 +223,11 @@ public class ValueBindingSupport {
 	 *      java.lang.String)
 	 */
 	public void bindToModel(Object valueHolder, String valuePropertyName) {
-		modelOV = PojoObservables.observeValue(valueHolder, valuePropertyName);
+		if (isBean(valueHolder.getClass())) {
+			modelOV = BeansObservables.observeValue(valueHolder, valuePropertyName);
+		} else {
+			modelOV = PojoObservables.observeValue(valueHolder, valuePropertyName);
+		}
 		rebindToModel();
 	}
 
@@ -442,6 +448,18 @@ public class ValueBindingSupport {
 
 	private IStatus getStatus(IValidator validationRule) {
 		return rule2status != null ? rule2status.get(validationRule) : null;
+	}
+
+	private boolean isBean(Class<?> clazz) {
+		boolean result;
+		try {
+			// next line throws NoSuchMethodException, if no matching method found
+			clazz.getMethod("addPropertyChangeListener", PropertyChangeListener.class); //$NON-NLS-1$
+			result = true; // have bean
+		} catch (NoSuchMethodException e) {
+			result = false; // have pojo
+		}
+		return result;
 	}
 
 	private boolean isBlocked(IValidator validationRule, IStatus status) {

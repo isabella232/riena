@@ -231,8 +231,12 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		} else {
 			listObservableValue = PojoObservables.observeList(listHolder, listPropertyName);
 		}
-		IObservableValue selectionObservableValue = PojoObservables
-				.observeValue(selectionHolder, selectionPropertyName);
+		IObservableValue selectionObservableValue;
+		if (AbstractSWTWidgetRidget.isBean(selectionHolder.getClass())) {
+			selectionObservableValue = BeansObservables.observeValue(selectionHolder, selectionPropertyName);
+		} else {
+			selectionObservableValue = PojoObservables.observeValue(selectionHolder, selectionPropertyName);
+		}
 		bindToModel(listObservableValue, rowClass, renderingMethod, selectionObservableValue);
 	}
 

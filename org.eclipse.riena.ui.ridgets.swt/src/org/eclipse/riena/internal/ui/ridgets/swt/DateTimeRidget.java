@@ -18,6 +18,7 @@ import java.util.Date;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.DateAndTimeObservableValue;
@@ -36,6 +37,7 @@ import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractEditableRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 
 /**
@@ -139,7 +141,11 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 
 	@Override
 	public void bindToModel(Object valueHolder, String valuePropertyName) {
-		bindToModel(PojoObservables.observeValue(valueHolder, valuePropertyName));
+		if (AbstractSWTRidget.isBean(valueHolder.getClass())) {
+			bindToModel(BeansObservables.observeValue(valueHolder, valuePropertyName));
+		} else {
+			bindToModel(PojoObservables.observeValue(valueHolder, valuePropertyName));
+		}
 	}
 
 	public Date getDate() {

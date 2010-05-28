@@ -24,6 +24,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.ListBinding;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.Diffs;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -94,7 +95,12 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	}
 
 	public final void bindMultiSelectionToModel(Object selectionHolder, String selectionPropertyName) {
-		IObservableList observableList = PojoObservables.observeList(selectionHolder, selectionPropertyName);
+		IObservableList observableList;
+		if (AbstractSWTRidget.isBean(selectionHolder.getClass())) {
+			observableList = BeansObservables.observeList(selectionHolder, selectionPropertyName);
+		} else {
+			observableList = PojoObservables.observeList(selectionHolder, selectionPropertyName);
+		}
 		bindMultiSelectionToModel(observableList);
 	}
 
@@ -108,7 +114,12 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	}
 
 	public final void bindSingleSelectionToModel(Object selectionHolder, String selectionPropertyName) {
-		IObservableValue observableValue = PojoObservables.observeValue(selectionHolder, selectionPropertyName);
+		IObservableValue observableValue;
+		if (AbstractSWTRidget.isBean(selectionHolder.getClass())) {
+			observableValue = PojoObservables.observeValue(selectionHolder, selectionPropertyName);
+		} else {
+			observableValue = PojoObservables.observeValue(selectionHolder, selectionPropertyName);
+		}
 		bindSingleSelectionToModel(observableValue);
 	}
 

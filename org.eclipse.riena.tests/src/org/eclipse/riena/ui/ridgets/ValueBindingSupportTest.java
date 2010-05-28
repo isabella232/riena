@@ -20,6 +20,8 @@ import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
+import org.eclipse.riena.beans.common.Address;
+import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.TestBean;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.Markable;
@@ -332,6 +334,57 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		assertEquals(0, markable.getMarkersOfType(ErrorMarker.class).size());
 	}
 
+	/**
+	 * As per Bug 313969
+	 */
+	public void testUsesBeanObservablesWhenBindingABean() {
+		Person person = new Person("Max", "Muster"); //$NON-NLS-1$ //$NON-NLS-2$
+		Address pdx = createAddress("pdx", "Portland", "97209", "USA"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		Address fra = createAddress("fra", "Frankfurt", "60329", "DE"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		person.setAddress(pdx);
+
+		valueBindingSupport.bindToModel(person, "address.streetAndNumber"); //$NON-NLS-1$
+
+		assertEquals("pdx", person.getAddress().getStreetAndNumber());
+		assertEquals("pdx", pdx.getStreetAndNumber());
+
+		target.setValue("new 1");
+
+		assertEquals("new 1", person.getAddress().getStreetAndNumber());
+		assertEquals("new 1", pdx.getStreetAndNumber());
+
+		person.setAddress(fra);
+		target.setValue("new 2");
+
+		assertEquals("new 2", person.getAddress().getStreetAndNumber());
+		assertEquals("new 2", fra.getStreetAndNumber());
+		assertEquals("new 1", pdx.getStreetAndNumber());
+	}
+
+	public void testUpdateFromModelOnRequest2() {
+		Person person = new Person("muster", "max"); //$NON-NLS-1$ //$NON-NLS-2$
+		valueBindingSupport.bindToModel(person, "firstname");
+		valueBindingSupport.updateFromModel();
+
+		assertEquals("max", person.getFirstname());
+		assertEquals("max", target.getValue());
+
+		target.setValue("moritz");
+
+		assertEquals("moritz", person.getFirstname());
+		assertEquals("moritz", target.getValue());
+
+		person.setFirstname("michel");
+
+		assertEquals("michel", person.getFirstname());
+		assertEquals("moritz", target.getValue());
+
+		valueBindingSupport.updateFromModel();
+
+		assertEquals("michel", person.getFirstname());
+		assertEquals("michel", target.getValue());
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -343,6 +396,15 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		}
 
 		assertTrue("missing MessageMarker for " + missingMessages, missingMessages.isEmpty());
+	}
+
+	public static Address createAddress(String str, String city, String zip, String cc) {
+		Address result = new Address();
+		result.setStreetAndNumber(str);
+		result.setTown(city);
+		result.setPostalCode(Integer.valueOf(zip));
+		result.setCountry(cc);
+		return result;
 	}
 
 	// helping clases

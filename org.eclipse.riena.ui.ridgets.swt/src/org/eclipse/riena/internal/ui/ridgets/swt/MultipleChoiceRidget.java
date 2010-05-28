@@ -20,6 +20,7 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
@@ -122,8 +123,18 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		Assert.isNotNull(listPropertyName, "listPropertyName"); //$NON-NLS-1$
 		Assert.isNotNull(selectionHolder, "selectionHolder"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList optionValues = PojoObservables.observeList(listHolder, listPropertyName);
-		IObservableList selectionValues = PojoObservables.observeList(selectionHolder, selectionPropertyName);
+		IObservableList optionValues;
+		if (AbstractSWTRidget.isBean(listHolder.getClass())) {
+			optionValues = BeansObservables.observeList(listHolder, listPropertyName);
+		} else {
+			optionValues = PojoObservables.observeList(listHolder, listPropertyName);
+		}
+		IObservableList selectionValues;
+		if (AbstractSWTRidget.isBean(selectionHolder.getClass())) {
+			selectionValues = BeansObservables.observeList(selectionHolder, selectionPropertyName);
+		} else {
+			selectionValues = PojoObservables.observeList(selectionHolder, selectionPropertyName);
+		}
 		bindToModel(optionValues, null, selectionValues);
 	}
 
@@ -133,7 +144,12 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		Assert.isNotNull(selectionHolder, "selectionHolder"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
 		IObservableList optionList = PojoObservables.observeList(new ListBean(optionValues), ListBean.PROPERTY_VALUES);
-		IObservableList selectionList = PojoObservables.observeList(selectionHolder, selectionPropertyName);
+		IObservableList selectionList;
+		if (AbstractSWTRidget.isBean(selectionHolder.getClass())) {
+			selectionList = BeansObservables.observeList(selectionHolder, selectionPropertyName);
+		} else {
+			selectionList = PojoObservables.observeList(selectionHolder, selectionPropertyName);
+		}
 		bindToModel(optionList, optionLabels, selectionList);
 	}
 

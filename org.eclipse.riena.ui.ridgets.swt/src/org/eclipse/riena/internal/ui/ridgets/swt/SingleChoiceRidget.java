@@ -20,6 +20,7 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
@@ -123,8 +124,18 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		Assert.isNotNull(listPropertyName, "listPropertyName"); //$NON-NLS-1$
 		Assert.isNotNull(selectionHolder, "selectionHolder"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList optionValues = PojoObservables.observeList(listHolder, listPropertyName);
-		IObservableValue selectionValue = PojoObservables.observeValue(selectionHolder, selectionPropertyName);
+		IObservableList optionValues;
+		if (AbstractSWTRidget.isBean(listHolder.getClass())) {
+			optionValues = BeansObservables.observeList(listHolder, listPropertyName);
+		} else {
+			optionValues = PojoObservables.observeList(listHolder, listPropertyName);
+		}
+		IObservableValue selectionValue;
+		if (AbstractSWTRidget.isBean(selectionHolder.getClass())) {
+			selectionValue = BeansObservables.observeValue(selectionHolder, selectionPropertyName);
+		} else {
+			selectionValue = PojoObservables.observeValue(selectionHolder, selectionPropertyName);
+		}
 		bindToModel(optionValues, null, selectionValue);
 	}
 
@@ -134,8 +145,13 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		Assert.isNotNull(selectionHolder, "selectionHolder"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
 		IObservableList list = new WritableList(optionValues, null);
-		IObservableValue selection = PojoObservables.observeValue(selectionHolder, selectionPropertyName);
-		bindToModel(list, optionLabels, selection);
+		IObservableValue selectionValue;
+		if (AbstractSWTRidget.isBean(selectionHolder.getClass())) {
+			selectionValue = BeansObservables.observeValue(selectionHolder, selectionPropertyName);
+		} else {
+			selectionValue = PojoObservables.observeValue(selectionHolder, selectionPropertyName);
+		}
+		bindToModel(list, optionLabels, selectionValue);
 	}
 
 	@Override
