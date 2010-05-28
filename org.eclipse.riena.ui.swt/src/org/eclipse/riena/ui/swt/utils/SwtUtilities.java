@@ -10,19 +10,27 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
+import java.util.Map;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.core.cache.LRUHashMap;
 import org.eclipse.riena.ui.swt.facades.GCFacade;
 
 /**
  * A collection of utility methods for SWT.
  */
 public final class SwtUtilities {
+
+	private static final String THREE_DOTS = "..."; //$NON-NLS-1$
+	private static final GCFacade GC_FACADE = GCFacade.getDefault();
+	private static final Map<GCString, Integer> TEXT_WIDTH_CACHE = LRUHashMap.createLRUHashMap(512);
 
 	/**
 	 * This class contains only static methods. So it is not necessary to create
@@ -47,19 +55,17 @@ public final class SwtUtilities {
 	 */
 	public static String clipText(final GC gc, final String text, int maxWidth) {
 		int textwidth = calcTextWidth(gc, text);
-		if (textwidth > maxWidth) {
-			StringBuffer shortText = new StringBuffer(text);
-			shortText.append("..."); //$NON-NLS-1$
-			while (textwidth > maxWidth) {
-				if (shortText.length() <= 3) {
-					break;
-				}
-				shortText = shortText.deleteCharAt(shortText.length() - 4);
-				textwidth = calcTextWidth(gc, shortText);
-			}
-			return shortText.toString();
+		if (textwidth <= maxWidth) {
+			return text;
 		}
-		return text;
+		final int threeDotsWidth = calcTextWidth(gc, THREE_DOTS);
+		final StringBuilder shortenedText = new StringBuilder(text);
+		while (textwidth + threeDotsWidth > maxWidth && shortenedText.length() != 0) {
+			shortenedText.setLength(shortenedText.length() - 1);
+			textwidth = calcTextWidth(gc, shortenedText);
+		}
+		shortenedText.append(THREE_DOTS);
+		return shortenedText.toString();
 	}
 
 	/**
@@ -73,14 +79,38 @@ public final class SwtUtilities {
 	 * @return width of text
 	 */
 	public static int calcTextWidth(final GC gc, final CharSequence text) {
-		int width = 0;
-		if (text != null) {
-			final GCFacade gcFacade = GCFacade.getDefault();
-			final int length = text.length();
-			for (int i = 0; i < length; i++) {
-				char ch = text.charAt(i);
-				width += gcFacade.getAdvanceWidth(gc, ch);
+		if (text == null) {
+			return 0;
+		}
+		GCString lookupKey = new GCString(gc, text);
+		Integer width = TEXT_WIDTH_CACHE.get(lookupKey);
+		if (width == null) {
+			int w = 0;
+			for (int i = 0; i < text.length(); i++) {
+				w += calcCharWidth(gc, text.charAt(i));
 			}
+			width = w;
+			TEXT_WIDTH_CACHE.put(lookupKey, width);
+		}
+		return width;
+	}
+
+	/**
+	 * Calculates the width of the given char based on the current settings of
+	 * the given graphics context.
+	 * 
+	 * @param gc
+	 *            graphics context
+	 * @param ch
+	 *            character
+	 * @return width of character
+	 */
+	public static int calcCharWidth(final GC gc, char ch) {
+		GCString lookupKey = new GCString(gc, Character.toString(ch));
+		Integer width = TEXT_WIDTH_CACHE.get(lookupKey);
+		if (width == null) {
+			width = GC_FACADE.getAdvanceWidth(gc, ch);
+			TEXT_WIDTH_CACHE.put(lookupKey, width);
 		}
 		return width;
 	}
@@ -166,6 +196,55 @@ public final class SwtUtilities {
 	 */
 	public static boolean isDisposed(Resource resource) {
 		return !((resource != null) && (!resource.isDisposed()));
+	}
+
+	private final static class GCString {
+		private final String text;
+		private final FontMetrics fontMetrics;
+
+		private GCString(GC gc, CharSequence seq) {
+			this.fontMetrics = gc.getFontMetrics();
+			this.text = seq.toString();
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((fontMetrics == null) ? 0 : fontMetrics.hashCode());
+			result = prime * result + ((text == null) ? 0 : text.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			GCString other = (GCString) obj;
+			if (fontMetrics == null) {
+				if (other.fontMetrics != null) {
+					return false;
+				}
+			} else if (!fontMetrics.equals(other.fontMetrics)) {
+				return false;
+			}
+			if (text == null) {
+				if (other.text != null) {
+					return false;
+				}
+			} else if (!text.equals(other.text)) {
+				return false;
+			}
+			return true;
+		}
+
 	}
 
 }
