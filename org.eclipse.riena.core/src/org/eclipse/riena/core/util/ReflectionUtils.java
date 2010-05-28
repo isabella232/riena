@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,13 +17,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
-
-import org.apache.oro.util.CacheLRU;
+import java.util.Map;
 
 import org.osgi.framework.Bundle;
 
 import org.eclipse.core.runtime.Assert;
 
+import org.eclipse.riena.core.cache.LRUHashMap;
 import org.eclipse.riena.internal.core.Activator;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 
@@ -36,9 +36,10 @@ import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 public final class ReflectionUtils {
 
 	/** A cache of Method (or NO_SUCH_METHOD) values. */
-	private static final CacheLRU METHOD_CACHE = new CacheLRU(25);
+	private static final Map<Integer, Object> METHOD_CACHE = LRUHashMap.createSynchronizedLRUHashMap(25);
 	/** Placeholder indicating a 'null' result (vs a cache miss) */
-	private static final Object NO_SUCH_METHOD = new Object();
+	private static final Object NO_SUCH_METHOD = new Object() {
+	};
 
 	/**
 	 * Private default constructor.
@@ -485,14 +486,14 @@ public final class ReflectionUtils {
 		// Reflective method lookup is expensive, therefore we cache the 25 most 
 		// frequent look-ups using a hashcode of (clazz x name x clazzes)
 		final Integer key = computeKey(clazz, name, clazzes);
-		final Object cachedMethod = METHOD_CACHE.getElement(key);
+		final Object cachedMethod = METHOD_CACHE.get(key);
 		if (cachedMethod != null) {
 			// cache hit; return 
 			return cachedMethod == NO_SUCH_METHOD ? null : (Method) cachedMethod;
 		}
 		final Method result = findMatchingMethod(open, clazz, name, clazzes);
 		// for a method miss add NO_SUCH_METHOD
-		METHOD_CACHE.addElement(key, result == null ? NO_SUCH_METHOD : result);
+		METHOD_CACHE.put(key, result == null ? NO_SUCH_METHOD : result);
 		return result;
 	}
 
@@ -666,4 +667,5 @@ public final class ReflectionUtils {
 					+ Arrays.asList(args) + "!", t); //$NON-NLS-1$
 		}
 	}
+
 }

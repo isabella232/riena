@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.oro.util.CacheLRU;
-
 import org.osgi.service.log.LogService;
 
 import org.eclipse.equinox.log.Logger;
@@ -43,6 +41,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.cache.LRUHashMap;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -53,7 +52,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class LnFUpdater {
 
-	private static CacheLRU resourceCache = new CacheLRU(200);
+	private final static Map<String, Object> RESOURCE_CACHE = LRUHashMap.createSynchronizedLRUHashMap(200);
 	private static final Object NULL_RESOURCE = new Object();
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
@@ -76,20 +75,7 @@ public class LnFUpdater {
 	private static final Logger LOGGER = Log4r.getLogger(LnFUpdater.class);
 
 	public LnFUpdater() {
-		this(false);
-	}
-
-	/**
-	 * Creates a new instance of {@code LnFUpdater} and clears (if necessary)
-	 * the resource cache.
-	 * 
-	 * @param clearCache
-	 *            {@code true} clear cache; {@code false} don't clear cache
-	 */
-	public LnFUpdater(boolean clearCache) {
-		if (clearCache) {
-			resourceCache = new CacheLRU(200);
-		}
+		super();
 	}
 
 	/**
@@ -650,7 +636,7 @@ public class LnFUpdater {
 	@SuppressWarnings("unchecked")
 	private Object getLnfValue(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
 		final String lnfKey = generateLnfKey(controlClass, property);
-		Object lnfValue = resourceCache.getElement(lnfKey);
+		Object lnfValue = RESOURCE_CACHE.get(lnfKey);
 		if (lnfValue != null) {
 			return lnfValue == NULL_RESOURCE ? null : lnfValue;
 		}
@@ -669,7 +655,7 @@ public class LnFUpdater {
 		// This is implemented by invoking getLnfValue for the 1st lookup and the getLnfValueInternal for the 
 		// 2nd - nth levels of the type hierarchy.
 
-		resourceCache.addElement(lnfKey, lnfValue == null ? NULL_RESOURCE : lnfValue);
+		RESOURCE_CACHE.put(lnfKey, lnfValue == null ? NULL_RESOURCE : lnfValue);
 		return lnfValue;
 	}
 
