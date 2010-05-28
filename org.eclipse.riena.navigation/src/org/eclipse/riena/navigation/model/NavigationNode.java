@@ -514,7 +514,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.INavigationNode#setLabel(java.lang.String)
 	 */
 	public void setLabel(String label) {
+		String old = this.label;
 		this.label = label;
+		propertyChangeSupport.firePropertyChange(INavigationNode.PROPERTY_LABEL, old, label);
 		notifyLabelChanged();
 	}
 

@@ -33,6 +33,8 @@ import org.eclipse.riena.ui.filter.IUIFilterable;
 public interface INavigationNode<C extends INavigationNode<?>> extends ITypecastingAdaptable, IMarkable, IUIFilterable,
 		IDisposable, INavigationHistory {
 
+	final String PROPERTY_LABEL = "label"; //$NON-NLS-1$
+
 	/**
 	 * The states of the navigation node.
 	 */
