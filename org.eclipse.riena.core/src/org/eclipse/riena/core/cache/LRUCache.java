@@ -62,14 +62,14 @@ public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 	 * org.eclipse.riena.core.cache.IGenericObjectCache#setName(java.lang.String
 	 * )
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name + " : "; //$NON-NLS-1$
 	}
 
 	/**
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setTimeout(int)
 	 */
-	public void setTimeout(int milliseconds) {
+	public void setTimeout(final int milliseconds) {
 		LOGGER.log(LogService.LOG_INFO, "setTimeout = " + milliseconds); //$NON-NLS-1$
 		timeout = milliseconds;
 	}
@@ -78,16 +78,16 @@ public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 		return (int) timeout;
 	}
 
-	public synchronized V get(K key) {
+	public synchronized V get(final K key) {
 		LOGGER.log(LogService.LOG_DEBUG, "get = " + key); //$NON-NLS-1$
-		ICacheEntry<K, V> entry = lruMap.get(key);
+		final ICacheEntry<K, V> entry = lruMap.get(key);
 		/** do we find the entry * */
 		if (entry == null) {
 			statNotFound++;
 			printStat();
 			return null;
 		}
-		long timePassed = System.currentTimeMillis() - entry.getTimestamp();
+		final long timePassed = System.currentTimeMillis() - entry.getTimestamp();
 		/** is the entry expired * */
 		if (timePassed < timeout) {
 			/** does the soft reference still point anywhere * */
@@ -123,7 +123,7 @@ public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#put(Object,
 	 *      java.lang.Object)
 	 */
-	public synchronized void put(K key, V value) {
+	public synchronized void put(final K key, final V value) {
 		LOGGER.log(LogService.LOG_DEBUG, "put = " + key + ", " + value); //$NON-NLS-1$ //$NON-NLS-2$
 		lruMap.put(key, new SimpleCacheEntry<K, V>(value, key));
 	}
@@ -139,7 +139,7 @@ public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 	/**
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#remove(Object)
 	 */
-	public synchronized void remove(K key) {
+	public synchronized void remove(final K key) {
 		LOGGER.log(LogService.LOG_DEBUG, "remove = " + key); //$NON-NLS-1$
 		lruMap.remove(key);
 	}
@@ -159,7 +159,7 @@ public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 	/**
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setMinimumSize(int)
 	 */
-	public synchronized void setMinimumSize(int minSize) {
+	public synchronized void setMinimumSize(final int minSize) {
 		LOGGER.log(LogService.LOG_INFO, "setMinSize = " + minSize); //$NON-NLS-1$
 		minimumSize = minSize;
 		lruMap = new LRUHashMap<K, V>(minSize);
@@ -172,15 +172,15 @@ public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 	/**
 	 * HashMap that implements a Last Recently Used schema on a LinkedHashMap
 	 */
-	public static class LRUHashMap<K, V> extends LinkedHashMap<K, ICacheEntry<K, V>> {
+	private static class LRUHashMap<K, V> extends LinkedHashMap<K, ICacheEntry<K, V>> {
 
-		private int minSize;
+		private final int minSize;
 		private static final long serialVersionUID = 6499327049035525641L;
 
 		/**
 		 * @param minSize
 		 */
-		public LRUHashMap(int minSize) {
+		public LRUHashMap(final int minSize) {
 			super(minSize, .75F, true);
 			this.minSize = minSize;
 		}
@@ -191,7 +191,7 @@ public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 		 * @see java.util.LinkedHashMap#removeEldestEntry(java.util.Map.Entry)
 		 */
 		@Override
-		protected boolean removeEldestEntry(Entry<K, ICacheEntry<K, V>> eldest) {
+		protected boolean removeEldestEntry(final Entry<K, ICacheEntry<K, V>> eldest) {
 			return size() > minSize;
 		}
 	}
