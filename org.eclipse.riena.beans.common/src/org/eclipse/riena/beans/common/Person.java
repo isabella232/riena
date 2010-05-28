@@ -52,6 +52,10 @@ public class Person extends AbstractBean {
 	 * Property name of the pets property ("{@value} ").
 	 */
 	public static final String PROPERTY_PETS = "pets"; //$NON-NLS-1$
+	/**
+	 * Property name of the address property ("{@value} ").
+	 */
+	public static final String PROPERTY_ADDRESS = "address"; //$NON-NLS-1$
 
 	/**
 	 * Constant for <code>MALE</code> gender value ("male").
@@ -331,7 +335,9 @@ public class Person extends AbstractBean {
 	}
 
 	public void setAddress(Address address) {
+		Address oldValue = this.address;
 		this.address = address;
+		firePropertyChanged(PROPERTY_ADDRESS, oldValue, address);
 	}
 
 	public Address getAddress() {
