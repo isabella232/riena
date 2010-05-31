@@ -71,7 +71,7 @@ public class NavigationNodeId {
 		if (other == null) {
 			return false;
 		}
-		if (NavigationNodeId.class != other.getClass()) {
+		if (getClass() != other.getClass()) {
 			return false;
 		}
 		NavigationNodeId otherId = (NavigationNodeId) other;

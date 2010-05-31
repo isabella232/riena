@@ -65,6 +65,21 @@ public class NavigationNodeIdTest extends TestCase {
 		nodeId2 = new NavigationNodeId("1", "2");
 		assertFalse(nodeId.equals(nodeId2));
 
+		MyNavigationNodeId nodeId3 = new MyNavigationNodeId("1");
+		assertFalse(nodeId.equals(nodeId3));
+		assertTrue(nodeId3.equals(nodeId3));
+
+		MyNavigationNodeId nodeId4 = new MyNavigationNodeId("1");
+		assertTrue(nodeId3.equals(nodeId4));
+
+	}
+
+	private class MyNavigationNodeId extends NavigationNodeId {
+
+		public MyNavigationNodeId(String typeId) {
+			super(typeId);
+		}
+
 	}
 
 }
