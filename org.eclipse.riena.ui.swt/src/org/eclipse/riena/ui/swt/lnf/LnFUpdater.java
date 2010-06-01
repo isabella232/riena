@@ -115,7 +115,7 @@ public class LnFUpdater {
 	 */
 	private void updateLayout(Composite parent) {
 		if (isDirtyLayout()) {
-			parent.layout(true, false);
+			parent.layout(true, true);
 			setDirtyLayout(false);
 		}
 	}
@@ -230,8 +230,8 @@ public class LnFUpdater {
 	 *            UI control
 	 * @param property
 	 *            property to check
-	 * @return {@code true} if property should be ignored; otherwise
-	 *         {@code false}
+	 * @return {@code true} if property should be ignored; otherwise {@code
+	 *         false}
 	 */
 	private boolean ignoreProperty(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
 
