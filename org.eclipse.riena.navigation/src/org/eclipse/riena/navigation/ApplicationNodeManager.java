@@ -13,7 +13,6 @@ package org.eclipse.riena.navigation;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 
 /**
@@ -114,7 +113,7 @@ public final class ApplicationNodeManager {
 	 * @since 1.2
 	 */
 	public static ISubApplicationNode locateActiveSubApplicationNode() {
-		ApplicationNode applicationNode = (ApplicationNode) ApplicationNodeManager.getApplicationNode();
+		IApplicationNode applicationNode = ApplicationNodeManager.getApplicationNode();
 		if (applicationNode == null) {
 			return null;
 		}
