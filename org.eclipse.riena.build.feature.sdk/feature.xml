@@ -6,9 +6,13 @@
       provider-name="Eclipse.org">
 
    <description url="http://www.eclipse.org/riena">
-      This is the feature used for the PDE Build of Riena.
-
-This Feature is used to pick up the source code.
+      This feature contains the corresponding components for Riena
+Target Components. It is intended to be added to target platforms at
+development time. It also requires Equinox SDK and RCP SDK to
+resolve all dependencies.
+DO NOT INSTALL into your Eclipse IDE. Only install into your
+target
+platform.
    </description>
 
    <copyright url="http://www.compeople.de">
