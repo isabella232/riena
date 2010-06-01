@@ -31,8 +31,7 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 	private Rectangle bounds;
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#paint(org.eclipse.swt.graphics.GC,
-	 *      java.lang.Object)
+	 * {@inheritDoc}
 	 */
 	public void paint(GC gc, Object value) {
 		Assert.isNotNull(gc);
@@ -40,15 +39,14 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#getBounds()
+	 * {@inheritDoc}
 	 */
 	public Rectangle getBounds() {
 		return bounds;
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#setBounds(int,
-	 *      int, int, int)
+	 * {@inheritDoc}
 	 */
 	public void setBounds(int x, int y, int width, int height) {
 		setBounds(new Rectangle(x, y, width, height));
@@ -56,30 +54,28 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#setBounds(org.eclipse.swt.graphics.Rectangle)
+	 * {@inheritDoc}
 	 */
 	public void setBounds(Rectangle bounds) {
 		this.bounds = bounds;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.riena.ui.swt.lnf.ILnfRenderer#setMarkers(java.util.Collection
-	 * )
+	/**
+	 * {@inheritDoc}
 	 */
 	public void setMarkers(Collection<? extends IMarker> markers) {
 		this.markers = markers;
 	}
 
-	/*
-	 * @see org.eclipse.riena.ui.swt.lnf.ILnfRenderer#getMarkers()
+	/**
+	 * {@inheritDoc}
 	 */
 	public Collection<? extends IMarker> getMarkers() {
 		return markers;
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.ILnfRenderer#getMarkersOfType(java.lang.Class)
+	 * {@inheritDoc}
 	 */
 	public <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
 		return Markable.getMarkersOfType(getMarkers(), type);
