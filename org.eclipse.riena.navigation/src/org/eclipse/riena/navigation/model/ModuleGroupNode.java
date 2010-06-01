@@ -68,18 +68,16 @@ public class ModuleGroupNode extends NavigationNode<IModuleGroupNode, IModuleNod
 
 	@Override
 	public final boolean isVisible() {
-		boolean visible = super.isVisible();
-		if (visible) {
-			visible = false;
-			List<IModuleNode> children = getChildren();
-			for (IModuleNode moduleNode : children) {
-				if (moduleNode.isVisible()) {
-					visible = true;
-					break;
-				}
+		if (!super.isVisible()) {
+			return false;
+		}
+		List<IModuleNode> children = getChildren();
+		for (IModuleNode moduleNode : children) {
+			if (moduleNode.isVisible()) {
+				return true;
 			}
 		}
-		return visible;
+		return false;
 	}
 
 }

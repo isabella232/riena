@@ -38,6 +38,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  */
 public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 
+	private static final MarkerComperator MARKER_COMPERATOR = new MarkerComperator();
 	private TreeItem item;
 	private FlasherSupportForRenderer flasherSupport;
 
@@ -82,11 +83,7 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	 */
 	protected void paintMarkers(final GC gc, final Collection<IIconizableMarker> markers, final TreeItem item) {
 		List<IIconizableMarker> sortedMarkers = new ArrayList<IIconizableMarker>(markers);
-		Collections.sort(sortedMarkers, new Comparator<IMarker>() {
-			public int compare(IMarker m1, IMarker m2) {
-				return m1.getPriority().compareTo(m2.getPriority());
-			}
-		});
+		Collections.sort(sortedMarkers, MARKER_COMPERATOR);
 
 		if (isPaintMarkersHierarchically() && sortedMarkers.size() > 0) {
 			MarkerPosition position = (MarkerPosition) LnfManager.getLnf().getSetting(
@@ -194,6 +191,12 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 		 */
 		public void run() {
 			item.getParent().redraw();
+		}
+	}
+
+	private static class MarkerComperator implements Comparator<IMarker> {
+		public int compare(IMarker m1, IMarker m2) {
+			return m1.getPriority().compareTo(m2.getPriority());
 		}
 	}
 

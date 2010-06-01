@@ -82,6 +82,8 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private PropertyChangeSupport propertyChangeSupport;
 	private IMarker hiddenMarker;
 	private IMarker disabledMarker;
+	private Boolean cachedVisible;
+	private Boolean cachedEnabled;
 
 	/**
 	 * Creates a NavigationNode.
@@ -766,6 +768,8 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	@SuppressWarnings("unchecked")
 	private void notifyMarkersChanged(IMarker marker) {
+		cachedVisible = null;
+		cachedEnabled = null;
 		for (L next : getListeners()) {
 			next.markerChanged((S) this, marker);
 		}
@@ -1084,7 +1088,10 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	private boolean isEnabled(INavigationNode<?> node) {
-		boolean enabled = node.getMarkersOfType(DisabledMarker.class).isEmpty();
+		if (cachedEnabled == null) {
+			cachedEnabled = node.getMarkersOfType(DisabledMarker.class).isEmpty();
+		}
+		boolean enabled = cachedEnabled;
 		if (enabled && (node.getParent() != null)) {
 			enabled = isEnabled(node.getParent());
 		}
@@ -1122,7 +1129,10 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	private boolean isVisible(INavigationNode<?> node) {
-		boolean visible = node.getMarkersOfType(HiddenMarker.class).isEmpty();
+		if (cachedVisible == null) {
+			cachedVisible = node.getMarkersOfType(HiddenMarker.class).isEmpty();
+		}
+		boolean visible = cachedVisible;
 		if (visible && (node.getParent() != null)) {
 			visible = isVisible(node.getParent());
 		}

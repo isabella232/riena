@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +30,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -625,9 +627,9 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 *            the event which occurred
 	 */
 	private void paintTreeItem(Event event) {
-		SubModuleTreeItemMarkerRenderer renderer = getTreeItemRenderer();
-		renderer.setBounds(event.x, event.y, event.width, event.height);
 		if (event.item instanceof TreeItem) {
+			SubModuleTreeItemMarkerRenderer renderer = getTreeItemRenderer();
+			renderer.setBounds(event.x, event.y, event.width, event.height);
 			TreeItem item = (TreeItem) event.item;
 			SubModuleNode node = (SubModuleNode) item.getData();
 			if (node != null) {
@@ -650,28 +652,57 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 *            {@code false} only markers of the given node
 	 * @return all markers, that can be displayed in the navigation tree
 	 */
+	//	private Collection<? extends IMarker> getAllMarkers(ISubModuleNode node, boolean deep) {
+	//
+	//		if ((node == null) || !node.isVisible()) {
+	//			return Collections.emptyList();
+	//		}
+	//
+	//		Set<IMarker> markers = new HashSet<IMarker>();
+	//
+	//		List<ISubModuleNode> allNodes = new ArrayList<ISubModuleNode>();
+	//		allNodes.add(node);
+	//		int i = 0;
+	//		while (i < allNodes.size() && deep) {
+	//			List<ISubModuleNode> children = allNodes.get(i).getChildren();
+	//			for (ISubModuleNode child : children) {
+	//				if (child.isVisible()) {
+	//					allNodes.add(child);
+	//					markers.addAll(child.getMarkers());
+	//				}
+	//			}
+	//			i++;
+	//		}
+	//
+	//		return Markable.getMarkersOfType(markers, IIconizableMarker.class);
+	//
+	//	}
+
 	private Collection<? extends IMarker> getAllMarkers(ISubModuleNode node, boolean deep) {
 
-		Set<IMarker> markers = new HashSet<IMarker>();
-
 		if ((node == null) || !node.isVisible()) {
-			return markers;
+			return Collections.emptySet();
 		}
 
-		for (IMarker marker : node.getMarkers()) {
-			if (marker instanceof IIconizableMarker) {
-				markers.add(marker);
-			}
+		HashSet<IMarker> markers = new HashSet<IMarker>();
+		fillMarkers(node, deep, markers);
+
+		return markers;
+	}
+
+	private void fillMarkers(final ISubModuleNode node, boolean deep, final Set<IMarker> markers) {
+
+		if (!node.isVisible()) {
+			return;
 		}
+
+		markers.addAll(Markable.getMarkersOfType(node.getMarkers(), IIconizableMarker.class));
 
 		if (deep) {
 			for (ISubModuleNode child : node.getChildren()) {
-				Collection<? extends IMarker> childMarkers = getAllMarkers(child, deep);
-				markers.addAll(childMarkers);
+				fillMarkers(child, deep, markers);
 			}
 		}
-
-		return markers;
 
 	}
 
