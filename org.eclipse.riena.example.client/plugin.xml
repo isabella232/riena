@@ -615,6 +615,18 @@
             schemeId="org.eclipse.riena.example.client.scheme"
             sequence="F11">
       </key>
+      <key
+            commandId="org.eclipse.riena.example.client.zoomInCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.riena.example.client.scheme"
+            sequence="CTRL+I">
+      </key>
+      <key
+            commandId="org.eclipse.riena.example.client.zoomOutCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.riena.example.client.scheme"
+            sequence="CTRL+O">
+      </key>
    </extension>
    <extension
          point="org.eclipse.riena.navigation.assemblies2">
