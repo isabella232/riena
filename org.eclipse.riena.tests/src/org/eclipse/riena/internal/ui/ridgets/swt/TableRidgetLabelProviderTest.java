@@ -123,6 +123,7 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		Image siUnchecked = Activator.getSharedImage(SharedImages.IMG_UNCHECKED);
 		assertNotNull(siUnchecked);
 		assertEquals(siUnchecked, labelProvider.getColumnImage(elementA, 1));
+		assertTrue(labelProvider.getColumnText(elementA, 1).length() > 0);
 
 		Image siChecked = Activator.getSharedImage(SharedImages.IMG_CHECKED);
 		assertNotNull(siChecked);
@@ -131,6 +132,17 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		assertNotSame(siChecked, siUnchecked);
 
 		assertEquals(null, labelProvider.getColumnImage(elementA, 99));
+
+		ColumnFormatter emptyFormatter = new ColumnFormatter() {
+			public String getText(Object element) {
+				return "";
+			};
+		};
+		IColumnFormatter[] emptyTextFormatters = new IColumnFormatter[] { emptyFormatter, emptyFormatter };
+		labelProvider = new TableRidgetLabelProvider(attrMaps, emptyTextFormatters);
+		assertEquals(siUnchecked, labelProvider.getColumnImage(elementA, 1));
+		assertEquals("", labelProvider.getColumnText(elementA, 1));
+
 	}
 
 	public void testSetFormatters() {
