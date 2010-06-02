@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.presentation;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -160,15 +161,14 @@ public class SwtViewProvider {
 
 	public <N extends INavigationNode<?>> N getNavigationNode(String pId, String secondary, Class<N> pClass,
 			boolean ignoreSharedState) {
-		for (INavigationNode<?> next : views.keySet()) {
-			SwtViewId nextViewId = views.get(next);
-			if (nextViewId == null) {
+		for (Entry<INavigationNode<?>, SwtViewId> entry : views.entrySet()) {
+			if (entry.getValue() == null) {
 				continue;
 			}
-			if (nextViewId.getId().equals(pId) && //
-					(secondary == null || secondary.equals(nextViewId.getSecondary()))) {
-				if (ignoreSharedState || !isViewShared(pId) || next.isActivated()) {
-					return next.getTypecastedAdapter(pClass);
+			if (entry.getValue().getId().equals(pId) && //
+					(secondary == null || secondary.equals(entry.getValue().getSecondary()))) {
+				if (ignoreSharedState || !isViewShared(pId) || entry.getKey().isActivated()) {
+					return entry.getKey().getTypecastedAdapter(pClass);
 				}
 			}
 		}

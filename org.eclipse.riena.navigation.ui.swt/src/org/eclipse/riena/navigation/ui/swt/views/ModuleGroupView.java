@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -77,10 +78,9 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 	}
 
 	protected ModuleNode getNodeForView(ModuleView view) {
-		for (ModuleNode node : registeredModuleViews.keySet()) {
-			ModuleView moduleView = registeredModuleViews.get(node);
-			if (view.equals(moduleView)) {
-				return node;
+		for (Entry<ModuleNode, ModuleView> entry : registeredModuleViews.entrySet()) {
+			if (view.equals(entry.getValue())) {
+				return entry.getKey();
 			}
 		}
 
@@ -345,8 +345,8 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 	/**
 	 * Returns the current layout data of this view.
 	 * 
-	 * @return current layout data; {@code null} if layout data is not a {@code
-	 *         FormData}
+	 * @return current layout data; {@code null} if layout data is not a
+	 *         {@code FormData}
 	 */
 	private FormData getCurrentFormData() {
 
