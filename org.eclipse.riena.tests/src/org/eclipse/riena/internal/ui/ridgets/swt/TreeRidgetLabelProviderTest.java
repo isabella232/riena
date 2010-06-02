@@ -283,7 +283,8 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		assertSame(siError, labelProvider.getColumnImage(leaf, 0));
 		assertSame(siLeaf, labelProvider.getColumnImage(alpha, 0));
 
-		assertNull(labelProvider.getColumnImage(alpha, 1));
+		Image siUnchecked = Activator.getSharedImage(SharedImages.IMG_UNCHECKED);
+		assertSame(siUnchecked, labelProvider.getColumnImage(alpha, 1));
 
 		assertNull(labelProvider.getColumnImage(node, 99));
 	}
