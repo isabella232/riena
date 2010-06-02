@@ -95,7 +95,7 @@ public class NavigationSubModuleController extends SubModuleController {
 				ISubModuleNode navigationNode = getNavigationNode();
 				List<ISubModuleNode> children = new ArrayList<ISubModuleNode>(navigationNode.getChildren());
 				for (ISubModuleNode child : children) {
-					navigationNode.removeChild(child);
+					child.dispose();
 				}
 				if (children.size() > 0) {
 					showStatusLineMessage("All children removed!"); //$NON-NLS-1$
