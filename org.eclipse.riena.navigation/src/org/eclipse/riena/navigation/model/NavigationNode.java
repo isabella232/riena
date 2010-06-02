@@ -631,10 +631,10 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 */
 	public void setExpanded(boolean pExpanded) {
 
-		if (expanded != pExpanded) {
-			expanded = pExpanded;
-			notifyExpandedChanged();
-		}
+		//		if (expanded != pExpanded) {
+		expanded = pExpanded;
+		notifyExpandedChanged();
+		//		}
 
 	}
 
