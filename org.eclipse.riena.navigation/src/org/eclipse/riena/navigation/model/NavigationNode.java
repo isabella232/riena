@@ -678,6 +678,11 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		return getMarkable().getMarkers();
 	}
 
+	private void clearCachedValues() {
+		cachedVisible = null;
+		cachedEnabled = null;
+	}
+
 	public void addMarker(IMarker marker) {
 		INavigationProcessor proc = getNavigationProcessor();
 		if (proc != null) {
@@ -695,6 +700,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	public void addMarker(INavigationContext context, IMarker marker) {
 		getMarkable().addMarker(marker);
+		clearCachedValues();
 		notifyMarkersChanged(marker);
 		if ((marker instanceof DisabledMarker) || (marker instanceof HiddenMarker)) {
 			for (Object child : getChildren()) {
@@ -729,6 +735,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		while (!getMarkable().getMarkers().isEmpty()) {
 			IMarker marker = getMarkable().getMarkers().iterator().next();
 			getMarkable().removeMarker(marker);
+			clearCachedValues();
 			notifyMarkersChanged(marker);
 		}
 		if (oldEnabled != isEnabled()) {
@@ -750,6 +757,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		boolean oldEnabled = isEnabled();
 		boolean oldVisible = isVisible();
 		getMarkable().removeMarker(marker);
+		clearCachedValues();
 		if (oldEnabled != isEnabled()) {
 			propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_ENABLED, oldEnabled, isEnabled());
 		}
@@ -768,8 +776,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	@SuppressWarnings("unchecked")
 	private void notifyMarkersChanged(IMarker marker) {
-		cachedVisible = null;
-		cachedEnabled = null;
 		for (L next : getListeners()) {
 			next.markerChanged((S) this, marker);
 		}
@@ -1087,13 +1093,14 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		return isEnabled(this);
 	}
 
-	private boolean isEnabled(INavigationNode<?> node) {
-		if (cachedEnabled == null) {
-			cachedEnabled = node.getMarkersOfType(DisabledMarker.class).isEmpty();
+	private boolean isEnabled(NavigationNode<?, ?, ?> node) {
+		// cachedEnabled = null; // TURN OFF CACHE
+		if (node.cachedEnabled == null) {
+			node.cachedEnabled = node.getMarkersOfType(DisabledMarker.class).isEmpty();
 		}
-		boolean enabled = cachedEnabled;
+		boolean enabled = node.cachedEnabled;
 		if (enabled && (node.getParent() != null)) {
-			enabled = isEnabled(node.getParent());
+			enabled = isEnabled((NavigationNode<?, ?, ?>) node.getParent());
 		}
 		return enabled;
 	}
@@ -1128,13 +1135,14 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		return isVisible(this);
 	}
 
-	private boolean isVisible(INavigationNode<?> node) {
-		if (cachedVisible == null) {
-			cachedVisible = node.getMarkersOfType(HiddenMarker.class).isEmpty();
+	private boolean isVisible(NavigationNode<?, ?, ?> node) {
+		// cachedVisible = null; // TURN OFF CACHE
+		if (node.cachedVisible == null) {
+			node.cachedVisible = node.getMarkersOfType(HiddenMarker.class).isEmpty();
 		}
-		boolean visible = cachedVisible;
+		boolean visible = node.cachedVisible;
 		if (visible && (node.getParent() != null)) {
-			visible = isVisible(node.getParent());
+			visible = isVisible((NavigationNode<?, ?, ?>) node.getParent());
 		}
 		return visible;
 	}
