@@ -399,8 +399,6 @@ public class CompletionCombo extends Composite {
 	 * 
 	 * @see VerifyListener
 	 * @see #removeVerifyListener
-	 * 
-	 * @since 3.3
 	 */
 	public void addVerifyListener(VerifyListener listener) {
 		checkWidget();
@@ -589,8 +587,6 @@ public class CompletionCombo extends Composite {
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
 	 *                thread that created the receiver</li>
 	 *                </ul>
-	 * 
-	 * @since 3.3
 	 */
 	public void copy() {
 		checkWidget();
@@ -653,8 +649,6 @@ public class CompletionCombo extends Composite {
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
 	 *                thread that created the receiver</li>
 	 *                </ul>
-	 * 
-	 * @since 3.3
 	 */
 	public void cut() {
 		checkWidget();
@@ -829,8 +823,6 @@ public class CompletionCombo extends Composite {
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
 	 *                thread that created the receiver</li>
 	 *                </ul>
-	 * 
-	 * @since 3.0
 	 */
 	public boolean getEditable() {
 		checkWidget();
@@ -942,8 +934,6 @@ public class CompletionCombo extends Composite {
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
 	 *                thread that created the receiver</li>
 	 *                </ul>
-	 * 
-	 * @since 3.4
 	 */
 	public boolean getListVisible() {
 		checkWidget();
@@ -1087,8 +1077,6 @@ public class CompletionCombo extends Composite {
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
 	 *                thread that created the receiver</li>
 	 *                </ul>
-	 * 
-	 * @since 3.0
 	 */
 	public int getVisibleItemCount() {
 		checkWidget();
@@ -1454,8 +1442,6 @@ public class CompletionCombo extends Composite {
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
 	 *                thread that created the receiver</li>
 	 *                </ul>
-	 * 
-	 * @since 3.3
 	 */
 	public void paste() {
 		checkWidget();
@@ -1698,8 +1684,6 @@ public class CompletionCombo extends Composite {
 	 * 
 	 * @see VerifyListener
 	 * @see #addVerifyListener
-	 * 
-	 * @since 3.3
 	 */
 	public void removeVerifyListener(VerifyListener listener) {
 		checkWidget();
@@ -1770,8 +1754,6 @@ public class CompletionCombo extends Composite {
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
 	 *                thread that created the receiver</li>
 	 *                </ul>
-	 * 
-	 * @since 3.0
 	 */
 	public void setEditable(boolean editable) {
 		checkWidget();
@@ -1927,8 +1909,6 @@ public class CompletionCombo extends Composite {
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
 	 *                thread that created the receiver</li>
 	 *                </ul>
-	 * 
-	 * @since 3.4
 	 */
 	public void setListVisible(boolean visible) {
 		checkWidget();
@@ -2071,8 +2051,6 @@ public class CompletionCombo extends Composite {
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
 	 *                thread that created the receiver</li>
 	 *                </ul>
-	 * 
-	 * @since 3.0
 	 */
 	public void setVisibleItemCount(int count) {
 		checkWidget();
