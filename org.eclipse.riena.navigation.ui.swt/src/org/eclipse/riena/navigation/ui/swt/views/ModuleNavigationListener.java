@@ -15,6 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -49,7 +51,7 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
  * {@link NavigationProcessor}. Moving over such a node is not problem anymore,
  * since the activation is only triggered after a delay - not instantly.
  */
-class ModuleNavigationListener extends SelectionAdapter implements KeyListener {
+class ModuleNavigationListener extends SelectionAdapter implements KeyListener, FocusListener {
 
 	/** Keycode for 'arrow down' (16777218) */
 	private static final int KC_ARROW_DOWN = 16777218;
@@ -66,6 +68,7 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener {
 	ModuleNavigationListener(Tree moduleTree) {
 		moduleTree.addKeyListener(this);
 		moduleTree.addSelectionListener(this);
+		moduleTree.addFocusListener(this);
 	}
 
 	@Override
@@ -109,16 +112,24 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener {
 
 	public void keyReleased(KeyEvent event) {
 		// System.out.println("keyReleased() " + getSelection(event));
-		// check stateMask is zero to ensure no modifier is pressed (i.e. ctrl or alt)
-		if (event.stateMask == 0) {
-			if (KC_ARROW_UP == event.keyCode && isFirst) {
-				createSwitchModuleOp().doSwitch(false);
-			} else if (KC_ARROW_DOWN == event.keyCode && isLast) {
-				createSwitchModuleOp().doSwitch(true);
-			} else {
-				startSwitch(getSelection(event));
-			}
+		// plain arrow up
+		if (event.stateMask == 0 && KC_ARROW_UP == event.keyCode && isFirst) {
+			createSwitchModuleOp().doSwitch(false);
+			// plain arrow down
+		} else if (event.stateMask == 0 && KC_ARROW_DOWN == event.keyCode && isLast) {
+			createSwitchModuleOp().doSwitch(true);
+		} else {
+			startSwitch(getSelection(event));
 		}
+		keyPressed = false;
+	}
+
+	public void focusGained(FocusEvent e) {
+		// unused
+	}
+
+	public void focusLost(FocusEvent e) {
+		// reset key pressed state when focus is removed from the tree
 		keyPressed = false;
 	}
 
