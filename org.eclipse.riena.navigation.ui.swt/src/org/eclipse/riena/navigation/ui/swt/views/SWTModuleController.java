@@ -251,7 +251,7 @@ public class SWTModuleController extends ModuleController {
 					tree.collapse(source);
 					return;
 				}
-				tree.updateFromModel();
+				updateTree(childRemoved);
 			}
 
 		}
@@ -262,9 +262,7 @@ public class SWTModuleController extends ModuleController {
 		@Override
 		public void childAdded(ISubModuleNode source, ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
-			if (tree != null) {
-				tree.updateFromModel();
-			}
+			updateTree(childAdded);
 		}
 	}
 
@@ -278,11 +276,23 @@ public class SWTModuleController extends ModuleController {
 		@Override
 		public void childAdded(IModuleNode source, ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
-			if (tree != null) {
-				tree.updateFromModel();
-			}
+			updateTree(childAdded);
 		}
 
 	}
 
+	private void updateTree(ISubModuleNode source) {
+		if (tree == null || !tree.isVisible()) {
+			return;
+		}
+		if (source == null || !source.isVisible()) {
+			return;
+		}
+		IModuleNode moduleNode = source.getParentOfType(IModuleNode.class);
+		if ((moduleNode == null) || (!moduleNode.isActivated())) {
+			return;
+		}
+
+		tree.updateFromModel();
+	}
 }
