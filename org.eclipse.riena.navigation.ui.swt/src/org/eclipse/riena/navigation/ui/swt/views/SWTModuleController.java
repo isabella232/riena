@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,15 +39,15 @@ public class SWTModuleController extends ModuleController {
 	private final static String PROPERTY_IMAGE = "icon"; //$NON-NLS-1$
 	private final static String PROPERTY_EXPANDED = "expanded"; //$NON-NLS-1$
 
-	private boolean showOneSubTree;
+	private final boolean showOneSubTree;
 
 	/**
 	 * @param navigationNode
 	 */
-	public SWTModuleController(IModuleNode navigationNode) {
+	public SWTModuleController(final IModuleNode navigationNode) {
 		super(navigationNode);
 		addListeners();
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		showOneSubTree = lnf.getBooleanSetting(LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE, false);
 	}
 
@@ -55,7 +55,7 @@ public class SWTModuleController extends ModuleController {
 	 * @param tree
 	 *            the tree to set
 	 */
-	public void setTree(ITreeRidget tree) {
+	public void setTree(final ITreeRidget tree) {
 		this.tree = tree;
 	}
 
@@ -80,7 +80,7 @@ public class SWTModuleController extends ModuleController {
 	 * Adds listeners for sub-module and module nodes.
 	 */
 	private void addListeners() {
-		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
+		final NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(new ModuleListener());
 		navigationTreeObserver.addListener(new SubModuleListener());
 		navigationTreeObserver.addListenerTo(getNavigationNode());
@@ -91,7 +91,7 @@ public class SWTModuleController extends ModuleController {
 	 */
 	private void bindTree() {
 		tree.setRootsVisible(false);
-		INavigationNode<?>[] roots = createTreeRootNodes();
+		final INavigationNode<?>[] roots = createTreeRootNodes();
 		tree.bindToModel(roots, SubModuleNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
 				"label", PROPERTY_ENABLED, PROPERTY_VISIBLE, PROPERTY_IMAGE, null, PROPERTY_EXPANDED); //$NON-NLS-1$
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
@@ -109,7 +109,7 @@ public class SWTModuleController extends ModuleController {
 	 * @return root nodes
 	 */
 	private IModuleNode[] createTreeRootNodes() {
-		IModuleNode moduleNode = getNavigationNode();
+		final IModuleNode moduleNode = getNavigationNode();
 		return new IModuleNode[] { moduleNode };
 	}
 
@@ -117,7 +117,7 @@ public class SWTModuleController extends ModuleController {
 		return new SwtUISynchronizer().getDisplay();
 	}
 
-	private void runAsync(Runnable op) {
+	private void runAsync(final Runnable op) {
 		getDisplay().asyncExec(op);
 	}
 
@@ -135,7 +135,7 @@ public class SWTModuleController extends ModuleController {
 	 * @param activeNode
 	 *            active sub-module node
 	 */
-	private void showOneSubTree(ISubModuleNode activeNode) {
+	private void showOneSubTree(final ISubModuleNode activeNode) {
 
 		if (isShowOneSubTree()) {
 			collapseSibling(activeNode);
@@ -154,10 +154,10 @@ public class SWTModuleController extends ModuleController {
 	 * @param node
 	 *            sub-module node
 	 */
-	private void collapseSibling(ISubModuleNode node) {
+	private void collapseSibling(final ISubModuleNode node) {
 
-		INavigationNode<?> parent = node.getParent();
-		for (INavigationNode<?> sibling : parent.getChildren()) {
+		final INavigationNode<?> parent = node.getParent();
+		for (final INavigationNode<?> sibling : parent.getChildren()) {
 			if ((sibling != node) && (sibling.isExpanded())) {
 				sibling.setExpanded(false);
 			}
@@ -173,17 +173,17 @@ public class SWTModuleController extends ModuleController {
 	 * 
 	 * @param node
 	 */
-	private void setSelectedNode(INavigationNode<?> node) {
+	private void setSelectedNode(final INavigationNode<?> node) {
 		if (node.isActivated() && (node != getNavigationNode())) {
 			tree.setSelection(node);
 			expandAllParents(node);
 		}
-		for (INavigationNode<?> child : node.getChildren()) {
+		for (final INavigationNode<?> child : node.getChildren()) {
 			setSelectedNode(child);
 		}
 	}
 
-	private void expandAllParents(INavigationNode<?> node) {
+	private void expandAllParents(final INavigationNode<?> node) {
 		INavigationNode<?> parent = node.getParent();
 		while (parent instanceof SubModuleNode) {
 			tree.expand(parent);
@@ -229,7 +229,7 @@ public class SWTModuleController extends ModuleController {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void expandedChanged(ISubModuleNode source) {
+		public void expandedChanged(final ISubModuleNode source) {
 			super.expandedChanged(source);
 			if (tree != null) {
 				if (source.isExpanded()) {
@@ -244,7 +244,7 @@ public class SWTModuleController extends ModuleController {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void childRemoved(ISubModuleNode source, ISubModuleNode childRemoved) {
+		public void childRemoved(final ISubModuleNode source, final ISubModuleNode childRemoved) {
 			super.childRemoved(source, childRemoved);
 			if (tree != null) {
 				if (source.getChildren().size() == 0) {
@@ -260,7 +260,7 @@ public class SWTModuleController extends ModuleController {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void childAdded(ISubModuleNode source, ISubModuleNode childAdded) {
+		public void childAdded(final ISubModuleNode source, final ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
 			updateTree(childAdded);
 		}
@@ -274,21 +274,21 @@ public class SWTModuleController extends ModuleController {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void childAdded(IModuleNode source, ISubModuleNode childAdded) {
+		public void childAdded(final IModuleNode source, final ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
 			updateTree(childAdded);
 		}
 
 	}
 
-	private void updateTree(ISubModuleNode source) {
+	private void updateTree(final ISubModuleNode source) {
 		if (tree == null || !tree.isVisible()) {
 			return;
 		}
 		if (source == null || !source.isVisible()) {
 			return;
 		}
-		IModuleNode moduleNode = source.getParentOfType(IModuleNode.class);
+		final IModuleNode moduleNode = source.getParentOfType(IModuleNode.class);
 		if ((moduleNode == null) || (!moduleNode.isActivated())) {
 			return;
 		}
