@@ -4,7 +4,8 @@ Bundle-Name: Tests Plug-in
 Bundle-SymbolicName: org.eclipse.riena.tests;singleton:=true
 Bundle-Version: 2.1.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.tests.Activator
-Require-Bundle: org.easymock,
+Require-Bundle: org.apache.log4j;resolution:=optional,
+ org.easymock,
  org.eclipse.riena.client,
  org.eclipse.riena.example.client,
  org.eclipse.riena.monitor.common,
