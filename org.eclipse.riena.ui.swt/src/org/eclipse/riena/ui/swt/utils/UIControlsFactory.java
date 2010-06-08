@@ -97,7 +97,7 @@ public class UIControlsFactory {
 
 	static {
 		SHARED_BG_COLOR = LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND);
-		Assert.isNotNull(SHARED_BG_COLOR);
+		Assert.isNotNull(SHARED_BG_COLOR, "You must define a color for LnfKeyConstants.SUB_MODULE_BACKGROUND");
 	}
 
 	/**
