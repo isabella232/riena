@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -180,6 +181,26 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse((control.getStyle() & SWT.MULTI) == 0);
 		assertEquals("", control.getSelectionText());
 	}
+
+	/**
+	 * As per Bug 315691
+	 */
+	public void testSetOutputPreservesBackground() {
+		ITextRidget ridget = getRidget();
+		Text control = getWidget();
+
+		final Color oldBg = control.getBackground();
+
+		ridget.setEnabled(false);
+		ridget.setOutputOnly(true);
+		ridget.setEnabled(true);
+		ridget.setOutputOnly(false);
+
+		assertEquals(oldBg, control.getBackground());
+	}
+
+	// helping classes
+	//////////////////
 
 	/**
 	 * An object holding two strings.
