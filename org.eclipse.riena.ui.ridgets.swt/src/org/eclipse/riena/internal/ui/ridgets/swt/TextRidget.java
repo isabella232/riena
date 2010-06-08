@@ -28,6 +28,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
@@ -174,7 +175,13 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	protected void updateEditable() {
 		Text control = getTextWidget();
 		if (control != null && !control.isDisposed()) {
-			control.setEditable(isOutputOnly() ? false : true);
+			boolean isEditable = isOutputOnly() ? false : true;
+			if (isEditable != control.getEditable()) {
+				Color bgColor = control.getBackground();
+				control.setEditable(isEditable);
+				// workaround for Bug 315689 / 315691
+				control.setBackground(bgColor);
+			}
 		}
 	}
 
