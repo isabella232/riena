@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.injector.extension;
 
-import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.osgi.framework.Bundle;
+
+import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 
 /**
  *

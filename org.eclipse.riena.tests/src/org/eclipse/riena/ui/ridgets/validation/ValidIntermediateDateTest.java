@@ -14,7 +14,6 @@ import junit.framework.TestCase;
 
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
-import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
 
 /**
  * Tests for the ValidIntermediateDate rule.

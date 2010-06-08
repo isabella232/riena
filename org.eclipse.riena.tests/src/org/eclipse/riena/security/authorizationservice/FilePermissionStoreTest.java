@@ -21,10 +21,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import junit.framework.TestCase;
 
+import org.xml.sax.SAXException;
+
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
-import org.xml.sax.SAXException;
 
 @NonUITestCase
 public class FilePermissionStoreTest extends TestCase {

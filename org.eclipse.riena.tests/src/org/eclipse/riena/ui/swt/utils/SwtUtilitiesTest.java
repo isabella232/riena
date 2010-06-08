@@ -12,13 +12,13 @@ package org.eclipse.riena.ui.swt.utils;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.internal.core.test.collect.UITestCase;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.riena.internal.core.test.collect.UITestCase;
 
 /**
  * Tests of the class {@link SwtUtilities}

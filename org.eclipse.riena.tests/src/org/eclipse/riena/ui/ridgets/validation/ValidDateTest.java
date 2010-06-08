@@ -12,8 +12,6 @@ package org.eclipse.riena.ui.ridgets.validation;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-import org.eclipse.riena.ui.ridgets.validation.ValidDate;
-import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
 /**
  * Tests for the ValidDate rule.

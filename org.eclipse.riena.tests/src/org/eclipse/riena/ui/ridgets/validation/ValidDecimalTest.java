@@ -17,8 +17,6 @@ import java.util.Locale;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-import org.eclipse.riena.ui.ridgets.validation.ValidDecimal;
-import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
 /**
  * Tests for the ValidCharacters rule.

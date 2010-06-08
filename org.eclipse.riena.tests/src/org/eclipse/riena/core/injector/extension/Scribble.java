@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.injector.extension;
 
-import org.eclipse.riena.core.injector.Inject;
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.riena.core.injector.Inject;
 
 /**
  * This class contains just a few scribbles for the fluent interface of the

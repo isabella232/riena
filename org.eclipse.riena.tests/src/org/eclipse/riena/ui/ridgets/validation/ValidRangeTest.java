@@ -17,7 +17,6 @@ import java.util.Locale;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
-import org.eclipse.riena.ui.ridgets.validation.ValidRange;
 
 /**
  * Tests for the MaxLength rule.

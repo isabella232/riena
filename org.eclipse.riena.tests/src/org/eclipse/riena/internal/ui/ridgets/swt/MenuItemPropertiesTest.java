@@ -12,13 +12,14 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.internal.core.test.collect.UITestCase;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Tests of the class {@link MenuItemProperties}.

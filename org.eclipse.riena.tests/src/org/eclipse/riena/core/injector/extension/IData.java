@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.injector.extension;
 
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.osgi.framework.Bundle;
+
+import org.eclipse.core.runtime.IConfigurationElement;
 
 @ExtensionInterface
 public interface IData {
