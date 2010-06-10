@@ -19,16 +19,16 @@ import org.eclipse.riena.objecttransaction.IObjectId;
  * TODO Fehlender Klassen-Kommentar
  */
 public class GenericOID implements IObjectId {
-	private String type;
-	private String primName;
-	private Object primValue;
+	private final String type;
+	private final String primName;
+	private final Object primValue;
 
 	/**
 	 * @param type
 	 * @param primName
 	 * @param primValue
 	 */
-	public GenericOID(String type, String primName, Object primValue) {
+	public GenericOID(final String type, final String primName, final Object primValue) {
 		super();
 		this.type = type;
 		this.primName = primName;
@@ -36,28 +36,25 @@ public class GenericOID implements IObjectId {
 	}
 
 	/**
-	 * @see de.compeople.scp.objecttransaction.IObjectId#getType()
+	 * {@inheritDoc}
 	 */
 	public String getType() {
 		return type;
 	}
 
 	/**
-	 * @see de.compeople.scp.objecttransaction.IObjectId#getProperties()
+	 * {@inheritDoc}
 	 */
 	protected Map<String, Object> getProperties() {
-		HashMap<String, Object> map = new HashMap<String, Object>();
+		final HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put(primName, primValue);
 		return map;
 	}
 
-	/**
-	 * @see de.compeople.scp.objecttransaction.IObjectId#equals(de.compeople.scp.objecttransaction.IObjectId)
-	 */
 	@Override
-	public boolean equals(Object oid) {
+	public boolean equals(final Object oid) {
 		if (oid instanceof GenericOID) {
-			GenericOID gOID = (GenericOID) oid;
+			final GenericOID gOID = (GenericOID) oid;
 			if (gOID.type.equals(type) && gOID.primName.equals(primName) && gOID.primValue.equals(primValue)) {
 				return true;
 			}
@@ -72,7 +69,7 @@ public class GenericOID implements IObjectId {
 				return ((Integer) primValue).intValue();
 			}
 			return Integer.parseInt((String) primValue);
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			return super.hashCode();
 		}
 	}
