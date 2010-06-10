@@ -18,19 +18,41 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
+import com.caucho.hessian.io.Hessian2Output;
 
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
+import org.eclipse.riena.communication.core.zipsupport.ReusableBufferedInputStream;
 
 public class RienaHessianProxyFactory extends HessianProxyFactory {
 
 	private ICallMessageContextAccessor mca;
 	private final static ThreadLocal<HttpURLConnection> CONNECTIONS = new ThreadLocal<HttpURLConnection>();
 	private static boolean transferDataChunked = false; // set chunking to FALSE by default overwriting the hessian default
+	private static boolean zipClientRequest = false;
+	private static boolean propertiesInitialized = false;
+	private static final String RIENA_COMMUNICATION_ZIP_PROPERTY = "riena.communication.zip"; //$NON-NLS-1$
+
+	/**
+	 * @param zipClientRequest
+	 *            the zipClientRequest to set
+	 */
+	public static void setZipClientRequest(boolean zipClientRequest) {
+		RienaHessianProxyFactory.zipClientRequest = zipClientRequest;
+	}
+
+	/**
+	 * @return the zipClientRequest
+	 */
+	public static boolean isZipClientRequest() {
+		return zipClientRequest;
+	}
 
 	public RienaHessianProxyFactory() {
 		super();
@@ -39,6 +61,14 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 		setHessian2Request(true);
 		setHessian2Reply(true);
 		setChunkedPost(transferDataChunked);
+
+		if (!propertiesInitialized) {
+			String zipProp = System.getProperty(RIENA_COMMUNICATION_ZIP_PROPERTY);
+			if (zipProp != null && zipProp.length() > 0) {
+				zipClientRequest = zipProp.equalsIgnoreCase("true");
+			}
+			propertiesInitialized = true;
+		}
 	}
 
 	/**
@@ -86,21 +116,54 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 				}
 			}
 		}
+		if (isZipClientRequest()) {
+			connection.addRequestProperty("Content-Encoding", "gzip"); //$NON-NLS-1$//$NON-NLS-2$
+		}
+
 		CONNECTIONS.set((HttpURLConnection) connection);
 		return connection;
 	}
 
 	@Override
-	public AbstractHessianInput getHessianInput(final InputStream is) {
+	public AbstractHessianInput getHessianInput(InputStream is) {
 		final ICallMessageContext messageContext = mca.getMessageContext();
+		boolean inputWasGZIP = false;
+
+		final InputStream myInputStream;
+
+		try {
+			if (isZipClientRequest()) {
+				InputStream zipTestInputStream = new ReusableBufferedInputStream(is);
+				if (zipTestInputStream.markSupported()) {
+					zipTestInputStream.mark(20);
+					int readMAGIC;
+					readMAGIC = zipTestInputStream.read() + zipTestInputStream.read() * 256;
+					if (readMAGIC == GZIPInputStream.GZIP_MAGIC) {
+						inputWasGZIP = true;
+					}
+					zipTestInputStream.reset();
+				}
+				if (inputWasGZIP) {
+					myInputStream = new GZIPInputStream(zipTestInputStream);
+				} else {
+					myInputStream = zipTestInputStream;
+				}
+			} else {
+				myInputStream = is;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+
 		if (messageContext.getProgressMonitorList() == null) {
-			return super.getHessianInput(is);
+			return super.getHessianInput(myInputStream);
 		} else {
 			return super.getHessianInput(new InputStream() {
 
 				@Override
 				public int read() throws IOException {
-					int b = is.read();
+					int b = myInputStream.read();
 					if (b != -1) {
 						messageContext.fireReadEvent(1);
 					}
@@ -112,16 +175,28 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 	}
 
 	@Override
-	public AbstractHessianOutput getHessianOutput(final OutputStream os) {
+	public AbstractHessianOutput getHessianOutput(OutputStream outputStreamParameter) {
 		final ICallMessageContext messageContext = mca.getMessageContext();
+
+		final OutputStream myOutputStream;
+		if (isZipClientRequest()) {
+			try {
+				myOutputStream = new GZIPOutputStream(outputStreamParameter);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		} else
+			myOutputStream = outputStreamParameter;
+
 		if (messageContext.getProgressMonitorList() == null) {
-			return super.getHessianOutput(os);
+			//			return super.getHessianOutput(myOutputStream);
+			return getHessianOutputImpl(myOutputStream);
 		} else {
-			return super.getHessianOutput(new OutputStream() {
+			return getHessianOutputImpl(new OutputStream() {
 
 				@Override
 				public void write(int b) throws IOException {
-					os.write(b);
+					myOutputStream.write(b);
 					messageContext.fireWriteEvent(1);
 				}
 
@@ -135,6 +210,35 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 
 	protected static HttpURLConnection getHttpURLConnection() {
 		return CONNECTIONS.get();
+	}
+
+	private AbstractHessianOutput getHessianOutputImpl(final OutputStream outputStreamParameter) {
+		AbstractHessianOutput out;
+
+		if (/* _isHessian2Request */true)
+			out = new Hessian2Output(outputStreamParameter) {
+
+				@Override
+				public void completeCall() throws IOException {
+					super.completeCall();
+					this.flush();
+					if (outputStreamParameter instanceof GZIPOutputStream) {
+						((GZIPOutputStream) outputStreamParameter).finish();
+					}
+					outputStreamParameter.flush();
+				}
+			};
+		//		else {
+		//			HessianOutput out1 = new HessianOutput(outputStreamParameter);
+		//			out = out1;
+		//
+		//			if (/* _isHessian2Reply */true)
+		//				out1.setVersion(2);
+		//		}
+
+		out.setSerializerFactory(getSerializerFactory());
+
+		return out;
 	}
 
 }

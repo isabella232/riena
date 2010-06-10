@@ -10,8 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.publisher.hessian;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
@@ -33,6 +38,7 @@ import org.osgi.service.log.LogService;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
+import org.eclipse.riena.communication.core.zipsupport.ReusableBufferedInputStream;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.service.Service;
@@ -118,7 +124,31 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 		}
 		Object instance = rsd.getService();
 		HessianSkeleton sk = new HessianSkeleton(instance, rsd.getServiceInterfaceClass());
-		Hessian2Input inp = new Hessian2Input(httpReq.getInputStream());
+		String gzip = httpReq.getHeader("Content-Encoding"); //$NON-NLS-1$
+		boolean gzipFlag = false;
+		boolean inputWasGZIP = false;
+
+		if (gzip != null && gzip.equals("gzip")) { //$NON-NLS-1$
+			gzipFlag = true;
+		}
+		InputStream requestInputStream = httpReq.getInputStream();
+		if (gzipFlag) {
+			BufferedInputStream tempInput = new ReusableBufferedInputStream(requestInputStream);
+			if (tempInput.markSupported()) {
+				tempInput.mark(20);
+				int readMAGIC = tempInput.read() + tempInput.read() * 256;
+				if (readMAGIC == GZIPInputStream.GZIP_MAGIC) {
+					inputWasGZIP = true;
+				}
+				tempInput.reset();
+				requestInputStream = tempInput;
+			}
+			if (inputWasGZIP) {
+				requestInputStream = new GZIPInputStream(requestInputStream);
+			}
+		}
+
+		Hessian2Input inp = new Hessian2Input(requestInputStream);
 		AbstractHessianOutput out;
 		inp.setSerializerFactory(serializerFactory);
 
@@ -128,10 +158,19 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 		}
 		int major = inp.read();
 		inp.read(); // read/skip the minor version - not used currently
+
+		if (inputWasGZIP) {
+			httpRes.setHeader("Content-Encoding", "gzip"); //$NON-NLS-1$//$NON-NLS-2$
+		}
+
+		OutputStream outputStream = httpRes.getOutputStream();
+		if (inputWasGZIP) {
+			outputStream = new GZIPOutputStream(outputStream);
+		}
 		if (major >= 2) {
-			out = new Hessian2Output(httpRes.getOutputStream());
+			out = new Hessian2Output(outputStream);
 		} else {
-			out = new HessianOutput(httpRes.getOutputStream());
+			out = new HessianOutput(outputStream);
 		}
 
 		out.setSerializerFactory(serializerFactory);
@@ -148,6 +187,10 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 			throw new ServletException(t);
 		} finally {
 			out.close(); // Hessian2Output forgets to close if the service throws an exception
+			if (outputStream instanceof GZIPOutputStream) {
+				((GZIPOutputStream) outputStream).finish();
+			}
+			outputStream.flush();
 		}
 	}
 
