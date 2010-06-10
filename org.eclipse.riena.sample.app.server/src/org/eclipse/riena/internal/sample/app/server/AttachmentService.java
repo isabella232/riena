@@ -42,8 +42,12 @@ public final class AttachmentService implements IAttachmentService {
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), AttachmentService.class);
 	private static final String TESTDATA1 = "das sind testdaten, die wir mal einfach so verschicken um etwas zu testen."; //$NON-NLS-1$
 
-	/**
-	 * @see de.compeople.spirit.examples.base.attachmentservice.IAttachmentService#sendSingleAttachment(de.compeople.spirit.communication.base.attachment.Attachment)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.sample.app.common.attachment.IAttachmentService#
+	 * sendSingleAttachment
+	 * (org.eclipse.riena.communication.core.attachment.Attachment)
 	 */
 	public String sendSingleAttachment(Attachment singleAttachment) {
 		return readAttachmentStart(singleAttachment);
@@ -64,20 +68,27 @@ public final class AttachmentService implements IAttachmentService {
 
 	}
 
-	/**
-	 * @see de.compeople.spirit.examples.base.attachmentservice.IAttachmentService#sendTwoAttachments(de.compeople.spirit.communication.base.attachment.Attachment,
-	 *      de.compeople.spirit.communication.base.attachment.Attachment)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.sample.app.common.attachment.IAttachmentService#
+	 * sendTwoAttachments
+	 * (org.eclipse.riena.communication.core.attachment.Attachment,
+	 * org.eclipse.riena.communication.core.attachment.Attachment)
 	 */
 	public String sendTwoAttachments(Attachment firstAttachment, Attachment secondAttachment) {
 		return readAttachmentStart(firstAttachment) + "+" + readAttachmentStart(secondAttachment); //$NON-NLS-1$
 	}
 
-	/**
-	 * @see de.compeople.spirit.examples.base.attachmentservice.IAttachmentService#sendAttachmentsAndData(java.lang.String,
-	 *      de.compeople.spirit.communication.base.attachment.Attachment,
-	 *      java.lang.String,
-	 *      de.compeople.spirit.communication.base.attachment.Attachment,
-	 *      java.lang.String, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.sample.app.common.attachment.IAttachmentService#
+	 * sendAttachmentsAndData(java.lang.String,
+	 * org.eclipse.riena.communication.core.attachment.Attachment,
+	 * java.lang.String,
+	 * org.eclipse.riena.communication.core.attachment.Attachment,
+	 * java.lang.String, int)
 	 */
 	public String sendAttachmentsAndData(String firstString, Attachment firstAttachment, String secondString,
 			Attachment secondAttachment, String thirdString, int number) {
@@ -85,15 +96,21 @@ public final class AttachmentService implements IAttachmentService {
 				+ readAttachmentStart(secondAttachment) + "+" + thirdString + "+" + number; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	/**
-	 * @see de.compeople.spirit.examples.base.attachmentservice.IAttachmentService#returnAttachment()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.sample.app.common.attachment.IAttachmentService#
+	 * returnAttachment()
 	 */
 	public Attachment returnAttachment() throws IOException {
 		return new Attachment(setupTestFile(TESTDATA1));
 	}
 
-	/**
-	 * @see de.compeople.spirit.examples.base.attachmentservice.IAttachmentService#returnAttachmentForRequest(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.sample.app.common.attachment.IAttachmentService#
+	 * returnAttachmentForRequest(java.lang.String)
 	 */
 	public Attachment returnAttachmentForRequest(String attachmentName) throws IOException {
 		if (attachmentName.equals("validfilename")) { //$NON-NLS-1$
@@ -106,8 +123,12 @@ public final class AttachmentService implements IAttachmentService {
 		throw new RuntimeException("invalid request"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @see de.compeople.spirit.examples.base.attachmentservice.IAttachmentService#sendAndReturnAttachment(de.compeople.spirit.communication.base.attachment.Attachment)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.sample.app.common.attachment.IAttachmentService#
+	 * sendAndReturnAttachment
+	 * (org.eclipse.riena.communication.core.attachment.Attachment)
 	 */
 	public Attachment sendAndReturnAttachment(Attachment attachment) {
 		LOGGER.log(LogService.LOG_DEBUG, readAttachmentStart(attachment));
@@ -192,9 +213,8 @@ public final class AttachmentService implements IAttachmentService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * de.compeople.spirit.examples.base.attachmentservice.IAttachmentService
-	 * #getBytesFromInvalidUrl()
+	 * @see org.eclipse.riena.sample.app.common.attachment.IAttachmentService#
+	 * getBytesFromInvalidUrl()
 	 */
 	public Attachment getBytesFromInvalidUrl() throws IOException {
 		try {
@@ -211,8 +231,8 @@ public final class AttachmentService implements IAttachmentService {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * de.compeople.spirit.examples.base.attachmentservice.IAttachmentService
-	 * #sendAndDeleteFile()
+	 * org.eclipse.riena.sample.app.common.attachment.IAttachmentService#sendFile
+	 * (org.eclipse.riena.communication.core.attachment.Attachment)
 	 */
 	public void sendFile(Attachment attachment) {
 		return;
@@ -221,9 +241,8 @@ public final class AttachmentService implements IAttachmentService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * de.compeople.spirit.examples.base.attachmentservice.IAttachmentService
-	 * #getAttachmentAsObject()
+	 * @see org.eclipse.riena.sample.app.common.attachment.IAttachmentService#
+	 * getAttachmentAsObject()
 	 */
 	public Object getAttachmentAsObject() throws IOException {
 		try {
@@ -234,11 +253,10 @@ public final class AttachmentService implements IAttachmentService {
 	}
 
 	/*
-	 * returns Attachment Object with empty InputStream (non-Javadoc)
+	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * de.compeople.spirit.examples.base.attachmentservice.IAttachmentService
-	 * #getEmptyAttachment()
+	 * @see org.eclipse.riena.sample.app.common.attachment.IAttachmentService#
+	 * getEmptyAttachment()
 	 */
 	public Attachment getEmptyAttachment() throws IOException {
 		return new Attachment(new InputStream() {

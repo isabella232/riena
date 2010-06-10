@@ -29,9 +29,6 @@ import org.eclipse.riena.security.server.session.ISessionService;
  */
 public class Activator extends RienaPlugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "de.compeople.scp.security.server"; //$NON-NLS-1$
-
 	// The shared instance
 	private static Activator plugin;
 
@@ -67,12 +64,12 @@ public class Activator extends RienaPlugin {
 		// create and Start Injectors
 		Inject.service(IGenericObjectCache.class).useFilter("(cache.type=PrincipalCache)").into(securityServiceHook) //$NON-NLS-1$
 				.andStart(Activator.getDefault().getContext());
-		Inject.service(ISessionService.class).useRanking().into(securityServiceHook).andStart(
-				Activator.getDefault().getContext());
-		Inject.service(ISubjectHolder.class).useRanking().into(securityServiceHook).andStart(
-				Activator.getDefault().getContext());
-		Inject.service(ISessionHolder.class).useRanking().into(securityServiceHook).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(ISessionService.class).useRanking().into(securityServiceHook)
+				.andStart(Activator.getDefault().getContext());
+		Inject.service(ISubjectHolder.class).useRanking().into(securityServiceHook)
+				.andStart(Activator.getDefault().getContext());
+		Inject.service(ISessionHolder.class).useRanking().into(securityServiceHook)
+				.andStart(Activator.getDefault().getContext());
 	}
 
 	/*

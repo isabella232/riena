@@ -39,6 +39,10 @@ import org.eclipse.riena.security.server.session.ISessionService;
  */
 public class SecurityServiceHook implements IServiceHook {
 
+	/**
+	 * 
+	 */
+	private static final String RIENA_SSOID = "de.compeople.ssoid"; //$NON-NLS-1$
 	/** <code>SESSIONID</code> */
 	public static final String SESSIONID = "ssoid"; //$NON-NLS-1$
 	/** <code>SSOID</code> used as Cookie name for the ssoid */
@@ -72,45 +76,7 @@ public class SecurityServiceHook implements IServiceHook {
 	public SecurityServiceHook() {
 		super();
 
-		// List<UnsecureWebservice> tempList =
-		// RegistryAccessor.fetchRegistry().getConfiguration(
-		// UNSECURE_WEBSERVICES_ID);
 		String appName = "???appname??????";// RuntimeInfo.getApplicationName(); //$NON-NLS-1$
-		//		if (appName == null) {
-		//			appName = "<unknown>"; //$NON-NLS-1$
-		//		}
-		// if (tempList.size() == 0) {
-		// LOGGER.log(LogService.LOG_INFO, appName +" : no unsecureWebservices
-		// defined");
-		// }
-		// for (int i = 0; i < tempList.size(); i++) {
-		// UnsecureWebservice freeWS = tempList.get(i);
-		// freeHivemindWebservices.put(freeWS.getServiceId(), Boolean.TRUE);
-		// if (freeWS.getServiceId().equals("*")) {
-		// requiresSSOIDbyDefault = false;
-		// }
-		// if (freeWS.getServiceId().equals("*")) {
-		// LOGGER.log(LogService.LOG_INFO, appName
-		// +" : defining ALL WEBSERVICES in this Webapp as unsecure (SSOID is
-		// not required). definition * for
-		// UnsecureServices found.");
-		// } else {
-		// LOGGER.log(LogService.LOG_INFO, appName + ": defining a Webservice "
-		// + freeWS.getServiceId() +" as unsecure
-		// (SSOID not required).");
-		// }
-		// }
-
-		// String preferenceValue =
-		// PreferencesAccessor.fetchPreferences().getSystemPreference(
-		// "spirit.security.server.UnsecureWebservices").getString("All");
-		// if (preferenceValue.equalsIgnoreCase("true")) {
-		// requiresSSOIDbyDefault = false;
-		// LOGGER.log(LogService.LOG_INFO," ALL WEBSERVICES are defined as
-		// unsecure in webapp:" + appName
-		// +" using SystemPreference
-		// spirit.security.server.UnsecureWebservices.");
-		// }
 
 		if (!requiresSSOIDbyDefault) {
 			LOGGER.log(LogService.LOG_INFO, appName
@@ -234,7 +200,7 @@ public class SecurityServiceHook implements IServiceHook {
 		if (ssoid != null) {
 			Session beforeSession = new Session(ssoid);
 			sessionHolder.setSession(beforeSession);
-			callback.setProperty("de.compeople.ssoid", beforeSession); //$NON-NLS-1$
+			callback.setProperty(RIENA_SSOID, beforeSession); //$NON-NLS-1$
 		}
 
 	}
@@ -248,7 +214,7 @@ public class SecurityServiceHook implements IServiceHook {
 	 */
 	public void afterService(ServiceContext context) {
 		Session afterSession = sessionHolder.getSession();
-		Session beforeSession = (Session) context.getProperty("de.compeople.ssoid"); //$NON-NLS-1$
+		Session beforeSession = (Session) context.getProperty(RIENA_SSOID); //$NON-NLS-1$
 		String ssoid = null;
 		if (afterSession != null) {
 			ssoid = afterSession.getSessionId();

@@ -18,6 +18,9 @@ import org.eclipse.riena.objecttransaction.IObjectId;
 /**
  * TODO Fehlender Klassen-Kommentar
  */
+/**
+ *
+ */
 public class GenericOID implements IObjectId {
 	private String type;
 	private String primName;
@@ -35,15 +38,17 @@ public class GenericOID implements IObjectId {
 		this.primValue = primValue;
 	}
 
-	/**
-	 * @see de.compeople.scp.objecttransaction.IObjectId#getType()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.objecttransaction.IObjectId#getType()
 	 */
 	public String getType() {
 		return type;
 	}
 
 	/**
-	 * @see de.compeople.scp.objecttransaction.IObjectId#getProperties()
+	 * @return
 	 */
 	protected Map<String, Object> getProperties() {
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -52,7 +57,8 @@ public class GenericOID implements IObjectId {
 	}
 
 	/**
-	 * @see de.compeople.scp.objecttransaction.IObjectId#equals(de.compeople.scp.objecttransaction.IObjectId)
+	 * @param oid
+	 * @return
 	 */
 	@Override
 	public boolean equals(Object oid) {

@@ -13,8 +13,8 @@ package org.eclipse.riena.core.marker;
 import java.util.Map;
 
 /**
- * A <code>IMarker</code> is used to mark an adapter, resp. its associated UI
- * control. Implementations supported by Spirit are and {@link MandatoryMarker
+ * A <code>IMarker</code> is used to mark a ridget, resp. its associated UI
+ * control. Implementations supported by Riena are {@link MandatoryMarker
  * MandatoryMarker}{@link ErrorMarker ErrorMarker}.
  */
 public interface IMarker {
@@ -98,8 +98,8 @@ public interface IMarker {
 	 * otherwise. If marker is unique, only one unique marker of this marker
 	 * type is allowed.
 	 * 
-	 * @return {@code true} if marker is created by a filter; otherwise {@code
-	 *         false}
+	 * @return {@code true} if marker is created by a filter; otherwise
+	 *         {@code false}
 	 */
 	boolean isUnique();
 

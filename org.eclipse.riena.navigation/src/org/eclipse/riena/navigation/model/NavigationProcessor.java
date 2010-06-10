@@ -32,6 +32,7 @@ import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.Trace;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IJumpTargetListener;
+import org.eclipse.riena.navigation.IJumpTargetListener.JumpTargetState;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationHistory;
@@ -43,7 +44,6 @@ import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.navigation.IJumpTargetListener.JumpTargetState;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -71,10 +71,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (toActivate != null) {
 			if (toActivate.isActivated()) {
 				if (debugNaviProc) {
-					LOGGER
-							.log(
-									LogService.LOG_DEBUG,
-									"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
+					LOGGER.log(
+							LogService.LOG_DEBUG,
+							"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
 				}
 				Nop.reason("see comment below."); //$NON-NLS-1$
 				// do nothing
@@ -88,10 +87,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				}
 				if (!toActivate.isVisible() || !toActivate.isEnabled()) {
 					if (debugNaviProc) {
-						LOGGER
-								.log(
-										LogService.LOG_DEBUG,
-										"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is not visible or not enabled --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
+						LOGGER.log(
+								LogService.LOG_DEBUG,
+								"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is not visible or not enabled --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
 					}
 
 					return;
@@ -811,7 +809,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (activeParent != null) {
 			//
 			// EAC: fix for bug
-			// http://www.spiritframework.de/bugzilla/show_bug.cgi?id=67
+			// internal bug 67
 			// This fix handles the case that no active child is available due
 			// to some errors or exceptions which occurred before
 			//
@@ -1271,8 +1269,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (navigationListener.size() == 0) {
 			return;
 		}
-		INavigationHistoryEvent event = new NavigationHistoryEvent(histBack
-				.subList(0, Math.max(0, histBack.size() - 1)));
+		INavigationHistoryEvent event = new NavigationHistoryEvent(
+				histBack.subList(0, Math.max(0, histBack.size() - 1)));
 		for (INavigationHistoryListener listener : navigationListener) {
 			listener.backHistoryChanged(event);
 		}

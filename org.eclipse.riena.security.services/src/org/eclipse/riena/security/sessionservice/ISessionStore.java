@@ -27,7 +27,7 @@ import org.eclipse.riena.security.common.session.Session;
  */
 public interface ISessionStore {
 
-	String SESSION_STORE_ID = "spirit.securityimplementation.server.SessionStore"; //$NON-NLS-1$
+	//	String SESSION_STORE_ID = "riena.securityimplementation.server.SessionStore"; //$NON-NLS-1$
 
 	/**
 	 * reads the sessions for one principal from the store TODO should be
