@@ -32,6 +32,7 @@ import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.Trace;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IJumpTargetListener;
+import org.eclipse.riena.navigation.IJumpTargetListener.JumpTargetState;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationHistory;
@@ -43,7 +44,6 @@ import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.navigation.IJumpTargetListener.JumpTargetState;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -55,26 +55,25 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 public class NavigationProcessor implements INavigationProcessor, INavigationHistory {
 
 	private static int maxStacksize = 40;
-	private Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
-	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
-	private Map<INavigationNode<?>, Stack<INavigationNode<?>>> jumpTargets = new HashMap<INavigationNode<?>, Stack<INavigationNode<?>>>();
-	private Map<INavigationNode<?>, List<IJumpTargetListener>> jumpTargetListeners = new HashMap<INavigationNode<?>, List<IJumpTargetListener>>();
-	private Map<INavigationNode<?>, INavigationNode<?>> navigationMap = new HashMap<INavigationNode<?>, INavigationNode<?>>();
-	private List<INavigationHistoryListener> navigationListener = new Vector<INavigationHistoryListener>();
+	private final Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
+	private final Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
+	private final Map<INavigationNode<?>, Stack<INavigationNode<?>>> jumpTargets = new HashMap<INavigationNode<?>, Stack<INavigationNode<?>>>();
+	private final Map<INavigationNode<?>, List<IJumpTargetListener>> jumpTargetListeners = new HashMap<INavigationNode<?>, List<IJumpTargetListener>>();
+	private final Map<INavigationNode<?>, INavigationNode<?>> navigationMap = new HashMap<INavigationNode<?>, INavigationNode<?>>();
+	private final List<INavigationHistoryListener> navigationListener = new Vector<INavigationHistoryListener>();
 	private static boolean debugNaviProc = Trace.isOn(NavigationProcessor.class, "debug"); //$NON-NLS-1$
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationProcessor.class);;
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#activate(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void activate(INavigationNode<?> toActivate) {
+	public void activate(final INavigationNode<?> toActivate) {
 		if (toActivate != null) {
 			if (toActivate.isActivated()) {
 				if (debugNaviProc) {
-					LOGGER
-							.log(
-									LogService.LOG_DEBUG,
-									"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
+					LOGGER.log(
+							LogService.LOG_DEBUG,
+							"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
 				}
 				Nop.reason("see comment below."); //$NON-NLS-1$
 				// do nothing
@@ -88,10 +87,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				}
 				if (!toActivate.isVisible() || !toActivate.isEnabled()) {
 					if (debugNaviProc) {
-						LOGGER
-								.log(
-										LogService.LOG_DEBUG,
-										"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is not visible or not enabled --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
+						LOGGER.log(
+								LogService.LOG_DEBUG,
+								"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is not visible or not enabled --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
 					}
 
 					return;
@@ -104,15 +102,15 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				// 5. do the deactivation chain
 				// 6. hande node on the histBack
 				// 7. do the activation chain
-				List<INavigationNode<?>> toActivateList = getNodesToActivateOnActivation(toActivate);
-				List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnActivation(toActivate);
+				final List<INavigationNode<?>> toActivateList = getNodesToActivateOnActivation(toActivate);
+				final List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnActivation(toActivate);
 				INavigationContext navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
 				if (allowsDeactivate(navigationContext)) {
 					if (allowsActivate(navigationContext)) {
 						deactivate(navigationContext);
 						activate(navigationContext);
 					} else {
-						INavigationNode<?> currentActive = getActiveChild(toActivate.getParent());
+						final INavigationNode<?> currentActive = getActiveChild(toActivate.getParent());
 						toActivateList.clear();
 						toActivateList.add(currentActive);
 						toDeactivateList.clear();
@@ -130,11 +128,11 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * 
 	 * @since 2.0
 	 */
-	public void prepare(INavigationNode<?> toPrepare) {
+	public void prepare(final INavigationNode<?> toPrepare) {
 
-		List<INavigationNode<?>> toPreparedList = new LinkedList<INavigationNode<?>>();
+		final List<INavigationNode<?>> toPreparedList = new LinkedList<INavigationNode<?>>();
 		toPreparedList.add(toPrepare);
-		INavigationContext navigationContext = new NavigationContext(toPreparedList, null, null);
+		final INavigationContext navigationContext = new NavigationContext(toPreparedList, null, null);
 		toPrepare.prepare(navigationContext);
 
 	}
@@ -146,7 +144,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * 
 	 * @param toActivate
 	 */
-	private void buildHistory(INavigationNode<?> toActivate) {
+	private void buildHistory(final INavigationNode<?> toActivate) {
 		// filter out unnavigatable nodes
 		if (!(toActivate instanceof ISubModuleNode) || toActivate.isDisposed()) {
 			return;
@@ -170,7 +168,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#dispose(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void dispose(INavigationNode<?> toDispose) {
+	public void dispose(final INavigationNode<?> toDispose) {
 		// 1. check which nodes are active from the node toDispose and all its
 		// children must be deactivated
 		// 2. find nodes to activate automatically
@@ -184,12 +182,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		// than the whole Module Group has to be disposed
 		// if there was no sub module active in the module,
 		// than no other module has to be activated
-		INavigationNode<?> nodeToDispose = getNodeToDispose(toDispose);
+		final INavigationNode<?> nodeToDispose = getNodeToDispose(toDispose);
 		if (nodeToDispose != null && !nodeToDispose.isDisposed()) {
 			unregisterJumpSource(nodeToDispose);
-			List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToDispose);
-			List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToDispose);
-			INavigationContext navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
+			final List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToDispose);
+			final List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToDispose);
+			final INavigationContext navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
 			if (allowsDeactivate(navigationContext)) {
 				if (allowsDispose(navigationContext)) {
 					if (allowsActivate(navigationContext)) {
@@ -204,16 +202,17 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	public void addMarker(INavigationNode<?> node, IMarker marker) {
+	public void addMarker(final INavigationNode<?> node, final IMarker marker) {
 
 		if (node != null) {
 			if (node.isActivated() && (marker instanceof DisabledMarker || marker instanceof HiddenMarker)) {
-				INavigationNode<?> nodeToHide = getNodeToDispose(node);
+				final INavigationNode<?> nodeToHide = getNodeToDispose(node);
 				// if ((nodeToHide != null) && (nodeToHide.isVisible() && (nodeToHide.isEnabled()))) {
 				if (nodeToHide != null) {
-					List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToHide);
-					List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToHide);
-					INavigationContext navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
+					final List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToHide);
+					final List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToHide);
+					final INavigationContext navigationContext = new NavigationContext(null, toActivateList,
+							toDeactivateList);
 					if (allowsDeactivate(navigationContext) && allowsActivate(navigationContext)) {
 						deactivate(navigationContext);
 						activate(navigationContext);
@@ -226,16 +225,16 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				node.setSelected(false);
 			}
 
-			List<INavigationNode<?>> toMarkList = new LinkedList<INavigationNode<?>>();
+			final List<INavigationNode<?>> toMarkList = new LinkedList<INavigationNode<?>>();
 			toMarkList.add(node);
-			INavigationContext navigationContext = new NavigationContext(null, toMarkList, null);
+			final INavigationContext navigationContext = new NavigationContext(null, toMarkList, null);
 			addMarker(navigationContext, marker);
 		}
 
 	}
 
-	private void addMarker(INavigationContext context, IMarker marker) {
-		for (INavigationNode<?> node : context.getToActivate()) {
+	private void addMarker(final INavigationContext context, final IMarker marker) {
+		for (final INavigationNode<?> node : context.getToActivate()) {
 			node.addMarker(context, marker);
 		}
 	}
@@ -245,7 +244,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * 
 	 * @param toDispose
 	 */
-	private void cleanupHistory(INavigationNode<?> toDispose) {
+	private void cleanupHistory(final INavigationNode<?> toDispose) {
 		boolean bhc = false;
 		while (histBack.contains(toDispose)) {
 			histBack.remove(toDispose);
@@ -272,7 +271,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * 
 	 * @since 2.0
 	 */
-	public INavigationNode<?> create(INavigationNode<?> sourceNode, NavigationNodeId targetId) {
+	public INavigationNode<?> create(final INavigationNode<?> sourceNode, final NavigationNodeId targetId) {
 		return provideNode(sourceNode, targetId, null);
 	}
 
@@ -281,8 +280,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * 
 	 * @since 2.0
 	 */
-	public INavigationNode<?> create(INavigationNode<?> sourceNode, NavigationNodeId targetId,
-			NavigationArgument argument) {
+	public INavigationNode<?> create(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
+			final NavigationArgument argument) {
 		return provideNode(sourceNode, targetId, argument);
 	}
 
@@ -291,17 +290,17 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * 
 	 * @since 2.0
 	 */
-	public void move(INavigationNode<?> sourceNode, NavigationNodeId targetId) {
+	public void move(final INavigationNode<?> sourceNode, final NavigationNodeId targetId) {
 		Assert.isTrue(ModuleNode.class.isAssignableFrom(sourceNode.getClass()));
-		ModuleNode moduleNode = ModuleNode.class.cast(sourceNode);
-		INavigationNode<?> targetNode = create(sourceNode, targetId);
+		final ModuleNode moduleNode = ModuleNode.class.cast(sourceNode);
+		final INavigationNode<?> targetNode = create(sourceNode, targetId);
 		Assert.isTrue(ModuleGroupNode.class.isAssignableFrom(targetNode.getClass()));
-		ModuleGroupNode targetModuleGroup = ModuleGroupNode.class.cast(targetNode);
-		ModuleGroupNode oldParentModuleGroup = ModuleGroupNode.class.cast(moduleNode.getParent());
+		final ModuleGroupNode targetModuleGroup = ModuleGroupNode.class.cast(targetNode);
+		final ModuleGroupNode oldParentModuleGroup = ModuleGroupNode.class.cast(moduleNode.getParent());
 		if (targetModuleGroup.equals(oldParentModuleGroup)) {
 			return;
 		}
-		boolean isActivated = moduleNode.isActivated();
+		final boolean isActivated = moduleNode.isActivated();
 		moduleNode.dispose(null);
 		moduleNode.deactivate(null);
 		oldParentModuleGroup.removeChild(moduleNode);
@@ -339,17 +338,17 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * {@inheritDoc}
 	 */
 	private INavigationNode<?> navigateSync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
-			final NavigationArgument navigation, NavigationType navigationType) {
+			final NavigationArgument navigation, final NavigationType navigationType) {
 		INavigationNode<?> targetNode = null;
 		try {
 			targetNode = provideNode(sourceNode, targetId, navigation);
-		} catch (NavigationModelFailure failure) {
+		} catch (final NavigationModelFailure failure) {
 			LOGGER.log(LogService.LOG_ERROR, failure.getMessage());
 		}
 		if (targetNode == null) {
 			return null;
 		}
-		INavigationNode<?> activateNode = targetNode.findNode(targetId);
+		final INavigationNode<?> activateNode = targetNode.findNode(targetId);
 		INavigationNode<?> node = activateNode;
 		if (node == null) {
 			node = targetNode;
@@ -365,7 +364,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		node.activate();
 		try {
 			setFocusOnRidget(node, navigation);
-		} catch (NavigationModelFailure failure) {
+		} catch (final NavigationModelFailure failure) {
 			LOGGER.log(LogService.LOG_ERROR, failure.getMessage());
 		}
 
@@ -376,18 +375,18 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @param node
 	 * @param enabled
 	 */
-	private void notifyNodeWithSuccessors(INavigationNode<?> node, JumpTargetState enabled) {
+	private void notifyNodeWithSuccessors(final INavigationNode<?> node, final JumpTargetState enabled) {
 		fireJumpTargetStateChanged(node, enabled);
 		if (!(node instanceof ModuleNode)) {
 			return;
 		}
 		//Only notify direct children
-		for (INavigationNode<?> child : node.getChildren()) {
+		for (final INavigationNode<?> child : node.getChildren()) {
 			notifyDeep(child, enabled);
 		}
 	}
 
-	private void registerJump(INavigationNode<?> source, INavigationNode<?> target) {
+	private void registerJump(final INavigationNode<?> source, final INavigationNode<?> target) {
 		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(target);
 		if (sourceStack == null) {
 			sourceStack = new Stack<INavigationNode<?>>();
@@ -398,22 +397,23 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	private void unregisterJumpSource(INavigationNode<?> source) {
-		Iterator<Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>>> it = jumpTargets.entrySet().iterator();
+	private void unregisterJumpSource(final INavigationNode<?> source) {
+		final Iterator<Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>>> it = jumpTargets.entrySet().iterator();
 
 		while (it.hasNext()) {
-			Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>> entry = it.next();
-			while (entry.getValue().remove(source))
+			final Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>> entry = it.next();
+			while (entry.getValue().remove(source)) {
 				;
+			}
 
 			if (entry.getValue().size() == 0) {
-				INavigationNode<?> node = entry.getKey();
+				final INavigationNode<?> node = entry.getKey();
 				notifyDeep(node, JumpTargetState.DISABLED);
 				it.remove();
 			}
 		}
 
-		for (INavigationNode<?> child : source.getChildren()) {
+		for (final INavigationNode<?> child : source.getChildren()) {
 			unregisterJumpSource(child);
 		}
 
@@ -423,9 +423,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @param node
 	 * @param disabled
 	 */
-	private void notifyDeep(INavigationNode<?> node, JumpTargetState enabled) {
+	private void notifyDeep(final INavigationNode<?> node, final JumpTargetState enabled) {
 		fireJumpTargetStateChanged(node, enabled);
-		for (INavigationNode<?> child : node.getChildren()) {
+		for (final INavigationNode<?> child : node.getChildren()) {
 			notifyDeep(child, enabled);
 		}
 	}
@@ -435,7 +435,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 *      NavigationArgument)
 	 * @since 2.0
 	 */
-	public void jump(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument) {
+	public void jump(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
+			final NavigationArgument argument) {
 		navigateSync(sourceNode, targetId, argument, NavigationType.JUMP);
 	}
 
@@ -443,10 +444,10 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @see INavigationProcessor#jumpBack(INavigationNode, NavigationNodeId)
 	 * @since 2.0
 	 */
-	public void jumpBack(INavigationNode<?> sourceNode) {
-		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(sourceNode);
+	public void jumpBack(final INavigationNode<?> sourceNode) {
+		final Stack<INavigationNode<?>> sourceStack = jumpTargets.get(sourceNode);
 		if (sourceStack == null) {
-			ModuleNode module = sourceNode.getParentOfType(ModuleNode.class);
+			final ModuleNode module = sourceNode.getParentOfType(ModuleNode.class);
 			if (module != null) {
 				module.jumpBack();
 				return;
@@ -454,7 +455,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 		if (sourceStack != null) {
 			if (sourceStack.size() > 0) {
-				INavigationNode<?> backTarget = sourceStack.pop();
+				final INavigationNode<?> backTarget = sourceStack.pop();
 				backTarget.activate();
 			}
 			jumpTargets.remove(sourceNode);
@@ -466,12 +467,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @see INavigationProcessor#isJumpTarget(INavigationNode)
 	 * @since 2.0
 	 */
-	public boolean isJumpTarget(INavigationNode<?> node) {
-		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(node);
+	public boolean isJumpTarget(final INavigationNode<?> node) {
+		final Stack<INavigationNode<?>> sourceStack = jumpTargets.get(node);
 		if (sourceStack != null && sourceStack.size() > 0) {
 			return true;
 		}
-		INavigationNode<?> parent = node.getParent();
+		final INavigationNode<?> parent = node.getParent();
 		if (node instanceof SubModuleNode && parent instanceof ModuleNode) {
 			return isJumpTarget(node.getParent());
 		}
@@ -483,7 +484,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 *      IJumpTargetListener)
 	 * @since 2.0
 	 */
-	public void addJumpTargetListener(INavigationNode<?> node, IJumpTargetListener listener) {
+	public void addJumpTargetListener(final INavigationNode<?> node, final IJumpTargetListener listener) {
 		List<IJumpTargetListener> listeners = jumpTargetListeners.get(node);
 		if (listeners == null) {
 			listeners = new LinkedList<IJumpTargetListener>();
@@ -497,8 +498,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 *      IJumpTargetListener)
 	 * @since 2.0
 	 */
-	public void removeJumpTargetListener(INavigationNode<?> node, IJumpTargetListener listener) {
-		List<IJumpTargetListener> listeners = jumpTargetListeners.get(node);
+	public void removeJumpTargetListener(final INavigationNode<?> node, final IJumpTargetListener listener) {
+		final List<IJumpTargetListener> listeners = jumpTargetListeners.get(node);
 		if (listeners == null) {
 			return;
 		}
@@ -508,19 +509,19 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	private void cleanupJumpTargetListeners(INavigationNode<?> node) {
+	private void cleanupJumpTargetListeners(final INavigationNode<?> node) {
 		jumpTargetListeners.remove(node);
-		for (INavigationNode<?> child : node.getChildren()) {
+		for (final INavigationNode<?> child : node.getChildren()) {
 			cleanupJumpTargetListeners(child);
 		}
 	}
 
-	private void fireJumpTargetStateChanged(INavigationNode<?> node, JumpTargetState jumpTargetState) {
-		List<IJumpTargetListener> listeners = jumpTargetListeners.get(node);
+	private void fireJumpTargetStateChanged(final INavigationNode<?> node, final JumpTargetState jumpTargetState) {
+		final List<IJumpTargetListener> listeners = jumpTargetListeners.get(node);
 		if (listeners == null) {
 			return;
 		}
-		for (IJumpTargetListener listener : listeners) {
+		for (final IJumpTargetListener listener : listeners) {
 			listener.jumpTargetStateChanged(node, jumpTargetState);
 		}
 	}
@@ -532,11 +533,11 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @param activateNode
 	 * @param navigation
 	 */
-	private void setFocusOnRidget(INavigationNode<?> activateNode, NavigationArgument navigation) {
+	private void setFocusOnRidget(final INavigationNode<?> activateNode, final NavigationArgument navigation) {
 		if (null != navigation && null != navigation.getRidgetId()) {
-			IRidgetContainer ridgetContainer = activateNode.getNavigationNodeController().getTypecastedAdapter(
+			final IRidgetContainer ridgetContainer = activateNode.getNavigationNodeController().getTypecastedAdapter(
 					IRidgetContainer.class);
-			IRidget ridget = ridgetContainer.getRidget(navigation.getRidgetId());
+			final IRidget ridget = ridgetContainer.getRidget(navigation.getRidgetId());
 			if (null != ridget) {
 				ridget.requestFocus();
 			} else {
@@ -620,12 +621,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	//		p.setTitle("sample uiProcess title"); //$NON-NLS-1$
 	//		p.start();
 	//	}
-	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
-			NavigationArgument argument) {
+	private INavigationNode<?> provideNode(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
+			final NavigationArgument argument) {
 
 		try {
 			return getNavigationNodeProvider().provideNode(sourceNode, targetId, argument);
-		} catch (ExtensionPointFailure failure) {
+		} catch (final ExtensionPointFailure failure) {
 			throw new NavigationModelFailure(String.format("Node not found '%s'", targetId), failure); //$NON-NLS-1$
 		}
 	}
@@ -641,12 +642,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @param toDispose
 	 * @return the correct node to dispose
 	 */
-	private INavigationNode<?> getNodeToDispose(INavigationNode<?> toDispose) {
-		IModuleNode moduleNode = toDispose.getTypecastedAdapter(IModuleNode.class);
+	private INavigationNode<?> getNodeToDispose(final INavigationNode<?> toDispose) {
+		final IModuleNode moduleNode = toDispose.getTypecastedAdapter(IModuleNode.class);
 		if (moduleNode != null) {
-			INavigationNode<?> parent = moduleNode.getParent();
+			final INavigationNode<?> parent = moduleNode.getParent();
 			if (parent != null) {
-				int ind = parent.getIndexOfChild(moduleNode);
+				final int ind = parent.getIndexOfChild(moduleNode);
 				if (ind == 0) {
 					return parent;
 				}
@@ -663,14 +664,14 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 *            the node to dispose
 	 * @return
 	 */
-	private List<INavigationNode<?>> getNodesToDeactivateOnDispose(INavigationNode<?> toDispose) {
-		List<INavigationNode<?>> allToDispose = new LinkedList<INavigationNode<?>>();
+	private List<INavigationNode<?>> getNodesToDeactivateOnDispose(final INavigationNode<?> toDispose) {
+		final List<INavigationNode<?>> allToDispose = new LinkedList<INavigationNode<?>>();
 		addAllChildren(allToDispose, toDispose);
 		return allToDispose;
 	}
 
-	private void addAllChildren(List<INavigationNode<?>> allToDispose, INavigationNode<?> toDispose) {
-		for (Object nextChild : toDispose.getChildren()) {
+	private void addAllChildren(final List<INavigationNode<?>> allToDispose, final INavigationNode<?> toDispose) {
+		for (final Object nextChild : toDispose.getChildren()) {
 			addAllChildren(allToDispose, (INavigationNode<?>) nextChild);
 		}
 		allToDispose.add(toDispose);
@@ -684,23 +685,23 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 *            the node to dispose
 	 * @return a list of nodes
 	 */
-	private List<INavigationNode<?>> getNodesToActivateOnDispose(INavigationNode<?> toDispose) {
+	private List<INavigationNode<?>> getNodesToActivateOnDispose(final INavigationNode<?> toDispose) {
 		// on dispose must only then something be activated, if one of the
 		// modules to dispose was active
 		// we assume, that if any submodule of this module was active,
 		// than this module is active itself
 		// while dispose of a node, the next brother node must be activated
 		if (toDispose.isActivated()) {
-			INavigationNode<?> parentOfToDispose = toDispose.getParent();
+			final INavigationNode<?> parentOfToDispose = toDispose.getParent();
 			INavigationNode<?> brotherToActivate = null;
 			if (parentOfToDispose != null) {
-				List<?> childrenOfParentOfToDispose = parentOfToDispose.getChildren();
-				List<INavigationNode<?>> activateableNode = getActivateableNodes(childrenOfParentOfToDispose);
+				final List<?> childrenOfParentOfToDispose = parentOfToDispose.getChildren();
+				final List<INavigationNode<?>> activateableNode = getActivateableNodes(childrenOfParentOfToDispose);
 				if (childrenOfParentOfToDispose.size() > 1) {
 					// there must be a least 2 children: the disposed will be
 					// removed
 					// get the first child which is not the one to remove
-					for (INavigationNode<?> nextChild : activateableNode) {
+					for (final INavigationNode<?> nextChild : activateableNode) {
 						if (!nextChild.equals(toDispose)) {
 							brotherToActivate = nextChild;
 							break;
@@ -723,11 +724,11 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 *            list of node
 	 * @return filtered list
 	 */
-	private List<INavigationNode<?>> getActivateableNodes(List<?> nodes) {
-		List<INavigationNode<?>> activateableNodes = new LinkedList<INavigationNode<?>>();
-		for (Object node : nodes) {
+	private List<INavigationNode<?>> getActivateableNodes(final List<?> nodes) {
+		final List<INavigationNode<?>> activateableNodes = new LinkedList<INavigationNode<?>>();
+		for (final Object node : nodes) {
 			if (node instanceof INavigationNode<?>) {
-				INavigationNode<?> naviNode = (INavigationNode<?>) node;
+				final INavigationNode<?> naviNode = (INavigationNode<?>) node;
 				if (naviNode.isVisible() && naviNode.isEnabled()) {
 					activateableNodes.add(naviNode);
 				}
@@ -743,8 +744,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 *            the node do activate
 	 * @return a List of all nodes to activate
 	 */
-	private List<INavigationNode<?>> getNodesToActivateOnActivation(INavigationNode<?> toActivate) {
-		List<INavigationNode<?>> nodesToActivate = new LinkedList<INavigationNode<?>>();
+	private List<INavigationNode<?>> getNodesToActivateOnActivation(final INavigationNode<?> toActivate) {
+		final List<INavigationNode<?>> nodesToActivate = new LinkedList<INavigationNode<?>>();
 		// go up and add all parents
 		addParentsToActivate(nodesToActivate, toActivate);
 		// go down and add all children
@@ -753,9 +754,10 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		return nodesToActivate;
 	}
 
-	private void addParentsToActivate(List<INavigationNode<?>> nodesToActivate, INavigationNode<?> toActivate) {
+	private void addParentsToActivate(final List<INavigationNode<?>> nodesToActivate,
+			final INavigationNode<?> toActivate) {
 		// go up to the next active parent
-		INavigationNode<?> parent = getActivationParent(toActivate);
+		final INavigationNode<?> parent = getActivationParent(toActivate);
 		if (parent != null) {
 			if (parent.isActivated()) {
 				addSelectableNode(nodesToActivate, toActivate);
@@ -768,7 +770,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	private void addSelectableNode(List<INavigationNode<?>> nodesToActivate, INavigationNode<?> toActivate) {
+	private void addSelectableNode(final List<INavigationNode<?>> nodesToActivate, final INavigationNode<?> toActivate) {
 		if (toActivate instanceof ISubModuleNode && !((ISubModuleNode) toActivate).isSelectable()) {
 			// do not add; not selectable
 		} else {
@@ -776,10 +778,10 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	private INavigationNode<?> getActivationParent(INavigationNode<?> child) {
+	private INavigationNode<?> getActivationParent(final INavigationNode<?> child) {
 		// by a subModule is it the module node
 		// by all other die direct parent
-		ISubModuleNode subModuleNode = child.getTypecastedAdapter(ISubModuleNode.class);
+		final ISubModuleNode subModuleNode = child.getTypecastedAdapter(ISubModuleNode.class);
 		if (subModuleNode != null) {
 			INavigationNode<?> parent = child.getParent();
 			while (parent != null) {
@@ -796,26 +798,23 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	}
 
-	private void addChildrenToActivate(List<INavigationNode<?>> nodesToActivate, INavigationNode<?> toActivate) {
-		INavigationNode<?> childToActivate = getChildToActivate(toActivate);
+	private void addChildrenToActivate(final List<INavigationNode<?>> nodesToActivate,
+			final INavigationNode<?> toActivate) {
+		final INavigationNode<?> childToActivate = getChildToActivate(toActivate);
 		if (childToActivate != null) {
 			nodesToActivate.add(childToActivate);
 			addChildrenToActivate(nodesToActivate, childToActivate);
 		}
 	}
 
-	private List<INavigationNode<?>> getNodesToDeactivateOnActivation(INavigationNode<?> toActivate) {
+	private List<INavigationNode<?>> getNodesToDeactivateOnActivation(final INavigationNode<?> toActivate) {
 		// get next active parent or root
-		List<INavigationNode<?>> nodesToDeactivate = new LinkedList<INavigationNode<?>>();
-		INavigationNode<?> activeParent = getNextActiveParent(toActivate);
+		final List<INavigationNode<?>> nodesToDeactivate = new LinkedList<INavigationNode<?>>();
+		final INavigationNode<?> activeParent = getNextActiveParent(toActivate);
 		if (activeParent != null) {
-			//
-			// EAC: fix for bug
-			// http://www.spiritframework.de/bugzilla/show_bug.cgi?id=67
-			// This fix handles the case that no active child is available due
+			// Handle the case that no active child is available due
 			// to some errors or exceptions which occurred before
-			//
-			INavigationNode<?> activeChild = getActiveChild(activeParent);
+			final INavigationNode<?> activeChild = getActiveChild(activeParent);
 			if (activeChild != null) {
 				addChildrenToDeactivate(nodesToDeactivate, activeChild);
 			}
@@ -827,8 +826,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	}
 
-	private void addChildrenToDeactivate(List<INavigationNode<?>> nodesToDeactivate, INavigationNode<?> toAdd) {
-		INavigationNode<?> activeChild = getActiveChild(toAdd);
+	private void addChildrenToDeactivate(final List<INavigationNode<?>> nodesToDeactivate,
+			final INavigationNode<?> toAdd) {
+		final INavigationNode<?> activeChild = getActiveChild(toAdd);
 		if (activeChild != null) {
 			addChildrenToDeactivate(nodesToDeactivate, activeChild);
 			nodesToDeactivate.add(toAdd);
@@ -841,9 +841,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	/**
 	 * find the next active parent
 	 */
-	private INavigationNode<?> getNextActiveParent(INavigationNode<?> node) {
+	private INavigationNode<?> getNextActiveParent(final INavigationNode<?> node) {
 		// the next active parent must be at least a Module Node
-		ISubModuleNode subModuleNode = node.getTypecastedAdapter(ISubModuleNode.class);
+		final ISubModuleNode subModuleNode = node.getTypecastedAdapter(ISubModuleNode.class);
 		if (subModuleNode != null) {
 			// if sub module node go up
 			return getNextActiveParent(subModuleNode.getParent());
@@ -863,7 +863,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * find the top parent
 	 */
 
-	private INavigationNode<?> getTopParent(INavigationNode<?> node) {
+	private INavigationNode<?> getTopParent(final INavigationNode<?> node) {
 		if (node.getParent() != null) {
 			return getTopParent(node.getParent());
 		} else {
@@ -872,8 +872,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	}
 
-	private boolean allowsActivate(INavigationContext context) {
-		for (INavigationNode<?> nextToActivate : context.getToActivate()) {
+	private boolean allowsActivate(final INavigationContext context) {
+		for (final INavigationNode<?> nextToActivate : context.getToActivate()) {
 			if (!nextToActivate.allowsActivate(context)) {
 				return false;
 			}
@@ -881,8 +881,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		return true;
 	}
 
-	private boolean allowsDispose(INavigationContext context) {
-		for (INavigationNode<?> nextToDeactivate : context.getToDeactivate()) {
+	private boolean allowsDispose(final INavigationContext context) {
+		for (final INavigationNode<?> nextToDeactivate : context.getToDeactivate()) {
 			if (!nextToDeactivate.allowsDispose(context)) {
 				return false;
 			}
@@ -890,8 +890,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		return true;
 	}
 
-	private boolean allowsDeactivate(INavigationContext context) {
-		for (INavigationNode<?> nextToDeactivate : context.getToDeactivate()) {
+	private boolean allowsDeactivate(final INavigationContext context) {
+		for (final INavigationNode<?> nextToDeactivate : context.getToDeactivate()) {
 			if (!nextToDeactivate.allowsDeactivate(context)) {
 				return false;
 			}
@@ -899,21 +899,21 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		return true;
 	}
 
-	private void activate(INavigationContext context) {
-		for (INavigationNode<?> nextToActivate : context.getToActivate()) {
+	private void activate(final INavigationContext context) {
+		for (final INavigationNode<?> nextToActivate : context.getToActivate()) {
 			if (debugNaviProc) {
 				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - beforeActivate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
 			}
 			nextToActivate.onBeforeActivate(context);
 		}
-		for (INavigationNode<?> nextToActivate : context.getToActivate()) {
+		for (final INavigationNode<?> nextToActivate : context.getToActivate()) {
 			if (debugNaviProc) {
 				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - activate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
 			}
 			nextToActivate.activate(context);
 			setAsSelectedChild(nextToActivate);
 		}
-		for (INavigationNode<?> nextToActivate : copyReverse(context.getToActivate())) {
+		for (final INavigationNode<?> nextToActivate : copyReverse(context.getToActivate())) {
 			if (debugNaviProc) {
 				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - onAfterActivate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
 			}
@@ -921,9 +921,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	private void deactivate(INavigationContext context) {
-		Collection<INavigationNode<?>> previouslyActivatedNodes = new ArrayList<INavigationNode<?>>();
-		for (INavigationNode<?> nextToDeactivate : copyReverse(context.getToDeactivate())) {
+	private void deactivate(final INavigationContext context) {
+		final Collection<INavigationNode<?>> previouslyActivatedNodes = new ArrayList<INavigationNode<?>>();
+		for (final INavigationNode<?> nextToDeactivate : copyReverse(context.getToDeactivate())) {
 			if (nextToDeactivate.isActivated()) {
 				previouslyActivatedNodes.add(nextToDeactivate);
 				if (debugNaviProc) {
@@ -932,7 +932,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				nextToDeactivate.onBeforeDeactivate(context);
 			}
 		}
-		for (INavigationNode<?> nextToDeactivate : context.getToDeactivate()) {
+		for (final INavigationNode<?> nextToDeactivate : context.getToDeactivate()) {
 			// check for activated to make this method usable for disposing
 			if (previouslyActivatedNodes.contains(nextToDeactivate)) {
 				if (debugNaviProc) {
@@ -941,7 +941,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				nextToDeactivate.deactivate(context);
 			}
 		}
-		for (INavigationNode<?> nextToDeactivate : context.getToDeactivate()) {
+		for (final INavigationNode<?> nextToDeactivate : context.getToDeactivate()) {
 			if (previouslyActivatedNodes.contains(nextToDeactivate)) {
 				if (debugNaviProc) {
 					LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - onAfterDeactivate: " + nextToDeactivate.getNodeId()); //$NON-NLS-1$
@@ -951,23 +951,23 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	private void dispose(INavigationContext context) {
-		for (INavigationNode<?> nextToDispose : copyReverse(context.getToDeactivate())) {
+	private void dispose(final INavigationContext context) {
+		for (final INavigationNode<?> nextToDispose : copyReverse(context.getToDeactivate())) {
 			nextToDispose.onBeforeDispose(context);
 		}
-		for (INavigationNode<?> nextToDispose : context.getToDeactivate()) {
+		for (final INavigationNode<?> nextToDispose : context.getToDeactivate()) {
 			// check for activated to make this method usable for disposing
 			if (debugNaviProc) {
 				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - dispos: " + nextToDispose.getNodeId()); //$NON-NLS-1$
 			}
 			nextToDispose.dispose(context);
 			// remove the node from tree
-			INavigationNode<?> parent = nextToDispose.getParent();
+			final INavigationNode<?> parent = nextToDispose.getParent();
 			if (parent != null) {
 				parent.removeChild(nextToDispose);
 			}
 		}
-		for (INavigationNode<?> nextToDispose : context.getToDeactivate()) {
+		for (final INavigationNode<?> nextToDispose : context.getToDeactivate()) {
 			nextToDispose.onAfterDispose(context);
 			// clean up history stacks
 			cleanupHistory(nextToDispose);
@@ -996,8 +996,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		 * @param toDeactivate
 		 *            nodes to be deactevated
 		 */
-		public NavigationContext(List<INavigationNode<?>> toPrepare, List<INavigationNode<?>> toActivate,
-				List<INavigationNode<?>> toDeactivate) {
+		public NavigationContext(final List<INavigationNode<?>> toPrepare, final List<INavigationNode<?>> toActivate,
+				final List<INavigationNode<?>> toDeactivate) {
 			super();
 			this.toPrepare = toPrepare;
 			this.toActivate = toActivate;
@@ -1042,10 +1042,10 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @param pNode
 	 *            the node who's child is searched
 	 */
-	private INavigationNode<?> getChildToActivate(INavigationNode<?> pNode) {
+	private INavigationNode<?> getChildToActivate(final INavigationNode<?> pNode) {
 		// for sub module is always null
 
-		ISubModuleNode subModuleNode = pNode.getTypecastedAdapter(ISubModuleNode.class);
+		final ISubModuleNode subModuleNode = pNode.getTypecastedAdapter(ISubModuleNode.class);
 		if (subModuleNode != null) {
 
 			if (!subModuleNode.isSelectable()) {
@@ -1059,12 +1059,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			return null;
 		}
 		// for module node is it the deepest selected sub Module node
-		IModuleNode moduleNode = pNode.getTypecastedAdapter(IModuleNode.class);
+		final IModuleNode moduleNode = pNode.getTypecastedAdapter(IModuleNode.class);
 		if (moduleNode != null) {
 			ISubModuleNode nextChild = getSelectedChild(moduleNode);
 			if (nextChild != null) {
 				while (true) {
-					ISubModuleNode nextTmp = getSelectedChild(nextChild);
+					final ISubModuleNode nextTmp = getSelectedChild(nextChild);
 					if (nextTmp != null) {
 						nextChild = nextTmp;
 					} else {
@@ -1081,11 +1081,11 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			}
 		}
 		// for all others is it the direct selected child
-		INavigationNode<?> nextSelectedChild = getSelectedChild(pNode);
+		final INavigationNode<?> nextSelectedChild = getSelectedChild(pNode);
 		if (nextSelectedChild != null) {
 			return nextSelectedChild;
 		} else {
-			for (INavigationNode<?> next : pNode.getChildren()) {
+			for (final INavigationNode<?> next : pNode.getChildren()) {
 				if (next.isVisible() && next.isEnabled()) {
 					return next;
 				}
@@ -1094,7 +1094,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	private ISubModuleNode findSelectableChildNode(ISubModuleNode startNode) {
+	private ISubModuleNode findSelectableChildNode(final ISubModuleNode startNode) {
 		// if node is not visible, return null (note: this method is recursive, see below)
 		if (!startNode.isVisible()) {
 			return null;
@@ -1106,8 +1106,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		// if not selectable, expand it because it does not get activated some else need to expand it
 		startNode.setExpanded(true);
 		// check childs for selectable node
-		for (ISubModuleNode child : startNode.getChildren()) {
-			ISubModuleNode found = findSelectableChildNode(child);
+		for (final ISubModuleNode child : startNode.getChildren()) {
+			final ISubModuleNode found = findSelectableChildNode(child);
 			if (found != null) {
 				return found;
 			}
@@ -1115,14 +1115,14 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		return null;
 	}
 
-	private INavigationNode<?> getActiveChild(INavigationNode<?> pNode) {
+	private INavigationNode<?> getActiveChild(final INavigationNode<?> pNode) {
 		// for a Sub Module it is always null
-		ISubModuleNode subModuleNode = pNode.getTypecastedAdapter(ISubModuleNode.class);
+		final ISubModuleNode subModuleNode = pNode.getTypecastedAdapter(ISubModuleNode.class);
 		if (subModuleNode != null) {
 			return null;
 		}
 		// for a module node it is the last selected child
-		IModuleNode moduleNode = pNode.getTypecastedAdapter(IModuleNode.class);
+		final IModuleNode moduleNode = pNode.getTypecastedAdapter(IModuleNode.class);
 		if (moduleNode != null) {
 			ISubModuleNode nextChild = getSelectedChild(moduleNode);
 			if (nextChild != null) {
@@ -1140,7 +1140,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			}
 		}
 		// for all other the selectedChild if any and active
-		INavigationNode<?> nextSelectedChild = getSelectedChild(pNode);
+		final INavigationNode<?> nextSelectedChild = getSelectedChild(pNode);
 		if (nextSelectedChild != null && nextSelectedChild.isActivated()) {
 			return nextSelectedChild;
 		} else {
@@ -1160,11 +1160,11 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @param pNode
 	 *            the node to set the selected chain for.
 	 */
-	private void setAsSelectedChild(INavigationNode<?> pNode) {
+	private void setAsSelectedChild(final INavigationNode<?> pNode) {
 
 		// when activating a sub module the chain must be set up to the module
 		// node
-		ISubModuleNode subModuleNode = pNode.getTypecastedAdapter(ISubModuleNode.class);
+		final ISubModuleNode subModuleNode = pNode.getTypecastedAdapter(ISubModuleNode.class);
 		if (subModuleNode != null) {
 			ISubModuleNode nextToSet = subModuleNode;
 			while (nextToSet != null) {
@@ -1194,8 +1194,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @param child
 	 *            the child to set as selected
 	 */
-	private void setSelectedChild(INavigationNode<?> parent, INavigationNode<?> child) {
-		for (INavigationNode<?> next : parent.getChildren()) {
+	private void setSelectedChild(final INavigationNode<?> parent, final INavigationNode<?> child) {
+		for (final INavigationNode<?> next : parent.getChildren()) {
 			if (next.equals(child)) {
 				next.setSelected(true);
 				if (next.isActivated()) {//remember only active subModule nodes
@@ -1208,8 +1208,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	private INavigationNode<?> getSelectedChild(INavigationNode<?> pNavigationNode) {
-		for (INavigationNode<?> next : pNavigationNode.getChildren()) {
+	private INavigationNode<?> getSelectedChild(final INavigationNode<?> pNavigationNode) {
+		for (final INavigationNode<?> next : pNavigationNode.getChildren()) {
 			if (next.isSelected()) {
 				return next;
 			}
@@ -1217,8 +1217,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		return null;
 	}
 
-	private ISubModuleNode getSelectedChild(IModuleNode pModuleNode) {
-		for (ISubModuleNode next : pModuleNode.getChildren()) {
+	private ISubModuleNode getSelectedChild(final IModuleNode pModuleNode) {
+		for (final ISubModuleNode next : pModuleNode.getChildren()) {
 			if (next.isSelected()) {
 				return next;
 			}
@@ -1226,8 +1226,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		return null;
 	}
 
-	private ISubModuleNode getSelectedChild(ISubModuleNode pSubModuleNode) {
-		for (ISubModuleNode next : pSubModuleNode.getChildren()) {
+	private ISubModuleNode getSelectedChild(final ISubModuleNode pSubModuleNode) {
+		for (final ISubModuleNode next : pSubModuleNode.getChildren()) {
 			if (next.isSelected()) {
 				return next;
 			}
@@ -1235,9 +1235,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		return null;
 	}
 
-	private List<INavigationNode<?>> copyReverse(List<INavigationNode<?>> list) {
+	private List<INavigationNode<?>> copyReverse(final List<INavigationNode<?>> list) {
 
-		List<INavigationNode<?>> listReverse = list.subList(0, list.size());
+		final List<INavigationNode<?>> listReverse = list.subList(0, list.size());
 		Collections.reverse(listReverse);
 
 		return listReverse;
@@ -1250,14 +1250,14 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 */
 	public void historyBack() {
 		if (getHistoryBackSize() > 0) {
-			INavigationNode<?> current = histBack.pop();// skip self
+			final INavigationNode<?> current = histBack.pop();// skip self
 			fireBackHistoryChangedEvent();
 			histForward.push(current);
 			if (histForward.size() > maxStacksize) {
 				histForward.remove(histForward.firstElement());
 			}
 			fireForewardHistoryChangedEvent();
-			INavigationNode<?> node = histBack.peek();// activate parent
+			final INavigationNode<?> node = histBack.peek();// activate parent
 			if (node != null) {
 				activate(node);
 			}
@@ -1271,9 +1271,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (navigationListener.size() == 0) {
 			return;
 		}
-		INavigationHistoryEvent event = new NavigationHistoryEvent(histBack
-				.subList(0, Math.max(0, histBack.size() - 1)));
-		for (INavigationHistoryListener listener : navigationListener) {
+		final INavigationHistoryEvent event = new NavigationHistoryEvent(histBack.subList(0,
+				Math.max(0, histBack.size() - 1)));
+		for (final INavigationHistoryListener listener : navigationListener) {
 			listener.backHistoryChanged(event);
 		}
 	}
@@ -1285,7 +1285,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 */
 	public void historyForward() {
 		if (getHistoryForwardSize() > 0) {
-			INavigationNode<?> current = histForward.pop();
+			final INavigationNode<?> current = histForward.pop();
 			fireForewardHistoryChangedEvent();
 			if (current != null) {
 				histBack.push(current);
@@ -1305,8 +1305,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (navigationListener.size() == 0) {
 			return;
 		}
-		INavigationHistoryEvent event = new NavigationHistoryEvent(histForward.subList(0, histForward.size()));
-		for (INavigationHistoryListener listener : navigationListener) {
+		final INavigationHistoryEvent event = new NavigationHistoryEvent(histForward.subList(0, histForward.size()));
+		for (final INavigationHistoryListener listener : navigationListener) {
 			listener.forwardHistoryChanged(event);
 		}
 	}
@@ -1351,7 +1351,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @param targetNode
 	 *            The node where we have navigate to and return from
 	 */
-	public void navigateBack(INavigationNode<?> targetNode) {
+	public void navigateBack(final INavigationNode<?> targetNode) {
 		INavigationNode<?> sourceNode = null;
 		INavigationNode<?> lookupNode = targetNode;
 		while (sourceNode == null) {
@@ -1373,7 +1373,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * addNavigationHistoryListener
 	 * (org.eclipse.riena.navigation.INavigationHistoryListener)
 	 */
-	public synchronized void addNavigationHistoryListener(INavigationHistoryListener listener) {
+	public synchronized void addNavigationHistoryListener(final INavigationHistoryListener listener) {
 		if (!navigationListener.contains(listener)) {
 			navigationListener.add(listener);
 			INavigationHistoryEvent event = new NavigationHistoryEvent(histBack.subList(0,
@@ -1391,7 +1391,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * removeNavigationHistoryListener
 	 * (org.eclipse.riena.navigation.INavigationHistoryListener)
 	 */
-	public synchronized void removeNavigationHistoryListener(INavigationHistoryListener listener) {
+	public synchronized void removeNavigationHistoryListener(final INavigationHistoryListener listener) {
 		navigationListener.remove(listener);
 	}
 }
