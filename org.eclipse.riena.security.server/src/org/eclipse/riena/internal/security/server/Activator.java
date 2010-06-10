@@ -30,7 +30,7 @@ import org.eclipse.riena.security.server.session.ISessionService;
 public class Activator extends RienaPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "de.compeople.scp.security.server"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.riena.security.server"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
@@ -48,12 +48,12 @@ public class Activator extends RienaPlugin {
 	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
-		GenericObjectCache<String, Principal[]> principalCache = new GenericObjectCache<String, Principal[]>();
+		final GenericObjectCache<String, Principal[]> principalCache = new GenericObjectCache<String, Principal[]>();
 		principalCache.setName("principalCache"); //$NON-NLS-1$
-		Hashtable<String, String> props = new Hashtable<String, String>();
+		final Hashtable<String, String> props = new Hashtable<String, String>();
 		props.put("cache.type", "PrincipalCache"); //$NON-NLS-1$ //$NON-NLS-2$
 		context.registerService(IGenericObjectCache.class.getName(), principalCache, props);
 		createSecurityServiceHookAndInjectors();
@@ -61,18 +61,18 @@ public class Activator extends RienaPlugin {
 
 	private void createSecurityServiceHookAndInjectors() {
 		// create SecurityServiceHook
-		IServiceHook securityServiceHook = new SecurityServiceHook();
+		final IServiceHook securityServiceHook = new SecurityServiceHook();
 		getContext().registerService(IServiceHook.class.getName(), securityServiceHook, null);
 
 		// create and Start Injectors
 		Inject.service(IGenericObjectCache.class).useFilter("(cache.type=PrincipalCache)").into(securityServiceHook) //$NON-NLS-1$
 				.andStart(Activator.getDefault().getContext());
-		Inject.service(ISessionService.class).useRanking().into(securityServiceHook).andStart(
-				Activator.getDefault().getContext());
-		Inject.service(ISubjectHolder.class).useRanking().into(securityServiceHook).andStart(
-				Activator.getDefault().getContext());
-		Inject.service(ISessionHolder.class).useRanking().into(securityServiceHook).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(ISessionService.class).useRanking().into(securityServiceHook)
+				.andStart(Activator.getDefault().getContext());
+		Inject.service(ISubjectHolder.class).useRanking().into(securityServiceHook)
+				.andStart(Activator.getDefault().getContext());
+		Inject.service(ISessionHolder.class).useRanking().into(securityServiceHook)
+				.andStart(Activator.getDefault().getContext());
 	}
 
 	/*
@@ -82,7 +82,7 @@ public class Activator extends RienaPlugin {
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;
 		super.stop(context);
 	}
