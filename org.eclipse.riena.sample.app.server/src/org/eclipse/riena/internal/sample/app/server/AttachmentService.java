@@ -43,21 +43,21 @@ public final class AttachmentService implements IAttachmentService {
 	private static final String TESTDATA1 = "das sind testdaten, die wir mal einfach so verschicken um etwas zu testen."; //$NON-NLS-1$
 
 	/**
-	 * @see de.compeople.spirit.examples.base.attachmentservice.IAttachmentService#sendSingleAttachment(de.compeople.spirit.communication.base.attachment.Attachment)
+	 * {@inheritDoc}
 	 */
-	public String sendSingleAttachment(Attachment singleAttachment) {
+	public String sendSingleAttachment(final Attachment singleAttachment) {
 		return readAttachmentStart(singleAttachment);
 	}
 
-	private String readAttachmentStart(Attachment attachment) {
-		byte[] byteArray = new byte[ATTACHMENT_START];
+	private String readAttachmentStart(final Attachment attachment) {
+		final byte[] byteArray = new byte[ATTACHMENT_START];
 		try {
-			InputStream input = attachment.readAsStream();
-			int nbrBytes = input.read(byteArray, 0, byteArray.length);
+			final InputStream input = attachment.readAsStream();
+			final int nbrBytes = input.read(byteArray, 0, byteArray.length);
 			if (nbrBytes < 1) {
 				throw new IOException("Empty Attachment."); //$NON-NLS-1$
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			return "[can't read " + attachment + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return new String(byteArray);
@@ -65,37 +65,32 @@ public final class AttachmentService implements IAttachmentService {
 	}
 
 	/**
-	 * @see de.compeople.spirit.examples.base.attachmentservice.IAttachmentService#sendTwoAttachments(de.compeople.spirit.communication.base.attachment.Attachment,
-	 *      de.compeople.spirit.communication.base.attachment.Attachment)
+	 * {@inheritDoc}
 	 */
-	public String sendTwoAttachments(Attachment firstAttachment, Attachment secondAttachment) {
+	public String sendTwoAttachments(final Attachment firstAttachment, final Attachment secondAttachment) {
 		return readAttachmentStart(firstAttachment) + "+" + readAttachmentStart(secondAttachment); //$NON-NLS-1$
 	}
 
 	/**
-	 * @see de.compeople.spirit.examples.base.attachmentservice.IAttachmentService#sendAttachmentsAndData(java.lang.String,
-	 *      de.compeople.spirit.communication.base.attachment.Attachment,
-	 *      java.lang.String,
-	 *      de.compeople.spirit.communication.base.attachment.Attachment,
-	 *      java.lang.String, int)
+	 * {@inheritDoc}
 	 */
-	public String sendAttachmentsAndData(String firstString, Attachment firstAttachment, String secondString,
-			Attachment secondAttachment, String thirdString, int number) {
+	public String sendAttachmentsAndData(final String firstString, final Attachment firstAttachment,
+			final String secondString, final Attachment secondAttachment, final String thirdString, final int number) {
 		return firstString + "+" + readAttachmentStart(firstAttachment) + "+" + secondString + "+" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				+ readAttachmentStart(secondAttachment) + "+" + thirdString + "+" + number; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
-	 * @see de.compeople.spirit.examples.base.attachmentservice.IAttachmentService#returnAttachment()
+	 * {@inheritDoc}
 	 */
 	public Attachment returnAttachment() throws IOException {
 		return new Attachment(setupTestFile(TESTDATA1));
 	}
 
 	/**
-	 * @see de.compeople.spirit.examples.base.attachmentservice.IAttachmentService#returnAttachmentForRequest(java.lang.String)
+	 * {@inheritDoc}
 	 */
-	public Attachment returnAttachmentForRequest(String attachmentName) throws IOException {
+	public Attachment returnAttachmentForRequest(final String attachmentName) throws IOException {
 		if (attachmentName.equals("validfilename")) { //$NON-NLS-1$
 			return new Attachment(setupTestFile(TESTDATA1));
 		} else {
@@ -107,9 +102,9 @@ public final class AttachmentService implements IAttachmentService {
 	}
 
 	/**
-	 * @see de.compeople.spirit.examples.base.attachmentservice.IAttachmentService#sendAndReturnAttachment(de.compeople.spirit.communication.base.attachment.Attachment)
+	 * {@inheritDoc}
 	 */
-	public Attachment sendAndReturnAttachment(Attachment attachment) {
+	public Attachment sendAndReturnAttachment(final Attachment attachment) {
 		LOGGER.log(LogService.LOG_DEBUG, readAttachmentStart(attachment));
 		return attachment;
 	}
@@ -117,7 +112,7 @@ public final class AttachmentService implements IAttachmentService {
 	public InputStream getFile() {
 		try {
 			return new BufferedInputStream(new FileInputStream(setupTestFile(TESTDATA1)));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			return null;
 		}
 	}
@@ -128,18 +123,18 @@ public final class AttachmentService implements IAttachmentService {
 
 	public Attachment getBytesFromUrlWithErrorAtStart() {
 		try {
-			URL url = new URL("http://localhost:20080/"); //$NON-NLS-1$
-			HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+			final URL url = new URL("http://localhost:20080/"); //$NON-NLS-1$
+			final HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
 			if (httpConn.getResponseCode() > 399) {
-				String errorMsg = "no error msg"; //$NON-NLS-1$
+				final String errorMsg = "no error msg"; //$NON-NLS-1$
 				if (httpConn.getErrorStream().available() > 0) {
-					byte[] buffer = new byte[httpConn.getErrorStream().available()];
+					final byte[] buffer = new byte[httpConn.getErrorStream().available()];
 					httpConn.getErrorStream().read(buffer, 0, buffer.length);
 				}
 				throw new RuntimeException("rc=" + httpConn.getResponseCode() + " msg=" + errorMsg); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return new Attachment(url);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			Nop.reason("do nothing"); //$NON-NLS-1$
 		}
 		return null;
@@ -148,9 +143,9 @@ public final class AttachmentService implements IAttachmentService {
 	public Attachment getBytesFromUrlWithError() {
 		try {
 			return new Attachment(new URL("http://localhost:8080/junittest/errorinthemiddle")); //$NON-NLS-1$
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
 			Nop.reason("do nothing"); //$NON-NLS-1$
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			Nop.reason("do nothing"); //$NON-NLS-1$
 		}
 		return null;
@@ -158,23 +153,23 @@ public final class AttachmentService implements IAttachmentService {
 
 	public Attachment getBytesFromUrlWithoutError() {
 		try {
-			URL url = new URL("http://localhost:8080/junittest/validoutput"); //$NON-NLS-1$
+			final URL url = new URL("http://localhost:8080/junittest/validoutput"); //$NON-NLS-1$
 			return new Attachment(url);
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
 			Nop.reason("do nothing"); //$NON-NLS-1$
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			Nop.reason("do nothing"); //$NON-NLS-1$
 		}
 		return null;
 	}
 
-	public Attachment getAttachmentForSize(int sizeInBytes) throws IOException {
+	public Attachment getAttachmentForSize(final int sizeInBytes) throws IOException {
 		final int countInBytes = sizeInBytes;
 
 		return new Attachment(new InputStream() {
 
 			private int count = countInBytes;
-			private SecureRandom random = new SecureRandom();
+			private final SecureRandom random = new SecureRandom();
 
 			@Override
 			public int read() throws IOException {
@@ -189,56 +184,40 @@ public final class AttachmentService implements IAttachmentService {
 		});
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.compeople.spirit.examples.base.attachmentservice.IAttachmentService
-	 * #getBytesFromInvalidUrl()
+	/**
+	 * {@inheritDoc}
 	 */
 	public Attachment getBytesFromInvalidUrl() throws IOException {
 		try {
 			// intentionally a invalid port
 			return new Attachment(new URL("http://localhost:24444/unittest/errorinthemiddle")); //$NON-NLS-1$
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
 			Nop.reason("do nothing"); //$NON-NLS-1$
 		}
 
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.compeople.spirit.examples.base.attachmentservice.IAttachmentService
-	 * #sendAndDeleteFile()
+	/**
+	 * {@inheritDoc}
 	 */
-	public void sendFile(Attachment attachment) {
+	public void sendFile(final Attachment attachment) {
 		return;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.compeople.spirit.examples.base.attachmentservice.IAttachmentService
-	 * #getAttachmentAsObject()
+	/**
+	 * {@inheritDoc}
 	 */
 	public Object getAttachmentAsObject() throws IOException {
 		try {
 			return new Attachment(setupTestFile(TESTDATA1));
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			return null;
 		}
 	}
 
-	/*
-	 * returns Attachment Object with empty InputStream (non-Javadoc)
-	 * 
-	 * @see
-	 * de.compeople.spirit.examples.base.attachmentservice.IAttachmentService
-	 * #getEmptyAttachment()
+	/**
+	 * {@inheritDoc}
 	 */
 	public Attachment getEmptyAttachment() throws IOException {
 		return new Attachment(new InputStream() {
@@ -251,8 +230,8 @@ public final class AttachmentService implements IAttachmentService {
 
 	}
 
-	public int sendAttachmentAndReturnSize(Attachment attachment) throws IOException {
-		InputStream readAsStream = attachment.readAsStream();
+	public int sendAttachmentAndReturnSize(final Attachment attachment) throws IOException {
+		final InputStream readAsStream = attachment.readAsStream();
 		int i = 0;
 		while (readAsStream.read() != -1) {
 			i++;
@@ -261,19 +240,19 @@ public final class AttachmentService implements IAttachmentService {
 		return i;
 	}
 
-	public Attachment returnAttachmentForSize(int size) throws IOException {
+	public Attachment returnAttachmentForSize(final int size) throws IOException {
 		return generateLargeAttachment(size);
 	}
 
-	private File setupTestFile(String string) {
+	private File setupTestFile(final String string) {
 		File file;
 		try {
 			file = File.createTempFile("attachTest", null); //$NON-NLS-1$
-			PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
+			final PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
 			printWriter.write(string);
 			printWriter.close();
 			return file;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
@@ -283,7 +262,7 @@ public final class AttachmentService implements IAttachmentService {
 		return new Attachment(new InputStream() {
 
 			private int count = countInBytes;
-			private SecureRandom random = new SecureRandom();
+			private final SecureRandom random = new SecureRandom();
 
 			@Override
 			public int read() throws IOException {
