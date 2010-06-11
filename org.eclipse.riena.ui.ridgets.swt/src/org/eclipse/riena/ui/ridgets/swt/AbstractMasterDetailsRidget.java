@@ -303,10 +303,6 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	public void updateFromModel() {
 		checkDelegate();
 		super.updateFromModel();
-		IRidget tableRidget = getTableRidget();
-		if (tableRidget != null) {
-			tableRidget.updateFromModel();
-		}
 	}
 
 	// protected methods
