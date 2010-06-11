@@ -88,11 +88,11 @@ public class MarkerSubModuleController extends SubModuleController {
 		textDate.setText("04.12.2008"); //$NON-NLS-1$
 
 		final IDateTimeRidget dtDate = getRidget(IDateTimeRidget.class, "dtDate"); //$NON-NLS-1$
-		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); //$NON-NLS-1$
+		final DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); //$NON-NLS-1$
 		try {
-			Date date = dateFormat.parse("04.12.2008"); //$NON-NLS-1$
+			final Date date = dateFormat.parse("04.12.2008"); //$NON-NLS-1$
 			dtDate.setDate(date);
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			dtDate.setDate(new Date());
 		}
 
@@ -101,14 +101,23 @@ public class MarkerSubModuleController extends SubModuleController {
 		dtPicker.setText("04.12.2008"); //$NON-NLS-1$
 
 		final IComboRidget comboAge = getRidget(IComboRidget.class, "comboAge"); //$NON-NLS-1$
-		List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		comboAge.bindToModel(new WritableList(ages, String.class), String.class, null, new WritableValue());
 		comboAge.updateFromModel();
 		comboAge.setEmptySelectionItem("<none>"); //$NON-NLS-1$
 		comboAge.setSelection(1);
 
+		final IComboRidget comboStyle = getRidget(IComboRidget.class, "comboStyle"); //$NON-NLS-1$
+		final List<String> styles = Arrays.asList(new String[] {
+				"<none>", "Bordeaux", "Beaujolaix", "Merlot", "Pinot Noire", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				"Syrah" }); //$NON-NLS-1$
+		comboStyle.bindToModel(new WritableList(styles, String.class), String.class, null, new WritableValue());
+		comboStyle.updateFromModel();
+		comboStyle.setEmptySelectionItem("<none>"); //$NON-NLS-1$
+		comboStyle.setSelection(1);
+
 		final IComboRidget comboSize = getRidget(IComboRidget.class, "ccomboSize"); //$NON-NLS-1$
-		List<String> sizes = Arrays.asList(new String[] { "<none>", "xs", "s", "m", "l", "xl" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		final List<String> sizes = Arrays.asList(new String[] { "<none>", "xs", "s", "m", "l", "xl" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		comboSize.bindToModel(new WritableList(sizes, String.class), String.class, null, new WritableValue());
 		comboSize.updateFromModel();
 		comboSize.setEmptySelectionItem("<none>"); //$NON-NLS-1$
@@ -134,12 +143,12 @@ public class MarkerSubModuleController extends SubModuleController {
 		final ITableRidget tablePersons = getRidget(ITableRidget.class, "tablePersons"); //$NON-NLS-1$
 		tablePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		String[] colValues = new String[] { "lastname", "firstname" }; //$NON-NLS-1$ //$NON-NLS-2$
-		String[] colHeaders = new String[] { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] colHeaders = new String[] { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 		tablePersons.bindToModel(createPersonList(), Person.class, colValues, colHeaders);
 		tablePersons.updateFromModel();
 
 		final ICompositeTableRidget compTable = getRidget(ICompositeTableRidget.class, "compTable"); //$NON-NLS-1$
-		WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
+		final WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
 		compTable.bindToModel(input, Person.class, RowRidget.class);
 		compTable.updateFromModel();
 
@@ -153,7 +162,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		treeWCols.setSelectionType(ISelectableRidget.SelectionType.MULTI);
 		treeWCols.setGroupingEnabled(true);
 		colValues = new String[] { "word", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$
-		String[] colHeaders2 = new String[] { "Word", "#A" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] colHeaders2 = new String[] { "Word", "#A" }; //$NON-NLS-1$ //$NON-NLS-2$
 		treeWCols.bindToModel(createTreeTableRoots(), WordNode.class, ITreeNode.PROPERTY_CHILDREN,
 				ITreeNode.PROPERTY_PARENT, colValues, colHeaders2);
 		treeWCols.updateFromModel();
@@ -166,8 +175,8 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IToggleButtonRidget buttonCheck = getRidget(IToggleButtonRidget.class, "buttonCheck"); //$NON-NLS-1$
 
 		final IRidget[] markables = new IRidget[] { textName, textPrice, textAmount, textDate, dtDate, dtPicker,
-				comboAge, comboSize, choiceType, choiceFlavor, listPersons, tablePersons, compTable, treePersons,
-				treeWCols, buttonToggle, buttonPush, buttonRadioA, buttonRadioB, buttonCheck };
+				comboAge, comboStyle, comboSize, choiceType, choiceFlavor, listPersons, tablePersons, compTable,
+				treePersons, treeWCols, buttonToggle, buttonPush, buttonRadioA, buttonRadioB, buttonCheck };
 
 		final IToggleButtonRidget checkMandatory = getRidget(IToggleButtonRidget.class, "checkMandatory"); //$NON-NLS-1$
 		final IToggleButtonRidget checkError = getRidget(IToggleButtonRidget.class, "checkError"); //$NON-NLS-1$
@@ -178,12 +187,12 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		checkMandatory.addListener(new IActionListener() {
 			public void callback() {
-				boolean isMandatory = checkMandatory.isSelected();
-				for (IRidget ridget : markables) {
+				final boolean isMandatory = checkMandatory.isSelected();
+				for (final IRidget ridget : markables) {
 					if (ridget instanceof IMarkableRidget) {
 						((IMarkableRidget) ridget).setMandatory(isMandatory);
 					} else {
-						String name = ridget.getClass().getSimpleName();
+						final String name = ridget.getClass().getSimpleName();
 						System.out.println("No mandatory marker support on " + name); //$NON-NLS-1$
 					}
 				}
@@ -194,6 +203,7 @@ public class MarkerSubModuleController extends SubModuleController {
 					textDate.setText(null);
 					dtPicker.setText(null);
 					comboAge.setSelection("<none>"); //$NON-NLS-1$
+					comboStyle.setSelection("<none>"); //$NON-NLS-1$
 					comboSize.setSelection("<none>"); //$NON-NLS-1$
 					choiceType.setSelection(null);
 					choiceFlavor.setSelection(null);
@@ -211,11 +221,11 @@ public class MarkerSubModuleController extends SubModuleController {
 		});
 
 		checkError.addListener(new IActionListener() {
-			private IValidator alwaysWrong = new AlwaysWrongValidator();
+			private final IValidator alwaysWrong = new AlwaysWrongValidator();
 
 			public void callback() {
-				boolean isError = checkError.isSelected();
-				for (IRidget ridget : markables) {
+				final boolean isError = checkError.isSelected();
+				for (final IRidget ridget : markables) {
 					if (ridget instanceof IMarkableRidget) {
 						((IMarkableRidget) ridget).setErrorMarked(isError);
 					}
@@ -245,10 +255,10 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		getNavigationNode().addSimpleListener(new SimpleNavigationNodeAdapter() {
 			@Override
-			public void afterDeactivated(INavigationNode<?> node) {
+			public void afterDeactivated(final INavigationNode<?> node) {
 				super.afterDeactivated(node);
-				Collection<AttentionMarker> markers = node.getMarkersOfType(AttentionMarker.class);
-				for (AttentionMarker marker : markers) {
+				final Collection<AttentionMarker> markers = node.getMarkersOfType(AttentionMarker.class);
+				for (final AttentionMarker marker : markers) {
 					node.removeMarker(marker);
 				}
 			}
@@ -263,18 +273,18 @@ public class MarkerSubModuleController extends SubModuleController {
 	}
 
 	private ITreeNode[] createTreeRoots() {
-		ITreeNode rootA = new TreeNode("A"); //$NON-NLS-1$
+		final ITreeNode rootA = new TreeNode("A"); //$NON-NLS-1$
 		new TreeNode(rootA, new Person("Albinus", "Albert")); //$NON-NLS-1$ //$NON-NLS-2$
 		new TreeNode(rootA, new Person("Aurelius", "Mark")); //$NON-NLS-1$ //$NON-NLS-2$
-		ITreeNode rootB = new TreeNode("B"); //$NON-NLS-1$
+		final ITreeNode rootB = new TreeNode("B"); //$NON-NLS-1$
 		new TreeNode(rootB, new Person("Barker", "Clyve")); //$NON-NLS-1$ //$NON-NLS-2$
 		new TreeNode(rootB, new Person("Barclay", "Bob")); //$NON-NLS-1$ //$NON-NLS-2$
 		return new ITreeNode[] { rootA, rootB };
 	}
 
 	private WordNode[] createTreeTableRoots() {
-		WordNode rootA = new WordNode("A"); //$NON-NLS-1$
-		WordNode rootB = new WordNode("B"); //$NON-NLS-1$
+		final WordNode rootA = new WordNode("A"); //$NON-NLS-1$
+		final WordNode rootB = new WordNode("B"); //$NON-NLS-1$
 		new WordNode(rootA, "Astoria"); //$NON-NLS-1$
 		new WordNode(rootA, "Ashland"); //$NON-NLS-1$
 		new WordNode(rootA, "Aurora"); //$NON-NLS-1$
@@ -294,14 +304,14 @@ public class MarkerSubModuleController extends SubModuleController {
 		private final IRidget[] markables;
 		private final IToggleButtonRidget checkDisabled;
 
-		private DisabledActionListener(IRidget[] markables, IToggleButtonRidget checkDisabled) {
+		private DisabledActionListener(final IRidget[] markables, final IToggleButtonRidget checkDisabled) {
 			this.markables = markables;
 			this.checkDisabled = checkDisabled;
 		}
 
 		public void callback() {
-			boolean isEnabled = !checkDisabled.isSelected();
-			for (IRidget ridget : markables) {
+			final boolean isEnabled = !checkDisabled.isSelected();
+			for (final IRidget ridget : markables) {
 				ridget.setEnabled(isEnabled);
 			}
 		}
@@ -313,18 +323,18 @@ public class MarkerSubModuleController extends SubModuleController {
 		private final IRidget[] markables;
 		private final IToggleButtonRidget checkOutput;
 
-		private OutputActionListener(IRidget[] markables, IToggleButtonRidget checkOutput) {
+		private OutputActionListener(final IRidget[] markables, final IToggleButtonRidget checkOutput) {
 			this.markables = markables;
 			this.checkOutput = checkOutput;
 		}
 
 		public void callback() {
-			boolean isOutput = checkOutput.isSelected();
-			for (IRidget ridget : markables) {
+			final boolean isOutput = checkOutput.isSelected();
+			for (final IRidget ridget : markables) {
 				if (ridget instanceof IMarkableRidget) {
 					((IMarkableRidget) ridget).setOutputOnly(isOutput);
 				} else {
-					String name = ridget.getClass().getSimpleName();
+					final String name = ridget.getClass().getSimpleName();
 					System.out.println("No output marker support on " + name); //$NON-NLS-1$
 				}
 			}
@@ -337,14 +347,14 @@ public class MarkerSubModuleController extends SubModuleController {
 		private final IToggleButtonRidget checkHidden;
 		private final IRidget[] markables;
 
-		private HiddenActionListener(IToggleButtonRidget checkHidden, IRidget[] markables) {
+		private HiddenActionListener(final IToggleButtonRidget checkHidden, final IRidget[] markables) {
 			this.checkHidden = checkHidden;
 			this.markables = markables;
 		}
 
 		public void callback() {
-			boolean isVisible = !checkHidden.isSelected();
-			for (IRidget ridget : markables) {
+			final boolean isVisible = !checkHidden.isSelected();
+			for (final IRidget ridget : markables) {
 				ridget.setVisible(isVisible);
 			}
 		}
@@ -356,14 +366,14 @@ public class MarkerSubModuleController extends SubModuleController {
 		private final IToggleButtonRidget checkHiddenParent;
 		private final IRidget[] markables;
 
-		private HiddenParentActionListener(IToggleButtonRidget checkHiddenParent, IRidget[] markables) {
+		private HiddenParentActionListener(final IToggleButtonRidget checkHiddenParent, final IRidget[] markables) {
 			this.checkHiddenParent = checkHiddenParent;
 			this.markables = markables;
 		}
 
 		public void callback() {
-			Composite parent = ((Control) markables[0].getUIControl()).getParent();
-			boolean isVisible = !checkHiddenParent.isSelected();
+			final Composite parent = ((Control) markables[0].getUIControl()).getParent();
+			final boolean isVisible = !checkHiddenParent.isSelected();
 			parent.setVisible(isVisible);
 		}
 
@@ -373,7 +383,7 @@ public class MarkerSubModuleController extends SubModuleController {
 	 * Validator that always returns an error status.
 	 */
 	private static final class AlwaysWrongValidator implements IValidator {
-		public IStatus validate(Object value) {
+		public IStatus validate(final Object value) {
 			return ValidationRuleStatus.error(false, ""); //$NON-NLS-1$
 		}
 	}
@@ -385,16 +395,16 @@ public class MarkerSubModuleController extends SubModuleController {
 	public static final class RowRidget extends AbstractCompositeRidget implements IRowRidget {
 		private Person rowData;
 
-		public void setData(Object rowData) {
+		public void setData(final Object rowData) {
 			this.rowData = (Person) rowData;
 		}
 
 		@Override
 		public void configureRidgets() {
-			ITextRidget txtLast = (ITextRidget) getRidget("txtLast"); //$NON-NLS-1$
+			final ITextRidget txtLast = (ITextRidget) getRidget("txtLast"); //$NON-NLS-1$
 			txtLast.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
 			txtLast.updateFromModel();
-			ITextRidget txtFirst = (ITextRidget) getRidget("txtFirst"); //$NON-NLS-1$
+			final ITextRidget txtFirst = (ITextRidget) getRidget("txtFirst"); //$NON-NLS-1$
 			txtFirst.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 		}
