@@ -57,6 +57,11 @@
 			name="java.system.property"
 			resolver="org.eclipse.riena.core.util.JavaSystemPropertiesResolver"
 			supportsArgument="true"/>
+		<variable
+			description="Function resolver"
+			name="fn"
+			resolver="org.eclipse.riena.core.util.FunctionResolver"
+			supportsArgument="true"/>
 	</extension>
    
 </plugin>
