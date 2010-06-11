@@ -790,8 +790,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		final FTPropertyChangeListener listener = new FTPropertyChangeListener();
 		listener.setRunnable(new Runnable() {
 			public void run() {
-				if (!(control instanceof CCombo)) {
-					// CCombo updates asynchronously by design, so we skip these two.
+				if (!(control instanceof CCombo) && !(control instanceof CompletionCombo)) {
+					// CCombo and CompletionCombo updates asynchronously by design, so we skip these:
 					assertEquals(0, getSelectionIndex(control));
 					assertEquals("A", getSelectedString(control));
 				}
