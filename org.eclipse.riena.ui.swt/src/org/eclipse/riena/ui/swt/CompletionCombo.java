@@ -132,7 +132,7 @@ public class CompletionCombo extends Composite {
 	 * @see SWT#FLAT
 	 * @see Widget#getStyle()
 	 */
-	public CompletionCombo(Composite parent, int style) {
+	public CompletionCombo(final Composite parent, int style) {
 		super(parent, style = checkStyle(style));
 		_shell = super.getShell();
 
@@ -151,7 +151,7 @@ public class CompletionCombo extends Composite {
 		arrow = new Button(this, arrowStyle);
 
 		listener = new Listener() {
-			public void handleEvent(Event event) {
+			public void handleEvent(final Event event) {
 				if (isDisposed()) {
 					return;
 				}
@@ -188,11 +188,11 @@ public class CompletionCombo extends Composite {
 			}
 		};
 		filter = new Listener() {
-			public void handleEvent(Event event) {
+			public void handleEvent(final Event event) {
 				if (isDisposed()) {
 					return;
 				}
-				Shell shell = ((Control) event.widget).getShell();
+				final Shell shell = ((Control) event.widget).getShell();
 				if (shell == CompletionCombo.this.getShell()) {
 					if (event.type == SWT.MouseDown && !isClickedInCombo()) {
 						dropDown(false);
@@ -204,29 +204,29 @@ public class CompletionCombo extends Composite {
 			}
 
 			private boolean isClickedInCombo() {
-				Point point = toControl(getDisplay().getCursorLocation());
-				Point size = getSize();
-				Rectangle rect = new Rectangle(0, 0, size.x, size.y);
+				final Point point = toControl(getDisplay().getCursorLocation());
+				final Point size = getSize();
+				final Rectangle rect = new Rectangle(0, 0, size.x, size.y);
 				return rect.contains(point);
 			}
 		};
 
-		int[] comboEvents = { SWT.Dispose, SWT.FocusIn, SWT.FocusOut, SWT.Move, SWT.Resize };
-		for (int i = 0; i < comboEvents.length; i++) {
-			this.addListener(comboEvents[i], listener);
+		final int[] comboEvents = { SWT.Dispose, SWT.FocusIn, SWT.FocusOut, SWT.Move, SWT.Resize };
+		for (final int comboEvent : comboEvents) {
+			this.addListener(comboEvent, listener);
 		}
 
-		int[] textEvents = { SWT.DefaultSelection, SWT.DragDetect, SWT.KeyDown, SWT.KeyUp, SWT.MenuDetect, SWT.Modify,
-				SWT.MouseDown, SWT.MouseUp, SWT.MouseDoubleClick, SWT.MouseEnter, SWT.MouseExit, SWT.MouseHover,
-				SWT.MouseMove, SWT.MouseWheel, SWT.Traverse, SWT.FocusIn, SWT.Verify };
-		for (int i = 0; i < textEvents.length; i++) {
-			text.addListener(textEvents[i], listener);
+		final int[] textEvents = { SWT.DefaultSelection, SWT.DragDetect, SWT.KeyDown, SWT.KeyUp, SWT.MenuDetect,
+				SWT.Modify, SWT.MouseDown, SWT.MouseUp, SWT.MouseDoubleClick, SWT.MouseEnter, SWT.MouseExit,
+				SWT.MouseHover, SWT.MouseMove, SWT.MouseWheel, SWT.Traverse, SWT.FocusIn, SWT.Verify };
+		for (final int textEvent : textEvents) {
+			text.addListener(textEvent, listener);
 		}
 
-		int[] arrowEvents = { SWT.DragDetect, SWT.MouseDown, SWT.MouseEnter, SWT.MouseExit, SWT.MouseHover,
+		final int[] arrowEvents = { SWT.DragDetect, SWT.MouseDown, SWT.MouseEnter, SWT.MouseExit, SWT.MouseHover,
 				SWT.MouseMove, SWT.MouseUp, SWT.MouseWheel, SWT.Selection, SWT.FocusIn };
-		for (int i = 0; i < arrowEvents.length; i++) {
-			arrow.addListener(arrowEvents[i], listener);
+		for (final int arrowEvent : arrowEvents) {
+			arrow.addListener(arrowEvent, listener);
 		}
 
 		createPopup(null, -1);
@@ -235,8 +235,8 @@ public class CompletionCombo extends Composite {
 		autoCompletionMode = AutoCompletionMode.NO_MISSMATCH;
 	}
 
-	static int checkStyle(int style) {
-		int mask = SWT.BORDER | SWT.READ_ONLY | SWT.FLAT | SWT.LEFT_TO_RIGHT | SWT.RIGHT_TO_LEFT;
+	static int checkStyle(final int style) {
+		final int mask = SWT.BORDER | SWT.READ_ONLY | SWT.FLAT | SWT.LEFT_TO_RIGHT | SWT.RIGHT_TO_LEFT;
 		return SWT.NO_FOCUS | (style & mask);
 	}
 
@@ -260,7 +260,7 @@ public class CompletionCombo extends Composite {
 	 * 
 	 * @see #add(String,int)
 	 */
-	public void add(String string) {
+	public void add(final String string) {
 		checkWidget();
 		if (string == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
@@ -297,7 +297,7 @@ public class CompletionCombo extends Composite {
 	 * 
 	 * @see #add(String)
 	 */
-	public void add(String string, int index) {
+	public void add(final String string, final int index) {
 		checkWidget();
 		if (string == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
@@ -328,12 +328,12 @@ public class CompletionCombo extends Composite {
 	 * @see ModifyListener
 	 * @see #removeModifyListener
 	 */
-	public void addModifyListener(ModifyListener listener) {
+	public void addModifyListener(final ModifyListener listener) {
 		checkWidget();
 		if (listener == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
 		}
-		TypedListener typedListener = new TypedListener(listener);
+		final TypedListener typedListener = new TypedListener(listener);
 		addListener(SWT.Modify, typedListener);
 	}
 
@@ -367,12 +367,12 @@ public class CompletionCombo extends Composite {
 	 * @see #removeSelectionListener
 	 * @see SelectionEvent
 	 */
-	public void addSelectionListener(SelectionListener listener) {
+	public void addSelectionListener(final SelectionListener listener) {
 		checkWidget();
 		if (listener == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
 		}
-		TypedListener typedListener = new TypedListener(listener);
+		final TypedListener typedListener = new TypedListener(listener);
 		addListener(SWT.Selection, typedListener);
 		addListener(SWT.DefaultSelection, typedListener);
 	}
@@ -400,16 +400,16 @@ public class CompletionCombo extends Composite {
 	 * @see VerifyListener
 	 * @see #removeVerifyListener
 	 */
-	public void addVerifyListener(VerifyListener listener) {
+	public void addVerifyListener(final VerifyListener listener) {
 		checkWidget();
 		if (listener == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
 		}
-		TypedListener typedListener = new TypedListener(listener);
+		final TypedListener typedListener = new TypedListener(listener);
 		addListener(SWT.Verify, typedListener);
 	}
 
-	void arrowEvent(Event event) {
+	void arrowEvent(final Event event) {
 		switch (event.type) {
 		case SWT.FocusIn:
 			handleFocus(SWT.FocusIn);
@@ -441,14 +441,14 @@ public class CompletionCombo extends Composite {
 			}
 			if (event.count != 0) {
 				event.doit = false;
-				int oldIndex = getSelectionIndex();
+				final int oldIndex = getSelectionIndex();
 				if (event.count > 0) {
 					select(Math.max(oldIndex - 1, 0));
 				} else {
 					select(Math.min(oldIndex + 1, getItemCount() - 1));
 				}
 				if (oldIndex != getSelectionIndex()) {
-					Event e = new Event();
+					final Event e = new Event();
 					e.time = event.time;
 					e.stateMask = event.stateMask;
 					notifyListeners(SWT.Selection, e);
@@ -492,7 +492,7 @@ public class CompletionCombo extends Composite {
 		list.deselectAll();
 	}
 
-	void comboEvent(Event event) {
+	void comboEvent(final Event event) {
 		switch (event.type) {
 		case SWT.Dispose:
 			removeListener(SWT.Dispose, listener);
@@ -503,9 +503,9 @@ public class CompletionCombo extends Composite {
 				list.removeListener(SWT.Dispose, listener);
 				popup.dispose();
 			}
-			Shell shell = getShell();
+			final Shell shell = getShell();
 			shell.removeListener(SWT.Deactivate, listener);
-			Display display = getDisplay();
+			final Display display = getDisplay();
 			display.removeFilter(SWT.FocusIn, filter);
 			popup = null;
 			text = null;
@@ -514,7 +514,7 @@ public class CompletionCombo extends Composite {
 			_shell = null;
 			break;
 		case SWT.FocusIn:
-			Control focusControl = getDisplay().getFocusControl();
+			final Control focusControl = getDisplay().getFocusControl();
 			if (focusControl == arrow || focusControl == list) {
 				return;
 			}
@@ -547,21 +547,22 @@ public class CompletionCombo extends Composite {
 		}
 	}
 
-	public Point computeSize(int wHint, int hHint, boolean changed) {
+	@Override
+	public Point computeSize(final int wHint, final int hHint, final boolean changed) {
 		checkWidget();
 		int width = 0, height = 0;
-		String[] items = list.getItems();
-		GC gc = new GC(text);
-		int spacer = gc.stringExtent(" ").x; //$NON-NLS-1$
+		final String[] items = list.getItems();
+		final GC gc = new GC(text);
+		final int spacer = gc.stringExtent(" ").x; //$NON-NLS-1$
 		int textWidth = gc.stringExtent(text.getText()).x;
-		for (int i = 0; i < items.length; i++) {
-			textWidth = Math.max(gc.stringExtent(items[i]).x, textWidth);
+		for (final String item : items) {
+			textWidth = Math.max(gc.stringExtent(item).x, textWidth);
 		}
 		gc.dispose();
-		Point textSize = text.computeSize(SWT.DEFAULT, SWT.DEFAULT, changed);
-		Point arrowSize = arrow.computeSize(SWT.DEFAULT, SWT.DEFAULT, changed);
-		Point listSize = list.computeSize(SWT.DEFAULT, SWT.DEFAULT, changed);
-		int borderWidth = getBorderWidth();
+		final Point textSize = text.computeSize(SWT.DEFAULT, SWT.DEFAULT, changed);
+		final Point arrowSize = arrow.computeSize(SWT.DEFAULT, SWT.DEFAULT, changed);
+		final Point listSize = list.computeSize(SWT.DEFAULT, SWT.DEFAULT, changed);
+		final int borderWidth = getBorderWidth();
 
 		height = Math.max(textSize.y, arrowSize.y);
 		width = Math.max(textWidth + 2 * spacer + arrowSize.x + 2 * borderWidth, listSize.x);
@@ -593,10 +594,10 @@ public class CompletionCombo extends Composite {
 		text.copy();
 	}
 
-	void createPopup(String[] items, int selectionIndex) {
+	void createPopup(final String[] items, final int selectionIndex) {
 		// create shell and list
 		popup = new Shell(getShell(), SWT.NO_TRIM | SWT.ON_TOP);
-		int style = getStyle();
+		final int style = getStyle();
 		int listStyle = SWT.SINGLE | SWT.V_SCROLL;
 		if ((style & SWT.FLAT) != 0) {
 			listStyle |= SWT.FLAT;
@@ -618,13 +619,14 @@ public class CompletionCombo extends Composite {
 			list.setBackground(background);
 		}
 
-		int[] popupEvents = { SWT.Close, SWT.Paint, SWT.Deactivate };
-		for (int i = 0; i < popupEvents.length; i++) {
-			popup.addListener(popupEvents[i], listener);
+		final int[] popupEvents = { SWT.Close, SWT.Paint, SWT.Deactivate };
+		for (final int popupEvent : popupEvents) {
+			popup.addListener(popupEvent, listener);
 		}
-		int[] listEvents = { SWT.MouseUp, SWT.Selection, SWT.Traverse, SWT.KeyDown, SWT.KeyUp, SWT.FocusIn, SWT.Dispose };
-		for (int i = 0; i < listEvents.length; i++) {
-			list.addListener(listEvents[i], listener);
+		final int[] listEvents = { SWT.MouseUp, SWT.Selection, SWT.Traverse, SWT.KeyDown, SWT.KeyUp, SWT.FocusIn,
+				SWT.Dispose };
+		for (final int listEvent : listEvents) {
+			list.addListener(listEvent, listener);
 		}
 
 		if (items != null) {
@@ -671,7 +673,7 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void deselect(int index) {
+	public void deselect(final int index) {
 		checkWidget();
 		if (0 <= index && index < list.getItemCount() && index == list.getSelectionIndex()
 				&& text.getText().equals(list.getItem(index))) {
@@ -703,7 +705,7 @@ public class CompletionCombo extends Composite {
 		list.deselectAll();
 	}
 
-	void dropDown(boolean drop) {
+	void dropDown(final boolean drop) {
 		if (drop == isDropped()) {
 			return;
 		}
@@ -718,8 +720,8 @@ public class CompletionCombo extends Composite {
 			return;
 		}
 		if (getShell() != popup.getParent()) {
-			String[] items = list.getItems();
-			int selectionIndex = list.getSelectionIndex();
+			final String[] items = list.getItems();
+			final int selectionIndex = list.getSelectionIndex();
 			list.removeListener(SWT.Dispose, listener);
 			popup.dispose();
 			popup = null;
@@ -727,24 +729,24 @@ public class CompletionCombo extends Composite {
 			createPopup(items, selectionIndex);
 		}
 
-		Point size = getSize();
+		final Point size = getSize();
 		int itemCount = list.getItemCount();
 		itemCount = (itemCount == 0) ? visibleItemCount : Math.min(visibleItemCount, itemCount);
-		int itemHeight = list.getItemHeight() * itemCount;
-		Point listSize = list.computeSize(SWT.DEFAULT, itemHeight, false);
+		final int itemHeight = list.getItemHeight() * itemCount;
+		final Point listSize = list.computeSize(SWT.DEFAULT, itemHeight, false);
 		list.setBounds(1, 1, Math.max(size.x - 2, listSize.x), listSize.y);
 
-		int index = list.getSelectionIndex();
+		final int index = list.getSelectionIndex();
 		if (index != -1) {
 			list.setTopIndex(index);
 		}
-		Display display = getDisplay();
-		Rectangle listRect = list.getBounds();
-		Rectangle parentRect = display.map(getParent(), null, getBounds());
-		Point comboSize = getSize();
-		Rectangle displayRect = getMonitor().getClientArea();
-		int width = Math.max(comboSize.x, listRect.width + 2);
-		int height = listRect.height + 2;
+		final Display display = getDisplay();
+		final Rectangle listRect = list.getBounds();
+		final Rectangle parentRect = display.map(getParent(), null, getBounds());
+		final Point comboSize = getSize();
+		final Rectangle displayRect = getMonitor().getClientArea();
+		final int width = Math.max(comboSize.x, listRect.width + 2);
+		final int height = listRect.height + 2;
 		int x = parentRect.x;
 		int y = parentRect.y + comboSize.y;
 		if (y + height > displayRect.y + displayRect.height) {
@@ -769,12 +771,12 @@ public class CompletionCombo extends Composite {
 	 * character in the given string. If there are no '&' characters in the
 	 * given string, return '\0'.
 	 */
-	char _findMnemonic(String string) {
+	char _findMnemonic(final String string) {
 		if (string == null) {
 			return '\0';
 		}
 		int index = 0;
-		int length = string.length();
+		final int length = string.length();
 		do {
 			while (index < length && string.charAt(index) != '&') {
 				index++;
@@ -795,7 +797,7 @@ public class CompletionCombo extends Composite {
 	 * null if none.
 	 */
 	Label getAssociatedLabel() {
-		Control[] siblings = getParent().getChildren();
+		final Control[] siblings = getParent().getChildren();
 		for (int i = 0; i < siblings.length; i++) {
 			if (siblings[i] == this) {
 				if (i > 0 && siblings[i - 1] instanceof Label) {
@@ -806,6 +808,7 @@ public class CompletionCombo extends Composite {
 		return null;
 	}
 
+	@Override
 	public Control[] getChildren() {
 		checkWidget();
 		return new Control[0];
@@ -851,7 +854,7 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public String getItem(int index) {
+	public String getItem(final int index) {
 		checkWidget();
 		return list.getItem(index);
 	}
@@ -940,6 +943,7 @@ public class CompletionCombo extends Composite {
 		return isDropped();
 	}
 
+	@Override
 	public Menu getMenu() {
 		return text.getMenu();
 	}
@@ -985,9 +989,10 @@ public class CompletionCombo extends Composite {
 		return list.getSelectionIndex();
 	}
 
+	@Override
 	public Shell getShell() {
 		checkWidget();
-		Shell shell = super.getShell();
+		final Shell shell = super.getShell();
 		if (shell != _shell) {
 			if (_shell != null && !_shell.isDisposed()) {
 				_shell.removeListener(SWT.Deactivate, listener);
@@ -997,6 +1002,7 @@ public class CompletionCombo extends Composite {
 		return _shell;
 	}
 
+	@Override
 	public int getStyle() {
 		int style = super.getStyle();
 		style &= ~SWT.READ_ONLY;
@@ -1083,7 +1089,7 @@ public class CompletionCombo extends Composite {
 		return visibleItemCount;
 	}
 
-	void handleFocus(int type) {
+	void handleFocus(final int type) {
 		switch (type) {
 		case SWT.FocusIn:
 			if (hasFocus) {
@@ -1108,7 +1114,7 @@ public class CompletionCombo extends Composite {
 			if (!hasFocus) {
 				return;
 			}
-			Control focusControl = getDisplay().getFocusControl();
+			final Control focusControl = getDisplay().getFocusControl();
 			if (focusControl == arrow || focusControl == list || focusControl == text) {
 				return;
 			}
@@ -1147,7 +1153,7 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public int indexOf(String string) {
+	public int indexOf(final String string) {
 		checkWidget();
 		if (string == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
@@ -1179,7 +1185,7 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public int indexOf(String string, int start) {
+	public int indexOf(final String string, final int start) {
 		checkWidget();
 		if (string == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
@@ -1188,23 +1194,25 @@ public class CompletionCombo extends Composite {
 	}
 
 	void initAccessible() {
-		AccessibleAdapter accessibleAdapter = new AccessibleAdapter() {
-			public void getName(AccessibleEvent e) {
+		final AccessibleAdapter accessibleAdapter = new AccessibleAdapter() {
+			@Override
+			public void getName(final AccessibleEvent e) {
 				String name = null;
-				Label label = getAssociatedLabel();
+				final Label label = getAssociatedLabel();
 				if (label != null) {
 					name = stripMnemonic(label.getText());
 				}
 				e.result = name;
 			}
 
-			public void getKeyboardShortcut(AccessibleEvent e) {
+			@Override
+			public void getKeyboardShortcut(final AccessibleEvent e) {
 				String shortcut = null;
-				Label label = getAssociatedLabel();
+				final Label label = getAssociatedLabel();
 				if (label != null) {
-					String labelText = label.getText();
+					final String labelText = label.getText();
 					if (labelText != null) {
-						char mnemonic = _findMnemonic(labelText);
+						final char mnemonic = _findMnemonic(labelText);
 						if (mnemonic != '\0') {
 							shortcut = "Alt+" + mnemonic; //$NON-NLS-1$
 						}
@@ -1213,7 +1221,8 @@ public class CompletionCombo extends Composite {
 				e.result = shortcut;
 			}
 
-			public void getHelp(AccessibleEvent e) {
+			@Override
+			public void getHelp(final AccessibleEvent e) {
 				e.result = getToolTipText();
 			}
 		};
@@ -1222,73 +1231,86 @@ public class CompletionCombo extends Composite {
 		list.getAccessible().addAccessibleListener(accessibleAdapter);
 
 		arrow.getAccessible().addAccessibleListener(new AccessibleAdapter() {
-			public void getName(AccessibleEvent e) {
+			@Override
+			public void getName(final AccessibleEvent e) {
 				e.result = isDropped() ? SWT.getMessage("SWT_Close") : SWT.getMessage("SWT_Open"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
-			public void getKeyboardShortcut(AccessibleEvent e) {
+			@Override
+			public void getKeyboardShortcut(final AccessibleEvent e) {
 				e.result = "Alt+Down Arrow"; //$NON-NLS-1$
 			}
 
-			public void getHelp(AccessibleEvent e) {
+			@Override
+			public void getHelp(final AccessibleEvent e) {
 				e.result = getToolTipText();
 			}
 		});
 
 		getAccessible().addAccessibleTextListener(new AccessibleTextAdapter() {
-			public void getCaretOffset(AccessibleTextEvent e) {
+			@Override
+			public void getCaretOffset(final AccessibleTextEvent e) {
 				e.offset = text.getCaretPosition();
 			}
 
-			public void getSelectionRange(AccessibleTextEvent e) {
-				Point sel = text.getSelection();
+			@Override
+			public void getSelectionRange(final AccessibleTextEvent e) {
+				final Point sel = text.getSelection();
 				e.offset = sel.x;
 				e.length = sel.y - sel.x;
 			}
 		});
 
 		getAccessible().addAccessibleControlListener(new AccessibleControlAdapter() {
-			public void getChildAtPoint(AccessibleControlEvent e) {
-				Point testPoint = toControl(e.x, e.y);
+			@Override
+			public void getChildAtPoint(final AccessibleControlEvent e) {
+				final Point testPoint = toControl(e.x, e.y);
 				if (getBounds().contains(testPoint)) {
 					e.childID = ACC.CHILDID_SELF;
 				}
 			}
 
-			public void getLocation(AccessibleControlEvent e) {
-				Rectangle location = getBounds();
-				Point pt = getParent().toDisplay(location.x, location.y);
+			@Override
+			public void getLocation(final AccessibleControlEvent e) {
+				final Rectangle location = getBounds();
+				final Point pt = getParent().toDisplay(location.x, location.y);
 				e.x = pt.x;
 				e.y = pt.y;
 				e.width = location.width;
 				e.height = location.height;
 			}
 
-			public void getChildCount(AccessibleControlEvent e) {
+			@Override
+			public void getChildCount(final AccessibleControlEvent e) {
 				e.detail = 0;
 			}
 
-			public void getRole(AccessibleControlEvent e) {
+			@Override
+			public void getRole(final AccessibleControlEvent e) {
 				e.detail = ACC.ROLE_COMBOBOX;
 			}
 
-			public void getState(AccessibleControlEvent e) {
+			@Override
+			public void getState(final AccessibleControlEvent e) {
 				e.detail = ACC.STATE_NORMAL;
 			}
 
-			public void getValue(AccessibleControlEvent e) {
+			@Override
+			public void getValue(final AccessibleControlEvent e) {
 				e.result = getText();
 			}
 		});
 
 		text.getAccessible().addAccessibleControlListener(new AccessibleControlAdapter() {
-			public void getRole(AccessibleControlEvent e) {
+			@Override
+			public void getRole(final AccessibleControlEvent e) {
 				e.detail = text.getEditable() ? ACC.ROLE_TEXT : ACC.ROLE_LABEL;
 			}
 		});
 
 		arrow.getAccessible().addAccessibleControlListener(new AccessibleControlAdapter() {
-			public void getDefaultAction(AccessibleControlEvent e) {
+			@Override
+			public void getDefaultAction(final AccessibleControlEvent e) {
 				e.result = isDropped() ? SWT.getMessage("SWT_Close") : SWT.getMessage("SWT_Open"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		});
@@ -1298,6 +1320,7 @@ public class CompletionCombo extends Composite {
 		return popup.getVisible();
 	}
 
+	@Override
 	public boolean isFocusControl() {
 		checkWidget();
 		if (text.isFocusControl() || arrow.isFocusControl() || list.isFocusControl() || popup.isFocusControl()) {
@@ -1306,24 +1329,24 @@ public class CompletionCombo extends Composite {
 		return super.isFocusControl();
 	}
 
-	void internalLayout(boolean changed) {
+	void internalLayout(final boolean changed) {
 		if (isDropped()) {
 			dropDown(false);
 		}
-		Rectangle rect = getClientArea();
-		int width = rect.width;
-		int height = rect.height;
-		Point arrowSize = arrow.computeSize(SWT.DEFAULT, height, changed);
+		final Rectangle rect = getClientArea();
+		final int width = rect.width;
+		final int height = rect.height;
+		final Point arrowSize = arrow.computeSize(SWT.DEFAULT, height, changed);
 		text.setBounds(0, 0, width - arrowSize.x, height);
 		arrow.setBounds(width - arrowSize.x, 0, arrowSize.x, arrowSize.y);
 	}
 
-	void listEvent(Event event) {
+	void listEvent(final Event event) {
 		switch (event.type) {
 		case SWT.Dispose:
 			if (getShell() != popup.getParent()) {
-				String[] items = list.getItems();
-				int selectionIndex = list.getSelectionIndex();
+				final String[] items = list.getItems();
+				final int selectionIndex = list.getSelectionIndex();
 				popup = null;
 				list = null;
 				createPopup(items, selectionIndex);
@@ -1339,7 +1362,7 @@ public class CompletionCombo extends Composite {
 			dropDown(false);
 			break;
 		case SWT.Selection:
-			int index = list.getSelectionIndex();
+			final int index = list.getSelectionIndex();
 			if (index == -1) {
 				return;
 			}
@@ -1448,12 +1471,12 @@ public class CompletionCombo extends Composite {
 		text.paste();
 	}
 
-	void popupEvent(Event event) {
+	void popupEvent(final Event event) {
 		switch (event.type) {
 		case SWT.Paint:
 			// draw black rectangle around list
-			Rectangle listRect = list.getBounds();
-			Color black = getDisplay().getSystemColor(SWT.COLOR_BLACK);
+			final Rectangle listRect = list.getBounds();
+			final Color black = getDisplay().getSystemColor(SWT.COLOR_BLACK);
 			event.gc.setForeground(black);
 			event.gc.drawRectangle(0, 0, listRect.width + 1, listRect.height + 1);
 			break;
@@ -1473,9 +1496,9 @@ public class CompletionCombo extends Composite {
 			 * selection event to be disappear.
 			 */
 			if (!"carbon".equals(SWT.getPlatform())) { //$NON-NLS-1$
-				Point point = arrow.toControl(getDisplay().getCursorLocation());
-				Point size = arrow.getSize();
-				Rectangle rect = new Rectangle(0, 0, size.x, size.y);
+				final Point point = arrow.toControl(getDisplay().getCursorLocation());
+				final Point size = arrow.getSize();
+				final Rectangle rect = new Rectangle(0, 0, size.x, size.y);
 				if (!rect.contains(point)) {
 					dropDown(false);
 				}
@@ -1488,6 +1511,7 @@ public class CompletionCombo extends Composite {
 		}
 	}
 
+	@Override
 	public void redraw() {
 		super.redraw();
 		text.redraw();
@@ -1497,7 +1521,8 @@ public class CompletionCombo extends Composite {
 		}
 	}
 
-	public void redraw(int x, int y, int width, int height, boolean all) {
+	@Override
+	public void redraw(final int x, final int y, final int width, final int height, final boolean all) {
 		super.redraw(x, y, width, height, true);
 	}
 
@@ -1522,7 +1547,7 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void remove(int index) {
+	public void remove(final int index) {
 		checkWidget();
 		list.remove(index);
 	}
@@ -1550,7 +1575,7 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void remove(int start, int end) {
+	public void remove(final int start, final int end) {
 		checkWidget();
 		list.remove(start, end);
 	}
@@ -1576,7 +1601,7 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void remove(String string) {
+	public void remove(final String string) {
 		checkWidget();
 		if (string == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
@@ -1624,7 +1649,7 @@ public class CompletionCombo extends Composite {
 	 * @see ModifyListener
 	 * @see #addModifyListener
 	 */
-	public void removeModifyListener(ModifyListener listener) {
+	public void removeModifyListener(final ModifyListener listener) {
 		checkWidget();
 		if (listener == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
@@ -1654,7 +1679,7 @@ public class CompletionCombo extends Composite {
 	 * @see SelectionListener
 	 * @see #addSelectionListener
 	 */
-	public void removeSelectionListener(SelectionListener listener) {
+	public void removeSelectionListener(final SelectionListener listener) {
 		checkWidget();
 		if (listener == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
@@ -1685,7 +1710,7 @@ public class CompletionCombo extends Composite {
 	 * @see VerifyListener
 	 * @see #addVerifyListener
 	 */
-	public void removeVerifyListener(VerifyListener listener) {
+	public void removeVerifyListener(final VerifyListener listener) {
 		checkWidget();
 		if (listener == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
@@ -1709,7 +1734,7 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void select(int index) {
+	public void select(final int index) {
 		checkWidget();
 		if (index == -1) {
 			list.deselectAll();
@@ -1726,7 +1751,8 @@ public class CompletionCombo extends Composite {
 		}
 	}
 
-	public void setBackground(Color color) {
+	@Override
+	public void setBackground(final Color color) {
 		super.setBackground(color);
 		background = color;
 		// fix for 304869
@@ -1755,12 +1781,13 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void setEditable(boolean editable) {
+	public void setEditable(final boolean editable) {
 		checkWidget();
 		text.setEditable(editable);
 	}
 
-	public void setEnabled(boolean enabled) {
+	@Override
+	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (popup != null) {
 			popup.setVisible(false);
@@ -1773,6 +1800,7 @@ public class CompletionCombo extends Composite {
 		}
 	}
 
+	@Override
 	public boolean setFocus() {
 		checkWidget();
 		if (!isEnabled() || !isVisible()) {
@@ -1784,7 +1812,8 @@ public class CompletionCombo extends Composite {
 		return text.setFocus();
 	}
 
-	public void setFont(Font font) {
+	@Override
+	public void setFont(final Font font) {
 		super.setFont(font);
 		this.font = font;
 		text.setFont(font);
@@ -1792,7 +1821,8 @@ public class CompletionCombo extends Composite {
 		internalLayout(true);
 	}
 
-	public void setForeground(Color color) {
+	@Override
+	public void setForeground(final Color color) {
 		super.setForeground(color);
 		foreground = color;
 		// fix for 304869
@@ -1833,7 +1863,7 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void setItem(int index, String string) {
+	public void setItem(final int index, final String string) {
 		checkWidget();
 		list.setItem(index, string);
 	}
@@ -1858,7 +1888,7 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void setItems(String[] items) {
+	public void setItems(final String[] items) {
 		checkWidget();
 		list.setItems(items);
 		if (!text.getEditable()) {
@@ -1885,7 +1915,8 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void setLayout(Layout layout) {
+	@Override
+	public void setLayout(final Layout layout) {
 		checkWidget();
 		return;
 	}
@@ -1910,12 +1941,13 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void setListVisible(boolean visible) {
+	public void setListVisible(final boolean visible) {
 		checkWidget();
 		dropDown(visible);
 	}
 
-	public void setMenu(Menu menu) {
+	@Override
+	public void setMenu(final Menu menu) {
 		text.setMenu(menu);
 	}
 
@@ -1939,7 +1971,7 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void setSelection(Point selection) {
+	public void setSelection(final Point selection) {
 		checkWidget();
 		if (selection == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
@@ -1971,12 +2003,12 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void setText(String string) {
+	public void setText(final String string) {
 		checkWidget();
 		if (string == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
 		}
-		int index = list.indexOf(string);
+		final int index = list.indexOf(string);
 		if (index == -1) {
 			list.deselectAll();
 			text.setText(string);
@@ -2007,19 +2039,21 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void setTextLimit(int limit) {
+	public void setTextLimit(final int limit) {
 		checkWidget();
 		text.setTextLimit(limit);
 	}
 
-	public void setToolTipText(String string) {
+	@Override
+	public void setToolTipText(final String string) {
 		checkWidget();
 		super.setToolTipText(string);
 		arrow.setToolTipText(string);
 		text.setToolTipText(string);
 	}
 
-	public void setVisible(boolean visible) {
+	@Override
+	public void setVisible(final boolean visible) {
 		super.setVisible(visible);
 		/*
 		 * At this point the widget may have been disposed in a FocusOut event.
@@ -2052,7 +2086,7 @@ public class CompletionCombo extends Composite {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 */
-	public void setVisibleItemCount(int count) {
+	public void setVisibleItemCount(final int count) {
 		checkWidget();
 		if (count < 0) {
 			return;
@@ -2060,9 +2094,9 @@ public class CompletionCombo extends Composite {
 		visibleItemCount = count;
 	}
 
-	String stripMnemonic(String string) {
+	String stripMnemonic(final String string) {
 		int index = 0;
-		int length = string.length();
+		final int length = string.length();
 		do {
 			while ((index < length) && (string.charAt(index) != '&')) {
 				index++;
@@ -2078,7 +2112,7 @@ public class CompletionCombo extends Composite {
 		return string;
 	}
 
-	void textEvent(Event event) {
+	void textEvent(final Event event) {
 		switch (event.type) {
 		case SWT.FocusIn:
 			handleFocus(SWT.FocusIn);
@@ -2106,7 +2140,7 @@ public class CompletionCombo extends Composite {
 			event.type = SWT.None;
 			break;
 		case SWT.KeyDown:
-			Event keyEvent = new Event();
+			final Event keyEvent = new Event();
 			keyEvent.time = event.time;
 			keyEvent.character = event.character;
 			keyEvent.keyCode = event.keyCode;
@@ -2132,7 +2166,7 @@ public class CompletionCombo extends Composite {
 			if (event.keyCode == SWT.ARROW_UP || event.keyCode == SWT.ARROW_DOWN) {
 				event.doit = false;
 				if ((event.stateMask & SWT.ALT) != 0) {
-					boolean dropped = isDropped();
+					final boolean dropped = isDropped();
 					text.selectAll();
 					if (!dropped) {
 						setFocus();
@@ -2141,7 +2175,7 @@ public class CompletionCombo extends Composite {
 					break;
 				}
 
-				int oldIndex = getSelectionIndex();
+				final int oldIndex = getSelectionIndex();
 				if (event.keyCode == SWT.ARROW_UP) {
 					select(Math.max(oldIndex - 1, 0));
 				} else {
@@ -2210,7 +2244,7 @@ public class CompletionCombo extends Composite {
 			if (text.getEditable()) {
 				return;
 			}
-			boolean dropped = isDropped();
+			final boolean dropped = isDropped();
 			text.selectAll();
 			if (!dropped) {
 				setFocus();
@@ -2253,7 +2287,7 @@ public class CompletionCombo extends Composite {
 			}
 			if (event.count != 0) {
 				event.doit = false;
-				int oldIndex = getSelectionIndex();
+				final int oldIndex = getSelectionIndex();
 				if (event.count > 0) {
 					select(Math.max(oldIndex - 1, 0));
 				} else {
@@ -2315,7 +2349,8 @@ public class CompletionCombo extends Composite {
 		}
 	}
 
-	public boolean traverse(int event) {
+	@Override
+	public boolean traverse(final int event) {
 		/*
 		 * When the traverse event is sent to the CCombo, it will create a list
 		 * of controls to tab to next. Since the CCombo is a composite, the next
@@ -2341,7 +2376,7 @@ public class CompletionCombo extends Composite {
 	 *            the key event that triggered the method
 	 * @return if this method handled the event
 	 */
-	private void handleAutoCompletion(Event event) {
+	private void handleAutoCompletion(final Event event) {
 		if (event.character == SWT.DEL && !isAllowMissmatch()) {
 			event.doit = false;
 		} else if (Character.isLetterOrDigit(event.character) || event.character == SWT.BS) {
@@ -2350,10 +2385,10 @@ public class CompletionCombo extends Composite {
 				text.setFocus();
 			}
 
-			char typedChar = event.character;
-			Point selection = getSelection();
+			final char typedChar = event.character;
+			final Point selection = getSelection();
 
-			String prefix = buildPrefix(text.getText().substring(0, selection.x), typedChar, selection);
+			final String prefix = buildPrefix(text.getText().substring(0, selection.x), typedChar, selection);
 
 			matchPrefixWithList(prefix);
 			event.doit = false;
@@ -2366,7 +2401,7 @@ public class CompletionCombo extends Composite {
 	/**
 	 * 
 	 */
-	private String buildPrefix(String prefix, char typedChar, Point selection) {
+	private String buildPrefix(final String prefix, final char typedChar, final Point selection) {
 		if (Character.isLetterOrDigit(typedChar)) {
 			return buildPrefixForLetterOrDigit(typedChar, selection);
 		} else if (!StringUtils.isDeepEmpty(prefix)) {
@@ -2376,10 +2411,10 @@ public class CompletionCombo extends Composite {
 
 	}
 
-	private void matchPrefixWithList(String prefix) {
+	private void matchPrefixWithList(final String prefix) {
 		if (prefix != null) {
-			int prefixLength = prefix.length();
-			for (String item : list.getItems()) {
+			final int prefixLength = prefix.length();
+			for (final String item : list.getItems()) {
 				if (matchesWord(prefix, item)) {
 					setMatchingTextAndSelection(prefixLength, item);
 					return;
@@ -2392,13 +2427,13 @@ public class CompletionCombo extends Composite {
 		}
 	}
 
-	private void setMatchingTextAndSelection(int selectionStart, String item) {
+	private void setMatchingTextAndSelection(final int selectionStart, final String item) {
 		text.setText(item);
 		setSelection(new Point(selectionStart, item.length()));
 		list.setSelection(new String[] { item });
 	}
 
-	private String buildPrefixOnBackSpace(char typedChar, Point selection) {
+	private String buildPrefixOnBackSpace(final char typedChar, final Point selection) {
 		String prefix = text.getText().substring(0, selection.x);
 		if (isAllowMissmatch()) {
 			prefix = text.getText().substring(0, selection.x - 1) + text.getText().substring(selection.y);
@@ -2417,7 +2452,7 @@ public class CompletionCombo extends Composite {
 		return prefix;
 	}
 
-	private String buildPrefixForLetterOrDigit(char typedChar, Point selection) {
+	private String buildPrefixForLetterOrDigit(final char typedChar, final Point selection) {
 		String prefix = text.getText().substring(0, selection.x);
 		if (isAllowMissmatch()) {
 			prefix = text.getText().substring(0, selection.x) + typedChar + text.getText().substring(selection.y);
@@ -2432,7 +2467,7 @@ public class CompletionCombo extends Composite {
 		return prefix;
 	}
 
-	private boolean matchesWord(String prefix, String word) {
+	private boolean matchesWord(final String prefix, final String word) {
 		if (prefix == null || word == null) {
 			return false;
 		}
@@ -2454,7 +2489,7 @@ public class CompletionCombo extends Composite {
 	 * @param autoCompletion
 	 *            true if autocompletion should be turned on, false is default
 	 */
-	public void setAutoCompletion(boolean autoCompletion) {
+	public void setAutoCompletion(final boolean autoCompletion) {
 		this.autoCompletion = autoCompletion;
 	}
 
@@ -2467,7 +2502,7 @@ public class CompletionCombo extends Composite {
 	 * @param autoCompletionMode
 	 *            an {@link AutoCompletionMode} instance; never null
 	 */
-	public void setAutoCompletionMode(AutoCompletionMode autoCompletionMode) {
+	public void setAutoCompletionMode(final AutoCompletionMode autoCompletionMode) {
 		Assert.isNotNull(autoCompletionMode);
 		this.autoCompletionMode = autoCompletionMode;
 	}
