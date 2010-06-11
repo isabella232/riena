@@ -76,8 +76,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	public AbstractMasterDetailsRidget() {
 		addPropertyChangeListener(null, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				String propertyName = evt.getPropertyName();
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final String propertyName = evt.getPropertyName();
 				if (!hasApplyButton()
 						|| isDirectWriting
 						|| ignoreChanges
@@ -98,14 +98,14 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		});
 	}
 
-	public final void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass,
-			String[] columnPropertyNames, String[] columnHeaders) {
+	public final void bindToModel(final IObservableList rowObservables, final Class<? extends Object> rowClass,
+			final String[] columnPropertyNames, final String[] columnHeaders) {
 		this.rowObservables = rowObservables;
 		bindTableToModel(rowObservables, rowClass, columnPropertyNames, columnHeaders);
 	}
 
-	public final void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
-			String[] columnPropertyNames, String[] headerNames) {
+	public final void bindToModel(final Object listHolder, final String listPropertyName,
+			final Class<? extends Object> rowClass, final String[] columnPropertyNames, final String[] headerNames) {
 		IObservableList rowObservableList;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			rowObservableList = BeansObservables.observeList(listHolder, listPropertyName);
@@ -165,10 +165,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			});
 		}
 
-		for (IRidget ridget : detailRidgets.getRidgets()) {
+		for (final IRidget ridget : detailRidgets.getRidgets()) {
 			ridget.addPropertyChangeListener(new PropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent evt) {
-					String propertyName = evt.getPropertyName();
+				public void propertyChange(final PropertyChangeEvent evt) {
+					final String propertyName = evt.getPropertyName();
 					if (!isDirectWriting
 							|| ignoreChanges
 							|| delegate == null
@@ -223,36 +223,36 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return isDirectWriting;
 	}
 
-	public void setApplyRequiresNoErrors(boolean requiresNoErrors) {
+	public void setApplyRequiresNoErrors(final boolean requiresNoErrors) {
 		if (applyRequiresNoErrors != requiresNoErrors) {
 			applyRequiresNoErrors = requiresNoErrors;
 			updateApplyButton();
 		}
 	}
 
-	public void setApplyRequiresNoMandatories(boolean requiresNoMandatories) {
+	public void setApplyRequiresNoMandatories(final boolean requiresNoMandatories) {
 		if (applyRequiresNoMandatories != requiresNoMandatories) {
 			applyRequiresNoMandatories = requiresNoMandatories;
 			updateApplyButton();
 		}
 	}
 
-	public void setApplyTriggersNew(boolean triggersNew) {
+	public void setApplyTriggersNew(final boolean triggersNew) {
 		applyTriggersNew = triggersNew;
 	}
 
-	public void setColumnWidths(Object[] widths) {
+	public void setColumnWidths(final Object[] widths) {
 		((ITableRidget) getTableRidget()).setColumnWidths(widths);
 	}
 
-	public final void setDelegate(IMasterDetailsDelegate delegate) {
+	public final void setDelegate(final IMasterDetailsDelegate delegate) {
 		Assert.isLegal(this.delegate == null, "setDelegate can only be called once"); //$NON-NLS-1$
 		Assert.isLegal(delegate != null, "delegate cannot be null"); //$NON-NLS-1$
 		this.delegate = delegate;
 		delegate.configureRidgets(detailRidgets);
 	}
 
-	public void setDirectWriting(boolean directWriting) {
+	public void setDirectWriting(final boolean directWriting) {
 		if (directWriting != isDirectWriting) {
 			isDirectWriting = directWriting;
 			if (hasApplyButton()) {
@@ -261,16 +261,16 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
-	public void setSelection(Object newSelection) {
+	public void setSelection(final Object newSelection) {
 		setTableSelection(newSelection);
 		handleSelectionChange(newSelection);
-		AbstractMasterDetailsComposite control = getUIControl();
+		final AbstractMasterDetailsComposite control = getUIControl();
 		if (control != null) {
 			revealTableSelection();
 		}
 	}
 
-	public void suggestNewEntry(Object entry) {
+	public void suggestNewEntry(final Object entry) {
 		ignoreChanges = true;
 		try {
 			editable = entry;
@@ -291,7 +291,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		if (applyRequiresNoErrors || applyRequiresNoMandatories) {
 			// inlined for performance
 			// isEnabled = areDetailsChanged() && noErrors && noMandatories
-			boolean isEnabled = areDetailsChanged() && (applyRequiresNoErrors ? !hasErrors() : true)
+			final boolean isEnabled = areDetailsChanged() && (applyRequiresNoErrors ? !hasErrors() : true)
 					&& (applyRequiresNoMandatories ? !hasMandatories() : true);
 			getApplyButtonRidget().setEnabled(isEnabled);
 		} else {
@@ -303,17 +303,13 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	public void updateFromModel() {
 		checkDelegate();
 		super.updateFromModel();
-		IRidget tableRidget = getTableRidget();
-		if (tableRidget != null) {
-			tableRidget.updateFromModel();
-		}
 	}
 
 	// protected methods
 	////////////////////
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, AbstractMasterDetailsComposite.class);
 	}
 
@@ -339,7 +335,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return false;
 	}
 
-	protected void handleSelectionChange(Object newSelection) {
+	protected void handleSelectionChange(final Object newSelection) {
 		ignoreChanges = true;
 		try {
 			delegate.prepareItemSelected(newSelection);
@@ -365,13 +361,13 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	@Override
 	protected final void updateEnabled() {
-		AbstractMasterDetailsComposite control = getUIControl();
+		final AbstractMasterDetailsComposite control = getUIControl();
 		if (control != null) {
 			if (!isEnabled()) {
 				clearSelection();
 				clearTableSelection();
-				Collection<? extends IRidget> ridgets = getRidgets();
-				for (IRidget ridget : ridgets) {
+				final Collection<? extends IRidget> ridgets = getRidgets();
+				for (final IRidget ridget : ridgets) {
 					ridget.setEnabled(false);
 				}
 			} else {
@@ -388,7 +384,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	@Override
 	protected final void updateToolTipText() {
-		AbstractMasterDetailsComposite control = getUIControl();
+		final AbstractMasterDetailsComposite control = getUIControl();
 		if (control != null) {
 			control.setToolTipText(getToolTipText());
 		}
@@ -396,7 +392,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	@Override
 	protected final void updateVisible() {
-		AbstractMasterDetailsComposite control = getUIControl();
+		final AbstractMasterDetailsComposite control = getUIControl();
 		if (control != null) {
 			control.setVisible(!isMarkedHidden());
 		}
@@ -411,7 +407,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
-	private void bindEnablementToValue(DataBindingContext dbc, IRidget ridget, IObservableValue value) {
+	private void bindEnablementToValue(final DataBindingContext dbc, final IRidget ridget, final IObservableValue value) {
 		Assert.isNotNull(ridget);
 		Assert.isNotNull(value);
 		dbc.bindValue(BeansObservables.observeValue(ridget, IRidget.PROPERTY_ENABLED), value, null, null);
@@ -426,7 +422,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	private boolean canApply() {
-		String reason = delegate.isValid(detailRidgets);
+		final String reason = delegate.isValid(detailRidgets);
 		if (reason != null) {
 			getUIControl().warnApplyFailed(reason);
 		}
@@ -434,15 +430,15 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	private boolean canApplyDirectly() {
-		boolean noErrors = applyRequiresNoErrors ? !hasErrors() : true;
-		boolean noMandatories = applyRequiresNoMandatories ? !hasMandatories() : true;
+		final boolean noErrors = applyRequiresNoErrors ? !hasErrors() : true;
+		final boolean noMandatories = applyRequiresNoMandatories ? !hasMandatories() : true;
 		return noErrors && noMandatories && (delegate.isValid(detailRidgets) == null);
 	}
 
 	private boolean canRemove() {
-		Object selection = getSelection();
+		final Object selection = getSelection();
 		Assert.isNotNull(selection);
-		String reason = delegate.isRemovable(selection);
+		final String reason = delegate.isRemovable(selection);
 		if (reason != null) {
 			getUIControl().warnRemoveFailed(reason);
 			return false;
@@ -463,7 +459,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	private Control getDetailsControl() {
 		Control result = null;
-		AbstractMasterDetailsComposite control = getUIControl();
+		final AbstractMasterDetailsComposite control = getUIControl();
 		if (control != null) {
 			result = control.getDetails();
 		}
@@ -488,9 +484,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	private boolean hasErrors() {
-		for (IRidget ridget : detailRidgets.getRidgets()) {
+		for (final IRidget ridget : detailRidgets.getRidgets()) {
 			if (ridget instanceof IMarkableRidget) {
-				IMarkableRidget markableRidget = (IMarkableRidget) ridget;
+				final IMarkableRidget markableRidget = (IMarkableRidget) ridget;
 				if (!markableRidget.getMarkersOfType(ErrorMarker.class).isEmpty()) {
 					return true;
 				}
@@ -500,10 +496,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	private boolean hasMandatories() {
-		for (IRidget ridget : detailRidgets.getRidgets()) {
+		for (final IRidget ridget : detailRidgets.getRidgets()) {
 			if (ridget instanceof IMarkableRidget) {
-				IMarkableRidget markableRidget = (IMarkableRidget) ridget;
-				for (MandatoryMarker marker : markableRidget.getMarkersOfType(MandatoryMarker.class)) {
+				final IMarkableRidget markableRidget = (IMarkableRidget) ridget;
+				for (final MandatoryMarker marker : markableRidget.getMarkersOfType(MandatoryMarker.class)) {
 					if (!marker.isDisabled()) {
 						return true;
 					}
@@ -525,14 +521,14 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return getApplyButtonRidget() != null;
 	}
 
-	private void setEnabled(boolean applyEnabled, boolean detailsEnabled) {
+	private void setEnabled(final boolean applyEnabled, final boolean detailsEnabled) {
 		ignoreChanges = true;
 		try {
 			if (hasApplyButton()) {
 				getApplyButtonRidget().setEnabled(applyEnabled);
 			}
 			this.detailsEnabled = detailsEnabled;
-			for (IRidget ridget : detailRidgets.getRidgets()) {
+			for (final IRidget ridget : detailRidgets.getRidgets()) {
 				ridget.setEnabled(detailsEnabled);
 			}
 		} finally {
@@ -555,7 +551,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	private void setFocusToTable() {
-		AbstractMasterDetailsComposite control = getUIControl();
+		final AbstractMasterDetailsComposite control = getUIControl();
 		if (control != null) {
 			final Control table = control.getTable();
 			table.getDisplay().asyncExec(new Runnable() {
@@ -572,12 +568,12 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	@SuppressWarnings("unused")
-	private void traceEvent(PropertyChangeEvent evt) {
-		String className = evt.getSource().getClass().getSimpleName();
+	private void traceEvent(final PropertyChangeEvent evt) {
+		final String className = evt.getSource().getClass().getSimpleName();
 		System.out.println(String.format("prop: %s %s", evt.getPropertyName(), className)); //$NON-NLS-1$
 	}
 
-	private void updateDetails(Object bean) {
+	private void updateDetails(final Object bean) {
 		Assert.isNotNull(bean);
 		ignoreChanges = true;
 		try {
@@ -618,7 +614,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	 */
 	public void handleRemove() {
 		assertIsBoundToModel();
-		Object selection = getSelection();
+		final Object selection = getSelection();
 		Assert.isNotNull(selection);
 		rowObservables.remove(selection);
 		clearSelection();
@@ -665,7 +661,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			detailRidgets = getDetailRidgets();
 		}
 
-		public void addRidget(String id, IRidget ridget) {
+		public void addRidget(final String id, final IRidget ridget) {
 			throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 		}
 
@@ -673,11 +669,11 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 		}
 
-		public IRidget getRidget(String id) {
+		public IRidget getRidget(final String id) {
 			return AbstractMasterDetailsRidget.this.getRidget(id);
 		}
 
-		public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+		public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
 			return AbstractMasterDetailsRidget.this.getRidget(ridgetClazz, id);
 		}
 
@@ -686,7 +682,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 
 		private List<IRidget> getDetailRidgets() {
-			List<IRidget> result = new ArrayList<IRidget>(AbstractMasterDetailsRidget.this.getRidgets());
+			final List<IRidget> result = new ArrayList<IRidget>(AbstractMasterDetailsRidget.this.getRidgets());
 			result.remove(getNewButtonRidget());
 			result.remove(getRemoveButtonRidget());
 			result.remove(getApplyButtonRidget());

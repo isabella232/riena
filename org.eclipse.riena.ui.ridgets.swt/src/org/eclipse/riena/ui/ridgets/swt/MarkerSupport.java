@@ -36,6 +36,7 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -54,8 +55,8 @@ public class MarkerSupport extends BasicMarkerSupport {
 	/**
 	 * This flag defines the default value that defines whether disabled ridgets
 	 * do hide their content. Since v2.0 the default value is {@code false}. It
-	 * can be overridden by setting the system property {@code 
-	 * 'HIDE_DISABLED_RIDGET_CONTENT'} to {@code true}.
+	 * can be overridden by setting the system property
+	 * {@code  'HIDE_DISABLED_RIDGET_CONTENT'} to {@code true}.
 	 * <p>
 	 * Note: A Look&Feel constants exists to define whether disabled ridgets do
 	 * hide their content: {@code LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT}.
@@ -156,7 +157,11 @@ public class MarkerSupport extends BasicMarkerSupport {
 			if (color == null) {
 				color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY);
 			}
-			control.setBackground(color);
+			if (control instanceof CompletionCombo) {
+				((CompletionCombo) control).setTextBackground(color);
+			} else {
+				control.setBackground(color);
+			}
 		}
 	}
 
