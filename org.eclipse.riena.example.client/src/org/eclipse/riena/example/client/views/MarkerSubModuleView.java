@@ -118,15 +118,15 @@ public class MarkerSubModuleView extends SubModuleView {
 		hFillFactory.applyTo(dtDate);
 		UIControlsFactory.createDatePickerComposite(cmpDate, "dtPicker"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Age:", "labelcomboAge"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createLabel(group, "Age (Combo):", "labelcomboAge"); //$NON-NLS-1$ //$NON-NLS-2$
 		final Combo comboAge = UIControlsFactory.createCombo(group, "comboAge"); //$NON-NLS-1$
 		hFillFactory.applyTo(comboAge);
 
-		UIControlsFactory.createLabel(group, "Style:", "labelcomboStyle"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createLabel(group, "Style (CompletionCombo):", "labelcomboStyle"); //$NON-NLS-1$ //$NON-NLS-2$
 		final CompletionCombo comboStyle = UIControlsFactory.createCompletionCombo(group, "comboStyle"); //$NON-NLS-1$
 		hFillFactory.applyTo(comboStyle);
 
-		UIControlsFactory.createLabel(group, "Size:", "labelccomboSize"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createLabel(group, "Size (CCombo):", "labelccomboSize"); //$NON-NLS-1$ //$NON-NLS-2$
 		final CCombo ccomboSize = UIControlsFactory.createCCombo(group, "ccomboSize"); //$NON-NLS-1$
 		hFillFactory.applyTo(ccomboSize);
 

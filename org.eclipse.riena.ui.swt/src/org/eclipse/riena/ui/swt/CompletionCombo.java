@@ -76,7 +76,7 @@ public class CompletionCombo extends Composite {
 	private Button arrow;
 	private boolean hasFocus;
 	private Listener listener, filter;
-	private Color foreground, background;
+	private Color listForeground, listBackground;
 	private Font font;
 	private Shell _shell;
 	private boolean autoCompletion;
@@ -144,6 +144,7 @@ public class CompletionCombo extends Composite {
 			textStyle |= SWT.FLAT;
 		}
 		text = new Text(this, textStyle);
+		text.setBackground(getBackground());
 		int arrowStyle = SWT.ARROW | SWT.DOWN;
 		if ((style & SWT.FLAT) != 0) {
 			arrowStyle |= SWT.FLAT;
@@ -612,11 +613,11 @@ public class CompletionCombo extends Composite {
 		if (font != null) {
 			list.setFont(font);
 		}
-		if (foreground != null) {
-			list.setForeground(foreground);
+		if (listForeground != null) {
+			list.setForeground(listForeground);
 		}
-		if (background != null) {
-			list.setBackground(background);
+		if (listBackground != null) {
+			list.setBackground(listBackground);
 		}
 
 		final int[] popupEvents = { SWT.Close, SWT.Paint, SWT.Deactivate };
@@ -812,6 +813,26 @@ public class CompletionCombo extends Composite {
 	public Control[] getChildren() {
 		checkWidget();
 		return new Control[0];
+	}
+
+	/**
+	 * Returns the background color of the Combo's List widget.
+	 * 
+	 * @return a Color instance
+	 * @since 2.1
+	 */
+	public Color getListBackground() {
+		return listBackground != null ? listBackground : getBackground();
+	}
+
+	/**
+	 * Returns the background color of the Combo's Text widget.
+	 * 
+	 * @return a Color instance
+	 * @since 2.1
+	 */
+	public Color getTextBackground() {
+		return text.getBackground();
 	}
 
 	/**
@@ -1751,16 +1772,43 @@ public class CompletionCombo extends Composite {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Note: this will change the background of both the Text and List widgets
+	 * maintained by this control.
+	 */
 	@Override
 	public void setBackground(final Color color) {
 		super.setBackground(color);
-		background = color;
-		// fix for 304869
-		if (text != null && !text.isDisposed()) {
-			text.setBackground(color);
-		}
+		setTextBackground(color);
+		setListBackground(color);
+	}
+
+	/**
+	 * Set the background of this Combo's List widget.
+	 * 
+	 * @param color
+	 *            the new color (or null to set to the default system color)
+	 * @since 2.1
+	 */
+	public void setListBackground(final Color color) {
+		listBackground = color;
 		if (list != null && !list.isDisposed()) {
 			list.setBackground(color);
+		}
+	}
+
+	/**
+	 * Set the background of this Combo's Text widget.
+	 * 
+	 * @param color
+	 *            the new color (or null to set to the default system color)
+	 * @since 2.1
+	 */
+	public void setTextBackground(final Color color) {
+		if (text != null && !text.isDisposed()) {
+			text.setBackground(color);
 		}
 		if (arrow != null && !arrow.isDisposed()) {
 			arrow.setBackground(color);
@@ -1824,7 +1872,7 @@ public class CompletionCombo extends Composite {
 	@Override
 	public void setForeground(final Color color) {
 		super.setForeground(color);
-		foreground = color;
+		listForeground = color;
 		// fix for 304869
 		if (text != null && !text.isDisposed()) {
 			text.setForeground(color);

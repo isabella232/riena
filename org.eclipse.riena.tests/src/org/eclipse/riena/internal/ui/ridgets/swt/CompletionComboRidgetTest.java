@@ -11,9 +11,11 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.CompletionCombo;
@@ -24,12 +26,12 @@ import org.eclipse.riena.ui.swt.CompletionCombo;
 public class CompletionComboRidgetTest extends AbstractComboRidgetTest {
 
 	@Override
-	protected Control createWidget(Composite parent) {
+	protected Control createWidget(final Composite parent) {
 		return new CompletionCombo(parent, SWT.NONE);
 	}
 
 	@Override
-	protected Control createWidget(Composite parent, int style) {
+	protected Control createWidget(final Composite parent, final int style) {
 		return new CompletionCombo(parent, style);
 	}
 
@@ -38,9 +40,39 @@ public class CompletionComboRidgetTest extends AbstractComboRidgetTest {
 		return new CompletionComboRidget();
 	}
 
+	// testing methods
+	//////////////////
+
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertTrue(getWidget() instanceof CompletionCombo);
 		assertSame(CompletionComboRidget.class, mapper.getRidgetClass(getWidget()));
+	}
+
+	public void testMandatoryChangesTextBackgroundOnly() {
+		final IComboRidget ridget = getRidget();
+		final CompletionCombo control = (CompletionCombo) getWidget();
+		final Color bg = control.getBackground();
+		final Color mandatory = new Color(null, 255, 255, 175);
+
+		try {
+			assertEquals(bg, control.getBackground());
+			assertEquals(bg, control.getTextBackground());
+			assertEquals(bg, control.getListBackground());
+
+			ridget.setMandatory(true);
+
+			assertEquals(bg, control.getBackground());
+			assertEquals(mandatory, control.getTextBackground());
+			assertEquals(bg, control.getListBackground());
+
+			ridget.setMandatory(false);
+
+			assertEquals(bg, control.getBackground());
+			assertEquals(bg, control.getTextBackground());
+			assertEquals(bg, control.getListBackground());
+		} finally {
+			mandatory.dispose();
+		}
 	}
 }
