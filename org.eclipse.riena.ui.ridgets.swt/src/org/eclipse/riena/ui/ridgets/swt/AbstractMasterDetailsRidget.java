@@ -273,12 +273,13 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	public void suggestNewEntry(final Object entry) {
 		ignoreChanges = true;
 		try {
-			editable = entry;
-			delegate.prepareItemSelected(editable);
+			// make editable != details: editable := new, details := suggestion
+			editable = delegate.createWorkingCopy();
+			delegate.prepareItemSelected(entry);
 			setEnabled(true, true);
-			updateDetails(editable);
+			updateDetails(entry);
 			ignoreChanges = true;
-			delegate.itemSelected(editable);
+			delegate.itemSelected(entry);
 		} finally {
 			ignoreChanges = false;
 		}
