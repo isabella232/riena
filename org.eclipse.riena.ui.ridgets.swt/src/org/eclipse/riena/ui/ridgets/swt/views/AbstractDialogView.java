@@ -201,14 +201,23 @@ public abstract class AbstractDialogView extends Dialog {
 
 	@Override
 	protected final Control createDialogArea(final Composite parent) {
+		final Composite mainComposite = createMainComposite(parent);
+		new DialogGrabCorner(mainComposite, mainComposite.getStyle());
 
+		createContentComposite(mainComposite);
+		return mainComposite;
+	}
+
+	private Composite createMainComposite(final Composite parent) {
 		final Composite mainComposite = new Composite(parent, parent.getStyle());
 		mainComposite.setBackground(parent.getBackground());
 		mainComposite.setLayout(new FormLayout());
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(mainComposite);
-		new DialogGrabCorner(mainComposite, mainComposite.getStyle());
+		return mainComposite;
+	}
 
-		final Composite contentComposite = new Composite(mainComposite, parent.getStyle());
+	private void createContentComposite(final Composite parent) {
+		final Composite contentComposite = new Composite(parent, parent.getStyle());
 		GridLayoutFactory.swtDefaults().applyTo(contentComposite);
 		buildView(contentComposite);
 		addUIControl(getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
@@ -218,7 +227,6 @@ public abstract class AbstractDialogView extends Dialog {
 		resultFormData.right = new FormAttachment(100, 0);
 		resultFormData.bottom = new FormAttachment(100, 0);
 		contentComposite.setLayoutData(resultFormData);
-		return mainComposite;
 	}
 
 	/**
