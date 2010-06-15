@@ -15,6 +15,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Rectangle;
@@ -30,18 +31,20 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.swt.RienaWindowRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
 
 /**
- * Base class for Riena Dialogs. This class enchances JFace dialogs by adding:
+ * Base class for Riena Dialogs. This class enhances JFace dialogs by adding:
  * (a) theming capabilities based on the current Look-and-Feel, (b) providing
- * View / Controller seperation, (c) binding the View's widgets to the
+ * View / Controller separation, (c) binding the View's widgets to the
  * Controller's ridgets.
  * <p>
  * Implementors have to subclass this class and provide these methods:
  * <ol>
  * <li>createController() - returns the Controller for this dialog</li>
- * <li>buildView() - creates the UI for this dialog. This incldues creating the
+ * <li>buildView() - creates the UI for this dialog. This includes creating the
  * appropriate buttons, such as Ok and Cancel.</li>
  * </ol>
  * This subclass can then be used as any other JFace dialog: create a new
@@ -104,7 +107,6 @@ public abstract class AbstractDialogView extends Dialog {
 
 	@Override
 	public void create() {
-
 		// compute the 'styled' shell style, before creating the shell
 		setShellStyle(dlgRenderer.computeShellStyle());
 		super.create();
@@ -180,7 +182,7 @@ public abstract class AbstractDialogView extends Dialog {
 	 * @param uiControl
 	 *            the UI control to bind; never null
 	 * @param bindingId
-	 *            a non-empty non-null bindind id for the control. Must be
+	 *            a non-empty non-null binding id for the control. Must be
 	 *            unique within this composite
 	 */
 	protected final void addUIControl(final Object uiControl, final String bindingId) {
@@ -202,8 +204,9 @@ public abstract class AbstractDialogView extends Dialog {
 	@Override
 	protected final Control createDialogArea(final Composite parent) {
 		final Composite mainComposite = createMainComposite(parent);
-		new DialogGrabCorner(mainComposite, mainComposite.getStyle());
-
+		if (isResizable() && isHideOsBorder()) {
+			new DialogGrabCorner(mainComposite, mainComposite.getStyle());
+		}
 		createContentComposite(mainComposite);
 		return mainComposite;
 	}
@@ -227,6 +230,15 @@ public abstract class AbstractDialogView extends Dialog {
 		resultFormData.right = new FormAttachment(100, 0);
 		resultFormData.bottom = new FormAttachment(100, 0);
 		contentComposite.setLayoutData(resultFormData);
+	}
+
+	@Override
+	protected boolean isResizable() {
+		return (getShellStyle() & SWT.RESIZE) == SWT.RESIZE;
+	}
+
+	private boolean isHideOsBorder() {
+		return LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER);
 	}
 
 	/**

@@ -49,12 +49,12 @@ public class RienaWindowRenderer {
 	private DialogTitleBarMouseListener mouseListener;
 	private Composite topComposite;
 
-	public RienaWindowRenderer(Window dialog) {
+	public RienaWindowRenderer(final Window dialog) {
 		this.dialog = dialog;
 
 		// if we are in design time, supply default renderer
 		if (Beans.isDesignTime() || Activator.getDefault() == null) {
-			ILnfRendererExtension[] extensions = new ILnfRendererExtension[] {
+			final ILnfRendererExtension[] extensions = new ILnfRendererExtension[] {
 					new LnfRendererExtension(new DialogBorderRenderer(), LnfKeyConstants.DIALOG_BORDER_RENDERER),
 					new LnfRendererExtension(new DialogTitleBarRenderer(), LnfKeyConstants.DIALOG_RENDERER) };
 			LnfManager.getLnf().update(extensions);
@@ -95,20 +95,23 @@ public class RienaWindowRenderer {
 		if (isMinimizeable()) {
 			result |= SWT.MIN;
 		}
+		if (isResizable()) {
+			result |= SWT.RESIZE;
+		}
 		return result;
 	}
 
-	public Control createButtonBar(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridData data = new GridData();
+	public Control createButtonBar(final Composite parent) {
+		final Composite composite = new Composite(parent, SWT.NONE);
+		final GridData data = new GridData();
 		data.heightHint = 0;
 		composite.setLayoutData(data);
 		return composite;
 	}
 
-	public Control createContents(Composite parent) {
+	public Control createContents(final Composite parent) {
 		int padding = 0;
-		Composite contentsComposite = new Composite(parent, SWT.NONE);
+		final Composite contentsComposite = new Composite(parent, SWT.NONE);
 		contentsComposite.setLayout(new FormLayout());
 		if (isHideOsBorder()) {
 			SWTFacade.getDefault().addPaintListener(contentsComposite, new DialogBorderPaintListener());
@@ -121,9 +124,9 @@ public class RienaWindowRenderer {
 		if (isHideOsBorder()) {
 			titleBarHeight = getTitleBarHeight();
 
-			SWTFacade swtFacade = SWTFacade.getDefault();
-			DialogTitlePaintListener titlePaintListener = new DialogTitlePaintListener(isCloseable(), isMaximizeable(),
-					isMinimizeable());
+			final SWTFacade swtFacade = SWTFacade.getDefault();
+			final DialogTitlePaintListener titlePaintListener = new DialogTitlePaintListener(isCloseable(),
+					isMaximizeable(), isMinimizeable());
 			swtFacade.addPaintListener(topComposite, titlePaintListener);
 
 			mouseListener = new DialogTitleBarMouseListener();
@@ -139,7 +142,7 @@ public class RienaWindowRenderer {
 		topComposite.setLayoutData(formData);
 
 		centerComposite = new Composite(contentsComposite, SWT.NONE);
-		GridLayout layout = new GridLayout();
+		final GridLayout layout = new GridLayout();
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		layout.verticalSpacing = 0;
@@ -161,7 +164,7 @@ public class RienaWindowRenderer {
 	public void removeDialogTitleBarMouseListener() {
 		if ((topComposite != null) && (mouseListener != null)) {
 			topComposite.removeMouseListener(mouseListener);
-			SWTFacade swtFacade = SWTFacade.getDefault();
+			final SWTFacade swtFacade = SWTFacade.getDefault();
 			swtFacade.removeMouseMoveListener(topComposite, mouseListener);
 			swtFacade.removeMouseTrackListener(topComposite, mouseListener);
 			mouseListener.dispose();
@@ -173,13 +176,13 @@ public class RienaWindowRenderer {
 	//////////////////
 
 	private int getBorderWidth() {
-		DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
+		final DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.DIALOG_BORDER_RENDERER);
 		return borderRenderer != null ? borderRenderer.getBorderWidth() : 0;
 	}
 
 	private int getTitleBarHeight() {
-		DialogTitleBarRenderer titleBarRenderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(
+		final DialogTitleBarRenderer titleBarRenderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.DIALOG_RENDERER);
 		return titleBarRenderer != null ? titleBarRenderer.getHeight() : 0;
 	}
@@ -193,7 +196,7 @@ public class RienaWindowRenderer {
 	}
 
 	private boolean isHideOsBorder() {
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		return lnf.getBooleanSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER);
 	}
 
@@ -203,6 +206,10 @@ public class RienaWindowRenderer {
 
 	private boolean isMaximizeable() {
 		return (getShellStyle() & SWT.MAX) == SWT.MAX;
+	}
+
+	private boolean isResizable() {
+		return (getShellStyle() & SWT.RESIZE) == SWT.RESIZE;
 	}
 
 	private int getShellStyle() {
@@ -236,7 +243,7 @@ public class RienaWindowRenderer {
 		private final boolean canMax;
 		private final boolean canMin;
 
-		DialogTitlePaintListener(boolean canClose, boolean canMax, boolean canMin) {
+		DialogTitlePaintListener(final boolean canClose, final boolean canMax, final boolean canMin) {
 			this.canClose = canClose;
 			this.canMax = canMax;
 			this.canMin = canMin;
