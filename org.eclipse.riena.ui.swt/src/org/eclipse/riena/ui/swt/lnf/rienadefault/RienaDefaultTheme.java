@@ -57,6 +57,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_HAND = "hand.gif"; //$NON-NLS-1$
 	private static final String IMAGE_GRAB = "grab.gif"; //$NON-NLS-1$
 	private static final String IMAGE_GRAB_CORNER = "grabCorner"; //$NON-NLS-1$
+	private static final String DIALOG_IMAGE_GRAB_CORNER = "dialogGrabCorner"; //$NON-NLS-1$
 	private static final String IMAGE_SPACER = "spacer"; //$NON-NLS-1$
 	private static final String IMAGE_ERROR = "statusline_error.gif"; //$NON-NLS-1$
 	private static final String IMAGE_WARNING = "statusline_warning.gif"; //$NON-NLS-1$
@@ -353,6 +354,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 				IMAGE_RESTORE_HOVER_SELECTED));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_RESTORE_INACTIVE_ICON, new ImageLnfResource(
 				IMAGE_RESTORE_INACTIVE_ICON));
+		lnf.putLnfResource(LnfKeyConstants.DIALOG_GRAB_CORNER_IMAGE, new ImageLnfResource(DIALOG_IMAGE_GRAB_CORNER));
 
 		lnf.putLnfResource(LnfKeyConstants.DEFAULT_NODE_ICON, new ImageLnfResource(IMAGE_DEFAULT_NODE_ICON));
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(

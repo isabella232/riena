@@ -12,10 +12,15 @@ package org.eclipse.riena.ui.ridgets.swt.views;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -89,7 +94,7 @@ public abstract class AbstractDialogView extends Dialog {
 	 *             when parentShell the value {@code null} and the class failed
 	 *             to obtain an appropriate shell.
 	 */
-	protected AbstractDialogView(Shell parentShell) {
+	protected AbstractDialogView(final Shell parentShell) {
 		super(parentShell != null ? parentShell : getShellByGuessing());
 		title = ""; //$NON-NLS-1$
 		dlgRenderer = new RienaWindowRenderer(this);
@@ -115,7 +120,7 @@ public abstract class AbstractDialogView extends Dialog {
 		centerWindow(getShell());
 
 		getShell().addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+			public void widgetDisposed(final DisposeEvent e) {
 				if (!isClosing) {
 					close();
 				}
@@ -127,7 +132,7 @@ public abstract class AbstractDialogView extends Dialog {
 	@Override
 	public boolean close() {
 		isClosing = true;
-		AbstractWindowController controller = getController();
+		final AbstractWindowController controller = getController();
 		setReturnCode(controller.getReturnCode());
 		controlledView.unbind(controller);
 		return super.close();
@@ -152,7 +157,7 @@ public abstract class AbstractDialogView extends Dialog {
 	 * @param title
 	 *            the title; never null.
 	 */
-	public final void setTitle(String title) {
+	public final void setTitle(final String title) {
 		Assert.isNotNull(title);
 		this.title = title;
 	}
@@ -160,6 +165,7 @@ public abstract class AbstractDialogView extends Dialog {
 	/**
 	 * @deprecated use {@link #open()}
 	 */
+	@Deprecated
 	public final void build() {
 		open();
 	}
@@ -177,27 +183,42 @@ public abstract class AbstractDialogView extends Dialog {
 	 *            a non-empty non-null bindind id for the control. Must be
 	 *            unique within this composite
 	 */
-	protected final void addUIControl(Object uiControl, String bindingId) {
+	protected final void addUIControl(final Object uiControl, final String bindingId) {
 		controlledView.addUIControl(uiControl, bindingId);
 	}
 
 	@Override
-	protected final Control createButtonBar(Composite parent) {
+	protected final Control createButtonBar(final Composite parent) {
 		return dlgRenderer.createButtonBar(parent);
 	}
 
 	@Override
-	protected final Control createContents(Composite parent) {
-		Control result = dlgRenderer.createContents(parent);
+	protected final Control createContents(final Composite parent) {
+		final Control result = dlgRenderer.createContents(parent);
 		super.createContents(dlgRenderer.getCenterComposite());
 		return result;
 	}
 
 	@Override
-	protected final Control createDialogArea(Composite parent) {
-		Control result = buildView(parent);
+	protected final Control createDialogArea(final Composite parent) {
+
+		final Composite mainComposite = new Composite(parent, parent.getStyle());
+		mainComposite.setBackground(parent.getBackground());
+		mainComposite.setLayout(new FormLayout());
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(mainComposite);
+		new DialogGrabCorner(mainComposite, mainComposite.getStyle());
+
+		final Composite contentComposite = new Composite(mainComposite, parent.getStyle());
+		GridLayoutFactory.swtDefaults().applyTo(contentComposite);
+		buildView(contentComposite);
 		addUIControl(getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
-		return result;
+		final FormData resultFormData = new FormData();
+		resultFormData.top = new FormAttachment(0, 0);
+		resultFormData.left = new FormAttachment(0, 0);
+		resultFormData.right = new FormAttachment(100, 0);
+		resultFormData.bottom = new FormAttachment(100, 0);
+		contentComposite.setLayoutData(resultFormData);
+		return mainComposite;
 	}
 
 	/**
@@ -218,16 +239,16 @@ public abstract class AbstractDialogView extends Dialog {
 	// helping methods
 	//////////////////
 
-	private void applyTitle(Shell shell) {
+	private void applyTitle(final Shell shell) {
 		if (shell.getText().length() == 0) {
 			shell.setText(title);
 		}
 	}
 
-	private void addUIControls(Composite composite) {
-		SWTControlFinder finder = new SWTControlFinder(composite) {
+	private void addUIControls(final Composite composite) {
+		final SWTControlFinder finder = new SWTControlFinder(composite) {
 			@Override
-			public void handleBoundControl(Control control, String bindingProperty) {
+			public void handleBoundControl(final Control control, final String bindingProperty) {
 				addUIControl(control, bindingProperty);
 			}
 		};
@@ -239,12 +260,12 @@ public abstract class AbstractDialogView extends Dialog {
 		controlledView.bind(getController());
 	}
 
-	private void centerWindow(Shell dialogShell) {
+	private void centerWindow(final Shell dialogShell) {
 		if (dialogShell != null && dialogShell.getParent() != null) {
-			Rectangle parentShellBounds = dialogShell.getParent().getBounds();
-			Rectangle dialogShellBounds = dialogShell.getBounds();
-			int leftMargin = parentShellBounds.x + (parentShellBounds.width - dialogShellBounds.width) / 2;
-			int topMargin = parentShellBounds.y + (parentShellBounds.height - dialogShellBounds.height) / 2;
+			final Rectangle parentShellBounds = dialogShell.getParent().getBounds();
+			final Rectangle dialogShellBounds = dialogShell.getBounds();
+			final int leftMargin = parentShellBounds.x + (parentShellBounds.width - dialogShellBounds.width) / 2;
+			final int topMargin = parentShellBounds.y + (parentShellBounds.height - dialogShellBounds.height) / 2;
 			dialogShell.setLocation(leftMargin, topMargin);
 		}
 	}
@@ -254,12 +275,12 @@ public abstract class AbstractDialogView extends Dialog {
 
 	private static final class ControlledView extends AbstractControlledView<AbstractWindowController> {
 		@Override
-		protected void addUIControl(Object uiControl, String propertyName) {
+		protected void addUIControl(final Object uiControl, final String propertyName) {
 			super.addUIControl(uiControl, propertyName);
 		}
 
 		@Override
-		protected void setController(AbstractWindowController controller) {
+		protected void setController(final AbstractWindowController controller) {
 			super.setController(controller);
 		}
 	}
