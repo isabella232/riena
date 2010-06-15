@@ -33,7 +33,7 @@ import org.eclipse.riena.ui.filter.IUIFilterable;
 public interface INavigationNode<C extends INavigationNode<?>> extends ITypecastingAdaptable, IMarkable, IUIFilterable,
 		IDisposable, INavigationHistory {
 
-	final String PROPERTY_LABEL = "label"; //$NON-NLS-1$
+	String PROPERTY_LABEL = "label"; //$NON-NLS-1$
 
 	/**
 	 * The states of the navigation node.
@@ -169,8 +169,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * 
 	 * @param pContext
 	 *            the Context to check within
-	 * @return {@code true} if the node can be activated; otherwise {@code
-	 *         false}
+	 * @return {@code true} if the node can be activated; otherwise
+	 *         {@code false}
 	 */
 	boolean allowsActivate(INavigationContext pContext);
 
@@ -180,8 +180,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * 
 	 * @param pContext
 	 *            the Context to check within
-	 * @return {@code true} if the node can be deactivated; otherwise {@code
-	 *         false}
+	 * @return {@code true} if the node can be deactivated; otherwise
+	 *         {@code false}
 	 */
 	boolean allowsDeactivate(INavigationContext pContext);
 
