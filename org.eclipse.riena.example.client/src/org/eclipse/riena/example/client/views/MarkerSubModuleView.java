@@ -38,6 +38,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.swt.optional.OptionalUIControlsFactory;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.CompletionCombo;
+import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -116,7 +117,8 @@ public class MarkerSubModuleView extends SubModuleView {
 		hFillFactory.applyTo(textDate);
 		final DateTime dtDate = UIControlsFactory.createDate(cmpDate, SWT.DATE | SWT.DROP_DOWN | SWT.MEDIUM, "dtDate"); //$NON-NLS-1$
 		hFillFactory.applyTo(dtDate);
-		UIControlsFactory.createDatePickerComposite(cmpDate, "dtPicker"); //$NON-NLS-1$
+		final DatePickerComposite dtPicker = UIControlsFactory.createDatePickerComposite(cmpDate, "dtPicker"); //$NON-NLS-1$
+		hFillFactory.applyTo(dtPicker);
 
 		UIControlsFactory.createLabel(group, "Age (Combo):", "labelcomboAge"); //$NON-NLS-1$ //$NON-NLS-2$
 		final Combo comboAge = UIControlsFactory.createCombo(group, "comboAge"); //$NON-NLS-1$
@@ -134,11 +136,13 @@ public class MarkerSubModuleView extends SubModuleView {
 		final ChoiceComposite choiceType = UIControlsFactory.createChoiceComposite(group, SWT.BORDER, false,
 				"choiceType"); //$NON-NLS-1$
 		choiceType.setOrientation(SWT.HORIZONTAL);
+		hFillFactory.applyTo(choiceType);
 
 		UIControlsFactory.createLabel(group, "Flavor:", "labelchoiceFlavor"); //$NON-NLS-1$ //$NON-NLS-2$
 		final ChoiceComposite choiceFlavor = UIControlsFactory.createChoiceComposite(group, SWT.BORDER, true,
 				"choiceFlavor"); //$NON-NLS-1$
 		choiceFlavor.setOrientation(SWT.HORIZONTAL);
+		hFillFactory.applyTo(choiceFlavor);
 
 		final Label lblReviewed = UIControlsFactory.createLabel(group, "Reviewed by:", "labellistPersons"); //$NON-NLS-1$ //$NON-NLS-2$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblReviewed);
