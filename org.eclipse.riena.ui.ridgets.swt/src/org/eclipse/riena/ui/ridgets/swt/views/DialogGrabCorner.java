@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,7 @@ public class DialogGrabCorner extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public DialogGrabCorner(Composite parent, int style) {
+	public DialogGrabCorner(final Composite parent, final int style) {
 
 		super(parent, style);
 		setBackground(parent.getBackground());
@@ -49,8 +49,8 @@ public class DialogGrabCorner extends Composite {
 	 * Sets the (form) layout data for the grab corner.
 	 */
 	private void setLayoutData() {
-		Point grabCornerSize = getGrabCornerSize();
-		FormData grabFormData = new FormData();
+		final Point grabCornerSize = getGrabCornerSize();
+		final FormData grabFormData = new FormData();
 		grabFormData.width = grabCornerSize.x;
 		grabFormData.height = grabCornerSize.y;
 		grabFormData.bottom = new FormAttachment(100, 0);
@@ -67,7 +67,7 @@ public class DialogGrabCorner extends Composite {
 	 */
 	public static Point getGrabCornerSize() {
 		Point grabCornerSize = new Point(0, 0);
-		Image grabCorner = getGrabCornerImage();
+		final Image grabCorner = getGrabCornerImage();
 
 		if ((grabCorner != null) && isResizeable()) {
 			grabCornerSize = new Point(grabCorner.getImageData().width, grabCorner.getImageData().height);
@@ -103,7 +103,7 @@ public class DialogGrabCorner extends Composite {
 	 * @return border width
 	 */
 	private static int getShellBorderWidth() {
-		DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
+		final DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.DIALOG_BORDER_RENDERER);
 		if (borderRenderer != null) {
 			return borderRenderer.getBorderWidth();
@@ -117,9 +117,9 @@ public class DialogGrabCorner extends Composite {
 	 */
 	private static class GrabPaintListener implements PaintListener {
 
-		public void paintControl(PaintEvent e) {
-			GC gc = e.gc;
-			Image grabCornerImage = getGrabCornerImage();
+		public void paintControl(final PaintEvent e) {
+			final GC gc = e.gc;
+			final Image grabCornerImage = getGrabCornerImage();
 			if (grabCornerImage != null) {
 				gc.drawImage(grabCornerImage, 0, 0);
 			}
