@@ -73,7 +73,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * 
 	 * @see UISynchronizer
 	 */
-	public UIProcess(final String name, boolean user) {
+	public UIProcess(final String name, final boolean user) {
 		this(name, user, new Object());
 	}
 
@@ -99,7 +99,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 *             class given in the extension point can not be instantiated.
 	 * 
 	 */
-	public UIProcess(final String name, boolean user, Object context) {
+	public UIProcess(final String name, final boolean user, final Object context) {
 		this(name, UISynchronizer.createSynchronizer(), user, context);
 	}
 
@@ -129,7 +129,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 *             class given in the extension point can not be instantiated.
 	 * 
 	 */
-	public UIProcess(String name, IUISynchronizer syncher, boolean user, Object context) {
+	public UIProcess(final String name, final IUISynchronizer syncher, final boolean user, final Object context) {
 		this(name, new UICallbackDispatcher(syncher), user, context);
 	}
 
@@ -160,7 +160,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 *             class given in the extension point can not be instantiated.
 	 * 
 	 */
-	private UIProcess(String name, UICallbackDispatcher dispatcher, boolean user, Object context) {
+	private UIProcess(final String name, final UICallbackDispatcher dispatcher, final boolean user, final Object context) {
 		this.callbackDispatcher = dispatcher;
 		this.job = createJob(name, user, context);
 		updateProcessConfiguration();
@@ -198,7 +198,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 	private void configureProcessInfo() {
 		if (callbackDispatcher != null) {
-			ProcessInfo processInfo = callbackDispatcher.getProcessInfo();
+			final ProcessInfo processInfo = callbackDispatcher.getProcessInfo();
 			processInfo.setContext(job.getProperty(PROPERTY_CONTEXT));
 			processInfo.addPropertyChangeListener(new CancelListener());
 			processInfo.setDialogVisible(job.isUser());
@@ -207,15 +207,15 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		}
 	}
 
-	private Job createJob(String name, boolean user, Object context) {
-		Job newJob = new InternalJob(name);
+	private Job createJob(final String name, final boolean user, final Object context) {
+		final Job newJob = new InternalJob(name);
 		newJob.setUser(user);
 		newJob.setProperty(PROPERTY_CONTEXT, context);
 		return newJob;
 	}
 
 	private final class CancelListener implements PropertyChangeListener {
-		public void propertyChange(PropertyChangeEvent event) {
+		public void propertyChange(final PropertyChangeEvent event) {
 			if (ProcessInfo.PROPERTY_CANCELED.equals(event.getPropertyName())) {
 				job.cancel();
 			}
@@ -228,12 +228,12 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 	private final class InternalJob extends Job {
 
-		public InternalJob(String name) {
+		public InternalJob(final String name) {
 			super(name);
 		}
 
 		@Override
-		protected IStatus run(IProgressMonitor monitor) {
+		protected IStatus run(final IProgressMonitor monitor) {
 			beforeRun(monitor);
 			if (forceMonitorBegin()) {
 				monitor.beginTask(getName(), getTotalWork());
@@ -241,11 +241,11 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 			boolean state = false;
 			try {
 				state = runJob(monitor);
-			} catch (OperationCanceledException e) {
+			} catch (final OperationCanceledException e) {
 				if (!monitor.isCanceled()) {
 					monitor.setCanceled(true);
 				}
-			} catch (Throwable t) {
+			} catch (final Throwable t) {
 				// Forward to exception handler
 				Service.get(Activator.getDefault().getContext(), IExceptionHandlerManager.class).handleException(t);
 			}
@@ -269,13 +269,13 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * called before {@link #runJob(IProgressMonitor)} is invoked (async)
 	 */
-	protected void beforeRun(IProgressMonitor monitor) {
+	protected void beforeRun(final IProgressMonitor monitor) {
 	}
 
 	/**
 	 * called after {@link #runJob(IProgressMonitor)} is invoked (async)
 	 */
-	protected void afterRun(IProgressMonitor monitor) {
+	protected void afterRun(final IProgressMonitor monitor) {
 	}
 
 	protected int getTotalWork() {
@@ -298,13 +298,13 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * called whenever a unit of work is completed
 	 */
-	public void updateProgress(int progress) {
+	public void updateProgress(final int progress) {
 	}
 
 	/**
 	 * called on the user interface thread before aynch work is done
 	 */
-	public void initialUpdateUI(int totalWork) {
+	public void initialUpdateUI(final int totalWork) {
 	}
 
 	/**
@@ -320,7 +320,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 *            the jobs API monitor used to control the {@link UIProcess}
 	 * @return true if the method has been run without errors
 	 */
-	public boolean runJob(IProgressMonitor monitor) {
+	public boolean runJob(final IProgressMonitor monitor) {
 		return true;
 	}
 
@@ -333,7 +333,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public Object getAdapter(Class adapter) {
+	public Object getAdapter(final Class adapter) {
 		Object adapted = super.getAdapter(adapter);
 		if (adapted == null) {
 			if (adapter.isInstance(this)) {
@@ -350,7 +350,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * @param note
 	 *            the note to set
 	 */
-	public void setNote(String note) {
+	public void setNote(final String note) {
 		getProcessInfo().setNote(note);
 	}
 
@@ -358,15 +358,33 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * @param title
 	 *            the title to set
 	 */
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		getProcessInfo().setTitle(title);
+	}
+
+	/**
+	 * Sets the enabled state of the cancel button of the uiprocess window
+	 * 
+	 * @param enabled
+	 */
+	public void setCancelEnabled(final boolean enabled) {
+		getProcessInfo().setCancelEnabled(enabled);
+	}
+
+	/**
+	 * Sets the visible state of the cancel button of the uiprocess window
+	 * 
+	 * @param visible
+	 */
+	public void setCancelVisible(final boolean visible) {
+		getProcessInfo().setCancelVisible(visible);
 	}
 
 	/**
 	 * @param icon
 	 *            the icon to set
 	 */
-	public void setIcon(String icon) {
+	public void setIcon(final String icon) {
 		getProcessInfo().setIcon(icon);
 	}
 
@@ -376,7 +394,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * @param strategy
 	 *            - the progress strategy
 	 */
-	public void setProgresStrategy(ProcessInfo.ProgresStrategy strategy) {
+	public void setProgresStrategy(final ProcessInfo.ProgresStrategy strategy) {
 		getProcessInfo().setProgresStartegy(strategy);
 	}
 
@@ -399,7 +417,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 			public void run() {
 				try {
 					updateUi();
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					Service.get(Activator.getDefault().getContext(), IExceptionHandlerManager.class).handleException(e);
 				}
 			}

@@ -29,7 +29,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public UIProcessDemoSubModuleController(ISubModuleNode navigationNode) {
+	public UIProcessDemoSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -66,19 +66,19 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 
 	void runUIProcess() {
 
-		UIProcess p = new UIProcess("sample uiProcess", true, getNavigationNode()) { //$NON-NLS-1$
+		final UIProcess p = new UIProcess("sample uiProcess", true, getNavigationNode()) { //$NON-NLS-1$
 
 			@Override
-			public void initialUpdateUI(int totalWork) {
+			public void initialUpdateUI(final int totalWork) {
 				super.initialUpdateUI(totalWork);
-				setBlocked(true);
+				//				setBlocked(true);
 			}
 
 			@Override
-			public boolean runJob(IProgressMonitor monitor) {
+			public boolean runJob(final IProgressMonitor monitor) {
 				try {
 					Thread.sleep(1500);
-				} catch (InterruptedException e1) {
+				} catch (final InterruptedException e1) {
 					e1.getCause(); // .ignore();
 				}
 				for (int i = 0; i < 10; i++) {
@@ -87,8 +87,8 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 						return false;
 					}
 					try {
-						Thread.sleep(400);
-					} catch (InterruptedException e) {
+						Thread.sleep(8000);
+					} catch (final InterruptedException e) {
 						e.printStackTrace();
 					}
 					setTitle("sample uiProcess worked [" + i + "]"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -100,7 +100,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 			@Override
 			public void finalUpdateUI() {
 				super.finalUpdateUI();
-				setBlocked(false);
+				//				setBlocked(false);
 			}
 
 			@Override
@@ -110,20 +110,21 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 		};
 		p.setNote("sample uiProcess note " + getNavigationNode().getLabel() + ".."); //$NON-NLS-1$ //$NON-NLS-2$
 		p.setTitle("sample uiProcess"); //$NON-NLS-1$
+		p.setCancelEnabled(false);
 		p.start();
 
 	}
 
 	void runJob() {
-		Job job = new Job("eclipse job") { //$NON-NLS-1$
+		final Job job = new Job("eclipse job") { //$NON-NLS-1$
 			@Override
-			public IStatus run(IProgressMonitor monitor) {
+			public IStatus run(final IProgressMonitor monitor) {
 				try {
 					monitor.beginTask("eclipse job", 10); //$NON-NLS-1$
 					for (int i = 0; i < 10; i++) {
 						try {
 							Thread.sleep(500);
-						} catch (InterruptedException e) {
+						} catch (final InterruptedException e) {
 							e.printStackTrace();
 						}
 						monitor.worked(1);

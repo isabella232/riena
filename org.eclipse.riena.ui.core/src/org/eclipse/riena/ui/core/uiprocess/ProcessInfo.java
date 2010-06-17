@@ -26,6 +26,8 @@ public class ProcessInfo {
 	public static final String PROPERTY_CONTEXT = "context"; //$NON-NLS-1$
 	public static final String PROPERTY_STYLE = "style"; //$NON-NLS-1$
 	public static final String PROPERTY_PROGRESS_STRATEGY = "progress.strategy"; //$NON-NLS-1$
+	public static final String PROPERTY_CANCEL_VISIBLE = "cancel.visible"; //$NON-NLS-1$
+	public static final String PROPERTY_CANCEL_ENABLED = "cancel.enabled"; //$NON-NLS-1$
 
 	/// properties
 	private String title;
@@ -37,21 +39,25 @@ public class ProcessInfo {
 	private boolean canceled;
 	private boolean ignoreCancel;
 	private ProgresStrategy progresStartegy;
+	private boolean cancelEnabled;
+	private boolean cancelVisible;
 
-	private PropertyChangeSupport ppSupport;
+	private final PropertyChangeSupport ppSupport;
 
 	public ProcessInfo() {
 		ppSupport = new PropertyChangeSupport(this);
 		progresStartegy = ProgresStrategy.UNIT;
 		maxProgress = 0;
 		dialogVisible = true;
+		cancelVisible = true;
+		cancelEnabled = true;
 	}
 
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
+	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		ppSupport.addPropertyChangeListener(listener);
 	}
 
-	public void setIgnoreCancel(boolean ignoreCancel) {
+	public void setIgnoreCancel(final boolean ignoreCancel) {
 		this.ignoreCancel = ignoreCancel;
 	}
 
@@ -66,8 +72,8 @@ public class ProcessInfo {
 	 * @param title
 	 *            the title to set
 	 */
-	public void setTitle(String title) {
-		String old = this.title;
+	public void setTitle(final String title) {
+		final String old = this.title;
 		this.title = title;
 		ppSupport.firePropertyChange(PROPERTY_TITLE, old, title);
 	}
@@ -83,8 +89,8 @@ public class ProcessInfo {
 	 * @param icon
 	 *            the icon to set
 	 */
-	public void setIcon(String icon) {
-		String old = this.icon;
+	public void setIcon(final String icon) {
+		final String old = this.icon;
 		this.icon = icon;
 		ppSupport.firePropertyChange(PROPERTY_ICON, old, icon);
 	}
@@ -100,8 +106,8 @@ public class ProcessInfo {
 	 * @param progresStartegy
 	 *            the progresStartegy to set
 	 */
-	public void setProgresStartegy(ProgresStrategy progresStartegy) {
-		ProgresStrategy old = this.progresStartegy;
+	public void setProgresStartegy(final ProgresStrategy progresStartegy) {
+		final ProgresStrategy old = this.progresStartegy;
 		this.progresStartegy = progresStartegy;
 		ppSupport.firePropertyChange(PROPERTY_PROGRESS_STRATEGY, old, progresStartegy);
 	}
@@ -117,8 +123,8 @@ public class ProcessInfo {
 	 * @param note
 	 *            the note to set
 	 */
-	public void setNote(String note) {
-		String old = this.note;
+	public void setNote(final String note) {
+		final String old = this.note;
 		this.note = note;
 		ppSupport.firePropertyChange(PROPERTY_NOTE, old, note);
 
@@ -135,8 +141,8 @@ public class ProcessInfo {
 	 * @param maxProgress
 	 *            the maxProgress to set
 	 */
-	public void setMaxProgress(int maxProgress) {
-		int old = this.maxProgress;
+	public void setMaxProgress(final int maxProgress) {
+		final int old = this.maxProgress;
 		this.maxProgress = maxProgress;
 		ppSupport.firePropertyChange(PROPERTY_MAX_PROGRESS, old, maxProgress);
 	}
@@ -152,8 +158,8 @@ public class ProcessInfo {
 		ppSupport.firePropertyChange(PROPERTY_CANCELED, false, true);
 	}
 
-	public void setDialogVisible(boolean visible) {
-		boolean old = this.dialogVisible;
+	public void setDialogVisible(final boolean visible) {
+		final boolean old = this.dialogVisible;
 		this.dialogVisible = visible;
 		ppSupport.firePropertyChange(PROPERTY_DIALOG_VISIBLE, old, visible);
 	}
@@ -163,11 +169,45 @@ public class ProcessInfo {
 	}
 
 	/**
+	 * @param cancelEnabled
+	 *            the cancelEnabled to set
+	 */
+	public void setCancelEnabled(final boolean cancelEnabled) {
+		final boolean oldValue = isCancelEnabled();
+		this.cancelEnabled = cancelEnabled;
+		ppSupport.firePropertyChange(PROPERTY_CANCEL_ENABLED, oldValue, isCancelEnabled());
+	}
+
+	/**
+	 * @return the cancelEnabled
+	 */
+	public boolean isCancelEnabled() {
+		return cancelEnabled;
+	}
+
+	/**
+	 * @param cancelVisible
+	 *            the cancelVisible to set
+	 */
+	public void setCancelVisible(final boolean cancelVisible) {
+		final boolean oldValue = isCancelVisible();
+		this.cancelVisible = cancelVisible;
+		ppSupport.firePropertyChange(PROPERTY_CANCEL_VISIBLE, oldValue, isCancelVisible());
+	}
+
+	/**
+	 * @return the cancelVisible
+	 */
+	public boolean isCancelVisible() {
+		return cancelVisible;
+	}
+
+	/**
 	 * @param context
 	 *            the context to set
 	 */
-	public void setContext(Object context) {
-		Object old = this.context;
+	public void setContext(final Object context) {
+		final Object old = this.context;
 		this.context = context;
 		ppSupport.firePropertyChange(PROPERTY_CONTEXT, old, context);
 	}

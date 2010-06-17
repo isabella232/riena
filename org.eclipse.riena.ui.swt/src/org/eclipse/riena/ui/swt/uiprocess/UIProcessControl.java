@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.swt.uiprocess;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
@@ -33,18 +34,19 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	// the jface window
 	private UIProcessWindow processWindow;
 
-	private ListenerList<ICancelListener> cancelListeners = new ListenerList<ICancelListener>(ICancelListener.class);
+	private final ListenerList<ICancelListener> cancelListeners = new ListenerList<ICancelListener>(
+			ICancelListener.class);
 
 	private ProcessUpdateThread processUpdateThread;
 
 	private String name;
 
-	public UIProcessControl(Shell parentShell) {
+	public UIProcessControl(final Shell parentShell) {
 		Assert.isNotNull(parentShell);
 		createProcessWindow(parentShell);
 	}
 
-	private void createProcessWindow(Shell parentShell) {
+	private void createProcessWindow(final Shell parentShell) {
 		// create window
 		processWindow = new UIProcessWindow(parentShell, this);
 		// observe window
@@ -96,7 +98,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		return processing;
 	}
 
-	public synchronized void setProcessing(boolean processing) {
+	public synchronized void setProcessing(final boolean processing) {
 		this.processing = processing;
 	}
 
@@ -181,7 +183,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 
 			try {
 				Thread.sleep(UPDATE_DELAY);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
@@ -201,12 +203,12 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	 * org.eclipse.riena.ui.swt.uiprocess.IProgressControl#showProgress(int,
 	 * int)
 	 */
-	public void showProgress(int value, int maxValue) {
+	public void showProgress(final int value, final int maxValue) {
 		if (maxValue <= 0) {
 			return;
 		}
 		stopProcessing();
-		int percentValue = calcSelection(value, maxValue);
+		final int percentValue = calcSelection(value, maxValue);
 		if (getWindow().getShell() != null && !getWindow().getShell().isDisposed()) {
 			getPercentLabel().setText(String.valueOf(percentValue) + " %"); //$NON-NLS-1$
 			getProgressBar().setSelection(percentValue);
@@ -217,8 +219,8 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		return processWindow.getPercent();
 	}
 
-	private int calcSelection(int value, int maxValue) {
-		double v = (double) value / (double) maxValue * 100;
+	private int calcSelection(final int value, final int maxValue) {
+		final double v = (double) value / (double) maxValue * 100;
 		return (int) v;
 	}
 
@@ -231,15 +233,15 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		showWindow();
 	}
 
-	public void setDescription(String text) {
+	public void setDescription(final String text) {
 		processWindow.setDescription(text);
 	}
 
-	public void setTitle(String text) {
-		Shell shell = processWindow.getShell();
+	public void setTitle(final String text) {
+		final Shell shell = processWindow.getShell();
 		if (!StringUtils.equals(text, shell.getText())) {
 			shell.setText(text);
-			Rectangle bounds = shell.getBounds();
+			final Rectangle bounds = shell.getBounds();
 			shell.redraw(0, 0, bounds.width, bounds.height, true);
 		}
 	}
@@ -247,11 +249,11 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	/**
 	 * add an {@link ICancelListener} to be notified about cancel events.
 	 */
-	public void addCancelListener(ICancelListener listener) {
+	public void addCancelListener(final ICancelListener listener) {
 		cancelListeners.add(listener);
 	}
 
-	public void removeCancelListener(ICancelListener listener) {
+	public void removeCancelListener(final ICancelListener listener) {
 		cancelListeners.remove(listener);
 	}
 
@@ -260,8 +262,8 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	 * 
 	 * @param windowClosing
 	 */
-	protected void fireCanceled(boolean windowClosing) {
-		for (ICancelListener listener : cancelListeners.getListeners()) {
+	protected void fireCanceled(final boolean windowClosing) {
+		for (final ICancelListener listener : cancelListeners.getListeners()) {
 			listener.canceled(windowClosing);
 		}
 	}
@@ -283,7 +285,33 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	 * org.eclipse.riena.ui.swt.utils.IPropertyNameProvider#setPropertyName(
 	 * java.lang.String)
 	 */
-	public void setPropertyName(String propertyName) {
+	public void setPropertyName(final String propertyName) {
 		this.name = propertyName;
+	}
+
+	/**
+	 * @param sets
+	 *            the cancelButton of the {@link UIProcessWindow} visible/hidden
+	 */
+	public void setCancelVisible(final boolean cancelVisible) {
+		getCancelButton().setVisible(cancelVisible);
+
+	}
+
+	/**
+	 * @param sets
+	 *            the cancelButton of the {@link UIProcessWindow}
+	 *            enabled/disabled
+	 */
+	public void setCancelEnabled(final boolean cancelEnabled) {
+		getCancelButton().setEnabled(cancelEnabled);
+
+	}
+
+	/**
+	 * return the cancelButton of the {@link UIProcessWindow}
+	 */
+	private Button getCancelButton() {
+		return processWindow.getCancelButton();
 	}
 }

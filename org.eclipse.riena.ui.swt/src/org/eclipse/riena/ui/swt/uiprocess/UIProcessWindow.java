@@ -48,6 +48,7 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 	private ProgressBar progressBar;
 	private Label description;
 	private Label percent;
+	private Button cancelButton;
 
 	public UIProcessWindow(final Shell parentShell, final UIProcessControl progressControl) {
 		super(parentShell);
@@ -118,9 +119,8 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 		progressBar.setLayoutData(formDate);
 		centerComposite.setBackground(centerComposite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-		// cancel
-		final Button cancel = new Button(centerComposite, SWT.NONE);
-		cancel.addSelectionListener(new SelectionListener() {
+		cancelButton = new Button(centerComposite, SWT.NONE);
+		cancelButton.addSelectionListener(new SelectionListener() {
 
 			public void widgetDefaultSelected(final SelectionEvent e) {
 				progressControl.fireCanceled(false);
@@ -132,13 +132,13 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 			}
 
 		});
-		cancel.setText(Messages.UIProcessWindow_cancel);
+		cancelButton.setText(Messages.UIProcessWindow_cancel);
 		formDate = new FormData();
 		formDate.top = new FormAttachment(progressBar, 10);
 		formDate.width = CANCEL_BUTTON_WIDTH;
 		formDate.left = new FormAttachment(0,
 				(int) ((double) PROGRESS_BAR_WIDTH / 2 - (double) CANCEL_BUTTON_WIDTH / 2));
-		cancel.setLayoutData(formDate);
+		cancelButton.setLayoutData(formDate);
 
 		return contentsComposite;
 	}
@@ -191,6 +191,13 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 
 	public ProgressBar getProgressBar() {
 		return progressBar;
+	}
+
+	/**
+	 * @return the cancelButton of the window
+	 */
+	protected Button getCancelButton() {
+		return cancelButton;
 	}
 
 	/**
