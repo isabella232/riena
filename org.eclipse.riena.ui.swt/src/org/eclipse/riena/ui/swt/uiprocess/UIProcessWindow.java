@@ -49,7 +49,7 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 	private Label description;
 	private Label percent;
 
-	public UIProcessWindow(Shell parentShell, UIProcessControl progressControl) {
+	public UIProcessWindow(final Shell parentShell, final UIProcessControl progressControl) {
 		super(parentShell);
 		this.progressControl = progressControl;
 		windowListeners = new HashSet<IProcessWindowListener>();
@@ -58,15 +58,15 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 
 	@Override
 	public void create() {
-		setShellStyle(windowRenderer.computeShellStyle());
+		setShellStyle(windowRenderer.computeShellStyle() & ~SWT.MIN & ~SWT.MAX);
 		super.create();
 	}
 
 	/**
 	 * do the layouting for {@link FormLayout} for the parent here
 	 */
-	private void createWindowLayout(Composite parent) {
-		FormLayout layout = new FormLayout();
+	private void createWindowLayout(final Composite parent) {
+		final FormLayout layout = new FormLayout();
 		layout.marginTop = 10;
 		layout.marginBottom = 10;
 		layout.marginLeft = 20;
@@ -80,10 +80,10 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 	 * @see org.eclipse.jface.window.Window#createContents(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	protected Control createContents(Composite parent) {
+	protected Control createContents(final Composite parent) {
 
-		Control contentsComposite = windowRenderer.createContents(parent);
-		Composite centerComposite = windowRenderer.getCenterComposite();
+		final Control contentsComposite = windowRenderer.createContents(parent);
+		final Composite centerComposite = windowRenderer.getCenterComposite();
 
 		createWindowLayout(centerComposite);
 
@@ -119,15 +119,15 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 		centerComposite.setBackground(centerComposite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		// cancel
-		Button cancel = new Button(centerComposite, SWT.NONE);
+		final Button cancel = new Button(centerComposite, SWT.NONE);
 		cancel.addSelectionListener(new SelectionListener() {
 
-			public void widgetDefaultSelected(SelectionEvent e) {
+			public void widgetDefaultSelected(final SelectionEvent e) {
 				progressControl.fireCanceled(false);
 
 			}
 
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent e) {
 				progressControl.fireCanceled(false);
 			}
 
@@ -151,7 +151,7 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		getDescription().setText(description);
 	}
 
@@ -175,16 +175,16 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 	}
 
 	@Override
-	public void setShellStyle(int newShellStyle) {
+	public void setShellStyle(final int newShellStyle) {
 		super.setShellStyle(newShellStyle);
 	}
 
-	public void addProcessWindowListener(IProcessWindowListener listener) {
+	public void addProcessWindowListener(final IProcessWindowListener listener) {
 		windowListeners.add(listener);
 	}
 
 	protected void fireWindowAboutToClose() {
-		for (IProcessWindowListener listener : windowListeners) {
+		for (final IProcessWindowListener listener : windowListeners) {
 			listener.windowAboutToClose();
 		}
 	}
@@ -200,7 +200,7 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 	 * @see org.eclipse.jface.window.ApplicationWindow#createTrimWidgets(org.eclipse.swt.widgets.Shell)
 	 */
 	@Override
-	protected void createTrimWidgets(Shell shell) {
+	protected void createTrimWidgets(final Shell shell) {
 		// do nothing
 	}
 
