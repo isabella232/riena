@@ -46,11 +46,12 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	private final static int CLOSE_BTN_INDEX = 0;
 	private final static int MAX_BTN_INDEX = 1;
 	private final static int MIN_BTN_INDEX = 2;
-	private BtnState[] btnStates = new BtnState[BTN_COUNT];
+	private final BtnState[] btnStates = new BtnState[BTN_COUNT];
 	private boolean mouseDownOnButton;
 	private boolean moveInside;
 	private boolean move;
 	private Point moveStartPoint;
+	private boolean cancelFromTitleBar;
 
 	public AbstractTitleBarMouseListener() {
 		resetBtnStates();
@@ -83,7 +84,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 * @param btnIndex
 	 *            button index
 	 */
-	private void changeBtnState(BtnState newState, int btnIndex) {
+	private void changeBtnState(final BtnState newState, final int btnIndex) {
 		if (newState != BtnState.NONE) {
 			resetBtnStates();
 		}
@@ -96,9 +97,9 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 * @param e
 	 *            mouse event
 	 */
-	private void updateButtonStates(MouseEvent e) {
+	private void updateButtonStates(final MouseEvent e) {
 
-		Point pointer = new Point(e.x, e.y);
+		final Point pointer = new Point(e.x, e.y);
 		boolean insideAButton = false;
 
 		resetBtnStates();
@@ -128,11 +129,11 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 			mouseDownOnButton = false;
 		}
 
-		boolean redraw = updateRenderer();
+		final boolean redraw = updateRenderer();
 		if (redraw) {
-			Control control = (Control) e.getSource();
+			final Control control = (Control) e.getSource();
 			if (!control.isDisposed()) {
-				Rectangle buttonBounds = getTitleBarRenderer().getAllButtonsBounds();
+				final Rectangle buttonBounds = getTitleBarRenderer().getAllButtonsBounds();
 				control.redraw(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, false);
 			}
 		}
@@ -143,8 +144,8 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		boolean changed = false;
 
 		for (int i = 0; i < btnStates.length; i++) {
-			boolean hover = btnStates[i] == BtnState.HOVER;
-			boolean pressed = btnStates[i] == BtnState.HOVER_SELECTED && mouseDownOnButton;
+			final boolean hover = btnStates[i] == BtnState.HOVER;
+			final boolean pressed = btnStates[i] == BtnState.HOVER_SELECTED && mouseDownOnButton;
 			switch (i) {
 			case CLOSE_BTN_INDEX:
 				if (getTitleBarRenderer().isCloseButtonHover() != hover) {
@@ -183,12 +184,12 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		return changed;
 	}
 
-	private void updateCursor(MouseEvent e) {
+	private void updateCursor(final MouseEvent e) {
 
-		Control control = (Control) e.getSource();
+		final Control control = (Control) e.getSource();
 		// avoids widget is disposed exception on close
 		if (!control.isDisposed()) {
-			Point pointer = new Point(e.x, e.y);
+			final Point pointer = new Point(e.x, e.y);
 			if (moveInside && getTitleBarRenderer().isInsideMoveArea(pointer)) {
 				if (move) {
 					showGrabCursor(control);
@@ -203,15 +204,15 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		}
 	}
 
-	public void mouseDoubleClick(MouseEvent e) {
+	public void mouseDoubleClick(final MouseEvent e) {
 		// unused
 	}
 
-	public void mouseDown(MouseEvent e) {
+	public void mouseDown(final MouseEvent e) {
 		mouseDownOnButton = true;
 		updateButtonStates(e);
 		if (!mouseDownOnButton) {
-			Point pointer = new Point(e.x, e.y);
+			final Point pointer = new Point(e.x, e.y);
 			if (getTitleBarRenderer().isInsideMoveArea(pointer)) {
 				move = true;
 				moveStartPoint = pointer;
@@ -225,21 +226,22 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	/**
 	 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
 	 */
-	public void mouseUp(MouseEvent e) {
-
-		Point pointer = new Point(e.x, e.y);
+	public void mouseUp(final MouseEvent e) {
+		cancelFromTitleBar = false;
+		final Point pointer = new Point(e.x, e.y);
 
 		if (mouseDownOnButton && (e.getSource() instanceof Control)) {
-			Control control = (Control) e.getSource();
-			Shell shell = getShell(control);
+			final Control control = (Control) e.getSource();
+			final Shell shell = getShell(control);
 			if (shell != null) {
 				if (getTitleBarRenderer().isInsideCloseButton(pointer)) {
 					if (btnStates[CLOSE_BTN_INDEX] == BtnState.HOVER_SELECTED) {
+						cancelFromTitleBar = true;
 						shell.close();
 					}
 				} else if (getTitleBarRenderer().isInsideMaximizeButton(pointer)) {
 					if (btnStates[MAX_BTN_INDEX] == BtnState.HOVER_SELECTED) {
-						boolean maximized = shell.getMaximized();
+						final boolean maximized = shell.getMaximized();
 						shell.setMaximized(!maximized);
 					}
 				} else if (getTitleBarRenderer().isInsideMinimizeButton(pointer)) {
@@ -256,25 +258,25 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		updateCursor(e);
 	}
 
-	public void mouseEnter(MouseEvent e) {
+	public void mouseEnter(final MouseEvent e) {
 		updateButtonStates(e);
 		moveInside = true;
 		move = false;
 		updateCursor(e);
 	}
 
-	public void mouseExit(MouseEvent e) {
+	public void mouseExit(final MouseEvent e) {
 		updateButtonStates(e);
 		moveInside = false;
 		move = false;
 		updateCursor(e);
 	}
 
-	public void mouseHover(MouseEvent e) {
+	public void mouseHover(final MouseEvent e) {
 		// unused
 	}
 
-	public void mouseMove(MouseEvent e) {
+	public void mouseMove(final MouseEvent e) {
 		updateButtonStates(e);
 		if (move) {
 			move(e);
@@ -282,14 +284,14 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		updateCursor(e);
 	}
 
-	private void move(MouseEvent e) {
-		Point moveEndPoint = new Point(e.x, e.y);
-		Control control = (Control) e.getSource();
-		Shell shell = getShell(control);
-		int xMove = moveStartPoint.x - moveEndPoint.x;
-		int yMove = moveStartPoint.y - moveEndPoint.y;
-		int x = shell.getLocation().x - xMove;
-		int y = shell.getLocation().y - yMove;
+	private void move(final MouseEvent e) {
+		final Point moveEndPoint = new Point(e.x, e.y);
+		final Control control = (Control) e.getSource();
+		final Shell shell = getShell(control);
+		final int xMove = moveStartPoint.x - moveEndPoint.x;
+		final int yMove = moveStartPoint.y - moveEndPoint.y;
+		final int x = shell.getLocation().x - xMove;
+		final int y = shell.getLocation().y - yMove;
 		shell.setLocation(x, y);
 	}
 
@@ -310,7 +312,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 * 
 	 * @param control
 	 */
-	private void showHandCursor(Control control) {
+	private void showHandCursor(final Control control) {
 		if (handCursor == null) {
 			handCursor = createHandCursor(control.getDisplay());
 		}
@@ -322,7 +324,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 * 
 	 * @param control
 	 */
-	private void showGrabCursor(Control control) {
+	private void showGrabCursor(final Control control) {
 		if (grabCursor == null) {
 			grabCursor = createGrabCursor(control.getDisplay());
 		}
@@ -334,7 +336,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 * 
 	 * @param shell
 	 */
-	private void showDefaultCursor(Control control) {
+	private void showDefaultCursor(final Control control) {
 		if (defaultCursor == null) {
 			defaultCursor = new Cursor(control.getDisplay(), SWT.CURSOR_ARROW);
 		}
@@ -348,7 +350,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 * @param cursor
 	 *            new cursor
 	 */
-	private void setCursor(Control control, Cursor cursor) {
+	private void setCursor(final Control control, final Cursor cursor) {
 		if (!SwtUtilities.isDisposed(control)) {
 			if ((cursor != null) && (control.getCursor() != cursor)) {
 				control.setCursor(cursor);
@@ -356,15 +358,15 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		}
 	}
 
-	private Cursor createHandCursor(Display display) {
-		String key = LnfKeyConstants.TITLELESS_SHELL_HAND_IMAGE;
-		Image image = LnfManager.getLnf().getImage(key);
+	private Cursor createHandCursor(final Display display) {
+		final String key = LnfKeyConstants.TITLELESS_SHELL_HAND_IMAGE;
+		final Image image = LnfManager.getLnf().getImage(key);
 		return SWTFacade.getDefault().createCursor(display, image, SWT.CURSOR_HAND);
 	}
 
-	private Cursor createGrabCursor(Display display) {
-		String key = LnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE;
-		Image image = LnfManager.getLnf().getImage(key);
+	private Cursor createGrabCursor(final Display display) {
+		final String key = LnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE;
+		final Image image = LnfManager.getLnf().getImage(key);
 		return SWTFacade.getDefault().createCursor(display, image, SWT.CURSOR_HAND);
 	}
 
@@ -372,6 +374,17 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		SwtUtilities.disposeResource(handCursor);
 		SwtUtilities.disposeResource(grabCursor);
 		SwtUtilities.disposeResource(defaultCursor);
+	}
+
+	/**
+	 * Returns whether a close was triggered by pushing the close button in the
+	 * titleBar.
+	 * 
+	 * @return whether a close was triggered by pushing the close button in the
+	 *         titleBar
+	 */
+	public boolean isCancelFromTitleBar() {
+		return cancelFromTitleBar;
 	}
 
 }

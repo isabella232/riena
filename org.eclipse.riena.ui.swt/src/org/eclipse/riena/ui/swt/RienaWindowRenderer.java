@@ -62,6 +62,17 @@ public class RienaWindowRenderer {
 	}
 
 	/**
+	 * Returns whether a close was triggered by pushing the close button in the
+	 * titleBar.
+	 * 
+	 * @return whether a close was triggered by pushing the close button in the
+	 *         titleBar
+	 */
+	public boolean isCancelFromTitleBar() {
+		return mouseListener.isCancelFromTitleBar();
+	}
+
+	/**
 	 * Updates the style of the dialog shell.
 	 * 
 	 * @returns new style of the dialog
@@ -266,12 +277,19 @@ public class RienaWindowRenderer {
 		}
 	}
 
-	private static final class DialogTitleBarMouseListener extends AbstractTitleBarMouseListener {
+	private final class DialogTitleBarMouseListener extends AbstractTitleBarMouseListener {
 		@Override
 		protected AbstractTitleBarRenderer getTitleBarRenderer() {
 			return (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.DIALOG_RENDERER);
 		}
 
+		//		@Override
+		//		public void mouseUp(final MouseEvent e) {
+		//			super.mouseUp(e);
+		//			if (isClosingCancel) {
+		//				
+		//			}
+		//		}
 	}
 
 }
