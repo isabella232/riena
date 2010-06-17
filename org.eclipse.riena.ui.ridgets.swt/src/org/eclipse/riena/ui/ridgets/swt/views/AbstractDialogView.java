@@ -125,6 +125,10 @@ public abstract class AbstractDialogView extends Dialog {
 			public void widgetDisposed(final DisposeEvent e) {
 				if (!isClosing) {
 					close();
+				} else {
+					final AbstractWindowController controller = getController();
+					controller.setReturnCode(CANCEL);
+					setReturnCode(controller.getReturnCode());
 				}
 				isClosing = false;
 			}
