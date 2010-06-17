@@ -25,18 +25,21 @@ public class CompletionComboSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		IComboRidget combo1 = getRidget(IComboRidget.class, "combo1"); //$NON-NLS-1$
-		IComboRidget combo2 = getRidget(IComboRidget.class, "combo2"); //$NON-NLS-1$
-		ITextRidget selection1 = getRidget(ITextRidget.class, "selection1"); //$NON-NLS-1$
-		ITextRidget selection2 = getRidget(ITextRidget.class, "selection2"); //$NON-NLS-1$
+		final IComboRidget combo1 = getRidget(IComboRidget.class, "combo1"); //$NON-NLS-1$
+		final IComboRidget combo2 = getRidget(IComboRidget.class, "combo2"); //$NON-NLS-1$
+		final IComboRidget combo3 = getRidget(IComboRidget.class, "combo3"); //$NON-NLS-1$
+		final ITextRidget selection1 = getRidget(ITextRidget.class, "selection1"); //$NON-NLS-1$
+		final ITextRidget selection2 = getRidget(ITextRidget.class, "selection2"); //$NON-NLS-1$
+		final ITextRidget selection3 = getRidget(ITextRidget.class, "selection3"); //$NON-NLS-1$
 		final ITextRidget text1 = getRidget(ITextRidget.class, "text1"); //$NON-NLS-1$
 		final ITextRidget text2 = getRidget(ITextRidget.class, "text2"); //$NON-NLS-1$
+		final ITextRidget text3 = getRidget(ITextRidget.class, "text3"); //$NON-NLS-1$
 
-		ListBean input = new ListBean("Aachen", "Athens", "Austin", "Arkansas", "Ashland", "London", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		final ListBean input = new ListBean("Aachen", "Athens", "Austin", "Arkansas", "Ashland", "London", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 				"Moskow", "New York", "Paris", "Portland", "Potzdam"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		combo1.bindToModel(input, ListBean.PROPERTY_VALUES, String.class, null, selection1, "text"); //$NON-NLS-1$
 		combo1.addPropertyChangeListener(IComboRidget.PROPERTY_TEXT, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				text1.setText((String) evt.getNewValue());
 			}
 		});
@@ -47,12 +50,22 @@ public class CompletionComboSubModuleController extends SubModuleController {
 
 		combo2.bindToModel(input, ListBean.PROPERTY_VALUES, String.class, null, selection2, "text"); //$NON-NLS-1$
 		combo2.addPropertyChangeListener(IComboRidget.PROPERTY_TEXT, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				text2.setText((String) evt.getNewValue());
 			}
 		});
 		combo2.updateFromModel();
 		selection2.setOutputOnly(true);
 		text2.setOutputOnly(true);
+
+		combo3.bindToModel(input, ListBean.PROPERTY_VALUES, String.class, null, selection3, "text"); //$NON-NLS-1$
+		combo3.addPropertyChangeListener(IComboRidget.PROPERTY_TEXT, new PropertyChangeListener() {
+			public void propertyChange(final PropertyChangeEvent evt) {
+				text3.setText((String) evt.getNewValue());
+			}
+		});
+		combo3.updateFromModel();
+		selection3.setOutputOnly(true);
+		text3.setOutputOnly(true);
 	}
 }
