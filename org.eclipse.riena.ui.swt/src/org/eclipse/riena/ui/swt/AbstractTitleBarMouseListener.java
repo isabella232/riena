@@ -51,7 +51,6 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	private boolean moveInside;
 	private boolean move;
 	private Point moveStartPoint;
-	private boolean cancelFromTitleBar;
 
 	public AbstractTitleBarMouseListener() {
 		resetBtnStates();
@@ -227,7 +226,6 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
 	 */
 	public void mouseUp(final MouseEvent e) {
-		cancelFromTitleBar = false;
 		final Point pointer = new Point(e.x, e.y);
 
 		if (mouseDownOnButton && (e.getSource() instanceof Control)) {
@@ -236,7 +234,6 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 			if (shell != null) {
 				if (getTitleBarRenderer().isInsideCloseButton(pointer)) {
 					if (btnStates[CLOSE_BTN_INDEX] == BtnState.HOVER_SELECTED) {
-						cancelFromTitleBar = true;
 						shell.close();
 					}
 				} else if (getTitleBarRenderer().isInsideMaximizeButton(pointer)) {
@@ -375,16 +372,4 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		SwtUtilities.disposeResource(grabCursor);
 		SwtUtilities.disposeResource(defaultCursor);
 	}
-
-	/**
-	 * Returns whether a close was triggered by pushing the close button in the
-	 * titleBar.
-	 * 
-	 * @return whether a close was triggered by pushing the close button in the
-	 *         titleBar
-	 */
-	public boolean isCancelFromTitleBar() {
-		return cancelFromTitleBar;
-	}
-
 }

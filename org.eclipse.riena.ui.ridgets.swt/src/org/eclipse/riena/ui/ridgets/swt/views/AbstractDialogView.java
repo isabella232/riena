@@ -140,9 +140,6 @@ public abstract class AbstractDialogView extends Dialog {
 	public boolean close() {
 		isClosing = true;
 		final AbstractWindowController controller = getController();
-		if (dlgRenderer.isCancelFromTitleBar()) {
-			controller.setReturnCode(CANCEL);
-		}
 		setReturnCode(controller.getReturnCode());
 		controlledView.unbind(controller);
 		return super.close();

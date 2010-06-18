@@ -62,17 +62,6 @@ public class RienaWindowRenderer {
 	}
 
 	/**
-	 * Returns whether a close was triggered by pushing the close button in the
-	 * titleBar.
-	 * 
-	 * @return whether a close was triggered by pushing the close button in the
-	 *         titleBar
-	 */
-	public boolean isCancelFromTitleBar() {
-		return mouseListener.isCancelFromTitleBar();
-	}
-
-	/**
 	 * Updates the style of the dialog shell.
 	 * 
 	 * @returns new style of the dialog
