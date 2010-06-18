@@ -36,9 +36,6 @@ import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
  */
 public class HelloDialogController extends AbstractWindowController {
 
-	public static final String RIDGET_ID_OK = "okButton"; //$NON-NLS-1$
-	public static final String RIDGET_ID_CANCEL = "cancelButton"; //$NON-NLS-1$
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public void configureRidgets() {
@@ -50,21 +47,21 @@ public class HelloDialogController extends AbstractWindowController {
 		final CarConfig carConfig = new CarConfig();
 
 		final ISingleChoiceRidget compositeCarModel = (ISingleChoiceRidget) getRidget("compositeCarModel"); //$NON-NLS-1$
-		compositeCarModel.bindToModel(toList(CarModels.values()), BeansObservables.observeValue(carConfig,
-				CarConfig.PROP_MODEL));
+		compositeCarModel.bindToModel(toList(CarModels.values()),
+				BeansObservables.observeValue(carConfig, CarConfig.PROP_MODEL));
 		compositeCarModel.addMarker(new MandatoryMarker());
 		compositeCarModel.updateFromModel();
 
 		final IMultipleChoiceRidget compositeCarExtras = (IMultipleChoiceRidget) getRidget("compositeCarExtras"); //$NON-NLS-1$
-		String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				"Park Distance Control System", }; //$NON-NLS-1$
 		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig,
 				CarConfig.PROP_OPTIONS);
 		compositeCarExtras.updateFromModel();
 
 		final ISingleChoiceRidget compositeCarWarranty = (ISingleChoiceRidget) getRidget("compositeCarWarranty"); //$NON-NLS-1$
-		compositeCarWarranty.bindToModel(toList(CarWarranties.values()), BeansObservables.observeValue(carConfig,
-				CarConfig.PROP_WARRANTY));
+		compositeCarWarranty.bindToModel(toList(CarWarranties.values()),
+				BeansObservables.observeValue(carConfig, CarConfig.PROP_WARRANTY));
 		compositeCarWarranty.addMarker(new MandatoryMarker());
 		compositeCarWarranty.updateFromModel();
 
@@ -74,13 +71,13 @@ public class HelloDialogController extends AbstractWindowController {
 		compositeCarPlates.addMarker(new MandatoryMarker());
 		compositeCarPlates.updateFromModel();
 
-		ITextRidget txtPrice = (ITextRidget) getRidget("txtPrice"); //$NON-NLS-1$
+		final ITextRidget txtPrice = (ITextRidget) getRidget("txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
-		DataBindingContext dbc = new DataBindingContext();
-		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextRidget.PROPERTY_TEXT), BeansObservables
-				.observeValue(carConfig, CarConfig.PROP_PRICE), null, null);
+		final DataBindingContext dbc = new DataBindingContext();
+		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextRidget.PROPERTY_TEXT),
+				BeansObservables.observeValue(carConfig, CarConfig.PROP_PRICE), null, null);
 
-		IActionRidget buttonPreset = (IActionRidget) getRidget("buttonPreset"); //$NON-NLS-1$
+		final IActionRidget buttonPreset = (IActionRidget) getRidget("buttonPreset"); //$NON-NLS-1$
 		buttonPreset.setText("&Quick Config"); //$NON-NLS-1$
 		buttonPreset.addListener(new IActionListener() {
 			public void callback() {
@@ -90,7 +87,7 @@ public class HelloDialogController extends AbstractWindowController {
 				compositeCarPlates.setSelection(Arrays.asList(new String[] { carPlates[0] }));
 			}
 		});
-		IActionRidget buttonReset = (IActionRidget) getRidget("buttonReset"); //$NON-NLS-1$
+		final IActionRidget buttonReset = (IActionRidget) getRidget("buttonReset"); //$NON-NLS-1$
 
 		buttonReset.setText("&Reset"); //$NON-NLS-1$
 		buttonReset.addListener(new IActionListener() {
@@ -103,14 +100,15 @@ public class HelloDialogController extends AbstractWindowController {
 			}
 		});
 
-		IActionRidget okAction = (IActionRidget) getRidget(RIDGET_ID_OK);
+		final IActionRidget okAction = getRidget(IActionRidget.class, RIDGET_ID_OK);
+		okAction.setText("&Okay"); //$NON-NLS-1$
 		okAction.addListener(new IActionListener() {
 			public void callback() {
 				setReturnCode(OK);
 				getWindowRidget().dispose();
 			}
 		});
-		IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
+		final IActionRidget cancelAction = getRidget(IActionRidget.class, RIDGET_ID_CANCEL);
 		cancelAction.addListener(new IActionListener() {
 			public void callback() {
 				setReturnCode(CANCEL);
@@ -122,7 +120,7 @@ public class HelloDialogController extends AbstractWindowController {
 	// helping methods
 	// ////////////////
 
-	private WritableList toList(Object[] values) {
+	private WritableList toList(final Object[] values) {
 		return new WritableList(Arrays.asList(values), Object.class);
 	}
 
@@ -150,7 +148,7 @@ public class HelloDialogController extends AbstractWindowController {
 			return model;
 		}
 
-		public void setModel(CarModels model) {
+		public void setModel(final CarModels model) {
 			firePropertyChanged(PROP_MODEL, this.model, this.model = model);
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
@@ -160,7 +158,7 @@ public class HelloDialogController extends AbstractWindowController {
 			return Collections.unmodifiableList(options);
 		}
 
-		public void setOptions(List<CarOptions> options) {
+		public void setOptions(final List<CarOptions> options) {
 			firePropertyChanged(PROP_OPTIONS, this.options, this.options = new ArrayList<CarOptions>(options));
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
@@ -170,7 +168,7 @@ public class HelloDialogController extends AbstractWindowController {
 			return warranty;
 		}
 
-		public void setWarranty(CarWarranties warranty) {
+		public void setWarranty(final CarWarranties warranty) {
 			firePropertyChanged(PROP_WARRANTY, this.warranty, this.warranty = warranty);
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
@@ -180,7 +178,7 @@ public class HelloDialogController extends AbstractWindowController {
 			return Collections.unmodifiableList(plates);
 		}
 
-		public void setPlates(List<String> plates) {
+		public void setPlates(final List<String> plates) {
 			firePropertyChanged(PROP_PLATES, this.plates, this.plates = new ArrayList<String>(plates));
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
@@ -209,9 +207,9 @@ public class HelloDialogController extends AbstractWindowController {
 	private enum CarModels {
 		ASTON_MARTIN("Aston Martin V-12 Vanquish"), LOTUS("Lotus Esprit Turbo"), BMW("BMW Z8"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		private String label;
+		private final String label;
 
-		private CarModels(String label) {
+		private CarModels(final String label) {
 			Assert.isNotNull(label);
 			this.label = label;
 		}
@@ -231,12 +229,12 @@ public class HelloDialogController extends AbstractWindowController {
 
 		@Override
 		public String toString() {
-			char[] result = super.toString().toLowerCase().toCharArray();
+			final char[] result = super.toString().toLowerCase().toCharArray();
 			result[0] = Character.toUpperCase(result[0]);
 			return String.valueOf(result);
 		}
 	}
 
-	private String[] carPlates = { "JM5B0ND", "1 SPY", "MNY PNY", "BN D07", "Q RULE2", "MI64EVR" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	private final String[] carPlates = { "JM5B0ND", "1 SPY", "MNY PNY", "BN D07", "Q RULE2", "MI64EVR" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
 }

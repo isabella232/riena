@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.riena.example.client.controllers.DialogSubModuleController;
 import org.eclipse.riena.example.client.controllers.HelloDialogController;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
-import org.eclipse.riena.ui.ridgets.swt.views.AbstractDialogView;
+import org.eclipse.riena.ui.ridgets.swt.views.AbstractDialogViewWithButtonBar;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -35,7 +35,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * 
  * @see DialogSubModuleController
  */
-public class HelloDialogView extends AbstractDialogView {
+public class HelloDialogView extends AbstractDialogViewWithButtonBar {
 
 	public HelloDialogView() {
 		super(null);
@@ -47,7 +47,7 @@ public class HelloDialogView extends AbstractDialogView {
 	}
 
 	@Override
-	protected Control buildView(Composite parent) {
+	protected Control buildView(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
@@ -57,28 +57,28 @@ public class HelloDialogView extends AbstractDialogView {
 		return group1;
 	}
 
-	private Group createChoiceGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "James' Car Configurator:"); //$NON-NLS-1$
+	private Group createChoiceGroup(final Composite parent) {
+		final Group group = UIControlsFactory.createGroup(parent, "James' Car Configurator:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).spacing(20, 20).applyTo(group);
 
-		GridDataFactory choiceLayoutFactory = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).grab(true,
-				false);
+		final GridDataFactory choiceLayoutFactory = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING)
+				.grab(true, false);
 
 		// next row
 
-		Label lblModel = UIControlsFactory.createLabel(group, "Model"); //$NON-NLS-1$
+		final Label lblModel = UIControlsFactory.createLabel(group, "Model"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblModel);
 
-		Composite compositeCarModel = new ChoiceComposite(group, SWT.NONE, false);
+		final Composite compositeCarModel = new ChoiceComposite(group, SWT.NONE, false);
 		choiceLayoutFactory.applyTo(compositeCarModel);
 		addUIControl(compositeCarModel, "compositeCarModel"); //$NON-NLS-1$
 
 		// next row
 
-		Label lblExtras = UIControlsFactory.createLabel(group, "Extras"); //$NON-NLS-1$
+		final Label lblExtras = UIControlsFactory.createLabel(group, "Extras"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblExtras);
 
-		Composite compositeCarExtras = new ChoiceComposite(group, SWT.NONE, true);
+		final Composite compositeCarExtras = new ChoiceComposite(group, SWT.NONE, true);
 		choiceLayoutFactory.applyTo(compositeCarExtras);
 		addUIControl(compositeCarExtras, "compositeCarExtras"); //$NON-NLS-1$
 
@@ -86,7 +86,7 @@ public class HelloDialogView extends AbstractDialogView {
 
 		UIControlsFactory.createLabel(group, "Manufacturer's\nWarranty"); //$NON-NLS-1$
 
-		Composite compositeCarWarranty = new ChoiceComposite(group, SWT.NONE, false);
+		final Composite compositeCarWarranty = new ChoiceComposite(group, SWT.NONE, false);
 		choiceLayoutFactory.applyTo(compositeCarWarranty);
 		addUIControl(compositeCarWarranty, "compositeCarWarranty"); //$NON-NLS-1$
 
@@ -94,7 +94,7 @@ public class HelloDialogView extends AbstractDialogView {
 
 		UIControlsFactory.createLabel(group, "License Plate(s)"); //$NON-NLS-1$
 
-		ChoiceComposite compositeCarPlates = new ChoiceComposite(group, SWT.NONE, true);
+		final ChoiceComposite compositeCarPlates = new ChoiceComposite(group, SWT.NONE, true);
 		compositeCarPlates.setOrientation(SWT.HORIZONTAL);
 		choiceLayoutFactory.applyTo(compositeCarPlates);
 		addUIControl(compositeCarPlates, "compositeCarPlates"); //$NON-NLS-1$
@@ -103,46 +103,46 @@ public class HelloDialogView extends AbstractDialogView {
 
 		UIControlsFactory.createLabel(group, "Price"); //$NON-NLS-1$
 
-		Text txtPrice = UIControlsFactory.createText(group, SWT.RIGHT);
-		int widthHint = UIControlsFactory.getWidthHint(txtPrice, 12);
+		final Text txtPrice = UIControlsFactory.createText(group, SWT.RIGHT);
+		final int widthHint = UIControlsFactory.getWidthHint(txtPrice, 12);
 		GridDataFactory.swtDefaults().hint(widthHint, SWT.DEFAULT).applyTo(txtPrice);
 		addUIControl(txtPrice, "txtPrice"); //$NON-NLS-1$
 
-		Composite buttonComposite = createChoiceGroupButtons(group);
+		final Composite buttonComposite = createChoiceGroupButtons(group);
 		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(buttonComposite);
-		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(createOkCancelButtons(parent));
+		//		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(createButtons(parent));
 
 		return group;
 	}
 
-	private Composite createChoiceGroupButtons(Group group) {
-		Composite buttonComposite = UIControlsFactory.createComposite(group);
+	private Composite createChoiceGroupButtons(final Group group) {
+		final Composite buttonComposite = UIControlsFactory.createComposite(group);
 		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(buttonComposite);
 
-		Button buttonPreset = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonPreset = UIControlsFactory.createButton(buttonComposite);
 		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(buttonPreset);
 		addUIControl(buttonPreset, "buttonPreset"); //$NON-NLS-1$
 
-		Button buttonReset = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonReset = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonReset, "buttonReset"); //$NON-NLS-1$
 
 		return buttonComposite;
 	}
 
-	private Composite createOkCancelButtons(Composite parent) {
-
-		Composite buttonComposite = UIControlsFactory.createComposite(parent);
-		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(buttonComposite);
-
-		Button okButton = UIControlsFactory.createButton(buttonComposite);
-		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(okButton);
-		okButton.setText("Ok"); //$NON-NLS-1$
-		addUIControl(okButton, HelloDialogController.RIDGET_ID_OK);
-
-		Button cancelButton = UIControlsFactory.createButton(buttonComposite);
-		cancelButton.setText("Cancel"); //$NON-NLS-1$
-		addUIControl(cancelButton, HelloDialogController.RIDGET_ID_CANCEL);
-
-		return buttonComposite;
-	}
+	//	private Composite createButtons(final Composite parent) {
+	//
+	//		final Composite buttonComposite = UIControlsFactory.createComposite(parent);
+	//		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(buttonComposite);
+	//
+	//		final Button okButton = UIControlsFactory.createButton(buttonComposite);
+	//		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(okButton);
+	//		okButton.setText("Ok"); //$NON-NLS-1$
+	//		addUIControl(okButton, HelloDialogController.RIDGET_ID_OK);
+	//
+	//		final Button cancelButton = UIControlsFactory.createButton(buttonComposite);
+	//		cancelButton.setText("Cancel"); //$NON-NLS-1$
+	//		addUIControl(cancelButton, HelloDialogController.RIDGET_ID_CANCEL);
+	//
+	//		return buttonComposite;
+	//	}
 }

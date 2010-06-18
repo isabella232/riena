@@ -34,6 +34,7 @@ import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Base class for Riena Dialogs. This class enhances JFace dialogs by adding:
@@ -138,8 +139,8 @@ public abstract class AbstractDialogView extends Dialog {
 
 	@Override
 	public boolean close() {
-		isClosing = true;
 		final AbstractWindowController controller = getController();
+		isClosing = true;
 		setReturnCode(controller.getReturnCode());
 		controlledView.unbind(controller);
 		return super.close();
@@ -216,8 +217,12 @@ public abstract class AbstractDialogView extends Dialog {
 		return mainComposite;
 	}
 
+	protected void createOkCancelButtons(final Composite parent) {
+		// do nothing by default
+	}
+
 	private Composite createMainComposite(final Composite parent) {
-		final Composite mainComposite = new Composite(parent, parent.getStyle());
+		final Composite mainComposite = UIControlsFactory.createComposite(parent, parent.getStyle());
 		mainComposite.setBackground(parent.getBackground());
 		mainComposite.setLayout(new FormLayout());
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(mainComposite);
@@ -225,7 +230,10 @@ public abstract class AbstractDialogView extends Dialog {
 	}
 
 	private void createContentComposite(final Composite parent) {
-		final Composite contentComposite = new Composite(parent, parent.getStyle());
+		final Composite mainContentComposite = UIControlsFactory.createComposite(parent, parent.getStyle());
+		GridLayoutFactory.swtDefaults().applyTo(mainContentComposite);
+		final Composite contentComposite = UIControlsFactory.createComposite(mainContentComposite, parent.getStyle());
+		GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(contentComposite);
 		GridLayoutFactory.swtDefaults().applyTo(contentComposite);
 		buildView(contentComposite);
 		addUIControl(getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
@@ -234,7 +242,8 @@ public abstract class AbstractDialogView extends Dialog {
 		resultFormData.left = new FormAttachment(0, 0);
 		resultFormData.right = new FormAttachment(100, 0);
 		resultFormData.bottom = new FormAttachment(100, 0);
-		contentComposite.setLayoutData(resultFormData);
+		mainContentComposite.setLayoutData(resultFormData);
+		createOkCancelButtons(mainContentComposite);
 	}
 
 	@Override

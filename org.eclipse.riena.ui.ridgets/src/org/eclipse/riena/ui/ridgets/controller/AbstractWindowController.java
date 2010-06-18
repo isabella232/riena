@@ -26,6 +26,9 @@ import org.eclipse.riena.ui.ridgets.IWindowRidget;
  */
 public abstract class AbstractWindowController implements IController, IContext {
 
+	public static final String RIDGET_ID_OK = "dialogOkButton"; //$NON-NLS-1$
+	public static final String RIDGET_ID_CANCEL = "dialogCancelButton"; //$NON-NLS-1$
+
 	/**
 	 * The ridget id to use for the window ridget.
 	 */
@@ -81,11 +84,11 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 * 
 	 * @since 2.0
 	 */
-	public void addDefaultAction(IRidget focusRidget, IActionRidget action) {
+	public void addDefaultAction(final IRidget focusRidget, final IActionRidget action) {
 		actionManager = getWindowRidget().addDefaultAction(focusRidget, action);
 	}
 
-	public void addRidget(String id, IRidget ridget) {
+	public void addRidget(final String id, final IRidget ridget) {
 		ridgets.put(id, ridget);
 	}
 
@@ -104,11 +107,11 @@ public abstract class AbstractWindowController implements IController, IContext 
 	/**
 	 * @since 1.2
 	 */
-	public Object getContext(String key) {
+	public Object getContext(final String key) {
 		return context.get(key);
 	}
 
-	public IRidget getRidget(String id) {
+	public IRidget getRidget(final String id) {
 		return ridgets.get(id);
 	}
 
@@ -116,7 +119,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 * @since 2.0
 	 */
 	@SuppressWarnings("unchecked")
-	public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+	public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
 		return (R) getRidget(id);
 	}
 
@@ -147,7 +150,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 		return this.blocked;
 	}
 
-	public void setBlocked(boolean blocked) {
+	public void setBlocked(final boolean blocked) {
 		this.blocked = blocked;
 		// TODO: implement
 	}
@@ -155,7 +158,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	/**
 	 * @since 1.2
 	 */
-	public void setContext(String key, Object value) {
+	public void setContext(final String key, final Object value) {
 		context.put(key, value);
 	}
 
@@ -167,7 +170,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 * 
 	 * @since 1.2
 	 */
-	public void setReturnCode(int returnCode) {
+	public void setReturnCode(final int returnCode) {
 		this.returnCode = returnCode;
 	}
 
@@ -177,7 +180,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 * @param windowRidget
 	 *            The window ridget.
 	 */
-	public void setWindowRidget(IWindowRidget windowRidget) {
+	public void setWindowRidget(final IWindowRidget windowRidget) {
 		this.windowRidget = windowRidget;
 	}
 }
