@@ -70,7 +70,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * @param navigationNode
 	 *            the node to work on
 	 */
-	public NavigationNodeController(N navigationNode) {
+	public NavigationNodeController(final N navigationNode) {
 
 		ridgets = new HashMap<String, IRidget>();
 		propertyChangeListener = new PropertyChangeHandler();
@@ -93,8 +93,8 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * @param navigationNode
 	 *            the navigationNode to set
 	 */
-	@SuppressWarnings( { "rawtypes", "unchecked" })
-	public void setNavigationNode(N navigationNode) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void setNavigationNode(final N navigationNode) {
 		if (getNavigationNode() instanceof INavigationNodeListenerable) {
 			((INavigationNodeListenerable) getNavigationNode()).removeListener(nodeListener);
 		}
@@ -110,7 +110,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * 
 	 * @see org.eclipse.riena.navigation.IActivateable#allowsActivate(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public boolean allowsActivate(INavigationNode<?> pNode, INavigationContext context) {
+	public boolean allowsActivate(final INavigationNode<?> pNode, final INavigationContext context) {
 		return true;
 	}
 
@@ -119,7 +119,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * 
 	 * @see org.eclipse.riena.navigation.IActivateable#allowsDeactivate(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public boolean allowsDeactivate(INavigationNode<?> pNode, INavigationContext context) {
+	public boolean allowsDeactivate(final INavigationNode<?> pNode, final INavigationContext context) {
 		return true;
 	}
 
@@ -163,7 +163,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * @see org.eclipse.riena.navigation.INavigationNodeController#allowsDispose(org.eclipse.riena.navigation.INavigationNode,
 	 *      org.eclipse.riena.navigation.INavigationContext)
 	 */
-	public boolean allowsDispose(INavigationNode<?> node, INavigationContext context) {
+	public boolean allowsDispose(final INavigationNode<?> node, final INavigationContext context) {
 		return true;
 	}
 
@@ -171,7 +171,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#addRidget(java.lang.String,
 	 *      org.eclipse.riena.ui.internal.ridgets.IRidget)
 	 */
-	public void addRidget(String id, IRidget ridget) {
+	public void addRidget(final String id, final IRidget ridget) {
 		ridget.addPropertyChangeListener(IBasicMarkableRidget.PROPERTY_MARKER, propertyChangeListener);
 		ridget.addPropertyChangeListener(IRidget.PROPERTY_SHOWING, propertyChangeListener);
 		ridgets.put(id, ridget);
@@ -189,12 +189,12 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * ITextRidget txtName = (ITextRidget) getRidget(&quot;searchComposite.txtName&quot;);
 	 * </pre>
 	 */
-	public IRidget getRidget(String id) {
+	public IRidget getRidget(final String id) {
 		IRidget result = ridgets.get(id);
 		if (result == null && id.indexOf('.') != -1) {
-			String parentId = id.substring(0, id.lastIndexOf('.'));
-			String childId = id.substring(id.lastIndexOf('.') + 1);
-			IRidget parent = ridgets.get(parentId);
+			final String parentId = id.substring(0, id.lastIndexOf('.'));
+			final String childId = id.substring(id.lastIndexOf('.') + 1);
+			final IRidget parent = ridgets.get(parentId);
 			if (parent instanceof IRidgetContainer) {
 				result = ((IRidgetContainer) parent).getRidget(childId);
 			}
@@ -206,7 +206,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * @since 2.0
 	 */
 	@SuppressWarnings("unchecked")
-	public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+	public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
 		R ridget = (R) getRidget(id);
 
 		if (ridget != null) {
@@ -215,20 +215,20 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		if (RienaStatus.isTest()) {
 			try {
 				if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
-					Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(ridgetClazz);
+					final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(
+							ridgetClazz);
 					if (mappedRidgetClazz != null) {
 						ridget = mappedRidgetClazz.newInstance();
 					}
-					Assert
-							.isNotNull(
-									ridget,
-									"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+					Assert.isNotNull(
+							ridget,
+							"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
 					ridget = ridgetClazz.newInstance();
 				}
-			} catch (InstantiationException e) {
+			} catch (final InstantiationException e) {
 				throw new RuntimeException(e);
-			} catch (IllegalAccessException e) {
+			} catch (final IllegalAccessException e) {
 				throw new RuntimeException(e);
 			}
 
@@ -245,7 +245,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		return ridgets.values();
 	}
 
-	private void addRidgetMarkers(IRidget ridget, List<IMarker> combinedMarkers) {
+	private void addRidgetMarkers(final IRidget ridget, final List<IMarker> combinedMarkers) {
 
 		if (ridget instanceof IBasicMarkableRidget && ((IBasicMarkableRidget) ridget).isVisible()
 				&& ((IBasicMarkableRidget) ridget).isEnabled()) {
@@ -255,51 +255,60 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		}
 	}
 
-	private void addRidgetMarkers(IBasicMarkableRidget ridget, List<IMarker> combinedMarkers) {
+	private void addRidgetMarkers(final IBasicMarkableRidget ridget, final List<IMarker> combinedMarkers) {
 		combinedMarkers.addAll(ridget.getMarkers());
 	}
 
-	private void addRidgetMarkers(IRidgetContainer ridgetContainer, List<IMarker> combinedMarkers) {
-		for (IRidget ridget : ridgetContainer.getRidgets()) {
+	private void addRidgetMarkers(final IRidgetContainer ridgetContainer, final List<IMarker> combinedMarkers) {
+		for (final IRidget ridget : ridgetContainer.getRidgets()) {
 			addRidgetMarkers(ridget, combinedMarkers);
 		}
 	}
 
 	protected void updateNavigationNodeMarkers() {
-		// remove error and mandatory marker
-		Collection<ErrorMarker> errorMarkers = getNavigationNode().getMarkersOfType(ErrorMarker.class);
-		for (IMarker marker : errorMarkers) {
-			getNavigationNode().removeMarker(marker);
-		}
-		Collection<MandatoryMarker> mandatroyMarkers = getNavigationNode().getMarkersOfType(MandatoryMarker.class);
-		for (IMarker marker : mandatroyMarkers) {
-			getNavigationNode().removeMarker(marker);
-		}
+		final Collection<ErrorMarker> errorMarkers = getNavigationNode().getMarkersOfType(ErrorMarker.class);
+		final Collection<MandatoryMarker> mandatoryMarkers = getNavigationNode()
+				.getMarkersOfType(MandatoryMarker.class);
+		final Collection<ErrorMarker> currentErrors = new ArrayList<ErrorMarker>();
+		final Collection<MandatoryMarker> currentMandatory = new ArrayList<MandatoryMarker>();
 
 		// add error and/or mandatory marker, if a Ridget has an error marker and/or a (enabled) mandatory marker
-		for (IMarker marker : getRidgetMarkers()) {
+		for (final IMarker marker : getRidgetMarkers()) {
 			if (marker instanceof ErrorMarker) {
+				currentErrors.add(ErrorMarker.class.cast(marker));
 				getNavigationNode().addMarker(marker);
 			} else if (marker instanceof MandatoryMarker) {
-				MandatoryMarker mandatoryMarker = (MandatoryMarker) marker;
+				final MandatoryMarker mandatoryMarker = (MandatoryMarker) marker;
 				if (!mandatoryMarker.isDisabled()) {
+					currentMandatory.add(MandatoryMarker.class.cast(marker));
 					getNavigationNode().addMarker(marker);
 				}
+			}
+		}
+
+		for (final IMarker marker : errorMarkers) {
+			if (!currentErrors.contains(marker)) {
+				getNavigationNode().removeMarker(marker);
+			}
+		}
+		for (final IMarker marker : mandatoryMarkers) {
+			if (!currentMandatory.contains(marker)) {
+				getNavigationNode().removeMarker(marker);
 			}
 		}
 	}
 
 	private List<IMarker> getRidgetMarkers() {
-		List<IMarker> combinedMarkers = new ArrayList<IMarker>();
+		final List<IMarker> combinedMarkers = new ArrayList<IMarker>();
 		addRidgetMarkers(this, combinedMarkers);
 		return combinedMarkers;
 	}
 
-	protected void updateIcon(IWindowRidget windowRidget) {
+	protected void updateIcon(final IWindowRidget windowRidget) {
 		if (windowRidget == null) {
 			return;
 		}
-		String nodeIcon = getNavigationNode().getIcon();
+		final String nodeIcon = getNavigationNode().getIcon();
 		windowRidget.setIcon(nodeIcon);
 	}
 
@@ -307,7 +316,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	// return new ProgressVisualizer();
 	// }
 
-	public void setBlocked(boolean blocked) {
+	public void setBlocked(final boolean blocked) {
 		if (getNavigationNode() != null) {
 			getNavigationNode().setBlocked(blocked);
 		}
@@ -327,7 +336,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	private class PropertyChangeHandler implements PropertyChangeListener {
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			updateNavigationNodeMarkers();
 		}
 	}
@@ -341,7 +350,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	/**
 	 * @since 1.2
 	 */
-	public void setContext(String key, Object value) {
+	public void setContext(final String key, final Object value) {
 		Assert.isNotNull(getNavigationNode(), "NavigationNode may not be null"); //$NON-NLS-1$
 		getNavigationNode().setContext(key, value);
 	}
@@ -354,7 +363,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	/**
 	 * @since 1.2
 	 */
-	public Object getContext(String key) {
+	public Object getContext(final String key) {
 		Assert.isNotNull(getNavigationNode(), "NavigationNode may not be null"); //$NON-NLS-1$
 		return getNavigationNode().getContext(key);
 	}
@@ -362,7 +371,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	/**
 	 * @see INavigationNodeController#navigationArgumentChanged(NavigationArgument)
 	 */
-	public void navigationArgumentChanged(NavigationArgument argument) {
+	public void navigationArgumentChanged(final NavigationArgument argument) {
 	}
 
 }

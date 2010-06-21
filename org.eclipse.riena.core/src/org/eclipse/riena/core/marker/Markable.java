@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +23,7 @@ import java.util.Set;
  */
 public class Markable implements IMarkable {
 
-	private Set<IMarker> markers;
+	private final Set<IMarker> markers;
 
 	/**
 	 * Create new Instance and initialize
@@ -37,13 +36,12 @@ public class Markable implements IMarkable {
 	/**
 	 * @see org.eclipse.riena.core.marker.IMarkable#addMarker(org.eclipse.riena.core.marker.IMarker)
 	 */
-	public void addMarker(IMarker marker) {
+	public void addMarker(final IMarker marker) {
 
 		if (marker.isUnique()) {
-			Collection<? extends IMarker> markersOfType = getMarkersOfType(marker.getClass());
+			final Collection<? extends IMarker> markersOfType = getMarkersOfType(marker.getClass());
 			boolean unique = false;
-			for (Iterator<? extends IMarker> iterator = markersOfType.iterator(); iterator.hasNext();) {
-				IMarker m = iterator.next();
+			for (final IMarker m : markersOfType) {
 				if (m.isUnique()) {
 					unique = true;
 				}
@@ -66,7 +64,7 @@ public class Markable implements IMarkable {
 	/**
 	 * @see org.eclipse.riena.core.marker.IMarkable#getMarkersOfType(java.lang.Class)
 	 */
-	public <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
+	public <T extends IMarker> Collection<T> getMarkersOfType(final Class<T> type) {
 		return getMarkersOfType(getMarkers(), type);
 	}
 
@@ -80,27 +78,31 @@ public class Markable implements IMarkable {
 	/**
 	 * @see org.eclipse.riena.core.marker.IMarkable#removeMarker(org.eclipse.riena.core.marker.IMarker)
 	 */
-	public void removeMarker(IMarker marker) {
-		markers.remove(marker);
+	public boolean removeMarker(final IMarker marker) {
+		return markers.remove(marker);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends IMarker> Collection<T> getMarkersOfType(Collection<? extends IMarker> markerSet,
-			Class<T> type) {
+	public static <T extends IMarker> Collection<T> getMarkersOfType(final Collection<? extends IMarker> markerSet,
+			final Class<T> type) {
 
 		if ((type == null) || (markerSet == null)) {
 			return Collections.emptyList();
 		}
 
-		List<T> typedMarkerList = new ArrayList<T>();
-		for (IMarker marker : markerSet) {
+		List<T> typedMarkerList = null;
+		for (final IMarker marker : markerSet) {
 			if (type.isAssignableFrom(marker.getClass())) {
+				if (typedMarkerList == null) {
+					typedMarkerList = new ArrayList<T>();
+				}
 				typedMarkerList.add((T) marker);
 			}
 		}
-
-		return typedMarkerList;
-
+		if (typedMarkerList == null) {
+			return Collections.emptyList();
+		} else {
+			return typedMarkerList;
+		}
 	}
-
 }

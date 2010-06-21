@@ -64,10 +64,10 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * @throws BindingException
 	 *             if the uiControl is not of the given type
 	 */
-	public static void assertType(Object uiControl, Class<?> type) {
+	public static void assertType(final Object uiControl, final Class<?> type) {
 		if ((uiControl != null) && !(type.isAssignableFrom(uiControl.getClass()))) {
-			String expectedClassName = type.getSimpleName();
-			String controlClassName = uiControl.getClass().getSimpleName();
+			final String expectedClassName = type.getSimpleName();
+			final String controlClassName = uiControl.getClass().getSimpleName();
 			throw new BindingException("uiControl of  must be a " + expectedClassName + " but was a " //$NON-NLS-1$ //$NON-NLS-2$
 					+ controlClassName);
 		}
@@ -83,13 +83,13 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * @param clazz
 	 *            a non-null class value
 	 */
-	public static boolean isBean(Class<?> clazz) {
+	public static boolean isBean(final Class<?> clazz) {
 		boolean result;
 		try {
 			// next line throws NoSuchMethodException, if no matching method found
 			clazz.getMethod("addPropertyChangeListener", PropertyChangeListener.class); //$NON-NLS-1$
 			result = true; // have bean
-		} catch (NoSuchMethodException e) {
+		} catch (final NoSuchMethodException e) {
 			result = false; // have pojo
 		}
 		return result;
@@ -101,7 +101,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * the control when it is bound/unbound, for example to add/remove
 	 * listeners.
 	 */
-	public final void setUIControl(Object uiControl) {
+	public final void setUIControl(final Object uiControl) {
 		checkUIControl(uiControl);
 		uninstallListeners();
 		unbindUIControl();
@@ -118,7 +118,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	public String getID() {
-		IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		return locator.locateBindingProperty(getUIControl());
 	}
 
@@ -134,11 +134,11 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		return false;
 	}
 
-	public void setFocusable(boolean focusable) {
+	public void setFocusable(final boolean focusable) {
 		// not supported
 	}
 
-	public final void setVisible(boolean visible) {
+	public final void setVisible(final boolean visible) {
 		if (hiddenMarker == null) {
 			hiddenMarker = new HiddenMarker();
 		}
@@ -150,8 +150,8 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
-	public final void setToolTipText(String toolTipText) {
-		String oldValue = this.toolTip;
+	public final void setToolTipText(final String toolTipText) {
+		final String oldValue = this.toolTip;
 		this.toolTip = toolTipText;
 		updateToolTip();
 		firePropertyChange(PROPERTY_TOOLTIP, oldValue, this.toolTip);
@@ -235,7 +235,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
-	private void addHierarchieVisibilityListener(Composite parent, Listener listener) {
+	private void addHierarchieVisibilityListener(final Composite parent, final Listener listener) {
 		if (parent != null && !parent.isDisposed()) {
 			parent.addListener(SWT.Show, listener);
 			parent.addListener(SWT.Hide, listener);
@@ -253,7 +253,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
-	private void removeHierarchieVisibilityListener(Composite parent, Listener listener) {
+	private void removeHierarchieVisibilityListener(final Composite parent, final Listener listener) {
 		if (parent != null && !parent.isDisposed()) {
 			parent.removeListener(SWT.Show, listener);
 			parent.removeListener(SWT.Hide, listener);
@@ -261,7 +261,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
-	protected Image getManagedImage(String key) {
+	protected Image getManagedImage(final String key) {
 		Image image = ImageStore.getInstance().getImage(key);
 		if (image == null) {
 			image = ImageStore.getInstance().getMissingImage();
@@ -278,7 +278,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 *            new value
 	 * @return true, if value has changed; otherwise false
 	 */
-	protected boolean hasChanged(Object oldValue, Object newValue) {
+	protected boolean hasChanged(final Object oldValue, final Object newValue) {
 		if (oldValue == null && newValue == null) {
 			return false;
 		}
@@ -292,11 +292,11 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		return !getMarkersOfType(ErrorMarker.class).isEmpty();
 	}
 
-	public final void setErrorMarked(boolean errorMarked) {
+	public final void setErrorMarked(final boolean errorMarked) {
 		setErrorMarked(errorMarked, null);
 	}
 
-	protected final void setErrorMarked(boolean errorMarked, String message) {
+	protected final void setErrorMarked(final boolean errorMarked, final String message) {
 		if (!errorMarked) {
 			if (errorMarker != null) {
 				removeMarker(errorMarker);
@@ -316,7 +316,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * <p>
 	 * Adding the same marker twice has no effect.
 	 */
-	public synchronized final void addMarker(IMarker marker) {
+	public synchronized final void addMarker(final IMarker marker) {
 		if (markerSupport == null) {
 			markerSupport = createMarkerSupport();
 		}
@@ -357,7 +357,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		return Collections.emptySet();
 	}
 
-	public final <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
+	public final <T extends IMarker> Collection<T> getMarkersOfType(final Class<T> type) {
 		if (markerSupport != null) {
 			return markerSupport.getMarkersOfType(type);
 		}
@@ -370,17 +370,18 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
-	public final void removeMarker(IMarker marker) {
+	public final boolean removeMarker(final IMarker marker) {
 		if (markerSupport != null) {
-			markerSupport.removeMarker(marker);
+			return markerSupport.removeMarker(marker);
 		}
+		return false;
 	}
 
 	public boolean isEnabled() {
 		return getMarkersOfType(DisabledMarker.class).isEmpty();
 	}
 
-	public synchronized void setEnabled(boolean enabled) {
+	public synchronized void setEnabled(final boolean enabled) {
 		if (enabled) {
 			if (disabledMarker != null) {
 				removeMarker(disabledMarker);
@@ -397,7 +398,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		return !getMarkersOfType(OutputMarker.class).isEmpty();
 	}
 
-	public final void setOutputOnly(boolean outputOnly) {
+	public final void setOutputOnly(final boolean outputOnly) {
 		if (!outputOnly) {
 			if (outputMarker != null) {
 				removeMarker(outputMarker);
@@ -414,7 +415,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		return !getMarkersOfType(MandatoryMarker.class).isEmpty();
 	}
 
-	public final void setMandatory(boolean mandatory) {
+	public final void setMandatory(final boolean mandatory) {
 		if (!mandatory) {
 			if (mandatoryMarker != null) {
 				removeMarker(mandatoryMarker);
@@ -437,9 +438,9 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * @param disable
 	 *            the new disabled state
 	 */
-	protected final void disableMandatoryMarkers(boolean disable) {
-		for (IMarker marker : getMarkersOfType(MandatoryMarker.class)) {
-			MandatoryMarker mMarker = (MandatoryMarker) marker;
+	protected final void disableMandatoryMarkers(final boolean disable) {
+		for (final IMarker marker : getMarkersOfType(MandatoryMarker.class)) {
+			final MandatoryMarker mMarker = (MandatoryMarker) marker;
 			mMarker.setDisabled(disable);
 		}
 	}
@@ -458,7 +459,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 
 	private class VisibilityListener implements Listener {
 
-		public void handleEvent(Event event) {
+		public void handleEvent(final Event event) {
 			// fire a showing event for Ridgets with markers whose visibility
 			// changes because of a parent widget so that markers can be
 			// updated (bug 261980)

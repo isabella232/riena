@@ -12,7 +12,9 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.swt.SWT;
@@ -64,8 +66,8 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 	private static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
 	private static final LnFUpdater LNF_UPDATER = new LnFUpdater();
-	private AbstractViewBindingDelegate binding;
-	private Composite parent;
+	private final AbstractViewBindingDelegate binding;
+	private final Composite parent;
 	private Composite body;
 	private Tree subModuleTree;
 	private ModuleNode moduleNode;
@@ -77,21 +79,27 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 	private NavigationTreeObserver navigationTreeObserver;
 
-	private ListenerList<IComponentUpdateListener> updateListeners;
+	private final ListenerList<IComponentUpdateListener> updateListeners;
 	private ModuleGroupNode moduleGroupNode;
+	private Map<ISubModuleNode, Set<IMarker>> subModuleMarkerCache;
 
-	public ModuleView(Composite parent) {
+	public ModuleView(final Composite parent) {
 		this.parent = parent;
 		binding = createBinding();
 		updateListeners = new ListenerList<IComponentUpdateListener>(IComponentUpdateListener.class);
+		initializeSubModuleMarkerCache();
 		buildView();
 	}
 
-	public void addUpdateListener(IComponentUpdateListener listener) {
+	private void initializeSubModuleMarkerCache() {
+		subModuleMarkerCache = new HashMap<ISubModuleNode, Set<IMarker>>();
+	}
+
+	public void addUpdateListener(final IComponentUpdateListener listener) {
 		updateListeners.add(listener);
 	}
 
-	public void setModuleGroupNode(ModuleGroupNode moduleGroupNode) {
+	public void setModuleGroupNode(final ModuleGroupNode moduleGroupNode) {
 		this.moduleGroupNode = moduleGroupNode;
 	}
 
@@ -102,7 +110,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		return moduleGroupNode;
 	}
 
-	public void bind(ModuleNode node) {
+	public void bind(final ModuleNode node) {
 
 		moduleNode = node;
 
@@ -112,7 +120,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		navigationTreeObserver.addListenerTo(moduleNode);
 
 		if (getNavigationNode().getNavigationNodeController() instanceof IController) {
-			IController controller = (IController) node.getNavigationNodeController();
+			final IController controller = (IController) node.getNavigationNodeController();
 			binding.injectRidgets(controller);
 			binding.bind(controller);
 			controller.afterBind();
@@ -124,6 +132,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 * Disposes this module item.
 	 */
 	public void dispose() {
+		subModuleMarkerCache.clear();
 		unbind();
 		SwtUtilities.disposeWidget(title);
 		SwtUtilities.disposeWidget(getBody());
@@ -137,7 +146,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 */
 	public Rectangle getBounds() {
 
-		Rectangle bounds = title.getBounds();
+		final Rectangle bounds = title.getBounds();
 
 		if (getNavigationNode().isActivated()) {
 			bounds.height += getBody().getSize().y;
@@ -176,13 +185,13 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 * @return height.
 	 */
 	public int getOpenHeight() {
-		IModuleNode navigationNode = getNavigationNode();
+		final IModuleNode navigationNode = getNavigationNode();
 		if ((navigationNode != null) && (navigationNode.isActivated())) {
-			int depth = navigationNode.calcDepth();
+			final int depth = navigationNode.calcDepth();
 			if (depth == 0) {
 				return 0;
 			} else {
-				int itemHeight = getTree().getItemHeight();
+				final int itemHeight = getTree().getItemHeight();
 				return depth * itemHeight + 1;
 			}
 		} else {
@@ -252,7 +261,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 * @param hover
 	 *            true, if mouse over the module; otherwise false.
 	 */
-	public void setHover(boolean hover) {
+	public void setHover(final boolean hover) {
 		if (this.hover != hover) {
 			this.hover = hover;
 			if (!parent.isDisposed()) {
@@ -269,7 +278,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 * @param pressed
 	 *            true, if mouse over the module and pressed; otherwise false.
 	 */
-	public void setPressed(boolean pressed) {
+	public void setPressed(final boolean pressed) {
 		if (this.pressed != pressed) {
 			this.pressed = pressed;
 			if (!parent.isDisposed()) {
@@ -281,7 +290,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	public void unbind() {
 
 		if (getNavigationNode().getNavigationNodeController() instanceof IController) {
-			IController controller = (IController) getNavigationNode().getNavigationNodeController();
+			final IController controller = (IController) getNavigationNode().getNavigationNodeController();
 			binding.unbind(controller);
 		}
 
@@ -311,9 +320,9 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			if (getBody().isVisible() != currentActiveState) {
 				getBody().setVisible(currentActiveState);
 			}
-			int height = getOpenHeight();
+			final int height = getOpenHeight();
 			if (getBody().getSize().y != height) {
-				FormData formData = new FormData();
+				final FormData formData = new FormData();
 				formData.top = new FormAttachment(title);
 				formData.left = new FormAttachment(0, 0);
 				formData.right = new FormAttachment(100, 0);
@@ -340,16 +349,16 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 * @param parent
 	 *            body of the module
 	 */
-	protected void createBodyContent(Composite parent) {
+	protected void createBodyContent(final Composite parent) {
 
 		parent.setLayout(new FormLayout());
 
 		subModuleTree = new Tree(parent, SWT.NO_SCROLL | SWT.DOUBLE_BUFFERED);
 		subModuleTree.setLinesVisible(false);
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		subModuleTree.setFont(lnf.getFont(LnfKeyConstants.SUB_MODULE_ITEM_FONT));
 		binding.addUIControl(subModuleTree, "tree"); //$NON-NLS-1$
-		FormData formData = new FormData();
+		final FormData formData = new FormData();
 		formData.top = new FormAttachment(0, 0);
 		formData.left = new FormAttachment(0, 0);
 		formData.right = new FormAttachment(100, 0);
@@ -363,8 +372,8 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 	}
 
-	protected void fireUpdated(INavigationNode<?> node) {
-		for (IComponentUpdateListener listener : updateListeners.getListeners()) {
+	protected void fireUpdated(final INavigationNode<?> node) {
+		for (final IComponentUpdateListener listener : updateListeners.getListeners()) {
 			listener.update(node);
 		}
 	}
@@ -414,20 +423,20 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 */
 	private void addListeners() {
 		getTree().addListener(SWT.Paint, new Listener() {
-			public void handleEvent(Event event) {
+			public void handleEvent(final Event event) {
 				onTreePaint(event.gc);
 			}
 		});
 
 		getTree().addListener(SWT.Expand, new Listener() {
-			public void handleEvent(Event event) {
+			public void handleEvent(final Event event) {
 				// treeDirty = true;
 				handleExpandCollapse(event, true);
 			}
 		});
 
 		getTree().addListener(SWT.Collapse, new Listener() {
-			public void handleEvent(Event event) {
+			public void handleEvent(final Event event) {
 				// treeDirty = true;
 				handleExpandCollapse(event, false);
 			}
@@ -435,7 +444,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		});
 
 		getTree().addListener(SWT.PaintItem, new Listener() {
-			public void handleEvent(Event event) {
+			public void handleEvent(final Event event) {
 				paintTreeItem(event);
 			}
 		});
@@ -443,7 +452,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		new ModuleNavigationListener(getTree());
 	}
 
-	private void blockView(boolean block) {
+	private void blockView(final boolean block) {
 		if (blockManager == null) {
 			blockManager = new BlockManager();
 		}
@@ -478,14 +487,14 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 *            tree item
 	 * @return true: text was clipped; false: text was not clipped
 	 */
-	private boolean clipSubModuleText(GC gc, TreeItem item) {
+	private boolean clipSubModuleText(final GC gc, final TreeItem item) {
 		boolean clipped = false;
-		Rectangle treeBounds = getTree().getBounds();
-		Rectangle itemBounds = item.getBounds();
-		int maxWidth = treeBounds.width - itemBounds.x - 5;
-		String longText = getItemText(item);
+		final Rectangle treeBounds = getTree().getBounds();
+		final Rectangle itemBounds = item.getBounds();
+		final int maxWidth = treeBounds.width - itemBounds.x - 5;
+		final String longText = getItemText(item);
 		if (longText != null) {
-			String text = SwtUtilities.clipText(gc, longText, maxWidth);
+			final String text = SwtUtilities.clipText(gc, longText, maxWidth);
 			clipped = !longText.equals(text);
 			if (clipped) {
 				item.setText(text);
@@ -503,11 +512,11 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 *            tree item
 	 * @return true: some text was clipped; false: no text was clipped
 	 */
-	private boolean clipSubModuleTexts(GC gc, TreeItem item) {
+	private boolean clipSubModuleTexts(final GC gc, final TreeItem item) {
 		boolean clipped = clipSubModuleText(gc, item);
 
-		TreeItem[] items = item.getItems();
-		for (TreeItem childItem : items) {
+		final TreeItem[] items = item.getItems();
+		for (final TreeItem childItem : items) {
 			if (clipSubModuleTexts(gc, childItem)) {
 				clipped = true;
 			}
@@ -516,8 +525,8 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		return clipped;
 	}
 
-	private String getItemText(TreeItem item) {
-		INavigationNode<?> subModule = (INavigationNode<?>) item.getData();
+	private String getItemText(final TreeItem item) {
+		final INavigationNode<?> subModule = (INavigationNode<?>) item.getData();
 		if (subModule != null) {
 			return subModule.getLabel();
 		} else {
@@ -561,10 +570,10 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 *            the event which occurred
 	 * @param expand
 	 */
-	private void handleExpandCollapse(Event event, boolean expand) {
+	private void handleExpandCollapse(final Event event, final boolean expand) {
 		if (event.item instanceof TreeItem) {
-			TreeItem item = (TreeItem) event.item;
-			INavigationNode<?> node = (INavigationNode<?>) item.getData();
+			final TreeItem item = (TreeItem) event.item;
+			final INavigationNode<?> node = (INavigationNode<?>) item.getData();
 			node.setExpanded(expand);
 		}
 		resize();
@@ -572,9 +581,9 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 	private void layoutTitle() {
 
-		FormData formData = new FormData();
+		final FormData formData = new FormData();
 
-		int index = getModuleGroupNode().getIndexOfChild(getNavigationNode());
+		final int index = getModuleGroupNode().getIndexOfChild(getNavigationNode());
 
 		if (index == 0) {
 			formData.top = new FormAttachment(0, 0);
@@ -598,8 +607,8 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 *            - the child for which the body control will be located
 	 * @return - the body {@link Control}
 	 */
-	private Control getModuleViewBody(IModuleNode child) {
-		for (ModuleView moduleView : getModuleGroupRenderer().getItems()) {
+	private Control getModuleViewBody(final IModuleNode child) {
+		for (final ModuleView moduleView : getModuleGroupRenderer().getItems()) {
 			if (moduleView.getNavigationNode() == child) {
 				return moduleView.getBody();
 			}
@@ -613,9 +622,9 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 * 
 	 * @param gc
 	 */
-	private void onTreePaint(GC gc) {
-		TreeItem[] items = getTree().getItems();
-		for (TreeItem item : items) {
+	private void onTreePaint(final GC gc) {
+		final TreeItem[] items = getTree().getItems();
+		for (final TreeItem item : items) {
 			clipSubModuleTexts(gc, item);
 		}
 	}
@@ -626,15 +635,15 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 * @param event
 	 *            the event which occurred
 	 */
-	private void paintTreeItem(Event event) {
+	private void paintTreeItem(final Event event) {
 		if (event.item instanceof TreeItem) {
-			SubModuleTreeItemMarkerRenderer renderer = getTreeItemRenderer();
+			final SubModuleTreeItemMarkerRenderer renderer = getTreeItemRenderer();
 			renderer.setBounds(event.x, event.y, event.width, event.height);
-			TreeItem item = (TreeItem) event.item;
-			SubModuleNode node = (SubModuleNode) item.getData();
+			final TreeItem item = (TreeItem) event.item;
+			final SubModuleNode node = (SubModuleNode) item.getData();
 			if (node != null) {
-				boolean deep = !item.getExpanded();
-				Collection<? extends IMarker> markers = getAllMarkers(node, deep);
+				final boolean deep = !item.getExpanded();
+				final Collection<? extends IMarker> markers = getAllMarkers(node, deep);
 				renderer.setMarkers(markers);
 			}
 			renderer.paint(event.gc, event.item);
@@ -678,19 +687,19 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	//
 	//	}
 
-	private Collection<? extends IMarker> getAllMarkers(ISubModuleNode node, boolean deep) {
+	private Collection<? extends IMarker> getAllMarkers(final ISubModuleNode node, final boolean deep) {
 
 		if ((node == null) || !node.isVisible()) {
 			return Collections.emptySet();
 		}
 
-		HashSet<IMarker> markers = new HashSet<IMarker>();
+		final HashSet<IMarker> markers = new HashSet<IMarker>();
 		fillMarkers(node, deep, markers);
 
 		return markers;
 	}
 
-	private void fillMarkers(final ISubModuleNode node, boolean deep, final Set<IMarker> markers) {
+	private void fillMarkers(final ISubModuleNode node, final boolean deep, final Set<IMarker> markers) {
 
 		if (!node.isVisible()) {
 			return;
@@ -699,7 +708,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		markers.addAll(Markable.getMarkersOfType(node.getMarkers(), IIconizableMarker.class));
 
 		if (deep) {
-			for (ISubModuleNode child : node.getChildren()) {
+			for (final ISubModuleNode child : node.getChildren()) {
 				fillMarkers(child, deep, markers);
 			}
 		}
@@ -715,24 +724,25 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 */
 	private class ModuleListener extends ModuleNodeListener {
 		@Override
-		public void activated(IModuleNode source) {
+		public void activated(final IModuleNode source) {
 			super.activated(source);
 			updateModuleView();
 		}
 
 		@Override
-		public void block(IModuleNode source, boolean block) {
+		public void block(final IModuleNode source, final boolean block) {
 			blockView(block);
 		}
 
 		@Override
-		public void disposed(IModuleNode source) {
+		public void disposed(final IModuleNode source) {
 			super.disposed(source);
+
 			dispose();
 		}
 
 		@Override
-		public void markerChanged(IModuleNode source, IMarker marker) {
+		public void markerChanged(final IModuleNode source, final IMarker marker) {
 			super.markerChanged(source, marker);
 			title.setMarkers(source.getMarkers());
 			title.redraw();
@@ -745,7 +755,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 */
 	private class SubModuleListener extends SubModuleNodeListener {
 		@Override
-		public void beforeActivated(ISubModuleNode source) {
+		public void beforeActivated(final ISubModuleNode source) {
 			/*
 			 * SWT feature: when tree.setFocus() is called below, it will fire a
 			 * selection event in ADDITION of setting the focus. This will
@@ -756,15 +766,15 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			 * we go into the activated(...) method, to avoid this selection
 			 * event.
 			 */
-			Tree tree = getTree();
+			final Tree tree = getTree();
 			if (tree.getSelectionCount() == 0 && tree.getItemCount() > 0) {
-				TreeItem firstItem = tree.getItem(0);
+				final TreeItem firstItem = tree.getItem(0);
 				tree.select(firstItem);
 			}
 		}
 
 		@Override
-		public void activated(ISubModuleNode source) {
+		public void activated(final ISubModuleNode source) {
 			doNotResize = true;
 			updateExpanded(source); // fix for bug 269221
 			doNotResize = false;
@@ -773,27 +783,45 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		}
 
 		@Override
-		public void childAdded(ISubModuleNode source, ISubModuleNode childAdded) {
+		public void childAdded(final ISubModuleNode source, final ISubModuleNode childAdded) {
 			resize();
 		}
 
 		@Override
-		public void childRemoved(ISubModuleNode source, ISubModuleNode childRemoved) {
+		public void childRemoved(final ISubModuleNode source, final ISubModuleNode childRemoved) {
 			resize();
 		}
 
 		@Override
-		public void labelChanged(ISubModuleNode source) {
+		public void labelChanged(final ISubModuleNode source) {
 			super.labelChanged(source);
 			getTree().redraw();
 		}
 
 		@Override
-		public void markerChanged(ISubModuleNode source, IMarker marker) {
-			getTree().redraw();
+		public void markerChanged(final ISubModuleNode source, final IMarker marker) {
+			if (isTreeRedrawOnMarkerChanged(source, marker)) {
+				getTree().redraw();
+			}
 		}
 
-		private void updateExpanded(ISubModuleNode node) {
+		private boolean isTreeRedrawOnMarkerChanged(final ISubModuleNode source, final IMarker marker) {
+			Set<IMarker> resultCache = subModuleMarkerCache.get(source);
+			if (resultCache == null) {
+				resultCache = new HashSet<IMarker>();
+				subModuleMarkerCache.put(source, resultCache);
+			}
+			final Set<IMarker> originalCache = new HashSet<IMarker>(resultCache);
+			if (source.getMarkers().contains(marker)) {
+				resultCache.add(marker);
+			} else {
+				resultCache.remove(marker);
+			}
+
+			return !resultCache.equals(originalCache);
+		}
+
+		private void updateExpanded(final ISubModuleNode node) {
 			final INavigationNode<?> nodeParent = node.getParent();
 			if (nodeParent instanceof ISubModuleNode) {
 				nodeParent.setExpanded(true);
@@ -802,7 +830,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		}
 
 		@Override
-		public void expandedChanged(ISubModuleNode source) {
+		public void expandedChanged(final ISubModuleNode source) {
 			super.expandedChanged(source);
 			resize();
 		}
@@ -839,7 +867,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		private boolean disableTitle() {
 			// when the subapp is disabled: disable the title
 			// when the subapp is enabled but the module disable: keep title as is
-			ISubApplicationNode subApp = getNavigationNode().getParentOfType(ISubApplicationNode.class);
+			final ISubApplicationNode subApp = getNavigationNode().getParentOfType(ISubApplicationNode.class);
 			return subApp != null && subApp.isBlocked();
 		}
 

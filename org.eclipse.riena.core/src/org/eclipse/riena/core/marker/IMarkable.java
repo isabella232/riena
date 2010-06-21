@@ -33,7 +33,7 @@ public interface IMarkable {
 	 * @param marker
 	 *            the marker to remove.
 	 */
-	void removeMarker(IMarker marker);
+	boolean removeMarker(IMarker marker);
 
 	/**
 	 * Removes all marker from the markable object.
