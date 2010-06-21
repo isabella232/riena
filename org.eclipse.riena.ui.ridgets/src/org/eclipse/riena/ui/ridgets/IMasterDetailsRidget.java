@@ -75,6 +75,17 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 			String[] columnPropertyNames, String[] headerNames);
 
 	/**
+	 * This method checks if the details can be overwritten by
+	 * {@link #suggestNewEntry(Object)}. If the details are dirty, the user will
+	 * be asked to discard changes (via a blocking dialog).
+	 * 
+	 * @return true if the details or not dirty or can be overwritten (@see
+	 *         {@link #suggestNewEntry(Object)}, false otherwise
+	 * @since 2.1
+	 */
+	public boolean canSuggest();
+
+	/**
 	 * Return the current {@link IMasterDetailsDelegate} or null, if none has
 	 * (yet) been set.
 	 * 

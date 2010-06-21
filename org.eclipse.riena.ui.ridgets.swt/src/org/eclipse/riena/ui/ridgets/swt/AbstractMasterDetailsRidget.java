@@ -115,6 +115,14 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		bindToModel(rowObservableList, rowClass, columnPropertyNames, headerNames);
 	}
 
+	public boolean canSuggest() {
+		boolean result = true;
+		if (areDetailsChanged()) {
+			result = getUIControl().confirmDiscardChanges();
+		}
+		return result;
+	}
+
 	@Override
 	public void configureRidgets() {
 		configureTableRidget();
