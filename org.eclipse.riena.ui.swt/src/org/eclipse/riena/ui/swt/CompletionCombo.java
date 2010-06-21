@@ -11,6 +11,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -21,6 +24,8 @@ import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.accessibility.AccessibleTextAdapter;
 import org.eclipse.swt.accessibility.AccessibleTextEvent;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -43,8 +48,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TypedListener;
 import org.eclipse.swt.widgets.Widget;
-
-import org.eclipse.riena.core.util.StringUtils;
 
 /**
  * The CompletionCombo class represents a selectable user interface object that
@@ -81,6 +84,12 @@ public class CompletionCombo extends Composite {
 	private Shell _shell;
 	private boolean autoCompletion;
 	private AutoCompletionMode autoCompletionMode;
+	/**
+	 * Stores all allowed input characters that are not letters or digits. This
+	 * date is computed as items are added to the CompletionCombo and used in
+	 * {@link #isInputChar(char)}.
+	 */
+	private final Set<Character> inputChars = new HashSet<Character>();
 
 	/**
 	 * This enumeration is used to configure the the way the autocompletion
@@ -267,6 +276,7 @@ public class CompletionCombo extends Composite {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
 		}
 		list.add(string);
+		updateInputChars(string);
 	}
 
 	/**
@@ -304,6 +314,7 @@ public class CompletionCombo extends Composite {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
 		}
 		list.add(string, index);
+		updateInputChars(string);
 	}
 
 	/**
@@ -636,26 +647,6 @@ public class CompletionCombo extends Composite {
 		if (selectionIndex != -1) {
 			list.setSelection(selectionIndex);
 		}
-	}
-
-	/**
-	 * Cuts the selected text.
-	 * <p>
-	 * The current selection is first copied to the clipboard and then deleted
-	 * from the widget.
-	 * </p>
-	 * 
-	 * @exception SWTException
-	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
-	 *                </ul>
-	 */
-	public void cut() {
-		checkWidget();
-		text.cut();
 	}
 
 	/**
@@ -1472,26 +1463,6 @@ public class CompletionCombo extends Composite {
 		}
 	}
 
-	/**
-	 * Pastes text from clipboard.
-	 * <p>
-	 * The selected text is deleted from the widget and new text inserted from
-	 * the clipboard.
-	 * </p>
-	 * 
-	 * @exception SWTException
-	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
-	 *                </ul>
-	 */
-	public void paste() {
-		checkWidget();
-		text.paste();
-	}
-
 	void popupEvent(final Event event) {
 		switch (event.type) {
 		case SWT.Paint:
@@ -1914,6 +1885,7 @@ public class CompletionCombo extends Composite {
 	public void setItem(final int index, final String string) {
 		checkWidget();
 		list.setItem(index, string);
+		updateInputChars(string);
 	}
 
 	/**
@@ -1939,6 +1911,9 @@ public class CompletionCombo extends Composite {
 	public void setItems(final String[] items) {
 		checkWidget();
 		list.setItems(items);
+		for (final String item : items) {
+			updateInputChars(item);
+		}
 		if (!text.getEditable()) {
 			text.setText(""); //$NON-NLS-1$
 		}
@@ -2425,54 +2400,175 @@ public class CompletionCombo extends Composite {
 	 * @return if this method handled the event
 	 */
 	private void handleAutoCompletion(final Event event) {
-		if (event.character == SWT.DEL && !isAllowMissmatch()) {
-			event.doit = false;
-		} else if (Character.isLetterOrDigit(event.character) || event.character == SWT.BS) {
+		event.doit = false;
+		// System.out.println(String.format("ch:%c, kc:%d, mask:%d", event.character, event.keyCode, event.stateMask));
+		if (event.stateMask == SWT.ALT || event.stateMask == SWT.CONTROL) {
+			//  Must use equality instead of (stateMask & const > 0) here!
+			// This allows ALT + x or CONTROL + x combos. However 
+			// ALT + CONTROL + x will not go in here and will be handled
+			// by isInputChar(x) instead.
+			event.doit = handleClipboardOperations(event);
+		} else if (event.character == SWT.DEL && isAllowMissmatch()) {
+			event.doit = true;
+		} else if (isControlChar(event)) {
+			// System.out.println("isControlChar: " + event.character);
+			event.doit = true;
+		} else if (isInputChar(event.character)) {
+			// System.out.println("isInputChar: " + event.character);
 			if (!isDropped()) {
 				dropDown(true);
 				text.setFocus();
 			}
 
-			final char typedChar = event.character;
 			final Point selection = getSelection();
-
-			final String prefix = buildPrefix(text.getText().substring(0, selection.x), typedChar, selection);
-
-			matchPrefixWithList(prefix);
-			event.doit = false;
-		} else {
-			event.doit = true;
-		}
-
-	}
-
-	/**
-	 * 
-	 */
-	private String buildPrefix(final String prefix, final char typedChar, final Point selection) {
-		if (Character.isLetterOrDigit(typedChar)) {
-			return buildPrefixForLetterOrDigit(typedChar, selection);
-		} else if (!StringUtils.isDeepEmpty(prefix)) {
-			return buildPrefixOnBackSpace(typedChar, selection);
-		}
-		return null;
-
-	}
-
-	private void matchPrefixWithList(final String prefix) {
-		if (prefix != null) {
-			final int prefixLength = prefix.length();
-			for (final String item : list.getItems()) {
-				if (matchesWord(prefix, item)) {
-					setMatchingTextAndSelection(prefixLength, item);
+			final String oldPrefix = text.getText().substring(0, selection.x);
+			final String newPrefix;
+			if (event.character == SWT.BS) {
+				newPrefix = buildPrefixOnBackSpace(selection);
+			} else if (isRepeatOfFirstChar(event, oldPrefix)) {
+				if (jumpToNextItem(oldPrefix)) {
 					return;
 				}
+				newPrefix = buildPrefixForInput(event.character, selection);
+			} else {
+				newPrefix = buildPrefixForInput(event.character, selection);
 			}
-			if (isAllowMissmatch()) {
-				text.setText(prefix);
-				setSelection(new Point(prefixLength, prefixLength));
+
+			final boolean matched = matchPrefixWithList(newPrefix);
+			if (!matched && isAllowMissmatch()) {
+				event.doit = true;
 			}
 		}
+	}
+
+	private boolean isRepeatOfFirstChar(final Event event, final String oldPrefix) {
+		return !isAllowMissmatch() && oldPrefix.length() == 1
+				&& oldPrefix.equalsIgnoreCase(String.valueOf(event.character)) && list.getSelectionIndex() != -1;
+	}
+
+	private boolean jumpToNextItem(final String oldPrefix) {
+		boolean result = false;
+		final int newIndex = list.getSelectionIndex() + 1;
+		if (newIndex < list.getItemCount()) {
+			final String newSelection = list.getItem(newIndex);
+			if (newSelection.length() > 0 && oldPrefix.equalsIgnoreCase(newSelection.substring(0, 1))) {
+				text.setText(newSelection);
+				list.setSelection(newIndex);
+				text.setSelection(1, newSelection.length());
+				result = true;
+			}
+		}
+		return result;
+	}
+
+	private boolean handleClipboardOperations(final Event event) {
+		boolean result = true;
+		if (!isAllowMissmatch() && event.stateMask == SWT.CONTROL) {
+			if (event.keyCode == 118) { // Ctrl + V
+				handlePaste();
+				result = false;
+			} else if (event.keyCode == 120) { // Ctrl + X
+				handleCut();
+				result = false;
+			}
+		}
+		return result;
+	}
+
+	private void handleCut() {
+		final Point selection = text.getSelection();
+		final String oldText = text.getText();
+		final String newText = oldText.substring(0, selection.x) + oldText.substring(selection.y, oldText.length());
+		final int index = indexOf(newText);
+		if (index != -1 || newText.length() == 0) {
+			text.cut();
+			text.setText(newText);
+			list.setSelection(index);
+			text.setSelection(newText.length());
+		}
+	}
+
+	private void handlePaste() {
+		final Clipboard clipboard = new Clipboard(getDisplay());
+		try {
+			final String data = (String) clipboard.getContents(TextTransfer.getInstance());
+			final Point selection = text.getSelection();
+			final String oldText = text.getText();
+			final String newText = oldText.substring(0, selection.x) + data
+					+ oldText.substring(selection.y, oldText.length());
+			final int index = indexOf(newText);
+			if (index != -1) {
+				text.setText(newText);
+				list.setSelection(index);
+				text.setSelection(newText.length());
+			}
+		} finally {
+			clipboard.dispose();
+		}
+	}
+
+	private void updateInputChars(final String string) {
+		for (int i = 0; i < string.length(); i++) {
+			final char ch = string.charAt(i);
+			if (!Character.isLetterOrDigit(ch)) {
+				inputChars.add(Character.valueOf(ch));
+			}
+		}
+	}
+
+	private boolean isInputChar(final char ch) {
+		if (Character.isLetterOrDigit(ch) || ch == SWT.BS) {
+			return true;
+		}
+		final Character character = Character.valueOf(ch);
+		if (inputChars.contains(character)) {
+			return true;
+		}
+		if (isAllowMissmatch()) {
+			// Special character: dash, punktuation, currency, quotes, brakets, ...
+			final int type = Character.getType(ch);
+			if (type == Character.LETTER_NUMBER || type == Character.OTHER_NUMBER || type >= Character.DASH_PUNCTUATION
+					&& type < Character.FINAL_QUOTE_PUNCTUATION) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isControlChar(final Event event) {
+		final char[] chars = { SWT.ESC, SWT.CR };
+		for (final int ch : chars) {
+			if (ch == event.character) {
+				return true;
+			}
+		}
+		final int[] keyCodes = { SWT.ARROW_UP, SWT.ARROW_DOWN, SWT.ARROW_LEFT, SWT.ARROW_RIGHT, SWT.HOME, SWT.END };
+		for (final int keycode : keyCodes) {
+			if (keycode == event.keyCode) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean matchPrefixWithList(final String prefix) {
+		boolean result = false;
+		if (prefix != null) {
+			if (prefix.length() == 0) {
+				text.setText(""); //$NON-NLS-1$
+				result = true;
+			} else {
+				final int prefixLength = prefix.length();
+				for (final String item : list.getItems()) {
+					if (matchesWord(prefix, item)) {
+						setMatchingTextAndSelection(prefixLength, item);
+						result = true;
+						break;
+					}
+				}
+			}
+		}
+		return result;
 	}
 
 	private void setMatchingTextAndSelection(final int selectionStart, final String item) {
@@ -2481,34 +2577,24 @@ public class CompletionCombo extends Composite {
 		list.setSelection(new String[] { item });
 	}
 
-	private String buildPrefixOnBackSpace(final char typedChar, final Point selection) {
-		String prefix = text.getText().substring(0, selection.x);
+	private String buildPrefixOnBackSpace(final Point selection) {
+		String result;
+		final String theText = text.getText();
 		if (isAllowMissmatch()) {
-			prefix = text.getText().substring(0, selection.x - 1) + text.getText().substring(selection.y);
-			if (selection.y != text.getText().length()) {
-				text.setText(prefix);
-				setSelection(new Point(selection.x - 1, selection.y - 1));
-				return null;
-			}
+			final int end = Math.max(0, selection.x - 1);
+			result = theText.substring(0, end) + theText.substring(selection.y);
 		} else {
-			prefix = prefix.substring(0, prefix.length() - 1);
+			final String prefix = theText.substring(0, selection.x);
+			final int end = Math.max(0, prefix.length() - 1);
+			result = prefix.substring(0, end);
 		}
-		if (prefix.length() == 0) {
-			text.setText(""); //$NON-NLS-1$
-			return null;
-		}
-		return prefix;
+		return result;
 	}
 
-	private String buildPrefixForLetterOrDigit(final char typedChar, final Point selection) {
+	private String buildPrefixForInput(final char typedChar, final Point selection) {
 		String prefix = text.getText().substring(0, selection.x);
 		if (isAllowMissmatch()) {
 			prefix = text.getText().substring(0, selection.x) + typedChar + text.getText().substring(selection.y);
-			if (selection.y != text.getText().length()) {
-				text.setText(prefix);
-				setSelection(new Point(selection.x + 1, selection.y + 1));
-				return null;
-			}
 		} else {
 			prefix += typedChar;
 		}
