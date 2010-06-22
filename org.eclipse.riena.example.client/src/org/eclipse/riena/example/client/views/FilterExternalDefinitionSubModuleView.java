@@ -23,29 +23,29 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class FilterExternalDefinitionSubModuleView extends SubModuleView {
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 
 		parent.setLayout(new GridLayout(1, false));
 
-		Group group1 = createFiltersGroup(parent);
+		final Group group1 = createFiltersGroup(parent);
 		GridDataFactory.fillDefaults().grab(false, false).applyTo(group1);
 
 	}
 
-	private Group createFiltersGroup(Composite parent) {
+	private Group createFiltersGroup(final Composite parent) {
 
-		Group group = UIControlsFactory.createGroup(parent, "UI-Filters (External definition)"); //$NON-NLS-1$
+		final Group group = UIControlsFactory.createGroup(parent, "UI-Filters (External definition)"); //$NON-NLS-1$
 
-		int defaultVSpacing = new GridLayout().verticalSpacing;
+		final int defaultVSpacing = new GridLayout().verticalSpacing;
 		GridLayoutFactory.swtDefaults().numColumns(1).equalWidth(false).margins(10, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
 
-		Button addFilter = UIControlsFactory.createButton(group);
+		final Button addFilter = UIControlsFactory.createButton(group);
 		addFilter.setText("Enable offline filter"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, false).span(1, 1).applyTo(addFilter);
 		addUIControl(addFilter, "addOffline"); //$NON-NLS-1$
 
-		Button removeFilters = UIControlsFactory.createButton(group);
+		final Button removeFilters = UIControlsFactory.createButton(group);
 		removeFilters.setText("Disable offline filter"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, false).span(1, 1).applyTo(removeFilters);
 		addUIControl(removeFilters, "removeOffline"); //$NON-NLS-1$

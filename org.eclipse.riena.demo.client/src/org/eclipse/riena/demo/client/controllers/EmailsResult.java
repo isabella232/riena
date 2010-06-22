@@ -32,7 +32,7 @@ public class EmailsResult {
 	 * @param emails
 	 *            the emails to set
 	 */
-	public void setEmails(List<Email> emails) {
+	public void setEmails(final List<Email> emails) {
 		this.emails = emails;
 	}
 

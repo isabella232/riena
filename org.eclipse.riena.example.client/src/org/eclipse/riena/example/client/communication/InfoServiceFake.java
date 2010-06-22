@@ -27,16 +27,16 @@ public class InfoServiceFake implements IInfoService {
 		Inject.service(IRemoteProgressMonitorRegistry.class).into(this).andStart(Activator.getDefault().getContext());
 	}
 
-	public void bind(IRemoteProgressMonitorRegistry registry) {
+	public void bind(final IRemoteProgressMonitorRegistry registry) {
 		this.registry = registry;
 	}
 
-	public void unbind(IRemoteProgressMonitorRegistry registry) {
+	public void unbind(final IRemoteProgressMonitorRegistry registry) {
 		this.registry = null;
 	}
 
-	public String getInfo(String parameter) {
-		IRemoteProgressMonitorList progressMonitors = registry.getProgressMonitors(this);
+	public String getInfo(final String parameter) {
+		final IRemoteProgressMonitorList progressMonitors = registry.getProgressMonitors(this);
 		new CommunicationFaker().communicate(progressMonitors);
 		return "hello, " + parameter + " from remote service"; //$NON-NLS-1$ //$NON-NLS-2$
 	}

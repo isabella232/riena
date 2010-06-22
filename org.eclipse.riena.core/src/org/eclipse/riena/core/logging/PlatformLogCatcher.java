@@ -46,12 +46,12 @@ public class PlatformLogCatcher implements ILogListener, ILogCatcher {
 	 * org.eclipse.core.runtime.ILogListener#logging(org.eclipse.core.runtime
 	 * .IStatus, java.lang.String)
 	 */
-	public void logging(IStatus status, String plugin) {
+	public void logging(final IStatus status, final String plugin) {
 		if (Activator.getDefault() == null) {
 			return;
 		}
 		int logLevel;
-		int severity = status.getSeverity();
+		final int severity = status.getSeverity();
 		if (IStatus.ERROR == severity) {
 			logLevel = LogService.LOG_ERROR;
 		} else if (IStatus.WARNING == severity) {
@@ -61,7 +61,7 @@ public class PlatformLogCatcher implements ILogListener, ILogCatcher {
 		} else {
 			logLevel = LogService.LOG_DEBUG;
 		}
-		StringBuilder bob = new StringBuilder("Message: "); //$NON-NLS-1$
+		final StringBuilder bob = new StringBuilder("Message: "); //$NON-NLS-1$
 		bob.append(status.getMessage()).append(", Code: "); //$NON-NLS-1$
 		bob.append(status.getCode()).append(", Plugin: "); //$NON-NLS-1$
 		bob.append(status.getPlugin());

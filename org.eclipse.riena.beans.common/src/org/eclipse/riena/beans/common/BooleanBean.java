@@ -30,7 +30,7 @@ public class BooleanBean extends AbstractBean {
 	 * @param value
 	 *            The value.
 	 */
-	public BooleanBean(boolean value) {
+	public BooleanBean(final boolean value) {
 		this.value = value;
 	}
 
@@ -40,7 +40,7 @@ public class BooleanBean extends AbstractBean {
 	 * @param value
 	 *            The value.
 	 */
-	public BooleanBean(Boolean value) {
+	public BooleanBean(final Boolean value) {
 		this.value = value;
 	}
 
@@ -55,9 +55,9 @@ public class BooleanBean extends AbstractBean {
 	 * @param value
 	 *            The value to set.
 	 */
-	public void setValue(boolean value) {
+	public void setValue(final boolean value) {
 		if (this.value != value) {
-			boolean old = this.value;
+			final boolean old = this.value;
 			this.value = value;
 			firePropertyChanged("value", old, this.value); //$NON-NLS-1$
 		}

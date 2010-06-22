@@ -46,7 +46,7 @@ public class CommandProviderLogFilter implements LogFilter, CommandProvider, IEx
 	 * org.eclipse.equinox.log.LogFilter#isLoggable(org.osgi.framework.Bundle,
 	 * java.lang.String, int)
 	 */
-	public boolean isLoggable(Bundle b, String loggerName, int logLevel) {
+	public boolean isLoggable(final Bundle b, final String loggerName, final int logLevel) {
 		return logLevel <= threshold;
 	}
 
@@ -57,8 +57,8 @@ public class CommandProviderLogFilter implements LogFilter, CommandProvider, IEx
 	 * @throws Exception
 	 */
 	@IgnoreCheckStyle("the _ is the pattern for console commands - do not change!!")
-	public void _logLevel(CommandInterpreter ci) throws Exception {
-		String level = ci.nextArgument();
+	public void _logLevel(final CommandInterpreter ci) throws Exception {
+		final String level = ci.nextArgument();
 		if (level != null) {
 			threshold = LogLevelMapper.getValue(level);
 		}
@@ -71,11 +71,10 @@ public class CommandProviderLogFilter implements LogFilter, CommandProvider, IEx
 	 * @see org.eclipse.osgi.framework.console.CommandProvider#getHelp()
 	 */
 	public String getHelp() {
-		StringWriter stringWriter = new StringWriter();
-		PrintWriter writer = new PrintWriter(stringWriter);
+		final StringWriter stringWriter = new StringWriter();
+		final PrintWriter writer = new PrintWriter(stringWriter);
 		writer.println("---Controlling Riena logging---"); //$NON-NLS-1$
-		writer
-				.println("\tlogLevel [ <level> ] - specify log level, e.g. debug, info, warn, error or none, or retrieve current level"); //$NON-NLS-1$
+		writer.println("\tlogLevel [ <level> ] - specify log level, e.g. debug, info, warn, error or none, or retrieve current level"); //$NON-NLS-1$
 		writer.close();
 		return stringWriter.toString();
 	}
@@ -88,7 +87,7 @@ public class CommandProviderLogFilter implements LogFilter, CommandProvider, IEx
 	 * .eclipse.core.runtime.IConfigurationElement, java.lang.String,
 	 * java.lang.Object)
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 		if (data == null) {
 			return;

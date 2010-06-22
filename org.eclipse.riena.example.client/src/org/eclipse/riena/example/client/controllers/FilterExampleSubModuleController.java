@@ -39,7 +39,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 
 		private final String id;
 
-		FilterId(String id) {
+		FilterId(final String id) {
 			this.id = id;
 		}
 
@@ -61,7 +61,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 
 		super.configureRidgets();
 
-		IToggleButtonRidget navigationAction = (IToggleButtonRidget) getRidget("navigationBtn"); //$NON-NLS-1$
+		final IToggleButtonRidget navigationAction = (IToggleButtonRidget) getRidget("navigationBtn"); //$NON-NLS-1$
 		updateToggleText(navigationAction);
 		navigationAction.addListener(new IActionListener() {
 			public void callback() {
@@ -69,7 +69,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 			}
 		});
 
-		IToggleButtonRidget menuToolAction = (IToggleButtonRidget) getRidget("menuToolItemBtn"); //$NON-NLS-1$
+		final IToggleButtonRidget menuToolAction = (IToggleButtonRidget) getRidget("menuToolItemBtn"); //$NON-NLS-1$
 		updateToggleText(menuToolAction);
 		menuToolAction.addListener(new IActionListener() {
 			public void callback() {
@@ -77,7 +77,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 			}
 		});
 
-		IToggleButtonRidget ridgetAction = (IToggleButtonRidget) getRidget("ridgetBtn"); //$NON-NLS-1$
+		final IToggleButtonRidget ridgetAction = (IToggleButtonRidget) getRidget("ridgetBtn"); //$NON-NLS-1$
 		updateToggleText(ridgetAction);
 		ridgetAction.addListener(new IActionListener() {
 			public void callback() {
@@ -85,7 +85,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 			}
 		});
 
-		IToggleButtonRidget ridgetDisableAction = (IToggleButtonRidget) getRidget("ridgetDisableBtn"); //$NON-NLS-1$
+		final IToggleButtonRidget ridgetDisableAction = (IToggleButtonRidget) getRidget("ridgetDisableBtn"); //$NON-NLS-1$
 		updateToggleText(ridgetAction);
 		ridgetDisableAction.addListener(new IActionListener() {
 			public void callback() {
@@ -93,7 +93,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 			}
 		});
 
-		IToggleButtonRidget ridgetHideAction = (IToggleButtonRidget) getRidget("ridgetHideBtn"); //$NON-NLS-1$
+		final IToggleButtonRidget ridgetHideAction = (IToggleButtonRidget) getRidget("ridgetHideBtn"); //$NON-NLS-1$
 		updateToggleText(ridgetAction);
 		ridgetHideAction.addListener(new IActionListener() {
 			public void callback() {
@@ -101,7 +101,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 			}
 		});
 
-		IToggleButtonRidget ridget01Action = (IToggleButtonRidget) getRidget("ridget01Btn"); //$NON-NLS-1$
+		final IToggleButtonRidget ridget01Action = (IToggleButtonRidget) getRidget("ridget01Btn"); //$NON-NLS-1$
 		updateToggleText(ridgetAction);
 		ridget01Action.addListener(new IActionListener() {
 			public void callback() {
@@ -109,25 +109,25 @@ public class FilterExampleSubModuleController extends SubModuleController {
 			}
 		});
 
-		MySampleBean sampleBean = new MySampleBean();
+		final MySampleBean sampleBean = new MySampleBean();
 
-		ITextRidget sampleText = (ITextRidget) getRidget("sampleText"); //$NON-NLS-1$
+		final ITextRidget sampleText = (ITextRidget) getRidget("sampleText"); //$NON-NLS-1$
 		sampleText.setMandatory(true);
 		sampleText.bindToModel(sampleBean, "text"); //$NON-NLS-1$
 		sampleText.updateFromModel();
 
 	}
 
-	private void doFilter(FilterId filterId, String buttonRidgetId) {
+	private void doFilter(final FilterId filterId, final String buttonRidgetId) {
 
-		IToggleButtonRidget menuToolAction = (IToggleButtonRidget) getRidget(buttonRidgetId);
+		final IToggleButtonRidget menuToolAction = (IToggleButtonRidget) getRidget(buttonRidgetId);
 
-		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-		IUIFilterContainer container = Service.get(IUIFilterProvider.class).provideFilter(filterId.toString());
-		IUIFilter filter = container.getFilter();
-		Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
-		for (String targetNodeId : targetNodeIds) {
-			INavigationNode<?> node = NavigationNodeUtility.findNodeLongId(targetNodeId, applNode);
+		final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+		final IUIFilterContainer container = Service.get(IUIFilterProvider.class).provideFilter(filterId.toString());
+		final IUIFilter filter = container.getFilter();
+		final Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
+		for (final String targetNodeId : targetNodeIds) {
+			final INavigationNode<?> node = NavigationNodeUtility.findNodeLongId(targetNodeId, applNode);
 			if (menuToolAction.isSelected()) {
 				node.addFilter(filter);
 			} else {
@@ -145,7 +145,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 	 * @param toggle
 	 *            toggle button
 	 */
-	private void updateToggleText(IToggleButtonRidget toggle) {
+	private void updateToggleText(final IToggleButtonRidget toggle) {
 
 		if (toggle.isSelected()) {
 			toggle.setText(SELECTED_TEXT);
@@ -160,7 +160,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 		private String text = ""; //$NON-NLS-1$
 
 		@SuppressWarnings("unused")
-		public void setText(String text) {
+		public void setText(final String text) {
 			this.text = text;
 		}
 

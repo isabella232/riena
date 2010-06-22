@@ -23,11 +23,11 @@ import org.eclipse.riena.internal.core.logging.LogLevelMapper;
 
 public class SysoLogListener implements LogListener {
 
-	public void logged(LogEntry entry) {
-		ExtendedLogEntry eEntry = (ExtendedLogEntry) entry;
-		StringBuilder buffer = new StringBuilder();
+	public void logged(final LogEntry entry) {
+		final ExtendedLogEntry eEntry = (ExtendedLogEntry) entry;
+		final StringBuilder buffer = new StringBuilder();
 		buffer.append(new Date(eEntry.getTime()).toString()).append(' ');
-		String level = LogLevelMapper.getValue(eEntry.getLevel());
+		final String level = LogLevelMapper.getValue(eEntry.getLevel());
 		buffer.append(level).append(' ');
 		buffer.append("[" + eEntry.getThreadName() + "] "); //$NON-NLS-1$ //$NON-NLS-2$
 		buffer.append(eEntry.getLoggerName()).append(' ');
@@ -35,8 +35,8 @@ public class SysoLogListener implements LogListener {
 			buffer.append(eEntry.getContext()).append(' ');
 		}
 		buffer.append(entry.getMessage());
-		PrintStream stream = LogService.LOG_ERROR == eEntry.getLevel() || LogService.LOG_WARNING == eEntry.getLevel() ? System.err
-				: System.out;
+		final PrintStream stream = LogService.LOG_ERROR == eEntry.getLevel()
+				|| LogService.LOG_WARNING == eEntry.getLevel() ? System.err : System.out;
 		stream.println(buffer.toString());
 		if (eEntry.getException() != null) {
 			eEntry.getException().printStackTrace(stream);

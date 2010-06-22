@@ -41,7 +41,7 @@ public class HistoryBackwardHandler extends DummyHandler {
 	 *      .core.commands.ExecutionEvent)
 	 */
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		ApplicationNodeManager.getApplicationNode().historyBack();
 		return null;
 	}

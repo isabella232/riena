@@ -46,14 +46,14 @@ public class MasterDetailsSubModuleView2 extends SubModuleView {
 	public static final String ID = MasterDetailsSubModuleView2.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		colorLightBlue = new Color(parent.getDisplay(), 222, 232, 247);
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout());
 
-		Group groupMaster = createMasterDetails(parent);
+		final Group groupMaster = createMasterDetails(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(groupMaster);
-		Group groupOptions = createOptions(parent);
+		final Group groupOptions = createOptions(parent);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(groupOptions);
 	}
 
@@ -66,33 +66,34 @@ public class MasterDetailsSubModuleView2 extends SubModuleView {
 	// helping methods
 	//////////////////
 
-	private Group createMasterDetails(Composite parent) {
-		Group result = UIControlsFactory.createGroup(parent, "Master/Details:"); //$NON-NLS-1$
+	private Group createMasterDetails(final Composite parent) {
+		final Group result = UIControlsFactory.createGroup(parent, "Master/Details:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).applyTo(result);
 
-		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.TOP) {
+		final MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.TOP) {
 			@Override
-			protected Composite createButtons(Composite parent) {
-				Composite result = UIControlsFactory.createComposite(parent, SWT.NONE);
+			protected Composite createButtons(final Composite parent) {
+				final Composite result = UIControlsFactory.createComposite(parent, SWT.NONE);
 
-				RowLayout buttonLayout = new RowLayout(SWT.VERTICAL);
+				final RowLayout buttonLayout = new RowLayout(SWT.VERTICAL);
 				buttonLayout.marginTop = 10;
 				buttonLayout.fill = true;
 				result.setLayout(buttonLayout);
 
-				Control btnNew = createButtonNew(result);
+				final Control btnNew = createButtonNew(result);
 				addUIControl(btnNew, BIND_ID_NEW);
 
-				Control btnRemove = createButtonRemove(result);
+				final Control btnRemove = createButtonRemove(result);
 				addUIControl(btnRemove, BIND_ID_REMOVE);
 
 				return result;
 			}
 
-			public boolean confirmRemove(Object item) {
-				String title = "Confirm Remove"; //$NON-NLS-1$
-				String message = String.format("Delete '%s' ?", item.toString()); //$NON-NLS-1$
-				boolean result = MessageDialog.openQuestion(getShell(), title, message);
+			@Override
+			public boolean confirmRemove(final Object item) {
+				final String title = "Confirm Remove"; //$NON-NLS-1$
+				final String message = String.format("Delete '%s' ?", item.toString()); //$NON-NLS-1$
+				final boolean result = MessageDialog.openQuestion(getShell(), title, message);
 				return result;
 			}
 		};
@@ -100,32 +101,32 @@ public class MasterDetailsSubModuleView2 extends SubModuleView {
 		addUIControl(mdComposite, "master2"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(mdComposite);
 
-		Composite details = mdComposite.getDetails();
-		GridLayout gridLayout = new GridLayout(3, false);
+		final Composite details = mdComposite.getDetails();
+		final GridLayout gridLayout = new GridLayout(3, false);
 		gridLayout.horizontalSpacing = 6;
 		details.setLayout(gridLayout);
 		{
-			Text txtFirst = UIControlsFactory.createText(details);
+			final Text txtFirst = UIControlsFactory.createText(details);
 			txtFirst.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			mdComposite.addUIControl(txtFirst, "first"); //$NON-NLS-1$
 
-			Text txtLast = UIControlsFactory.createText(details);
+			final Text txtLast = UIControlsFactory.createText(details);
 			txtLast.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			mdComposite.addUIControl(txtLast, "last"); //$NON-NLS-1$
 
-			Button btnApply = new Button(details, SWT.PUSH | SWT.FLAT);
+			final Button btnApply = new Button(details, SWT.PUSH | SWT.FLAT);
 			mdComposite.addUIControl(btnApply, MasterDetailsComposite.BIND_ID_APPLY);
 		}
 
-		Label lblStatus = UIControlsFactory.createLabel(result, "", SWT.CENTER, "lblStatus"); //$NON-NLS-1$ //$NON-NLS-2$
+		final Label lblStatus = UIControlsFactory.createLabel(result, "", SWT.CENTER, "lblStatus"); //$NON-NLS-1$ //$NON-NLS-2$
 		lblStatus.setBackground(colorLightBlue);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(lblStatus);
 
 		return result;
 	}
 
-	private Group createOptions(Composite parent) {
-		Group result = UIControlsFactory.createGroup(parent, "Apply Enablement:"); //$NON-NLS-1$
+	private Group createOptions(final Composite parent) {
+		final Group result = UIControlsFactory.createGroup(parent, "Apply Enablement:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(result);
 
 		UIControlsFactory.createButtonCheck(result, "No &Errors", "chkNoErrors"); //$NON-NLS-1$ //$NON-NLS-2$

@@ -24,7 +24,7 @@ public class InvocationTargetFailure extends ReflectionFailure {
 	 * @param msg
 	 *            the message.
 	 */
-	public InvocationTargetFailure(String msg) {
+	public InvocationTargetFailure(final String msg) {
 		super(msg);
 	}
 
@@ -36,7 +36,7 @@ public class InvocationTargetFailure extends ReflectionFailure {
 	 * @param targetException
 	 *            the cause.
 	 */
-	public InvocationTargetFailure(String msg, Throwable targetException) {
+	public InvocationTargetFailure(final String msg, final Throwable targetException) {
 		super(msg, targetException);
 	}
 

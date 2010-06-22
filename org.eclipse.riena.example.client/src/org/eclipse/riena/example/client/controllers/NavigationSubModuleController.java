@@ -51,7 +51,7 @@ public class NavigationSubModuleController extends SubModuleController {
 	/**
 	 * @param navigationNode
 	 */
-	public NavigationSubModuleController(ISubModuleNode navigationNode) {
+	public NavigationSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -67,8 +67,8 @@ public class NavigationSubModuleController extends SubModuleController {
 		addSubModuleToModuleBtn.setText("Add Sub-Module to &Root"); //$NON-NLS-1$
 		addSubModuleToModuleBtn.addListener(new IActionListener() {
 			public void callback() {
-				ISubModuleNode newNode = createSubModuleNode("Node " + String.valueOf(nodeCount++)); //$NON-NLS-1$
-				IModuleNode parent = getParentNodeOfType(getNavigationNode(), IModuleNode.class);
+				final ISubModuleNode newNode = createSubModuleNode("Node " + String.valueOf(nodeCount++)); //$NON-NLS-1$
+				final IModuleNode parent = getParentNodeOfType(getNavigationNode(), IModuleNode.class);
 				parent.setNodeId(new NavigationNodeId("org.eclipse.riena.example.navigate.root")); //$NON-NLS-1$
 				parent.addChild(newNode);
 				showStatusLineMessage("Sub-Module was added!"); //$NON-NLS-1$
@@ -80,8 +80,8 @@ public class NavigationSubModuleController extends SubModuleController {
 		addSubModuleToSelfBtn.setText("Add S&ub-Module this Node"); //$NON-NLS-1$
 		addSubModuleToSelfBtn.addListener(new IActionListener() {
 			public void callback() {
-				ISubModuleNode navigationNode = getNavigationNode();
-				ISubModuleNode subModule = createSubModuleNode("Node " + String.valueOf(nodeCount++)); //$NON-NLS-1$
+				final ISubModuleNode navigationNode = getNavigationNode();
+				final ISubModuleNode subModule = createSubModuleNode("Node " + String.valueOf(nodeCount++)); //$NON-NLS-1$
 				navigationNode.addChild(subModule);
 				subModule.activate();
 				showStatusLineMessage("Sub-Module was added!"); //$NON-NLS-1$
@@ -92,9 +92,9 @@ public class NavigationSubModuleController extends SubModuleController {
 		removeSubModuleBtn.setText("Remove all children"); //$NON-NLS-1$
 		removeSubModuleBtn.addListener(new IActionListener() {
 			public void callback() {
-				ISubModuleNode navigationNode = getNavigationNode();
-				List<ISubModuleNode> children = new ArrayList<ISubModuleNode>(navigationNode.getChildren());
-				for (ISubModuleNode child : children) {
+				final ISubModuleNode navigationNode = getNavigationNode();
+				final List<ISubModuleNode> children = new ArrayList<ISubModuleNode>(navigationNode.getChildren());
+				for (final ISubModuleNode child : children) {
 					child.dispose();
 				}
 				if (children.size() > 0) {
@@ -107,7 +107,7 @@ public class NavigationSubModuleController extends SubModuleController {
 		addModuleBtn.setText("Add &Module"); //$NON-NLS-1$
 		addModuleBtn.addListener(new IActionListener() {
 			public void callback() {
-				IModuleGroupNode parent = getParentNodeOfType(getNavigationNode(), IModuleGroupNode.class);
+				final IModuleGroupNode parent = getParentNodeOfType(getNavigationNode(), IModuleGroupNode.class);
 				parent.addChild(createModuleNode());
 				showStatusLineMessage("Module was added!"); //$NON-NLS-1$
 			}
@@ -117,20 +117,20 @@ public class NavigationSubModuleController extends SubModuleController {
 		addModuleGroupBtn.setText("Add Module-&Group"); //$NON-NLS-1$
 		addModuleGroupBtn.addListener(new IActionListener() {
 			public void callback() {
-				ISubApplicationNode parent = getParentNodeOfType(getNavigationNode(), ISubApplicationNode.class);
+				final ISubApplicationNode parent = getParentNodeOfType(getNavigationNode(), ISubApplicationNode.class);
 				parent.addChild(createModuleGroupNode());
 				showStatusLineMessage("Module-Group was added!"); //$NON-NLS-1$
 			}
 		});
 	}
 
-	private void showStatusLineMessage(String text) {
+	private void showStatusLineMessage(final String text) {
 		if (!RienaStatus.isTest()) {
 			getApplicationController().getStatusline().setMessage(text);
 		}
 	}
 
-	private <N extends INavigationNode<?>> N getParentNodeOfType(INavigationNode<?> node, Class<N> clazz) {
+	private <N extends INavigationNode<?>> N getParentNodeOfType(final INavigationNode<?> node, final Class<N> clazz) {
 		return node.getParentOfType(clazz);
 	}
 
@@ -141,10 +141,10 @@ public class NavigationSubModuleController extends SubModuleController {
 	 */
 	private IModuleGroupNode createModuleGroupNode() {
 
-		NavigationNodeId nodeId = new NavigationNodeId("moduleGroup", Integer.toString(++nodeCount)); //$NON-NLS-1$
-		IModuleGroupNode newModuleGroupNode = new ModuleGroupNode(nodeId);
+		final NavigationNodeId nodeId = new NavigationNodeId("moduleGroup", Integer.toString(++nodeCount)); //$NON-NLS-1$
+		final IModuleGroupNode newModuleGroupNode = new ModuleGroupNode(nodeId);
 		newModuleGroupNode.setLabel("ModuleGroup"); //$NON-NLS-1$
-		IModuleNode newModuleNode = createModuleNode();
+		final IModuleNode newModuleNode = createModuleNode();
 		newModuleGroupNode.addChild(newModuleNode);
 
 		return newModuleGroupNode;
@@ -157,9 +157,9 @@ public class NavigationSubModuleController extends SubModuleController {
 	 */
 	private IModuleNode createModuleNode() {
 
-		NavigationNodeId nodeId = new NavigationNodeId("module", Integer.toString(++nodeCount)); //$NON-NLS-1$
-		IModuleNode newModuleNode = new ModuleNode(nodeId, "Module"); //$NON-NLS-1$ 
-		ISubModuleNode newSubModuleNode = createSubModuleNode("SubModule"); //$NON-NLS-1$
+		final NavigationNodeId nodeId = new NavigationNodeId("module", Integer.toString(++nodeCount)); //$NON-NLS-1$
+		final IModuleNode newModuleNode = new ModuleNode(nodeId, "Module"); //$NON-NLS-1$ 
+		final ISubModuleNode newSubModuleNode = createSubModuleNode("SubModule"); //$NON-NLS-1$
 		WorkareaManager.getInstance().registerDefinition(newSubModuleNode, NavigationSubModuleController.class,
 				NavigationSubModuleView.ID, false);
 		newModuleNode.addChild(newSubModuleNode);
@@ -174,9 +174,9 @@ public class NavigationSubModuleController extends SubModuleController {
 	 *            label of the sub-module
 	 * @return sub-module
 	 */
-	private ISubModuleNode createSubModuleNode(String label) {
+	private ISubModuleNode createSubModuleNode(final String label) {
 
-		ISubModuleNode newSubModuleNode = new SubModuleNode(new NavigationNodeId(
+		final ISubModuleNode newSubModuleNode = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigation", Integer.toString(nodeCount)), label); //$NON-NLS-1$
 		if (!RienaStatus.isTest()) {
 			WorkareaManager.getInstance().registerDefinition(newSubModuleNode, NavigationSubModuleController.class,

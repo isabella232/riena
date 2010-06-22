@@ -39,13 +39,13 @@ public class EmailView extends SubModuleView {
 	}
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Font boldFont11 = SWTResourceManager.getFont("Arial", 11, SWT.BOLD); //$NON-NLS-1$
-		Font normalFont11 = SWTResourceManager.getFont("Arial", 11, SWT.NORMAL); //$NON-NLS-1$
-		Composite container = new Composite(parent, SWT.NONE);
+		final Font boldFont11 = SWTResourceManager.getFont("Arial", 11, SWT.BOLD); //$NON-NLS-1$
+		final Font normalFont11 = SWTResourceManager.getFont("Arial", 11, SWT.NORMAL); //$NON-NLS-1$
+		final Composite container = new Composite(parent, SWT.NONE);
 
 		table = new Table(container, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		table.setFont(SWTResourceManager.getFont("Arial", 10, SWT.NORMAL));
@@ -56,13 +56,13 @@ public class EmailView extends SubModuleView {
 		table.setLinesVisible(true);
 		addUIControl(table, "emailsTable"); //$NON-NLS-1$
 
-		TableColumn tableColumn = new TableColumn(table, SWT.NONE);
+		final TableColumn tableColumn = new TableColumn(table, SWT.NONE);
 		tableColumn.setWidth(188);
 
-		TableColumn tableColumn_1 = new TableColumn(table, SWT.NONE);
+		final TableColumn tableColumn_1 = new TableColumn(table, SWT.NONE);
 		tableColumn_1.setWidth(349);
 
-		TableColumn tableColumn_2 = new TableColumn(table, SWT.NONE);
+		final TableColumn tableColumn_2 = new TableColumn(table, SWT.NONE);
 		tableColumn_2.setWidth(143);
 
 		Label l = new Label(container, SWT.WRAP);
@@ -72,7 +72,7 @@ public class EmailView extends SubModuleView {
 		l.setForeground(SWTResourceManager.getColor(1, 1, 1));
 		l.setText("Subject"); //$NON-NLS-1$
 
-		Label subjectLabel = new Label(container, SWT.NONE);
+		final Label subjectLabel = new Label(container, SWT.NONE);
 		subjectLabel.setLocation(103, 254);
 		subjectLabel.setSize(619, 17);
 		//		subjectLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -87,7 +87,7 @@ public class EmailView extends SubModuleView {
 		l.setForeground(SWTResourceManager.getColor(1, 1, 1));
 		l.setText("From"); //$NON-NLS-1$
 
-		Label fromLabel = new Label(container, SWT.NONE);
+		final Label fromLabel = new Label(container, SWT.NONE);
 		fromLabel.setLocation(103, 277);
 		fromLabel.setSize(302, 17);
 		//		fromLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -102,7 +102,7 @@ public class EmailView extends SubModuleView {
 		l.setForeground(SWTResourceManager.getColor(1, 1, 1));
 		l.setText("To"); //$NON-NLS-1$
 
-		Label toLabel = new Label(container, SWT.NONE);
+		final Label toLabel = new Label(container, SWT.NONE);
 		toLabel.setLocation(440, 277);
 		toLabel.setSize(282, 17);
 		//		toLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -117,7 +117,7 @@ public class EmailView extends SubModuleView {
 		l.setForeground(SWTResourceManager.getColor(1, 1, 1));
 		l.setText("Date"); //$NON-NLS-1$
 
-		Label dateLabel = new Label(container, SWT.NONE);
+		final Label dateLabel = new Label(container, SWT.NONE);
 		dateLabel.setLocation(103, 300);
 		dateLabel.setSize(142, 17);
 		//		dateLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -127,7 +127,7 @@ public class EmailView extends SubModuleView {
 
 		// message contents
 
-		Text emailBody = new Text(container, SWT.MULTI | SWT.WRAP);
+		final Text emailBody = new Text(container, SWT.MULTI | SWT.WRAP);
 		emailBody.setLocation(31, 326);
 		emailBody.setSize(697, 112);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(emailBody);
@@ -135,17 +135,17 @@ public class EmailView extends SubModuleView {
 		addUIControl(emailBody, "emailBody"); //$NON-NLS-1$
 
 		//create button
-		Button openCustomerButton = new Button(container, SWT.NONE);
+		final Button openCustomerButton = new Button(container, SWT.NONE);
 		openCustomerButton.setBounds(580, 474, 133, 38);
 		openCustomerButton.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD)); //$NON-NLS-1$
 		openCustomerButton.setText("Open Customer"); //$NON-NLS-1$
 		addUIControl(openCustomerButton, "openCustomer"); //$NON-NLS-1$
 
-		Composite composite = new Composite(container, SWT.NONE);
+		final Composite composite = new Composite(container, SWT.NONE);
 		composite.setBackground(SWTResourceManager.getColor(121, 117, 168));
 		composite.setBounds(25, 235, 1054, 2);
 
-		Composite composite2 = new Composite(container, SWT.NONE);
+		final Composite composite2 = new Composite(container, SWT.NONE);
 		composite2.setBackground(SWTResourceManager.getColor(121, 117, 168));
 		composite2.setBounds(25, 457, 1054, 2);
 	}

@@ -30,15 +30,15 @@ public class ComboAndChoiceSubModuleView extends SubModuleView {
 	public static final String ID = ComboAndChoiceSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		GridLayoutFactory.swtDefaults().numColumns(1).applyTo(parent);
 
-		GridDataFactory gdfFill = GridDataFactory.fillDefaults().grab(true, false);
+		final GridDataFactory gdfFill = GridDataFactory.fillDefaults().grab(true, false);
 
-		Group grpComboBoxes = createGroupComboBoxes(parent);
+		final Group grpComboBoxes = createGroupComboBoxes(parent);
 		gdfFill.applyTo(grpComboBoxes);
 
-		Group grpSingleChoice = createGroupSingleChoice(parent);
+		final Group grpSingleChoice = createGroupSingleChoice(parent);
 		gdfFill.applyTo(grpSingleChoice);
 
 		UIControlsFactory.createButton(parent, "update all ridgets from model", //$NON-NLS-1$
@@ -48,40 +48,40 @@ public class ComboAndChoiceSubModuleView extends SubModuleView {
 	// helping methods
 	//////////////////
 
-	private Group createGroupComboBoxes(Composite parent) {
-		Group result = UIControlsFactory.createGroup(parent, "Combo boxes"); //$NON-NLS-1$
+	private Group createGroupComboBoxes(final Composite parent) {
+		final Group result = UIControlsFactory.createGroup(parent, "Combo boxes"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().numColumns(3).equalWidth(true).margins(20, 20).applyTo(result);
 
-		Combo comboBoxWithModel = UIControlsFactory.createCombo(result, "comboBoxWithModel"); //$NON-NLS-1$
+		final Combo comboBoxWithModel = UIControlsFactory.createCombo(result, "comboBoxWithModel"); //$NON-NLS-1$
 		GridDataFactory.swtDefaults().hint(100, SWT.DEFAULT).applyTo(comboBoxWithModel);
-		Label label1 = UIControlsFactory.createLabel(result, "Combo with model", SWT.NONE, //$NON-NLS-1$
+		final Label label1 = UIControlsFactory.createLabel(result, "Combo with model", SWT.NONE, //$NON-NLS-1$
 				"labelComboBoxWithModel"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(label1);
 
-		Combo comboBoxWithoutModel = UIControlsFactory.createCombo(result, "comboBoxWithoutModel"); //$NON-NLS-1$
+		final Combo comboBoxWithoutModel = UIControlsFactory.createCombo(result, "comboBoxWithoutModel"); //$NON-NLS-1$
 		GridDataFactory.swtDefaults().hint(100, SWT.DEFAULT).applyTo(comboBoxWithoutModel);
 		UIControlsFactory.createLabel(result, "Combo without model", //$NON-NLS-1$
 				SWT.NONE, "myLabelId"); //$NON-NLS-1$
 		UIControlsFactory.createButton(result, "bind to model", "bindComboToModel"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		String msg = "click \"bind to model\" and \"update all ridgets from model\"\n" //$NON-NLS-1$
+		final String msg = "click \"bind to model\" and \"update all ridgets from model\"\n" //$NON-NLS-1$
 				+ "to see the values of the \"Combo without model\""; //$NON-NLS-1$
-		Label label2 = UIControlsFactory.createLabel(result, msg);
+		final Label label2 = UIControlsFactory.createLabel(result, msg);
 		GridDataFactory.fillDefaults().grab(true, false).span(3, 1).applyTo(label2);
 
 		return result;
 	}
 
-	private Group createGroupSingleChoice(Composite parent) {
-		Group result = UIControlsFactory.createGroup(parent, "Single choice"); //$NON-NLS-1$
+	private Group createGroupSingleChoice(final Composite parent) {
+		final Group result = UIControlsFactory.createGroup(parent, "Single choice"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().numColumns(1).margins(20, 20).applyTo(result);
 
-		Composite compositeNumberModel = new ChoiceComposite(result, SWT.NONE, false);
+		final Composite compositeNumberModel = new ChoiceComposite(result, SWT.NONE, false);
 		addUIControl(compositeNumberModel, "compositeNumberModel"); //$NON-NLS-1$
 
 		UIControlsFactory.createButton(result, "bind to model", "bindChoiceToModel"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		Label lblBindChoice = UIControlsFactory.createLabel(result, "lblBindChoice"); //$NON-NLS-1$
+		final Label lblBindChoice = UIControlsFactory.createLabel(result, "lblBindChoice"); //$NON-NLS-1$
 		lblBindChoice
 				.setText("click \"bind to model\" and \"update all ridgets from model\" to visualize radio buttons"); //$NON-NLS-1$
 

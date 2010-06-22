@@ -28,7 +28,7 @@ public class TypedBean<T> extends AbstractBean {
 	 * 
 	 * @param value
 	 */
-	public TypedBean(T value) {
+	public TypedBean(final T value) {
 		this.value = value;
 	}
 
@@ -38,8 +38,8 @@ public class TypedBean<T> extends AbstractBean {
 	 * @param value
 	 *            to set
 	 */
-	public void setValue(T value) {
-		Object old = this.value;
+	public void setValue(final T value) {
+		final Object old = this.value;
 		this.value = value;
 		firePropertyChanged(PROP_VALUE, old, this.value);
 	}

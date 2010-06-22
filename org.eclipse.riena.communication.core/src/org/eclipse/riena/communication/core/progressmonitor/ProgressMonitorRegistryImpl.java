@@ -24,7 +24,7 @@ import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
  */
 public class ProgressMonitorRegistryImpl implements IRemoteProgressMonitorRegistry {
 
-	private HashMap<Object, List<IRemoteProgressMonitor>> remoteProgressMonitors = new HashMap<Object, List<IRemoteProgressMonitor>>();
+	private final HashMap<Object, List<IRemoteProgressMonitor>> remoteProgressMonitors = new HashMap<Object, List<IRemoteProgressMonitor>>();
 
 	/*
 	 * (non-Javadoc)
@@ -37,11 +37,11 @@ public class ProgressMonitorRegistryImpl implements IRemoteProgressMonitorRegist
 	 * .riena.communication.core.progressmonitor.IRemoteProgressMonitorRegistry
 	 * .RemovalPolicy)
 	 */
-	public void addProgressMonitor(Object callProxy, IRemoteProgressMonitor monitor,
-			IRemoteProgressMonitorRegistry.RemovalPolicy removalPolicy) {
+	public void addProgressMonitor(Object callProxy, final IRemoteProgressMonitor monitor,
+			final IRemoteProgressMonitorRegistry.RemovalPolicy removalPolicy) {
 		// TODO very awful hack !!!!!
 		if (Proxy.isProxyClass(callProxy.getClass())) {
-			InvocationHandler invocationHandler = Proxy.getInvocationHandler(callProxy);
+			final InvocationHandler invocationHandler = Proxy.getInvocationHandler(callProxy);
 			if (invocationHandler instanceof CallHooksProxy) {
 				callProxy = ((CallHooksProxy) invocationHandler).getCallProxy();
 			}
@@ -62,9 +62,9 @@ public class ProgressMonitorRegistryImpl implements IRemoteProgressMonitorRegist
 	 * org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorRegistry
 	 * #getProgressMonitors(java.lang.Object)
 	 */
-	public IRemoteProgressMonitorList getProgressMonitors(Object callProxy) {
+	public IRemoteProgressMonitorList getProgressMonitors(final Object callProxy) {
 		// callProxy.equals(new Object());
-		List<IRemoteProgressMonitor> pmList = remoteProgressMonitors.get(callProxy);
+		final List<IRemoteProgressMonitor> pmList = remoteProgressMonitors.get(callProxy);
 		if (pmList == null) {
 			return null;
 			//			return new ProgressMonitorListImpl(new IRemoteProgressMonitor[0]);
@@ -79,7 +79,7 @@ public class ProgressMonitorRegistryImpl implements IRemoteProgressMonitorRegist
 	 * org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorRegistry
 	 * #removeAllProgressMonitors(java.lang.Object)
 	 */
-	public void removeAllProgressMonitors(Object callProxy) {
+	public void removeAllProgressMonitors(final Object callProxy) {
 		remoteProgressMonitors.remove(callProxy);
 	}
 
@@ -92,8 +92,8 @@ public class ProgressMonitorRegistryImpl implements IRemoteProgressMonitorRegist
 	 * removeProgressMonitor(org.eclipse.riena.communication.core.progressmonitor
 	 * .IProgressMonitor)
 	 */
-	public void removeProgressMonitor(IRemoteProgressMonitor monitor) {
-		for (List<IRemoteProgressMonitor> pmList : remoteProgressMonitors.values()) {
+	public void removeProgressMonitor(final IRemoteProgressMonitor monitor) {
+		for (final List<IRemoteProgressMonitor> pmList : remoteProgressMonitors.values()) {
 			// I dont need to know if there is actually one in the list
 			pmList.remove(monitor);
 		}

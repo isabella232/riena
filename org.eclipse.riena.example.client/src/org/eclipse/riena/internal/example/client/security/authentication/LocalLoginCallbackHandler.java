@@ -26,7 +26,7 @@ public class LocalLoginCallbackHandler implements CallbackHandler {
 	private static String name;
 	private static String password;
 
-	public static void setSuppliedCredentials(String nameParm, String passwordParm) {
+	public static void setSuppliedCredentials(final String nameParm, final String passwordParm) {
 		name = nameParm;
 		password = passwordParm;
 	}
@@ -38,22 +38,22 @@ public class LocalLoginCallbackHandler implements CallbackHandler {
 		super();
 	}
 
-	public void handle(Callback[] callbacks) {
-		for (int i = 0; i < callbacks.length; i++) {
-			if (callbacks[i] instanceof NameCallback) {
-				NameCallback nc = (NameCallback) callbacks[i];
+	public void handle(final Callback[] callbacks) {
+		for (final Callback callback : callbacks) {
+			if (callback instanceof NameCallback) {
+				final NameCallback nc = (NameCallback) callback;
 				nc.setName(name);
 			} else {
-				if (callbacks[i] instanceof PasswordCallback) {
-					PasswordCallback pc = (PasswordCallback) callbacks[i];
+				if (callback instanceof PasswordCallback) {
+					final PasswordCallback pc = (PasswordCallback) callback;
 					if (password == null) {
 						pc.setPassword(null);
 					} else {
 						pc.setPassword(password.toCharArray());
 					}
 				} else {
-					if (callbacks[i] instanceof TextOutputCallback) {
-						TextOutputCallback toc = (TextOutputCallback) callbacks[i];
+					if (callback instanceof TextOutputCallback) {
+						final TextOutputCallback toc = (TextOutputCallback) callback;
 						String typeAsString;
 						// detect text output message type and translate it to string
 						switch (toc.getMessageType()) {

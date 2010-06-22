@@ -22,7 +22,7 @@ public class ProxyAlreadyRegisteredFailure extends Failure {
 	/**
 	 * @param msg
 	 */
-	public ProxyAlreadyRegisteredFailure(String msg) {
+	public ProxyAlreadyRegisteredFailure(final String msg) {
 		super(msg);
 	}
 

@@ -44,7 +44,7 @@ public final class IOUtils {
 	 * @throws IOException
 	 * @pre from!=null && to!=null
 	 */
-	public static void copyFile(File from, File to) throws IOException {
+	public static void copyFile(final File from, final File to) throws IOException {
 		Assert.isNotNull(from, "from"); //$NON-NLS-1$
 		Assert.isNotNull(to, "to"); //$NON-NLS-1$
 
@@ -74,13 +74,13 @@ public final class IOUtils {
 	 * @param closeable
 	 *            the closeable to close.
 	 */
-	public static void close(Closeable closeable) {
+	public static void close(final Closeable closeable) {
 		if (closeable == null) {
 			return;
 		}
 		try {
 			closeable.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(LogService.LOG_DEBUG, "Could not close given closeable.", e); //$NON-NLS-1$
 		}
 	}

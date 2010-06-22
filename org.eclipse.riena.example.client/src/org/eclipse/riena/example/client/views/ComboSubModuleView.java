@@ -31,33 +31,33 @@ public class ComboSubModuleView extends SubModuleView {
 	public static final String ID = ComboSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		GridLayoutFactory.swtDefaults().margins(20, 20).applyTo(parent);
 
-		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
+		final GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
 		UIControlsFactory.createLabel(parent, "&Persons:"); //$NON-NLS-1$
 
-		Combo combo = UIControlsFactory.createCombo(parent);
+		final Combo combo = UIControlsFactory.createCombo(parent);
 		fillFactory.applyTo(combo);
 		addUIControl(combo, "comboOne"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "&First Name:"); //$NON-NLS-1$
-		Text textFirst = UIControlsFactory.createText(parent);
+		final Text textFirst = UIControlsFactory.createText(parent);
 		fillFactory.applyTo(textFirst);
 		addUIControl(textFirst, "textFirst"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "&Last Name:"); //$NON-NLS-1$
-		Text textLast = UIControlsFactory.createText(parent);
+		final Text textLast = UIControlsFactory.createText(parent);
 		fillFactory.applyTo(textLast);
 		addUIControl(textLast, "textLast"); //$NON-NLS-1$
 
-		Button buttonSave = UIControlsFactory.createButton(parent);
+		final Button buttonSave = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(buttonSave);
 		addUIControl(buttonSave, "buttonSave"); //$NON-NLS-1$
 
-		Button buttonSecondValue = UIControlsFactory.createButtonCheck(parent);
+		final Button buttonSecondValue = UIControlsFactory.createButtonCheck(parent);
 		fillFactory.applyTo(buttonSecondValue);
 		addUIControl(buttonSecondValue, "buttonSecondValue"); //$NON-NLS-1$
 	}

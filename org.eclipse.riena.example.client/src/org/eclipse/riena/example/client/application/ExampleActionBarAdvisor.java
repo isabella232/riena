@@ -27,7 +27,7 @@ public class ExampleActionBarAdvisor extends ActionBarAdvisor {
 	 * @param configurer
 	 *            the action bar configurer
 	 */
-	public ExampleActionBarAdvisor(IActionBarConfigurer configurer) {
+	public ExampleActionBarAdvisor(final IActionBarConfigurer configurer) {
 		super(configurer);
 	}
 
@@ -37,7 +37,7 @@ public class ExampleActionBarAdvisor extends ActionBarAdvisor {
 	 * Registers the help actions.
 	 */
 	@Override
-	protected void makeActions(IWorkbenchWindow window) {
+	protected void makeActions(final IWorkbenchWindow window) {
 
 		super.makeActions(window);
 

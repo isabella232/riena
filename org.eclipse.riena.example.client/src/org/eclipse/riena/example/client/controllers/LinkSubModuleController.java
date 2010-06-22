@@ -28,21 +28,20 @@ public class LinkSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public LinkSubModuleController(ISubModuleNode navigationNode) {
+	public LinkSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
 	@Override
 	public void configureRidgets() {
-		ILinkRidget link1 = (ILinkRidget) getRidget("link1"); //$NON-NLS-1$
+		final ILinkRidget link1 = (ILinkRidget) getRidget("link1"); //$NON-NLS-1$
 		link1.setText("<a>http://www.eclipse.org/</a>"); //$NON-NLS-1$
 
-		ILinkRidget link2 = (ILinkRidget) getRidget("link2"); //$NON-NLS-1$
+		final ILinkRidget link2 = (ILinkRidget) getRidget("link2"); //$NON-NLS-1$
 		link2.setText("Visit <a href=\"http://www.eclipse.org/riena/\">Riena</a>"); //$NON-NLS-1$
 
-		ILinkRidget link3 = (ILinkRidget) getRidget("link3"); //$NON-NLS-1$
-		link3
-				.setText("Eclipse <a href=\"http://planeteclipse.org\">Blogs</a>, <a href=\"http://www.eclipse.org/community/news/\">News</a> and <a href=\"http://live.eclipse.org\">Events</a>"); //$NON-NLS-1$
+		final ILinkRidget link3 = (ILinkRidget) getRidget("link3"); //$NON-NLS-1$
+		link3.setText("Eclipse <a href=\"http://planeteclipse.org\">Blogs</a>, <a href=\"http://www.eclipse.org/community/news/\">News</a> and <a href=\"http://live.eclipse.org\">Events</a>"); //$NON-NLS-1$
 
 		final ITextRidget textLinkUrl = (ITextRidget) getRidget("textLinkUrl"); //$NON-NLS-1$
 		textLinkUrl.setOutputOnly(true);
@@ -50,9 +49,9 @@ public class LinkSubModuleController extends SubModuleController {
 		final IBrowserRidget browser = (IBrowserRidget) getRidget("browser"); //$NON-NLS-1$
 		browser.bindToModel(textLinkUrl, ITextRidget.PROPERTY_TEXT);
 
-		ISelectionListener listener = new ISelectionListener() {
-			public void ridgetSelected(SelectionEvent event) {
-				String linkUrl = (String) event.getNewSelection().get(0);
+		final ISelectionListener listener = new ISelectionListener() {
+			public void ridgetSelected(final SelectionEvent event) {
+				final String linkUrl = (String) event.getNewSelection().get(0);
 				browser.setUrl(linkUrl);
 			}
 		};

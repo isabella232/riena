@@ -44,7 +44,7 @@ public class CompositeTableSubModuleView extends SubModuleView {
 	public static final String ID = CompositeTableSubModuleView.class.getName();
 
 	private static class Header extends AbstractNativeHeader {
-		public Header(Composite parent, int style) {
+		public Header(final Composite parent, final int style) {
 			super(parent, style);
 			setWeights(new int[] { 100, 100, 100 });
 			setColumnText(new String[] { "Name", "Gender", "Pet" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -54,7 +54,7 @@ public class CompositeTableSubModuleView extends SubModuleView {
 	public static class Row extends Composite implements IComplexComponent {
 		private final List<Object> controls = new ArrayList<Object>();
 
-		public Row(Composite parent, int style) {
+		public Row(final Composite parent, final int style) {
 			super(parent, style);
 			setBackground(parent.getBackground());
 			setLayout(new ResizableGridRowLayout());
@@ -67,38 +67,38 @@ public class CompositeTableSubModuleView extends SubModuleView {
 			return Collections.unmodifiableList(controls);
 		}
 
-		private void addUIControl(Object uiControl, String bindingId) {
+		private void addUIControl(final Object uiControl, final String bindingId) {
 			controls.add(uiControl);
 			SWTBindingPropertyLocator.getInstance().setBindingProperty(uiControl, bindingId);
 		}
 
 		private void createColumnName() {
-			Composite cell = createCell();
+			final Composite cell = createCell();
 			createText(cell, "first"); //$NON-NLS-1$
 			createText(cell, "last"); //$NON-NLS-1$
 		}
 
 		private void createColumnGender() {
-			Composite cell = createCell();
-			ChoiceComposite gender = new ChoiceComposite(cell, SWT.NONE, false);
+			final Composite cell = createCell();
+			final ChoiceComposite gender = new ChoiceComposite(cell, SWT.NONE, false);
 			addUIControl(gender, "gender"); //$NON-NLS-1$
 		}
 
 		private void createColumnPet() {
-			Composite cell = createCell();
-			ChoiceComposite pet = new ChoiceComposite(cell, SWT.NONE, true);
+			final Composite cell = createCell();
+			final ChoiceComposite pet = new ChoiceComposite(cell, SWT.NONE, true);
 			addUIControl(pet, "pets"); //$NON-NLS-1$
 		}
 
 		private Composite createCell() {
-			Composite cell = new Composite(this, SWT.NONE);
+			final Composite cell = new Composite(this, SWT.NONE);
 			cell.setBackground(getBackground());
 			GridLayoutFactory.swtDefaults().numColumns(1).applyTo(cell);
 			return cell;
 		}
 
-		private void createText(Composite parent, String bindingId) {
-			Text txtFirst = UIControlsFactory.createText(parent);
+		private void createText(final Composite parent, final String bindingId) {
+			final Text txtFirst = UIControlsFactory.createText(parent);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtFirst);
 			addUIControl(txtFirst, bindingId);
 		}
@@ -108,11 +108,11 @@ public class CompositeTableSubModuleView extends SubModuleView {
 	private CompositeTable table;
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
-		Group group1 = createTableGroup(parent);
+		final Group group1 = createTableGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(group1);
 	}
 
@@ -128,8 +128,8 @@ public class CompositeTableSubModuleView extends SubModuleView {
 	// helping methods
 	// ////////////////
 
-	private Group createTableGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "Composite Table:"); //$NON-NLS-1$
+	private Group createTableGroup(final Composite parent) {
+		final Group group = UIControlsFactory.createGroup(parent, "Composite Table:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(1).applyTo(group);
 
 		table = OptionalUIControlsFactory.createCompositeTable(group, SWT.BORDER);
@@ -142,26 +142,26 @@ public class CompositeTableSubModuleView extends SubModuleView {
 
 		addUIControl(table, "table"); //$NON-NLS-1$
 
-		Composite buttonComposite = createButtonComposite(group);
+		final Composite buttonComposite = createButtonComposite(group);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(buttonComposite);
 
 		return group;
 	}
 
-	private Composite createButtonComposite(Group group) {
-		Composite buttonComposite = UIControlsFactory.createComposite(group);
+	private Composite createButtonComposite(final Group group) {
+		final Composite buttonComposite = UIControlsFactory.createComposite(group);
 		GridLayoutFactory.fillDefaults().numColumns(3).equalWidth(false).applyTo(buttonComposite);
 
-		Button buttonAdd = UIControlsFactory.createButton(buttonComposite);
-		int widthHint = UIControlsFactory.getWidthHint(buttonAdd);
+		final Button buttonAdd = UIControlsFactory.createButton(buttonComposite);
+		final int widthHint = UIControlsFactory.getWidthHint(buttonAdd);
 		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).hint(widthHint, SWT.DEFAULT)
 				.applyTo(buttonAdd);
 		addUIControl(buttonAdd, "buttonAdd"); //$NON-NLS-1$
 
-		Button buttonDelete = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonDelete = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonDelete, "buttonDelete"); //$NON-NLS-1$
 
-		Button buttonDump = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonDump = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonDump, "buttonDump"); //$NON-NLS-1$
 
 		return buttonComposite;

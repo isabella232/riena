@@ -28,7 +28,7 @@ public class SoftCacheEntry<K, V> implements ICacheEntry<K, V> {
 	 * 
 	 * @param key
 	 */
-	public SoftCacheEntry(K key) {
+	public SoftCacheEntry(final K key) {
 		super();
 		this.key = key;
 		timestamp = System.currentTimeMillis();
@@ -41,7 +41,7 @@ public class SoftCacheEntry<K, V> implements ICacheEntry<K, V> {
 	 * @param key
 	 * @param queue
 	 */
-	public SoftCacheEntry(V value, K key, ReferenceQueue<V> queue) {
+	public SoftCacheEntry(final V value, final K key, final ReferenceQueue<V> queue) {
 		this(key);
 		if (value != null) {
 			this.value = new SoftReference<V>(value, queue);

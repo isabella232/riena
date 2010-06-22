@@ -34,19 +34,19 @@ public class ListSubModuleView extends SubModuleView {
 	public static final String ID = ListSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(2, true));
 
-		Group group1 = createListGroup(parent);
+		final Group group1 = createListGroup(parent);
 		GridDataFactory.fillDefaults().applyTo(group1);
 
-		Group group2 = createEditGroup(parent);
+		final Group group2 = createEditGroup(parent);
 		GridDataFactory.fillDefaults().applyTo(group2);
 	}
 
-	protected Control createListControl(Composite parent) {
-		List listPersons = UIControlsFactory.createList(parent, true, true);
+	protected Control createListControl(final Composite parent) {
+		final List listPersons = UIControlsFactory.createList(parent, true, true);
 		GridDataFactory.fillDefaults().grab(false, true).span(2, 1).applyTo(listPersons);
 		return listPersons;
 	}
@@ -54,23 +54,23 @@ public class ListSubModuleView extends SubModuleView {
 	// helping methods
 	// ////////////////
 
-	private Group createListGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "&Persons:"); //$NON-NLS-1$
+	private Group createListGroup(final Composite parent) {
+		final Group group = UIControlsFactory.createGroup(parent, "&Persons:"); //$NON-NLS-1$
 		group.setLayout(new GridLayout(2, true));
 
-		Control listPersons = createListControl(group);
+		final Control listPersons = createListControl(group);
 		addUIControl(listPersons, "listPersons"); //$NON-NLS-1$
 
-		Button buttonSort = UIControlsFactory.createButtonCheck(group);
+		final Button buttonSort = UIControlsFactory.createButtonCheck(group);
 		GridDataFactory.fillDefaults().grab(false, true).span(2, 1).applyTo(buttonSort);
 		addUIControl(buttonSort, "buttonSort"); //$NON-NLS-1$
 
-		Button buttonAdd = UIControlsFactory.createButton(group);
+		final Button buttonAdd = UIControlsFactory.createButton(group);
 		addUIControl(buttonAdd, "buttonAdd"); //$NON-NLS-1$
 		int xHint = UIControlsFactory.getWidthHint(buttonAdd);
 		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(buttonAdd);
 
-		Button buttonRemove = UIControlsFactory.createButton(group);
+		final Button buttonRemove = UIControlsFactory.createButton(group);
 		addUIControl(buttonRemove, "buttonRemove"); //$NON-NLS-1$
 		xHint = UIControlsFactory.getWidthHint(buttonRemove);
 		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(buttonRemove);
@@ -78,24 +78,24 @@ public class ListSubModuleView extends SubModuleView {
 		return group;
 	}
 
-	private Group createEditGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "Edit:"); //$NON-NLS-1$
+	private Group createEditGroup(final Composite parent) {
+		final Group group = UIControlsFactory.createGroup(parent, "Edit:"); //$NON-NLS-1$
 		group.setLayout(new GridLayout(1, false));
 
-		GridDataFactory fillFactory = GridDataFactory.fillDefaults().grab(true, false);
+		final GridDataFactory fillFactory = GridDataFactory.fillDefaults().grab(true, false);
 
 		UIControlsFactory.createLabel(group, "&First Name:"); //$NON-NLS-1$
-		Text textFirst = UIControlsFactory.createText(group);
+		final Text textFirst = UIControlsFactory.createText(group);
 
 		fillFactory.applyTo(textFirst);
 		addUIControl(textFirst, "textFirst"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "&Last Name:"); //$NON-NLS-1$
-		Text textLast = UIControlsFactory.createText(group);
+		final Text textLast = UIControlsFactory.createText(group);
 		fillFactory.applyTo(textLast);
 		addUIControl(textLast, "textLast"); //$NON-NLS-1$
 
-		Button buttonSave = UIControlsFactory.createButton(group);
+		final Button buttonSave = UIControlsFactory.createButton(group);
 		fillFactory.applyTo(buttonSave);
 		addUIControl(buttonSave, "buttonSave"); //$NON-NLS-1$
 

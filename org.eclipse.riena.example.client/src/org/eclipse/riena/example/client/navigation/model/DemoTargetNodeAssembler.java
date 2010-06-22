@@ -40,7 +40,7 @@ public class DemoTargetNodeAssembler extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds = null;
 
-	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
 		if (knownTargetIds == null) {
 			knownTargetIds = new HashSet<String>(Arrays.asList(ID));
 			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
@@ -49,18 +49,18 @@ public class DemoTargetNodeAssembler extends AbstractNavigationAssembler {
 		return knownTargetIds.contains(nodeId.getTypeId());
 	}
 
-	public INavigationNode<?>[] buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId(
+	public INavigationNode<?>[] buildNode(final NavigationNodeId nodeId, final NavigationArgument navigationArgument) {
+		final IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigate.target.moduleGroup")); //$NON-NLS-1$
 		moduleGroup.setPresentWithSingleModule(false);
 
-		IModuleNode module = new ModuleNode(new NavigationNodeId(ID), "Target Module"); //$NON-NLS-1$ //$NON-NLS-2$
+		final IModuleNode module = new ModuleNode(new NavigationNodeId(ID), "Target Module"); //$NON-NLS-1$ 
 		module.setIcon(ExampleIcons.ICON_GREEN_LED);
 		moduleGroup.addChild(module);
 
-		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
+		final ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigate.target.submodule"), "Target"); //$NON-NLS-1$ //$NON-NLS-2$
-		IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule,
+		final IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule,
 				DemoTargetSubModuleController.class, DemoTargetSubModuleView.ID);
 		def.setRequiredPreparation(true);
 		module.addChild(subModule);

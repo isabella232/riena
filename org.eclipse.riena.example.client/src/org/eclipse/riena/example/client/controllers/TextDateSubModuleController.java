@@ -49,10 +49,10 @@ public class TextDateSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		String[] ids = {
+		final String[] ids = {
 				"dd.MM.yyyy", "dd.MM.yy", "dd.MM", "MM.yyyy", "yyyy", "HH:mm:ss", "HH:mm", "dd.MM.yyyy_HH:mm", "dd.MM.yyyyPicker" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
-		DataBindingContext dbc = new DataBindingContext();
-		for (String id : ids) {
+		final DataBindingContext dbc = new DataBindingContext();
+		for (final String id : ids) {
 			bind(dbc, id);
 		}
 
@@ -64,7 +64,7 @@ public class TextDateSubModuleController extends SubModuleController {
 		bindToModel("MM.yyyy", new StringBean("10.2008")); //$NON-NLS-1$ //$NON-NLS-2$
 		bindToModel("yyyy", new StringBean("2008")); //$NON-NLS-1$ //$NON-NLS-2$
 
-		IDateTextRidget txtDatePicker = (IDateTextRidget) getRidget("indd.MM.yyyyPicker"); //$NON-NLS-1$
+		final IDateTextRidget txtDatePicker = (IDateTextRidget) getRidget("indd.MM.yyyyPicker"); //$NON-NLS-1$
 		txtDatePicker.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		txtDatePicker.setFocusable(true);
 		txtDatePicker.setMandatory(true);
@@ -83,7 +83,7 @@ public class TextDateSubModuleController extends SubModuleController {
 		justEights.bindToModel(new StringBean("88.88.8888"), StringBean.PROP_VALUE); //$NON-NLS-1$
 		justEights.updateFromModel();
 
-		IDateTextRidget justSpaces = (IDateTextRidget) getRidget("inJustSpaces"); //$NON-NLS-1$
+		final IDateTextRidget justSpaces = (IDateTextRidget) getRidget("inJustSpaces"); //$NON-NLS-1$
 		justSpaces.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		justSpaces.setOutputOnly(true);
 		justSpaces.bindToModel(new StringBean("  .  .    "), StringBean.PROP_VALUE); //$NON-NLS-1$
@@ -93,28 +93,29 @@ public class TextDateSubModuleController extends SubModuleController {
 		fontManager.addRidget(justEights);
 		fontManager.addRidget(justSpaces);
 
-		IComboRidget comboFonts = (IComboRidget) getRidget("comboFonts"); //$NON-NLS-1$
-		SingleSelectionListBean fonts = new SingleSelectionListBean(new Object[] { "Arial", "Courier New", "Verdana" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final IComboRidget comboFonts = (IComboRidget) getRidget("comboFonts"); //$NON-NLS-1$
+		final SingleSelectionListBean fonts = new SingleSelectionListBean(new Object[] {
+				"Arial", "Courier New", "Verdana" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		fonts.setSelection("Arial"); //$NON-NLS-1$
 		comboFonts.bindToModel(fonts, SingleSelectionListBean.PROPERTY_VALUES, String.class, null, fonts,
 				SingleSelectionListBean.PROPERTY_SELECTION);
 		comboFonts.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				String name = (String) evt.getNewValue();
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final String name = (String) evt.getNewValue();
 				fontManager.setName(name);
 			}
 		});
 		comboFonts.updateFromModel();
 
-		SingleSelectionListBean sizes = new SingleSelectionListBean(
-				new Object[] { "6", "7", "8", "9", "10", "11", "12" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+		final SingleSelectionListBean sizes = new SingleSelectionListBean(new Object[] {
+				"6", "7", "8", "9", "10", "11", "12" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		sizes.setSelection("9"); //$NON-NLS-1$
-		IComboRidget comboSizes = (IComboRidget) getRidget("comboSizes"); //$NON-NLS-1$
+		final IComboRidget comboSizes = (IComboRidget) getRidget("comboSizes"); //$NON-NLS-1$
 		comboSizes.bindToModel(sizes, SingleSelectionListBean.PROPERTY_VALUES, String.class, null, sizes,
 				SingleSelectionListBean.PROPERTY_SELECTION);
 		comboSizes.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				String size = (String) evt.getNewValue();
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final String size = (String) evt.getNewValue();
 				fontManager.setSize(size);
 			}
 		});
@@ -126,7 +127,7 @@ public class TextDateSubModuleController extends SubModuleController {
 		super.afterBind();
 		// dispose fontManager when the text control is disposed
 		((Control) justEights.getUIControl()).addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+			public void widgetDisposed(final DisposeEvent e) {
 				if (fontManager != null) {
 					fontManager.dispose();
 					fontManager = null;
@@ -138,17 +139,17 @@ public class TextDateSubModuleController extends SubModuleController {
 	// helping methods
 	//////////////////
 
-	private void bind(DataBindingContext dbc, String id) {
-		IRidget inputRidget = getRidget("in" + id); //$NON-NLS-1$
-		ITextRidget outputRidget = (ITextRidget) getRidget("out" + id); //$NON-NLS-1$
+	private void bind(final DataBindingContext dbc, final String id) {
+		final IRidget inputRidget = getRidget("in" + id); //$NON-NLS-1$
+		final ITextRidget outputRidget = (ITextRidget) getRidget("out" + id); //$NON-NLS-1$
 		outputRidget.setOutputOnly(true);
 		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextRidget.PROPERTY_TEXT), BeansObservables
 				.observeValue(outputRidget, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
 	}
 
-	private void bindToModel(String id, StringBean value) {
-		IDateTextRidget ridget = (IDateTextRidget) getRidget("in" + id); //$NON-NLS-1$
+	private void bindToModel(final String id, final StringBean value) {
+		final IDateTextRidget ridget = (IDateTextRidget) getRidget("in" + id); //$NON-NLS-1$
 		ridget.setFormat(id.replace('_', ' '));
 		ridget.bindToModel(value, TypedBean.PROP_VALUE);
 		ridget.updateFromModel();
@@ -167,9 +168,9 @@ public class TextDateSubModuleController extends SubModuleController {
 		private Font font;
 		private String name;
 		private String size;
-		private Set<IRidget> ridgets;
+		private final Set<IRidget> ridgets;
 
-		FontManager(Display display) {
+		FontManager(final Display display) {
 			Assert.isNotNull(display);
 			this.display = display;
 			name = ""; //$NON-NLS-1$
@@ -177,7 +178,7 @@ public class TextDateSubModuleController extends SubModuleController {
 			ridgets = new HashSet<IRidget>();
 		}
 
-		void addRidget(IRidget control) {
+		void addRidget(final IRidget control) {
 			ridgets.add(control);
 		}
 
@@ -189,7 +190,7 @@ public class TextDateSubModuleController extends SubModuleController {
 			}
 		}
 
-		void setName(String name) {
+		void setName(final String name) {
 			Assert.isNotNull(name);
 			if (!this.name.equals(name)) {
 				this.name = name;
@@ -197,7 +198,7 @@ public class TextDateSubModuleController extends SubModuleController {
 			}
 		}
 
-		void setSize(String size) {
+		void setSize(final String size) {
 			Assert.isNotNull(size);
 			if (!this.size.equals(size)) {
 				this.size = size;
@@ -210,8 +211,8 @@ public class TextDateSubModuleController extends SubModuleController {
 				font.dispose();
 			}
 			font = new Font(display, name, Integer.valueOf(size).intValue(), SWT.NORMAL);
-			for (IRidget ridget : ridgets) {
-				Object control = ridget.getUIControl();
+			for (final IRidget ridget : ridgets) {
+				final Object control = ridget.getUIControl();
 				if (control instanceof Control) {
 					((Control) control).setFont(font);
 				}

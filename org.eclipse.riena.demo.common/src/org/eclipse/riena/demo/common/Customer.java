@@ -40,7 +40,7 @@ public class Customer {
 		return custno;
 	}
 
-	public void setCustno(String custno) {
+	public void setCustno(final String custno) {
 		this.custno = custno;
 	}
 
@@ -48,7 +48,7 @@ public class Customer {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName(final String lastName) {
 		this.lastName = lastName;
 	}
 
@@ -56,7 +56,7 @@ public class Customer {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName(final String firstName) {
 		this.firstName = firstName;
 	}
 
@@ -64,7 +64,7 @@ public class Customer {
 		return address;
 	}
 
-	public void setAddress(Address address) {
+	public void setAddress(final Address address) {
 		this.address = address;
 	}
 
@@ -72,7 +72,7 @@ public class Customer {
 	 * @param emailAddress
 	 *            the emailAddress to set
 	 */
-	public void setEmailAddress(String emailAddress) {
+	public void setEmailAddress(final String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
 
@@ -87,7 +87,7 @@ public class Customer {
 		return birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(final Date birthDate) {
 		this.birthDate = birthDate;
 	}
 
@@ -95,7 +95,7 @@ public class Customer {
 		return salary;
 	}
 
-	public void setSalary(float salary) {
+	public void setSalary(final float salary) {
 		this.salary = salary;
 	}
 
@@ -103,7 +103,7 @@ public class Customer {
 		return contracts;
 	}
 
-	public void setContracts(List<Contract> contracts) {
+	public void setContracts(final List<Contract> contracts) {
 		this.contracts = contracts;
 	}
 

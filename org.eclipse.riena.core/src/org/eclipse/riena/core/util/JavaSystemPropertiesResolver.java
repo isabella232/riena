@@ -77,14 +77,14 @@ public class JavaSystemPropertiesResolver implements IDynamicVariableResolver {
 	private static final String RIENA = "riena."; //$NON-NLS-1$
 
 	/**
-	 * "Synthetic" property that retrieves the host's IP address, i.e. {@code
-	 * InetAddress.getLocalHost().getHostAddress()}
+	 * "Synthetic" property that retrieves the host's IP address, i.e.
+	 * {@code InetAddress.getLocalHost().getHostAddress()}
 	 */
 	private static final String HOST_ADDRESS = RIENA + "host.address"; //$NON-NLS-1$
 
 	/**
-	 * "Synthetic" property that retrieves the host name, i.e. {@code
-	 * InetAddress.getLocalHost().getHostName()}
+	 * "Synthetic" property that retrieves the host name, i.e.
+	 * {@code InetAddress.getLocalHost().getHostName()}
 	 */
 	private static final String HOST_NAME = RIENA + "host.name"; //$NON-NLS-1$
 

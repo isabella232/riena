@@ -45,7 +45,7 @@ public class ValidationSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public ValidationSubModuleController(ISubModuleNode navigationNode) {
+	public ValidationSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -138,14 +138,14 @@ public class ValidationSubModuleController extends SubModuleController {
 
 		// show validation messages in statusline and tooltip
 
-		IStatuslineRidget statuslineRidget = getApplicationController().getStatusline();
-		StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(
+		final IStatuslineRidget statuslineRidget = getApplicationController().getStatusline();
+		final StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(
 				statuslineRidget);
-		TooltipMessageMarkerViewer tooltipMessageMarkerViewer = new TooltipMessageMarkerViewer();
+		final TooltipMessageMarkerViewer tooltipMessageMarkerViewer = new TooltipMessageMarkerViewer();
 
-		IBasicMarkableRidget[] ridgets = { txtNumbersOnly, txtNumbersOnlyDW, txtCharactersOnly, txtExpression,
+		final IBasicMarkableRidget[] ridgets = { txtNumbersOnly, txtNumbersOnlyDW, txtCharactersOnly, txtExpression,
 				txtLengthLessThan5, txtRequiredLowercase, txtRange18to80, txtLength5to10, txtDate, txtEmail };
-		for (IBasicMarkableRidget ridget : ridgets) {
+		for (final IBasicMarkableRidget ridget : ridgets) {
 			statuslineMessageMarkerViewer.addRidget(ridget);
 			tooltipMessageMarkerViewer.addRidget(ridget);
 		}
@@ -154,7 +154,7 @@ public class ValidationSubModuleController extends SubModuleController {
 	// helping methods
 	//////////////////
 
-	private IObservableValue getTextValue(ITextRidget bean) {
+	private IObservableValue getTextValue(final ITextRidget bean) {
 		return BeansObservables.observeValue(bean, ITextRidget.PROPERTY_TEXT);
 	}
 
@@ -168,8 +168,8 @@ public class ValidationSubModuleController extends SubModuleController {
 				.getNavigationNodeController();
 	}
 
-	private void makeOutputOnly(ITextRidget... ridgets) {
-		for (ITextRidget ridget : ridgets) {
+	private void makeOutputOnly(final ITextRidget... ridgets) {
+		for (final ITextRidget ridget : ridgets) {
 			ridget.setOutputOnly(true);
 		}
 	}

@@ -49,8 +49,8 @@ public class OrderedCallHooksExecuter implements ICallHook {
 	public void update(final ICallHookExtension[] callHookExtensions) {
 		final Orderer<ICallHook> orderer = new Orderer<ICallHook>();
 		for (final ICallHookExtension extension : callHookExtensions) {
-			orderer.add(extension.getCallHook(), extension.getName(), extension.getPostHooks(), extension
-					.getPostHooks());
+			orderer.add(extension.getCallHook(), extension.getName(), extension.getPostHooks(),
+					extension.getPostHooks());
 		}
 		final List<ICallHook> tempOrdered = orderer.getOrderedObjects();
 		final List<ICallHook> tempReverse = new ArrayList<ICallHook>(tempOrdered.size());

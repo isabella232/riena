@@ -22,9 +22,9 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class AllowActivateSubModuleView extends SubModuleView {
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 
-		MessageBox messageBox = UIControlsFactory.createMessageBox(parent);
+		final MessageBox messageBox = UIControlsFactory.createMessageBox(parent);
 		addUIControl(messageBox, "messageBox"); //$NON-NLS-1$
 
 	}

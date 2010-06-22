@@ -21,7 +21,7 @@ import com.caucho.hessian.io.Serializer;
 public class StacktraceElementSerializerFactory extends AbstractRienaSerializerFactory {
 
 	@Override
-	public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
+	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
 		if (cl.equals(StackTraceElement.class)) {
 			return new JavaDeserializer(cl) {
 
@@ -35,7 +35,7 @@ public class StacktraceElementSerializerFactory extends AbstractRienaSerializerF
 	}
 
 	@Override
-	public Serializer getSerializer(Class cl) throws HessianProtocolException {
+	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		return null;
 	}
 

@@ -25,7 +25,7 @@ public class BeanUtilFailure extends UtilFailure {
 	 * @param msg
 	 *            the message
 	 */
-	public BeanUtilFailure(String msg) {
+	public BeanUtilFailure(final String msg) {
 		super(msg);
 	}
 
@@ -37,7 +37,7 @@ public class BeanUtilFailure extends UtilFailure {
 	 * @param cause
 	 *            the cause
 	 */
-	public BeanUtilFailure(String msg, Throwable cause) {
+	public BeanUtilFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 }

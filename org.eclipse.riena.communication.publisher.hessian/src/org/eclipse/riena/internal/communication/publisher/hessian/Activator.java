@@ -41,7 +41,7 @@ public class Activator extends RienaActivator {
 	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 
@@ -49,7 +49,7 @@ public class Activator extends RienaActivator {
 		logger.log(LogService.LOG_INFO, "start hessian support on server"); //$NON-NLS-1$
 
 		publisher = new HessianRemoteServicePublisher();
-		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
+		final Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
 		properties.put(IServicePublisher.PROP_PROTOCOL, publisher.getProtocol());
 		publisherReg = context.registerService(IServicePublisher.class.getName(), publisher, properties);
 	}
@@ -61,7 +61,7 @@ public class Activator extends RienaActivator {
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		publisherReg.unregister();
 		publisherReg = null;
 		publisher = null;

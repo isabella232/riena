@@ -38,44 +38,44 @@ public class ChoiceSubModuleView extends SubModuleView {
 	public static final String ID = ChoiceSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
-		Group group1 = createChoiceGroup(parent);
+		final Group group1 = createChoiceGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(group1);
 	}
 
 	@Override
-	protected ChoiceSubModuleController createController(ISubModuleNode subModuleNode) {
+	protected ChoiceSubModuleController createController(final ISubModuleNode subModuleNode) {
 		return new ChoiceSubModuleController(subModuleNode);
 	}
 
 	// helping methods
 	// ////////////////
 
-	private Group createChoiceGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "James' Car Configurator:"); //$NON-NLS-1$
+	private Group createChoiceGroup(final Composite parent) {
+		final Group group = UIControlsFactory.createGroup(parent, "James' Car Configurator:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).spacing(20, 20).applyTo(group);
 
-		GridDataFactory choiceLayoutFactory = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING)
+		final GridDataFactory choiceLayoutFactory = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING)
 				.grab(true, false);
 
 		// next row
 
-		Label lblModel = UIControlsFactory.createLabel(group, "Model"); //$NON-NLS-1$
+		final Label lblModel = UIControlsFactory.createLabel(group, "Model"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblModel);
 
-		Composite compositeCarModel = new ChoiceComposite(group, SWT.NONE, false);
+		final Composite compositeCarModel = new ChoiceComposite(group, SWT.NONE, false);
 		choiceLayoutFactory.applyTo(compositeCarModel);
 		addUIControl(compositeCarModel, "compositeCarModel"); //$NON-NLS-1$
 
 		// next row
 
-		Label lblExtras = UIControlsFactory.createLabel(group, "Extras"); //$NON-NLS-1$
+		final Label lblExtras = UIControlsFactory.createLabel(group, "Extras"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblExtras);
 
-		Composite compositeCarExtras = new ChoiceComposite(group, SWT.NONE, true);
+		final Composite compositeCarExtras = new ChoiceComposite(group, SWT.NONE, true);
 		choiceLayoutFactory.applyTo(compositeCarExtras);
 		addUIControl(compositeCarExtras, "compositeCarExtras"); //$NON-NLS-1$
 
@@ -83,7 +83,7 @@ public class ChoiceSubModuleView extends SubModuleView {
 
 		UIControlsFactory.createLabel(group, "Manufacturer's\nWarranty"); //$NON-NLS-1$
 
-		Composite compositeCarWarranty = new ChoiceComposite(group, SWT.NONE, false);
+		final Composite compositeCarWarranty = new ChoiceComposite(group, SWT.NONE, false);
 		choiceLayoutFactory.applyTo(compositeCarWarranty);
 		addUIControl(compositeCarWarranty, "compositeCarWarranty"); //$NON-NLS-1$
 
@@ -91,7 +91,7 @@ public class ChoiceSubModuleView extends SubModuleView {
 
 		UIControlsFactory.createLabel(group, "License Plate(s)"); //$NON-NLS-1$
 
-		ChoiceComposite compositeCarPlates = new ChoiceComposite(group, SWT.NONE, true);
+		final ChoiceComposite compositeCarPlates = new ChoiceComposite(group, SWT.NONE, true);
 		compositeCarPlates.setOrientation(SWT.HORIZONTAL);
 		choiceLayoutFactory.applyTo(compositeCarPlates);
 		addUIControl(compositeCarPlates, "compositeCarPlates"); //$NON-NLS-1$
@@ -100,7 +100,7 @@ public class ChoiceSubModuleView extends SubModuleView {
 
 		UIControlsFactory.createLabel(group, "Sun Roof"); //$NON-NLS-1$
 
-		ChoiceComposite compositeSunRoof = new ChoiceComposite(group, SWT.NONE, false);
+		final ChoiceComposite compositeSunRoof = new ChoiceComposite(group, SWT.NONE, false);
 		compositeSunRoof.setOrientation(SWT.HORIZONTAL);
 		choiceLayoutFactory.applyTo(compositeSunRoof);
 		addUIControl(compositeSunRoof, "compositeSunroof"); //$NON-NLS-1$
@@ -109,7 +109,7 @@ public class ChoiceSubModuleView extends SubModuleView {
 
 		UIControlsFactory.createLabel(group, "Color"); //$NON-NLS-1$
 
-		ChoiceComposite compositeColor = new ChoiceComposite(group, SWT.NONE, false);
+		final ChoiceComposite compositeColor = new ChoiceComposite(group, SWT.NONE, false);
 		compositeColor.setOrientation(SWT.VERTICAL);
 		choiceLayoutFactory.applyTo(compositeColor);
 		addUIControl(compositeColor, "compositeColor"); //$NON-NLS-1$
@@ -118,26 +118,26 @@ public class ChoiceSubModuleView extends SubModuleView {
 
 		UIControlsFactory.createLabel(group, "Price"); //$NON-NLS-1$
 
-		Text txtPrice = UIControlsFactory.createText(group, SWT.RIGHT);
-		int widthHint = UIControlsFactory.getWidthHint(txtPrice, 12);
+		final Text txtPrice = UIControlsFactory.createText(group, SWT.RIGHT);
+		final int widthHint = UIControlsFactory.getWidthHint(txtPrice, 12);
 		GridDataFactory.swtDefaults().hint(widthHint, SWT.DEFAULT).applyTo(txtPrice);
 		addUIControl(txtPrice, "txtPrice"); //$NON-NLS-1$
 
-		Composite buttonComposite = createButtonComposite(group);
+		final Composite buttonComposite = createButtonComposite(group);
 		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(buttonComposite);
 
 		return group;
 	}
 
-	private Composite createButtonComposite(Group group) {
-		Composite buttonComposite = UIControlsFactory.createComposite(group);
+	private Composite createButtonComposite(final Group group) {
+		final Composite buttonComposite = UIControlsFactory.createComposite(group);
 		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(buttonComposite);
 
-		Button buttonPreset = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonPreset = UIControlsFactory.createButton(buttonComposite);
 		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(buttonPreset);
 		addUIControl(buttonPreset, "buttonPreset"); //$NON-NLS-1$
 
-		Button buttonReset = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonReset = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonReset, "buttonReset"); //$NON-NLS-1$
 
 		return buttonComposite;

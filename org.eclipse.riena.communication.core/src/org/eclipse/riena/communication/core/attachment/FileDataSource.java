@@ -23,9 +23,9 @@ import org.eclipse.core.runtime.Assert;
  */
 public class FileDataSource implements IDataSource {
 
-	private File file;
+	private final File file;
 
-	public FileDataSource(File file) {
+	public FileDataSource(final File file) {
 		Assert.isNotNull(file, "file must not be null"); //$NON-NLS-1$
 		this.file = file;
 	}
@@ -38,7 +38,7 @@ public class FileDataSource implements IDataSource {
 	 * ()
 	 */
 	public InputStream getInputStream() throws IOException {
-		FileInputStream inputStream = new FileInputStream(file);
+		final FileInputStream inputStream = new FileInputStream(file);
 		return inputStream;
 	}
 

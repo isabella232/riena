@@ -121,12 +121,12 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			if (value == null) {
 				return Result.CACHED_NULL;
 			}
-			Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
+			final Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
 			if (bundle == null) {
 				return Result.CACHED_NULL;
 			}
 			// does it contain initialization data?
-			int colon = value.indexOf(':');
+			final int colon = value.indexOf(':');
 			if (colon != -1) {
 				value = value.substring(0, colon);
 			}
@@ -150,8 +150,8 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			final Object[] result = (Object[]) Array.newInstance(returnType.getComponentType(), cfgElements.length);
 			for (int i = 0; i < cfgElements.length; i++) {
 				result[i] = Proxy.newProxyInstance(returnType.getComponentType().getClassLoader(),
-						new Class[] { returnType.getComponentType() }, new InterfaceBeanHandler(returnType
-								.getComponentType(), symbolReplace, cfgElements[i]));
+						new Class[] { returnType.getComponentType() },
+						new InterfaceBeanHandler(returnType.getComponentType(), symbolReplace, cfgElements[i]));
 			}
 			return Result.cache(result);
 		}
@@ -170,10 +170,10 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		if (method.isAnnotationPresent(CreateLazy.class)) {
 			return Result.noCache(LazyExecutableExtension.newInstance(configurationElement, attributeName, wire));
 		}
-		Object result = configurationElement.createExecutableExtension(attributeName);
+		final Object result = configurationElement.createExecutableExtension(attributeName);
 		if (wire) {
 			// Try wiring the created executable extension
-			Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
+			final Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
 			BundleContext context = null;
 			if (bundle != null) {
 				context = bundle.getBundleContext();
@@ -186,19 +186,19 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		return Result.noCache(result);
 	}
 
-	private Class<?> loadClass(Bundle bundle, String className) throws ClassNotFoundException {
+	private Class<?> loadClass(final Bundle bundle, final String className) throws ClassNotFoundException {
 		try {
 			return bundle.loadClass(className);
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			// Are we a fragment bundle
-			Bundle[] hosts = Platform.getHosts(bundle);
+			final Bundle[] hosts = Platform.getHosts(bundle);
 			if (hosts == null) {
 				throw e;
 			}
-			for (Bundle host : hosts) {
+			for (final Bundle host : hosts) {
 				try {
 					return host.loadClass(className);
-				} catch (ClassNotFoundException e2) {
+				} catch (final ClassNotFoundException e2) {
 					Nop.reason("try next host"); //$NON-NLS-1$
 				}
 			}
@@ -212,11 +212,11 @@ final class InterfaceBeanHandler implements InvocationHandler {
 	 */
 	public boolean proxiedEquals(final Object obj) {
 		try {
-			InvocationHandler handler = Proxy.getInvocationHandler(obj);
+			final InvocationHandler handler = Proxy.getInvocationHandler(obj);
 			if (handler instanceof InterfaceBeanHandler) {
 				return configurationElement.equals(((InterfaceBeanHandler) handler).configurationElement);
 			}
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			return false;
 		}
 		return false;
@@ -240,7 +240,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		final StringBuilder bob = new StringBuilder("Dynamic proxy for "); //$NON-NLS-1$
 		bob.append(interfaceType.getName()).append(':');
 		final String[] names = configurationElement.getAttributeNames();
-		for (String name : names) {
+		for (final String name : names) {
 			bob.append(name).append('=').append(configurationElement.getAttribute(name)).append(',');
 		}
 		bob.setLength(bob.length() - 1);
@@ -306,14 +306,14 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			return value;
 		}
 
-		IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
+		final IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
 		if (variableManager == null) {
 			return value;
 		}
 
 		try {
 			return variableManager.performStringSubstitution(value);
-		} catch (CoreException e) {
+		} catch (final CoreException e) {
 			LOGGER.log(LogService.LOG_ERROR, "Could not perfrom string substitution for '" + value + "' .", e); //$NON-NLS-1$ //$NON-NLS-2$
 			return value;
 		}

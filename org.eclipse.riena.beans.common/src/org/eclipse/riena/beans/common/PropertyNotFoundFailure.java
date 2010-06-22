@@ -27,7 +27,7 @@ public final class PropertyNotFoundFailure extends PropertyFailure {
 	 * @param bean
 	 *            the Java Bean used to lookup the property
 	 */
-	public PropertyNotFoundFailure(String propertyName, Object bean) {
+	public PropertyNotFoundFailure(final String propertyName, final Object bean) {
 		this(propertyName, bean, null);
 	}
 
@@ -45,7 +45,7 @@ public final class PropertyNotFoundFailure extends PropertyFailure {
 	 *            permitted, and indicates that the cause is nonexistent or
 	 *            unknown.)
 	 */
-	public PropertyNotFoundFailure(String propertyName, Object bean, Throwable cause) {
+	public PropertyNotFoundFailure(final String propertyName, final Object bean, final Throwable cause) {
 		super("Property '" + propertyName + "' not found in bean " + bean, cause); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

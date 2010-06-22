@@ -71,7 +71,7 @@ public class RemoteServiceDescription {
 	private String serviceInterfaceClassName;
 	private String url;
 	private String protocol;
-	private Map<String, Object> properties = new HashMap<String, Object>();
+	private final Map<String, Object> properties = new HashMap<String, Object>();
 
 	/**
 	 * Create a instance of a RemoteServiceDescription
@@ -87,12 +87,13 @@ public class RemoteServiceDescription {
 	 * @param serviceRef
 	 * @param service
 	 */
-	public RemoteServiceDescription(ServiceReference serviceRef, Object service, Class<?> serviceInterface) {
+	public RemoteServiceDescription(final ServiceReference serviceRef, final Object service,
+			final Class<?> serviceInterface) {
 		this();
 		this.serviceRef = serviceRef;
 		this.service = service;
-		String[] keys = serviceRef.getPropertyKeys();
-		for (String key : keys) {
+		final String[] keys = serviceRef.getPropertyKeys();
+		for (final String key : keys) {
 			if (key.equals(Constants.OBJECTCLASS)) {
 				// String obejctClassName =
 				// CommunicationUtil.accessProperty(serviceRef
@@ -218,7 +219,7 @@ public class RemoteServiceDescription {
 	 * 
 	 * @param bundleName
 	 */
-	public void setBundleName(String bundleName) {
+	public void setBundleName(final String bundleName) {
 		this.bundleName = bundleName;
 	}
 
@@ -227,7 +228,7 @@ public class RemoteServiceDescription {
 	 * 
 	 * @param path
 	 */
-	public void setPath(String path) {
+	public void setPath(final String path) {
 		this.path = path;
 	}
 
@@ -236,7 +237,7 @@ public class RemoteServiceDescription {
 	 * 
 	 * @param protocol
 	 */
-	public void setProtocol(String protocol) {
+	public void setProtocol(final String protocol) {
 		this.protocol = protocol;
 	}
 
@@ -245,7 +246,7 @@ public class RemoteServiceDescription {
 	 * 
 	 * @param service
 	 */
-	public void setService(Object service) {
+	public void setService(final Object service) {
 		this.service = service;
 		// TODO enable this later
 		//		assertServiceConstraints();
@@ -256,7 +257,7 @@ public class RemoteServiceDescription {
 	 * 
 	 * @param interfaceClass
 	 */
-	public void setServiceInterfaceClass(Class<?> interfaceClass) {
+	public void setServiceInterfaceClass(final Class<?> interfaceClass) {
 		this.serviceInterfaceClass = interfaceClass;
 		// TODO enable this later
 		//		assertServiceConstraints();
@@ -267,7 +268,7 @@ public class RemoteServiceDescription {
 	 * 
 	 * @param interfaceClassName
 	 */
-	public void setServiceInterfaceClassName(String interfaceClassName) {
+	public void setServiceInterfaceClassName(final String interfaceClassName) {
 		this.serviceInterfaceClassName = interfaceClassName;
 
 	}
@@ -277,11 +278,11 @@ public class RemoteServiceDescription {
 	 * 
 	 * @param serviceRef
 	 */
-	public void setServiceRef(ServiceReference serviceRef) {
+	public void setServiceRef(final ServiceReference serviceRef) {
 		this.serviceRef = serviceRef;
 	}
 
-	public void setState(State type) {
+	public void setState(final State type) {
 		this.state = type;
 	}
 
@@ -290,7 +291,7 @@ public class RemoteServiceDescription {
 	 * 
 	 * @param url
 	 */
-	public void setURL(String url) {
+	public void setURL(final String url) {
 		this.url = url;
 	}
 
@@ -299,7 +300,7 @@ public class RemoteServiceDescription {
 	 * 
 	 * @param version
 	 */
-	public void setVersion(String version) {
+	public void setVersion(final String version) {
 		this.version = version;
 	}
 
@@ -314,7 +315,7 @@ public class RemoteServiceDescription {
 	 * @param name
 	 * @param value
 	 */
-	public void setProperty(String name, Object value) {
+	public void setProperty(final String name, final Object value) {
 		properties.put(name, value);
 	}
 
@@ -324,7 +325,7 @@ public class RemoteServiceDescription {
 	 * @param name
 	 * @return the property value
 	 */
-	public Object getProperty(String name) {
+	public Object getProperty(final String name) {
 		return properties.get(name);
 	}
 
@@ -333,9 +334,9 @@ public class RemoteServiceDescription {
 	private void assertServiceConstraints() {
 		// Do not allow multiple occurrences of the same service method names, i.e. no overloading
 		if (serviceInterfaceClass != null) {
-			Method[] methods = serviceInterfaceClass.getMethods();
-			Set<String> names = new HashSet<String>();
-			for (Method method : methods) {
+			final Method[] methods = serviceInterfaceClass.getMethods();
+			final Set<String> names = new HashSet<String>();
+			for (final Method method : methods) {
 				if (!Modifier.isVolatile(method.getModifiers()) && !names.add(method.getName())) {
 					throw new RemoteFailure("Can not use interface " + serviceInterfaceClass.getName() //$NON-NLS-1$
 							+ " as service interface because at least one method (" + method.getName() //$NON-NLS-1$

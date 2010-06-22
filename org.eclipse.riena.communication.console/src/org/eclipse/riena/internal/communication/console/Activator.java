@@ -33,11 +33,11 @@ public class Activator extends RienaActivator {
 	private static Activator plugin;
 
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 		// register new OSGi command interpreter
-		CommunicationConsole console = new CommunicationConsole();
+		final CommunicationConsole console = new CommunicationConsole();
 		// the filter applies only if the service is living in this container
 		// e.g. server.
 		// String filter = "(" + RSDPublisherProperties.PROP_IS_REMOTE +
@@ -49,7 +49,7 @@ public class Activator extends RienaActivator {
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		publisherInjector.stop();
 		publisherInjector = null;
 		registryInjector.stop();

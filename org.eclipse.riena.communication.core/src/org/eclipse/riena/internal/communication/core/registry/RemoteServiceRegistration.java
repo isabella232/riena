@@ -30,7 +30,7 @@ public class RemoteServiceRegistration implements IRemoteServiceRegistration {
 	 * @param reference
 	 * @param registry
 	 */
-	public RemoteServiceRegistration(IRemoteServiceReference reference, IRemoteServiceRegistry registry) {
+	public RemoteServiceRegistration(final IRemoteServiceReference reference, final IRemoteServiceRegistry registry) {
 		super();
 		this.reference = reference;
 		this.registry = registry;
@@ -68,7 +68,7 @@ public class RemoteServiceRegistration implements IRemoteServiceRegistration {
 	 * org.eclipse.riena.communication.core.IRemoteServiceRegistration#setReference
 	 * (org.eclipse.riena.communication.core.IRemoteServiceReference)
 	 */
-	public void setReference(IRemoteServiceReference reference) {
+	public void setReference(final IRemoteServiceReference reference) {
 		this.reference = reference;
 
 	}

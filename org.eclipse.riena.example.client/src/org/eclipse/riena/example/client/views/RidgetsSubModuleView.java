@@ -39,14 +39,14 @@ public class RidgetsSubModuleView extends SubModuleView {
 	private Image scaledWarningImage;
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new FormLayout());
 
-		Group buttonGroup = createButtonGroup(parent);
+		final Group buttonGroup = createButtonGroup(parent);
 		buttonGroup.setLayoutData(createFormData(null));
 
-		Group imageButtonGroup = createImageButtonGroup(parent);
+		final Group imageButtonGroup = createImageButtonGroup(parent);
 		imageButtonGroup.setLayoutData(createFormData(buttonGroup));
 	}
 
@@ -73,14 +73,14 @@ public class RidgetsSubModuleView extends SubModuleView {
 	 *            the parent of the group
 	 * @return the Group; never null.
 	 */
-	private Group createButtonGroup(Composite parent) {
-		Group buttonGroup = UIControlsFactory.createGroup(parent, "Buttons"); //$NON-NLS-1$
+	private Group createButtonGroup(final Composite parent) {
+		final Group buttonGroup = UIControlsFactory.createGroup(parent, "Buttons"); //$NON-NLS-1$
 		buttonGroup.setLayout(new RowLayout(SWT.VERTICAL));
 
 		UIControlsFactory.createButtonToggle(buttonGroup, "", "toggleOne"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		Button toggleTwo = UIControlsFactory.createButtonToggle(buttonGroup, "", "toggleTwo"); //$NON-NLS-1$ //$NON-NLS-2$
-		Display display = parent.getDisplay();
+		final Button toggleTwo = UIControlsFactory.createButtonToggle(buttonGroup, "", "toggleTwo"); //$NON-NLS-1$ //$NON-NLS-2$
+		final Display display = parent.getDisplay();
 		Image image = display.getSystemImage(SWT.ICON_QUESTION);
 		Assert.isTrue(scaledQuestionImage == null);
 		scaledQuestionImage = new Image(display, image.getImageData().scaledTo(16, 16));
@@ -90,7 +90,7 @@ public class RidgetsSubModuleView extends SubModuleView {
 
 		UIControlsFactory.createButton(buttonGroup, "", "buttonOne"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		Button buttonTwo = UIControlsFactory.createButton(buttonGroup, "", "buttonTwo"); //$NON-NLS-1$ //$NON-NLS-2$
+		final Button buttonTwo = UIControlsFactory.createButton(buttonGroup, "", "buttonTwo"); //$NON-NLS-1$ //$NON-NLS-2$
 		image = display.getSystemImage(SWT.ICON_WARNING);
 		Assert.isTrue(scaledWarningImage == null);
 		scaledWarningImage = new Image(display, image.getImageData().scaledTo(16, 16));
@@ -99,8 +99,8 @@ public class RidgetsSubModuleView extends SubModuleView {
 		return buttonGroup;
 	}
 
-	private Group createImageButtonGroup(Composite parent) {
-		Group imageButtonGroup = UIControlsFactory.createGroup(parent, "Image Buttons"); //$NON-NLS-1$
+	private Group createImageButtonGroup(final Composite parent) {
+		final Group imageButtonGroup = UIControlsFactory.createGroup(parent, "Image Buttons"); //$NON-NLS-1$
 		imageButtonGroup.setLayout(new RowLayout(SWT.VERTICAL));
 
 		UIControlsFactory.createImageButton(imageButtonGroup, SWT.NONE, "imageButton"); //$NON-NLS-1$
@@ -110,8 +110,8 @@ public class RidgetsSubModuleView extends SubModuleView {
 		return imageButtonGroup;
 	}
 
-	private FormData createFormData(Control topControl) {
-		FormData result = new FormData();
+	private FormData createFormData(final Control topControl) {
+		final FormData result = new FormData();
 		if (topControl != null) {
 			result.top = new FormAttachment(topControl, 10);
 		} else {

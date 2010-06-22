@@ -46,14 +46,14 @@ public class SonarView extends SubModuleView {
 	public static final String BID_START_BUTTON = "startButton"; //$NON-NLS-1$
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setLayout(new FillLayout());
 
-		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
+		final SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
 
 		// left side
 
-		Composite left = UIControlsFactory.createComposite(sashForm, SWT.FILL);
+		final Composite left = UIControlsFactory.createComposite(sashForm, SWT.FILL);
 		GridLayout gridLayout = new GridLayout(1, false);
 		gridLayout.horizontalSpacing = 5;
 		gridLayout.verticalSpacing = 5;
@@ -62,47 +62,47 @@ public class SonarView extends SubModuleView {
 		gridLayout.marginRight = 0;
 		left.setLayout(gridLayout);
 
-		Composite buttonComposite = UIControlsFactory.createComposite(left);
+		final Composite buttonComposite = UIControlsFactory.createComposite(left);
 		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).applyTo(buttonComposite);
-		GridLayout bcLayout = new GridLayout(9, false);
+		final GridLayout bcLayout = new GridLayout(9, false);
 		bcLayout.horizontalSpacing = 5;
 		bcLayout.verticalSpacing = 5;
 		bcLayout.marginHeight = 0;
 		bcLayout.marginWidth = 0;
 		buttonComposite.setLayout(bcLayout);
 
-		Button startButton = UIControlsFactory.createButton(buttonComposite);
+		final Button startButton = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(startButton, BID_START_BUTTON);
 		GridDataFactory.swtDefaults().applyTo(startButton);
 
-		Button stopButton = UIControlsFactory.createButton(buttonComposite);
+		final Button stopButton = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(stopButton, BID_STOP_BUTTON);
 		GridDataFactory.swtDefaults().applyTo(stopButton);
 
 		UIControlsFactory.createLabel(buttonComposite, Messages.pinged);
 		UIControlsFactory.createLabel(buttonComposite, "  0", BID_PING_LABEL); //$NON-NLS-1$
 
-		Label bcSpacer = UIControlsFactory.createLabel(buttonComposite, ""); //$NON-NLS-1$
+		final Label bcSpacer = UIControlsFactory.createLabel(buttonComposite, ""); //$NON-NLS-1$
 		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(bcSpacer);
 
 		UIControlsFactory.createLabel(buttonComposite, Messages.failed);
 		UIControlsFactory.createLabel(buttonComposite, "  0", BID_FAILED_LABEL); //$NON-NLS-1$
 
-		Button nextErrorButton = UIControlsFactory.createButton(buttonComposite);
+		final Button nextErrorButton = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(nextErrorButton, BID_NEXT_ERROR_BUTTON);
 		GridDataFactory.swtDefaults().applyTo(nextErrorButton);
 
-		Button previousErrorButton = UIControlsFactory.createButton(buttonComposite);
+		final Button previousErrorButton = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(previousErrorButton, BID_PREVIOUS_ERROR_BUTTON);
 		GridDataFactory.swtDefaults().applyTo(previousErrorButton);
 
-		Tree sonarTree = UIControlsFactory.createTree(left, SWT.BORDER, BID_SONAR_TREE);
+		final Tree sonarTree = UIControlsFactory.createTree(left, SWT.BORDER, BID_SONAR_TREE);
 		sonarTree.setSize(300, 200);
 		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(sonarTree);
 
 		// right side
 
-		Composite right = UIControlsFactory.createComposite(sashForm, SWT.FILL);
+		final Composite right = UIControlsFactory.createComposite(sashForm, SWT.FILL);
 		gridLayout = new GridLayout(1, false);
 		gridLayout.horizontalSpacing = 5;
 		gridLayout.verticalSpacing = 5;
@@ -111,11 +111,11 @@ public class SonarView extends SubModuleView {
 		gridLayout.marginRight = 10;
 		right.setLayout(gridLayout);
 
-		ProgressBarWidget progressBar = new ProgressBarWidget(right);
+		final ProgressBarWidget progressBar = new ProgressBarWidget(right);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(progressBar, BID_PROGRESS_BAR);
 		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(progressBar);
 
-		Composite failureMessageComposite = UIControlsFactory.createComposite(right, SWT.FILL);
+		final Composite failureMessageComposite = UIControlsFactory.createComposite(right, SWT.FILL);
 		gridLayout = new GridLayout(2, false);
 		gridLayout.horizontalSpacing = 5;
 		gridLayout.verticalSpacing = 0;
@@ -123,15 +123,15 @@ public class SonarView extends SubModuleView {
 		gridLayout.marginWidth = 0;
 		failureMessageComposite.setLayout(gridLayout);
 
-		Label failureMessageIconLabel = UIControlsFactory.createLabel(failureMessageComposite,
+		final Label failureMessageIconLabel = UIControlsFactory.createLabel(failureMessageComposite,
 				"", BID_FAILURE_MESSAGE_ICON_LABEL); //$NON-NLS-1$
 		GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(failureMessageIconLabel);
 
-		Label failureMessageTextLabel = UIControlsFactory.createLabel(failureMessageComposite,
+		final Label failureMessageTextLabel = UIControlsFactory.createLabel(failureMessageComposite,
 				Messages.failure_message, BID_FAILURE_MESSAGE_TEXT_LABEL);
 		GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(failureMessageTextLabel);
 
-		Text stackTraceText = UIControlsFactory.createTextMulti(right, true, true, BID_STACK_TRACE_TEXT);
+		final Text stackTraceText = UIControlsFactory.createTextMulti(right, true, true, BID_STACK_TRACE_TEXT);
 		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(stackTraceText);
 
 		sashForm.setWeights(new int[] { 1, 1 });

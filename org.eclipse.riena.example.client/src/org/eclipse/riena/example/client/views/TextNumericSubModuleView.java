@@ -31,7 +31,7 @@ public class TextNumericSubModuleView extends SubModuleView {
 	public static final String ID = TextNumericSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(3, true));
 
@@ -101,8 +101,8 @@ public class TextNumericSubModuleView extends SubModuleView {
 		//		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 		//		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 
-		GridDataFactory gdf = GridDataFactory.fillDefaults();
-		for (Control child : parent.getChildren()) {
+		final GridDataFactory gdf = GridDataFactory.fillDefaults();
+		for (final Control child : parent.getChildren()) {
 			if (child instanceof Text) {
 				gdf.applyTo(child);
 			}

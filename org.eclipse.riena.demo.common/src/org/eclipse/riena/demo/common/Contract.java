@@ -28,7 +28,7 @@ public class Contract {
 		return contractNo;
 	}
 
-	public void setContractNo(String contractNo) {
+	public void setContractNo(final String contractNo) {
 		this.contractNo = contractNo;
 	}
 
@@ -36,7 +36,7 @@ public class Contract {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
@@ -44,7 +44,7 @@ public class Contract {
 		return contractValue;
 	}
 
-	public void setContractValue(double contractValue) {
+	public void setContractValue(final double contractValue) {
 		this.contractValue = contractValue;
 	}
 
@@ -52,7 +52,7 @@ public class Contract {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(final String status) {
 		this.status = status;
 	}
 

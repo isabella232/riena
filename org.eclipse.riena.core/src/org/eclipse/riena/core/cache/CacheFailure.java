@@ -22,7 +22,7 @@ public class CacheFailure extends Failure {
 	/**
 	 * @param msg
 	 */
-	public CacheFailure(String msg) {
+	public CacheFailure(final String msg) {
 		super(msg);
 	}
 
@@ -30,7 +30,7 @@ public class CacheFailure extends Failure {
 	 * @param msg
 	 * @param cause
 	 */
-	public CacheFailure(String msg, Throwable cause) {
+	public CacheFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 }

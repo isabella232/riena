@@ -25,7 +25,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme;
 public class ExampleTheme extends RienaDefaultTheme {
 
 	@Override
-	public void customizeLnf(ILnfCustomizer lnf) {
+	public void customizeLnf(final ILnfCustomizer lnf) {
 		super.customizeLnf(lnf);
 
 		customizeColors(lnf);
@@ -34,7 +34,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 		customizeSettings(lnf);
 	}
 
-	private void customizeColors(ILnfCustomizer lnf) {
+	private void customizeColors(final ILnfCustomizer lnf) {
 
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_FOREGROUND, getPrimaryForeground());
 
@@ -57,7 +57,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 	}
 
-	private void customizeImages(ILnfCustomizer lnf) {
+	private void customizeImages(final ILnfCustomizer lnf) {
 
 		String imagePath = "exampleBackground.png"; //$NON-NLS-1$ 
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(imagePath));
@@ -72,7 +72,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 	}
 
-	private void customizeFonts(ILnfCustomizer lnf) {
+	private void customizeFonts(final ILnfCustomizer lnf) {
 
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_FONT, new FontLnfResource("Arial", 12, SWT.BOLD)); //$NON-NLS-1$
 
@@ -88,7 +88,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 	}
 
-	private void customizeSettings(ILnfCustomizer lnf) {
+	private void customizeSettings(final ILnfCustomizer lnf) {
 
 		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.TOP);
 		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 7);

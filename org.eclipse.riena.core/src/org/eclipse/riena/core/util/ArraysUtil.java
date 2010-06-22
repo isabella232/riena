@@ -34,12 +34,12 @@ public final class ArraysUtil {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T[] copyRange(T[] source, int from, int to) {
+	public static <T> T[] copyRange(final T[] source, final int from, final int to) {
 		Assert.isLegal(source != null, "source array must no be null."); //$NON-NLS-1$
-		int length = to - from;
+		final int length = to - from;
 		Assert.isLegal(length >= 0, "to must be greater that from"); //$NON-NLS-1$
 		Assert.isLegal(to <= source.length, "to must be less or equal length of source array"); //$NON-NLS-1$
-		T[] target = (T[]) Array.newInstance(source.getClass().getComponentType(), length);
+		final T[] target = (T[]) Array.newInstance(source.getClass().getComponentType(), length);
 		System.arraycopy(source, from, target, 0, length);
 		return target;
 	}

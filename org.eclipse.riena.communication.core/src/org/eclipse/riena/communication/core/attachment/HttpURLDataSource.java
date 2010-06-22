@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.Assert;
  */
 public class HttpURLDataSource implements IDataSource {
 
-	private HttpURLConnection httpUrlConnection;
+	private final HttpURLConnection httpUrlConnection;
 
 	/**
 	 * Creates a HttpUrlConnectionDataSource.
@@ -35,8 +35,8 @@ public class HttpURLDataSource implements IDataSource {
 	 * 
 	 * @pre httpURLConnection != null
 	 */
-	public HttpURLDataSource(URL url) throws IOException {
-		HttpURLConnection myHttpUrlConnection = (HttpURLConnection) url.openConnection();
+	public HttpURLDataSource(final URL url) throws IOException {
+		final HttpURLConnection myHttpUrlConnection = (HttpURLConnection) url.openConnection();
 		Assert.isNotNull(myHttpUrlConnection);
 		this.httpUrlConnection = myHttpUrlConnection;
 	}
@@ -52,7 +52,7 @@ public class HttpURLDataSource implements IDataSource {
 	 * @see javax.IDataSource.DataSource#getInputStream()
 	 */
 	public InputStream getInputStream() throws IOException {
-		InputStream input = httpUrlConnection.getInputStream();
+		final InputStream input = httpUrlConnection.getInputStream();
 		if (input.markSupported()) {
 			input.reset();
 		}
@@ -73,7 +73,7 @@ public class HttpURLDataSource implements IDataSource {
 	 * org.eclipse.riena.communication.core.attachment.IDataSource#checkValid()
 	 */
 	public void checkValid() throws IOException {
-		InputStream inputStream = httpUrlConnection.getInputStream();
+		final InputStream inputStream = httpUrlConnection.getInputStream();
 		if (inputStream != null) {
 			if (inputStream.markSupported()) {
 				inputStream.reset();

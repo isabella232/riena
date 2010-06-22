@@ -30,28 +30,28 @@ public class NavigationSubModuleView extends SubModuleView {
 	public static final String ID = NavigationSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
-		Button addSubModuleToModuleBtn = UIControlsFactory.createButton(parent, "", "addSubModuleToModuleBtn"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		final Button addSubModuleToModuleBtn = UIControlsFactory.createButton(parent, "", "addSubModuleToModuleBtn"); //$NON-NLS-1$ //$NON-NLS-2$ 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		addSubModuleToModuleBtn.setLayoutData(gridData);
 
-		Button addSubModuleToSelfBtn = UIControlsFactory.createButton(parent, "", "addSubModuleToSelfBtn");//$NON-NLS-1$ //$NON-NLS-2$ 
+		final Button addSubModuleToSelfBtn = UIControlsFactory.createButton(parent, "", "addSubModuleToSelfBtn");//$NON-NLS-1$ //$NON-NLS-2$ 
 		gridData = GridDataFactory.copyData(gridData);
 		addSubModuleToSelfBtn.setLayoutData(gridData);
 
-		Button removeSubModuleBtn = UIControlsFactory.createButton(parent, "", "removeSubModuleBtn"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		final Button removeSubModuleBtn = UIControlsFactory.createButton(parent, "", "removeSubModuleBtn"); //$NON-NLS-1$ //$NON-NLS-2$ 
 		gridData = GridDataFactory.copyData(gridData);
 		removeSubModuleBtn.setLayoutData(gridData);
 
-		Button addModuleBtn = UIControlsFactory.createButton(parent, "", "addModuleBtn"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		final Button addModuleBtn = UIControlsFactory.createButton(parent, "", "addModuleBtn"); //$NON-NLS-1$ //$NON-NLS-2$ 
 		gridData = GridDataFactory.copyData(gridData);
 		addModuleBtn.setLayoutData(gridData);
 
-		Button addModuleGroupBtn = UIControlsFactory.createButton(parent, "", "addModuleGroupBtn"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		final Button addModuleGroupBtn = UIControlsFactory.createButton(parent, "", "addModuleGroupBtn"); //$NON-NLS-1$ //$NON-NLS-2$ 
 		gridData = GridDataFactory.copyData(gridData);
 		addModuleGroupBtn.setLayoutData(gridData);
 	}

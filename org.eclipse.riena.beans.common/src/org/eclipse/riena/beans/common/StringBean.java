@@ -36,7 +36,7 @@ public class StringBean extends AbstractBean {
 	 * 
 	 * @param value
 	 */
-	public StringBean(String value) {
+	public StringBean(final String value) {
 		this.value = value;
 	}
 
@@ -46,8 +46,8 @@ public class StringBean extends AbstractBean {
 	 * @param value
 	 *            to set
 	 */
-	public void setValue(String value) {
-		Object old = this.value;
+	public void setValue(final String value) {
+		final Object old = this.value;
 		this.value = value;
 		firePropertyChanged(PROP_VALUE, old, this.value);
 	}

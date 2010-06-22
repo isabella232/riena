@@ -37,10 +37,10 @@ public class ProgressBarWidget extends Canvas {
 	 * @param parent
 	 *            the parent widget.
 	 */
-	public ProgressBarWidget(Composite parent) {
+	public ProgressBarWidget(final Composite parent) {
 		super(parent, SWT.BORDER | SWT.SHADOW_IN);
 		addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
+			public void paintControl(final PaintEvent e) {
 				ProgressBarWidget.this.paintControl(e);
 			}
 		});
@@ -57,19 +57,19 @@ public class ProgressBarWidget extends Canvas {
 	 * @param e
 	 *            the {@link PaintEvent}.
 	 */
-	public void paintControl(PaintEvent e) {
-		GC gc = e.gc;
-		Rectangle clientArea = getClientArea();
+	public void paintControl(final PaintEvent e) {
+		final GC gc = e.gc;
+		final Rectangle clientArea = getClientArea();
 		gc.setBackground(getBackground());
 		gc.fillRectangle(clientArea);
 		gc.setBackground(getForeground());
-		int width = (int) (clientArea.width * getPercentage());
+		final int width = (int) (clientArea.width * getPercentage());
 		gc.fillRectangle(clientArea.x, clientArea.y, width, clientArea.height);
 	}
 
 	@Override
-	public Point computeSize(int wHint, int hHint, boolean changed) {
-		Point size = super.computeSize(wHint, hHint, changed);
+	public Point computeSize(final int wHint, final int hHint, final boolean changed) {
+		final Point size = super.computeSize(wHint, hHint, changed);
 		if (size.y > HEIGHT) {
 			size.y = HEIGHT;
 		}
@@ -90,7 +90,7 @@ public class ProgressBarWidget extends Canvas {
 	 * 
 	 * @param selection
 	 */
-	public void setSelection(int selection) {
+	public void setSelection(final int selection) {
 		this.selection = selection;
 		redraw();
 	}
@@ -109,7 +109,7 @@ public class ProgressBarWidget extends Canvas {
 	 * 
 	 * @param maximum
 	 */
-	public void setMaximum(int maximum) {
+	public void setMaximum(final int maximum) {
 		this.maximum = maximum;
 		redraw();
 	}
@@ -128,7 +128,7 @@ public class ProgressBarWidget extends Canvas {
 	 * 
 	 * @param minimum
 	 */
-	public void setMinimum(int minimum) {
+	public void setMinimum(final int minimum) {
 		this.minimum = minimum;
 		redraw();
 	}

@@ -30,16 +30,16 @@ import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 
 /**
- * The {@code LoggerMill} is responsible for delivering ready to use {@code
- * Logger} instances and also for the configuration of the riena logging.<br>
+ * The {@code LoggerMill} is responsible for delivering ready to use
+ * {@code Logger} instances and also for the configuration of the riena logging.<br>
  * For the curious: There are so many LoggerFactories out there. So, not another
  * one!
  */
 @WireWith(LoggerMillWiring.class)
 public class LoggerMill {
 
-	private List<LogListener> logListeners = new ArrayList<LogListener>();
-	private List<ILogCatcher> logCatchers = new ArrayList<ILogCatcher>();;
+	private final List<LogListener> logListeners = new ArrayList<LogListener>();
+	private final List<ILogCatcher> logCatchers = new ArrayList<ILogCatcher>();;
 	private ILogListenerExtension[] listenerDefs;
 	private ILogCatcherExtension[] catcherDefs;
 
@@ -54,7 +54,7 @@ public class LoggerMill {
 	 *            logger name
 	 * @return
 	 */
-	public Logger getLogger(String category) {
+	public Logger getLogger(final String category) {
 		synchronized (this) {
 			return isReady() ? logService.getLogger(category) : null;
 		}
@@ -65,7 +65,7 @@ public class LoggerMill {
 	 * 
 	 * @param logService
 	 */
-	public void bind(ExtendedLogService logService) {
+	public void bind(final ExtendedLogService logService) {
 		synchronized (this) {
 			this.logService = logService;
 		}
@@ -76,7 +76,7 @@ public class LoggerMill {
 	 * 
 	 * @param logService
 	 */
-	public void unbind(ExtendedLogService logService) {
+	public void unbind(final ExtendedLogService logService) {
 		synchronized (this) {
 			this.logService = null;
 		}
@@ -87,14 +87,14 @@ public class LoggerMill {
 	 * 
 	 * @param logReaderService
 	 */
-	public void bind(ExtendedLogReaderService logReaderService) {
+	public void bind(final ExtendedLogReaderService logReaderService) {
 		// When isDevelopment() is explicitly set to {@code false} no default logging will be used. Otherwise if 
 		// no loggers have been defined than a default logging setup will be used.
 		final boolean useDefaultLogging = RienaStatus.isDevelopment();
 		if (listenerDefs.length == 0 && useDefaultLogging) {
 			listenerDefs = new ILogListenerExtension[] { new SysoLogListenerDefinition() };
 		}
-		for (ILogListenerExtension logListenerDef : listenerDefs) {
+		for (final ILogListenerExtension logListenerDef : listenerDefs) {
 			LogListener listener = logListenerDef.createLogListener();
 			if (listener == null) {
 				// this can only happen, if the mandatory attribute is not defined, i.e. a schema violation
@@ -104,7 +104,7 @@ public class LoggerMill {
 				listener = new SynchronousLogListenerAdapter(listener);
 			}
 			logListeners.add(listener);
-			LogFilter filter = logListenerDef.createLogFilter();
+			final LogFilter filter = logListenerDef.createLogFilter();
 			if (filter == null) {
 				logReaderService.addLogListener(listener);
 			} else {
@@ -115,8 +115,8 @@ public class LoggerMill {
 			catcherDefs = new ILogCatcherExtension[] { new PlatformLogCatcherDefinition(),
 					new LogServiceLogCatcherDefinition() };
 		}
-		for (ILogCatcherExtension catcherDef : catcherDefs) {
-			ILogCatcher logCatcher = catcherDef.createLogCatcher();
+		for (final ILogCatcherExtension catcherDef : catcherDefs) {
+			final ILogCatcher logCatcher = catcherDef.createLogCatcher();
 			logCatcher.attach();
 			logCatchers.add(logCatcher);
 		}
@@ -127,12 +127,12 @@ public class LoggerMill {
 	 * 
 	 * @param logReaderService
 	 */
-	public void unbind(ExtendedLogReaderService logReaderService) {
-		for (LogListener logListener : logListeners) {
+	public void unbind(final ExtendedLogReaderService logReaderService) {
+		for (final LogListener logListener : logListeners) {
 			logReaderService.removeLogListener(logListener);
 		}
 
-		for (ILogCatcher logCatcher : logCatchers) {
+		for (final ILogCatcher logCatcher : logCatchers) {
 			logCatcher.detach();
 		}
 	}

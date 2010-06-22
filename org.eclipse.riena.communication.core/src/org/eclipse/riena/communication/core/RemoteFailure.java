@@ -19,11 +19,11 @@ public class RemoteFailure extends Failure {
 
 	private static final long serialVersionUID = -7485563916742344058L;
 
-	public RemoteFailure(String msg, Throwable cause) {
+	public RemoteFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 
-	public RemoteFailure(String msg) {
+	public RemoteFailure(final String msg) {
 		super(msg);
 	}
 

@@ -28,16 +28,16 @@ public class Activator extends RienaActivator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 
 		Activator.plugin = this;
 
-		IServiceHook serviceHook = new OrderedServiceHooksExecuter();
+		final IServiceHook serviceHook = new OrderedServiceHooksExecuter();
 		Wire.instance(serviceHook).andStart(context);
 		context.registerService(IServiceHook.class.getName(), serviceHook, null);
 
-		IServicePublishBinder binder = new ServicePublishBinder();
+		final IServicePublishBinder binder = new ServicePublishBinder();
 		Wire.instance(binder).andStart(context);
 		context.registerService(IServicePublishBinder.class.getName(), binder, null);
 
@@ -48,7 +48,7 @@ public class Activator extends RienaActivator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;
 		super.stop(context);
 	}

@@ -24,7 +24,7 @@ public class AttachmentSerialized {
 	 * 
 	 * @param dataHandler
 	 */
-	protected AttachmentSerialized(IDataSource dataSource) {
+	protected AttachmentSerialized(final IDataSource dataSource) {
 		super();
 		if (dataSource != null) {
 			internalDataSource = new ByteArrayDataSource(dataSource);

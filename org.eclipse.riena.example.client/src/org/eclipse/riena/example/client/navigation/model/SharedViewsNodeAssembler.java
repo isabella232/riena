@@ -38,27 +38,28 @@ public class SharedViewsNodeAssembler extends AbstractNavigationAssembler {
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?>[] buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(
-				new NavigationNodeId("org.eclipse.riena.example.sharedViews")); //$NON-NLS-1$
+	public INavigationNode<?>[] buildNode(final NavigationNodeId navigationNodeId,
+			final NavigationArgument navigationArgument) {
+		final IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId(
+				"org.eclipse.riena.example.sharedViews")); //$NON-NLS-1$
 
-		IModuleNode sharedViewModule = new ModuleNode(null, "Shared View Demo"); //$NON-NLS-1$
+		final IModuleNode sharedViewModule = new ModuleNode(null, "Shared View Demo"); //$NON-NLS-1$
 		sharedViewModule.setIcon(ExampleIcons.ICON_SAMPLE);
 		moduleGroup.addChild(sharedViewModule);
 
-		ISubModuleNode sharedViewSm1 = new SubModuleNode(new NavigationNodeId(
+		final ISubModuleNode sharedViewSm1 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.sharedView", "1"), "Node 1 (shared)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		WorkareaManager.getInstance().registerDefinition(sharedViewSm1, SharedViewDemoSubModuleController.class,
 				SharedViewDemoSubModuleView.ID, true);
 		sharedViewModule.addChild(sharedViewSm1);
 
-		ISubModuleNode sharedViewSm2 = new SubModuleNode(new NavigationNodeId(
+		final ISubModuleNode sharedViewSm2 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.sharedViewNotShared", "2"), "Node 2 (not shared)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		WorkareaManager.getInstance().registerDefinition(sharedViewSm2, SharedViewDemoSubModuleController.class,
 				SharedViewDemoSubModuleView.ID + "NotShared", false); //$NON-NLS-1$
 		sharedViewModule.addChild(sharedViewSm2);
 
-		ISubModuleNode sharedViewSm3 = new SubModuleNode(new NavigationNodeId(
+		final ISubModuleNode sharedViewSm3 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.sharedView", "3"), "Node 3 (shared)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		WorkareaManager.getInstance().registerDefinition(sharedViewSm3, SharedViewDemoSubModuleController.class,
 				SharedViewDemoSubModuleView.ID, true);
@@ -70,7 +71,7 @@ public class SharedViewsNodeAssembler extends AbstractNavigationAssembler {
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
 	 */
-	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
 
 		if (knownTargetIds == null) {
 			knownTargetIds = new HashSet<String>(Arrays.asList(

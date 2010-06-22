@@ -31,45 +31,45 @@ public final class TopologicalSort {
 		// utility class
 	}
 
-	public static <T> List<T> sort(List<TopologicalNode<T>> nodes) {
-		Map<String, TopologicalNode<T>> topSort = new HashMap<String, TopologicalNode<T>>(nodes.size());
-		for (TopologicalNode<T> node : nodes) {
+	public static <T> List<T> sort(final List<TopologicalNode<T>> nodes) {
+		final Map<String, TopologicalNode<T>> topSort = new HashMap<String, TopologicalNode<T>>(nodes.size());
+		for (final TopologicalNode<T> node : nodes) {
 			topSort.put(node.getName(), node);
 		}
 
-		for (TopologicalNode<T> node : nodes) {
+		for (final TopologicalNode<T> node : nodes) {
 			if (node.getBefore().equals(ALL_NODES)) {
-				for (TopologicalNode<T> incNode : nodes) {
+				for (final TopologicalNode<T> incNode : nodes) {
 					if (!incNode.equals(node)) {
 						incNode.increase();
 					}
 				}
 			} else {
-				TopologicalNode<T> beforeNode = topSort.get(node.getBefore());
+				final TopologicalNode<T> beforeNode = topSort.get(node.getBefore());
 				if (beforeNode != null) {
 					beforeNode.increase();
 				}
 			}
 		}
 
-		List<TopologicalNode<T>> workNodes = new ArrayList<TopologicalNode<T>>(nodes);
-		List<T> result = new ArrayList<T>(nodes.size());
+		final List<TopologicalNode<T>> workNodes = new ArrayList<TopologicalNode<T>>(nodes);
+		final List<T> result = new ArrayList<T>(nodes.size());
 
 		while (!workNodes.isEmpty()) {
 			boolean foundNode = false;
-			Iterator<TopologicalNode<T>> itr = workNodes.iterator();
+			final Iterator<TopologicalNode<T>> itr = workNodes.iterator();
 			while (itr.hasNext()) {
-				TopologicalNode<T> node = itr.next();
+				final TopologicalNode<T> node = itr.next();
 				if (node.getPointToMe() == 0) {
 					if (ALL_NODES.equals(node.getBefore())) {
-						for (TopologicalNode<T> decNode : nodes) {
+						for (final TopologicalNode<T> decNode : nodes) {
 							if (!decNode.equals(node)) {
 								decNode.decrease();
 							}
 						}
 						foundNode = true;
 					} else {
-						TopologicalNode<T> beforeNode = topSort.get(node.getBefore());
+						final TopologicalNode<T> beforeNode = topSort.get(node.getBefore());
 						if (beforeNode != null) {
 							beforeNode.decrease();
 							foundNode = true;
@@ -82,7 +82,7 @@ public final class TopologicalSort {
 			if (!foundNode) {
 				// A recursion was detected, i.e. the nodes do not present a
 				// directed graph. The sorting stops here.
-				for (TopologicalNode<T> node : workNodes) {
+				for (final TopologicalNode<T> node : workNodes) {
 					result.add(node.getElement());
 				}
 				break;

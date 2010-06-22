@@ -59,7 +59,7 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RienaHessianDispatcherServlet.class);
 
 	@Override
-	public void init(ServletConfig config) throws ServletException {
+	public void init(final ServletConfig config) throws ServletException {
 		super.init(config);
 		serializerFactory = new SerializerFactory();
 		serializerFactory.setAllowNonSerializable(true);
@@ -69,19 +69,19 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 	}
 
 	@Override
-	public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+	public void service(final ServletRequest req, final ServletResponse res) throws ServletException, IOException {
 
-		HttpServletRequest httpReq = (HttpServletRequest) req;
-		HttpServletResponse httpRes = (HttpServletResponse) res;
+		final HttpServletRequest httpReq = (HttpServletRequest) req;
+		final HttpServletResponse httpRes = (HttpServletResponse) res;
 
 		// set the message context
 		MessageContextHolder.setMessageContext(new MessageContext(httpReq, httpRes));
 
-		HessianRemoteServicePublisher publisher = getPublisher();
+		final HessianRemoteServicePublisher publisher = getPublisher();
 		if (publisher == null) {
 			if (httpReq.getMethod().equals("GET")) { //$NON-NLS-1$
 				if (httpReq.getRemoteHost().equals("127.0.0.1")) { //$NON-NLS-1$
-					PrintWriter pw = new PrintWriter(res.getOutputStream());
+					final PrintWriter pw = new PrintWriter(res.getOutputStream());
 					pw.write("no webservices available"); //$NON-NLS-1$
 					pw.flush();
 					pw.close();
@@ -96,15 +96,15 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 			}
 		}
 		String requestURI = httpReq.getRequestURI();
-		String contextPath = httpReq.getContextPath();
+		final String contextPath = httpReq.getContextPath();
 		if (contextPath.length() > 1) {
 			requestURI = requestURI.substring(contextPath.length());
 		}
-		RemoteServiceDescription rsd = publisher.findService(requestURI);
+		final RemoteServiceDescription rsd = publisher.findService(requestURI);
 		log("call " + rsd); //$NON-NLS-1$
 		if (httpReq.getMethod().equals("GET")) { //$NON-NLS-1$
 			if (httpReq.getRemoteHost().equals("127.0.0.1")) { //$NON-NLS-1$
-				PrintWriter pw = new PrintWriter(res.getOutputStream());
+				final PrintWriter pw = new PrintWriter(res.getOutputStream());
 				if (rsd == null) {
 					pw.write("call received from browser, no remote service registered with this URL"); //$NON-NLS-1$
 				} else {
@@ -122,9 +122,9 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 			httpRes.sendError(HttpServletResponse.SC_NOT_FOUND, "unknown url :" + httpReq.getRequestURI()); //$NON-NLS-1$
 			return;
 		}
-		Object instance = rsd.getService();
-		HessianSkeleton sk = new HessianSkeleton(instance, rsd.getServiceInterfaceClass());
-		String gzip = httpReq.getHeader("Content-Encoding"); //$NON-NLS-1$
+		final Object instance = rsd.getService();
+		final HessianSkeleton sk = new HessianSkeleton(instance, rsd.getServiceInterfaceClass());
+		final String gzip = httpReq.getHeader("Content-Encoding"); //$NON-NLS-1$
 		boolean gzipFlag = false;
 		boolean inputWasGZIP = false;
 
@@ -133,10 +133,10 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 		}
 		InputStream requestInputStream = httpReq.getInputStream();
 		if (gzipFlag) {
-			BufferedInputStream tempInput = new ReusableBufferedInputStream(requestInputStream);
+			final BufferedInputStream tempInput = new ReusableBufferedInputStream(requestInputStream);
 			if (tempInput.markSupported()) {
 				tempInput.mark(20);
-				int readMAGIC = tempInput.read() + tempInput.read() * 256;
+				final int readMAGIC = tempInput.read() + tempInput.read() * 256;
 				if (readMAGIC == GZIPInputStream.GZIP_MAGIC) {
 					inputWasGZIP = true;
 				}
@@ -148,15 +148,15 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 			}
 		}
 
-		Hessian2Input inp = new Hessian2Input(requestInputStream);
+		final Hessian2Input inp = new Hessian2Input(requestInputStream);
 		AbstractHessianOutput out;
 		inp.setSerializerFactory(serializerFactory);
 
-		int code = inp.read();
+		final int code = inp.read();
 		if (code != 'c') {
 			throw new IOException("expected 'c' in hessian input at " + code); //$NON-NLS-1$
 		}
-		int major = inp.read();
+		final int major = inp.read();
 		inp.read(); // read/skip the minor version - not used currently
 
 		if (inputWasGZIP) {
@@ -177,7 +177,7 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 
 		try {
 			sk.invoke(inp, out);
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			Throwable t2 = t;
 			while (t2.getCause() != null) {
 				t2 = t2.getCause();

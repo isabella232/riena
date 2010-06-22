@@ -24,7 +24,7 @@ public final class MessageContextHolder {
 		return MESSAGE_CONTEXT.get();
 	}
 
-	public static void setMessageContext(MessageContext msgCtx) {
+	public static void setMessageContext(final MessageContext msgCtx) {
 		MESSAGE_CONTEXT.set(msgCtx);
 	}
 }

@@ -26,17 +26,17 @@ public class DemoTargetSubModuleView extends SubModuleView {
 	public static final String ID = DemoTargetSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		parent.setLayout(new GridLayout(1, false));
-		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
+		final GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
 		UIControlsFactory.createLabel(parent, "Want to go home?"); //$NON-NLS-1$
 
-		Button jumpBack = UIControlsFactory.createButton(parent);
+		final Button jumpBack = UIControlsFactory.createButton(parent);
 		jumpBack.setText("Jump Back"); //$NON-NLS-1$
 		fillFactory.applyTo(jumpBack);
-		addUIControl(jumpBack, DemoTargetSubModuleController.JUMP_BACK_RIDGET_ID); //$NON-NLS-1$
+		addUIControl(jumpBack, DemoTargetSubModuleController.JUMP_BACK_RIDGET_ID);
 	}
 
 }

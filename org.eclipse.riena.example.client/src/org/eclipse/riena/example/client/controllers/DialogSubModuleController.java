@@ -30,7 +30,7 @@ public class DialogSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		IActionRidget openShellAction = getRidget(IActionRidget.class, RIDGET_ID_OPEN_DIALOG);
+		final IActionRidget openShellAction = getRidget(IActionRidget.class, RIDGET_ID_OPEN_DIALOG);
 		openShellAction.setText("&Open dialog"); //$NON-NLS-1$
 		openShellAction.addListener(new IActionListener() {
 
@@ -42,7 +42,7 @@ public class DialogSubModuleController extends SubModuleController {
 				}
 				// the dialog controller is now available
 				dialog.getController().setContext("key", "value"); //$NON-NLS-1$//$NON-NLS-2$
-				int result = dialog.open();
+				final int result = dialog.open();
 				if (result == AbstractWindowController.OK) {
 					System.out.println("OK pressed"); //$NON-NLS-1$
 				} else {

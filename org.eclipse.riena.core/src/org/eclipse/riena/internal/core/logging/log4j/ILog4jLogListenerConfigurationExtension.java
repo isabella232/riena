@@ -15,8 +15,8 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 /**
- * The {@code ExtensionInterface} is for the configuration of the {@code
- * Log4jLogListener}.
+ * The {@code ExtensionInterface} is for the configuration of the
+ * {@code Log4jLogListener}.
  */
 @ExtensionInterface(id = "log4jConfiguration")
 public interface ILog4jLogListenerConfigurationExtension {

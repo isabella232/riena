@@ -40,9 +40,9 @@ public class MasterDetailsSubModuleView3 extends SubModuleView {
 	}
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
+		final FillLayout layout = new FillLayout(SWT.HORIZONTAL);
 		layout.marginHeight = 5;
 		layout.marginWidth = 5;
 		parent.setLayout(layout);
@@ -52,25 +52,25 @@ public class MasterDetailsSubModuleView3 extends SubModuleView {
 	// helping methods
 	//////////////////
 
-	private Group createMasterDetails(Composite parent) {
-		Group result = UIControlsFactory.createGroup(parent,
+	private Group createMasterDetails(final Composite parent) {
+		final Group result = UIControlsFactory.createGroup(parent,
 				"Master/Details with 'auto apply' -- i.e. setDirectWriting(true):"); //$NON-NLS-1$
-		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
+		final FillLayout layout = new FillLayout(SWT.HORIZONTAL);
 		layout.marginHeight = 20;
 		layout.marginWidth = 20;
 		result.setLayout(layout);
 
-		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.BOTTOM);
-		Composite details = mdComposite.getDetails();
+		final MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.BOTTOM);
+		final Composite details = mdComposite.getDetails();
 		details.setLayout(new GridLayout(2, false));
 
 		UIControlsFactory.createLabel(details, "First Name:"); //$NON-NLS-1$
-		Text txtFirst = UIControlsFactory.createText(details);
+		final Text txtFirst = UIControlsFactory.createText(details);
 		txtFirst.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		mdComposite.addUIControl(txtFirst, "first"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(details, "Last Name:"); //$NON-NLS-1$
-		Text txtLast = UIControlsFactory.createText(details);
+		final Text txtLast = UIControlsFactory.createText(details);
 		txtLast.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		mdComposite.addUIControl(txtLast, "last"); //$NON-NLS-1$
 

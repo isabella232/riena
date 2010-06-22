@@ -70,14 +70,14 @@ public final class TestCollector {
 	 *            on true also collect sub-packages
 	 * @return
 	 */
-	public static TestSuite createTestSuiteWith(final Bundle bundle, final Package withinPackage, boolean subPackages,
-			final Class<? extends Annotation>... annotationClasses) {
-		StringBuilder bob = new StringBuilder("Tests within bundle '").append(bundle.getSymbolicName()).append( //$NON-NLS-1$
+	public static TestSuite createTestSuiteWith(final Bundle bundle, final Package withinPackage,
+			final boolean subPackages, final Class<? extends Annotation>... annotationClasses) {
+		final StringBuilder bob = new StringBuilder("Tests within bundle '").append(bundle.getSymbolicName()).append( //$NON-NLS-1$
 				"' and package '"); //$NON-NLS-1$
 		bob.append(withinPackage == null ? "all" : withinPackage.getName()).append("'").append(" recursive '").append( //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				subPackages).append("'"); //$NON-NLS-1$
 		bob.append(" and restricted to '"); //$NON-NLS-1$
-		for (Class<? extends Annotation> annotationClass : annotationClasses) {
+		for (final Class<? extends Annotation> annotationClass : annotationClasses) {
 			bob.append(annotationClass.getSimpleName()).append(PLUS);
 		}
 		if (annotationClasses.length > 0) {
@@ -86,8 +86,8 @@ public final class TestCollector {
 			bob.append("none"); //$NON-NLS-1$
 		}
 		bob.append("'."); //$NON-NLS-1$
-		TestSuite suite = new TestSuite(bob.toString());
-		for (Class<? extends TestCase> clazz : collectWith(bundle, withinPackage, subPackages, annotationClasses)) {
+		final TestSuite suite = new TestSuite(bob.toString());
+		for (final Class<? extends TestCase> clazz : collectWith(bundle, withinPackage, subPackages, annotationClasses)) {
 			suite.addTestSuite(clazz);
 		}
 		return suite;
@@ -109,12 +109,12 @@ public final class TestCollector {
 	 * @return
 	 */
 	public static List<Class<? extends TestCase>> collectWith(final Bundle bundle, final Package withinPackage,
-			boolean subPackages, final Class<? extends Annotation>... annotationClasses) {
-		List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
+			final boolean subPackages, final Class<? extends Annotation>... annotationClasses) {
+		final List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
 
-		for (Class<? extends TestCase> testClass : collect(bundle, withinPackage, subPackages)) {
+		for (final Class<? extends TestCase> testClass : collect(bundle, withinPackage, subPackages)) {
 			boolean collect = annotationClasses.length == 0 ? true : false;
-			for (Class<? extends Annotation> annotationClass : annotationClasses) {
+			for (final Class<? extends Annotation> annotationClass : annotationClasses) {
 				collect = collect || testClass.isAnnotationPresent(annotationClass);
 			}
 			if (collect) {
@@ -136,9 +136,9 @@ public final class TestCollector {
 	 * @return
 	 */
 	public static List<Class<? extends TestCase>> collectUnmarked(final Bundle bundle, final Package withinPackage) {
-		List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
+		final List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
 
-		for (Class<? extends TestCase> testClass : collect(bundle, withinPackage, true)) {
+		for (final Class<? extends TestCase> testClass : collect(bundle, withinPackage, true)) {
 			if (testClass.getAnnotations().length == 0) {
 				testClasses.add(testClass);
 			}
@@ -158,9 +158,9 @@ public final class TestCollector {
 	 * @return
 	 */
 	public static List<Class<? extends TestCase>> collectBadlyNamed(final Bundle bundle, final Package withinPackage) {
-		List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
+		final List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
 
-		for (Class<? extends TestCase> testClass : collect(bundle, withinPackage, true)) {
+		for (final Class<? extends TestCase> testClass : collect(bundle, withinPackage, true)) {
 			if (!testClass.getName().endsWith("Test")) { //$NON-NLS-1$
 				testClasses.add(testClass);
 			}
@@ -183,16 +183,16 @@ public final class TestCollector {
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<Class<? extends TestCase>> collect(final Bundle bundle, final Package withinPackage,
-			boolean subPackages) {
-		List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
-		Enumeration<URL> allClasses = bundle.findEntries("", "*.class", true); //$NON-NLS-1$ //$NON-NLS-2$
-		for (URL entryURL : Iter.able(allClasses)) {
-			String url = entryURL.toExternalForm();
+			final boolean subPackages) {
+		final List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
+		final Enumeration<URL> allClasses = bundle.findEntries("", "*.class", true); //$NON-NLS-1$ //$NON-NLS-2$
+		for (final URL entryURL : Iter.able(allClasses)) {
+			final String url = entryURL.toExternalForm();
 			if (url.contains("$")) { //$NON-NLS-1$
 				// Skip inner classes
 				continue;
 			}
-			Class<?> clazz = getClass(bundle, entryURL);
+			final Class<?> clazz = getClass(bundle, entryURL);
 			if (clazz == null) {
 				trace("Could not get class name from ", url); //$NON-NLS-1$
 				continue;
@@ -201,7 +201,7 @@ public final class TestCollector {
 				trace("Not a TestCase: ", clazz.getName()); //$NON-NLS-1$
 				continue;
 			}
-			String className = clazz.getName();
+			final String className = clazz.getName();
 			if (withinPackage != null) {
 				if (subPackages) {
 					if (!(className.startsWith(withinPackage.getName()) && className.endsWith(clazz.getSimpleName()))) {
@@ -224,27 +224,27 @@ public final class TestCollector {
 		return testClasses;
 	}
 
-	private static Class<?> getClass(Bundle bundle, URL entryURL) {
-		String entry = entryURL.toExternalForm().replace(".class", "").replace('/', '.'); //$NON-NLS-1$ //$NON-NLS-2$
+	private static Class<?> getClass(final Bundle bundle, final URL entryURL) {
+		final String entry = entryURL.toExternalForm().replace(".class", "").replace('/', '.'); //$NON-NLS-1$ //$NON-NLS-2$
 		// Brute force detecting of how many chars we have to skip to find a class within the url
-		String name = entry;
+		final String name = entry;
 		int dot = 0;
 		while ((dot = name.indexOf('.', dot)) != -1) {
-			String className = name.substring(dot + 1);
+			final String className = name.substring(dot + 1);
 			try {
 				return bundle.loadClass(className);
-			} catch (ClassNotFoundException e) {
+			} catch (final ClassNotFoundException e) {
 				dot++;
-			} catch (NoClassDefFoundError e) {
+			} catch (final NoClassDefFoundError e) {
 				dot++;
 			}
 		}
 		return null;
 	}
 
-	private static void trace(Object... objects) {
-		StringBuilder bob = new StringBuilder();
-		for (Object object : objects) {
+	private static void trace(final Object... objects) {
+		final StringBuilder bob = new StringBuilder();
+		for (final Object object : objects) {
 			bob.append(object);
 		}
 		System.err.println(bob.toString());

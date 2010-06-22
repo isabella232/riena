@@ -54,10 +54,10 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 
 		MARKER("Marker", new DisabledMarker(), new HiddenMarker()); //$NON-NLS-1$
 
-		private String text;
-		private Object[] args;
+		private final String text;
+		private final Object[] args;
 
-		private FilterType(String text, Object... args) {
+		private FilterType(final String text, final Object... args) {
 			this.text = text;
 			this.args = args;
 		}
@@ -82,9 +82,9 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 
 		rebindFilterTypeValues(filterModel, filterTypeValues, addFilter);
 
-		SubApplicationNode subAppNode = getNavigationNode().getParentOfType(SubApplicationNode.class);
-		SubApplicationController subApp = (SubApplicationController) subAppNode.getNavigationNodeController();
-		IActionRidget ridget = subApp.getMenuActionRidget("org.eclipse.riena.example.client.histBackMenuItem"); //$NON-NLS-1$
+		final SubApplicationNode subAppNode = getNavigationNode().getParentOfType(SubApplicationNode.class);
+		final SubApplicationController subApp = (SubApplicationController) subAppNode.getNavigationNodeController();
+		final IActionRidget ridget = subApp.getMenuActionRidget("org.eclipse.riena.example.client.histBackMenuItem"); //$NON-NLS-1$
 		ridget.setEnabled(false);
 
 	}
@@ -94,19 +94,19 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private void initNavigationFilterGroup() {
 
-		ITextRidget ridgetID = (ITextRidget) getRidget("nodeId"); //$NON-NLS-1$
+		final ITextRidget ridgetID = (ITextRidget) getRidget("nodeId"); //$NON-NLS-1$
 		filterModel = new FilterModel();
 		ridgetID.bindToModel(filterModel, "nodeId"); //$NON-NLS-1$
 		ridgetID.updateFromModel();
 
-		ISingleChoiceRidget filterType = (ISingleChoiceRidget) getRidget("filterType"); //$NON-NLS-1$		
+		final ISingleChoiceRidget filterType = (ISingleChoiceRidget) getRidget("filterType"); //$NON-NLS-1$		
 		filterType.addPropertyChangeListener(new FilterTypeChangeListener());
 		filterType.bindToModel(filterModel, "types", filterModel, "selectedType"); //$NON-NLS-1$ //$NON-NLS-2$
 		filterType.updateFromModel();
 
 		filterTypeValues = (IComboRidget) getRidget("filterTypeValues"); //$NON-NLS-1$
 		filterTypeValues.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				if (addFilter != null) {
 					addFilter.setEnabled(evt.getNewValue() != null);
 				}
@@ -120,7 +120,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 			}
 		});
 
-		IActionRidget removeFilters = (IActionRidget) getRidget("removeFilters"); //$NON-NLS-1$
+		final IActionRidget removeFilters = (IActionRidget) getRidget("removeFilters"); //$NON-NLS-1$
 		removeFilters.addListener(new IActionListener() {
 			public void callback() {
 				doRemoveFilters();
@@ -139,7 +139,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 * @param add
 	 *            add button
 	 */
-	private void rebindFilterTypeValues(FilterModel model, IComboRidget typeValues, IActionRidget add) {
+	private void rebindFilterTypeValues(final FilterModel model, final IComboRidget typeValues, final IActionRidget add) {
 
 		if (model == null) {
 			return;
@@ -161,10 +161,10 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private void doAddFilter() {
 
-		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-		Collection<IUIFilterRule> rules = new ArrayList<IUIFilterRule>(1);
+		final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+		final Collection<IUIFilterRule> rules = new ArrayList<IUIFilterRule>(1);
 		rules.add(createFilterRule(filterModel, filterModel.getNodeId()));
-		IUIFilter filter = new UIFilter(rules);
+		final IUIFilter filter = new UIFilter(rules);
 		applNode.addFilter(filter);
 
 	}
@@ -174,7 +174,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private void doRemoveFilters() {
 
-		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+		final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 		applNode.removeAllFilters();
 
 	}
@@ -187,12 +187,12 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 *            model with selections.
 	 * @return filter rule
 	 */
-	private IUIFilterRule createFilterRule(FilterModel model, String nodeId) {
+	private IUIFilterRule createFilterRule(final FilterModel model, final String nodeId) {
 
 		IUIFilterRule attribute = null;
 
-		Object filterValue = model.getSelectedFilterTypeValue();
-		FilterType type = model.getSelectedType();
+		final Object filterValue = model.getSelectedFilterTypeValue();
+		final FilterType type = model.getSelectedType();
 
 		if (type == FilterType.MARKER) {
 			if (filterValue instanceof DisabledMarker) {
@@ -211,7 +211,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private class FilterTypeChangeListener implements PropertyChangeListener {
 
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			rebindFilterTypeValues(filterModel, filterTypeValues, addFilter);
 		}
 
@@ -240,7 +240,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 		}
 
 		@SuppressWarnings("unused")
-		public void setSelectedType(FilterType selectedType) {
+		public void setSelectedType(final FilterType selectedType) {
 			this.selectedType = selectedType;
 		}
 
@@ -251,7 +251,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 			return selectedType;
 		}
 
-		public void setSelectedFilterTypeValue(Object selectedFilterTypeValue) {
+		public void setSelectedFilterTypeValue(final Object selectedFilterTypeValue) {
 			this.selectedFilterTypeValue = selectedFilterTypeValue;
 		}
 
@@ -260,7 +260,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 		}
 
 		@SuppressWarnings("unused")
-		public void setNodeId(String nodeId) {
+		public void setNodeId(final String nodeId) {
 			this.nodeId = nodeId;
 		}
 

@@ -23,7 +23,7 @@ import org.eclipse.riena.ui.swt.StatuslineNumber;
 public class ExampleStatuslineContentFactory extends DefaultStatuslineContentFactory {
 
 	@Override
-	protected StatuslineNumber createStatuslineNumber(Statusline statusline) {
+	protected StatuslineNumber createStatuslineNumber(final Statusline statusline) {
 		return new StatuslineNumber(statusline, SWT.NONE) {
 
 			@Override

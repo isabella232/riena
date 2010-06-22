@@ -24,8 +24,8 @@ import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.riena.core.util.ReflectionUtils;
 
 /**
- * Helper class for analyzing the current state of the {@code
- * IExtensionRegistry}.
+ * Helper class for analyzing the current state of the
+ * {@code IExtensionRegistry}.
  */
 public final class ExtensionRegistryAnalyzer {
 

@@ -54,19 +54,19 @@ public class LoginDialogView extends AbstractDialogView implements ILoginDialogV
 	}
 
 	@Override
-	protected Control buildView(Composite parent) {
+	protected Control buildView(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		GridLayoutFactory.fillDefaults().numColumns(1).margins(10, 20).applyTo(parent);
 
-		Composite content = createContentView(parent);
+		final Composite content = createContentView(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(content);
 
 		return content;
 	}
 
-	private Composite createContentView(Composite parent) {
+	private Composite createContentView(final Composite parent) {
 
-		Composite content = UIControlsFactory.createComposite(parent);
+		final Composite content = UIControlsFactory.createComposite(parent);
 		content.setLayout(new GridLayout()); // create a simple GridLayout so SWT-Designer can parse it
 		GridLayoutFactory.fillDefaults().numColumns(4).spacing(6, 9).equalWidth(false).applyTo(content);
 
@@ -74,7 +74,7 @@ public class LoginDialogView extends AbstractDialogView implements ILoginDialogV
 		UIControlsFactory.createLabel(content, "                  "); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(content, "User"); //$NON-NLS-1$
-		Text user = UIControlsFactory.createText(content);
+		final Text user = UIControlsFactory.createText(content);
 		user.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		addUIControl(user, LoginDialogController.RIDGET_ID_USER);
 
@@ -82,7 +82,7 @@ public class LoginDialogView extends AbstractDialogView implements ILoginDialogV
 		UIControlsFactory.createLabel(content, ""); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(content, "Password"); //$NON-NLS-1$
-		Text password = UIControlsFactory.createText(content);
+		final Text password = UIControlsFactory.createText(content);
 		password.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		addUIControl(password, LoginDialogController.RIDGET_ID_PASSWORD);
 
@@ -91,17 +91,17 @@ public class LoginDialogView extends AbstractDialogView implements ILoginDialogV
 		// dummy to occupy the cell
 		UIControlsFactory.createLabel(content, ""); //$NON-NLS-1$
 
-		Button okButton = UIControlsFactory.createButton(content);
+		final Button okButton = UIControlsFactory.createButton(content);
 		okButton.setText("   Login   "); //$NON-NLS-1$
 		okButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		addUIControl(okButton, LoginDialogController.RIDGET_ID_OK);
 
-		Button cancelButton = UIControlsFactory.createButton(content);
+		final Button cancelButton = UIControlsFactory.createButton(content);
 		cancelButton.setText("   Cancel   "); //$NON-NLS-1$
 		cancelButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		addUIControl(cancelButton, LoginDialogController.RIDGET_ID_CANCEL);
 
-		Label info = UIControlsFactory
+		final Label info = UIControlsFactory
 				.createLabel(
 						content,
 						"\nTo authenticate with running Sample App Server\n    type: user=john, password=john.\n    To omit it just press login."); //$NON-NLS-1$

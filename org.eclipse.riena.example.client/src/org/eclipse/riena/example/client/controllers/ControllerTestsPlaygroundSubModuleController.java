@@ -67,8 +67,8 @@ import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 public class ControllerTestsPlaygroundSubModuleController extends SubModuleController {
 	private ITableRidget multiTable;
 	private IListRidget tableList;
-	private Temperature temperature;
-	private List<Person> input = PersonFactory.createPersonList();
+	private final Temperature temperature;
+	private final List<Person> input = PersonFactory.createPersonList();
 	private long now;
 	private IToggleButtonRidget selectAllToggleButton;
 	private IActionListener toggleListener;
@@ -98,7 +98,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 	 * 
 	 */
 	private void configureImageButtonGroup() {
-		IActionRidget imageButton = getRidget(ImageButtonRidget.class, "imageButton"); //$NON-NLS-1$
+		final IActionRidget imageButton = getRidget(ImageButtonRidget.class, "imageButton"); //$NON-NLS-1$
 		imageButton.setIcon("imageBtn"); //$NON-NLS-1$
 		imageButton.addListener(new IActionListener() {
 			public void callback() {
@@ -106,7 +106,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 			}
 		});
 
-		IActionRidget arrowButton = getRidget(ImageButtonRidget.class, "arrowButton"); //$NON-NLS-1$
+		final IActionRidget arrowButton = getRidget(ImageButtonRidget.class, "arrowButton"); //$NON-NLS-1$
 		arrowButton.setIcon("arrowRight"); //$NON-NLS-1$
 		arrowButton.addListener(new IActionListener() {
 			public void callback() {
@@ -114,7 +114,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 			}
 		});
 
-		IActionRidget arrowHotButton = getRidget(ImageButtonRidget.class, "arrowHotButton"); //$NON-NLS-1$
+		final IActionRidget arrowHotButton = getRidget(ImageButtonRidget.class, "arrowHotButton"); //$NON-NLS-1$
 		arrowHotButton.setIcon("arrowRight"); //$NON-NLS-1$
 		arrowHotButton.addListener(new IActionListener() {
 			public void callback() {
@@ -128,20 +128,20 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 	 */
 	private void configureDateTimeGroup() {
 		final IDateTimeRidget dtDate = getRidget(IDateTimeRidget.class, "dtDate"); //$NON-NLS-1$
-		IDateTimeRidget dtTime = getRidget(IDateTimeRidget.class, "dtTime"); //$NON-NLS-1$
+		final IDateTimeRidget dtTime = getRidget(IDateTimeRidget.class, "dtTime"); //$NON-NLS-1$
 		final IDateTimeRidget dtDateOnly = getRidget(IDateTimeRidget.class, "dtDateOnly"); //$NON-NLS-1$
-		IDateTimeRidget dtTimeOnly = getRidget(IDateTimeRidget.class, "dtTimeOnly"); //$NON-NLS-1$
+		final IDateTimeRidget dtTimeOnly = getRidget(IDateTimeRidget.class, "dtTimeOnly"); //$NON-NLS-1$
 		final IDateTimeRidget dtCal = getRidget(IDateTimeRidget.class, "dtCal"); //$NON-NLS-1$
-		ITextRidget txt1 = getRidget(ITextRidget.class, "txt1"); //$NON-NLS-1$
-		ITextRidget txt2 = getRidget(ITextRidget.class, "txt2"); //$NON-NLS-1$
-		ITextRidget txt3 = getRidget(ITextRidget.class, "txt3"); //$NON-NLS-1$
-		ITextRidget txt4 = getRidget(ITextRidget.class, "txt4"); //$NON-NLS-1$
+		final ITextRidget txt1 = getRidget(ITextRidget.class, "txt1"); //$NON-NLS-1$
+		final ITextRidget txt2 = getRidget(ITextRidget.class, "txt2"); //$NON-NLS-1$
+		final ITextRidget txt3 = getRidget(ITextRidget.class, "txt3"); //$NON-NLS-1$
+		final ITextRidget txt4 = getRidget(ITextRidget.class, "txt4"); //$NON-NLS-1$
 
 		now = System.currentTimeMillis();
-		TypedBean<Date> date1 = new TypedBean<Date>(new Date(now));
-		TypedBean<Date> date2 = new TypedBean<Date>(new Date(now));
-		TypedBean<Date> date3 = new TypedBean<Date>(new Date(now));
-		TypedBean<Date> date4 = new TypedBean<Date>(new Date(now));
+		final TypedBean<Date> date1 = new TypedBean<Date>(new Date(now));
+		final TypedBean<Date> date2 = new TypedBean<Date>(new Date(now));
+		final TypedBean<Date> date3 = new TypedBean<Date>(new Date(now));
+		final TypedBean<Date> date4 = new TypedBean<Date>(new Date(now));
 
 		dtDate.bindToModel(date1, TypedBean.PROP_VALUE);
 		dtDate.updateFromModel();
@@ -157,31 +157,31 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		dtCal.bindToModel(date4, TypedBean.PROP_VALUE);
 		dtCal.updateFromModel();
 
-		DataBindingContext dbc = new DataBindingContext();
-		dbc.bindValue(BeansObservables.observeValue(txt1, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
-				date1, TypedBean.PROP_VALUE));
-		dbc.bindValue(BeansObservables.observeValue(txt2, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
-				date2, TypedBean.PROP_VALUE));
-		dbc.bindValue(BeansObservables.observeValue(txt3, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
-				date3, TypedBean.PROP_VALUE));
-		dbc.bindValue(BeansObservables.observeValue(txt4, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
-				date4, TypedBean.PROP_VALUE));
+		final DataBindingContext dbc = new DataBindingContext();
+		dbc.bindValue(BeansObservables.observeValue(txt1, ITextRidget.PROPERTY_TEXT),
+				BeansObservables.observeValue(date1, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt2, ITextRidget.PROPERTY_TEXT),
+				BeansObservables.observeValue(date2, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt3, ITextRidget.PROPERTY_TEXT),
+				BeansObservables.observeValue(date3, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt4, ITextRidget.PROPERTY_TEXT),
+				BeansObservables.observeValue(date4, TypedBean.PROP_VALUE));
 
 		makeOutputOnly(txt1, txt2, txt3, txt4);
 
 		final IDateTextRidget dateTextRidget = getRidget(IDateTextRidget.class, "dateText"); //$NON-NLS-1$
 		dateTextRidget.setText("03.03.2011"); //$NON-NLS-1$
-		IActionRidget dateTimeButton = getRidget(IActionRidget.class, "dateTimeButton"); //$NON-NLS-1$
+		final IActionRidget dateTimeButton = getRidget(IActionRidget.class, "dateTimeButton"); //$NON-NLS-1$
 		dateTimeButton.setText("apply date"); //$NON-NLS-1$
 		dateTimeButton.addListener(new IActionListener() {
 			public void callback() {
-				DateFormat df = new SimpleDateFormat("dd.MM.yyyy"); //$NON-NLS-1$
+				final DateFormat df = new SimpleDateFormat("dd.MM.yyyy"); //$NON-NLS-1$
 				try {
-					Date newDate = df.parse(dateTextRidget.getText());
+					final Date newDate = df.parse(dateTextRidget.getText());
 					dtDate.setDate(newDate);
 					dtDateOnly.setDate(newDate);
 					dtCal.setDate(newDate);
-				} catch (ParseException e) {
+				} catch (final ParseException e) {
 					e.printStackTrace();
 				}
 			}
@@ -189,8 +189,8 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 	}
 
 	private void configureMasterDetailsGroup() {
-		String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
-		String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 		final IMasterDetailsRidget master = getRidget(IMasterDetailsRidget.class, "master"); //$NON-NLS-1$
 		if (master != null) {
@@ -201,11 +201,12 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 			master.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
 			master.updateFromModel();
 
-			IActionRidget actionApply = master.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
+			final IActionRidget actionApply = master.getRidget(IActionRidget.class,
+					MasterDetailsComposite.BIND_ID_APPLY);
 			addDefaultAction(master, actionApply);
 		}
 
-		IActionRidget enableDisableButton = getRidget(IActionRidget.class, "enableDisable"); //$NON-NLS-1$
+		final IActionRidget enableDisableButton = getRidget(IActionRidget.class, "enableDisable"); //$NON-NLS-1$
 		if (enableDisableButton != null) {
 			enableDisableButton.addListener(new IActionListener() {
 				public void callback() {
@@ -218,13 +219,13 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 	}
 
 	private void configureBrowserGroup() {
-		ILinkRidget link1 = getRidget(ILinkRidget.class, "link1"); //$NON-NLS-1$
+		final ILinkRidget link1 = getRidget(ILinkRidget.class, "link1"); //$NON-NLS-1$
 		link1.setText("<a>http://www.eclipse.org/</a>"); //$NON-NLS-1$
 
-		ILinkRidget link2 = getRidget(ILinkRidget.class, "link2"); //$NON-NLS-1$
+		final ILinkRidget link2 = getRidget(ILinkRidget.class, "link2"); //$NON-NLS-1$
 		link2.setText("Visit <a href=\"http://www.eclipse.org/riena/\">Riena</a>"); //$NON-NLS-1$
 
-		ILinkRidget link3 = getRidget(ILinkRidget.class, "link3"); //$NON-NLS-1$
+		final ILinkRidget link3 = getRidget(ILinkRidget.class, "link3"); //$NON-NLS-1$
 		link3.setText("Eclipse <a href=\"http://planeteclipse.org\">Blogs</a>, <a href=\"http://www.eclipse.org/community/news/\">News</a> and <a href=\"http://live.eclipse.org\">Events</a>"); //$NON-NLS-1$
 
 		final ITextRidget textLinkUrl = getRidget(ITextRidget.class, "textLinkUrl"); //$NON-NLS-1$
@@ -233,9 +234,9 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		final IBrowserRidget browser = getRidget(IBrowserRidget.class, "browser"); //$NON-NLS-1$
 		browser.bindToModel(textLinkUrl, ITextRidget.PROPERTY_TEXT);
 
-		ISelectionListener listener = new ISelectionListener() {
-			public void ridgetSelected(SelectionEvent event) {
-				String linkUrl = (String) event.getNewSelection().get(0);
+		final ISelectionListener listener = new ISelectionListener() {
+			public void ridgetSelected(final SelectionEvent event) {
+				final String linkUrl = (String) event.getNewSelection().get(0);
 				browser.setUrl(linkUrl);
 			}
 		};
@@ -266,8 +267,8 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		cComboAge.setEmptySelectionItem("<none>"); //$NON-NLS-1$
 		cComboAge.setSelection(0);
 
-		ISelectionListener selectionListener = new ISelectionListener() {
-			public void ridgetSelected(SelectionEvent event) {
+		final ISelectionListener selectionListener = new ISelectionListener() {
+			public void ridgetSelected(final SelectionEvent event) {
 				comboLabel.setText(event.getNewSelection().get(0).toString());
 			}
 		};
@@ -275,10 +276,10 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		comboAge.addSelectionListener(selectionListener);
 		cComboAge.addSelectionListener(selectionListener);
 
-		IActionRidget addToComboButton = getRidget(IActionRidget.class, "addToComboButton"); //$NON-NLS-1$
+		final IActionRidget addToComboButton = getRidget(IActionRidget.class, "addToComboButton"); //$NON-NLS-1$
 		addToComboButton.addListener(new IActionListener() {
 			public void callback() {
-				String comboString = comboText.getText();
+				final String comboString = comboText.getText();
 				if (comboString.length() >= 0) {
 					ages.add(comboString);
 				}
@@ -295,11 +296,11 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 
 	private void configureTableGroup() {
 		multiTable = getRidget(ITableRidget.class, "multiTable"); //$NON-NLS-1$
-		ColumnLayoutData[] widths = { new ColumnPixelData(80, true), new ColumnPixelData(80, true) };
+		final ColumnLayoutData[] widths = { new ColumnPixelData(80, true), new ColumnPixelData(80, true) };
 		multiTable.setColumnWidths(widths);
 		multiTable.setSelectionType(ISelectableRidget.SelectionType.MULTI);
-		String[] colValues = new String[] { "lastname", "firstname" }; //$NON-NLS-1$ //$NON-NLS-2$
-		String[] colHeaders = new String[] { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] colValues = new String[] { "lastname", "firstname" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] colHeaders = new String[] { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 		multiTable.addDoubleClickListener(new IActionListener() {
 
 			public void callback() {
@@ -324,7 +325,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 				multiTable.removeSelectionListener(multiTableSelectionListener);
 				if (selectAllToggleButton.isSelected()) {
 					selectAllToggleButton.setText("deselect"); //$NON-NLS-1$
-					int[] allIndices = new int[multiTable.getOptionCount()];
+					final int[] allIndices = new int[multiTable.getOptionCount()];
 					for (int i = 0; i < multiTable.getOptionCount(); i++) {
 						allIndices[i] = i;
 					}
@@ -338,10 +339,10 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		};
 		selectAllToggleButton.addListener(toggleListener);
 
-		IActionRidget copySelectionButton = getRidget(IActionRidget.class, "copySelectionButton"); //$NON-NLS-1$
+		final IActionRidget copySelectionButton = getRidget(IActionRidget.class, "copySelectionButton"); //$NON-NLS-1$
 		copySelectionButton.addListener(new IActionListener() {
 			public void callback() {
-				List<Object> selection = multiTable.getSelection();
+				final List<Object> selection = multiTable.getSelection();
 				tableList.bindToModel(new WritableList(selection, Person.class), Person.class, "listEntry"); //$NON-NLS-1$
 				tableList.updateFromModel();
 			}
@@ -354,7 +355,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		final ITraverseRidget celsiusScale = getRidget(ITraverseRidget.class, "celsiusScale"); //$NON-NLS-1$
 		final ISliderRidget kelvinSlider = getRidget(ISliderRidget.class, "kelvinSlider"); //$NON-NLS-1$
 
-		IActionListener listener = new IActionListener() {
+		final IActionListener listener = new IActionListener() {
 
 			public void callback() {
 				celsiusScale.updateFromModel();
@@ -404,15 +405,15 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 			setDegreeCelsius(0);
 		}
 
-		public void setDegreeCelsius(int degreeCelsius) {
+		public void setDegreeCelsius(final int degreeCelsius) {
 			setDegreeCelsius(degreeCelsius, true);
 		}
 
-		private void setDegreeCelsius(int degreeCelsius, boolean updateKelvin) {
-			int oldValue = this.degreeCelsius;
+		private void setDegreeCelsius(final int degreeCelsius, final boolean updateKelvin) {
+			final int oldValue = this.degreeCelsius;
 			this.degreeCelsius = degreeCelsius;
 			if (updateKelvin) {
-				float k = degreeCelsius + 273.15f;
+				final float k = degreeCelsius + 273.15f;
 				setKelvin(k, false);
 				updateFahrenheit();
 			}
@@ -425,16 +426,16 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		}
 
 		@SuppressWarnings("unused")
-		public void setDegreeFahrenheit(int degreeFahrenheit) {
+		public void setDegreeFahrenheit(final int degreeFahrenheit) {
 			setDegreeFahrenheit(degreeFahrenheit, true);
 		}
 
-		private void setDegreeFahrenheit(int degreeFahrenheit, boolean updateKelvin) {
-			int oldValue = this.degreeFahrenheit;
+		private void setDegreeFahrenheit(final int degreeFahrenheit, final boolean updateKelvin) {
+			final int oldValue = this.degreeFahrenheit;
 			this.degreeFahrenheit = degreeFahrenheit;
 			if (updateKelvin) {
-				float c = (degreeFahrenheit - 32) / 1.8f;
-				float k = c + 273.15f;
+				final float c = (degreeFahrenheit - 32) / 1.8f;
+				final float k = c + 273.15f;
 				setKelvin(k, false);
 				updateCelsius();
 			}
@@ -446,8 +447,8 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 			return degreeFahrenheit;
 		}
 
-		private void setKelvin(float kelvin, boolean updateOthers) {
-			float oldValue = this.kelvin;
+		private void setKelvin(final float kelvin, final boolean updateOthers) {
+			final float oldValue = this.kelvin;
 			this.kelvin = kelvin;
 			if (updateOthers) {
 				updateCelsius();
@@ -457,7 +458,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		}
 
 		@SuppressWarnings("unused")
-		public void setKelvin(int kelvin) {
+		public void setKelvin(final int kelvin) {
 			setKelvin(kelvin, true);
 		}
 
@@ -466,19 +467,19 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		}
 
 		private void updateCelsius() {
-			int c = Math.round(getKelvin() - 273.15f);
+			final int c = Math.round(getKelvin() - 273.15f);
 			setDegreeCelsius(c, false);
 		}
 
 		private void updateFahrenheit() {
-			int c = Math.round(getKelvin() - 273.15f);
-			int f = Math.round(c * 1.8f + 32);
+			final int c = Math.round(getKelvin() - 273.15f);
+			final int f = Math.round(c * 1.8f + 32);
 			setDegreeFahrenheit(f, false);
 		}
 	}
 
 	private class MultiTableSelectionListener implements ISelectionListener {
-		public void ridgetSelected(SelectionEvent event) {
+		public void ridgetSelected(final SelectionEvent event) {
 			selectAllToggleButton.removeListener(toggleListener);
 			selectAllToggleButton.setSelected(true);
 			selectAllToggleButton.setText("deselect"); //$NON-NLS-1$
@@ -500,25 +501,25 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 
 		private final Person workingCopy = createWorkingCopy();
 
-		public void configureRidgets(IRidgetContainer container) {
-			ITextRidget txtFirst = container.getRidget(ITextRidget.class, "first"); //$NON-NLS-1$
+		public void configureRidgets(final IRidgetContainer container) {
+			final ITextRidget txtFirst = container.getRidget(ITextRidget.class, "first"); //$NON-NLS-1$
 			txtFirst.setMandatory(true);
 			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
-			ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
+			final ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
 			txtLast.setMandatory(true);
 			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
 			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 
-			ISingleChoiceRidget gender = container.getRidget(ISingleChoiceRidget.class, "gender"); //$NON-NLS-1$
+			final ISingleChoiceRidget gender = container.getRidget(ISingleChoiceRidget.class, "gender"); //$NON-NLS-1$
 			if (gender != null) {
 				gender.bindToModel(Arrays.asList(GENDER), (List<String>) null, workingCopy, Person.PROPERTY_GENDER);
 				gender.updateFromModel();
 			}
 
-			IMultipleChoiceRidget pets = container.getRidget(IMultipleChoiceRidget.class, "pets"); //$NON-NLS-1$
+			final IMultipleChoiceRidget pets = container.getRidget(IMultipleChoiceRidget.class, "pets"); //$NON-NLS-1$
 			if (pets != null) {
 				pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, workingCopy,
 						Person.PROPERTY_PETS);
@@ -531,8 +532,8 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		}
 
 		public Person copyBean(final Object source, final Object target) {
-			Person from = source != null ? (Person) source : createWorkingCopy();
-			Person to = target != null ? (Person) target : createWorkingCopy();
+			final Person from = source != null ? (Person) source : createWorkingCopy();
+			final Person to = target != null ? (Person) target : createWorkingCopy();
 			to.setFirstname(from.getFirstname());
 			to.setLastname(from.getLastname());
 			to.setGender(from.getGender());
@@ -545,17 +546,18 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		}
 
 		@Override
-		public boolean isChanged(Object source, Object target) {
-			Person p1 = (Person) source;
-			Person p2 = (Person) target;
-			boolean equals = p1.getFirstname().equals(p2.getFirstname()) && p1.getLastname().equals(p2.getLastname())
-					&& p1.getGender().equals(p2.getGender()) && p1.getPets().equals(p2.getPets());
+		public boolean isChanged(final Object source, final Object target) {
+			final Person p1 = (Person) source;
+			final Person p2 = (Person) target;
+			final boolean equals = p1.getFirstname().equals(p2.getFirstname())
+					&& p1.getLastname().equals(p2.getLastname()) && p1.getGender().equals(p2.getGender())
+					&& p1.getPets().equals(p2.getPets());
 			return !equals;
 		}
 
 		@Override
-		public String isValid(IRidgetContainer container) {
-			ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
+		public String isValid(final IRidgetContainer container) {
+			final ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
 			if (txtLast.isErrorMarked()) {
 				return "'Last Name' is not valid."; //$NON-NLS-1$
 			}
@@ -563,8 +565,8 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 		}
 	}
 
-	private void makeOutputOnly(ITextRidget... ridgets) {
-		for (ITextRidget ridget : ridgets) {
+	private void makeOutputOnly(final ITextRidget... ridgets) {
+		for (final ITextRidget ridget : ridgets) {
 			ridget.setOutputOnly(true);
 		}
 	}

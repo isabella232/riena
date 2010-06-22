@@ -45,37 +45,37 @@ public class CompositeTableSubModuleController extends SubModuleController {
 
 		private static final String[] GENDER = { Person.FEMALE, Person.MALE };
 
-		public void setData(Object rowData) {
+		public void setData(final Object rowData) {
 			this.rowData = (Person) rowData;
 		}
 
 		@Override
 		public void configureRidgets() {
-			ITextRidget txtFirst = (ITextRidget) getRidget("first"); //$NON-NLS-1$
+			final ITextRidget txtFirst = (ITextRidget) getRidget("first"); //$NON-NLS-1$
 			txtFirst.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
-			ITextRidget txtLast = (ITextRidget) getRidget("last"); //$NON-NLS-1$
+			final ITextRidget txtLast = (ITextRidget) getRidget("last"); //$NON-NLS-1$
 			txtLast.bindToModel(rowData, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 
-			ISingleChoiceRidget gender = (ISingleChoiceRidget) getRidget("gender"); //$NON-NLS-1$
+			final ISingleChoiceRidget gender = (ISingleChoiceRidget) getRidget("gender"); //$NON-NLS-1$
 			gender.bindToModel(Arrays.asList(GENDER), (List<String>) null, rowData, Person.PROPERTY_GENDER);
 			gender.updateFromModel();
 
-			IMultipleChoiceRidget pets = (IMultipleChoiceRidget) getRidget("pets"); //$NON-NLS-1$
+			final IMultipleChoiceRidget pets = (IMultipleChoiceRidget) getRidget("pets"); //$NON-NLS-1$
 			pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, rowData, Person.PROPERTY_PETS);
 			pets.updateFromModel();
 		}
 	}
 
-	private List<Person> input = PersonFactory.createPersonList();
+	private final List<Person> input = PersonFactory.createPersonList();
 
 	public CompositeTableSubModuleController() {
 		this(null);
 	}
 
-	public CompositeTableSubModuleController(ISubModuleNode navigationNode) {
+	public CompositeTableSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -89,9 +89,9 @@ public class CompositeTableSubModuleController extends SubModuleController {
 		table.bindToModel(new WritableList(input, Person.class), Person.class, RowRidget.class);
 		table.updateFromModel();
 		table.setComparator(0, new Comparator<Object>() {
-			public int compare(Object o1, Object o2) {
-				Person p1 = (Person) o1;
-				Person p2 = (Person) o2;
+			public int compare(final Object o1, final Object o2) {
+				final Person p1 = (Person) o1;
+				final Person p2 = (Person) o2;
 				int result = p1.getLastname().compareTo(p2.getLastname());
 				if (result == 0) {
 					result = p1.getFirstname().compareTo(p2.getFirstname());
@@ -100,9 +100,9 @@ public class CompositeTableSubModuleController extends SubModuleController {
 			}
 		});
 		table.setComparator(1, new Comparator<Object>() {
-			public int compare(Object o1, Object o2) {
-				Person p1 = (Person) o1;
-				Person p2 = (Person) o2;
+			public int compare(final Object o1, final Object o2) {
+				final Person p1 = (Person) o1;
+				final Person p2 = (Person) o2;
 				return p1.getGender().compareTo(p2.getGender());
 			}
 		});
@@ -114,7 +114,7 @@ public class CompositeTableSubModuleController extends SubModuleController {
 
 			public void callback() {
 				i++;
-				Person person = new Person("Doe #" + i, "John"); //$NON-NLS-1$ //$NON-NLS-2$
+				final Person person = new Person("Doe #" + i, "John"); //$NON-NLS-1$ //$NON-NLS-2$
 				person.setHasCat(true);
 				input.add(person);
 				table.updateFromModel();
@@ -125,7 +125,7 @@ public class CompositeTableSubModuleController extends SubModuleController {
 		buttonDelete.setText("&Delete"); //$NON-NLS-1$
 		buttonDelete.addListener(new IActionListener() {
 			public void callback() {
-				Person person = (Person) table.getSingleSelectionObservable().getValue();
+				final Person person = (Person) table.getSingleSelectionObservable().getValue();
 				input.remove(person);
 				table.updateFromModel();
 			}
@@ -135,27 +135,27 @@ public class CompositeTableSubModuleController extends SubModuleController {
 		buttonDump.addListener(new IActionListener() {
 			public void callback() {
 				System.out.println("\nPersons:"); //$NON-NLS-1$
-				for (Person p : input) {
+				for (final Person p : input) {
 					System.out.println(p);
 				}
 			}
 		});
 
 		final IObservableValue viewerSelection = table.getSingleSelectionObservable();
-		IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
+		final IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
 			@Override
 			protected Object calculate() {
 				return Boolean.valueOf(viewerSelection.getValue() != null);
 			}
 		};
-		DataBindingContext dbc = new DataBindingContext();
+		final DataBindingContext dbc = new DataBindingContext();
 		bindEnablementToValue(dbc, buttonDelete, hasSelection);
 	}
 
 	// helping methods
 	//////////////////
 
-	private void bindEnablementToValue(DataBindingContext dbc, IRidget ridget, IObservableValue value) {
+	private void bindEnablementToValue(final DataBindingContext dbc, final IRidget ridget, final IObservableValue value) {
 		dbc.bindValue(BeansObservables.observeValue(ridget, IRidget.PROPERTY_ENABLED), value, null, null);
 	}
 

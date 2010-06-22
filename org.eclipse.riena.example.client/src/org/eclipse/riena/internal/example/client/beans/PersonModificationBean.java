@@ -28,7 +28,7 @@ public final class PersonModificationBean {
 		return person == null ? "" : person.getFirstname(); //$NON-NLS-1$
 	}
 
-	public void setFirstName(String first) {
+	public void setFirstName(final String first) {
 		this.first = first;
 	}
 
@@ -36,7 +36,7 @@ public final class PersonModificationBean {
 		return person == null ? "" : person.getLastname(); //$NON-NLS-1$
 	}
 
-	public void setLastName(String last) {
+	public void setLastName(final String last) {
 		this.last = last;
 	}
 
@@ -44,7 +44,7 @@ public final class PersonModificationBean {
 		return person;
 	}
 
-	public void setPerson(Person person) {
+	public void setPerson(final Person person) {
 		this.person = person;
 		first = getFirstName();
 		last = getLastName();
@@ -66,7 +66,7 @@ public final class PersonModificationBean {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -76,7 +76,7 @@ public final class PersonModificationBean {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		PersonModificationBean other = (PersonModificationBean) obj;
+		final PersonModificationBean other = (PersonModificationBean) obj;
 		if (person == null) {
 			if (other.person != null) {
 				return false;

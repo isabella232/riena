@@ -107,9 +107,9 @@ public final class Millis {
 	 * @throws IllegalArgumentError
 	 *             on parsing errors
 	 */
-	public static long valueOf(String period) {
+	public static long valueOf(final String period) {
 		Assert.isLegal(period != null, "period must not be null."); //$NON-NLS-1$
-		Scanner scanner = new Scanner(period);
+		final Scanner scanner = new Scanner(period);
 		long millis = 0;
 		long value = 0;
 		while (scanner.hasNext()) {
@@ -126,7 +126,7 @@ public final class Millis {
 	 * @param tokenizer
 	 * @return
 	 */
-	private static long getFactor(String unit) {
+	private static long getFactor(final String unit) {
 		if ("d".equals(unit)) { //$NON-NLS-1$
 			return Millis.days(1);
 		} else if ("h".equals(unit)) { //$NON-NLS-1$

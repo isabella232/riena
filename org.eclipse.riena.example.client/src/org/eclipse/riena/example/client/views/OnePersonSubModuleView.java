@@ -44,7 +44,7 @@ public class OnePersonSubModuleView extends SubModuleView {
 	public static final String ID = OnePersonSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 7;
 		parent.setLayout(gridLayout);

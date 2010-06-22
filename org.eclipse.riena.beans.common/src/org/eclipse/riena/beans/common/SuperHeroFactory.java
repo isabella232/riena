@@ -21,7 +21,7 @@ import java.util.List;
 public final class SuperHeroFactory {
 
 	public static List<SuperHero> createInput() {
-		List<SuperHero> nodes = new ArrayList<SuperHero>(7);
+		final List<SuperHero> nodes = new ArrayList<SuperHero>(7);
 		nodes.add(new SuperHero("Superman", "Clark Kent", 1938)); //$NON-NLS-1$ //$NON-NLS-2$
 		nodes.add(new SuperHero("Batman", "Bruce Wayne", 1939, false)); //$NON-NLS-1$ //$NON-NLS-2$
 		nodes.add(new SuperHero("Zorro", "Don Diego de la Vega", 1919, false)); //$NON-NLS-1$ //$NON-NLS-2$

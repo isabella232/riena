@@ -27,15 +27,15 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class BeforeActivateSubModuleView extends SubModuleView {
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		GridLayout layout = new GridLayout(2, false);
+		final GridLayout layout = new GridLayout(2, false);
 		layout.verticalSpacing = 10;
 		parent.setLayout(layout);
 
 		UIControlsFactory.createLabel(parent, "Allow activation of the next sub-module: "); //$NON-NLS-1$
-		ChoiceComposite choiceComposite = UIControlsFactory.createChoiceComposite(parent, SWT.NONE, false,
+		final ChoiceComposite choiceComposite = UIControlsFactory.createChoiceComposite(parent, SWT.NONE, false,
 				"allowChoice"); //$NON-NLS-1$
 		choiceComposite.setOrientation(SWT.HORIZONTAL);
 	}

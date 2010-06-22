@@ -92,7 +92,7 @@ public class SonarController extends SubModuleController {
 
 		treeRidget = (ITreeRidget) getRidget(SonarView.BID_SONAR_TREE);
 		treeRidget.addSelectionListener(new ISelectionListener() {
-			public void ridgetSelected(SelectionEvent event) {
+			public void ridgetSelected(final SelectionEvent event) {
 				treeNodeSelected();
 			}
 		});
@@ -153,14 +153,14 @@ public class SonarController extends SubModuleController {
 
 		((Tree) treeRidget.getUIControl()).addTreeListener(new TreeListener() {
 
-			public void treeExpanded(TreeEvent e) {
+			public void treeExpanded(final TreeEvent e) {
 				if (e.item.getData() instanceof PingResultTreeNode) {
 					final PingResultTreeNode node = (PingResultTreeNode) e.item.getData();
 					((Control) e.getSource()).getDisplay().asyncExec(new Runnable() {
 						public void run() {
-							List<ITreeNode> children = node.getChildren();
+							final List<ITreeNode> children = node.getChildren();
 							if (children != null) {
-								for (ITreeNode iTreeNode : children) {
+								for (final ITreeNode iTreeNode : children) {
 									treeRidget.refresh(iTreeNode);
 								}
 							}
@@ -169,7 +169,7 @@ public class SonarController extends SubModuleController {
 				}
 			}
 
-			public void treeCollapsed(TreeEvent e) {
+			public void treeCollapsed(final TreeEvent e) {
 				Nop.reason("nothing to do here"); //$NON-NLS-1$
 			}
 		});
@@ -189,7 +189,7 @@ public class SonarController extends SubModuleController {
 	 * @return the selected TreeNode.
 	 */
 	protected PingResultTreeNode getSelectedTreeNode() {
-		List<Object> selection = treeRidget.getSelection();
+		final List<Object> selection = treeRidget.getSelection();
 		if (selection.size() > 0) {
 			return (PingResultTreeNode) selection.get(0);
 		}
@@ -203,7 +203,7 @@ public class SonarController extends SubModuleController {
 	 */
 	protected void treeNodeSelected() {
 		boolean hasFailure = false;
-		PingResultTreeNode selectedNode = getSelectedTreeNode();
+		final PingResultTreeNode selectedNode = getSelectedTreeNode();
 		if (selectedNode != null && selectedNode.getPingResult() != null) {
 			stackTraceTextRidget.setText(selectedNode.getPingResult().getPingFailure());
 			hasFailure = selectedNode.getPingResult().hasPingFailed();
@@ -227,7 +227,7 @@ public class SonarController extends SubModuleController {
 	 * Selects the next node that has a failure message, if there is one.
 	 */
 	protected void selectNextFailure() {
-		PingResultTreeNode nextFailureNode = getFailureNode(SearchDirection.next);
+		final PingResultTreeNode nextFailureNode = getFailureNode(SearchDirection.next);
 		if (nextFailureNode != null) {
 			treeRidget.setSelection(nextFailureNode);
 		}
@@ -238,7 +238,7 @@ public class SonarController extends SubModuleController {
 	 * Selects the previous node that has a failure message, if there is one.
 	 */
 	protected void selectPreviousFailure() {
-		PingResultTreeNode nextFailureNode = getFailureNode(SearchDirection.previous);
+		final PingResultTreeNode nextFailureNode = getFailureNode(SearchDirection.previous);
 		if (nextFailureNode != null) {
 			treeRidget.setSelection(nextFailureNode);
 		}
@@ -253,9 +253,9 @@ public class SonarController extends SubModuleController {
 	 *            the
 	 * @return
 	 */
-	private PingResultTreeNode getFailureNode(SearchDirection searchDirection) {
-		PingResultTreeNode selectedTreeNode = getSelectedTreeNode();
-		List<PingResultTreeNode> nodes = flattenTree();
+	private PingResultTreeNode getFailureNode(final SearchDirection searchDirection) {
+		final PingResultTreeNode selectedTreeNode = getSelectedTreeNode();
+		final List<PingResultTreeNode> nodes = flattenTree();
 		if (nodes.size() == 0) {
 			return null;
 		}
@@ -279,7 +279,7 @@ public class SonarController extends SubModuleController {
 			if (i > nodes.size() || i < 0) {
 				return null;
 			}
-			PingResultTreeNode currentNode = nodes.get(i);
+			final PingResultTreeNode currentNode = nodes.get(i);
 			if (currentNode.hasPingFailed()) {
 				return currentNode;
 			}
@@ -294,21 +294,21 @@ public class SonarController extends SubModuleController {
 	 */
 	@SuppressWarnings("unchecked")
 	protected List<PingResultTreeNode> flattenTree() {
-		PingableTreeNode[] nodes = getRootNodes();
+		final PingableTreeNode[] nodes = getRootNodes();
 		if (nodes == null || nodes.length == 0) {
 			return Collections.EMPTY_LIST;
 		}
-		List<PingResultTreeNode> result = new ArrayList<PingResultTreeNode>();
-		for (PingableTreeNode current : nodes) {
+		final List<PingResultTreeNode> result = new ArrayList<PingResultTreeNode>();
+		for (final PingableTreeNode current : nodes) {
 			flattenTree(current, result);
 		}
 		return result;
 	}
 
-	private void flattenTree(PingResultTreeNode current, List<PingResultTreeNode> result) {
+	private void flattenTree(final PingResultTreeNode current, final List<PingResultTreeNode> result) {
 		result.add(current);
-		List<ITreeNode> children = current.getChildren();
-		for (ITreeNode child : children) {
+		final List<ITreeNode> children = current.getChildren();
+		for (final ITreeNode child : children) {
 			flattenTree((PingResultTreeNode) child, result);
 		}
 	}
@@ -328,7 +328,7 @@ public class SonarController extends SubModuleController {
 	 * @param nodes
 	 *            the root nodes.
 	 */
-	protected void setRootNodes(PingableTreeNode[] nodes) {
+	protected void setRootNodes(final PingableTreeNode[] nodes) {
 		this.rootNodes = nodes;
 		treeRidget.bindToModel(nodes, PingResultTreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
 				"label", null, null, "icon", "icon"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -339,7 +339,7 @@ public class SonarController extends SubModuleController {
 	 * Starts a new {@link SonarUIProcess}.
 	 */
 	protected void startSonar() {
-		SonarUIProcess process = new SonarUIProcess();
+		final SonarUIProcess process = new SonarUIProcess();
 		process.start();
 	}
 
@@ -350,8 +350,8 @@ public class SonarController extends SubModuleController {
 	 *            the pingables acting as root nodes.
 	 * @return the root nodes.
 	 */
-	protected PingableTreeNode[] createRootNodes(List<IPingable> pingableServices) {
-		PingableTreeNode[] result = new PingableTreeNode[pingableServices.size()];
+	protected PingableTreeNode[] createRootNodes(final List<IPingable> pingableServices) {
+		final PingableTreeNode[] result = new PingableTreeNode[pingableServices.size()];
 		for (int i = 0; i < result.length; i++) {
 			result[i] = new PingableTreeNode(pingableServices.get(i));
 		}
@@ -379,7 +379,7 @@ public class SonarController extends SubModuleController {
 			return Collections.EMPTY_LIST;
 		}
 
-		List<IPingable> result = new ArrayList<IPingable>();
+		final List<IPingable> result = new ArrayList<IPingable>();
 
 		// filter the pingable services
 		for (final ServiceReference serviceReference : allServiceReferences) {
@@ -394,11 +394,11 @@ public class SonarController extends SubModuleController {
 		return result;
 	}
 
-	protected void setShowHourGlassCursor(boolean show) {
-		Control uiControl = (Control) getWindowRidget().getUIControl();
+	protected void setShowHourGlassCursor(final boolean show) {
+		final Control uiControl = (Control) getWindowRidget().getUIControl();
 		if (show) {
 			oldCursor = uiControl.getCursor();
-			Cursor waitCursor = uiControl.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
+			final Cursor waitCursor = uiControl.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
 			uiControl.setCursor(waitCursor);
 		} else {
 			if (oldCursor != null) {
@@ -421,7 +421,7 @@ public class SonarController extends SubModuleController {
 		private boolean endRun;
 		private PingResultTreeNode currentNode;
 		private boolean expand = false;
-		private IActionListener stopActionListener = new IActionListener() {
+		private final IActionListener stopActionListener = new IActionListener() {
 			public void callback() {
 				canceled = true;
 				end();
@@ -436,9 +436,9 @@ public class SonarController extends SubModuleController {
 		}
 
 		@Override
-		public void initialUpdateUI(int totalWork) {
-			List<IPingable> pingableServices = getPingableServices();
-			PingableTreeNode[] nodes = createRootNodes(pingableServices);
+		public void initialUpdateUI(final int totalWork) {
+			final List<IPingable> pingableServices = getPingableServices();
+			final PingableTreeNode[] nodes = createRootNodes(pingableServices);
 			setRootNodes(nodes);
 
 			progressRidget.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
@@ -463,8 +463,8 @@ public class SonarController extends SubModuleController {
 		}
 
 		@Override
-		public boolean runJob(IProgressMonitor monitor) {
-			for (PingableTreeNode pingableNode : getRootNodes()) {
+		public boolean runJob(final IProgressMonitor monitor) {
+			for (final PingableTreeNode pingableNode : getRootNodes()) {
 
 				if (canceled) {
 					break;
@@ -475,10 +475,10 @@ public class SonarController extends SubModuleController {
 					break;
 				}
 
-				List<PingResult> pingResults = visitor.getPingResults();
+				final List<PingResult> pingResults = visitor.getPingResults();
 				++pinged;
 				++pingedRootNodes;
-				PingResult pingResult = pingResults.get(0);
+				final PingResult pingResult = pingResults.get(0);
 				pingableNode.setPingResult(pingResult);
 				if (pingResult.hasPingFailed()) {
 					++failureCount;
@@ -500,17 +500,17 @@ public class SonarController extends SubModuleController {
 		 * @param parent
 		 *            the node for which to create the child nodes.
 		 */
-		private void createChildNodes(PingResultTreeNode parent) {
+		private void createChildNodes(final PingResultTreeNode parent) {
 			currentNode = parent;
 			expand = true;
 			notifyUpdateUI();
 
-			PingResult pingResult = parent.getPingResult();
-			Iterable<PingResult> nestedResults = pingResult.getNestedResults();
+			final PingResult pingResult = parent.getPingResult();
+			final Iterable<PingResult> nestedResults = pingResult.getNestedResults();
 			boolean failed = false;
-			for (PingResult nested : nestedResults) {
+			for (final PingResult nested : nestedResults) {
 				++pinged;
-				PingResultTreeNode child = new PingResultTreeNode(parent, nested.getPingableName());
+				final PingResultTreeNode child = new PingResultTreeNode(parent, nested.getPingableName());
 				child.setPingResult(nested);
 				if (nested.hasPingFailed()) {
 					++failureCount;

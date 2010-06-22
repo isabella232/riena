@@ -29,12 +29,13 @@ import org.eclipse.riena.communication.core.RemoteServiceDescription;
  */
 public class CallContext {
 
-	private RemoteServiceDescription rsd;
-	private String methodName;
+	private final RemoteServiceDescription rsd;
+	private final String methodName;
 	private HashMap<String, String> properties;
-	private ICallMessageContext messageContext;
+	private final ICallMessageContext messageContext;
 
-	public CallContext(RemoteServiceDescription rsd, String methodName, ICallMessageContext messageContext) {
+	public CallContext(final RemoteServiceDescription rsd, final String methodName,
+			final ICallMessageContext messageContext) {
 		this.rsd = rsd;
 		this.methodName = methodName;
 		this.messageContext = messageContext;
@@ -76,10 +77,10 @@ public class CallContext {
 	 *             is currently not supported.
 	 */
 	public Method getMethod() {
-		Class<?> interf = getInterfaceClass();
-		Method[] methods = interf.getMethods();
+		final Class<?> interf = getInterfaceClass();
+		final Method[] methods = interf.getMethods();
 		Method foundMethod = null;
-		for (Method method : methods) {
+		for (final Method method : methods) {
 			if (method.getName().equals(methodName)) {
 				if (foundMethod == null) {
 					foundMethod = method;
@@ -101,7 +102,7 @@ public class CallContext {
 	 * @param value
 	 *            value for that key
 	 */
-	public void setProperty(String name, String value) {
+	public void setProperty(final String name, final String value) {
 		if (properties == null) {
 			properties = new HashMap<String, String>();
 		}
@@ -115,7 +116,7 @@ public class CallContext {
 	 * @param name
 	 * @return
 	 */
-	public String getProperty(String name) {
+	public String getProperty(final String name) {
 		if (properties == null) {
 			return null;
 		}
@@ -138,7 +139,7 @@ public class CallContext {
 	 * 
 	 * @param cookie
 	 */
-	public void setCookie(String name, String value) {
+	public void setCookie(final String name, final String value) {
 		messageContext.addRequestHeader("Cookie", name + "=" + value); //$NON-NLS-1$ //$NON-NLS-2$
 		return;
 	}
@@ -151,16 +152,16 @@ public class CallContext {
 	 * @return
 	 */
 	public Map<String, String> getSetCookies() {
-		Map<String, List<String>> respHeaders = messageContext.listResponseHeaders();
+		final Map<String, List<String>> respHeaders = messageContext.listResponseHeaders();
 		if (respHeaders == null) {
 			return null;
 		}
-		List<String> listSetCookies = respHeaders.get("Set-Cookie"); //$NON-NLS-1$
+		final List<String> listSetCookies = respHeaders.get("Set-Cookie"); //$NON-NLS-1$
 		if (listSetCookies == null) {
 			return null;
 		}
-		Map<String, String> setCookies = new HashMap<String, String>();
-		for (String temp : listSetCookies) {
+		final Map<String, String> setCookies = new HashMap<String, String>();
+		for (final String temp : listSetCookies) {
 			setCookies.put(temp.substring(0, temp.indexOf("=")), temp.substring(temp.indexOf("=") + 1)); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return setCookies;

@@ -62,7 +62,7 @@ public class SSLConfiguration {
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SSLConfiguration.class);
 
 	@InjectExtension(min = 0, max = 1)
-	public void configure(ISSLPropertiesExtension sslProperties) {
+	public void configure(final ISSLPropertiesExtension sslProperties) {
 		if (configured && sslProperties == null) {
 			restore();
 			return;
@@ -95,11 +95,10 @@ public class SSLConfiguration {
 
 		try {
 			// obtain some debug information related to security providers
-			Provider[] providers = Security.getProviders();
+			final Provider[] providers = Security.getProviders();
 			if (providers == null) {
-				LOGGER
-						.log(LogService.LOG_WARNING,
-								"Security did not find any providers. This might be a problem. Check imported jar files for sunjce_provider.jar!"); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_WARNING,
+						"Security did not find any providers. This might be a problem. Check imported jar files for sunjce_provider.jar!"); //$NON-NLS-1$
 			} else {
 				LOGGER.log(LogService.LOG_INFO, "Security found " + providers.length + " security providers."); //$NON-NLS-1$ //$NON-NLS-2$
 				for (int i = 0; i < providers.length; i++) {
@@ -107,8 +106,8 @@ public class SSLConfiguration {
 				}
 			}
 
-			KeyStore keyStore = KeyStore.getInstance("JKS"); //$NON-NLS-1$
-			URL keystoreUrl = getKeystoreUrl();
+			final KeyStore keyStore = KeyStore.getInstance("JKS"); //$NON-NLS-1$
+			final URL keystoreUrl = getKeystoreUrl();
 
 			if (keystoreUrl == null) {
 				LOGGER.log(LogService.LOG_ERROR, "Specified keystore '" + keystore //$NON-NLS-1$
@@ -118,22 +117,22 @@ public class SSLConfiguration {
 
 			LOGGER.log(LogService.LOG_DEBUG, "Keystore is '" + keystoreUrl + "'."); //$NON-NLS-1$ //$NON-NLS-2$
 
-			char[] passwordChars = password == null ? null : password.toCharArray();
+			final char[] passwordChars = password == null ? null : password.toCharArray();
 
 			keyStore.load(keystoreUrl.openStream(), passwordChars);
 
 			// Some debug information
-			Enumeration<String> enumeration = keyStore.aliases();
+			final Enumeration<String> enumeration = keyStore.aliases();
 			if (enumeration == null) {
 				LOGGER.log(LogService.LOG_ERROR, "Found no certificate."); //$NON-NLS-1$
 				throw new Exception("Found no certificate."); //$NON-NLS-1$
 			} else {
-				for (String alias : Iter.able(enumeration)) {
+				for (final String alias : Iter.able(enumeration)) {
 
 					LOGGER.log(LogService.LOG_DEBUG, "Found certificate: " + alias); //$NON-NLS-1$
-					Certificate certificate = keyStore.getCertificate(alias);
+					final Certificate certificate = keyStore.getCertificate(alias);
 					if (certificate instanceof X509Certificate) {
-						X509Certificate x509Certificate = (X509Certificate) certificate;
+						final X509Certificate x509Certificate = (X509Certificate) certificate;
 						LOGGER.log(LogService.LOG_DEBUG, "  Subject: " + x509Certificate.getSubjectDN()); //$NON-NLS-1$
 						LOGGER.log(LogService.LOG_DEBUG, "  Issuer : " + x509Certificate.getIssuerDN()); //$NON-NLS-1$
 						LOGGER.log(LogService.LOG_DEBUG, "  Valid from " + x509Certificate.getNotBefore() + " to " //$NON-NLS-1$ //$NON-NLS-2$
@@ -144,12 +143,12 @@ public class SSLConfiguration {
 				}
 			}
 
-			TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("SunX509"); //$NON-NLS-1$
+			final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("SunX509"); //$NON-NLS-1$
 			trustManagerFactory.init(keyStore);
 
-			TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+			final TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
 
-			SSLContext sslContext = SSLContext.getInstance("SSL"); //$NON-NLS-1$
+			final SSLContext sslContext = SSLContext.getInstance("SSL"); //$NON-NLS-1$
 			sslContext.init(null, trustManagers, null);
 
 			LOGGER.log(LogService.LOG_DEBUG, "SSLContext protocol: " + sslContext.getProtocol()); //$NON-NLS-1$
@@ -175,7 +174,7 @@ public class SSLConfiguration {
 
 			LOGGER.log(LogService.LOG_INFO, "Configuring the SSL protocol finished!"); //$NON-NLS-1$
 			configured = true;
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			LOGGER.log(LogService.LOG_ERROR, "Configuration of SSL protocol failed. SSL will not work properly!", ex); //$NON-NLS-1$
 		}
 	}
@@ -186,10 +185,10 @@ public class SSLConfiguration {
 	 */
 	private URL getKeystoreUrl() throws MalformedURLException {
 		if (keystore.equals(JRE_CACERTS_MARKER)) {
-			String jreDir = System.getProperty("java.home"); //$NON-NLS-1$
+			final String jreDir = System.getProperty("java.home"); //$NON-NLS-1$
 			LOGGER.log(LogService.LOG_DEBUG, "Attempting to load keystore from cacerts of the jre: " + jreDir); //$NON-NLS-1$
 			// walk down
-			File cacertFile = new File(new File(new File(new File(jreDir), "lib"), "security"), "cacerts"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final File cacertFile = new File(new File(new File(new File(jreDir), "lib"), "security"), "cacerts"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			return cacertFile.canRead() ? cacertFile.toURL() : null;
 		}
 
@@ -206,7 +205,7 @@ public class SSLConfiguration {
 		}
 
 		// keystore location a file?
-		File keystoreFile = new File(keystore);
+		final File keystoreFile = new File(keystore);
 		if (keystoreFile.canRead()) {
 			return keystoreFile.toURL();
 		}
@@ -242,7 +241,7 @@ public class SSLConfiguration {
 
 	public final static class StrictHostnameVerifier implements HostnameVerifier {
 
-		public boolean verify(String hostname, SSLSession session) {
+		public boolean verify(final String hostname, final SSLSession session) {
 			LOGGER.log(LogService.LOG_ERROR, "Hostname '" + hostname //$NON-NLS-1$
 					+ "' does not match the certificate´s host name (" + session.getPeerHost() + ")!"); //$NON-NLS-1$ //$NON-NLS-2$
 			return false;

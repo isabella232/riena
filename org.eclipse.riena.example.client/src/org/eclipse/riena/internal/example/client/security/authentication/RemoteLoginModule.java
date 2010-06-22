@@ -22,11 +22,13 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.security.common.authentication.RemoteLoginProxy;
-import org.osgi.service.log.LogService;
 
 /**
  * Test module that implements the JAAS LoginModule interface
@@ -70,8 +72,8 @@ public class RemoteLoginModule implements LoginModule {
 	 * , javax.security.auth.callback.CallbackHandler, java.util.Map,
 	 * java.util.Map)
 	 */
-	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
-			Map<String, ?> options) {
+	public void initialize(final Subject subject, final CallbackHandler callbackHandler,
+			final Map<String, ?> sharedState, final Map<String, ?> options) {
 		if (callbackHandler == null) {
 			LOGGER.log(LogService.LOG_ERROR, "callbackhandler cant be null"); //$NON-NLS-1$
 			throw new RuntimeException("callbackhandler cant be null"); //$NON-NLS-1$
@@ -88,16 +90,16 @@ public class RemoteLoginModule implements LoginModule {
 	 */
 	public boolean login() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "login"); //$NON-NLS-1$
-		Callback[] callbacks = new Callback[2];
+		final Callback[] callbacks = new Callback[2];
 		callbacks[0] = new NameCallback("username: "); //$NON-NLS-1$
 		callbacks[1] = new PasswordCallback("password: ", false); //$NON-NLS-1$
 		try {
 			callbackHandler.handle(callbacks);
 			return remoteLoginProxy.login(callbacks);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			return false;
-		} catch (UnsupportedCallbackException e) {
+		} catch (final UnsupportedCallbackException e) {
 			e.printStackTrace();
 			return false;
 		}

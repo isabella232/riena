@@ -19,11 +19,11 @@ import org.eclipse.riena.core.util.Nop;
  */
 public abstract class AbstractWiring implements IWiring {
 
-	public void wire(Object bean, BundleContext context) {
+	public void wire(final Object bean, final BundleContext context) {
 		Nop.reason("May be overridden."); //$NON-NLS-1$
 	}
 
-	public void unwire(Object bean, BundleContext context) {
+	public void unwire(final Object bean, final BundleContext context) {
 		Nop.reason("May be overridden."); //$NON-NLS-1$
 	}
 

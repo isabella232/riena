@@ -43,39 +43,39 @@ public class MultiServicePublisher {
 
 	public MultiServicePublisher() {
 		super();
-		Inject.service(IServicePublishBinder.class).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(IServicePublishBinder.class).useRanking().into(this)
+				.andStart(Activator.getDefault().getContext());
 	}
 
-	public MultiServicePublisher useFilter(String filter) {
+	public MultiServicePublisher useFilter(final String filter) {
 		Assert.isNotNull(filter);
 		this.filter = filter;
 		return this;
 	}
 
-	public MultiServicePublisher withProtocol(String protocol) {
+	public MultiServicePublisher withProtocol(final String protocol) {
 		Assert.isNotNull(protocol);
 		this.protocol = protocol;
 		return this;
 	}
 
-	public void andStart(BundleContext context) {
+	public void andStart(final BundleContext context) {
 		Assert.isNotNull(filter);
 		this.context = context;
 
 		try {
-			ServiceReference[] refs = this.context.getServiceReferences(null, filter);
+			final ServiceReference[] refs = this.context.getServiceReferences(null, filter);
 			if (refs != null) {
-				for (ServiceReference ref : refs) {
+				for (final ServiceReference ref : refs) {
 					publish(ref);
 				}
 			}
-		} catch (InvalidSyntaxException e1) {
+		} catch (final InvalidSyntaxException e1) {
 			e1.printStackTrace();
 		}
 
-		ServiceListener listener = new ServiceListener() {
-			public void serviceChanged(ServiceEvent event) {
+		final ServiceListener listener = new ServiceListener() {
+			public void serviceChanged(final ServiceEvent event) {
 				if (event.getType() == ServiceEvent.REGISTERED) {
 					publish(event.getServiceReference());
 				} else {
@@ -87,35 +87,35 @@ public class MultiServicePublisher {
 		};
 		try {
 			Activator.getDefault().getContext().addServiceListener(listener, filter);
-		} catch (InvalidSyntaxException e) {
+		} catch (final InvalidSyntaxException e) {
 			e.printStackTrace();
 		}
 
 		return;
 	}
 
-	public void bind(IServicePublishBinder binder) {
+	public void bind(final IServicePublishBinder binder) {
 		this.binder = binder;
 	}
 
-	public void unbind(IServicePublishBinder binder) {
+	public void unbind(final IServicePublishBinder binder) {
 		this.binder = null;
 	}
 
-	private void publish(ServiceReference serviceReference) {
+	private void publish(final ServiceReference serviceReference) {
 		String usedProtocol;
 		if (protocol != null) {
 			usedProtocol = protocol;
 		} else {
-			usedProtocol = CommunicationUtil.accessProperty(serviceReference
-					.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL), null);
+			usedProtocol = CommunicationUtil.accessProperty(
+					serviceReference.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL), null);
 		}
-		String path = CommunicationUtil.accessProperty(serviceReference.getProperty(PROP_REMOTE_PATH), null);
+		final String path = CommunicationUtil.accessProperty(serviceReference.getProperty(PROP_REMOTE_PATH), null);
 		binder.publish(serviceReference, path, usedProtocol);
 
 	}
 
-	private void unpublish(ServiceReference serviceReference) {
+	private void unpublish(final ServiceReference serviceReference) {
 		binder.unpublish(serviceReference);
 	}
 

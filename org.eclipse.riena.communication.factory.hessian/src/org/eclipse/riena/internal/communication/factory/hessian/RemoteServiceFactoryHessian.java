@@ -52,28 +52,28 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 		rienaHessianProxyFactory.setCallMessageContextAccessor(messageContextAccessor);
 	}
 
-	public IRemoteServiceReference createProxy(RemoteServiceDescription endpoint) {
+	public IRemoteServiceReference createProxy(final RemoteServiceDescription endpoint) {
 		String url = endpoint.getURL();
 		if (url == null) {
 			url = "http://localhost/" + PROTOCOL + endpoint.getPath(); //$NON-NLS-1$
 		}
 		try {
-			Object proxy = rienaHessianProxyFactory.create(endpoint.getServiceInterfaceClass(), url);
-			RemoteServiceReference serviceReference = new RemoteServiceReference(endpoint);
+			final Object proxy = rienaHessianProxyFactory.create(endpoint.getServiceInterfaceClass(), url);
+			final RemoteServiceReference serviceReference = new RemoteServiceReference(endpoint);
 			// set the create proxy as service instance
 			serviceReference.setServiceInstance(proxy);
 			return serviceReference;
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
 			throw new RuntimeException("MalformedURLException", e); //$NON-NLS-1$
 		}
 	}
 
 	@InjectService(useRanking = true)
-	public void bind(IRemoteProgressMonitorRegistry pmr) {
+	public void bind(final IRemoteProgressMonitorRegistry pmr) {
 		this.remoteProgressMonitorRegistry = pmr;
 	}
 
-	public void unbind(IRemoteProgressMonitorRegistry pmr) {
+	public void unbind(final IRemoteProgressMonitorRegistry pmr) {
 		if (this.remoteProgressMonitorRegistry == pmr) {
 			this.remoteProgressMonitorRegistry = null;
 		}
@@ -89,10 +89,11 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 
 	class CallMsgCtxAcc implements ICallMessageContextAccessor {
 
-		private ThreadLocal<ICallMessageContext> contexts = new ThreadLocal<ICallMessageContext>();
+		private final ThreadLocal<ICallMessageContext> contexts = new ThreadLocal<ICallMessageContext>();
 
-		public ICallMessageContext createMessageContext(Object proxy, String methodName, String requestId) {
-			ICallMessageContext mc = new MsgCtx(proxy, methodName, requestId);
+		public ICallMessageContext createMessageContext(final Object proxy, final String methodName,
+				final String requestId) {
+			final ICallMessageContext mc = new MsgCtx(proxy, methodName, requestId);
 			contexts.set(mc);
 			return mc;
 		}
@@ -110,10 +111,10 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			private int bytesWritten;
 			private int totalBytesWritten = 0;
 			private boolean firstEvent = true;
-			private String methodName;
+			private final String methodName;
 			private String requestId = null;
 
-			public MsgCtx(Object proxy, String methodName, String requestId) {
+			public MsgCtx(final Object proxy, final String methodName, final String requestId) {
 				super();
 				this.methodName = methodName;
 				this.requestId = requestId;
@@ -124,8 +125,8 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 				}
 			}
 
-			public List<String> getResponseHeaderValues(String name) {
-				Map<String, List<String>> headers = listResponseHeaders();
+			public List<String> getResponseHeaderValues(final String name) {
+				final Map<String, List<String>> headers = listResponseHeaders();
 				if (headers == null) {
 					return null;
 				}
@@ -137,14 +138,14 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			}
 
 			public Map<String, List<String>> listResponseHeaders() {
-				HttpURLConnection httpUrlConnection = RienaHessianProxyFactory.getHttpURLConnection();
+				final HttpURLConnection httpUrlConnection = RienaHessianProxyFactory.getHttpURLConnection();
 				if (httpUrlConnection == null) {
 					return null;
 				}
 				return httpUrlConnection.getHeaderFields();
 			}
 
-			public void addRequestHeader(String name, String value) {
+			public void addRequestHeader(final String name, final String value) {
 				if (customRequestHeader == null) {
 					customRequestHeader = new HashMap<String, List<String>>();
 				}
@@ -179,7 +180,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 				remoteProgressMonitorList.fireEndEvent(totalBytesRead + totalBytesWritten);
 			}
 
-			public void fireReadEvent(int parmBytesRead) {
+			public void fireReadEvent(final int parmBytesRead) {
 				if (firstEvent) {
 					remoteProgressMonitorList.fireStartEvent();
 					firstEvent = false;
@@ -200,7 +201,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 				remoteProgressMonitorList.fireReadEvent(-1, totalBytesRead);
 			}
 
-			public void fireWriteEvent(int parmBytesWritten) {
+			public void fireWriteEvent(final int parmBytesWritten) {
 				if (firstEvent) {
 					fireStartCall();
 				}

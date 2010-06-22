@@ -48,7 +48,7 @@ public final class RienaLocations {
 	public static File getDataArea() {
 		File dataArea;
 
-		Location instanceAreaLocation = Platform.getInstanceLocation();
+		final Location instanceAreaLocation = Platform.getInstanceLocation();
 		if (instanceAreaLocation != null && instanceAreaLocation.getURL() != null) {
 			LOGGER.log(LogService.LOG_DEBUG, "Platform Instance Location: " + instanceAreaLocation.getURL().toString()); //$NON-NLS-1$
 			dataArea = new File(instanceAreaLocation.getURL().getFile(), RIENA_NAME);
@@ -65,7 +65,7 @@ public final class RienaLocations {
 			return location;
 		} else {
 			LOGGER.log(LogService.LOG_DEBUG, location.getAbsolutePath() + " is not a directory."); //$NON-NLS-1$
-			boolean canWrite = true;
+			final boolean canWrite = true;
 			File tempFile = location;
 			while (tempFile.getParentFile() != null && canWrite) {
 				tempFile = tempFile.getParentFile();
@@ -86,9 +86,7 @@ public final class RienaLocations {
 			boolean created = location.mkdirs();
 
 			if (!created && canWrite) {
-				LOGGER
-						.log(LogService.LOG_DEBUG,
-								"Could not create; using ${user.home}/.${eclipse.product} as fallback"); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_DEBUG, "Could not create; using ${user.home}/.${eclipse.product} as fallback"); //$NON-NLS-1$
 				location = new File(fallbackLocation);
 				created = location.mkdirs();
 				if (!created) {
@@ -111,11 +109,11 @@ public final class RienaLocations {
 	 * @param bundle
 	 * @return
 	 */
-	public static File getDataArea(Bundle bundle) {
+	public static File getDataArea(final Bundle bundle) {
 		Assert.isLegal(bundle != null, "bundle must not be null."); //$NON-NLS-1$
-		String symbolicName = bundle.getSymbolicName();
+		final String symbolicName = bundle.getSymbolicName();
 		Assert.isLegal(StringUtils.isGiven(symbolicName), "no symbolic name for bundle."); //$NON-NLS-1$
-		File dataArea = new File(getDataArea(), symbolicName);
+		final File dataArea = new File(getDataArea(), symbolicName);
 		return existingOrNewDirectory(dataArea);
 	}
 }

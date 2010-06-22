@@ -24,11 +24,11 @@ public class SingleSelectionListBean extends ListBean {
 
 	private Object selection = null;
 
-	public SingleSelectionListBean(List<?> values) {
+	public SingleSelectionListBean(final List<?> values) {
 		super(values);
 	}
 
-	public SingleSelectionListBean(Object... values) {
+	public SingleSelectionListBean(final Object... values) {
 		super(values);
 	}
 
@@ -38,8 +38,8 @@ public class SingleSelectionListBean extends ListBean {
 	 * @param selection
 	 *            an object contained in the list or null
 	 */
-	public void setSelection(Object selection) {
-		Object oldSelection = this.selection;
+	public void setSelection(final Object selection) {
+		final Object oldSelection = this.selection;
 		if (selection != null && getValues().contains(selection)) {
 			this.selection = selection;
 		} else {

@@ -36,60 +36,60 @@ public class TreeSubModuleView extends SubModuleView {
 	public static final String ID = TreeSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
-		Group group1 = createTreeGroup(parent);
+		final Group group1 = createTreeGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(group1);
 	}
 
 	@Override
-	protected TreeSubModuleController createController(ISubModuleNode node) {
+	protected TreeSubModuleController createController(final ISubModuleNode node) {
 		return new TreeSubModuleController(node);
 	}
 
 	// helping methods
 	// ////////////////
 
-	private Group createTreeGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "&Tree:"); //$NON-NLS-1$
+	private Group createTreeGroup(final Composite parent) {
+		final Group group = UIControlsFactory.createGroup(parent, "&Tree:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(1).applyTo(group);
 
-		Tree tree = UIControlsFactory.createTree(group, SWT.FULL_SELECTION | SWT.MULTI);
+		final Tree tree = UIControlsFactory.createTree(group, SWT.FULL_SELECTION | SWT.MULTI);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(tree);
 		addUIControl(tree, "tree"); //$NON-NLS-1$
 
-		Composite buttonComposite = createButtonComposite(group);
+		final Composite buttonComposite = createButtonComposite(group);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(buttonComposite);
 
 		return group;
 	}
 
-	private Composite createButtonComposite(Group group) {
-		Composite buttonComposite = UIControlsFactory.createComposite(group);
+	private Composite createButtonComposite(final Group group) {
+		final Composite buttonComposite = UIControlsFactory.createComposite(group);
 		GridLayoutFactory.fillDefaults().numColumns(6).equalWidth(true).applyTo(buttonComposite);
 
-		Label spacer = UIControlsFactory.createLabel(buttonComposite, ""); //$NON-NLS-1$
+		final Label spacer = UIControlsFactory.createLabel(buttonComposite, ""); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(spacer);
 
-		Button buttonAddSibling = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonAddSibling = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonAddSibling, "buttonAddSibling"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().applyTo(buttonAddSibling);
 
-		Button buttonRename = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonRename = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonRename, "buttonRename"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().applyTo(buttonRename);
 
-		Button buttonEnable = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonEnable = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonEnable, "buttonEnable"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().applyTo(buttonEnable);
 
-		Button buttonExpand = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonExpand = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonExpand, "buttonExpand"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().applyTo(buttonExpand);
 
-		Button buttonShow = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonShow = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonShow, "buttonShow"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().applyTo(buttonShow);
 
@@ -97,23 +97,23 @@ public class TreeSubModuleView extends SubModuleView {
 
 		UIControlsFactory.createLabel(buttonComposite, ""); //$NON-NLS-1$
 
-		Button buttonAddChild = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonAddChild = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonAddChild, "buttonAddChild"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().applyTo(buttonAddChild);
 
-		Button buttonDelete = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonDelete = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonDelete, "buttonDelete"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().applyTo(buttonDelete);
 
-		Button buttonDisable = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonDisable = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonDisable, "buttonDisable"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().applyTo(buttonDisable);
 
-		Button buttonCollapse = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonCollapse = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonCollapse, "buttonCollapse"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().applyTo(buttonCollapse);
 
-		Button buttonHide = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonHide = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonHide, "buttonHide"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().applyTo(buttonHide);
 

@@ -91,7 +91,7 @@ public class Person extends AbstractBean {
 	 * @param lastname
 	 * @param firstname
 	 */
-	public Person(String lastname, String firstname) {
+	public Person(final String lastname, final String firstname) {
 		super();
 
 		this.lastname = lastname;
@@ -127,8 +127,8 @@ public class Person extends AbstractBean {
 	/**
 	 * @param lastname
 	 */
-	public void setLastname(String lastname) {
-		String oldLastname = this.lastname;
+	public void setLastname(final String lastname) {
+		final String oldLastname = this.lastname;
 		this.lastname = lastname;
 
 		firePropertyChanged(PROPERTY_LASTNAME, oldLastname, lastname);
@@ -137,8 +137,8 @@ public class Person extends AbstractBean {
 	/**
 	 * @param firstname
 	 */
-	public void setFirstname(String firstname) {
-		String oldFirstname = this.firstname;
+	public void setFirstname(final String firstname) {
+		final String oldFirstname = this.firstname;
 		this.firstname = firstname;
 
 		firePropertyChanged(PROPERTY_FIRSTNAME, oldFirstname, firstname);
@@ -147,7 +147,7 @@ public class Person extends AbstractBean {
 	/**
 	 * @param newEyeColor
 	 */
-	public void setEyeColor(Integer newEyeColor) {
+	public void setEyeColor(final Integer newEyeColor) {
 		if (newEyeColor != null) {
 			setEyeColor(newEyeColor.intValue());
 		}
@@ -156,8 +156,8 @@ public class Person extends AbstractBean {
 	/**
 	 * @param newEyeColor
 	 */
-	public void setEyeColor(int newEyeColor) {
-		int oldEyeColor = eyeColor;
+	public void setEyeColor(final int newEyeColor) {
+		final int oldEyeColor = eyeColor;
 		eyeColor = newEyeColor;
 
 		firePropertyChanged(PROPERTY_EYE_COLOR, Integer.valueOf(oldEyeColor), Integer.valueOf(eyeColor));
@@ -166,7 +166,7 @@ public class Person extends AbstractBean {
 	/**
 	 * @param value
 	 */
-	public void setEyeColorGreen(boolean value) {
+	public void setEyeColorGreen(final boolean value) {
 		if (value) {
 			setEyeColor(0);
 		}
@@ -175,7 +175,7 @@ public class Person extends AbstractBean {
 	/**
 	 * @param value
 	 */
-	public void setEyeColorGray(boolean value) {
+	public void setEyeColorGray(final boolean value) {
 		if (value) {
 			setEyeColor(1);
 		}
@@ -184,7 +184,7 @@ public class Person extends AbstractBean {
 	/**
 	 * @param value
 	 */
-	public void setEyeColorBlue(boolean value) {
+	public void setEyeColorBlue(final boolean value) {
 		if (value) {
 			setEyeColor(2);
 		}
@@ -193,7 +193,7 @@ public class Person extends AbstractBean {
 	/**
 	 * @param value
 	 */
-	public void setEyeColorBrown(boolean value) {
+	public void setEyeColorBrown(final boolean value) {
 		if (value) {
 			setEyeColor(3);
 		}
@@ -209,10 +209,10 @@ public class Person extends AbstractBean {
 	/**
 	 * @param gender
 	 */
-	public void setGender(String gender) {
+	public void setGender(final String gender) {
 		Assert.isLegal(MALE.equals(gender) || FEMALE.equals(gender));
 		if (gender != this.gender) {
-			String oldValue = this.gender;
+			final String oldValue = this.gender;
 			this.gender = gender;
 			firePropertyChanged(PROPERTY_GENDER, oldValue, this.gender);
 		}
@@ -229,7 +229,7 @@ public class Person extends AbstractBean {
 	 * @param hasDog
 	 *            The hasDog to set.
 	 */
-	public void setHasDog(boolean hasDog) {
+	public void setHasDog(final boolean hasDog) {
 		if (this.hasDog != hasDog) {
 			this.hasDog = hasDog;
 			firePropertyChanged(PROPERTY_PETS, null, getPets());
@@ -247,7 +247,7 @@ public class Person extends AbstractBean {
 	 * @param hasCat
 	 *            The hasCat to set.
 	 */
-	public void setHasCat(boolean hasCat) {
+	public void setHasCat(final boolean hasCat) {
 		if (this.hasCat != hasCat) {
 			this.hasCat = hasCat;
 			firePropertyChanged(PROPERTY_PETS, null, getPets());
@@ -265,7 +265,7 @@ public class Person extends AbstractBean {
 	 * @param hasFish
 	 *            The hasFish to set.
 	 */
-	public void setHasFish(boolean hasFish) {
+	public void setHasFish(final boolean hasFish) {
 		if (this.hasFish != hasFish) {
 			this.hasFish = hasFish;
 			firePropertyChanged(PROPERTY_PETS, null, getPets());
@@ -273,7 +273,7 @@ public class Person extends AbstractBean {
 	}
 
 	public List<Pets> getPets() {
-		List<Pets> result = new ArrayList<Pets>();
+		final List<Pets> result = new ArrayList<Pets>();
 		if (hasCat) {
 			result.add(Pets.CAT);
 		}
@@ -286,7 +286,7 @@ public class Person extends AbstractBean {
 		return result;
 	}
 
-	public void setPets(List<Pets> pets) {
+	public void setPets(final List<Pets> pets) {
 		setHasCat(pets.contains(Pets.CAT));
 		setHasDog(pets.contains(Pets.DOG));
 		setHasFish(pets.contains(Pets.FISH));
@@ -318,14 +318,14 @@ public class Person extends AbstractBean {
 	 * @param birthday
 	 *            The birthday to set.
 	 */
-	public void setBirthday(String birthday) {
-		Object oldValue = this.birthday;
+	public void setBirthday(final String birthday) {
+		final Object oldValue = this.birthday;
 		this.birthday = birthday;
 		firePropertyChanged(PROPERTY_BIRTHDAY, oldValue, birthday);
 	}
 
-	public void setBirthplace(String birthplace) {
-		Object oldValue = this.birthplace;
+	public void setBirthplace(final String birthplace) {
+		final Object oldValue = this.birthplace;
 		this.birthplace = birthplace;
 		firePropertyChanged(PROPERTY_BIRTHPLACE, oldValue, birthplace);
 	}
@@ -334,8 +334,8 @@ public class Person extends AbstractBean {
 		return birthplace;
 	}
 
-	public void setAddress(Address address) {
-		Address oldValue = this.address;
+	public void setAddress(final Address address) {
+		final Address oldValue = this.address;
 		this.address = address;
 		firePropertyChanged(PROPERTY_ADDRESS, oldValue, address);
 	}
@@ -344,8 +344,8 @@ public class Person extends AbstractBean {
 		return address;
 	}
 
-	public void setNumber(Integer number) {
-		Object oldValue = this.number;
+	public void setNumber(final Integer number) {
+		final Object oldValue = this.number;
 		this.number = number;
 		firePropertyChanged(PROPERTY_NUMBER, oldValue, number);
 	}
@@ -372,7 +372,7 @@ public class Person extends AbstractBean {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -382,7 +382,7 @@ public class Person extends AbstractBean {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Person other = (Person) obj;
+		final Person other = (Person) obj;
 		if (address == null) {
 			if (other.address != null) {
 				return false;

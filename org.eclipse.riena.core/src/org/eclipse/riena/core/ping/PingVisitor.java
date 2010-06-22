@@ -116,7 +116,7 @@ public class PingVisitor {
 	 *         calls where the visitor is serialized), so always work on the one
 	 *         returned by this method.
 	 */
-	public PingVisitor ping(IPingable pingable) {
+	public PingVisitor ping(final IPingable pingable) {
 		PingVisitor visitor = this;
 		PingResult pingResult = new PingResult(getPingableName(pingable));
 
@@ -124,7 +124,7 @@ public class PingVisitor {
 			// root of a new ping, add to list
 			pingResultList.add(pingResult);
 		} else {
-			PingResult parent = resultStack.peek();
+			final PingResult parent = resultStack.peek();
 			parent.addNestedResult(pingResult);
 		}
 		resultStack.push(pingResult);
@@ -132,7 +132,7 @@ public class PingVisitor {
 		Exception caughtException = null;
 		try {
 			visitor = pingable.ping(visitor);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			caughtException = e;
 		} finally {
 			pingResult = visitor.resultStack.pop();
@@ -227,7 +227,7 @@ public class PingVisitor {
 					pingableList.add(additionalPingable);
 				}
 			}
-		} catch (NoSuchMethodException nsme) {
+		} catch (final NoSuchMethodException nsme) {
 			Nop.reason("no getAdditionalPingables() method"); //$NON-NLS-1$
 		} catch (final Exception e) {
 			pingableList.add(new UnavailablePingable("getAdditionalPingables", //$NON-NLS-1$
@@ -239,7 +239,7 @@ public class PingVisitor {
 		}
 	}
 
-	private void setAccessible(Method method) {
+	private void setAccessible(final Method method) {
 		try {
 			method.setAccessible(true);
 		} catch (final SecurityException e) {
@@ -247,7 +247,7 @@ public class PingVisitor {
 		}
 	}
 
-	private void setAccessible(Field field) {
+	private void setAccessible(final Field field) {
 		try {
 			field.setAccessible(true);
 		} catch (final SecurityException e) {
@@ -312,10 +312,10 @@ public class PingVisitor {
 		return true;
 	}
 
-	private static String getPingableName(IPingable pingable) {
+	private static String getPingableName(final IPingable pingable) {
 		try {
 			return pingable.getPingFingerprint().getName();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return pingable.toString();
 		}
 	}

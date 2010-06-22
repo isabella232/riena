@@ -26,7 +26,7 @@ public final class PersonFactory {
 	 * Create a collection of persons.
 	 */
 	public static List<Person> createPersonList() {
-		List<Person> newList = new ArrayList<Person>();
+		final List<Person> newList = new ArrayList<Person>();
 
 		Person person = new Person("Doe", "John"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(1);

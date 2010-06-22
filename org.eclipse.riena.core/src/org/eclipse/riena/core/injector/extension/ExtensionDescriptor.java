@@ -84,8 +84,8 @@ public class ExtensionDescriptor {
 
 	/**
 	 * Create an extension descriptor. Attempts are made to retrieve the
-	 * required extension point id from annotations, e.g. {@code
-	 * ExtensionInterface} or {@code InjectExtension}
+	 * required extension point id from annotations, e.g.
+	 * {@code ExtensionInterface} or {@code InjectExtension}
 	 */
 	public ExtensionDescriptor() {
 		this.extensionPointId = new ExtensionPointId();

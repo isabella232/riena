@@ -28,7 +28,7 @@ abstract public class PropertyFailure extends Failure {
 	 *            the detail message. The detail message is saved for later
 	 *            retrieval by the {@link #getMessage()}method.
 	 */
-	public PropertyFailure(String message) {
+	public PropertyFailure(final String message) {
 		this(message, null);
 	}
 
@@ -45,7 +45,7 @@ abstract public class PropertyFailure extends Failure {
 	 *            permitted, and indicates that the cause is nonexistent or
 	 *            unknown.)
 	 */
-	public PropertyFailure(String message, Throwable cause) {
+	public PropertyFailure(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 }

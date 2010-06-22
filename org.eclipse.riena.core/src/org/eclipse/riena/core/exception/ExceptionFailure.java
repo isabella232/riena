@@ -23,7 +23,7 @@ public class ExceptionFailure extends Failure {
 	 * @param msg
 	 *            the message.
 	 */
-	public ExceptionFailure(String msg) {
+	public ExceptionFailure(final String msg) {
 		super(msg);
 	}
 
@@ -35,7 +35,7 @@ public class ExceptionFailure extends Failure {
 	 * @param cause
 	 *            the cause.
 	 */
-	public ExceptionFailure(String msg, Throwable cause) {
+	public ExceptionFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 }

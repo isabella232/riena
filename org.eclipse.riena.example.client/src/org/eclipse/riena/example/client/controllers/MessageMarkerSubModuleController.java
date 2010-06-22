@@ -47,22 +47,22 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 		super.configureRidgets();
 
-		MessageMarkerExampleBean bean = new MessageMarkerExampleBean();
+		final MessageMarkerExampleBean bean = new MessageMarkerExampleBean();
 
-		ITextRidget alwaysMarked = (ITextRidget) getRidget("alwaysMarked"); //$NON-NLS-1$
+		final ITextRidget alwaysMarked = (ITextRidget) getRidget("alwaysMarked"); //$NON-NLS-1$
 		alwaysMarked.addMarker(new ErrorMessageMarker("This textfield is inadequate in every way.")); //$NON-NLS-1$
 		alwaysMarked.bindToModel(bean, "alwaysMarkedText"); //$NON-NLS-1$
 		alwaysMarked.updateFromModel();
 
-		ITextRidget sometimesMarked = (ITextRidget) getRidget("sometimesMarked"); //$NON-NLS-1$
+		final ITextRidget sometimesMarked = (ITextRidget) getRidget("sometimesMarked"); //$NON-NLS-1$
 		sometimesMarked.addValidationRule(new MinLength(3), ValidationTime.ON_UPDATE_TO_MODEL);
 		sometimesMarked.addValidationMessage("Textfield contains less than 3 characters."); //$NON-NLS-1$
 		sometimesMarked.bindToModel(bean, "sometimesMarkedText"); //$NON-NLS-1$
 		sometimesMarked.updateFromModel();
 
-		ITextRidget sometimesMarkedMultipleRules = (ITextRidget) getRidget("sometimesMarkedMultipleRules"); //$NON-NLS-1$
-		StartsWithA startsWithA = new StartsWithA();
-		EndsWithZ endsWithZ = new EndsWithZ();
+		final ITextRidget sometimesMarkedMultipleRules = (ITextRidget) getRidget("sometimesMarkedMultipleRules"); //$NON-NLS-1$
+		final StartsWithA startsWithA = new StartsWithA();
+		final EndsWithZ endsWithZ = new EndsWithZ();
 		sometimesMarkedMultipleRules.addValidationRule(startsWithA, ValidationTime.ON_UPDATE_TO_MODEL);
 		sometimesMarkedMultipleRules.addValidationRule(endsWithZ, ValidationTime.ON_UPDATE_TO_MODEL);
 		sometimesMarkedMultipleRules.addValidationMessage("Text must begin with an A.", startsWithA); //$NON-NLS-1$
@@ -71,23 +71,24 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 		sometimesMarkedMultipleRules.updateFromModel();
 
 		// Show error messages in the status line
-		IApplicationNode application = getNavigationNode().getParentOfType(IApplicationNode.class);
-		ApplicationController applicationController = (ApplicationController) application.getNavigationNodeController();
-		IStatuslineRidget statuslineRidget = applicationController.getStatusline();
-		StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(
+		final IApplicationNode application = getNavigationNode().getParentOfType(IApplicationNode.class);
+		final ApplicationController applicationController = (ApplicationController) application
+				.getNavigationNodeController();
+		final IStatuslineRidget statuslineRidget = applicationController.getStatusline();
+		final StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(
 				statuslineRidget);
 		statuslineMessageMarkerViewer.addRidget(alwaysMarked);
 		statuslineMessageMarkerViewer.addRidget(sometimesMarked);
 		statuslineMessageMarkerViewer.addRidget(sometimesMarkedMultipleRules);
 
 		// Show error messages as a tool tip, when hovering over the text
-		TooltipMessageMarkerViewer tooltipMessageMarkerViewer = new TooltipMessageMarkerViewer();
+		final TooltipMessageMarkerViewer tooltipMessageMarkerViewer = new TooltipMessageMarkerViewer();
 		tooltipMessageMarkerViewer.addRidget(alwaysMarked);
 		tooltipMessageMarkerViewer.addRidget(sometimesMarked);
 		tooltipMessageMarkerViewer.addRidget(sometimesMarkedMultipleRules);
 
 		// Show error messages in a message box
-		IMessageBoxRidget messageBoxRidget = (IMessageBoxRidget) getRidget("messageBox"); //$NON-NLS-1$
+		final IMessageBoxRidget messageBoxRidget = (IMessageBoxRidget) getRidget("messageBox"); //$NON-NLS-1$
 		messageBoxRidget.setType(IMessageBoxRidget.Type.ERROR);
 		messageBoxRidget.setTitle("Problems Summary"); //$NON-NLS-1$
 		messageBoxRidget.setOptions(IMessageBoxRidget.OPTIONS_OK);
@@ -96,7 +97,7 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 		messageBoxMessageMarkerViewer.addRidget(sometimesMarked);
 		messageBoxMessageMarkerViewer.addRidget(sometimesMarkedMultipleRules);
 
-		MessageMarkerViewers viewers = new MessageMarkerViewers();
+		final MessageMarkerViewers viewers = new MessageMarkerViewers();
 		viewers.addViewer(statuslineMessageMarkerViewer, "Statusline"); //$NON-NLS-1$
 		viewers.addViewer(tooltipMessageMarkerViewer, "Tooltip"); //$NON-NLS-1$
 		viewers.addViewer(messageBoxMessageMarkerViewer, "MessageBox"); //$NON-NLS-1$
@@ -113,11 +114,11 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 
 	public class MessageMarkerViewers {
 
-		private List<IMessageMarkerViewer> viewers = new ArrayList<IMessageMarkerViewer>();
-		private List<String> viewerLabels = new ArrayList<String>();
+		private final List<IMessageMarkerViewer> viewers = new ArrayList<IMessageMarkerViewer>();
+		private final List<String> viewerLabels = new ArrayList<String>();
 		private List<IMessageMarkerViewer> selectedViewers = new ArrayList<IMessageMarkerViewer>();
 
-		public void addViewer(IMessageMarkerViewer viewer, String label) {
+		public void addViewer(final IMessageMarkerViewer viewer, final String label) {
 			viewers.add(viewer);
 			viewerLabels.add(label);
 			updateViewers();
@@ -135,7 +136,7 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 			return selectedViewers;
 		}
 
-		public void setSelectedViewers(List<IMessageMarkerViewer> selectedViewers) {
+		public void setSelectedViewers(final List<IMessageMarkerViewer> selectedViewers) {
 			this.selectedViewers = selectedViewers;
 			updateViewers();
 			if (this.selectedViewers.contains(messageBoxMessageMarkerViewer)) {
@@ -145,10 +146,10 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 		}
 
 		private void updateViewers() {
-			for (IMessageMarkerViewer viewer : viewers) {
+			for (final IMessageMarkerViewer viewer : viewers) {
 				viewer.setVisible(false);
 			}
-			for (IMessageMarkerViewer viewer : selectedViewers) {
+			for (final IMessageMarkerViewer viewer : selectedViewers) {
 				viewer.setVisible(true);
 			}
 		}
@@ -165,7 +166,7 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 			return alwaysMarkedText;
 		}
 
-		public void setAlwaysMarkedText(String alwaysMarkedText) {
+		public void setAlwaysMarkedText(final String alwaysMarkedText) {
 			this.alwaysMarkedText = alwaysMarkedText;
 		}
 
@@ -173,7 +174,7 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 			return sometimesMarkedText;
 		}
 
-		public void setSometimesMarkedText(String sometimesMarkedText) {
+		public void setSometimesMarkedText(final String sometimesMarkedText) {
 			this.sometimesMarkedText = sometimesMarkedText;
 		}
 
@@ -181,7 +182,7 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 			return sometimesMarkedMultipleRulesText;
 		}
 
-		public void setSometimesMarkedMultipleRulesText(String sometimesMarkedMultipleRulesText) {
+		public void setSometimesMarkedMultipleRulesText(final String sometimesMarkedMultipleRulesText) {
 			this.sometimesMarkedMultipleRulesText = sometimesMarkedMultipleRulesText;
 		}
 

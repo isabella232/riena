@@ -75,17 +75,17 @@ public class RemoteServiceBuilder {
 	 * 
 	 * @param context
 	 */
-	protected void activate(ComponentContext context) {
+	protected void activate(final ComponentContext context) {
 		try {
-			String serviceClassName = (String) context.getProperties().get(RSDPublisherProperties.PROP_INTERFACE);
-			Class<?> serviceClass = Class.forName(serviceClassName);
-			String path = (String) context.getProperties().get(RSDPublisherProperties.PROP_REMOTE_PATH);
-			String protocol = (String) context.getProperties().get(RSDPublisherProperties.PROP_REMOTE_PROTOCOL);
+			final String serviceClassName = (String) context.getProperties().get(RSDPublisherProperties.PROP_INTERFACE);
+			final Class<?> serviceClass = Class.forName(serviceClassName);
+			final String path = (String) context.getProperties().get(RSDPublisherProperties.PROP_REMOTE_PATH);
+			final String protocol = (String) context.getProperties().get(RSDPublisherProperties.PROP_REMOTE_PROTOCOL);
 
-			RemoteServiceFactory factory = new RemoteServiceFactory();
+			final RemoteServiceFactory factory = new RemoteServiceFactory();
 			rsReg = factory.createAndRegisterProxy(serviceClass, path, protocol, Activator.getDefault().getContext());
 
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -98,7 +98,7 @@ public class RemoteServiceBuilder {
 	 * @param reg
 	 * @param service
 	 */
-	public void ungetService(Bundle bundle, ServiceRegistration reg, Object service) {
+	public void ungetService(final Bundle bundle, final ServiceRegistration reg, final Object service) {
 		if (rsReg != null) {
 			rsReg.unregister();
 			rsReg = null;

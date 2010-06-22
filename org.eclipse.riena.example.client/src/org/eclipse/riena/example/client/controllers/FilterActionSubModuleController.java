@@ -52,10 +52,10 @@ public class FilterActionSubModuleController extends SubModuleController {
 
 		MARKER("Marker", new DisabledMarker(), new HiddenMarker()); //$NON-NLS-1$
 
-		private String text;
-		private Object[] args;
+		private final String text;
+		private final Object[] args;
 
-		private FilterType(String text, Object... args) {
+		private FilterType(final String text, final Object... args) {
 			this.text = text;
 			this.args = args;
 		}
@@ -86,7 +86,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 		super.configureRidgets();
 		filterModel = new FilterModel();
-		ISingleChoiceRidget filterType = (ISingleChoiceRidget) getRidget("filterType"); //$NON-NLS-1$		
+		final ISingleChoiceRidget filterType = (ISingleChoiceRidget) getRidget("filterType"); //$NON-NLS-1$		
 		filterType.addPropertyChangeListener(new FilterTypeChangeListener());
 		filterType.bindToModel(filterModel, "types", filterModel, "selectedType"); //$NON-NLS-1$ //$NON-NLS-2$
 		filterType.updateFromModel();
@@ -97,13 +97,13 @@ public class FilterActionSubModuleController extends SubModuleController {
 	 */
 	private void initNavigationFilterGroup() {
 
-		ITextRidget itemId = (ITextRidget) getRidget("itemId"); //$NON-NLS-1$
+		final ITextRidget itemId = (ITextRidget) getRidget("itemId"); //$NON-NLS-1$
 		itemId.bindToModel(filterModel, "itemId"); //$NON-NLS-1$
 		itemId.updateFromModel();
 
 		filterTypeValues = (IComboRidget) getRidget("filterTypeValues"); //$NON-NLS-1$
 		filterTypeValues.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				if (addFilter != null) {
 					addFilter.setEnabled(evt.getNewValue() != null);
 				}
@@ -117,7 +117,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 			}
 		});
 
-		IActionRidget removeFilters = (IActionRidget) getRidget("removeFilters"); //$NON-NLS-1$
+		final IActionRidget removeFilters = (IActionRidget) getRidget("removeFilters"); //$NON-NLS-1$
 		removeFilters.addListener(new IActionListener() {
 			public void callback() {
 				doRemoveFilters();
@@ -136,7 +136,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 	 * @param add
 	 *            add button
 	 */
-	private void rebindFilterTypeValues(FilterModel model, IComboRidget typeValues, IActionRidget add) {
+	private void rebindFilterTypeValues(final FilterModel model, final IComboRidget typeValues, final IActionRidget add) {
 
 		if (model == null) {
 			return;
@@ -158,10 +158,10 @@ public class FilterActionSubModuleController extends SubModuleController {
 	 */
 	private void doAddFilter() {
 
-		ISubApplicationNode subApp = getNavigationNode().getParentOfType(ISubApplicationNode.class);
-		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
+		final ISubApplicationNode subApp = getNavigationNode().getParentOfType(ISubApplicationNode.class);
+		final Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
 		attributes.add(createFilterAttribute(filterModel));
-		IUIFilter filter = new UIFilter(attributes);
+		final IUIFilter filter = new UIFilter(attributes);
 		subApp.addFilter(filter);
 
 	}
@@ -171,7 +171,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 	 */
 	private void doRemoveFilters() {
 
-		ISubApplicationNode subApp = getNavigationNode().getParentOfType(ISubApplicationNode.class);
+		final ISubApplicationNode subApp = getNavigationNode().getParentOfType(ISubApplicationNode.class);
 		subApp.removeAllFilters();
 
 	}
@@ -184,12 +184,12 @@ public class FilterActionSubModuleController extends SubModuleController {
 	 *            model with selections.
 	 * @return filter attribute
 	 */
-	private IUIFilterRule createFilterAttribute(FilterModel model) {
+	private IUIFilterRule createFilterAttribute(final FilterModel model) {
 
 		IUIFilterRule attribute = null;
 
-		Object filterValue = model.getSelectedFilterTypeValue();
-		FilterType type = model.getSelectedType();
+		final Object filterValue = model.getSelectedFilterTypeValue();
+		final FilterType type = model.getSelectedType();
 
 		if (type == FilterType.MARKER) {
 			if (filterValue instanceof DisabledMarker) {
@@ -208,7 +208,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 	 */
 	private class FilterTypeChangeListener implements PropertyChangeListener {
 
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			rebindFilterTypeValues(filterModel, filterTypeValues, addFilter);
 		}
 
@@ -237,7 +237,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 		}
 
 		@SuppressWarnings("unused")
-		public void setSelectedType(FilterType selectedType) {
+		public void setSelectedType(final FilterType selectedType) {
 			this.selectedType = selectedType;
 		}
 
@@ -248,7 +248,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 			return selectedType;
 		}
 
-		public void setSelectedFilterTypeValue(Object selectedFilterTypeValue) {
+		public void setSelectedFilterTypeValue(final Object selectedFilterTypeValue) {
 			this.selectedFilterTypeValue = selectedFilterTypeValue;
 		}
 
@@ -256,7 +256,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 			return selectedFilterTypeValue;
 		}
 
-		public void setItemId(String itemId) {
+		public void setItemId(final String itemId) {
 			this.itemId = itemId;
 		}
 

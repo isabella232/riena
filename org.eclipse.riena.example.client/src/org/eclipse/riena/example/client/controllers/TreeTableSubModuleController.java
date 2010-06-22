@@ -46,7 +46,7 @@ public class TreeTableSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public TreeTableSubModuleController(ISubModuleNode navigationNode) {
+	public TreeTableSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -60,9 +60,9 @@ public class TreeTableSubModuleController extends SubModuleController {
 	}
 
 	private void bindModel() {
-		Object[] roots = createTreeInput();
-		String[] columnPropertyNames = { "word", "upperCase", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		String[] columnHeaders = { "Word", "Uppercase", "A Count" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final Object[] roots = createTreeInput();
+		final String[] columnPropertyNames = { "word", "upperCase", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final String[] columnHeaders = { "Word", "Uppercase", "A Count" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		tree.bindToModel(roots, WordNode.class, "children", "parent", columnPropertyNames, columnHeaders); //$NON-NLS-1$ //$NON-NLS-2$
 		tree.expand(roots[0]);
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
@@ -88,9 +88,9 @@ public class TreeTableSubModuleController extends SubModuleController {
 
 		tree.addDoubleClickListener(new IActionListener() {
 			public void callback() {
-				WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
+				final WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
-					boolean isUpperCase = !node.isUpperCase();
+					final boolean isUpperCase = !node.isUpperCase();
 					node.setUpperCase(isUpperCase);
 				}
 			}
@@ -102,8 +102,8 @@ public class TreeTableSubModuleController extends SubModuleController {
 		buttonAddSibling.setText("Add &Sibling"); //$NON-NLS-1$
 		buttonAddSibling.addListener(new IActionListener() {
 			public void callback() {
-				WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
-				WordNode parent = (node != null) ? node.getParent() : null;
+				final WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
+				final WordNode parent = (node != null) ? node.getParent() : null;
 				if (parent != null) {
 					new WordNode(parent, "A_NEW_SIBLING"); //$NON-NLS-1$
 				}
@@ -113,7 +113,7 @@ public class TreeTableSubModuleController extends SubModuleController {
 		buttonAddChild.setText("Add &Child"); //$NON-NLS-1$
 		buttonAddChild.addListener(new IActionListener() {
 			public void callback() {
-				WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
+				final WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
 					new WordNode(node, "ANOTHER_CHILD"); //$NON-NLS-1$
 				}
@@ -123,9 +123,9 @@ public class TreeTableSubModuleController extends SubModuleController {
 		buttonRename.setText("&Modify"); //$NON-NLS-1$
 		buttonRename.addListener(new IActionListener() {
 			public void callback() {
-				WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
+				final WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
-					String newValue = getNewValue(node.getWordIgnoreUppercase());
+					final String newValue = getNewValue(node.getWordIgnoreUppercase());
 					if (newValue != null) {
 						node.setWord(newValue);
 					}
@@ -136,10 +136,10 @@ public class TreeTableSubModuleController extends SubModuleController {
 		buttonDelete.setText("&Delete"); //$NON-NLS-1$
 		buttonDelete.addListener(new IActionListener() {
 			public void callback() {
-				WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
-				WordNode parent = (node != null) ? node.getParent() : null;
+				final WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
+				final WordNode parent = (node != null) ? node.getParent() : null;
 				if (parent != null) {
-					List<WordNode> children = parent.getChildren();
+					final List<WordNode> children = parent.getChildren();
 					children.remove(node);
 					parent.setChildren(children);
 				}
@@ -149,7 +149,7 @@ public class TreeTableSubModuleController extends SubModuleController {
 		buttonExpand.setText("E&xpand"); //$NON-NLS-1$
 		buttonExpand.addListener(new IActionListener() {
 			public void callback() {
-				WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
+				final WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
 					tree.expand(node);
 				}
@@ -159,7 +159,7 @@ public class TreeTableSubModuleController extends SubModuleController {
 		buttonCollapse.setText("&Collapse"); //$NON-NLS-1$
 		buttonCollapse.addListener(new IActionListener() {
 			public void callback() {
-				WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
+				final WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
 					tree.collapse(node);
 				}
@@ -167,24 +167,24 @@ public class TreeTableSubModuleController extends SubModuleController {
 		});
 
 		final IObservableValue viewerSelection = tree.getSingleSelectionObservable();
-		IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
+		final IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
 			@Override
 			protected Object calculate() {
 				return Boolean.valueOf(viewerSelection.getValue() != null);
 			}
 		};
-		IObservableValue hasNonRootSelection = new ComputedValue(Boolean.TYPE) {
+		final IObservableValue hasNonRootSelection = new ComputedValue(Boolean.TYPE) {
 			@Override
 			protected Object calculate() {
 				boolean result = false;
-				Object node = viewerSelection.getValue();
+				final Object node = viewerSelection.getValue();
 				if (node instanceof WordNode) {
 					result = ((WordNode) node).getParent() != null;
 				}
 				return Boolean.valueOf(result);
 			}
 		};
-		DataBindingContext dbc = new DataBindingContext();
+		final DataBindingContext dbc = new DataBindingContext();
 		dbc.bindValue(BeansObservables.observeValue(tree, IGroupedTreeTableRidget.PROPERTY_GROUPING_ENABLED),
 				BeansObservables.observeValue(buttonEnableGrouping, IToggleButtonRidget.PROPERTY_SELECTED), null, null);
 		bindEnablementToValue(dbc, buttonAddChild, hasSelection);
@@ -195,23 +195,23 @@ public class TreeTableSubModuleController extends SubModuleController {
 		bindEnablementToValue(dbc, buttonCollapse, hasSelection);
 	}
 
-	private void bindEnablementToValue(DataBindingContext dbc, IRidget ridget, IObservableValue value) {
+	private void bindEnablementToValue(final DataBindingContext dbc, final IRidget ridget, final IObservableValue value) {
 		dbc.bindValue(BeansObservables.observeValue(ridget, IRidget.PROPERTY_ENABLED), value, null, null);
 	}
 
-	private String getNewValue(Object oldValue) {
+	private String getNewValue(final Object oldValue) {
 		String newValue = null;
 		if (oldValue != null) {
-			Shell shell = ((Button) buttonRename.getUIControl()).getShell();
-			IInputValidator validator = new IInputValidator() {
-				public String isValid(String newText) {
-					boolean isValid = newText.trim().length() > 0;
+			final Shell shell = ((Button) buttonRename.getUIControl()).getShell();
+			final IInputValidator validator = new IInputValidator() {
+				public String isValid(final String newText) {
+					final boolean isValid = newText.trim().length() > 0;
 					return isValid ? null : "Word cannot be empty!"; //$NON-NLS-1$
 				}
 			};
-			InputDialog dialog = new InputDialog(shell, "Modify", "Enter a new word:", String.valueOf(oldValue), //$NON-NLS-1$ //$NON-NLS-2$
+			final InputDialog dialog = new InputDialog(shell, "Modify", "Enter a new word:", String.valueOf(oldValue), //$NON-NLS-1$ //$NON-NLS-2$
 					validator);
-			int result = dialog.open();
+			final int result = dialog.open();
 			if (result == Window.OK) {
 				newValue = dialog.getValue();
 			}
@@ -220,13 +220,13 @@ public class TreeTableSubModuleController extends SubModuleController {
 	}
 
 	private WordNode[] createTreeInput() {
-		WordNode groupA = new WordNode("A"); //$NON-NLS-1$
-		WordNode groupB = new WordNode("B"); //$NON-NLS-1$
-		WordNode groupC = new WordNode("C"); //$NON-NLS-1$
-		WordNode groupD = new WordNode("D"); //$NON-NLS-1$
-		WordNode groupE = new WordNode("E"); //$NON-NLS-1$
+		final WordNode groupA = new WordNode("A"); //$NON-NLS-1$
+		final WordNode groupB = new WordNode("B"); //$NON-NLS-1$
+		final WordNode groupC = new WordNode("C"); //$NON-NLS-1$
+		final WordNode groupD = new WordNode("D"); //$NON-NLS-1$
+		final WordNode groupE = new WordNode("E"); //$NON-NLS-1$
 
-		WordNode node1 = new WordNode(groupA, "Abandonment"); //$NON-NLS-1$
+		final WordNode node1 = new WordNode(groupA, "Abandonment"); //$NON-NLS-1$
 		node1.setUpperCase(true);
 		new WordNode(groupA, "Adventure"); //$NON-NLS-1$
 		new WordNode(groupA, "Acclimatisation"); //$NON-NLS-1$

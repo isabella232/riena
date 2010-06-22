@@ -30,7 +30,7 @@ public final class CommunicationUtil {
 	 * @return the String value for propValue or the default value
 	 *         <code>returnIfNoString</code>
 	 */
-	public static String accessProperty(Object propValue, String returnIfNoString) {
+	public static String accessProperty(final Object propValue, final String returnIfNoString) {
 		if (propValue instanceof String) { // if api programmed we receive
 			return (String) propValue; // a String
 		} else {

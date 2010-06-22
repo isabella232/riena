@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.factory;
 
-import org.eclipse.riena.communication.core.IRemoteServiceReference;
-import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
+
+import org.eclipse.riena.communication.core.IRemoteServiceReference;
+import org.eclipse.riena.communication.core.RemoteServiceDescription;
 
 /**
  * This is a default implementation of {@link IRemoteServiceReference}.
@@ -30,7 +31,7 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	 * 
 	 * @param description
 	 */
-	public RemoteServiceReference(RemoteServiceDescription description) {
+	public RemoteServiceReference(final RemoteServiceDescription description) {
 		this.description = description;
 	}
 
@@ -60,7 +61,7 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	 * @seeorg.eclipse.riena.communication.core.IRemoteServiceReference#
 	 * setServiceRegistration(org.osgi.framework.ServiceRegistration)
 	 */
-	public void setServiceRegistration(ServiceRegistration serviceRegistration) {
+	public void setServiceRegistration(final ServiceRegistration serviceRegistration) {
 		this.serviceRegistration = serviceRegistration;
 	}
 
@@ -70,7 +71,7 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	 * 
 	 * @param serviceInstance
 	 */
-	public void setServiceInstance(Object serviceInstance) {
+	public void setServiceInstance(final Object serviceInstance) {
 		this.serviceInstance = serviceInstance;
 	}
 
@@ -131,7 +132,7 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	 * org.eclipse.riena.communication.core.IRemoteServiceReference#setContext
 	 * (org.osgi.framework.BundleContext)
 	 */
-	public void setContext(BundleContext context) {
+	public void setContext(final BundleContext context) {
 		this.context = context;
 	}
 

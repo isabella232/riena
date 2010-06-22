@@ -59,10 +59,10 @@ public class LoginDialogController extends AbstractWindowController {
 
 		final ITextRidget user = (ITextRidget) getRidget(RIDGET_ID_USER);
 		user.setMandatory(true);
-		ITextRidget password = (ITextRidget) getRidget(RIDGET_ID_PASSWORD);
+		final ITextRidget password = (ITextRidget) getRidget(RIDGET_ID_PASSWORD);
 		password.setMandatory(true);
 
-		IActionRidget okAction = (IActionRidget) getRidget(RIDGET_ID_OK);
+		final IActionRidget okAction = (IActionRidget) getRidget(RIDGET_ID_OK);
 		okAction.addListener(new IActionListener() {
 			public void callback() {
 				canLogin = checkLogin();
@@ -75,7 +75,7 @@ public class LoginDialogController extends AbstractWindowController {
 		});
 		addDefaultAction(getWindowRidget(), okAction);
 
-		IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
+		final IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
 		cancelAction.addListener(new IActionListener() {
 			public void callback() {
 				dispose(EXIT_ABORT);
@@ -92,8 +92,8 @@ public class LoginDialogController extends AbstractWindowController {
 
 	private boolean checkLogin() {
 		// do not use server authentication in case user = "" and password=""
-		String userId = ((ITextRidget) getRidget(RIDGET_ID_USER)).getText();
-		String password = ((ITextRidget) getRidget(RIDGET_ID_PASSWORD)).getText();
+		final String userId = ((ITextRidget) getRidget(RIDGET_ID_USER)).getText();
+		final String password = ((ITextRidget) getRidget(RIDGET_ID_PASSWORD)).getText();
 		if (StringUtils.isEmpty(userId) && StringUtils.isEmpty(password)) {
 			return true;
 		}
@@ -102,25 +102,25 @@ public class LoginDialogController extends AbstractWindowController {
 		LocalLoginCallbackHandler.setSuppliedCredentials(((ITextRidget) getRidget(RIDGET_ID_USER)).getText(),
 				((ITextRidget) getRidget(RIDGET_ID_PASSWORD)).getText());
 
-		URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
-		ILoginContext secureContext = LoginContextFactory.createContext("Remote", configUrl); //$NON-NLS-1$
+		final URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
+		final ILoginContext secureContext = LoginContextFactory.createContext("Remote", configUrl); //$NON-NLS-1$
 
 		try {
 			secureContext.login();
 			return true;
-		} catch (LoginException e) {
+		} catch (final LoginException e) {
 			showMessage(e);
 			return false;
 		}
 	}
 
-	private void dispose(int result) {
+	private void dispose(final int result) {
 		getWindowRidget().dispose();
 		setReturnCode(result);
 	}
 
-	private void showMessage(LoginException e) {
-		IMessageBoxRidget messageLoginException = (IMessageBoxRidget) getRidget(RIDGET_ID_MESSAGE_LOGIN_EXCEPTION);
+	private void showMessage(final LoginException e) {
+		final IMessageBoxRidget messageLoginException = (IMessageBoxRidget) getRidget(RIDGET_ID_MESSAGE_LOGIN_EXCEPTION);
 		messageLoginException.setType(IMessageBoxRidget.Type.ERROR);
 		messageLoginException.setTitle("Login exception"); //$NON-NLS-1$
 		messageLoginException.setText(e.getMessage()); //$NON-NLS-1

@@ -47,7 +47,7 @@ public abstract class AbstractRienaSerializerFactory extends AbstractSerializerF
 	 */
 	public static class SalienceComparator implements Comparator<AbstractRienaSerializerFactory> {
 
-		public int compare(AbstractRienaSerializerFactory o1, AbstractRienaSerializerFactory o2) {
+		public int compare(final AbstractRienaSerializerFactory o1, final AbstractRienaSerializerFactory o2) {
 			return o1.getSalience() < o2.getSalience() ? 1 : o1.getSalience() > o2.getSalience() ? -1 : 0;
 		}
 

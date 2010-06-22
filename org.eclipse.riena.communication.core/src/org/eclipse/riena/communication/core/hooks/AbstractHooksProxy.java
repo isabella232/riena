@@ -27,13 +27,13 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 	private final Object proxiedInstance;
 	private final AtomicReference<Map<MethodKey, Method>> methodTableRef;
 
-	public AbstractHooksProxy(Object proxiedInstance) {
+	public AbstractHooksProxy(final Object proxiedInstance) {
 		this.proxiedInstance = proxiedInstance;
 		this.methodTableRef = new AtomicReference<Map<MethodKey, Method>>();
 	}
 
-	public Object invoke(Object proxy, final Method method, final Object[] args) throws Throwable {
-		Subject subject = getSubject();
+	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+		final Subject subject = getSubject();
 		if (subject == null) {
 			return invoke(method, args);
 		} else {
@@ -43,7 +43,7 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 						return invoke(method, args);
 					}
 				}, null);
-			} catch (PrivilegedActionException pae) {
+			} catch (final PrivilegedActionException pae) {
 				Throwable cause = pae.getCause();
 				if (cause instanceof InvocationTargetException) {
 					cause = ((InvocationTargetException) cause).getTargetException();
@@ -56,7 +56,7 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 	private Object invoke(final Method method, final Object[] args) throws NoSuchMethodException,
 			InvocationTargetException, IllegalAccessException {
 		Method proxyMethod;
-		Map<MethodKey, Method> methodTable = methodTableRef.get();
+		final Map<MethodKey, Method> methodTable = methodTableRef.get();
 		if (methodTable == null) {
 			proxyMethod = method;
 		} else {
@@ -67,13 +67,13 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 		}
 		try {
 			return proxyMethod.invoke(proxiedInstance, args);
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			if (methodTable != null) {
 				throw new NoSuchMethodException(proxiedInstance + " " + method.getName() + "," + Arrays.toString(args)); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			Method[] methods = proxiedInstance.getClass().getMethods();
-			Map<MethodKey, Method> tempMethodTable = new HashMap<MethodKey, Method>(methods.length);
-			for (Method keyMethod : methods) {
+			final Method[] methods = proxiedInstance.getClass().getMethods();
+			final Map<MethodKey, Method> tempMethodTable = new HashMap<MethodKey, Method>(methods.length);
+			for (final Method keyMethod : methods) {
 				tempMethodTable.put(new MethodKey(keyMethod), keyMethod);
 			}
 			methodTableRef.compareAndSet(null, tempMethodTable);
@@ -88,9 +88,9 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 	public abstract Subject getSubject();
 
 	/**
-	 * The {@code MethodKey} is an object that can be used as a key for {@code
-	 * Method}s in {@code Map}s that does not consider the methods declaring
-	 * class.
+	 * The {@code MethodKey} is an object that can be used as a key for
+	 * {@code Method}s in {@code Map}s that does not consider the methods
+	 * declaring class.
 	 */
 	private static final class MethodKey {
 
@@ -109,11 +109,11 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 		 * parameter types and return type.
 		 */
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if (obj == null || !(obj instanceof MethodKey)) {
 				return false;
 			}
-			MethodKey other = (MethodKey) obj;
+			final MethodKey other = (MethodKey) obj;
 			if (!method.getName().equals(other.method.getName())) {
 				return false;
 			}

@@ -34,14 +34,14 @@ public class DetachedSubModuleView extends SubModuleView {
 	public static final String ID = DetachedSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
-		GridDataFactory fillFactory = GridDataFactory.fillDefaults().grab(true, true);
+		final GridDataFactory fillFactory = GridDataFactory.fillDefaults().grab(true, true);
 
-		String msg = "This sample opens two detached views.\n" //$NON-NLS-1$
+		final String msg = "This sample opens two detached views.\n" //$NON-NLS-1$
 				+ "Both of them are only visible when the corresponding navigation node is selected.\n"; //$NON-NLS-1$
-		Label msgLabel = UIControlsFactory.createLabel(parent, msg);
+		final Label msgLabel = UIControlsFactory.createLabel(parent, msg);
 		fillFactory.applyTo(msgLabel);
 
 		getNavigationNode().addSimpleListener(new NodeListener());
@@ -59,19 +59,19 @@ public class DetachedSubModuleView extends SubModuleView {
 		private final DetachedViewsManager dvManager = new DetachedViewsManager(getSite());
 
 		@Override
-		public void activated(INavigationNode<?> source) {
+		public void activated(final INavigationNode<?> source) {
 			dvManager.showView("viewRight", TreeSubModuleView.class, SWT.RIGHT); //$NON-NLS-1$
 			dvManager.showView("viewLeft", ChoiceSubModuleView.class, SWT.BOTTOM); //$NON-NLS-1$
 		}
 
 		@Override
-		public void deactivated(INavigationNode<?> source) {
+		public void deactivated(final INavigationNode<?> source) {
 			dvManager.hideView("viewRight"); //$NON-NLS-1$
 			dvManager.hideView("viewLeft"); //$NON-NLS-1$
 		}
 
 		@Override
-		public void disposed(INavigationNode<?> source) {
+		public void disposed(final INavigationNode<?> source) {
 			// closes all detached views by this manager
 			dvManager.dispose();
 			// remove this listener - if not removing here, this can also be done in in 

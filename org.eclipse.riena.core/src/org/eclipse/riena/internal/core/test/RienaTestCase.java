@@ -292,8 +292,8 @@ public abstract class RienaTestCase extends TestCase {
 		assertNotNull(extension);
 		final RegistryEventListener listener = new RegistryEventListener(extensionId);
 		registry.addListener(listener);
-		final boolean success = registry.removeExtension(extension, ((ExtensionRegistry) registry)
-				.getTemporaryUserToken());
+		final boolean success = registry.removeExtension(extension,
+				((ExtensionRegistry) registry).getTemporaryUserToken());
 		listener.waitExtensionRemoved();
 		registry.removeListener(listener);
 		assertTrue(success);
@@ -329,8 +329,8 @@ public abstract class RienaTestCase extends TestCase {
 		assertNotNull(extensionPoint);
 		final RegistryEventListener listener = new RegistryEventListener(extensionPointId);
 		registry.addListener(listener);
-		final boolean success = registry.removeExtensionPoint(extensionPoint, ((ExtensionRegistry) registry)
-				.getTemporaryUserToken());
+		final boolean success = registry.removeExtensionPoint(extensionPoint,
+				((ExtensionRegistry) registry).getTemporaryUserToken());
 		listener.waitExtensionPointRemoved();
 		registry.removeListener(listener);
 		assertTrue(success);
@@ -443,8 +443,7 @@ public abstract class RienaTestCase extends TestCase {
 					bundle.stop();
 				} else {
 					if (bundle.getState() != Bundle.UNINSTALLED) {
-						Nop
-								.reason("testcase tried to stop this bundle which did not run, but we can ignore this ==> bundle is stopped already"); //$NON-NLS-1$
+						Nop.reason("testcase tried to stop this bundle which did not run, but we can ignore this ==> bundle is stopped already"); //$NON-NLS-1$
 					}
 				}
 			}

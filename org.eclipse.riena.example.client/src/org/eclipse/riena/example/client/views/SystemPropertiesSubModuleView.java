@@ -37,60 +37,60 @@ public class SystemPropertiesSubModuleView extends SubModuleView {
 	public static final String ID = SystemPropertiesSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
-		Group group1 = createTableGroup(parent);
+		final Group group1 = createTableGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(group1);
 
-		Group group2 = createEditGroup(parent);
+		final Group group2 = createEditGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(group2);
 	}
 
 	// helping methods
 	// ////////////////
 
-	private Group createTableGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "&System Properties:"); //$NON-NLS-1$
+	private Group createTableGroup(final Composite parent) {
+		final Group group = UIControlsFactory.createGroup(parent, "&System Properties:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
-		Composite tableComposite = createTable(group);
+		final Composite tableComposite = createTable(group);
 		GridDataFactory.fillDefaults().grab(true, true).span(2, 1).applyTo(tableComposite);
 
-		Composite buttonComposite = createButtonComposite(group);
+		final Composite buttonComposite = createButtonComposite(group);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(buttonComposite);
 
 		return group;
 	}
 
-	private Group createEditGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "Edit:"); //$NON-NLS-1$
+	private Group createEditGroup(final Composite parent) {
+		final Group group = UIControlsFactory.createGroup(parent, "Edit:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
-		GridDataFactory fillFactory = GridDataFactory.fillDefaults().grab(true, false);
+		final GridDataFactory fillFactory = GridDataFactory.fillDefaults().grab(true, false);
 
 		UIControlsFactory.createLabel(group, "&Key:"); //$NON-NLS-1$
-		Text textKey = UIControlsFactory.createText(group);
+		final Text textKey = UIControlsFactory.createText(group);
 		fillFactory.applyTo(textKey);
 		addUIControl(textKey, "textKey"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "&Value:"); //$NON-NLS-1$
-		Text textValue = UIControlsFactory.createText(group);
+		final Text textValue = UIControlsFactory.createText(group);
 		fillFactory.applyTo(textValue);
 		addUIControl(textValue, "textValue"); //$NON-NLS-1$
 
-		Button buttonSave = UIControlsFactory.createButton(group);
-		int widthHint = UIControlsFactory.getWidthHint(buttonSave);
-		GridDataFactory.fillDefaults().align(SWT.END, SWT.BEGINNING).hint(widthHint, SWT.DEFAULT).span(2, 1).applyTo(
-				buttonSave);
+		final Button buttonSave = UIControlsFactory.createButton(group);
+		final int widthHint = UIControlsFactory.getWidthHint(buttonSave);
+		GridDataFactory.fillDefaults().align(SWT.END, SWT.BEGINNING).hint(widthHint, SWT.DEFAULT).span(2, 1)
+				.applyTo(buttonSave);
 		addUIControl(buttonSave, "buttonSave"); //$NON-NLS-1$
 
 		return group;
 	}
 
-	private Composite createTable(Group group) {
-		Composite tableComposite = new Composite(group, SWT.NONE);
+	private Composite createTable(final Group group) {
+		final Composite tableComposite = new Composite(group, SWT.NONE);
 
 		final Table tableProperties = UIControlsFactory.createTable(tableComposite, SWT.SINGLE | SWT.BORDER
 				| SWT.FULL_SELECTION);
@@ -101,7 +101,7 @@ public class SystemPropertiesSubModuleView extends SubModuleView {
 		final TableColumn columnKey = new TableColumn(tableProperties, SWT.LEFT);
 		final TableColumn columnValue = new TableColumn(tableProperties, SWT.LEFT);
 
-		TableColumnLayout layout = new TableColumnLayout();
+		final TableColumnLayout layout = new TableColumnLayout();
 		layout.setColumnData(columnKey, new ColumnWeightData(30));
 		layout.setColumnData(columnValue, new ColumnWeightData(60));
 		tableComposite.setLayout(layout);
@@ -109,17 +109,17 @@ public class SystemPropertiesSubModuleView extends SubModuleView {
 		return tableComposite;
 	}
 
-	private Composite createButtonComposite(Group group) {
-		Composite buttonComposite = UIControlsFactory.createComposite(group);
+	private Composite createButtonComposite(final Group group) {
+		final Composite buttonComposite = UIControlsFactory.createComposite(group);
 		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(buttonComposite);
 
-		Button buttonAdd = UIControlsFactory.createButton(buttonComposite);
-		int widthHint = UIControlsFactory.getWidthHint(buttonAdd);
+		final Button buttonAdd = UIControlsFactory.createButton(buttonComposite);
+		final int widthHint = UIControlsFactory.getWidthHint(buttonAdd);
 		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).hint(widthHint, SWT.DEFAULT)
 				.applyTo(buttonAdd);
 		addUIControl(buttonAdd, "buttonAdd"); //$NON-NLS-1$
 
-		Button toggleDoubleClick = UIControlsFactory.createButtonToggle(buttonComposite);
+		final Button toggleDoubleClick = UIControlsFactory.createButtonToggle(buttonComposite);
 		addUIControl(toggleDoubleClick, "toggleDoubleClick"); //$NON-NLS-1$
 
 		return buttonComposite;

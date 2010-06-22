@@ -30,8 +30,8 @@ public class OrderedServiceHooksExecuter implements IServiceHook {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void beforeService(ServiceContext context) {
-		for (IServiceHook sHook : orderedServiceHooks) {
+	public void beforeService(final ServiceContext context) {
+		for (final IServiceHook sHook : orderedServiceHooks) {
 			sHook.beforeService(context);
 		}
 	}
@@ -39,22 +39,22 @@ public class OrderedServiceHooksExecuter implements IServiceHook {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void afterService(ServiceContext context) {
-		for (IServiceHook sHook : reversedServiceHooks) {
+	public void afterService(final ServiceContext context) {
+		for (final IServiceHook sHook : reversedServiceHooks) {
 			sHook.beforeService(context);
 		}
 	}
 
 	@InjectExtension
-	public void update(IServiceHookExtension[] serviceHookExtensions) {
-		Orderer<IServiceHook> orderer = new Orderer<IServiceHook>();
-		for (IServiceHookExtension extension : serviceHookExtensions) {
-			orderer.add(extension.getServiceHook(), extension.getName(), extension.getPostHooks(), extension
-					.getPostHooks());
+	public void update(final IServiceHookExtension[] serviceHookExtensions) {
+		final Orderer<IServiceHook> orderer = new Orderer<IServiceHook>();
+		for (final IServiceHookExtension extension : serviceHookExtensions) {
+			orderer.add(extension.getServiceHook(), extension.getName(), extension.getPostHooks(),
+					extension.getPostHooks());
 		}
-		List<IServiceHook> tempOrdered = orderer.getOrderedObjects();
-		List<IServiceHook> tempReverse = new ArrayList<IServiceHook>(tempOrdered.size());
-		for (IServiceHook hook : Iter.ableReverse(tempOrdered)) {
+		final List<IServiceHook> tempOrdered = orderer.getOrderedObjects();
+		final List<IServiceHook> tempReverse = new ArrayList<IServiceHook>(tempOrdered.size());
+		for (final IServiceHook hook : Iter.ableReverse(tempOrdered)) {
 			tempReverse.add(hook);
 		}
 		synchronized (this) {

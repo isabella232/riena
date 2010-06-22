@@ -36,12 +36,12 @@ public final class Log4r {
 	/**
 	 * Get a {@code Logger} for class {@code clazz}.
 	 * <p>
-	 * If this is called in an OSGi context this method will return the {@code
-	 * Logger} of the Riena framework. Otherwise if the boolean system property
-	 * {@code LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a simple {@code
-	 * Logger} that writes to the console will be returned. If the system
-	 * property is {@code false} a <i>null</i> logger that does nothing will be
-	 * returned.
+	 * If this is called in an OSGi context this method will return the
+	 * {@code Logger} of the Riena framework. Otherwise if the boolean system
+	 * property {@code LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a
+	 * simple {@code Logger} that writes to the console will be returned. If the
+	 * system property is {@code false} a <i>null</i> logger that does nothing
+	 * will be returned.
 	 * 
 	 * @param clazz
 	 *            categorizes the logger
@@ -64,11 +64,11 @@ public final class Log4r {
 	 * @param activator
 	 *            If the activator is NOT {@code null} this method will return
 	 *            the {@code Logger} of the Riena framework. Otherwise if the
-	 *            boolean system property {@code
-	 *            LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a simple
-	 *            {@code Logger} that writes to the console will be returned. If
-	 *            the system property is {@code false} a <i>null</i> logger that
-	 *            does nothing will be returned.
+	 *            boolean system property
+	 *            {@code LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a
+	 *            simple {@code Logger} that writes to the console will be
+	 *            returned. If the system property is {@code false} a
+	 *            <i>null</i> logger that does nothing will be returned.
 	 * @param clazz
 	 *            categorizes the logger
 	 * @return the {@code Logger}
@@ -86,11 +86,11 @@ public final class Log4r {
 	 * @param activator
 	 *            If the activator is NOT {@code null} this method will return
 	 *            the {@code Logger} of the Riena framework. Otherwise if the
-	 *            boolean system property {@code
-	 *            LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a simple
-	 *            {@code Logger} that writes to the console will be returned. If
-	 *            the system property is {@code false} a <i>null</i> logger that
-	 *            does nothing will be returned.
+	 *            boolean system property
+	 *            {@code LoggerMill.RIENA_DEFAULT_LOGGING} is {@code true} a
+	 *            simple {@code Logger} that writes to the console will be
+	 *            returned. If the system property is {@code false} a
+	 *            <i>null</i> logger that does nothing will be returned.
 	 * @param className
 	 *            categorizes the logger
 	 * @return the {@code Logger}

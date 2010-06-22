@@ -32,7 +32,7 @@ public class ComboAssembler extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds;
 
-	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
 		if (knownTargetIds == null) {
 			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigate.firstSubModule" //$NON-NLS-1$
 					));
@@ -42,8 +42,8 @@ public class ComboAssembler extends AbstractNavigationAssembler {
 		return knownTargetIds.contains(nodeId.getTypeId());
 	}
 
-	public INavigationNode<?>[] buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
-		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
+	public INavigationNode<?>[] buildNode(final NavigationNodeId nodeId, final NavigationArgument navigationArgument) {
+		final ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigate.firstSubModule"), "First SubModule"); //$NON-NLS-1$ //$NON-NLS-2$
 		WorkareaManager.getInstance().registerDefinition(subModule, ComboAndChoiceSubModuleController.class,
 				ComboAndChoiceSubModuleView.ID);

@@ -37,7 +37,7 @@ import java.lang.annotation.Target;
  * 
  * The values of the annotation are the FindBugs bug detector names.
  */
-@Target( { TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE })
+@Target({ TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE })
 @Retention(RetentionPolicy.SOURCE)
 public @interface IgnoreFindBugs {
 

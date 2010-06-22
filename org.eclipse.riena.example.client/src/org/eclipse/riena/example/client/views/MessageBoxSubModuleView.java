@@ -40,48 +40,48 @@ public class MessageBoxSubModuleView extends SubModuleView {
 	private Font font;
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		GridLayout layout = new GridLayout(2, false);
+		final GridLayout layout = new GridLayout(2, false);
 		layout.verticalSpacing = 10;
 		parent.setLayout(layout);
 
-		Label explanation = UIControlsFactory.createLabel(parent, "Message displayed in a popup dialog"); //$NON-NLS-1$
+		final Label explanation = UIControlsFactory.createLabel(parent, "Message displayed in a popup dialog"); //$NON-NLS-1$
 		font = new Font(explanation.getDisplay(), "Arial", 8, SWT.BOLD); //$NON-NLS-1$
 		explanation.setFont(font);
 		explanation.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
 		UIControlsFactory.createLabel(parent, "Title"); //$NON-NLS-1$
-		Text messageTitle = UIControlsFactory.createText(parent);
+		final Text messageTitle = UIControlsFactory.createText(parent);
 		messageTitle.setLayoutData(GD230);
 		addUIControl(messageTitle, "messageTitle"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Text"); //$NON-NLS-1$
-		Text messageText = UIControlsFactory.createText(parent);
+		final Text messageText = UIControlsFactory.createText(parent);
 		messageText.setLayoutData(GD230);
 		addUIControl(messageText, "messageText"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Type"); //$NON-NLS-1$
-		Combo messageType = UIControlsFactory.createCombo(parent);
+		final Combo messageType = UIControlsFactory.createCombo(parent);
 		messageType.setLayoutData(GD230);
 		addUIControl(messageType, "messageType"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Options"); //$NON-NLS-1$
-		Combo messageOptions = UIControlsFactory.createCombo(parent);
+		final Combo messageOptions = UIControlsFactory.createCombo(parent);
 		messageOptions.setLayoutData(GD230);
 		addUIControl(messageOptions, "messageOptions"); //$NON-NLS-1$
 
-		Button showMessage = UIControlsFactory.createButton(parent);
+		final Button showMessage = UIControlsFactory.createButton(parent);
 		showMessage.setLayoutData(GD21LEFT);
 		addUIControl(showMessage, "showMessage"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Selected Option"); //$NON-NLS-1$
-		Text selectedOption = UIControlsFactory.createText(parent);
+		final Text selectedOption = UIControlsFactory.createText(parent);
 		selectedOption.setLayoutData(GD230);
 		addUIControl(selectedOption, "selectedOption"); //$NON-NLS-1$
 
-		MessageBox messageBox = UIControlsFactory.createMessageBox(parent);
+		final MessageBox messageBox = UIControlsFactory.createMessageBox(parent);
 		addUIControl(messageBox, "messageBox"); //$NON-NLS-1$
 	}
 

@@ -26,22 +26,22 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class RemoteServiceProgressSubModuleView extends SubModuleView {
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, true));
-		Group group = createUIProcessGroup(parent);
+		final Group group = createUIProcessGroup(parent);
 		GridDataFactory.fillDefaults().applyTo(group);
 	}
 
-	private Group createUIProcessGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "&Visualized Remote Service Call Progress"); //$NON-NLS-1$
+	private Group createUIProcessGroup(final Composite parent) {
+		final Group group = UIControlsFactory.createGroup(parent, "&Visualized Remote Service Call Progress"); //$NON-NLS-1$
 		group.setLayout(new GridLayout(1, true));
-		Button startCommunicationManuel = UIControlsFactory.createButton(group);
+		final Button startCommunicationManuel = UIControlsFactory.createButton(group);
 		int xHint = UIControlsFactory.getWidthHint(startCommunicationManuel) + 10;
 		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(startCommunicationManuel);
 		addUIControl(startCommunicationManuel, RemoteServiceProgressSubModuleController.SERVICE_CALL_ACTION_MANUAL);
 
-		Button startCommunicationUIProcess = UIControlsFactory.createButton(group);
+		final Button startCommunicationUIProcess = UIControlsFactory.createButton(group);
 		xHint = UIControlsFactory.getWidthHint(startCommunicationUIProcess);
 		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(startCommunicationUIProcess);
 		addUIControl(startCommunicationUIProcess,

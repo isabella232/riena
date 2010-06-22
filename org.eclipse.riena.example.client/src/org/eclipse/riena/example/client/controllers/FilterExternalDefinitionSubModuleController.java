@@ -12,7 +12,6 @@ package org.eclipse.riena.example.client.controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.riena.core.service.Service;
@@ -40,14 +39,14 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 */
 	private void initRidgets() {
 
-		IActionRidget removeFilters = (IActionRidget) getRidget("removeOffline"); //$NON-NLS-1$
+		final IActionRidget removeFilters = (IActionRidget) getRidget("removeOffline"); //$NON-NLS-1$
 		removeFilters.addListener(new IActionListener() {
 			public void callback() {
 				doRemoveFilters();
 			}
 		});
 
-		IActionRidget addFilters = (IActionRidget) getRidget("addOffline"); //$NON-NLS-1$
+		final IActionRidget addFilters = (IActionRidget) getRidget("addOffline"); //$NON-NLS-1$
 		addFilters.addListener(new IActionListener() {
 			public void callback() {
 				doAddFilters();
@@ -61,12 +60,12 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 */
 	private void doAddFilters() {
 
-		IUIFilterContainer container = Service.get(IUIFilterProvider.class).provideFilter("rienaExample.offline"); //$NON-NLS-1$
-		IUIFilter filter = container.getFilter();
-		Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
-		List<INavigationNode<?>> nodes = findNodes(targetNodeIds);
+		final IUIFilterContainer container = Service.get(IUIFilterProvider.class).provideFilter("rienaExample.offline"); //$NON-NLS-1$
+		final IUIFilter filter = container.getFilter();
+		final Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
+		final List<INavigationNode<?>> nodes = findNodes(targetNodeIds);
 		if (nodes != null && !nodes.isEmpty()) {
-			for (INavigationNode<?> navigationNode : nodes) {
+			for (final INavigationNode<?> navigationNode : nodes) {
 				navigationNode.addFilter(filter);
 			}
 		}
@@ -78,11 +77,11 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 */
 	private void doRemoveFilters() {
 
-		IUIFilterContainer container = Service.get(IUIFilterProvider.class).provideFilter("rienaExample.offline"); //$NON-NLS-1$
-		IUIFilter filter = container.getFilter();
-		Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
-		List<INavigationNode<?>> nodes = findNodes(targetNodeIds);
-		for (INavigationNode<?> navigationNode : nodes) {
+		final IUIFilterContainer container = Service.get(IUIFilterProvider.class).provideFilter("rienaExample.offline"); //$NON-NLS-1$
+		final IUIFilter filter = container.getFilter();
+		final Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
+		final List<INavigationNode<?>> nodes = findNodes(targetNodeIds);
+		for (final INavigationNode<?> navigationNode : nodes) {
 			navigationNode.removeFilter(filter.getFilterID());
 		}
 
@@ -95,24 +94,24 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 *            node ID
 	 * @return list of found nodes.
 	 */
-	private List<INavigationNode<?>> findNodes(String id) {
+	private List<INavigationNode<?>> findNodes(final String id) {
 
-		List<INavigationNode<?>> nodes = new ArrayList<INavigationNode<?>>();
+		final List<INavigationNode<?>> nodes = new ArrayList<INavigationNode<?>>();
 
-		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+		final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 		findNodes(id, applNode, nodes);
 
 		return nodes;
 
 	}
 
-	private void findNodes(String id, INavigationNode<?> node, List<INavigationNode<?>> nodes) {
+	private void findNodes(final String id, final INavigationNode<?> node, final List<INavigationNode<?>> nodes) {
 
 		if (node.getNodeId() != null && StringUtils.equals(node.getNodeId().getTypeId(), id)) {
 			nodes.add(node);
 		}
-		List<?> children = node.getChildren();
-		for (Object child : children) {
+		final List<?> children = node.getChildren();
+		for (final Object child : children) {
 			if (child instanceof INavigationNode<?>) {
 				findNodes(id, (INavigationNode<?>) child, nodes);
 			}
@@ -127,12 +126,11 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 *            node IDs
 	 * @return list of found nodes.
 	 */
-	private List<INavigationNode<?>> findNodes(Collection<String> ids) {
+	private List<INavigationNode<?>> findNodes(final Collection<String> ids) {
 
-		List<INavigationNode<?>> nodes = new ArrayList<INavigationNode<?>>();
+		final List<INavigationNode<?>> nodes = new ArrayList<INavigationNode<?>>();
 
-		for (Iterator<String> iterator = ids.iterator(); iterator.hasNext();) {
-			String id = iterator.next();
+		for (final String id : ids) {
 			nodes.addAll(findNodes(id));
 		}
 

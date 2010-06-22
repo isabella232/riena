@@ -34,13 +34,13 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 	private IServiceMessageContextAccessor mca;
 	private Subject subject;
 
-	public ServiceHooksProxy(Object serviceInstance) {
+	public ServiceHooksProxy(final Object serviceInstance) {
 		super(serviceInstance);
 		Wire.instance(this).andStart(Activator.getDefault().getContext());
 	}
 
 	@Override
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 		if (method.getName().equals("equals") || method.getName().equals("hashCode")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return new UnsupportedOperationException("method :" + method.getName() + " not supported for " //$NON-NLS-1$ //$NON-NLS-2$
 					+ this.getServiceInstance());
@@ -59,11 +59,11 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 			context = new ServiceContext(rsd, method, getServiceInstance(), mc);
 
 			// call before service hook
-			for (IServiceHook sHook : serviceHooks) {
+			for (final IServiceHook sHook : serviceHooks) {
 				sHook.beforeService(context);
 			}
 
-			Object s = context.getProperty("riena.subject"); //$NON-NLS-1$
+			final Object s = context.getProperty("riena.subject"); //$NON-NLS-1$
 			if (s instanceof Subject) {
 				subject = (Subject) s;
 			}
@@ -71,12 +71,12 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 
 		try {
 			return super.invoke(proxy, method, args);
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			throw e.getTargetException();
 		} finally {
 			// context might be null, but serviceHooks were injected during invoke
 			if (context != null) {
-				for (IServiceHook sHook : serviceHooks) {
+				for (final IServiceHook sHook : serviceHooks) {
 					sHook.afterService(context);
 				}
 			}
@@ -84,11 +84,11 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 	}
 
 	@InjectService
-	public void bind(IServiceHook serviceHook) {
+	public void bind(final IServiceHook serviceHook) {
 		serviceHooks.add(serviceHook);
 	}
 
-	public void unbind(IServiceHook serviceHook) {
+	public void unbind(final IServiceHook serviceHook) {
 		serviceHooks.remove(serviceHook);
 	}
 
@@ -96,11 +96,11 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 		return getProxiedInstance();
 	}
 
-	public void setRemoteServiceDescription(RemoteServiceDescription rsd) {
+	public void setRemoteServiceDescription(final RemoteServiceDescription rsd) {
 		this.rsd = rsd;
 	}
 
-	public void setMessageContextAccessor(IServiceMessageContextAccessor mca) {
+	public void setMessageContextAccessor(final IServiceMessageContextAccessor mca) {
 		this.mca = mca;
 	}
 

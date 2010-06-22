@@ -37,7 +37,7 @@ public class BeforeActivateSubModuleController extends SubModuleController {
 
 		allowChoice = getRidget(ISingleChoiceRidget.class, "allowChoice"); //$NON-NLS-1$
 		allowChoice.addSelectionListener(new ISelectionListener() {
-			public void ridgetSelected(SelectionEvent event) {
+			public void ridgetSelected(final SelectionEvent event) {
 				setAllowContext();
 			}
 		});
@@ -46,12 +46,12 @@ public class BeforeActivateSubModuleController extends SubModuleController {
 	}
 
 	@Override
-	public void setNavigationNode(ISubModuleNode navigationNode) {
+	public void setNavigationNode(final ISubModuleNode navigationNode) {
 		super.setNavigationNode(navigationNode);
 
 		navigationNode.addListener(new SubModuleNodeListener() {
 			@Override
-			public void beforeActivated(ISubModuleNode source) {
+			public void beforeActivated(final ISubModuleNode source) {
 				initAllow();
 			}
 
@@ -64,9 +64,9 @@ public class BeforeActivateSubModuleController extends SubModuleController {
 	 * sub-modules.
 	 */
 	private void setAllowContext() {
-		IModuleNode module = (IModuleNode) getNavigationNode().getParent();
-		List<ISubModuleNode> children = module.getChildren();
-		for (ISubModuleNode child : children) {
+		final IModuleNode module = (IModuleNode) getNavigationNode().getParent();
+		final List<ISubModuleNode> children = module.getChildren();
+		for (final ISubModuleNode child : children) {
 			if (child == this) {
 				continue;
 			}
@@ -82,7 +82,7 @@ public class BeforeActivateSubModuleController extends SubModuleController {
 		allowChoice.updateFromModel();
 	};
 
-	public void setAllowNext(boolean allowNext) {
+	public void setAllowNext(final boolean allowNext) {
 		this.allowNext = allowNext;
 	}
 

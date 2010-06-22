@@ -32,7 +32,7 @@ public class LinkSubModuleView extends SubModuleView {
 	public static final String ID = LinkSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(20, 5).applyTo(parent);
 
@@ -49,12 +49,12 @@ public class LinkSubModuleView extends SubModuleView {
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "URL:"); //$NON-NLS-1$
-		Text textLinkUrl = UIControlsFactory.createText(parent, SWT.SINGLE, "textLinkUrl"); //$NON-NLS-1$
+		final Text textLinkUrl = UIControlsFactory.createText(parent, SWT.SINGLE, "textLinkUrl"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(textLinkUrl);
 
-		Label label = UIControlsFactory.createLabel(parent, "Browser:"); //$NON-NLS-1$
+		final Label label = UIControlsFactory.createLabel(parent, "Browser:"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(false, true).applyTo(label);
-		Browser browser = UIControlsFactory.createBrowser(parent, SWT.NONE, "browser"); //$NON-NLS-1$
+		final Browser browser = UIControlsFactory.createBrowser(parent, SWT.NONE, "browser"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(browser);
 	}
 }

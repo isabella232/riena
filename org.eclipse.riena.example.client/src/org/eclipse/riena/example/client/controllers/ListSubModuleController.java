@@ -43,14 +43,14 @@ public class ListSubModuleController extends SubModuleController {
 	/** Manages a collection of persons. */
 	private final PersonManager manager;
 	/** Holds editable data for a person. */
-	private PersonModificationBean value;
+	private final PersonModificationBean value;
 	private ITableRidget listPersons;
 
 	public ListSubModuleController() {
 		this(null);
 	}
 
-	public ListSubModuleController(ISubModuleNode navigationNode) {
+	public ListSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 		manager = new PersonManager(PersonFactory.createPersonList());
 		manager.setSelectedPerson(manager.getPersons().iterator().next());
@@ -82,7 +82,7 @@ public class ListSubModuleController extends SubModuleController {
 		textLast.updateFromModel();
 
 		listPersons.addPropertyChangeListener(ITableRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				value.setPerson(manager.getSelectedPerson());
 				textFirst.updateFromModel();
 				textLast.updateFromModel();
@@ -95,7 +95,7 @@ public class ListSubModuleController extends SubModuleController {
 		listPersons.setSortedAscending(buttonSort.isSelected());
 		buttonSort.addListener(new IActionListener() {
 			public void callback() {
-				boolean ascending = buttonSort.isSelected();
+				final boolean ascending = buttonSort.isSelected();
 				listPersons.setSortedAscending(ascending);
 			}
 		});
@@ -106,7 +106,7 @@ public class ListSubModuleController extends SubModuleController {
 			private int count = 0;
 
 			public void callback() {
-				Person newPerson = new Person("Average", "Joe #" + ++count); //$NON-NLS-1$ //$NON-NLS-2$
+				final Person newPerson = new Person("Average", "Joe #" + ++count); //$NON-NLS-1$ //$NON-NLS-2$
 				manager.getPersons().add(newPerson);
 				listPersons.updateFromModel();
 				manager.setSelectedPerson(newPerson);
@@ -118,7 +118,7 @@ public class ListSubModuleController extends SubModuleController {
 		buttonRemove.setText("&Remove"); //$NON-NLS-1$
 		buttonRemove.addListener(new IActionListener() {
 			public void callback() {
-				Person selPerson = manager.getSelectedPerson();
+				final Person selPerson = manager.getSelectedPerson();
 				if (selPerson != null) {
 					manager.getPersons().remove(selPerson);
 					listPersons.updateFromModel();
@@ -137,13 +137,13 @@ public class ListSubModuleController extends SubModuleController {
 		});
 
 		final IObservableValue viewerSelection = listPersons.getSingleSelectionObservable();
-		IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
+		final IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
 			@Override
 			protected Object calculate() {
 				return Boolean.valueOf(viewerSelection.getValue() != null);
 			}
 		};
-		DataBindingContext dbc = new DataBindingContext();
+		final DataBindingContext dbc = new DataBindingContext();
 		bindEnablementToValue(dbc, buttonRemove, hasSelection);
 		bindEnablementToValue(dbc, buttonSave, hasSelection);
 
@@ -154,14 +154,14 @@ public class ListSubModuleController extends SubModuleController {
 	}
 
 	private void setValuesFromNavigation() {
-		NavigationArgument navigationArgument = getNavigationNode().getNavigationArgument();
+		final NavigationArgument navigationArgument = getNavigationNode().getNavigationArgument();
 		if (navigationArgument.getParameter() instanceof Integer) {
-			int modelIndex = (Integer) navigationArgument.getParameter();
+			final int modelIndex = (Integer) navigationArgument.getParameter();
 			listPersons.setSelection(modelIndex);
 		}
 	}
 
-	private void bindEnablementToValue(DataBindingContext dbc, IRidget ridget, IObservableValue value) {
+	private void bindEnablementToValue(final DataBindingContext dbc, final IRidget ridget, final IObservableValue value) {
 		dbc.bindValue(BeansObservables.observeValue(ridget, IRidget.PROPERTY_ENABLED), value, null, null);
 	}
 

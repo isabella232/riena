@@ -25,7 +25,7 @@ public class SalaryMoreThanNull implements IValidator {
 	private static final char DECIMAL_SEPARATOR = new DecimalFormatSymbols().getDecimalSeparator();
 	private static final char GROUPING_SEPARATOR = new DecimalFormatSymbols().getGroupingSeparator();
 
-	public IStatus validate(Object value) {
+	public IStatus validate(final Object value) {
 		try {
 			String strgValue = ""; //$NON-NLS-1$
 			if (value != null) {
@@ -33,12 +33,12 @@ public class SalaryMoreThanNull implements IValidator {
 				strgValue = strgValue.replace("" + GROUPING_SEPARATOR, ""); //$NON-NLS-1$//$NON-NLS-2$
 				strgValue = strgValue.replace(DECIMAL_SEPARATOR, '.');
 			}
-			float parseFloat = Float.parseFloat(strgValue);
+			final float parseFloat = Float.parseFloat(strgValue);
 			if (parseFloat > 0) {
 				return ValidationRuleStatus.ok();
 			}
 			return ValidationRuleStatus.error(false, "salary must be more than 0"); //$NON-NLS-1$
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			return ValidationRuleStatus.error(false, "invalid value"); //$NON-NLS-1$
 		}
 	}

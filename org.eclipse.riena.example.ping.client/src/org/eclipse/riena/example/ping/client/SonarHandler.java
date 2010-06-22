@@ -35,9 +35,9 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
  */
 public class SonarHandler extends AbstractHandler {
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ISubApplicationNode subApplicationNode = ApplicationNodeManager.locateActiveSubApplicationNode();
-		NavigationNodeId navigationNodeId = new NavigationNodeId(
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
+		final ISubApplicationNode subApplicationNode = ApplicationNodeManager.locateActiveSubApplicationNode();
+		final NavigationNodeId navigationNodeId = new NavigationNodeId(
 				"sonar.submodule", subApplicationNode.getNodeId().getInstanceId()); //$NON-NLS-1$
 		INavigationNode<?> node = subApplicationNode.findNode(navigationNodeId);
 		if (node == null) {
@@ -54,7 +54,7 @@ public class SonarHandler extends AbstractHandler {
 	 *            the Node of the current sub-application.
 	 * @return the Sonar SubModuleNode.
 	 */
-	private ISubModuleNode createPingModuleGroup(ISubApplicationNode subApplicationNode) {
+	private ISubModuleNode createPingModuleGroup(final ISubApplicationNode subApplicationNode) {
 		final IModuleGroupNode group = new ModuleGroupNode(new NavigationNodeId(
 				"sonar.module.group", subApplicationNode.getNodeId() //$NON-NLS-1$
 						.getInstanceId()));
@@ -64,7 +64,7 @@ public class SonarHandler extends AbstractHandler {
 		module.setClosable(true);
 		// module.setPresentSingleSubModule(true);
 		group.addChild(module);
-		ISubModuleNode submodule = new SubModuleNode(new NavigationNodeId(
+		final ISubModuleNode submodule = new SubModuleNode(new NavigationNodeId(
 				"sonar.submodule", subApplicationNode.getNodeId().getInstanceId()), //$NON-NLS-1$
 				null);
 		WorkareaManager.getInstance().registerDefinition(submodule, SonarController.class, SonarView.VIEW_ID, false);

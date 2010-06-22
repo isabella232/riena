@@ -42,7 +42,7 @@ public class ListBean extends AbstractBean {
 	 *            The values.
 	 * @pre values != null
 	 */
-	public ListBean(List<?> values) {
+	public ListBean(final List<?> values) {
 		Assert.isNotNull(values, "Expected a list"); //$NON-NLS-1$
 		this.values = values;
 	}
@@ -54,7 +54,7 @@ public class ListBean extends AbstractBean {
 	 *            The values.
 	 * @pre values != null
 	 */
-	public ListBean(Object... values) {
+	public ListBean(final Object... values) {
 		Assert.isNotNull(values, "Expected a list"); //$NON-NLS-1$
 		this.values = Arrays.asList(values);
 	}
@@ -70,8 +70,8 @@ public class ListBean extends AbstractBean {
 	 * @param values
 	 *            The values list to set.
 	 */
-	public void setValues(List<?> values) {
-		Object old = this.values;
+	public void setValues(final List<?> values) {
+		final Object old = this.values;
 		this.values = values;
 		firePropertyChanged(PROPERTY_VALUES, old, this.values);
 	}

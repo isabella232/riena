@@ -26,9 +26,9 @@ public class SalaryView extends SubModuleView {
 	 * basicCreatePartControl(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setLayout(new RowLayout(SWT.HORIZONTAL));
-		Label lbl = new Label(parent, SWT.None);
+		final Label lbl = new Label(parent, SWT.None);
 		lbl.setText("Salary"); //$NON-NLS-1$
 	}
 }

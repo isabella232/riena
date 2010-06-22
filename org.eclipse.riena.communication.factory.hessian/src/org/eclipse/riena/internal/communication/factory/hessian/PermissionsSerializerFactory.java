@@ -43,7 +43,7 @@ public class PermissionsSerializerFactory extends AbstractRienaSerializerFactory
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Serializer getSerializer(Class cl) throws HessianProtocolException {
+	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		if (cl != Permissions.class) {
 			return null;
 		}
@@ -53,7 +53,7 @@ public class PermissionsSerializerFactory extends AbstractRienaSerializerFactory
 	private static class PermissionsSerializer extends AbstractSerializer {
 
 		@Override
-		public void writeObject(Object obj, AbstractHessianOutput out) throws IOException {
+		public void writeObject(final Object obj, final AbstractHessianOutput out) throws IOException {
 			if (obj == null) {
 				out.writeNull();
 				return;
@@ -61,10 +61,10 @@ public class PermissionsSerializerFactory extends AbstractRienaSerializerFactory
 			if (out.addRef(obj)) {
 				return;
 			}
-			Class<?> cl = obj.getClass();
-			int ref = out.writeObjectBegin(cl.getName());
+			final Class<?> cl = obj.getClass();
+			final int ref = out.writeObjectBegin(cl.getName());
 
-			Permissions permissions = (Permissions) obj;
+			final Permissions permissions = (Permissions) obj;
 
 			if (ref < -1) { // hessian 1.0
 				out.writeString(PERMISSIONS_FIELD_NAME);
@@ -91,12 +91,12 @@ public class PermissionsSerializerFactory extends AbstractRienaSerializerFactory
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public Object readObject(AbstractHessianInput in, String[] fieldNames) throws IOException {
-			int ref = in.addRef(null);
+		public Object readObject(final AbstractHessianInput in, final String[] fieldNames) throws IOException {
+			final int ref = in.addRef(null);
 
 			List<Permission> initValue = null;
 
-			for (String key : fieldNames) {
+			for (final String key : fieldNames) {
 				if (key.equals(PERMISSIONS_FIELD_NAME)) {
 					initValue = (List<Permission>) in.readObject();
 				} else {
@@ -104,8 +104,8 @@ public class PermissionsSerializerFactory extends AbstractRienaSerializerFactory
 				}
 			}
 
-			Permissions permissions = new Permissions();
-			for (Permission permission : Iter.able(initValue)) {
+			final Permissions permissions = new Permissions();
+			for (final Permission permission : Iter.able(initValue)) {
 				permissions.add(permission);
 			}
 

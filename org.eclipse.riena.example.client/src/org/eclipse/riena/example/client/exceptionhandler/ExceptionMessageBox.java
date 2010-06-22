@@ -14,7 +14,6 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.core.exception.IExceptionHandler;
-import org.eclipse.riena.core.exception.IExceptionHandler.Action;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget.MessageBoxOption;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget.Type;
@@ -23,8 +22,8 @@ import org.eclipse.riena.ui.swt.MessageBox;
 
 public class ExceptionMessageBox implements IExceptionHandler {
 
-	public IExceptionHandler.Action handleException(Throwable t, String msg, Logger logger) {
-		MessageBox messageBox = new MessageBox(Display.getCurrent().getActiveShell());
+	public IExceptionHandler.Action handleException(final Throwable t, final String msg, final Logger logger) {
+		final MessageBox messageBox = new MessageBox(Display.getCurrent().getActiveShell());
 		final IMessageBoxRidget messageBoxRidget = (IMessageBoxRidget) SwtRidgetFactory.createRidget(messageBox);
 
 		messageBoxRidget.setTitle("Exception at Runtime"); //$NON-NLS-1$
@@ -32,12 +31,12 @@ public class ExceptionMessageBox implements IExceptionHandler {
 		if (t != null) {
 			messageBoxRidget.setText(t.getMessage());
 		}
-		IMessageBoxRidget.MessageBoxOption ok = new IMessageBoxRidget.MessageBoxOption("OK"); //$NON-NLS-1$
-		IMessageBoxRidget.MessageBoxOption ignore = new IMessageBoxRidget.MessageBoxOption("Ignore"); //$NON-NLS-1$
-		IMessageBoxRidget.MessageBoxOption printstack = new IMessageBoxRidget.MessageBoxOption(
+		final IMessageBoxRidget.MessageBoxOption ok = new IMessageBoxRidget.MessageBoxOption("OK"); //$NON-NLS-1$
+		final IMessageBoxRidget.MessageBoxOption ignore = new IMessageBoxRidget.MessageBoxOption("Ignore"); //$NON-NLS-1$
+		final IMessageBoxRidget.MessageBoxOption printstack = new IMessageBoxRidget.MessageBoxOption(
 				"Print stacktrace and OK"); //$NON-NLS-1$
 		messageBoxRidget.setOptions(new IMessageBoxRidget.MessageBoxOption[] { ok, ignore, printstack });
-		MessageBoxOption show = messageBoxRidget.show();
+		final MessageBoxOption show = messageBoxRidget.show();
 		if (t != null && show.equals(printstack)) {
 			t.printStackTrace();
 		}
@@ -47,7 +46,7 @@ public class ExceptionMessageBox implements IExceptionHandler {
 		return IExceptionHandler.Action.OK;
 	}
 
-	public IExceptionHandler.Action handleUncaught(Throwable t, String msg, Logger logger) {
+	public IExceptionHandler.Action handleUncaught(final Throwable t, final String msg, final Logger logger) {
 		return IExceptionHandler.Action.NOT_HANDLED;
 	}
 }

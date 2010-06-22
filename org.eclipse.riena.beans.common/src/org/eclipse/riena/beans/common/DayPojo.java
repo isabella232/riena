@@ -27,7 +27,7 @@ public final class DayPojo {
 	private final String italian;
 
 	public static List<DayPojo> createWeek() {
-		List<DayPojo> result = new ArrayList<DayPojo>(7);
+		final List<DayPojo> result = new ArrayList<DayPojo>(7);
 		result.add(new DayPojo("Monday", "Montag", "lundi", "lunes", "lunedì")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		result.add(new DayPojo("Tuesday", "Dienstag", "mardi", "martes", "martedì")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		result.add(new DayPojo("Wednesday", "Mittwoch", "mercredi", "miércoles", "mercoledì")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
@@ -38,7 +38,8 @@ public final class DayPojo {
 		return result;
 	}
 
-	private DayPojo(String english, String german, String french, String spanish, String italian) {
+	private DayPojo(final String english, final String german, final String french, final String spanish,
+			final String italian) {
 		this.english = english;
 		this.german = german;
 		this.french = french;

@@ -29,20 +29,20 @@ public class EmailSentController extends AbstractEmailController {
 	public void configureRidgets() {
 		super.configureRidgets();
 
-		ITableRidget emails = (ITableRidget) getRidget("emailsTable"); //$NON-NLS-1$
+		final ITableRidget emails = (ITableRidget) getRidget("emailsTable"); //$NON-NLS-1$
 
-		String[] columnHeaders = { "To", "Subject", "Date" }; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-		String[] columnPropertyNames = { "emailTo", "emailSubject", "emailDate" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		final String[] columnHeaders = { "To", "Subject", "Date" }; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+		final String[] columnPropertyNames = { "emailTo", "emailSubject", "emailDate" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		emails.bindToModel(emailsResult, "emails", Email.class, columnPropertyNames, columnHeaders); //$NON-NLS-1$
 
 		emails.setColumnFormatter(2, new DateColumnFormatter("dd.MMM. HH:mm") { //$NON-NLS-1$
 					@Override
-					protected Date getDate(Object element) {
+					protected Date getDate(final Object element) {
 						return ((Email) element).getEmailDate();
 					}
 				});
 
-		List<Email> sentEmailList = mailDemoService.showEmailsList("Sent"); //$NON-NLS-1$
+		final List<Email> sentEmailList = mailDemoService.showEmailsList("Sent"); //$NON-NLS-1$
 
 		emailsResult.setEmails(sentEmailList);
 		getRidget("emailsTable").updateFromModel(); //$NON-NLS-1$

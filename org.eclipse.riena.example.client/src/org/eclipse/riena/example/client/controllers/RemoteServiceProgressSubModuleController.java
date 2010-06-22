@@ -30,19 +30,19 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 	public static final String SERVICE_CALL_ACTION_UIPROCESS = "serviceCallActionUIProcess"; //$NON-NLS-1$
 
 	private IRemoteProgressMonitorRegistry remoteProgressMonitorRegistry;
-	private IInfoService remoteService;
+	private final IInfoService remoteService;
 
 	public RemoteServiceProgressSubModuleController() {
 		remoteService = new InfoServiceFake();
-		Inject.service(IRemoteProgressMonitorRegistry.class).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(IRemoteProgressMonitorRegistry.class).useRanking().into(this)
+				.andStart(Activator.getDefault().getContext());
 	}
 
-	public void bind(IRemoteProgressMonitorRegistry remoteProgressMonitorRegistry) {
+	public void bind(final IRemoteProgressMonitorRegistry remoteProgressMonitorRegistry) {
 		this.remoteProgressMonitorRegistry = remoteProgressMonitorRegistry;
 	}
 
-	public void unbind(IRemoteProgressMonitorRegistry remoteProgressMonitorRegistry) {
+	public void unbind(final IRemoteProgressMonitorRegistry remoteProgressMonitorRegistry) {
 		this.remoteProgressMonitorRegistry = null;
 	}
 
@@ -62,7 +62,7 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 		return getActionRidget(SERVICE_CALL_ACTION_UIPROCESS);
 	}
 
-	private IActionRidget getActionRidget(String ridgetName) {
+	private IActionRidget getActionRidget(final String ridgetName) {
 		return IActionRidget.class.cast(getRidget(ridgetName));
 	}
 
@@ -91,7 +91,7 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 		public void run() {
 			blockSubModule(true);
 
-			ServiceProgressVisualizer serviceProgress = new ServiceProgressVisualizer("remote"); //$NON-NLS-1$
+			final ServiceProgressVisualizer serviceProgress = new ServiceProgressVisualizer("remote"); //$NON-NLS-1$
 
 			// add monitor
 			remoteProgressMonitorRegistry.addProgressMonitor(remoteService, serviceProgress,
@@ -133,17 +133,17 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 	}
 
 	private void simulateUIProcessRemoteServiceCall() {
-		RemoteCallProcess<IInfoService> process = new RemoteCallProcess<IInfoService>("remote", true, //$NON-NLS-1$
+		final RemoteCallProcess<IInfoService> process = new RemoteCallProcess<IInfoService>("remote", true, //$NON-NLS-1$
 				getNavigationNode()) {
 
 			@Override
-			public void initialUpdateUI(int totalWork) {
+			public void initialUpdateUI(final int totalWork) {
 				super.initialUpdateUI(totalWork);
 				setBlocked(true);
 			}
 
 			@Override
-			public boolean runJob(IProgressMonitor monitor) {
+			public boolean runJob(final IProgressMonitor monitor) {
 				getService().getInfo("foo"); //$NON-NLS-1$
 				return true;
 			}

@@ -13,8 +13,8 @@ package org.eclipse.riena.communication.core.hooks;
 /**
  * {@code ICallHook} is an interface that needs to be implemented by a component
  * that wants to plug into the remote service call process. A component needs to
- * register as OSGi Service to activate itself as such an hook i.e. {@code
- * context.registerService(ICallHook.class.getName(), new YouCallHook(),null);}
+ * register as OSGi Service to activate itself as such an hook i.e.
+ * {@code context.registerService(ICallHook.class.getName(), new YouCallHook(),null);}
  * <p>
  * Then the beforeCall method is called (on the client) before EACH and EVERY
  * remote service call together with a {@code CallContext} instance. The

@@ -24,7 +24,7 @@ import org.eclipse.riena.core.wire.AbstractWiring;
 public class LoggerMillWiring extends AbstractWiring {
 
 	@Override
-	public void wire(Object bean, BundleContext context) {
+	public void wire(final Object bean, final BundleContext context) {
 		// get log catchers
 		Inject.extension(ILogCatcherExtension.ID).useType(ILogCatcherExtension.class).into(bean).andStart(context);
 

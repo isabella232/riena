@@ -74,15 +74,15 @@ public final class ContainerModel {
 	}
 
 	private static void initialize() {
-		String s = System.getProperty(RIENA_CONTAINER_TYPE);
+		final String s = System.getProperty(RIENA_CONTAINER_TYPE);
 		containerType = Type.CLIENT;
 		if (s != null) {
 			if (s.equals("server")) { //$NON-NLS-1$
 				containerType = Type.SERVER;
 			}
 		} else {
-			Bundle[] bundles = Activator.getDefault().getContext().getBundles();
-			for (Bundle bundle : bundles) {
+			final Bundle[] bundles = Activator.getDefault().getContext().getBundles();
+			for (final Bundle bundle : bundles) {
 				if (bundle.getSymbolicName().startsWith(ORG_ECLIPSE_EQUINOX_HTTP)) {
 					containerType = Type.SERVER;
 					break;

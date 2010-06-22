@@ -28,7 +28,7 @@ import org.eclipse.riena.internal.communication.publisher.Activator;
  */
 public class SingleServicePublisher {
 
-	private String serviceName;
+	private final String serviceName;
 	private String filter;
 	private BundleContext context;
 	private String path;
@@ -40,51 +40,52 @@ public class SingleServicePublisher {
 	// "=true)("
 	// + PROP_REMOTE_PROTOCOL + "=*)" + ")";
 
-	public SingleServicePublisher(String name) {
+	public SingleServicePublisher(final String name) {
 		super();
 		this.serviceName = name;
-		Inject.service(IServicePublishBinder.class).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(IServicePublishBinder.class).useRanking().into(this)
+				.andStart(Activator.getDefault().getContext());
 	}
 
-	public SingleServicePublisher useFilter(String filter) {
+	public SingleServicePublisher useFilter(final String filter) {
 		Assert.isNotNull(filter);
 		this.filter = filter;
 		return this;
 	}
 
-	public SingleServicePublisher usingPath(String path) {
+	public SingleServicePublisher usingPath(final String path) {
 		Assert.isNotNull(path);
 		this.path = path;
 		return this;
 	}
 
-	public SingleServicePublisher withProtocol(String protocol) {
+	public SingleServicePublisher withProtocol(final String protocol) {
 		Assert.isNotNull(protocol);
 		this.protocol = protocol;
 		return this;
 	}
 
-	public void andStart(BundleContext context) {
+	public void andStart(final BundleContext context) {
 		this.context = context;
 		Assert.isNotNull(path);
 		Assert.isNotNull(protocol);
 
 		try {
-			ServiceReference[] refs = this.context.getServiceReferences(serviceName, filter);
+			final ServiceReference[] refs = this.context.getServiceReferences(serviceName, filter);
 			if (refs != null) {
-				for (ServiceReference ref : refs) {
+				for (final ServiceReference ref : refs) {
 					publish(ref);
 				}
 			}
-		} catch (InvalidSyntaxException e1) {
+		} catch (final InvalidSyntaxException e1) {
 			e1.printStackTrace();
 		}
 
-		ServiceListener listener = new ServiceListener() {
-			public void serviceChanged(ServiceEvent event) {
-				String[] serviceInterfaces = (String[]) event.getServiceReference().getProperty(Constants.OBJECTCLASS);
-				for (String serviceInterf : serviceInterfaces) {
+		final ServiceListener listener = new ServiceListener() {
+			public void serviceChanged(final ServiceEvent event) {
+				final String[] serviceInterfaces = (String[]) event.getServiceReference().getProperty(
+						Constants.OBJECTCLASS);
+				for (final String serviceInterf : serviceInterfaces) {
 					if (serviceInterf.equals(serviceName)) {
 						if (event.getType() == ServiceEvent.REGISTERED) {
 							publish(event.getServiceReference());
@@ -99,26 +100,26 @@ public class SingleServicePublisher {
 		};
 		try {
 			Activator.getDefault().getContext().addServiceListener(listener, filter);
-		} catch (InvalidSyntaxException e) {
+		} catch (final InvalidSyntaxException e) {
 			e.printStackTrace();
 		}
 
 		return;
 	}
 
-	public void bind(IServicePublishBinder binder) {
+	public void bind(final IServicePublishBinder binder) {
 		this.binder = binder;
 	}
 
-	public void unbind(IServicePublishBinder binder) {
+	public void unbind(final IServicePublishBinder binder) {
 		this.binder = null;
 	}
 
-	private void publish(ServiceReference serviceReference) {
+	private void publish(final ServiceReference serviceReference) {
 		binder.publish(serviceReference, path, protocol);
 	}
 
-	private void unpublish(ServiceReference serviceReference) {
+	private void unpublish(final ServiceReference serviceReference) {
 		binder.unpublish(serviceReference);
 	}
 

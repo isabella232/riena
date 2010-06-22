@@ -31,9 +31,9 @@ public class Activator implements BundleActivator {
 
 	private BundleContext context;
 
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		this.context = context;
-		ServiceReference pingPongRef = context.getServiceReference(IPingPong.class.getName());
+		final ServiceReference pingPongRef = context.getServiceReference(IPingPong.class.getName());
 		if (pingPongRef != null) {
 			new PingClient().sendPing(pingPongRef);
 		} else {
@@ -41,29 +41,29 @@ public class Activator implements BundleActivator {
 		}
 	}
 
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		this.context = null;
 	}
 
 	class PingClient implements ServiceListener {
 
-		public void serviceChanged(ServiceEvent event) {
+		public void serviceChanged(final ServiceEvent event) {
 
-			ServiceReference pingPongRef = event.getServiceReference();
+			final ServiceReference pingPongRef = event.getServiceReference();
 			sendPing(pingPongRef);
 
 		}
 
-		void sendPing(ServiceReference pingPongRef) {
-			IPingPong pingPong = (IPingPong) context.getService(pingPongRef);
+		void sendPing(final ServiceReference pingPongRef) {
+			final IPingPong pingPong = (IPingPong) context.getService(pingPongRef);
 			if (pingPong == null) {
 				return;
 			}
 
-			Ping ping = new Ping();
+			final Ping ping = new Ping();
 			ping.setText("I ping you and you pong me"); //$NON-NLS-1$
 
-			Pong pong = pingPong.ping(ping);
+			final Pong pong = pingPong.ping(ping);
 			System.out.println("PingPong::Client:: " + pong); //$NON-NLS-1$
 
 		}

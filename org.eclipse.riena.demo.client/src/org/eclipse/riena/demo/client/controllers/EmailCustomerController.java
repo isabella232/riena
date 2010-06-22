@@ -34,21 +34,21 @@ public class EmailCustomerController extends AbstractEmailController {
 	public void configureRidgets() {
 		super.configureRidgets();
 
-		ITableRidget emails = (ITableRidget) getRidget("emailsTable"); //$NON-NLS-1$
+		final ITableRidget emails = (ITableRidget) getRidget("emailsTable"); //$NON-NLS-1$
 
-		String[] columnHeaders = { "Subject", "Date" }; //$NON-NLS-1$//$NON-NLS-2$
-		String[] columnPropertyNames = { "emailSubject", "emailDate" }; //$NON-NLS-1$//$NON-NLS-2$
+		final String[] columnHeaders = { "Subject", "Date" }; //$NON-NLS-1$//$NON-NLS-2$
+		final String[] columnPropertyNames = { "emailSubject", "emailDate" }; //$NON-NLS-1$//$NON-NLS-2$
 		emails.bindToModel(emailsResult, "emails", Email.class, columnPropertyNames, columnHeaders); //$NON-NLS-1$
 
 		emails.setColumnFormatter(1, new DateColumnFormatter("dd.MMM. HH:mm") { //$NON-NLS-1$
 					@Override
-					protected Date getDate(Object element) {
+					protected Date getDate(final Object element) {
 						return ((Email) element).getEmailDate();
 					}
 				});
 		if (getNavigationNode().getNavigationArgument().getParameter() instanceof Customer) {
-			Customer customer = (Customer) getNavigationNode().getNavigationArgument().getParameter();
-			String emailAddress = customer.getEmailAddress();
+			final Customer customer = (Customer) getNavigationNode().getNavigationArgument().getParameter();
+			final String emailAddress = customer.getEmailAddress();
 			customerEmailsList = mailDemoService.findEmailsForCustomer(emailAddress);
 
 		}

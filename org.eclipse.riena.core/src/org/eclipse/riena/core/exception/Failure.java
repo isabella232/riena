@@ -32,7 +32,7 @@ public abstract class Failure extends RuntimeException {
 	 * @param msg
 	 *            message text or message code.
 	 */
-	public Failure(String msg) {
+	public Failure(final String msg) {
 		super(msg);
 		setDetails();
 	}
@@ -45,7 +45,7 @@ public abstract class Failure extends RuntimeException {
 	 * @param msg
 	 *            message text or message code.
 	 */
-	public Failure(String msg, Throwable cause) {
+	public Failure(final String msg, final Throwable cause) {
 		super(msg, cause);
 		setDetails();
 	}
@@ -63,7 +63,7 @@ public abstract class Failure extends RuntimeException {
 	 * @param timestamp
 	 *            parameter value of timestamp.
 	 */
-	private void setTimestamp(Date timestamp) {
+	private void setTimestamp(final Date timestamp) {
 		this.timestamp = timestamp;
 	}
 

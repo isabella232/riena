@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
  * The first part (before the comma) of the annotation value is the FindBugs bug
  * detector name.
  */
-@Target( { TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE })
+@Target({ TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE })
 @Retention(RetentionPolicy.SOURCE)
 public @interface IgnoreCheckStyle {
 

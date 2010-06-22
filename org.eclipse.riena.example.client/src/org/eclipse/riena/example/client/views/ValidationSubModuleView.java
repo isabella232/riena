@@ -31,106 +31,106 @@ public class ValidationSubModuleView extends SubModuleView {
 	public static final String ID = ValidationSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
-		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
+		final GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
-		Group group1 = createGroupOnEditValidation(parent);
+		final Group group1 = createGroupOnEditValidation(parent);
 		fillFactory.applyTo(group1);
 	}
 
 	// helping methods
 	// ////////////////
 
-	private Group createGroupOnEditValidation(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "Validation Rules:"); //$NON-NLS-1$
+	private Group createGroupOnEditValidation(final Composite parent) {
+		final Group group = UIControlsFactory.createGroup(parent, "Validation Rules:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(3).applyTo(group);
 
 		UIControlsFactory.createLabel(group, ""); //$NON-NLS-1$
 		UIControlsFactory.createLabel(group, "Control Value"); //$NON-NLS-1$
 		UIControlsFactory.createLabel(group, "Ridget Value"); //$NON-NLS-1$
 
-		GridDataFactory fillFactory = GridDataFactory.fillDefaults().grab(true, false);
+		final GridDataFactory fillFactory = GridDataFactory.fillDefaults().grab(true, false);
 
 		UIControlsFactory.createLabel(group, "Numbers only:"); //$NON-NLS-1$
-		Text txtNumbersOnly = UIControlsFactory.createText(group);
+		final Text txtNumbersOnly = UIControlsFactory.createText(group);
 		addUIControl(txtNumbersOnly, "txtNumbersOnly"); //$NON-NLS-1$
 		fillFactory.applyTo(txtNumbersOnly);
-		Text lblNumbersOnly = UIControlsFactory.createText(group);
+		final Text lblNumbersOnly = UIControlsFactory.createText(group);
 		addUIControl(lblNumbersOnly, "lblNumbersOnly"); //$NON-NLS-1$
 		fillFactory.applyTo(lblNumbersOnly);
 
 		UIControlsFactory.createLabel(group, "Numbers only (direct writing):"); //$NON-NLS-1$
-		Text txtNumbersOnlyDW = UIControlsFactory.createText(group);
+		final Text txtNumbersOnlyDW = UIControlsFactory.createText(group);
 		addUIControl(txtNumbersOnlyDW, "txtNumbersOnlyDW"); //$NON-NLS-1$
 		fillFactory.applyTo(txtNumbersOnlyDW);
-		Text lblNumbersOnlyDW = UIControlsFactory.createText(group);
+		final Text lblNumbersOnlyDW = UIControlsFactory.createText(group);
 		addUIControl(lblNumbersOnlyDW, "lblNumbersOnlyDW"); //$NON-NLS-1$
 		fillFactory.applyTo(lblNumbersOnlyDW);
 
 		UIControlsFactory.createLabel(group, "Characters only:"); //$NON-NLS-1$
-		Text txtCharactersOnly = UIControlsFactory.createText(group);
+		final Text txtCharactersOnly = UIControlsFactory.createText(group);
 		addUIControl(txtCharactersOnly, "txtCharactersOnly"); //$NON-NLS-1$
 		fillFactory.applyTo(txtCharactersOnly);
-		Text lblCharactersOnly = UIControlsFactory.createText(group);
+		final Text lblCharactersOnly = UIControlsFactory.createText(group);
 		addUIControl(lblCharactersOnly, "lblCharactersOnly"); //$NON-NLS-1$
 		fillFactory.applyTo(lblCharactersOnly);
 
 		UIControlsFactory.createLabel(group, "Expression (PDX##):"); //$NON-NLS-1$
-		Text txtExpression = UIControlsFactory.createText(group);
+		final Text txtExpression = UIControlsFactory.createText(group);
 		addUIControl(txtExpression, "txtExpression"); //$NON-NLS-1$
 		fillFactory.applyTo(txtExpression);
-		Text lblExpression = UIControlsFactory.createText(group);
+		final Text lblExpression = UIControlsFactory.createText(group);
 		addUIControl(lblExpression, "lblExpression"); //$NON-NLS-1$
 		fillFactory.applyTo(lblExpression);
 
 		UIControlsFactory.createLabel(group, "Length < 5:"); //$NON-NLS-1$
-		Text txtLengthLessThan5 = UIControlsFactory.createText(group);
+		final Text txtLengthLessThan5 = UIControlsFactory.createText(group);
 		addUIControl(txtLengthLessThan5, "txtLengthLessThan5"); //$NON-NLS-1$
 		fillFactory.applyTo(txtLengthLessThan5);
-		Text lblLengthLessThan5 = UIControlsFactory.createText(group);
+		final Text lblLengthLessThan5 = UIControlsFactory.createText(group);
 		addUIControl(lblLengthLessThan5, "lblLengthLessThan5"); //$NON-NLS-1$
 		fillFactory.applyTo(lblLengthLessThan5);
 
 		UIControlsFactory.createLabel(group, "Required and Lowercase:"); //$NON-NLS-1$
-		Text txtRequiredLowercase = UIControlsFactory.createText(group);
+		final Text txtRequiredLowercase = UIControlsFactory.createText(group);
 		addUIControl(txtRequiredLowercase, "txtRequiredLowercase"); //$NON-NLS-1$
 		fillFactory.applyTo(txtRequiredLowercase);
-		Text lblRequiredLowercase = UIControlsFactory.createText(group);
+		final Text lblRequiredLowercase = UIControlsFactory.createText(group);
 		addUIControl(lblRequiredLowercase, "lblRequiredLowercase"); //$NON-NLS-1$
 		fillFactory.applyTo(lblRequiredLowercase);
 
 		UIControlsFactory.createLabel(group, "Numeric Range 18 to 80:"); //$NON-NLS-1$
-		Text txtRange18to80 = UIControlsFactory.createTextNumeric(group);
+		final Text txtRange18to80 = UIControlsFactory.createTextNumeric(group);
 		addUIControl(txtRange18to80, "txtRange18to80"); //$NON-NLS-1$
 		fillFactory.applyTo(txtRange18to80);
-		Text lblRange18to80 = UIControlsFactory.createText(group);
+		final Text lblRange18to80 = UIControlsFactory.createText(group);
 		addUIControl(lblRange18to80, "lblRange18to80"); //$NON-NLS-1$
 		fillFactory.applyTo(lblRange18to80);
 
 		UIControlsFactory.createLabel(group, "Length between 5 and 10:"); //$NON-NLS-1$
-		Text txtLength5to10 = UIControlsFactory.createText(group);
+		final Text txtLength5to10 = UIControlsFactory.createText(group);
 		addUIControl(txtLength5to10, "txtLength5to10"); //$NON-NLS-1$
 		fillFactory.applyTo(txtLength5to10);
-		Text lblLength5to10 = UIControlsFactory.createText(group);
+		final Text lblLength5to10 = UIControlsFactory.createText(group);
 		addUIControl(lblLength5to10, "lblLength5to10"); //$NON-NLS-1$
 		fillFactory.applyTo(lblLength5to10);
 
 		UIControlsFactory.createLabel(group, "Valid Date (dd.MM.yyyy):"); //$NON-NLS-1$
-		Text txtDate = UIControlsFactory.createText(group);
+		final Text txtDate = UIControlsFactory.createText(group);
 		addUIControl(txtDate, "txtDate"); //$NON-NLS-1$
 		fillFactory.applyTo(txtDate);
-		Text lblDate = UIControlsFactory.createText(group);
+		final Text lblDate = UIControlsFactory.createText(group);
 		addUIControl(lblDate, "lblDate"); //$NON-NLS-1$
 		fillFactory.applyTo(lblDate);
 
-		Label lbl = UIControlsFactory.createLabel(group, "Valid eMail:"); //$NON-NLS-1$
-		Text txtEmail = UIControlsFactory.createText(group);
+		final Label lbl = UIControlsFactory.createLabel(group, "Valid eMail:"); //$NON-NLS-1$
+		final Text txtEmail = UIControlsFactory.createText(group);
 		addUIControl(txtEmail, "txtEmail"); //$NON-NLS-1$
 		fillFactory.applyTo(txtEmail);
-		Text lblEmail = UIControlsFactory.createText(group);
+		final Text lblEmail = UIControlsFactory.createText(group);
 		addUIControl(lblEmail, "lblEmail"); //$NON-NLS-1$
 		fillFactory.applyTo(lblEmail);
 

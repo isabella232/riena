@@ -98,9 +98,10 @@ import org.eclipse.riena.internal.core.Activator;
  * &lt;/extension&gt;
  * </pre>
  * 
- * @deprecated Use instead the functional but extended {@code
- *             org.eclipse.riena.core.logging.log4j.Log4jLogListener}
+ * @deprecated Use instead the functional but extended
+ *             {@code org.eclipse.riena.core.logging.log4j.Log4jLogListener}
  */
+@Deprecated
 public class Log4jLogListener implements LogListener, IExecutableExtension {
 
 	/**
@@ -111,10 +112,10 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 	public Log4jLogListener() {
 	}
 
-	public void logged(LogEntry entry) {
-		ExtendedLogEntry extendedEntry = (ExtendedLogEntry) entry;
-		String loggerName = extendedEntry.getLoggerName();
-		Logger logger = Logger.getLogger(loggerName != null ? loggerName : "<unknown-logger-name>"); //$NON-NLS-1$
+	public void logged(final LogEntry entry) {
+		final ExtendedLogEntry extendedEntry = (ExtendedLogEntry) entry;
+		final String loggerName = extendedEntry.getLoggerName();
+		final Logger logger = Logger.getLogger(loggerName != null ? loggerName : "<unknown-logger-name>"); //$NON-NLS-1$
 
 		Level level;
 		switch (extendedEntry.getLevel()) {
@@ -146,7 +147,7 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 	 * .eclipse.core.runtime.IConfigurationElement, java.lang.String,
 	 * java.lang.Object)
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, Object data)
 			throws CoreException {
 		if (data == null) {
 			data = DEFAULT_CONFIGURATION;
@@ -154,43 +155,43 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 		if (!(data instanceof String)) {
 			return;
 		}
-		Bundle bundle = ContributorFactoryOSGi.resolve(config.getContributor());
+		final Bundle bundle = ContributorFactoryOSGi.resolve(config.getContributor());
 		configure(bundle, (String) data);
 	}
 
-	private void configure(Bundle bundle, String configuration) throws CoreException {
+	private void configure(final Bundle bundle, final String configuration) throws CoreException {
 		// fetch the URL of given log4j configuration file via context
 		// the context is the context of the bundle from which the log was
 		// initiated
-		URL url = bundle.getResource(configuration);
+		final URL url = bundle.getResource(configuration);
 
 		if (url != null) {
 			Element root = null;
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			dbf.setValidating(true);
 			try {
-				DocumentBuilder db = dbf.newDocumentBuilder();
+				final DocumentBuilder db = dbf.newDocumentBuilder();
 				db.setErrorHandler(new SAXErrorHandler());
 				db.setEntityResolver(new Log4jEntityResolver());
-				String xml = VariableManagerUtil.substitute(read(url.openStream()));
-				InputSource inputSource = new InputSource(new StringReader(xml));
+				final String xml = VariableManagerUtil.substitute(read(url.openStream()));
+				final InputSource inputSource = new InputSource(new StringReader(xml));
 				inputSource.setSystemId("dummy://log4j.dtd"); //$NON-NLS-1$
-				Document doc = db.parse(inputSource);
+				final Document doc = db.parse(inputSource);
 				root = doc.getDocumentElement();
-			} catch (ParserConfigurationException e) {
+			} catch (final ParserConfigurationException e) {
 				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 						"Could not configure log4j. Parser configuration error.", e)); //$NON-NLS-1$
-			} catch (SAXException e) {
+			} catch (final SAXException e) {
 				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 						"Could not configure log4j. Unable to parse xml configuration.", e)); //$NON-NLS-1$
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not configure log4j.", e)); //$NON-NLS-1$
 			}
 			// workaround to fix class loader problems with log4j
 			// implementation. see "eclipse rich client platform, eclipse
 			// series, page 340.
-			Thread thread = Thread.currentThread();
-			ClassLoader loader = thread.getContextClassLoader();
+			final Thread thread = Thread.currentThread();
+			final ClassLoader loader = thread.getContextClassLoader();
 			thread.setContextClassLoader(this.getClass().getClassLoader());
 			try {
 				// configure the log4j with given log4j.xml
@@ -212,9 +213,9 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 	 * @return
 	 * @throws IOException
 	 */
-	private String read(InputStream inputStream) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-		StringBuilder bob = new StringBuilder();
+	private String read(final InputStream inputStream) throws IOException {
+		final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+		final StringBuilder bob = new StringBuilder();
 		int ch;
 		while ((ch = reader.read()) != -1) {
 			bob.append((char) ch);
@@ -241,7 +242,7 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 		 * @param osgiLogLevel
 		 * @return
 		 */
-		private static synchronized CustomLevel create(int osgiLogLevel) {
+		private static synchronized CustomLevel create(final int osgiLogLevel) {
 			Assert.isTrue(osgiLogLevel < 1, "custom osgi log levels must be below 1"); //$NON-NLS-1$
 			CustomLevel customLevel = map.get(osgiLogLevel);
 			if (customLevel != null) {
@@ -258,7 +259,7 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 		 * @param levelStr
 		 * @param syslogEquivalent
 		 */
-		private CustomLevel(int level, String levelStr, int syslogEquivalent) {
+		private CustomLevel(final int level, final String levelStr, final int syslogEquivalent) {
 			super(level, levelStr, syslogEquivalent);
 		}
 

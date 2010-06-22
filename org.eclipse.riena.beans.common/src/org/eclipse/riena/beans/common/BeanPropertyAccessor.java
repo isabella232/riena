@@ -32,11 +32,11 @@ public final class BeanPropertyAccessor {
 	 * @param bean
 	 * @param descriptor
 	 * @return
-	 * @deprecated please use instead {@code
-	 *             BeanPropertyUtils.getPropertyValue(bean, descriptor)}.
+	 * @deprecated please use instead
+	 *             {@code BeanPropertyUtils.getPropertyValue(bean, descriptor)}.
 	 */
 	@Deprecated
-	public static Object getPropertyValue(Object bean, PropertyDescriptor descriptor) {
+	public static Object getPropertyValue(final Object bean, final PropertyDescriptor descriptor) {
 		return BeanPropertyUtils.getPropertyValue(bean, descriptor);
 	}
 
@@ -44,11 +44,12 @@ public final class BeanPropertyAccessor {
 	 * @param bean
 	 * @param descriptor
 	 * @param value
-	 * @deprecated please use instead {@code
-	 *             BeanPropertyUtils.setPropertyValue(bean, descriptor, value)}.
+	 * @deprecated please use instead
+	 *             {@code BeanPropertyUtils.setPropertyValue(bean, descriptor, value)}
+	 *             .
 	 */
 	@Deprecated
-	public static void setPropertyValue(Object bean, PropertyDescriptor descriptor, Object value) {
+	public static void setPropertyValue(final Object bean, final PropertyDescriptor descriptor, final Object value) {
 		BeanPropertyUtils.setPropertyValue(bean, descriptor, value);
 	}
 

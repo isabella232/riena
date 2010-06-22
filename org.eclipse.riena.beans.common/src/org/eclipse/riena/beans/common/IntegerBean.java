@@ -36,7 +36,7 @@ public class IntegerBean extends AbstractBean {
 	 * 
 	 * @param value
 	 */
-	public IntegerBean(Integer value) {
+	public IntegerBean(final Integer value) {
 		this.value = value;
 	}
 
@@ -45,7 +45,7 @@ public class IntegerBean extends AbstractBean {
 	 * 
 	 * @param value
 	 */
-	public IntegerBean(int value) {
+	public IntegerBean(final int value) {
 		this.value = value;
 	}
 
@@ -55,8 +55,8 @@ public class IntegerBean extends AbstractBean {
 	 * @param value
 	 *            value to set
 	 */
-	public void setValue(Integer value) {
-		Object old = this.value;
+	public void setValue(final Integer value) {
+		final Object old = this.value;
 		this.value = value;
 		firePropertyChanged(PROP_VALUE, old, this.value);
 

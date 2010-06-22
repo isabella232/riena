@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.beans.common.StringManager;
 import org.eclipse.riena.core.Log4r;
@@ -46,7 +47,7 @@ public class LogCollectorSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public LogCollectorSubModuleController(ISubModuleNode navigationNode) {
+	public LogCollectorSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 		logLevels = new StringManager("DEBUG", "INFO", "WARN", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		logLevels.setSelectedItem("DEBUG"); //$NON-NLS-1$
@@ -100,7 +101,7 @@ public class LogCollectorSubModuleController extends SubModuleController {
 					if (!StringUtils.isDeepEmpty(logException.getText())) {
 						throwable = (Throwable) Class.forName(logException.getText()).newInstance();
 					}
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					throwable = new IllegalArgumentException(
 							"Can not instantiate logException: " + logException.getText(), e); //$NON-NLS-1$
 				}

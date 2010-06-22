@@ -27,7 +27,7 @@ public class ExceptionTestController extends SubModuleController {
 		// TODO Auto-generated method stub
 		super.configureRidgets();
 
-		IActionRidget localNullPtr = (IActionRidget) getRidget("localNullPointerAction"); //$NON-NLS-1$
+		final IActionRidget localNullPtr = (IActionRidget) getRidget("localNullPointerAction"); //$NON-NLS-1$
 		localNullPtr.addListener(new IActionListener() {
 
 			public void callback() {
@@ -36,14 +36,14 @@ public class ExceptionTestController extends SubModuleController {
 			}
 		});
 
-		IActionRidget uiprocessNullPtr1 = (IActionRidget) getRidget("uiprocessNullPointerActionRunJob"); //$NON-NLS-1$
+		final IActionRidget uiprocessNullPtr1 = (IActionRidget) getRidget("uiprocessNullPointerActionRunJob"); //$NON-NLS-1$
 		uiprocessNullPtr1.addListener(new IActionListener() {
 
 			public void callback() {
-				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) { //$NON-NLS-1$
+				final UIProcess process = new UIProcess("TestException", true, getNavigationNode()) { //$NON-NLS-1$
 
 					@Override
-					public boolean runJob(IProgressMonitor monitor) {
+					public boolean runJob(final IProgressMonitor monitor) {
 						throw new NullPointerException("nullpointer in runJob"); //$NON-NLS-1$
 					}
 
@@ -52,14 +52,14 @@ public class ExceptionTestController extends SubModuleController {
 
 			}
 		});
-		IActionRidget uiprocessNullPtr2 = (IActionRidget) getRidget("uiprocessNullPointerActionUpdateUI"); //$NON-NLS-1$
+		final IActionRidget uiprocessNullPtr2 = (IActionRidget) getRidget("uiprocessNullPointerActionUpdateUI"); //$NON-NLS-1$
 		uiprocessNullPtr2.addListener(new IActionListener() {
 
 			public void callback() {
-				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) { //$NON-NLS-1$
+				final UIProcess process = new UIProcess("TestException", true, getNavigationNode()) { //$NON-NLS-1$
 
 					@Override
-					public boolean runJob(IProgressMonitor monitor) {
+					public boolean runJob(final IProgressMonitor monitor) {
 						notifyUpdateUI();
 						return false;
 					}
@@ -74,11 +74,11 @@ public class ExceptionTestController extends SubModuleController {
 
 			}
 		});
-		IActionRidget uiprocessNullPtr3 = (IActionRidget) getRidget("uiprocessNullPointerActionFinalUpdateUI"); //$NON-NLS-1$
+		final IActionRidget uiprocessNullPtr3 = (IActionRidget) getRidget("uiprocessNullPointerActionFinalUpdateUI"); //$NON-NLS-1$
 		uiprocessNullPtr3.addListener(new IActionListener() {
 
 			public void callback() {
-				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) { //$NON-NLS-1$
+				final UIProcess process = new UIProcess("TestException", true, getNavigationNode()) { //$NON-NLS-1$
 
 					@Override
 					public void finalUpdateUI() {

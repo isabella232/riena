@@ -49,13 +49,13 @@ public final class LogLevelMapper {
 		} else if (NONE.equals(logLevelString)) {
 			return LogService.LOG_ERROR - 1;
 		} else if (logLevelString.startsWith(CUSTOM)) {
-			int open = logLevelString.indexOf('(');
-			int close = logLevelString.indexOf(')');
+			final int open = logLevelString.indexOf('(');
+			final int close = logLevelString.indexOf(')');
 			if (open != -1 && close != -1 && open < close) {
-				String level = logLevelString.substring(open + 1, close).trim();
+				final String level = logLevelString.substring(open + 1, close).trim();
 				try {
 					return Integer.parseInt(level);
-				} catch (NumberFormatException e) {
+				} catch (final NumberFormatException e) {
 					return LogService.LOG_WARNING;
 				}
 			}
@@ -69,7 +69,7 @@ public final class LogLevelMapper {
 	 * @param logLevelString
 	 * @return the log level value as defined by <code>LogService</code>
 	 */
-	public static String getValue(int logLevel) {
+	public static String getValue(final int logLevel) {
 		switch (logLevel) {
 		case LogService.LOG_DEBUG:
 			return DEBUG;

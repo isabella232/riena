@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.communication;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorRegistry;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.example.client.Activator;
@@ -21,7 +22,7 @@ public abstract class RemoteCallProcess<T> extends UIProcess {
 	private IRemoteProgressMonitorRegistry registry;
 	private ServiceProgressVisualizer serviceProgressVisalizer;
 
-	public RemoteCallProcess(String name, boolean user, Object context) {
+	public RemoteCallProcess(final String name, final boolean user, final Object context) {
 		super(name, user, context);
 		injectRegistry();
 	}
@@ -30,23 +31,23 @@ public abstract class RemoteCallProcess<T> extends UIProcess {
 		Inject.service(IRemoteProgressMonitorRegistry.class).into(this).andStart(Activator.getDefault().getContext());
 	}
 
-	public void bind(IRemoteProgressMonitorRegistry registry) {
+	public void bind(final IRemoteProgressMonitorRegistry registry) {
 		this.registry = registry;
 	}
 
-	public void unbind(IRemoteProgressMonitorRegistry registry) {
+	public void unbind(final IRemoteProgressMonitorRegistry registry) {
 		this.registry = null;
 	}
 
 	@Override
-	protected void beforeRun(IProgressMonitor monitor) {
+	protected void beforeRun(final IProgressMonitor monitor) {
 		super.beforeRun(monitor);
 		serviceProgressVisalizer = new ServiceProgressVisualizer(getJob().getName(), monitor);
 		registerRemoteServiceMonitor();
 	}
 
 	@Override
-	protected void afterRun(IProgressMonitor monitor) {
+	protected void afterRun(final IProgressMonitor monitor) {
 		super.afterRun(monitor);
 		unregisterRemoteServiceMonitor();
 	}

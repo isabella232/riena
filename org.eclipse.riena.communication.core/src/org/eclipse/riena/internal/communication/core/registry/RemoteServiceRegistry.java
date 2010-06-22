@@ -47,9 +47,9 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 
 	public synchronized void stop() {
 		// avoid ConcurrentModificationException by cloning ´iterable´!
-		IRemoteServiceRegistration[] arrayRS = registeredServices.values().toArray(
+		final IRemoteServiceRegistration[] arrayRS = registeredServices.values().toArray(
 				new IRemoteServiceRegistration[registeredServices.values().size()]);
-		for (IRemoteServiceRegistration serviceReg : arrayRS) {
+		for (final IRemoteServiceRegistration serviceReg : arrayRS) {
 			// unregisters all services for this registry
 			unregisterService(serviceReg.getReference());
 		}
@@ -64,22 +64,23 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	 * org.eclipse.riena.communication.core.IRemoteServiceRegistry#registerService
 	 * (org.eclipse.riena.communication.core.IRemoteServiceReference)
 	 */
-	public IRemoteServiceRegistration registerService(IRemoteServiceReference reference, BundleContext context) {
+	public IRemoteServiceRegistration registerService(final IRemoteServiceReference reference,
+			final BundleContext context) {
 
 		final String url = reference.getDescription().getURL();
 		synchronized (registeredServices) {
-			IRemoteServiceRegistration foundRemoteServiceReg = registeredServices.get(url);
+			final IRemoteServiceRegistration foundRemoteServiceReg = registeredServices.get(url);
 			if (foundRemoteServiceReg == null) {
 				// it is a new entry, set properties
-				Properties props = new Properties();
+				final Properties props = new Properties();
 				props.put("service.url", url); //$NON-NLS-1$
 				props.put("service.protocol", reference.getDescription().getProtocol()); //$NON-NLS-1$
-				ServiceRegistration serviceRegistration = context.registerService(reference
-						.getServiceInterfaceClassName(), reference.getServiceInstance(), props);
+				final ServiceRegistration serviceRegistration = context.registerService(
+						reference.getServiceInterfaceClassName(), reference.getServiceInstance(), props);
 				try {
 					Activator.getDefault().getContext().addServiceListener(new ServiceListener() {
 
-						public void serviceChanged(ServiceEvent event) {
+						public void serviceChanged(final ServiceEvent event) {
 							if (event.getType() == ServiceEvent.UNREGISTERING) {
 								if (registeredServices.containsKey(url)) {
 									registeredServices.remove(url);
@@ -88,14 +89,14 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 							}
 						}
 					}, "(service.id=" + serviceRegistration.getReference().getProperty("service.id") + ")"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-				} catch (InvalidSyntaxException e) {
+				} catch (final InvalidSyntaxException e) {
 					// to nothing......
 					e.printStackTrace();
 				}
 				reference.setContext(context);
 				reference.setServiceRegistration(serviceRegistration);
 
-				RemoteServiceRegistration remoteServiceReg = new RemoteServiceRegistration(reference, this);
+				final RemoteServiceRegistration remoteServiceReg = new RemoteServiceRegistration(reference, this);
 				registeredServices.put(url, remoteServiceReg);
 
 				LOGGER.log(LogService.LOG_DEBUG, "OSGi NEW service registered id: " //$NON-NLS-1$
@@ -121,15 +122,15 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	 * org.eclipse.riena.communication.core.IRemoteServiceRegistry#unregisterService
 	 * (org.eclipse.riena.communication.core.IRemoteServiceReference)
 	 */
-	public void unregisterService(IRemoteServiceReference reference) {
+	public void unregisterService(final IRemoteServiceReference reference) {
 		Assert.isNotNull(reference, "RemoteServiceReference must not be null"); //$NON-NLS-1$
 		synchronized (registeredServices) {
 			// we have commented out the following lines
 			// because the service gets unregistered automatically when the bundle, that created it, is
 			// stopped. the explicit call sometimes fails because that bundle is already stopped
 			// and so unregister fails with an IllegalStateException
-			ServiceRegistration serviceRegistration = reference.getServiceRegistration();
-			String id = reference.getServiceInterfaceClassName();
+			final ServiceRegistration serviceRegistration = reference.getServiceRegistration();
+			final String id = reference.getServiceInterfaceClassName();
 			registeredServices.remove(reference.getURL());
 			reference.dispose();
 			serviceRegistration.unregister();
@@ -143,17 +144,17 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	 * @seeorg.eclipse.riena.communication.core.IRemoteServiceRegistry#
 	 * registeredServices(java.lang.String)
 	 */
-	public List<IRemoteServiceRegistration> registeredServices(BundleContext context) {
+	public List<IRemoteServiceRegistration> registeredServices(final BundleContext context) {
 		synchronized (registeredServices) {
-			Collection<IRemoteServiceRegistration> values = registeredServices.values();
+			final Collection<IRemoteServiceRegistration> values = registeredServices.values();
 			// Answers all service registrations when hostId is null
 			if (context == null) {
 				return new ArrayList<IRemoteServiceRegistration>(values);
 			}
 
-			List<IRemoteServiceRegistration> result = new ArrayList<IRemoteServiceRegistration>();
-			for (IRemoteServiceRegistration serviceReg : values) {
-				BundleContext registeredBundleContext = serviceReg.getReference().getContext();
+			final List<IRemoteServiceRegistration> result = new ArrayList<IRemoteServiceRegistration>();
+			for (final IRemoteServiceRegistration serviceReg : values) {
+				final BundleContext registeredBundleContext = serviceReg.getReference().getContext();
 				if (context.equals(registeredBundleContext)) {
 					result.add(serviceReg);
 				}
@@ -168,7 +169,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	 * @param url
 	 * @return
 	 */
-	public boolean hasServiceForUrl(String url) {
+	public boolean hasServiceForUrl(final String url) {
 		return (registeredServices.get(url) != null);
 	}
 }

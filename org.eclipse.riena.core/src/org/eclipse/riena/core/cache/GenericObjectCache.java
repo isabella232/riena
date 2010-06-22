@@ -35,14 +35,14 @@ import org.eclipse.riena.internal.core.cache.SoftCacheEntry;
  */
 public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 
-	private HashMap<K, ICacheEntry<K, V>> cacheEntries;
+	private final HashMap<K, ICacheEntry<K, V>> cacheEntries;
 	/** timeout in milliseconds * */
 	private long timeout;
 	/** minimum count of entries to keep * */
 	private int minimumSize;
-	private LinkedList<V> hardLinks;
+	private final LinkedList<V> hardLinks;
 	/** Reference queue for cleared SoftReference objects. */
-	private ReferenceQueue<V> queue;
+	private final ReferenceQueue<V> queue;
 	private int statHit;
 	private int statNotFound;
 	private int statMiss;
@@ -67,7 +67,7 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 	/**
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setName(java.lang.String)
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name + " : "; //$NON-NLS-1$
 	}
 
@@ -77,12 +77,12 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 	 * @see
 	 * org.eclipse.riena.core.cache.IGenericObjectCache#get(java.lang.Object)
 	 */
-	public V get(K key) {
+	public V get(final K key) {
 		LOGGER.log(LogService.LOG_DEBUG, "get = " + key); //$NON-NLS-1$
 		long timestamp = 0;
 		V value = null;
 		synchronized (cacheEntries) {
-			ICacheEntry<K, V> entry = cacheEntries.get(key);
+			final ICacheEntry<K, V> entry = cacheEntries.get(key);
 			/** do we find the entry * */
 			if (entry == null) {
 				statNotFound++;
@@ -91,7 +91,7 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 			}
 			timestamp = entry.getTimestamp();
 
-			long timePassed = System.currentTimeMillis() - timestamp;
+			final long timePassed = System.currentTimeMillis() - timestamp;
 			/** is the entry expired * */
 			if (timePassed > timeout) {
 				remove(key);
@@ -132,7 +132,7 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 				+ statHit + " / " + statNotFound + " / " + statMiss + " / " + statTimeout;//$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
 	}
 
-	private void touchValue(V value) {
+	private void touchValue(final V value) {
 		if (minimumSize > 0) {
 			synchronized (hardLinks) {
 				hardLinks.addFirst(value);
@@ -148,7 +148,7 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#put(Object,
 	 *      java.lang.Object)
 	 */
-	public void put(K key, V value) {
+	public void put(final K key, final V value) {
 		LOGGER.log(LogService.LOG_DEBUG, "put = " + key + " , " + value + ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		processQueue();
 		ICacheEntry<K, V> entry;
@@ -176,7 +176,7 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 	/**
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#remove(Object)
 	 */
-	public void remove(K key) {
+	public void remove(final K key) {
 		LOGGER.log(LogService.LOG_DEBUG, "remove = " + key); //$NON-NLS-1$
 		processQueue();
 		synchronized (cacheEntries) {
@@ -198,7 +198,7 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 	/**
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setTimeout(int)
 	 */
-	public void setTimeout(int milliseconds) {
+	public void setTimeout(final int milliseconds) {
 		LOGGER.log(LogService.LOG_DEBUG, "setTimeout = " + milliseconds); //$NON-NLS-1$
 		timeout = milliseconds;
 	}
@@ -227,7 +227,7 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 	/**
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setMinimumSize(int)
 	 */
-	public void setMinimumSize(int minSize) {
+	public void setMinimumSize(final int minSize) {
 		LOGGER.log(LogService.LOG_DEBUG, "setMinSize = " + minSize); //$NON-NLS-1$
 		minimumSize = minSize;
 	}
@@ -238,7 +238,7 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 		int count = 0;
 		synchronized (cacheEntries) {
 			while ((ref = (SoftReference<ICacheEntry<K, V>>) queue.poll()) != null) {
-				ICacheEntry<K, V> entry = ref.get();
+				final ICacheEntry<K, V> entry = ref.get();
 				if (entry != null) {
 					cacheEntries.remove(entry.getKey());
 					count++;

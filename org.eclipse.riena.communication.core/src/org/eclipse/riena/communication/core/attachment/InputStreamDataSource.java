@@ -20,9 +20,9 @@ import org.eclipse.riena.core.util.Nop;
  */
 public class InputStreamDataSource implements IDataSource {
 
-	private InputStream inputStream;
+	private final InputStream inputStream;
 
-	public InputStreamDataSource(InputStream inputStream) {
+	public InputStreamDataSource(final InputStream inputStream) {
 		this.inputStream = inputStream;
 	}
 
@@ -36,7 +36,7 @@ public class InputStreamDataSource implements IDataSource {
 	public InputStream getInputStream() throws IOException {
 		try {
 			inputStream.reset();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			Nop.reason("catch and ignore"); //$NON-NLS-1$
 		}
 		return inputStream;

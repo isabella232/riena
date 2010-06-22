@@ -13,10 +13,10 @@ package org.eclipse.riena.communication.core.proxyselector;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.net.Proxy.Type;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
-import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,14 +49,14 @@ public class CoreNetProxySelector extends ProxySelector {
 	}
 
 	@Override
-	public List<Proxy> select(URI uri) {
+	public List<Proxy> select(final URI uri) {
 		Assert.isLegal(uri != null, "uri must not be null."); //$NON-NLS-1$
-		IProxyData[] proxyDatas = ProxyManager.getProxyManager().select(uri);
+		final IProxyData[] proxyDatas = ProxyManager.getProxyManager().select(uri);
 		if (proxyDatas == null || proxyDatas.length == 0) {
 			return ProxySelectorUtils.NO_PROXY_LIST;
 		}
-		List<Proxy> proxies = new ArrayList<Proxy>(proxyDatas.length);
-		for (IProxyData proxyData : proxyDatas) {
+		final List<Proxy> proxies = new ArrayList<Proxy>(proxyDatas.length);
+		for (final IProxyData proxyData : proxyDatas) {
 			Type type = null;
 			if (proxyData.getType().equals(ProxyData.HTTP_PROXY_TYPE)
 					|| proxyData.getType().equals(ProxyData.HTTPS_PROXY_TYPE)) {
@@ -68,8 +68,8 @@ public class CoreNetProxySelector extends ProxySelector {
 						+ CoreNetProxySelector.class.getName() + " needs to be extended!"); //$NON-NLS-1$
 			}
 			if (type != null) {
-				InetSocketAddress address = InetSocketAddress
-						.createUnresolved(proxyData.getHost(), proxyData.getPort());
+				final InetSocketAddress address = InetSocketAddress.createUnresolved(proxyData.getHost(),
+						proxyData.getPort());
 				proxies.add(new Proxy(type, address));
 			}
 		}
@@ -78,7 +78,7 @@ public class CoreNetProxySelector extends ProxySelector {
 	}
 
 	@Override
-	public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
+	public void connectFailed(final URI uri, final SocketAddress sa, final IOException ioe) {
 		// TODO The core.net IProxyService has not yet support for this!
 		LOGGER.log(LogService.LOG_DEBUG, "Attempt to connect to uri: " + uri + " on proxy " + sa + " failed.", ioe); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}

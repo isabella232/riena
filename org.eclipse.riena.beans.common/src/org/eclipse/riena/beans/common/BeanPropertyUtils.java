@@ -36,9 +36,9 @@ public final class BeanPropertyUtils {
 	 * @param descriptor
 	 * @return
 	 */
-	public static Object getPropertyValue(Object bean, PropertyDescriptor descriptor) {
+	public static Object getPropertyValue(final Object bean, final PropertyDescriptor descriptor) {
 		Assert.isNotNull(descriptor, "descriptor cannot be null"); //$NON-NLS-1$
-		Method readMethod = descriptor.getReadMethod();
+		final Method readMethod = descriptor.getReadMethod();
 		if (readMethod == null) {
 			throw new UnsupportedOperationException("Property '" + descriptor.getName() + "' has no getter method"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -49,17 +49,17 @@ public final class BeanPropertyUtils {
 		// call getter and return the value
 		try {
 			return readMethod.invoke(bean, new Object[0]);
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			throw new PropertyAccessFailure("unexpected error getting the property", e); //$NON-NLS-1$
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			throw new PropertyAccessFailure("unexpected error getting the property", e); //$NON-NLS-1$
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			throw new PropertyAccessFailure("unexpected error getting the property", e); //$NON-NLS-1$
 		}
 	}
 
-	public static void setPropertyValue(Object bean, PropertyDescriptor descriptor, Object value) {
-		Method writeMethod = descriptor.getWriteMethod();
+	public static void setPropertyValue(final Object bean, final PropertyDescriptor descriptor, final Object value) {
+		final Method writeMethod = descriptor.getWriteMethod();
 		if (writeMethod == null) {
 			throw new UnsupportedOperationException("Property '" + descriptor.getName() + "' has no setter method"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -69,15 +69,15 @@ public final class BeanPropertyUtils {
 		}
 
 		// call setter
-		Object[] values = new Object[1];
+		final Object[] values = new Object[1];
 		values[0] = value;
 		try {
 			writeMethod.invoke(bean, values);
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			throw new PropertyAccessFailure("unexpected error setting the property", e); //$NON-NLS-1$
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			throw new PropertyAccessFailure("unexpected error setting the property", e); //$NON-NLS-1$
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			throw new PropertyAccessFailure("unexpected error setting the property", e); //$NON-NLS-1$
 		}
 	}

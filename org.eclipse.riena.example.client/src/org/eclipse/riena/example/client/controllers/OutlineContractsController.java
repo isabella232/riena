@@ -16,7 +16,7 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
 
 public class OutlineContractsController extends SubModuleController implements IController {
 
-	public OutlineContractsController(ISubModuleNode navigationNode) {
+	public OutlineContractsController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 

@@ -43,7 +43,7 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 	//name of the task working on
 	private String taskName;
 
-	private Map<CommunicationDirection, CommunicationChannel> channels = new HashMap<CommunicationDirection, CommunicationChannel>();
+	private final Map<CommunicationDirection, CommunicationChannel> channels = new HashMap<CommunicationDirection, CommunicationChannel>();
 
 	enum CommunicationDirection {
 		REQUEST, RESPONSE;
@@ -61,7 +61,7 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 			return actualTotalWork;
 		}
 
-		void setActualTotalWork(int actualTotalWork) {
+		void setActualTotalWork(final int actualTotalWork) {
 			this.actualTotalWork = actualTotalWork;
 		}
 
@@ -69,11 +69,11 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 			return actualWorkedUnits;
 		}
 
-		void setActualWorkedUnits(int actualWorkedUnits) {
+		void setActualWorkedUnits(final int actualWorkedUnits) {
 			this.actualWorkedUnits = actualWorkedUnits;
 		}
 
-		void workUnitsDone(int bytes) {
+		void workUnitsDone(final int bytes) {
 			setActualWorkedUnits(getActualWorkedUnits() + bytes);
 		}
 
@@ -85,20 +85,20 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 			if (actualWorkedUnits == 0) {
 				return 0;
 			}
-			double workMultiplier = Double.valueOf(actualWorkedUnits) / Double.valueOf(actualTotalWork);
+			final double workMultiplier = Double.valueOf(actualWorkedUnits) / Double.valueOf(actualTotalWork);
 			return (int) ((NORMALIZED_TOTAL_WORK / 2) * workMultiplier);
 		}
 
 	}
 
-	public ServiceProgressVisualizer(String taskname, IProgressMonitor progressMonitor) {
+	public ServiceProgressVisualizer(final String taskname, final IProgressMonitor progressMonitor) {
 		init(taskname, progressMonitor);
 	}
 
-	public ServiceProgressVisualizer(String taskname) {
+	public ServiceProgressVisualizer(final String taskname) {
 		// ui stuff goes here
-		UICallbackDispatcher callBackDispatcher = new UICallbackDispatcher(UISynchronizer.createSynchronizer());
-		ISubApplicationNode subApplicationNode = locateActiveSubApplicationNode();
+		final UICallbackDispatcher callBackDispatcher = new UICallbackDispatcher(UISynchronizer.createSynchronizer());
+		final ISubApplicationNode subApplicationNode = locateActiveSubApplicationNode();
 		// init delegation
 		callBackDispatcher.addUIMonitor(new ProgressVisualizerLocator().getProgressVisualizer(subApplicationNode));
 		progressMonitor = callBackDispatcher.createThreadSwitcher();
@@ -106,7 +106,7 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 		configureProcessInfo(callBackDispatcher, subApplicationNode);
 	}
 
-	private void init(String taskname, IProgressMonitor progressMonitor) {
+	private void init(final String taskname, final IProgressMonitor progressMonitor) {
 		initChannels();
 		this.taskName = taskname;
 		this.progressMonitor = progressMonitor;
@@ -118,8 +118,9 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 		channels.put(CommunicationDirection.RESPONSE, new CommunicationChannel());
 	}
 
-	private void configureProcessInfo(UICallbackDispatcher callBackDispatcher, ISubApplicationNode applicationNode) {
-		ProcessInfo processInfo = callBackDispatcher.getProcessInfo();
+	private void configureProcessInfo(final UICallbackDispatcher callBackDispatcher,
+			final ISubApplicationNode applicationNode) {
+		final ProcessInfo processInfo = callBackDispatcher.getProcessInfo();
 		processInfo.setNote(taskName);
 		processInfo.setTitle(taskName);
 		processInfo.setDialogVisible(true);
@@ -128,8 +129,8 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 	}
 
 	protected ISubApplicationNode locateActiveSubApplicationNode() {
-		ApplicationNode applicationNode = (ApplicationNode) ApplicationNodeManager.getApplicationNode();
-		for (ISubApplicationNode child : applicationNode.getChildren()) {
+		final ApplicationNode applicationNode = (ApplicationNode) ApplicationNodeManager.getApplicationNode();
+		for (final ISubApplicationNode child : applicationNode.getChildren()) {
 			if (child.isActivated()) {
 				return child;
 			}
@@ -139,7 +140,7 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 
 	private static class RemoteServiceCancelListener implements PropertyChangeListener {
 
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			if (ProcessInfo.PROPERTY_CANCELED.equals(evt.getPropertyName())) {
 				//TODO which is the best way to handle that?
 			}
@@ -155,29 +156,30 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 		progressMonitor.beginTask(taskName, (int) NORMALIZED_TOTAL_WORK);
 	}
 
-	CommunicationChannel getChannel(CommunicationDirection communicationDrection) {
+	CommunicationChannel getChannel(final CommunicationDirection communicationDrection) {
 		return channels.get(communicationDrection);
 	}
 
 	@Override
-	public void request(int bytes, int totalBytes) {
+	public void request(final int bytes, final int totalBytes) {
 		workUntisCompleted(bytes, totalBytes, getChannel(CommunicationDirection.REQUEST));
 	}
 
-	public void request(RemoteProgressMonitorEvent event) {
+	public void request(final RemoteProgressMonitorEvent event) {
 		request(event.getBytesProcessed(), event.getTotalBytes());
 	}
 
 	@Override
-	public void response(int bytes, int totalBytes) {
+	public void response(final int bytes, final int totalBytes) {
 		workUntisCompleted(bytes, totalBytes, getChannel(CommunicationDirection.RESPONSE));
 	}
 
-	public void response(RemoteProgressMonitorEvent event) {
+	public void response(final RemoteProgressMonitorEvent event) {
 		response(event.getBytesProcessed(), event.getTotalBytes());
 	}
 
-	private void workUntisCompleted(int bytes, int totalBytes, CommunicationChannel communicationChannel) {
+	private void workUntisCompleted(final int bytes, final int totalBytes,
+			final CommunicationChannel communicationChannel) {
 		communicationChannel.actualTotalWork = totalBytes;
 		updateWorked(bytes, communicationChannel);
 		if (transferComplete()) {
@@ -196,7 +198,7 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 
 	private int calculateTotalNormalizedProgress() {
 		int sum = 0;
-		for (CommunicationChannel channel : channels.values()) {
+		for (final CommunicationChannel channel : channels.values()) {
 			sum += channel.normalizeActualWorkedUnits();
 		}
 		return sum;
@@ -205,7 +207,7 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 	/*
 	 * update the channel
 	 */
-	private void updateWorked(int bytes, CommunicationChannel communicationChannel) {
+	private void updateWorked(final int bytes, final CommunicationChannel communicationChannel) {
 		communicationChannel.workUnitsDone(bytes);
 	}
 

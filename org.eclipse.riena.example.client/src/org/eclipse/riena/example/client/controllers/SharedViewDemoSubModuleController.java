@@ -24,23 +24,23 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
  */
 public class SharedViewDemoSubModuleController extends SubModuleController {
 
-	private Person personBean;
+	private final Person personBean;
 
 	public SharedViewDemoSubModuleController() {
 		this(null);
 	}
 
-	public SharedViewDemoSubModuleController(ISubModuleNode navigationNode) {
+	public SharedViewDemoSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 		personBean = new Person("Max", "Muster"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override
 	public void configureRidgets() {
-		ITextRidget txtFirst = getRidget(ITextRidget.class, "txtFirst"); //$NON-NLS-1$
+		final ITextRidget txtFirst = getRidget(ITextRidget.class, "txtFirst"); //$NON-NLS-1$
 		txtFirst.bindToModel(personBean, Person.PROPERTY_FIRSTNAME);
 
-		ITextRidget txtLast = getRidget(ITextRidget.class, "txtLast"); //$NON-NLS-1$
+		final ITextRidget txtLast = getRidget(ITextRidget.class, "txtLast"); //$NON-NLS-1$
 		txtLast.addMarker(new MandatoryMarker());
 		txtLast.bindToModel(personBean, Person.PROPERTY_LASTNAME);
 

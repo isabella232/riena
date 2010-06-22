@@ -16,7 +16,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.eclipse.equinox.log.Logger;
 
-
 /**
  * This logger factory creates a {@code Logger} that collects log events until a
  * <i>real</i> logger is available. The collected log events will than be

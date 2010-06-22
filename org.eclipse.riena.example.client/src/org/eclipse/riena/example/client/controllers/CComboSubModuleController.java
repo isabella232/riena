@@ -44,7 +44,7 @@ public class CComboSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public CComboSubModuleController(ISubModuleNode navigationNode) {
+	public CComboSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 		manager = new PersonManager(PersonFactory.createPersonList());
 		value = new PersonModificationBean();
@@ -79,8 +79,8 @@ public class CComboSubModuleController extends SubModuleController {
 		textLast = (ITextRidget) getRidget("textLast"); //$NON-NLS-1$
 
 		comboOne.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				Person selectedPerson = (Person) evt.getNewValue();
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final Person selectedPerson = (Person) evt.getNewValue();
 				value.setPerson(selectedPerson);
 				textFirst.updateFromModel();
 				textLast.updateFromModel();
@@ -103,9 +103,9 @@ public class CComboSubModuleController extends SubModuleController {
 				public void callback() {
 					if (buttonSecondValue.isSelected()) {
 						if (manager.getPersons().size() > 1) {
-							Iterator<Person> iterator = manager.getPersons().iterator();
+							final Iterator<Person> iterator = manager.getPersons().iterator();
 							iterator.next();
-							Person second = iterator.next();
+							final Person second = iterator.next();
 							manager.setSelectedPerson(second);
 						}
 						comboOne.setOutputOnly(true);

@@ -40,7 +40,7 @@ public class JavaPermissionSerializerFactory extends AbstractRienaSerializerFact
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Serializer getSerializer(Class cl) throws HessianProtocolException {
+	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		if (!Permission.class.isAssignableFrom(cl)) {
 			return null;
 		}
@@ -57,12 +57,12 @@ public class JavaPermissionSerializerFactory extends AbstractRienaSerializerFact
 
 	private static class JavaPermissionSerializer extends JavaSerializer {
 
-		public JavaPermissionSerializer(Class<?> cl) {
+		public JavaPermissionSerializer(final Class<?> cl) {
 			super(cl);
 		}
 
 		@Override
-		public void writeObject(Object obj, AbstractHessianOutput out) throws IOException {
+		public void writeObject(final Object obj, final AbstractHessianOutput out) throws IOException {
 			if (obj == null) {
 				out.writeNull();
 				return;
@@ -70,10 +70,10 @@ public class JavaPermissionSerializerFactory extends AbstractRienaSerializerFact
 			if (out.addRef(obj)) {
 				return;
 			}
-			Class<?> cl = obj.getClass();
-			int ref = out.writeObjectBegin(cl.getName());
+			final Class<?> cl = obj.getClass();
+			final int ref = out.writeObjectBegin(cl.getName());
 
-			Permission permission = (Permission) obj;
+			final Permission permission = (Permission) obj;
 
 			if (ref < -1) { // hessian 1.0
 				out.writeString(NAME_FIELD);
@@ -99,18 +99,18 @@ public class JavaPermissionSerializerFactory extends AbstractRienaSerializerFact
 
 		private Constructor<Permission> constructor;
 
-		public JavaPermissionDeserializer(Class<?> cl) {
+		public JavaPermissionDeserializer(final Class<?> cl) {
 			super(cl);
 		}
 
 		@Override
-		public Object readObject(AbstractHessianInput in, String[] fieldNames) throws IOException {
-			int ref = in.addRef(null);
+		public Object readObject(final AbstractHessianInput in, final String[] fieldNames) throws IOException {
+			final int ref = in.addRef(null);
 
 			String name = null;
 			String actions = null;
 
-			for (String key : fieldNames) {
+			for (final String key : fieldNames) {
 				if (key.equals(NAME_FIELD)) {
 					name = in.readString();
 				} else if (key.equals(ACTIONS_FIELD)) {
@@ -120,18 +120,18 @@ public class JavaPermissionSerializerFactory extends AbstractRienaSerializerFact
 				}
 			}
 
-			Permission permission = newPermission(name, actions);
+			final Permission permission = newPermission(name, actions);
 			in.setRef(ref, permission);
 			return permission;
 		}
 
-		private Permission newPermission(String name, String actions) throws HessianProtocolException {
+		private Permission newPermission(final String name, final String actions) throws HessianProtocolException {
 			if (constructor == null) {
 				constructor = getConstructor();
 			}
 			try {
 				return (actions == null ? constructor.newInstance(name) : constructor.newInstance(name, actions));
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				throw new HessianProtocolException("Could not create instance for permission " //$NON-NLS-1$
 						+ getType().getName() + ".", e); //$NON-NLS-1$
 			}
@@ -141,12 +141,12 @@ public class JavaPermissionSerializerFactory extends AbstractRienaSerializerFact
 		private Constructor<Permission> getConstructor() throws HessianProtocolException {
 			try {
 				return getType().getConstructor(String.class, String.class);
-			} catch (NoSuchMethodException e) {
+			} catch (final NoSuchMethodException e) {
 				Nop.reason("Fall throgh!"); //$NON-NLS-1$
 			}
 			try {
 				return getType().getConstructor(String.class);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				throw new HessianProtocolException("Could not create a constructor for permission " //$NON-NLS-1$
 						+ getType().getName() + ".", e); //$NON-NLS-1$
 			}

@@ -31,7 +31,7 @@ public class ComboAndChoiceSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 		comboRidgetWithModel = (IComboRidget) getRidget("comboBoxWithModel"); //$NON-NLS-1$
-		SingleSelectionListBean colors = new SingleSelectionListBean(new Object[] {
+		final SingleSelectionListBean colors = new SingleSelectionListBean(new Object[] {
 				"white", "black", "red", "blue", "green", "brown", "yellow" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		colors.setSelection("blue"); //$NON-NLS-1$
 		comboRidgetWithModel.bindToModel(colors, SingleSelectionListBean.PROPERTY_VALUES, String.class, null, colors,
@@ -53,7 +53,7 @@ public class ComboAndChoiceSubModuleController extends SubModuleController {
 		bindComboToModel.addListener(new IActionListener() {
 
 			public void callback() {
-				SingleSelectionListBean colors = new SingleSelectionListBean(new Object[] {
+				final SingleSelectionListBean colors = new SingleSelectionListBean(new Object[] {
 						"white", "black", "red", "blue", "green", "brown", "yellow" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 				colors.setSelection("red"); //$NON-NLS-1$
 				comboRidgetWithoutModel.bindToModel(colors, SingleSelectionListBean.PROPERTY_VALUES, String.class,
@@ -65,7 +65,7 @@ public class ComboAndChoiceSubModuleController extends SubModuleController {
 		bindChoiceToModel.addListener(new IActionListener() {
 
 			public void callback() {
-				SingleSelectionListBean numbers = new SingleSelectionListBean(new Object[] {
+				final SingleSelectionListBean numbers = new SingleSelectionListBean(new Object[] {
 						"choice 1", "choice 2", "choice 3" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				numbers.setSelection("choice 1"); //$NON-NLS-1$
 				compositeNumberModel.bindToModel(numbers, SingleSelectionListBean.PROPERTY_VALUES, numbers,

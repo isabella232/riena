@@ -27,24 +27,24 @@ public class UIProcessDemoSubModuleView extends SubModuleView {
 	public final static String ID = UIProcessDemoSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, true));
-		Group group = createUIProcessGroup(parent);
+		final Group group = createUIProcessGroup(parent);
 		GridDataFactory.fillDefaults().applyTo(group);
 
 	}
 
-	private Group createUIProcessGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "&UIProcess visualization:"); //$NON-NLS-1$
+	private Group createUIProcessGroup(final Composite parent) {
+		final Group group = UIControlsFactory.createGroup(parent, "&UIProcess visualization:"); //$NON-NLS-1$
 		group.setLayout(new GridLayout(1, true));
 
-		Button startUIProcess = UIControlsFactory.createButton(group);
+		final Button startUIProcess = UIControlsFactory.createButton(group);
 		int xHint = UIControlsFactory.getWidthHint(startUIProcess) + 10;
 		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(startUIProcess);
 		addUIControl(startUIProcess, "actionRidget"); //$NON-NLS-1$
 
-		Button startJob = UIControlsFactory.createButton(group);
+		final Button startJob = UIControlsFactory.createButton(group);
 		xHint = UIControlsFactory.getWidthHint(startJob);
 		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(startJob);
 		addUIControl(startJob, "actionRidgetJob"); //$NON-NLS-1$

@@ -41,20 +41,20 @@ public class LoginSplashView extends AbstractLoginSplashView {
 	}
 
 	@Override
-	protected Control buildView(Composite parent) {
+	protected Control buildView(final Composite parent) {
 		addUIControl(parent.getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
 		GridLayoutFactory.fillDefaults().numColumns(2).margins(5, 10).applyTo(parent);
 
 		return createContentView(parent);
 	}
 
-	private Composite createContentView(Composite parent) {
+	private Composite createContentView(final Composite parent) {
 
-		Label infoArea = new Label(parent, SWT.NONE);
+		final Label infoArea = new Label(parent, SWT.NONE);
 		infoArea.setText(Messages.LoginSplashView_infoArea);
 		infoArea.setLayoutData(GD11LEFTBOTTOMFILL);
 
-		Composite inputArea = new Composite(parent, SWT.NONE);
+		final Composite inputArea = new Composite(parent, SWT.NONE);
 		GridLayoutFactory.fillDefaults().numColumns(4).spacing(6, 9).equalWidth(false).applyTo(inputArea);
 		inputArea.setLayoutData(GD11RIGHTBOTTOMFILL);
 		// Force composite to inherit the splash background
@@ -64,7 +64,7 @@ public class LoginSplashView extends AbstractLoginSplashView {
 		new Label(inputArea, SWT.NONE).setText(""); //$NON-NLS-1$
 
 		new Label(inputArea, SWT.NONE).setText(Messages.LoginSplashView_user);
-		Text user = UIControlsFactory.createText(inputArea);
+		final Text user = UIControlsFactory.createText(inputArea);
 		user.setLayoutData(GD21FILL);
 		addUIControl(user, LoginDialogController.RIDGET_ID_USER);
 
@@ -72,7 +72,7 @@ public class LoginSplashView extends AbstractLoginSplashView {
 		new Label(inputArea, SWT.NONE);
 
 		new Label(inputArea, SWT.NONE).setText(Messages.LoginSplashView_password);
-		Text password = UIControlsFactory.createText(inputArea);
+		final Text password = UIControlsFactory.createText(inputArea);
 		password.setLayoutData(GD21FILL);
 		addUIControl(password, LoginDialogController.RIDGET_ID_PASSWORD);
 
@@ -81,12 +81,12 @@ public class LoginSplashView extends AbstractLoginSplashView {
 		// dummy to occupy the cell
 		new Label(inputArea, SWT.NONE);
 
-		Button okButton = UIControlsFactory.createButton(inputArea);
+		final Button okButton = UIControlsFactory.createButton(inputArea);
 		okButton.setText(Messages.LoginSplashView_login);
 		okButton.setLayoutData(GD11FILL);
 		addUIControl(okButton, LoginDialogController.RIDGET_ID_OK);
 
-		Button cancelButton = UIControlsFactory.createButton(inputArea);
+		final Button cancelButton = UIControlsFactory.createButton(inputArea);
 		cancelButton.setText(Messages.LoginSplashView_cancel);
 		cancelButton.setLayoutData(GD11FILL);
 		addUIControl(cancelButton, LoginDialogController.RIDGET_ID_CANCEL);

@@ -38,8 +38,8 @@ public class BigIntegerSerializerFactory extends AbstractRienaSerializerFactory 
 				}
 
 				@Override
-				public Object readObject(AbstractHessianInput in, String[] fieldNames) throws IOException {
-					BigInteger result = new BigInteger(in.readString());
+				public Object readObject(final AbstractHessianInput in, final String[] fieldNames) throws IOException {
+					final BigInteger result = new BigInteger(in.readString());
 					in.addRef(result);
 					return result;
 				}
@@ -51,13 +51,13 @@ public class BigIntegerSerializerFactory extends AbstractRienaSerializerFactory 
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Serializer getSerializer(Class cl) throws HessianProtocolException {
+	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		if (cl == BigInteger.class) {
 			return new JavaSerializer(cl) {
 
 				@Override
-				public void writeInstance(Object obj, AbstractHessianOutput out) throws IOException {
-					BigInteger bi = (BigInteger) obj;
+				public void writeInstance(final Object obj, final AbstractHessianOutput out) throws IOException {
+					final BigInteger bi = (BigInteger) obj;
 					out.writeString(bi.toString());
 				}
 

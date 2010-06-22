@@ -26,8 +26,8 @@ import org.eclipse.riena.core.util.StringUtils;
  * injector supports multiple ´compatible´ extension point id's for a single
  * ´update´ method. These id's will be treated as if they were one!.
  * <p>
- * Extension points are called ´compatible´ if the same {@code
- * ExtensionInterface} can be used for both of them.
+ * Extension points are called ´compatible´ if the same
+ * {@code ExtensionInterface} can be used for both of them.
  * <p>
  * The objective here is to support a smooth and simple transition from
  * &#64;deprecated extension point id's to the new one.
@@ -54,7 +54,7 @@ public class ExtensionPointId {
 	 * 
 	 * @param id
 	 */
-	public ExtensionPointId(String id) {
+	public ExtensionPointId(final String id) {
 		this.rawId = id;
 	}
 
@@ -73,7 +73,7 @@ public class ExtensionPointId {
 	 * 
 	 * @param extensionInterface
 	 */
-	public void normalize(Class<?> extensionInterface) {
+	public void normalize(final Class<?> extensionInterface) {
 		if (normalizedIds != null) {
 			return;
 		}
@@ -100,16 +100,16 @@ public class ExtensionPointId {
 	 * @param extensionInterface
 	 * @return
 	 */
-	private List<String> getNormalizedAndFullyQualifiedExtensionPointIds(Class<?> extensionInterface) {
-		List<String> ids = split(getRawExtensionPointId(rawId, extensionInterface));
-		List<String> result = new ArrayList<String>(ids.size());
-		for (String id : ids) {
+	private List<String> getNormalizedAndFullyQualifiedExtensionPointIds(final Class<?> extensionInterface) {
+		final List<String> ids = split(getRawExtensionPointId(rawId, extensionInterface));
+		final List<String> result = new ArrayList<String>(ids.size());
+		for (final String id : ids) {
 			if (id.contains(DOT)) {
 				// already a FQ id
 				result.add(id);
 				continue;
 			}
-			Bundle bundle = FrameworkUtil.getBundle(extensionInterface);
+			final Bundle bundle = FrameworkUtil.getBundle(extensionInterface);
 			if (bundle != null) {
 				result.add(bundle.getSymbolicName() + DOT + id);
 				continue;
@@ -130,8 +130,8 @@ public class ExtensionPointId {
 	 * @param rawId
 	 * @return
 	 */
-	private List<String> split(String rawId) {
-		List<String> result = new ArrayList<String>();
+	private List<String> split(final String rawId) {
+		final List<String> result = new ArrayList<String>();
 		int fromIndex = 0;
 		int i;
 		while ((i = rawId.indexOf(',', fromIndex)) > 0) {
@@ -150,21 +150,22 @@ public class ExtensionPointId {
 	 * @param extensionInterface
 	 * @param id
 	 */
-	private String getRawExtensionPointId(String id, Class<?> extensionInterface) {
+	private String getRawExtensionPointId(final String id, final Class<?> extensionInterface) {
 		if (StringUtils.isGiven(id)) {
 			return id;
 		}
-		ExtensionInterface extensionInterfaceAnnotation = extensionInterface.getAnnotation(ExtensionInterface.class);
+		final ExtensionInterface extensionInterfaceAnnotation = extensionInterface
+				.getAnnotation(ExtensionInterface.class);
 		if (extensionInterfaceAnnotation != null && StringUtils.isGiven(extensionInterfaceAnnotation.id())) {
 			return extensionInterfaceAnnotation.id();
 		}
 		try {
-			Field idField = extensionInterface.getField(ID);
-			Object value = idField.get(null);
+			final Field idField = extensionInterface.getField(ID);
+			final Object value = idField.get(null);
 			if (value instanceof String) {
 				return (String) value;
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Nop.reason("Fall throuh!"); //$NON-NLS-1$
 		}
 		throw new IllegalStateException(

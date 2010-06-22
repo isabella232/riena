@@ -25,11 +25,11 @@ public class PingPong implements IPingPong {
 	 * 
 	 * @see org.eclipse.riena.communication.sample.pingpong.common.IPingPong#ping(org.eclipse.riena.communication.sample.pingpong.common.Ping)
 	 */
-	public Pong ping(Ping ping) {
+	public Pong ping(final Ping ping) {
 
 		System.out.println("PingPong::Server:: " + ping); //$NON-NLS-1$
 
-		Pong pong = new Pong();
+		final Pong pong = new Pong();
 		pong.setText("Thx. I got the ping!"); //$NON-NLS-1$
 
 		return pong;

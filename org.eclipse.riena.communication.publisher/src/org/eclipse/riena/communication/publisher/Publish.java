@@ -21,11 +21,11 @@ public final class Publish {
 	private Publish() {
 	}
 
-	public static SingleServicePublisher service(String name) {
+	public static SingleServicePublisher service(final String name) {
 		return new SingleServicePublisher(name);
 	}
 
-	public static SingleServicePublisher service(Class<?> clazz) {
+	public static SingleServicePublisher service(final Class<?> clazz) {
 		return new SingleServicePublisher(clazz.getName());
 	}
 

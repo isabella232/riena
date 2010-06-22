@@ -23,8 +23,8 @@ import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
 public class SwtDemoApplication extends SwtApplication {
 
 	@Override
-	protected ApplicationController createApplicationController(IApplicationNode node) {
-		ApplicationController controller = super.createApplicationController(node);
+	protected ApplicationController createApplicationController(final IApplicationNode node) {
+		final ApplicationController controller = super.createApplicationController(node);
 		controller.setMenubarVisible(true);
 		return controller;
 	}
@@ -32,9 +32,9 @@ public class SwtDemoApplication extends SwtApplication {
 	@Override
 	protected IApplicationNode createModel() {
 
-		String bundleVersion = (String) Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
+		final String bundleVersion = (String) Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
 
-		IApplicationNode applicationNode = new ApplicationNode(
+		final IApplicationNode applicationNode = new ApplicationNode(
 				new NavigationNodeId("application"), "Riena Demo - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return applicationNode;

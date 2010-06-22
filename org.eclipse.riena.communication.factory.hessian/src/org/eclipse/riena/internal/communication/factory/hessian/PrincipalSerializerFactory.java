@@ -47,19 +47,19 @@ public class PrincipalSerializerFactory extends AbstractRienaSerializerFactory {
 	 * @param cl
 	 * @return
 	 */
-	private Constructor<?> getStringConstructor(Class<?> cl) {
+	private Constructor<?> getStringConstructor(final Class<?> cl) {
 		try {
 			return cl.getConstructor(String.class);
-		} catch (SecurityException e) {
+		} catch (final SecurityException e) {
 			Nop.reason("Fall through"); //$NON-NLS-1$
-		} catch (NoSuchMethodException e) {
+		} catch (final NoSuchMethodException e) {
 			Nop.reason("Fall through"); //$NON-NLS-1$
 		}
 		return null;
 	}
 
 	@Override
-	public Serializer getSerializer(Class cl) throws HessianProtocolException {
+	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		return null;
 	}
 

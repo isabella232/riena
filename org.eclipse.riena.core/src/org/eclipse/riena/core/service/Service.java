@@ -63,7 +63,7 @@ public final class Service {
 			final S result = (S) context.getService(reference);
 			context.ungetService(reference);
 			return result;
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			return null;
 		}
 	}
@@ -105,9 +105,9 @@ public final class Service {
 			final S result = (S) context.getService(references[0]);
 			context.ungetService(references[0]);
 			return result;
-		} catch (InvalidSyntaxException e) {
+		} catch (final InvalidSyntaxException e) {
 			throw new IllegalArgumentException("Given filter expression has a syntax error.", e); //$NON-NLS-1$
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			return null;
 		}
 	}

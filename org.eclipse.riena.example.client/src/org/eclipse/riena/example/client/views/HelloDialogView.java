@@ -51,7 +51,7 @@ public class HelloDialogView extends AbstractDialogViewWithButtonBar {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
-		Group group1 = createChoiceGroup(parent);
+		final Group group1 = createChoiceGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(group1);
 
 		return group1;

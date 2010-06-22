@@ -32,63 +32,64 @@ public class DefaultButtonSubModuleView extends SubModuleView {
 	public static final String ID = DefaultButtonSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
-		GridDataFactory gdf = GridDataFactory.fillDefaults().grab(true, false);
+		final GridDataFactory gdf = GridDataFactory.fillDefaults().grab(true, false);
 
-		Group groupOne = createGroupOne(parent);
+		final Group groupOne = createGroupOne(parent);
 		gdf.applyTo(groupOne);
 
-		Group groupTwo = createGroupTwo(parent);
+		final Group groupTwo = createGroupTwo(parent);
 		gdf.applyTo(groupTwo);
 
-		Group groupThree = createGroupThree(parent);
+		final Group groupThree = createGroupThree(parent);
 		gdf.applyTo(groupThree);
 	}
 
 	// helping methods
 	// ////////////////
 
-	private Group createGroupOne(Composite parent) {
-		Group group = createGroup(parent, "Example #1 - One Default Button", "group1"); //$NON-NLS-1$ //$NON-NLS-2$
+	private Group createGroupOne(final Composite parent) {
+		final Group group = createGroup(parent, "Example #1 - One Default Button", "group1"); //$NON-NLS-1$ //$NON-NLS-2$
 		createTextFields(group, "input1", "output1", "button1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		return group;
 	}
 
-	private Group createGroupTwo(Composite parent) {
-		Group group = createGroup(parent, "Example #2 - Two Defaults Buttons", "group2"); //$NON-NLS-1$ //$NON-NLS-2$
+	private Group createGroupTwo(final Composite parent) {
+		final Group group = createGroup(parent, "Example #2 - Two Defaults Buttons", "group2"); //$NON-NLS-1$ //$NON-NLS-2$
 		createTextFields(group, "input2a", "output2a", "button2a"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		createTextFields(group, "input2b", "output2b", "button2b"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		return group;
 	}
 
-	private Group createGroupThree(Composite parent) {
-		Group group = createGroup(parent, "Example #3 - Nested Default Buttons", "group3a");//$NON-NLS-1$ //$NON-NLS-2$ 
+	private Group createGroupThree(final Composite parent) {
+		final Group group = createGroup(parent, "Example #3 - Nested Default Buttons", "group3a");//$NON-NLS-1$ //$NON-NLS-2$ 
 		createTextFields(group, "input3a", "output3a", "button3a");//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		Group subGroup = createGroup(group, "Nested Group", "group3b"); //$NON-NLS-1$ //$NON-NLS-2$
+		final Group subGroup = createGroup(group, "Nested Group", "group3b"); //$NON-NLS-1$ //$NON-NLS-2$
 		GridDataFactory.fillDefaults().span(3, 1).applyTo(subGroup);
 		createTextFields(subGroup, "input3b", "output3b", "button3b");//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		return group;
 	}
 
-	private Group createGroup(Composite parent, String grpTitle, String groupId) {
-		Group result = UIControlsFactory.createGroup(parent, grpTitle, groupId);
+	private Group createGroup(final Composite parent, final String grpTitle, final String groupId) {
+		final Group result = UIControlsFactory.createGroup(parent, grpTitle, groupId);
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(3).applyTo(result);
 		return result;
 	}
 
-	private void createTextFields(Composite parent, String inputId, String outputId, String buttonId) {
+	private void createTextFields(final Composite parent, final String inputId, final String outputId,
+			final String buttonId) {
 		UIControlsFactory.createLabel(parent, "Input:"); //$NON-NLS-1$
-		Text txtInput = UIControlsFactory.createText(parent, SWT.BORDER, inputId);
+		final Text txtInput = UIControlsFactory.createText(parent, SWT.BORDER, inputId);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(txtInput);
 		UIControlsFactory.createButton(parent, "Apply", buttonId); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Output:"); //$NON-NLS-1$
-		Text txtOutput = UIControlsFactory.createText(parent, SWT.BORDER, outputId);
+		final Text txtOutput = UIControlsFactory.createText(parent, SWT.BORDER, outputId);
 		GridDataFactory.fillDefaults().applyTo(txtOutput);
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 	}

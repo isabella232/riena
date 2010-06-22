@@ -255,8 +255,8 @@ public class RemoteServiceFactory {
 
 			final Object serviceInstance = Proxy.newProxyInstance(this.getClass().getClassLoader(),
 					new Class[] { serviceClass }, lazyProxyHandler);
-			final LazyRemoteServiceReference ref = new LazyRemoteServiceReference(serviceInstance, rsd
-					.getServiceInterfaceClassName(), rsd);
+			final LazyRemoteServiceReference ref = new LazyRemoteServiceReference(serviceInstance,
+					rsd.getServiceInterfaceClassName(), rsd);
 			lazyProxyHandler.setLazyRemoteServiceReference(ref);
 			return ref;
 		} catch (final ClassNotFoundException e) {

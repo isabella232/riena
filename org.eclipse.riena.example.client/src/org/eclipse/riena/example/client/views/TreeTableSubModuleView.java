@@ -36,70 +36,70 @@ public class TreeTableSubModuleView extends SubModuleView {
 	public static final String ID = TreeTableSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
-		Group group1 = createTreeTableGroup(parent);
+		final Group group1 = createTreeTableGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(group1);
 	}
 
 	// helping methods
 	// ////////////////
 
-	private Group createTreeTableGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "&Tree Table:"); //$NON-NLS-1$
+	private Group createTreeTableGroup(final Composite parent) {
+		final Group group = UIControlsFactory.createGroup(parent, "&Tree Table:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(1).applyTo(group);
 
-		Composite treeComposite = new Composite(group, SWT.NONE);
+		final Composite treeComposite = new Composite(group, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(treeComposite);
 
-		Tree tree = UIControlsFactory.createTree(treeComposite, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
+		final Tree tree = UIControlsFactory.createTree(treeComposite, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		tree.setHeaderVisible(true);
 		addUIControl(tree, "tree"); //$NON-NLS-1$
 
-		TreeColumn columnWord = new TreeColumn(tree, SWT.LEFT);
-		TreeColumn columnUppercase = new TreeColumn(tree, SWT.LEFT);
-		TreeColumn columnACount = new TreeColumn(tree, SWT.LEFT);
+		final TreeColumn columnWord = new TreeColumn(tree, SWT.LEFT);
+		final TreeColumn columnUppercase = new TreeColumn(tree, SWT.LEFT);
+		final TreeColumn columnACount = new TreeColumn(tree, SWT.LEFT);
 
-		TreeColumnLayout layout = new TreeColumnLayout();
+		final TreeColumnLayout layout = new TreeColumnLayout();
 		layout.setColumnData(columnWord, new ColumnWeightData(30));
 		layout.setColumnData(columnUppercase, new ColumnWeightData(30));
 		layout.setColumnData(columnACount, new ColumnWeightData(30));
 		treeComposite.setLayout(layout);
 
-		Composite buttonComposite = createButtonComposite(group);
+		final Composite buttonComposite = createButtonComposite(group);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(buttonComposite);
 
 		return group;
 	}
 
-	private Composite createButtonComposite(Group group) {
-		Composite buttonComposite = UIControlsFactory.createComposite(group);
+	private Composite createButtonComposite(final Group group) {
+		final Composite buttonComposite = UIControlsFactory.createComposite(group);
 		GridLayoutFactory.fillDefaults().numColumns(6).equalWidth(false).applyTo(buttonComposite);
 
-		Button buttonEnableGrouping = UIControlsFactory.createButtonCheck(buttonComposite);
-		GridDataFactory.fillDefaults().span(6, 1).grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(
-				buttonEnableGrouping);
+		final Button buttonEnableGrouping = UIControlsFactory.createButtonCheck(buttonComposite);
+		GridDataFactory.fillDefaults().span(6, 1).grab(true, false).align(SWT.END, SWT.BEGINNING)
+				.applyTo(buttonEnableGrouping);
 		addUIControl(buttonEnableGrouping, "buttonEnableGrouping"); //$NON-NLS-1$
 
-		Button buttonAddSibling = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonAddSibling = UIControlsFactory.createButton(buttonComposite);
 		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(buttonAddSibling);
 		addUIControl(buttonAddSibling, "buttonAddSibling"); //$NON-NLS-1$
 
-		Button buttonAddChild = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonAddChild = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonAddChild, "buttonAddChild"); //$NON-NLS-1$
 
-		Button buttonRename = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonRename = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonRename, "buttonRename"); //$NON-NLS-1$
 
-		Button buttonDelete = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonDelete = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonDelete, "buttonDelete"); //$NON-NLS-1$
 
-		Button buttonExpand = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonExpand = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonExpand, "buttonExpand"); //$NON-NLS-1$
 
-		Button buttonCollapse = UIControlsFactory.createButton(buttonComposite);
+		final Button buttonCollapse = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonCollapse, "buttonCollapse"); //$NON-NLS-1$
 
 		return buttonComposite;

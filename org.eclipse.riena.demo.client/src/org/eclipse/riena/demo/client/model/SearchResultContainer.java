@@ -33,7 +33,7 @@ public class SearchResultContainer extends AbstractBean {
 	 * @param customerList
 	 *            The customerRecordOverview to set.
 	 */
-	public void setCustomerList(List<Customer> kunden) {
+	public void setCustomerList(final List<Customer> kunden) {
 		this.customerList = kunden;
 	}
 

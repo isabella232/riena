@@ -24,8 +24,8 @@ public class ExitHandler extends AbstractHandler {
 	/**
 	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
 	 */
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchWindow workbenchWindow = HandlerUtil.getActiveWorkbenchWindow(event);
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
+		final IWorkbenchWindow workbenchWindow = HandlerUtil.getActiveWorkbenchWindow(event);
 		workbenchWindow.close();
 		return null;
 	}

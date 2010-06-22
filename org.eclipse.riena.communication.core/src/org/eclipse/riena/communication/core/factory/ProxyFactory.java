@@ -30,7 +30,7 @@ public class ProxyFactory {
 	 * @param clazz
 	 *            of the remote service that needs to be created
 	 */
-	public ProxyFactory(Class<?> clazz) {
+	public ProxyFactory(final Class<?> clazz) {
 		this.clazz = clazz;
 	}
 
@@ -39,7 +39,7 @@ public class ProxyFactory {
 	 *            of the remote service
 	 * @return
 	 */
-	public ProxyFactory usingUrl(String url) {
+	public ProxyFactory usingUrl(final String url) {
 		Assert.isNotNull(url);
 		this.url = url;
 		return this;
@@ -50,7 +50,7 @@ public class ProxyFactory {
 	 *            as string i.e. "hessian"
 	 * @return
 	 */
-	public ProxyFactory withProtocol(String protocol) {
+	public ProxyFactory withProtocol(final String protocol) {
 		Assert.isNotNull(protocol);
 		this.protocol = protocol;
 		return this;
@@ -62,7 +62,7 @@ public class ProxyFactory {
 	 *            the proxy if the bundle context stops)
 	 * @return
 	 */
-	public IRemoteServiceRegistration andStart(BundleContext context) {
+	public IRemoteServiceRegistration andStart(final BundleContext context) {
 		Assert.isNotNull(url);
 		Assert.isNotNull(protocol);
 		return new RemoteServiceFactory().createAndRegisterProxy(clazz, url, protocol, context);

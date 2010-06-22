@@ -31,35 +31,35 @@ public class LogCollectorSubModuleView extends SubModuleView {
 	public static final String ID = LogCollectorSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(4, false));
-		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
+		final GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
 		UIControlsFactory.createLabel(parent, "&Log level:"); //$NON-NLS-1$
-		Combo logLevel = UIControlsFactory.createCombo(parent);
+		final Combo logLevel = UIControlsFactory.createCombo(parent);
 		fillFactory.applyTo(logLevel);
 		addUIControl(logLevel, "logLevelCombo"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "&Custom level:"); //$NON-NLS-1$
-		Combo customLevel = UIControlsFactory.createCombo(parent);
+		final Combo customLevel = UIControlsFactory.createCombo(parent);
 		fillFactory.applyTo(customLevel);
 		addUIControl(customLevel, "customLevelCombo"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "&Message:"); //$NON-NLS-1$
-		Text message = UIControlsFactory.createText(parent);
+		final Text message = UIControlsFactory.createText(parent);
 		//		message.setSize(new Point());
 		fillFactory.applyTo(message);
 		addUIControl(message, "logMessage"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "&Custom message:"); //$NON-NLS-1$
-		Text customMessage = UIControlsFactory.createText(parent);
+		final Text customMessage = UIControlsFactory.createText(parent);
 		//		message.setSize(new Point());
 		fillFactory.applyTo(customMessage);
 		addUIControl(customMessage, "customMessage"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "&Exception:"); //$NON-NLS-1$
-		Text exception = UIControlsFactory.createText(parent);
+		final Text exception = UIControlsFactory.createText(parent);
 		fillFactory.applyTo(exception);
 		addUIControl(exception, "logException"); //$NON-NLS-1$
 
@@ -67,13 +67,13 @@ public class LogCollectorSubModuleView extends SubModuleView {
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 
-		Button logBbutton = UIControlsFactory.createButton(parent);
+		final Button logBbutton = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(logBbutton);
 		addUIControl(logBbutton, "logButton"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 
-		Button customButton = UIControlsFactory.createButton(parent);
+		final Button customButton = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(customButton);
 		addUIControl(customButton, "customButton"); //$NON-NLS-1$
 	}

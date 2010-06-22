@@ -25,7 +25,7 @@ public class CustomerDetailSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public CustomerDetailSubModuleController(ISubModuleNode navigationNode) {
+	public CustomerDetailSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -34,9 +34,9 @@ public class CustomerDetailSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		ISubModuleNode newNode = new SubModuleNode(null, "dynamically added node"); //$NON-NLS-1$
+		final ISubModuleNode newNode = new SubModuleNode(null, "dynamically added node"); //$NON-NLS-1$
 		// TODO do it like swtExampleApplication ..
-		String iconPath = Activator.PLUGIN_ID.concat(":").concat(ExampleIcons.ICON_FILE); //$NON-NLS-1$
+		final String iconPath = Activator.PLUGIN_ID.concat(":").concat(ExampleIcons.ICON_FILE); //$NON-NLS-1$
 		newNode.setIcon(iconPath);
 		//		SwtViewProviderAccessor.getManager().present(newNode, CustomerDetailSubModuleView.ID); //$NON-NLS-1$
 		// getNavigationNode().addChild(newNode);

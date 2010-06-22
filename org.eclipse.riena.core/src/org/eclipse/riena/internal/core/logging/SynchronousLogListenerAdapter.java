@@ -16,8 +16,8 @@ import org.osgi.service.log.LogListener;
 import org.eclipse.equinox.log.SynchronousLogListener;
 
 /**
- * Wraps another {@code LogListener} so that it used as synchronous {@code
- * LogListener}.
+ * Wraps another {@code LogListener} so that it used as synchronous
+ * {@code LogListener}.
  */
 public class SynchronousLogListenerAdapter implements SynchronousLogListener {
 

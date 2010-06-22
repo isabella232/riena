@@ -39,7 +39,8 @@ final class LazyExecutableExtension implements InvocationHandler {
 	 * @param wire
 	 * @return
 	 */
-	static Object newInstance(final IConfigurationElement configurationElement, final String attributeName, boolean wire) {
+	static Object newInstance(final IConfigurationElement configurationElement, final String attributeName,
+			final boolean wire) {
 		final String className = configurationElement.getAttribute(attributeName);
 		if (className == null) {
 			return null;
@@ -58,13 +59,14 @@ final class LazyExecutableExtension implements InvocationHandler {
 			}
 			return Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, new LazyExecutableExtension(
 					configurationElement, attributeName, wire));
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			throw new IllegalStateException("Could not load class " + className + " from bundle " //$NON-NLS-1$ //$NON-NLS-2$
 					+ bundle.getSymbolicName(), e);
 		}
 	}
 
-	private LazyExecutableExtension(final IConfigurationElement configurationElement, final String attributeName, boolean wire) {
+	private LazyExecutableExtension(final IConfigurationElement configurationElement, final String attributeName,
+			final boolean wire) {
 		this.configurationElement = configurationElement;
 		this.attributeName = attributeName;
 		this.wire = wire;
@@ -76,7 +78,7 @@ final class LazyExecutableExtension implements InvocationHandler {
 	 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
 	 * java.lang.reflect.Method, java.lang.Object[])
 	 */
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 		synchronized (this) {
 			if (delegate == null) {
 				delegate = configurationElement.createExecutableExtension(attributeName);

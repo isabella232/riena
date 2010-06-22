@@ -43,7 +43,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 	 * @param zipClientRequest
 	 *            the zipClientRequest to set
 	 */
-	public static void setZipClientRequest(boolean zipClientRequest) {
+	public static void setZipClientRequest(final boolean zipClientRequest) {
 		RienaHessianProxyFactory.zipClientRequest = zipClientRequest;
 	}
 
@@ -63,7 +63,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 		setChunkedPost(transferDataChunked);
 
 		if (!propertiesInitialized) {
-			String zipProp = System.getProperty(RIENA_COMMUNICATION_ZIP_PROPERTY);
+			final String zipProp = System.getProperty(RIENA_COMMUNICATION_ZIP_PROPERTY);
 			if (zipProp != null && zipProp.length() > 0) {
 				zipClientRequest = zipProp.equalsIgnoreCase("true");
 			}
@@ -88,16 +88,16 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 	 * @param transferDataChunked
 	 *            true if data just be transfered in chunks (false=DEFAULT)
 	 */
-	public static void setTransferDataChunked(boolean transferDataChunked) {
+	public static void setTransferDataChunked(final boolean transferDataChunked) {
 		RienaHessianProxyFactory.transferDataChunked = transferDataChunked;
 	}
 
 	@Override
-	protected URLConnection openConnection(URL url) throws IOException {
+	protected URLConnection openConnection(final URL url) throws IOException {
 		URLConnection connection;
-		ICallMessageContext mc = mca.getMessageContext();
+		final ICallMessageContext mc = mca.getMessageContext();
 		String methodName = mc.getMethodName();
-		String requestId = mc.getRequestId();
+		final String requestId = mc.getRequestId();
 		if (methodName != null || requestId != null) {
 			if (requestId != null) {
 				methodName = methodName + "&" + requestId; //$NON-NLS-1$
@@ -106,11 +106,11 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 		} else {
 			connection = super.openConnection(url);
 		}
-		Map<String, List<String>> headers = mc.listRequestHeaders();
+		final Map<String, List<String>> headers = mc.listRequestHeaders();
 		if (headers != null) {
-			for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+			for (final Map.Entry<String, List<String>> entry : headers.entrySet()) {
 				// System.out.println("size:" + headers.get(hName).size());
-				for (String hValue : entry.getValue()) {
+				for (final String hValue : entry.getValue()) {
 					connection.addRequestProperty(entry.getKey(), hValue);
 					// System.out.println(">>>" + hName + ":" + hValue);
 				}
@@ -125,7 +125,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 	}
 
 	@Override
-	public AbstractHessianInput getHessianInput(InputStream is) {
+	public AbstractHessianInput getHessianInput(final InputStream is) {
 		final ICallMessageContext messageContext = mca.getMessageContext();
 		boolean inputWasGZIP = false;
 
@@ -133,7 +133,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 
 		try {
 			if (isZipClientRequest()) {
-				InputStream zipTestInputStream = new ReusableBufferedInputStream(is);
+				final InputStream zipTestInputStream = new ReusableBufferedInputStream(is);
 				if (zipTestInputStream.markSupported()) {
 					zipTestInputStream.mark(20);
 					int readMAGIC;
@@ -151,7 +151,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 			} else {
 				myInputStream = is;
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
@@ -163,7 +163,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 
 				@Override
 				public int read() throws IOException {
-					int b = myInputStream.read();
+					final int b = myInputStream.read();
 					if (b != -1) {
 						messageContext.fireReadEvent(1);
 					}
@@ -175,18 +175,19 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 	}
 
 	@Override
-	public AbstractHessianOutput getHessianOutput(OutputStream outputStreamParameter) {
+	public AbstractHessianOutput getHessianOutput(final OutputStream outputStreamParameter) {
 		final ICallMessageContext messageContext = mca.getMessageContext();
 
 		final OutputStream myOutputStream;
 		if (isZipClientRequest()) {
 			try {
 				myOutputStream = new GZIPOutputStream(outputStreamParameter);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw new RuntimeException(e);
 			}
-		} else
+		} else {
 			myOutputStream = outputStreamParameter;
+		}
 
 		if (messageContext.getProgressMonitorList() == null) {
 			//			return super.getHessianOutput(myOutputStream);
@@ -195,7 +196,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 			return getHessianOutputImpl(new OutputStream() {
 
 				@Override
-				public void write(int b) throws IOException {
+				public void write(final int b) throws IOException {
 					myOutputStream.write(b);
 					messageContext.fireWriteEvent(1);
 				}
@@ -204,7 +205,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 		}
 	}
 
-	public void setCallMessageContextAccessor(ICallMessageContextAccessor mca) {
+	public void setCallMessageContextAccessor(final ICallMessageContextAccessor mca) {
 		this.mca = mca;
 	}
 
@@ -215,7 +216,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 	private AbstractHessianOutput getHessianOutputImpl(final OutputStream outputStreamParameter) {
 		AbstractHessianOutput out;
 
-		if (/* _isHessian2Request */true)
+		if (/* _isHessian2Request */true) {
 			out = new Hessian2Output(outputStreamParameter) {
 
 				@Override
@@ -228,13 +229,14 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 					outputStreamParameter.flush();
 				}
 			};
-		//		else {
-		//			HessianOutput out1 = new HessianOutput(outputStreamParameter);
-		//			out = out1;
-		//
-		//			if (/* _isHessian2Reply */true)
-		//				out1.setVersion(2);
-		//		}
+			//		else {
+			//			HessianOutput out1 = new HessianOutput(outputStreamParameter);
+			//			out = out1;
+			//
+			//			if (/* _isHessian2Reply */true)
+			//				out1.setVersion(2);
+			//		}
+		}
 
 		out.setSerializerFactory(getSerializerFactory());
 

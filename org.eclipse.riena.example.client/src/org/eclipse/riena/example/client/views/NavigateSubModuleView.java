@@ -21,70 +21,70 @@ import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * View of a sub module to demonstrate the navigate method of {@code
- * INavigationNode}.
+ * View of a sub module to demonstrate the navigate method of
+ * {@code INavigationNode}.
  */
 public class NavigateSubModuleView extends SubModuleView {
 
 	public static final String ID = NavigateSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		parent.setLayout(new GridLayout(1, false));
-		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
+		final GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
 		UIControlsFactory.createLabel(parent, "Where do you want to go today?"); //$NON-NLS-1$
 
-		Button comboAndList = UIControlsFactory.createButton(parent);
+		final Button comboAndList = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(comboAndList);
 		addUIControl(comboAndList, "comboAndList"); //$NON-NLS-1$
 
-		Button tableTextAndTree = UIControlsFactory.createButton(parent);
+		final Button tableTextAndTree = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(tableTextAndTree);
 		addUIControl(tableTextAndTree, "tableTextAndTree"); //$NON-NLS-1$
 
-		Button textAssembly = UIControlsFactory.createButton(parent);
+		final Button textAssembly = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(textAssembly);
 		addUIControl(textAssembly, "textAssembly"); //$NON-NLS-1$
 
-		Button btnNavigateToRidget = UIControlsFactory.createButton(parent, "Navigate to First Name", //$NON-NLS-1$
+		final Button btnNavigateToRidget = UIControlsFactory.createButton(parent, "Navigate to First Name", //$NON-NLS-1$
 				"btnNavigateToRidget"); //$NON-NLS-1$
 		fillFactory.applyTo(btnNavigateToRidget);
 
-		Button openAsFirstModule = UIControlsFactory.createButton(parent);
+		final Button openAsFirstModule = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(openAsFirstModule);
 		addUIControl(openAsFirstModule, "openAsFirstModule"); //$NON-NLS-1$
 
-		Button openAsFirstSubModule = UIControlsFactory.createButton(parent);
+		final Button openAsFirstSubModule = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(openAsFirstSubModule);
 		addUIControl(openAsFirstSubModule, "openAsFirstSubModule"); //$NON-NLS-1$
 
-		Button openAsThirdSubModule = UIControlsFactory.createButton(parent);
+		final Button openAsThirdSubModule = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(openAsThirdSubModule);
 		addUIControl(openAsThirdSubModule, "openAsThirdSubModule"); //$NON-NLS-1$
 
-		Button openAsOrdinal10 = UIControlsFactory.createButton(parent);
+		final Button openAsOrdinal10 = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(openAsOrdinal10);
 		addUIControl(openAsOrdinal10, "openAsOrdinal10"); //$NON-NLS-1$
 
-		Button openAsOrdinal5 = UIControlsFactory.createButton(parent);
+		final Button openAsOrdinal5 = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(openAsOrdinal5);
 		addUIControl(openAsOrdinal5, "openAsOrdinal5"); //$NON-NLS-1$
 
-		Button moveModule = UIControlsFactory.createButton(parent);
+		final Button moveModule = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(moveModule);
 		addUIControl(moveModule, "moveModule"); //$NON-NLS-1$
 
-		Button moveInActiveModule = UIControlsFactory.createButton(parent);
+		final Button moveInActiveModule = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(moveInActiveModule);
 		addUIControl(moveInActiveModule, "moveInActiveModule"); //$NON-NLS-1$
 
-		Button addToModule = UIControlsFactory.createButton(parent);
+		final Button addToModule = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(addToModule);
 		addUIControl(addToModule, "addToModule"); //$NON-NLS-1$
 
-		Button jumpToTarget = UIControlsFactory.createButton(parent);
+		final Button jumpToTarget = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(jumpToTarget);
 		addUIControl(jumpToTarget, "jumpToTarget"); //$NON-NLS-1$
 

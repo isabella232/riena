@@ -19,7 +19,7 @@ public final class Register {
 		// utility class
 	}
 
-	public static ProxyFactory remoteProxy(Class<?> clazz) {
+	public static ProxyFactory remoteProxy(final Class<?> clazz) {
 		return new ProxyFactory(clazz);
 	}
 

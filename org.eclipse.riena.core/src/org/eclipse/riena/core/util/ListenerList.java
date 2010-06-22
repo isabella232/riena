@@ -100,7 +100,7 @@ public class ListenerList<L> {
 	 * @param listenerClass
 	 *            the listener class (used internally for creating arrays)
 	 */
-	public ListenerList(Class<?> listenerClass) {
+	public ListenerList(final Class<?> listenerClass) {
 		this(Mode.EQUALITY, listenerClass);
 	}
 
@@ -114,7 +114,7 @@ public class ListenerList<L> {
 	 *            the listener class (used internally for creating arrays)
 	 */
 	@SuppressWarnings("unchecked")
-	public ListenerList(Mode mode, Class<?> listenerClass) {
+	public ListenerList(final Mode mode, final Class<?> listenerClass) {
 		this.identity = mode == Mode.IDENTITY;
 		this.listenerClass = listenerClass;
 		this.emptyArray = Array.newInstance(listenerClass, 0);
@@ -129,7 +129,7 @@ public class ListenerList<L> {
 	 *            the non-<code>null</code> listener to add
 	 */
 	@SuppressWarnings("unchecked")
-	public synchronized void add(L listener) {
+	public synchronized void add(final L listener) {
 		// This method is synchronized to protect against multiple threads
 		// adding or removing listeners concurrently. This does not block
 		// concurrent readers.
@@ -137,7 +137,7 @@ public class ListenerList<L> {
 			throw new IllegalArgumentException();
 		}
 		// check for duplicates
-		for (L each : listeners) {
+		for (final L each : listeners) {
 			if (identity ? listener == each : listener.equals(each)) {
 				return;
 			}
@@ -145,7 +145,7 @@ public class ListenerList<L> {
 
 		// Thread safety: create new array to avoid affecting concurrent readers
 		final int oldSize = listeners.length;
-		L[] newListeners = (L[]) Array.newInstance(listenerClass, oldSize + 1);
+		final L[] newListeners = (L[]) Array.newInstance(listenerClass, oldSize + 1);
 		System.arraycopy(listeners, 0, newListeners, 0, oldSize);
 		newListeners[oldSize] = listener;
 		// atomic assignment
@@ -186,7 +186,7 @@ public class ListenerList<L> {
 	 *            the non-<code>null</code> listener to remove
 	 */
 	@SuppressWarnings("unchecked")
-	public synchronized void remove(L listener) {
+	public synchronized void remove(final L listener) {
 		// This method is synchronized to protect against multiple threads
 		// adding or removing listeners concurrently. This does not block
 		// concurrent readers.
@@ -195,14 +195,14 @@ public class ListenerList<L> {
 		}
 		final int oldSize = listeners.length;
 		for (int i = 0; i < oldSize; ++i) {
-			L each = listeners[i];
+			final L each = listeners[i];
 			if (identity ? listener == each : listener.equals(each)) {
 				if (oldSize == 1) {
 					listeners = (L[]) emptyArray;
 				} else {
 					// Thread safety: create new array to avoid affecting
 					// concurrent readers
-					L[] newListeners = (L[]) Array.newInstance(listenerClass, oldSize - 1);
+					final L[] newListeners = (L[]) Array.newInstance(listenerClass, oldSize - 1);
 					System.arraycopy(listeners, 0, newListeners, 0, i);
 					System.arraycopy(listeners, i + 1, newListeners, i, oldSize - i - 1);
 					// atomic assignment to field

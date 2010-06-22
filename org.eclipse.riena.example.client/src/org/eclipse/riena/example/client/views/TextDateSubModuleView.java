@@ -33,7 +33,7 @@ public class TextDateSubModuleView extends SubModuleView {
 	public static final String ID = TextDateSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(3, true));
 
@@ -77,7 +77,7 @@ public class TextDateSubModuleView extends SubModuleView {
 		addUIControl(UIControlsFactory.createTextDate(parent), "indd.MM.yyyy_HH:mm"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createText(parent), "outdd.MM.yyyy_HH:mm"); //$NON-NLS-1$
 
-		Label spacer = UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		final Label spacer = UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().span(3, 1).applyTo(spacer);
 
 		UIControlsFactory.createLabel(parent, "dd.MM.yyyy:"); //$NON-NLS-1$
@@ -92,8 +92,8 @@ public class TextDateSubModuleView extends SubModuleView {
 
 		addUIControl(UIControlsFactory.createCombo(parent), "comboSizes"); //$NON-NLS-1$
 
-		GridDataFactory gdf = GridDataFactory.fillDefaults();
-		for (Control child : parent.getChildren()) {
+		final GridDataFactory gdf = GridDataFactory.fillDefaults();
+		for (final Control child : parent.getChildren()) {
 			if (child instanceof Text || child instanceof Combo || child instanceof DatePickerComposite) {
 				gdf.applyTo(child);
 			}

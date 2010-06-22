@@ -28,7 +28,7 @@ public class FocusableSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public FocusableSubModuleController(ISubModuleNode navigationNode) {
+	public FocusableSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -63,8 +63,8 @@ public class FocusableSubModuleController extends SubModuleController {
 		checkVisible.setSelected(true);
 		checkVisible.addListener(new IActionListener() {
 			public void callback() {
-				boolean show = checkVisible.isSelected();
-				for (IToggleButtonRidget check : checkButtons) {
+				final boolean show = checkVisible.isSelected();
+				for (final IToggleButtonRidget check : checkButtons) {
 					check.setVisible(show);
 				}
 			}
@@ -72,10 +72,10 @@ public class FocusableSubModuleController extends SubModuleController {
 
 		Assert.isLegal(checkButtons.length == textRidgets.length);
 		for (int i = 0; i < checkButtons.length; i++) {
-			IToggleButtonRidget check = checkButtons[i];
+			final IToggleButtonRidget check = checkButtons[i];
 			check.setText("make focusable"); //$NON-NLS-1$
 			check.setSelected(true);
-			IActionListener listener = new ChangeFocusableCallback(check, textRidgets[i]);
+			final IActionListener listener = new ChangeFocusableCallback(check, textRidgets[i]);
 			check.addListener(listener);
 		}
 
@@ -91,13 +91,13 @@ public class FocusableSubModuleController extends SubModuleController {
 		private final IToggleButtonRidget buttonCheck;
 		private final ITextRidget textRidget;
 
-		private ChangeFocusableCallback(IToggleButtonRidget buttonCheck, ITextRidget textRidget) {
+		private ChangeFocusableCallback(final IToggleButtonRidget buttonCheck, final ITextRidget textRidget) {
 			this.buttonCheck = buttonCheck;
 			this.textRidget = textRidget;
 		}
 
 		public void callback() {
-			boolean isSelected = buttonCheck.isSelected();
+			final boolean isSelected = buttonCheck.isSelected();
 			textRidget.setFocusable(isSelected);
 		}
 	}

@@ -16,7 +16,7 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
 
 public class SalaryController extends SubModuleController implements IController {
 
-	public SalaryController(ISubModuleNode navigationNode) {
+	public SalaryController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 

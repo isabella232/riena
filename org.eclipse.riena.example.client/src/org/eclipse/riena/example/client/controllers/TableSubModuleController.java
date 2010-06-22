@@ -52,7 +52,7 @@ public class TableSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public TableSubModuleController(ISubModuleNode navigationNode) {
+	public TableSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -67,15 +67,15 @@ public class TableSubModuleController extends SubModuleController {
 
 	private void bindModel() {
 		input = createInput();
-		String[] columnPropertyNames = { "word", "upperCase", "ACount", "AQuota" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		String[] columnHeaders = { "Word", "Uppercase", "A Count", "A Quota [%]" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		final String[] columnPropertyNames = { "word", "upperCase", "ACount", "AQuota" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		final String[] columnHeaders = { "Word", "Uppercase", "A Count", "A Quota [%]" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		table.bindToModel(new WritableList(input, WordNode.class), WordNode.class, columnPropertyNames, columnHeaders);
 		table.updateFromModel();
 		table.setComparator(0, new TypedComparator<String>());
 		table.setComparator(1, new TypedComparator<Boolean>());
 		table.setColumnFormatter(3, new NumberColumnFormatter(Float.class, 2) {
 			@Override
-			protected Number getValue(Object element) {
+			protected Number getValue(final Object element) {
 				return ((WordNode) element).getAQuota();
 			}
 		});
@@ -91,22 +91,22 @@ public class TableSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 		table = getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonPrintSelection = getRidget(IToggleButtonRidget.class, "buttonPrintSelection"); //$NON-NLS-1$
-		IActionRidget buttonAddSibling = getRidget(IActionRidget.class, "buttonAddSibling"); //$NON-NLS-1$
+		final IActionRidget buttonAddSibling = getRidget(IActionRidget.class, "buttonAddSibling"); //$NON-NLS-1$
 		buttonRename = getRidget(IActionRidget.class, "buttonRename"); //$NON-NLS-1$
-		IActionRidget buttonDelete = getRidget(IActionRidget.class, "buttonDelete"); //$NON-NLS-1$
+		final IActionRidget buttonDelete = getRidget(IActionRidget.class, "buttonDelete"); //$NON-NLS-1$
 
 		table.addDoubleClickListener(new IActionListener() {
 			public void callback() {
-				WordNode node = (WordNode) table.getSingleSelectionObservable().getValue();
+				final WordNode node = (WordNode) table.getSingleSelectionObservable().getValue();
 				if (node != null) {
-					boolean isUpperCase = !node.isUpperCase();
+					final boolean isUpperCase = !node.isUpperCase();
 					node.setUpperCase(isUpperCase);
 				}
 			}
 		});
 
 		table.addSelectionListener(new ISelectionListener() {
-			public void ridgetSelected(SelectionEvent event) {
+			public void ridgetSelected(final SelectionEvent event) {
 				if (buttonPrintSelection.isSelected()) {
 					System.out.println(event);
 				}
@@ -119,7 +119,7 @@ public class TableSubModuleController extends SubModuleController {
 		buttonAddSibling.setText("&Add"); //$NON-NLS-1$
 		buttonAddSibling.addListener(new IActionListener() {
 			public void callback() {
-				WordNode newNode = new WordNode("A_NEW_SIBLING"); //$NON-NLS-1$
+				final WordNode newNode = new WordNode("A_NEW_SIBLING"); //$NON-NLS-1$
 				input.add(newNode);
 				table.updateFromModel();
 				table.setSelection(newNode);
@@ -129,9 +129,9 @@ public class TableSubModuleController extends SubModuleController {
 		buttonRename.setText("&Modify"); //$NON-NLS-1$
 		buttonRename.addListener(new IActionListener() {
 			public void callback() {
-				WordNode node = (WordNode) table.getSingleSelectionObservable().getValue();
+				final WordNode node = (WordNode) table.getSingleSelectionObservable().getValue();
 				if (node != null) {
-					String newValue = getNewValue(node.getWordIgnoreUppercase());
+					final String newValue = getNewValue(node.getWordIgnoreUppercase());
 					if (newValue != null) {
 						node.setWord(newValue);
 					}
@@ -142,43 +142,43 @@ public class TableSubModuleController extends SubModuleController {
 		buttonDelete.setText("&Delete"); //$NON-NLS-1$
 		buttonDelete.addListener(new IActionListener() {
 			public void callback() {
-				WordNode node = (WordNode) table.getSingleSelectionObservable().getValue();
+				final WordNode node = (WordNode) table.getSingleSelectionObservable().getValue();
 				input.remove(node);
 				table.updateFromModel();
 			}
 		});
 
 		final IObservableValue viewerSelection = table.getSingleSelectionObservable();
-		IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
+		final IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
 			@Override
 			protected Object calculate() {
 				return Boolean.valueOf(viewerSelection.getValue() != null);
 			}
 		};
-		DataBindingContext dbc = new DataBindingContext();
+		final DataBindingContext dbc = new DataBindingContext();
 		bindEnablementToValue(dbc, buttonDelete, hasSelection);
 		bindEnablementToValue(dbc, buttonRename, hasSelection);
 
 		bindModel();
 	}
 
-	private void bindEnablementToValue(DataBindingContext dbc, IRidget ridget, IObservableValue value) {
+	private void bindEnablementToValue(final DataBindingContext dbc, final IRidget ridget, final IObservableValue value) {
 		dbc.bindValue(BeansObservables.observeValue(ridget, IRidget.PROPERTY_ENABLED), value, null, null);
 	}
 
-	private String getNewValue(Object oldValue) {
+	private String getNewValue(final Object oldValue) {
 		String newValue = null;
 		if (oldValue != null) {
-			Shell shell = ((Button) buttonRename.getUIControl()).getShell();
-			IInputValidator validator = new IInputValidator() {
-				public String isValid(String newText) {
-					boolean isValid = newText.trim().length() > 0;
+			final Shell shell = ((Button) buttonRename.getUIControl()).getShell();
+			final IInputValidator validator = new IInputValidator() {
+				public String isValid(final String newText) {
+					final boolean isValid = newText.trim().length() > 0;
 					return isValid ? null : "Word cannot be empty!"; //$NON-NLS-1$
 				}
 			};
-			InputDialog dialog = new InputDialog(shell, "Modify", "Enter a new word:", String.valueOf(oldValue), //$NON-NLS-1$ //$NON-NLS-2$
+			final InputDialog dialog = new InputDialog(shell, "Modify", "Enter a new word:", String.valueOf(oldValue), //$NON-NLS-1$ //$NON-NLS-2$
 					validator);
-			int result = dialog.open();
+			final int result = dialog.open();
 			if (result == Window.OK) {
 				newValue = dialog.getValue();
 			}
@@ -187,12 +187,12 @@ public class TableSubModuleController extends SubModuleController {
 	}
 
 	private List<WordNode> createInput() {
-		String[] words = { "Adventure", "Acclimatisation", "Aardwark", "Binoculars", "Beverage", "Boredom", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		final String[] words = { "Adventure", "Acclimatisation", "Aardwark", "Binoculars", "Beverage", "Boredom", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 				"Ballistics", "Calculation", "Coexistence", "Cinnamon", "Celebration", "Disney", "Dictionary", "Delta", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 				"Desperate", "Elf", "Electronics", "Elwood", "Enemy" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		ArrayList<WordNode> result = new ArrayList<WordNode>(words.length);
-		for (int i = 0; i < words.length; i++) {
-			WordNode node = new WordNode(words[i]);
+		final ArrayList<WordNode> result = new ArrayList<WordNode>(words.length);
+		for (final String word : words) {
+			final WordNode node = new WordNode(word);
 			result.add(node);
 		}
 		result.get(0).setUpperCase(true);

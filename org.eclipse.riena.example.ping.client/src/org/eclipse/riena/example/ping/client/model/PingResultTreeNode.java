@@ -36,7 +36,7 @@ public class PingResultTreeNode extends TreeNode {
 	 * @param name
 	 *            the name of the node.
 	 */
-	public PingResultTreeNode(ITreeNode parent, String name) {
+	public PingResultTreeNode(final ITreeNode parent, final String name) {
 		super(parent, stripOffPackage(name));
 	}
 
@@ -64,7 +64,7 @@ public class PingResultTreeNode extends TreeNode {
 	 * @param pingResult
 	 *            the result.
 	 */
-	public void setPingResult(PingResult pingResult) {
+	public void setPingResult(final PingResult pingResult) {
 		this.pingResult = pingResult;
 	}
 
@@ -105,11 +105,11 @@ public class PingResultTreeNode extends TreeNode {
 		if (hasPingFailed()) {
 			return true;
 		}
-		List<ITreeNode> children = getChildren();
+		final List<ITreeNode> children = getChildren();
 		if (children == null) {
 			return false;
 		}
-		for (ITreeNode child : children) {
+		for (final ITreeNode child : children) {
 			if (((PingResultTreeNode) child).showFailureIcon()) {
 				return true;
 			}

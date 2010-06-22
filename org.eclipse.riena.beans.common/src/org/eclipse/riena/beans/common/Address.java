@@ -46,8 +46,8 @@ public class Address extends AbstractBean {
 		town = ""; //$NON-NLS-1$
 	}
 
-	public void setStreetAndNumber(String streetAndNumber) {
-		Object oldValue = this.streetAndNumber;
+	public void setStreetAndNumber(final String streetAndNumber) {
+		final Object oldValue = this.streetAndNumber;
 		this.streetAndNumber = streetAndNumber;
 		firePropertyChanged(PROPERTY_STREET, oldValue, streetAndNumber);
 	}
@@ -56,8 +56,8 @@ public class Address extends AbstractBean {
 		return streetAndNumber;
 	}
 
-	public void setCountry(String country) {
-		Object oldValue = this.country;
+	public void setCountry(final String country) {
+		final Object oldValue = this.country;
 		this.country = country;
 		firePropertyChanged(PROPERTY_COUNTRY, oldValue, country);
 	}
@@ -66,8 +66,8 @@ public class Address extends AbstractBean {
 		return country;
 	}
 
-	public void setPostalCode(int postalCode) {
-		Object oldValue = this.postalCode;
+	public void setPostalCode(final int postalCode) {
+		final Object oldValue = this.postalCode;
 		this.postalCode = postalCode;
 		firePropertyChanged(PROPERTY_POSTAL_CODE, oldValue, postalCode);
 	}
@@ -76,8 +76,8 @@ public class Address extends AbstractBean {
 		return postalCode;
 	}
 
-	public void setTown(String town) {
-		Object oldValue = this.town;
+	public void setTown(final String town) {
+		final Object oldValue = this.town;
 		this.town = town;
 		firePropertyChanged(PROPERTY_TOWN, oldValue, town);
 	}
@@ -108,7 +108,7 @@ public class Address extends AbstractBean {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -118,7 +118,7 @@ public class Address extends AbstractBean {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Address other = (Address) obj;
+		final Address other = (Address) obj;
 		if (country == null) {
 			if (other.country != null) {
 				return false;

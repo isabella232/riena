@@ -43,31 +43,31 @@ public class CustomerDetailSubModuleView extends SubModuleView {
 
 	public CustomerDetailSubModuleView() {
 		addPartPropertyListener(new IPropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent event) {
+			public void propertyChange(final PropertyChangeEvent event) {
 				System.out.println(event);
 			}
 		});
 	}
 
 	@Override
-	public void basicCreatePartControl(Composite parent) {
+	public void basicCreatePartControl(final Composite parent) {
 		this.contentArea = parent;
 		contentArea.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		contentArea.setLayout(new FormLayout());
 
-		Label personLabel = createSectionLabel(contentArea, "Person"); //$NON-NLS-1$
+		final Label personLabel = createSectionLabel(contentArea, "Person"); //$NON-NLS-1$
 		FormData fd = new FormData();
 		fd.top = new FormAttachment(0, TOP);
 		fd.left = new FormAttachment(0, LEFT);
 		personLabel.setLayoutData(fd);
 
-		Label kundennummerLabel = UIControlsFactory.createLabel(contentArea, "Customer No."); //$NON-NLS-1$
+		final Label kundennummerLabel = UIControlsFactory.createLabel(contentArea, "Customer No."); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(personLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(personLabel, SECTION_LABEL_WIDTH, SWT.LEFT);
 		kundennummerLabel.setLayoutData(fd);
 
-		Text kundennummerText = new Text(contentArea, SWT.SINGLE);
+		final Text kundennummerText = new Text(contentArea, SWT.SINGLE);
 		kundennummerText.setEditable(false);
 		fd = new FormData();
 		fd.top = new FormAttachment(kundennummerLabel, 0, SWT.TOP);
@@ -75,13 +75,13 @@ public class CustomerDetailSubModuleView extends SubModuleView {
 		fd.width = FIELD_WIDTH;
 		kundennummerText.setLayoutData(fd);
 
-		Label nameLabel = UIControlsFactory.createLabel(contentArea, "Last Name"); //$NON-NLS-1$
+		final Label nameLabel = UIControlsFactory.createLabel(contentArea, "Last Name"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(kundennummerLabel, LINE_GAP);
 		fd.left = new FormAttachment(kundennummerLabel, 0, SWT.LEFT);
 		nameLabel.setLayoutData(fd);
 
-		Text nameText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
+		final Text nameText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
 		nameText.setData("binding_property", "lastname"); //$NON-NLS-1$ //$NON-NLS-2$
 		fd = new FormData();
 		fd.top = new FormAttachment(nameLabel, 0, SWT.TOP);
@@ -90,45 +90,45 @@ public class CustomerDetailSubModuleView extends SubModuleView {
 		nameText.setLayoutData(fd);
 		nameText.setText(getController().getNavigationNode().getLabel());
 
-		Label vornameLabel = UIControlsFactory.createLabel(contentArea, "First Name"); //$NON-NLS-1$
+		final Label vornameLabel = UIControlsFactory.createLabel(contentArea, "First Name"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(nameLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(nameLabel, COL_GAP + FIELD_WIDTH + LABEL_WIDTH, SWT.LEFT);
 		vornameLabel.setLayoutData(fd);
 
-		Text vornameText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
+		final Text vornameText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
 		fd = new FormData();
 		fd.top = new FormAttachment(vornameLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(vornameLabel, LABEL_WIDTH, SWT.LEFT);
 		fd.width = FIELD_WIDTH;
 		vornameText.setLayoutData(fd);
 
-		Label birthdayLabel = UIControlsFactory.createLabel(contentArea, "Birthday"); //$NON-NLS-1$
+		final Label birthdayLabel = UIControlsFactory.createLabel(contentArea, "Birthday"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(nameLabel, LINE_GAP);
 		fd.left = new FormAttachment(nameLabel, 0, SWT.LEFT);
 		birthdayLabel.setLayoutData(fd);
 
-		DateTime birthdayText = new DateTime(contentArea, SWT.BORDER | SWT.DROP_DOWN);
+		final DateTime birthdayText = new DateTime(contentArea, SWT.BORDER | SWT.DROP_DOWN);
 		fd = new FormData();
 		fd.top = new FormAttachment(birthdayLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(nameText, 0, SWT.LEFT);
 		birthdayText.setLayoutData(fd);
 
-		Label birthplaceLabel = UIControlsFactory.createLabel(contentArea, "Birthplace"); //$NON-NLS-1$
+		final Label birthplaceLabel = UIControlsFactory.createLabel(contentArea, "Birthplace"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(birthdayLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(birthdayLabel, COL_GAP + FIELD_WIDTH + LABEL_WIDTH, SWT.LEFT);
 		birthplaceLabel.setLayoutData(fd);
 
-		Text birthplaceText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
+		final Text birthplaceText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
 		fd = new FormData();
 		fd.top = new FormAttachment(birthplaceLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(birthplaceLabel, LABEL_WIDTH, SWT.LEFT);
 		fd.width = FIELD_WIDTH;
 		birthplaceText.setLayoutData(fd);
 
-		Button openOffers = new Button(contentArea, 0);
+		final Button openOffers = new Button(contentArea, 0);
 		openOffers.setText("Offers"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(birthplaceText, LINE_GAP);
@@ -136,7 +136,7 @@ public class CustomerDetailSubModuleView extends SubModuleView {
 		fd.width = FIELD_WIDTH;
 		openOffers.setLayoutData(fd);
 
-		Button saveButton = new Button(contentArea, 0);
+		final Button saveButton = new Button(contentArea, 0);
 		saveButton.setText("Save"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(birthplaceText, LINE_GAP);
@@ -145,8 +145,8 @@ public class CustomerDetailSubModuleView extends SubModuleView {
 		saveButton.setLayoutData(fd);
 	}
 
-	private Label createSectionLabel(Composite parent, String text) {
-		Label label = UIControlsFactory.createLabel(parent, text);
+	private Label createSectionLabel(final Composite parent, final String text) {
+		final Label label = UIControlsFactory.createLabel(parent, text);
 		label.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY));
 		return label;
 	}

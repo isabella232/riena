@@ -32,13 +32,14 @@ public class MessageMarkerSubModuleView extends SubModuleView {
 	public static final String ID = MessageMarkerSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		GridLayoutFactory.swtDefaults().numColumns(2).margins(20, 20).spacing(10, 10).applyTo(parent);
 
-		GridDataFactory gdfSpanTwo = GridDataFactory.fillDefaults().span(2, 1);
+		final GridDataFactory gdfSpanTwo = GridDataFactory.fillDefaults().span(2, 1);
 
-		Label title = UIControlsFactory.createLabel(parent, "Messages about markers displayed outside the UI widget"); //$NON-NLS-1$
+		final Label title = UIControlsFactory.createLabel(parent,
+				"Messages about markers displayed outside the UI widget"); //$NON-NLS-1$
 		gdfSpanTwo.applyTo(title);
 
 		createText(parent, "alwaysMarked"); //$NON-NLS-1$
@@ -50,27 +51,27 @@ public class MessageMarkerSubModuleView extends SubModuleView {
 		createText(parent, "sometimesMarkedMultipleRules"); //$NON-NLS-1$
 		createLabel(parent, "Textfield with ErrorMarkers when not starting with A and/or ending with Z"); //$NON-NLS-1$
 
-		Label lbl = createLabel(parent, "Where to show the messages"); //$NON-NLS-1$
+		final Label lbl = createLabel(parent, "Where to show the messages"); //$NON-NLS-1$
 		gdfSpanTwo.applyTo(lbl);
 
-		ChoiceComposite choice = new ChoiceComposite(parent, SWT.NONE, true);
+		final ChoiceComposite choice = new ChoiceComposite(parent, SWT.NONE, true);
 		addUIControl(choice, "activeViewers"); //$NON-NLS-1$
 
-		MessageBox messageBox = new MessageBox(parent);
+		final MessageBox messageBox = new MessageBox(parent);
 		addUIControl(messageBox, "messageBox"); //$NON-NLS-1$
 	}
 
 	// helping methods
 	//////////////////
 
-	private Label createLabel(Composite parent, String caption) {
-		Label result = UIControlsFactory.createLabel(parent, caption);
+	private Label createLabel(final Composite parent, final String caption) {
+		final Label result = UIControlsFactory.createLabel(parent, caption);
 		GridDataFactory.fillDefaults().applyTo(result);
 		return result;
 	}
 
-	private void createText(Composite parent, String id) {
-		Text text = UIControlsFactory.createText(parent);
+	private void createText(final Composite parent, final String id) {
+		final Text text = UIControlsFactory.createText(parent);
 		GridDataFactory.fillDefaults().hint(100, SWT.DEFAULT).applyTo(text);
 		addUIControl(text, id);
 	}

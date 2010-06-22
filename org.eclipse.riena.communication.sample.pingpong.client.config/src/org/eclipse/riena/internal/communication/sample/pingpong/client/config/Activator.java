@@ -38,7 +38,7 @@ public class Activator implements BundleActivator {
 	 * Creates a RemoteServiceReferences based on Hessian protocol and registers
 	 * this as "remote" OSGi Service
 	 */
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		// register hessian proxy for riena remote service
 		pingPongReg = Register.remoteProxy(IPingPong.class).usingUrl("http://${riena.hostname}/hessian/PingPongWS") //$NON-NLS-1$
 				.withProtocol("hessian").andStart(context); //$NON-NLS-1$
@@ -47,7 +47,7 @@ public class Activator implements BundleActivator {
 	/**
 	 * unregister end release the "remote" OSGi Service
 	 */
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		if (pingPongReg != null) {
 			pingPongReg.unregister();
 			pingPongReg = null;

@@ -38,16 +38,16 @@ public class InputStreamSerializerFactory extends AbstractRienaSerializerFactory
 	 * lang.Class)
 	 */
 	@Override
-	public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
+	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
 		if (isInputStream(cl)) {
 			return new AbstractDeserializer() {
 
 				@Override
-				public Object readObject(AbstractHessianInput in) throws IOException {
+				public Object readObject(final AbstractHessianInput in) throws IOException {
 					try {
-						byte[] bytes = in.readBytes();
+						final byte[] bytes = in.readBytes();
 						return new ByteArrayInputStream(bytes);
-					} catch (HessianProtocolException e) {
+					} catch (final HessianProtocolException e) {
 						throw new RemoteFailure(
 								"Error while reading Attachment content. Probably incomplete or interrupted Attachment inputstream. " + e.getMessage()); //$NON-NLS-1$
 					}
@@ -65,25 +65,25 @@ public class InputStreamSerializerFactory extends AbstractRienaSerializerFactory
 	 * .Class)
 	 */
 	@Override
-	public Serializer getSerializer(Class cl) throws HessianProtocolException {
+	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		if (isInputStream(cl)) {
 			return new AbstractSerializer() {
 
 				@Override
-				public void writeObject(Object obj, AbstractHessianOutput out) throws IOException {
+				public void writeObject(final Object obj, final AbstractHessianOutput out) throws IOException {
 					if (obj == null) {
 						out.writeNull();
 						return;
 					}
-					InputStream is = (InputStream) obj;
+					final InputStream is = (InputStream) obj;
 					try {
-						byte[] buf = new byte[1024];
+						final byte[] buf = new byte[1024];
 						int len = 0;
 
 						while (true) {
 							try {
 								len = is.read(buf, 0, buf.length);
-							} catch (IOException e) {
+							} catch (final IOException e) {
 								// catch the exception only for the inputstream and close
 								// write null so that the client gets a "hick-up" and can tell that there is something wrong
 								out.writeNull();
@@ -106,7 +106,7 @@ public class InputStreamSerializerFactory extends AbstractRienaSerializerFactory
 		return null;
 	}
 
-	private boolean isInputStream(Class cl) {
+	private boolean isInputStream(final Class cl) {
 		if (cl == InputStream.class) {
 			return true;
 		}

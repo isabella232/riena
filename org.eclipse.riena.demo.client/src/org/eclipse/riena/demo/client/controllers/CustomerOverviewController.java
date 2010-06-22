@@ -32,10 +32,10 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
  */
 public class CustomerOverviewController extends SubModuleController {
 
-	private IUIFilter assistent = Service.get(IUIFilterProvider.class).provideFilter("demo.assistent") //$NON-NLS-1$
+	private final IUIFilter assistent = Service.get(IUIFilterProvider.class).provideFilter("demo.assistent") //$NON-NLS-1$
 			.getFilter();
 
-	private IUIFilter mandatory = Service.get(IUIFilterProvider.class).provideFilter("demo.mandatory") //$NON-NLS-1$
+	private final IUIFilter mandatory = Service.get(IUIFilterProvider.class).provideFilter("demo.mandatory") //$NON-NLS-1$
 			.getFilter();
 
 	private Customer customer;
@@ -47,7 +47,7 @@ public class CustomerOverviewController extends SubModuleController {
 		customer = (Customer) getNavigationNode().getParent().getContext("demo.customer"); //$NON-NLS-1$
 
 		if (customer == null) { // we came here from a navigation from the search
-			NavigationArgument navigationArgument = getNavigationNode().getNavigationArgument();
+			final NavigationArgument navigationArgument = getNavigationNode().getNavigationArgument();
 			if (navigationArgument != null) {
 				customer = (Customer) navigationArgument.getParameter();
 			} else {
@@ -57,10 +57,10 @@ public class CustomerOverviewController extends SubModuleController {
 			getNavigationNode().getParent().setContext("demo.customer", customer); //$NON-NLS-1$
 		}
 
-		ITextRidget firstName = (ITextRidget) getRidget("firstname"); //$NON-NLS-1$
+		final ITextRidget firstName = (ITextRidget) getRidget("firstname"); //$NON-NLS-1$
 		firstName.bindToModel(customer, "firstName"); //$NON-NLS-1$
 		firstName.setMandatory(true);
-		ITextRidget lastName = (ITextRidget) getRidget("lastname"); //$NON-NLS-1$
+		final ITextRidget lastName = (ITextRidget) getRidget("lastname"); //$NON-NLS-1$
 		lastName.setMandatory(true);
 		lastName.bindToModel(customer, "lastName"); //$NON-NLS-1$
 
@@ -76,7 +76,7 @@ public class CustomerOverviewController extends SubModuleController {
 
 		((IActionRidget) getRidget("openEmailsAction")).addListener(new IActionListener() { //$NON-NLS-1$
 					public void callback() {
-						String emailAddress = customer.getEmailAddress();
+						final String emailAddress = customer.getEmailAddress();
 						getNavigationNode().jump(
 								new NavigationNodeId("riena.demo.client.customermailfolders.mails", emailAddress), //$NON-NLS-1$
 								new NavigationArgument(customer));
@@ -87,7 +87,7 @@ public class CustomerOverviewController extends SubModuleController {
 		((IActionRidget) getRidget("assistent")).addListener(new IActionListener() { //$NON-NLS-1$
 
 					public void callback() {
-						IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+						final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 						if (((IToggleButtonRidget) getRidget("assistent")).isSelected()) { //$NON-NLS-1$
 							applNode.addFilter(assistent);
 						} else {
@@ -99,7 +99,7 @@ public class CustomerOverviewController extends SubModuleController {
 		((IActionRidget) getRidget("mandatory")).addListener(new IActionListener() { //$NON-NLS-1$
 
 					public void callback() {
-						IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+						final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 						if (((IToggleButtonRidget) getRidget("mandatory")).isSelected()) { //$NON-NLS-1$
 							applNode.addFilter(mandatory);
 						} else {
@@ -110,7 +110,7 @@ public class CustomerOverviewController extends SubModuleController {
 
 		getNavigationNode().addListener(new SubModuleNodeListener() {
 			@Override
-			public void activated(ISubModuleNode source) {
+			public void activated(final ISubModuleNode source) {
 				updateAllRidgetsFromModel();
 			}
 		});

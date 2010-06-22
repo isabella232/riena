@@ -39,10 +39,10 @@ public class CustomerSearchView extends SubModuleView {
 	 * @param parent
 	 */
 	@Override
-	public void basicCreatePartControl(Composite parent) {
+	public void basicCreatePartControl(final Composite parent) {
 
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
-		Composite container = new Composite(parent, SWT.NONE);
+		final Composite container = new Composite(parent, SWT.NONE);
 
 		ergebnis = new Table(container, SWT.BORDER | SWT.FULL_SELECTION);
 		ergebnis.setFont(SWTResourceManager.getFont("Arial", 10, SWT.NORMAL));
@@ -67,7 +67,7 @@ public class CustomerSearchView extends SubModuleView {
 		final TableColumn colCity = new TableColumn(ergebnis, SWT.NONE);
 		colCity.setWidth(127);
 
-		Text suchName = new Text(container, SWT.BORDER);
+		final Text suchName = new Text(container, SWT.BORDER);
 		suchName.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 		suchName.setBounds(120, 25, 201, 32);
 		addUIControl(suchName, "searchLastName"); //$NON-NLS-1$

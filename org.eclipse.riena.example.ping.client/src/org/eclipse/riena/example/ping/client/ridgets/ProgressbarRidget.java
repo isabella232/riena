@@ -61,7 +61,7 @@ public class ProgressbarRidget extends AbstractValueRidget {
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, ProgressBarWidget.class);
 	}
 
@@ -97,8 +97,8 @@ public class ProgressbarRidget extends AbstractValueRidget {
 	 * @param minimum
 	 *            the new value.
 	 */
-	public void setMinimum(int minimum) {
-		Integer oldMinimum = this.minimum;
+	public void setMinimum(final int minimum) {
+		final Integer oldMinimum = this.minimum;
 		this.minimum = minimum;
 		updateUIMinimum();
 		firePropertyChange(PROPERTY_MINIMUM, oldMinimum, Integer.valueOf(minimum));
@@ -137,8 +137,8 @@ public class ProgressbarRidget extends AbstractValueRidget {
 	 * @param maximum
 	 *            the new value.
 	 */
-	public void setMaximum(int maximum) {
-		Integer oldMaximum = this.maximum;
+	public void setMaximum(final int maximum) {
+		final Integer oldMaximum = this.maximum;
 		this.maximum = maximum;
 		updateUIMaximum();
 		firePropertyChange(PROPERTY_MAXIMUM, oldMaximum, Integer.valueOf(maximum));
@@ -177,8 +177,8 @@ public class ProgressbarRidget extends AbstractValueRidget {
 	 * @param selection
 	 *            the new progress.
 	 */
-	public void setSelection(int selection) {
-		Integer oldSelection = this.selection;
+	public void setSelection(final int selection) {
+		final Integer oldSelection = this.selection;
 		this.selection = selection;
 		updateUISelection();
 		firePropertyChange(PROPERTY_SELECTION, oldSelection, Integer.valueOf(selection));
@@ -214,8 +214,8 @@ public class ProgressbarRidget extends AbstractValueRidget {
 	 * @param foreground
 	 *            the new color.
 	 */
-	public void setForeground(Color foreground) {
-		Color oldForeground = this.foreground;
+	public void setForeground(final Color foreground) {
+		final Color oldForeground = this.foreground;
 		this.foreground = foreground;
 		updateUIForeground();
 		firePropertyChange(PROPERTY_FOREGROUND, oldForeground, foreground);
@@ -251,8 +251,8 @@ public class ProgressbarRidget extends AbstractValueRidget {
 	 * @param background
 	 *            the new color.
 	 */
-	public void setBackground(Color background) {
-		Color oldBackground = this.background;
+	public void setBackground(final Color background) {
+		final Color oldBackground = this.background;
 		this.background = background;
 		updateUIBackground();
 		firePropertyChange(PROPERTY_BACKGROUND, oldBackground, background);

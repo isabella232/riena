@@ -37,7 +37,7 @@ public final class Wire {
 	 * @param bean
 	 * @return
 	 */
-	public static WirePuller instance(Object bean) {
+	public static WirePuller instance(final Object bean) {
 		return new WirePuller(bean);
 	}
 

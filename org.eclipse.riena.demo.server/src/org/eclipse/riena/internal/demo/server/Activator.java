@@ -44,12 +44,12 @@ public class Activator extends Plugin {
 	}
 
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 
 		// Customer Service
-		CustomerService customerService = new CustomerService();
+		final CustomerService customerService = new CustomerService();
 		context.registerService(ICustomerService.class.getName(), customerService, null);
 		Publish.service(ICustomerService.class).usingPath(ICustomerService.WS_ID).withProtocol("hessian").andStart( //$NON-NLS-1$
 				context);
@@ -67,7 +67,7 @@ public class Activator extends Plugin {
 				.getName()))).getRepository());
 
 		// Email Service
-		EmailService emailService = new EmailService();
+		final EmailService emailService = new EmailService();
 		context.registerService(IEmailService.class.getName(), emailService, null);
 		Publish.service(IEmailService.class).usingPath(IEmailService.WS_ID).withProtocol("hessian").andStart( //$NON-NLS-1$
 				context);
@@ -81,13 +81,12 @@ public class Activator extends Plugin {
 		Assert.isNotNull(context.getService(context.getServiceReference(IEmailService.class.getName())));
 		Assert.isNotNull(context.getServiceReference(IEmailRepository.class.getName()));
 		Assert.isNotNull(context.getService(context.getServiceReference(IEmailRepository.class.getName())));
-		Assert
-				.isNotNull(((EmailService) context.getService(context
-						.getServiceReference(IEmailService.class.getName()))).getRepository());
+		Assert.isNotNull(((EmailService) context.getService(context.getServiceReference(IEmailService.class.getName())))
+				.getRepository());
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
 	}

@@ -32,10 +32,10 @@ public class AddSubmoduleToModuleAtIndexAssembler extends AbstractNavigationAsse
 
 	private Set<String> knownTargetIds;
 
-	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
 		if (knownTargetIds == null) {
-			knownTargetIds = new HashSet<String>(Arrays
-					.asList("org.eclipse.riena.example.navigate.submoduleToModuleAtIndex2" //$NON-NLS-1$
+			knownTargetIds = new HashSet<String>(
+					Arrays.asList("org.eclipse.riena.example.navigate.submoduleToModuleAtIndex2" //$NON-NLS-1$
 					));
 			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
 		}
@@ -43,8 +43,8 @@ public class AddSubmoduleToModuleAtIndexAssembler extends AbstractNavigationAsse
 		return knownTargetIds.contains(nodeId.getTypeId());
 	}
 
-	public INavigationNode<?>[] buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
-		ISubModuleNode subModule = new SubModuleNode(nodeId, "Node " + nodeId.getInstanceId()); //$NON-NLS-1$
+	public INavigationNode<?>[] buildNode(final NavigationNodeId nodeId, final NavigationArgument navigationArgument) {
+		final ISubModuleNode subModule = new SubModuleNode(nodeId, "Node " + nodeId.getInstanceId()); //$NON-NLS-1$
 		WorkareaManager.getInstance().registerDefinition(subModule, ComboAndChoiceSubModuleController.class,
 				ComboAndChoiceSubModuleView.ID);
 		return new INavigationNode<?>[] { subModule };

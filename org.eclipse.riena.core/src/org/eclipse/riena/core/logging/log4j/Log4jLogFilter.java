@@ -23,12 +23,12 @@ import org.eclipse.equinox.log.LogFilter;
  */
 public class Log4jLogFilter implements LogFilter {
 
-	public boolean isLoggable(Bundle bundle, String loggerName, int logLevel) {
-		Logger logger = Logger.getLogger(loggerName == null ? "" : loggerName); //$NON-NLS-1$
+	public boolean isLoggable(final Bundle bundle, final String loggerName, final int logLevel) {
+		final Logger logger = Logger.getLogger(loggerName == null ? "" : loggerName); //$NON-NLS-1$
 		return logger != null && logger.isEnabledFor(getLevel(logLevel));
 	}
 
-	private Level getLevel(int logLevel) {
+	private Level getLevel(final int logLevel) {
 		switch (logLevel) {
 		case LogService.LOG_DEBUG:
 			return Level.DEBUG;

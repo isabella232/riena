@@ -23,7 +23,7 @@ public class PropertyAccessFailure extends PropertyFailure {
 	 * @param message
 	 * @param cause
 	 */
-	public PropertyAccessFailure(String message, Throwable cause) {
+	public PropertyAccessFailure(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 }

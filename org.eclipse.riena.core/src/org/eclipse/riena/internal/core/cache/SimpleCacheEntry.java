@@ -14,16 +14,16 @@ package org.eclipse.riena.internal.core.cache;
  * A simple cache entry that is store in GenericObjectCache
  */
 public class SimpleCacheEntry<K, V> implements ICacheEntry<K, V> {
-	private V value;
-	private K key;
-	private long timestamp;
+	private final V value;
+	private final K key;
+	private final long timestamp;
 
 	/**
 	 * @param value
 	 * @param key
 	 * @param queue
 	 */
-	public SimpleCacheEntry(V value, K key) {
+	public SimpleCacheEntry(final V value, final K key) {
 		super();
 		this.value = value;
 		this.key = key;

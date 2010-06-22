@@ -25,13 +25,13 @@ public class RidgetsSubModuleController extends SubModuleController {
 	private final static String ICON_RED = "ledred.png"; //$NON-NLS-1$
 	private final static String ICON_GREEN = "ledlightgreen.png"; //$NON-NLS-1$
 
-	private RidgetsModel model;
+	private final RidgetsModel model;
 
 	public RidgetsSubModuleController() {
 		this(null);
 	}
 
-	public RidgetsSubModuleController(ISubModuleNode navigationNode) {
+	public RidgetsSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 		model = new RidgetsModel();
 		model.setToggleOneSelected(true);
@@ -43,18 +43,18 @@ public class RidgetsSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 		super.configureRidgets();
 
-		IToggleButtonRidget toggleOne = getRidget(IToggleButtonRidget.class, "toggleOne"); //$NON-NLS-1$
+		final IToggleButtonRidget toggleOne = getRidget(IToggleButtonRidget.class, "toggleOne"); //$NON-NLS-1$
 		toggleOne.setText("&Toggle 1"); //$NON-NLS-1$
 		toggleOne.setIcon(ICON_SAMPLE);
 		toggleOne.bindToModel(model, "toggleOneSelected"); //$NON-NLS-1$
 		toggleOne.updateFromModel();
 
-		IToggleButtonRidget toggleTwo = getRidget(IToggleButtonRidget.class, "toggleTwo"); //$NON-NLS-1$
+		final IToggleButtonRidget toggleTwo = getRidget(IToggleButtonRidget.class, "toggleTwo"); //$NON-NLS-1$
 		toggleTwo.setText("&Toggle 2"); //$NON-NLS-1$
 		toggleTwo.bindToModel(model, "toggleTwoSelected"); //$NON-NLS-1$
 		toggleTwo.updateFromModel();
 
-		IToggleButtonRidget checkOne = getRidget(IToggleButtonRidget.class, "checkOne"); //$NON-NLS-1$
+		final IToggleButtonRidget checkOne = getRidget(IToggleButtonRidget.class, "checkOne"); //$NON-NLS-1$
 		checkOne.setText("C&heck 1"); //$NON-NLS-1$
 		checkOne.bindToModel(model, "checkOneSelected"); //$NON-NLS-1$
 		checkOne.updateFromModel();
@@ -78,21 +78,21 @@ public class RidgetsSubModuleController extends SubModuleController {
 			}
 		});
 
-		IActionListener actionListener = new IActionListener() {
+		final IActionListener actionListener = new IActionListener() {
 			public void callback() {
 				System.out.println("Button clicked..."); //$NON-NLS-1$
 			}
 		};
 
-		IActionRidget imageButton = (IActionRidget) getRidget("imageButton"); //$NON-NLS-1$
+		final IActionRidget imageButton = (IActionRidget) getRidget("imageButton"); //$NON-NLS-1$
 		imageButton.setIcon("imageBtn"); //$NON-NLS-1$
 		imageButton.addListener(actionListener);
 
-		IActionRidget arrowButton = (IActionRidget) getRidget("arrowButton"); //$NON-NLS-1$
+		final IActionRidget arrowButton = (IActionRidget) getRidget("arrowButton"); //$NON-NLS-1$
 		arrowButton.setIcon("arrowRight"); //$NON-NLS-1$
 		arrowButton.addListener(actionListener);
 
-		IActionRidget arrowHotButton = (IActionRidget) getRidget("arrowHotButton"); //$NON-NLS-1$
+		final IActionRidget arrowHotButton = (IActionRidget) getRidget("arrowHotButton"); //$NON-NLS-1$
 		arrowHotButton.setIcon("arrowRight"); //$NON-NLS-1$
 		arrowHotButton.addListener(actionListener);
 	}
@@ -114,11 +114,11 @@ public class RidgetsSubModuleController extends SubModuleController {
 			return toggleOneSelected;
 		}
 
-		public void setToggleOneSelected(boolean toggleOneSelected) {
+		public void setToggleOneSelected(final boolean toggleOneSelected) {
 			this.toggleOneSelected = toggleOneSelected;
 		}
 
-		public void setToggleTwoSelected(boolean toggleTwoSelected) {
+		public void setToggleTwoSelected(final boolean toggleTwoSelected) {
 			this.toggleTwoSelected = toggleTwoSelected;
 		}
 
@@ -132,7 +132,7 @@ public class RidgetsSubModuleController extends SubModuleController {
 			return checkOneSelected;
 		}
 
-		public void setCheckOneSelected(boolean checkOneSelected) {
+		public void setCheckOneSelected(final boolean checkOneSelected) {
 			this.checkOneSelected = checkOneSelected;
 		}
 

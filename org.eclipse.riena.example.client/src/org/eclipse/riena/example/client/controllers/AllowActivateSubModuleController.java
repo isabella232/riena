@@ -42,9 +42,9 @@ public class AllowActivateSubModuleController extends SubModuleController {
 	 * Shows a message box if it's not allowed to activate this sub-module.
 	 */
 	@Override
-	public boolean allowsActivate(INavigationNode<?> pNode, INavigationContext context) {
+	public boolean allowsActivate(final INavigationNode<?> pNode, final INavigationContext context) {
 
-		Object contextValue = getNavigationNode().getContext("allow"); //$NON-NLS-1$
+		final Object contextValue = getNavigationNode().getContext("allow"); //$NON-NLS-1$
 		if (contextValue instanceof Boolean) {
 			if ((Boolean) contextValue) {
 				return true;

@@ -27,19 +27,19 @@ public class CustomerRepository implements ICustomerRepository {
 
 	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy"); //$NON-NLS-1$
 
-	private List<Customer> customers = new ArrayList<Customer>();
-	private Map<String, Customer> email2customer = new HashMap<String, Customer>();
+	private final List<Customer> customers = new ArrayList<Customer>();
+	private final Map<String, Customer> email2customer = new HashMap<String, Customer>();
 
 	public CustomerRepository() {
 		System.out.println("repository started"); //$NON-NLS-1$
 		init();
 	}
 
-	public List<Customer> search(String lastName) {
+	public List<Customer> search(final String lastName) {
 		return customers;
 	}
 
-	public void store(Customer customer) {
+	public void store(final Customer customer) {
 		customers.add(customer);
 		if (customer.getEmailAddress() != null) {
 			email2customer.put(customer.getEmailAddress(), customer);
@@ -54,7 +54,7 @@ public class CustomerRepository implements ICustomerRepository {
 	 * org.eclipse.riena.demo.server.ICustomerRepository#searchWithEmailAddress
 	 * (java.lang.String)
 	 */
-	public Customer findCustomerWithEmailAddress(String emailAddress) {
+	public Customer findCustomerWithEmailAddress(final String emailAddress) {
 		return email2customer.get(emailAddress);
 
 	}
@@ -126,7 +126,7 @@ public class CustomerRepository implements ICustomerRepository {
 			if (crv.getEmailAddress() != null) {
 				email2customer.put(crv.getEmailAddress(), crv);
 			}
-		} catch (ParseException p) {
+		} catch (final ParseException p) {
 			System.out.println(p.getMessage());
 		}
 	}

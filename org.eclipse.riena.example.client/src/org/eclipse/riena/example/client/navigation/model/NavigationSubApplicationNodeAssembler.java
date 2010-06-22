@@ -42,20 +42,21 @@ public class NavigationSubApplicationNodeAssembler extends AbstractNavigationAss
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?>[] buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
+	public INavigationNode<?>[] buildNode(final NavigationNodeId navigationNodeId,
+			final NavigationArgument navigationArgument) {
 
-		ISubApplicationNode subApplication = new SubApplicationNode(new NavigationNodeId(
+		final ISubApplicationNode subApplication = new SubApplicationNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigation.subapplication"), "Na&vigation"); //$NON-NLS-1$ //$NON-NLS-2$
 		subApplication.setIcon(ExampleIcons.ICON_APPLICATION);
 		WorkareaManager.getInstance().registerDefinition(subApplication, "subapplication.1", false); //$NON-NLS-1$
 		subApplication.setSelected(true);
 
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId(
-				"org.eclipse.riena.example.moduleGroup1.1.1")); //$NON-NLS-1$ //$NON-NLS-2$
+				"org.eclipse.riena.example.moduleGroup1.1.1")); //$NON-NLS-1$ 
 		moduleGroup.setLabel("ModuleGroup 1.1"); //$NON-NLS-1$
 		subApplication.addChild(moduleGroup);
 		IModuleNode module = new ModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.module.1.1.1"), "Module 1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				new NavigationNodeId("org.eclipse.riena.example.module.1.1.1"), "Module 1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$ 
 		module.setIcon(ExampleIcons.ICON_APPLICATION);
 		moduleGroup.addChild(module);
 		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
@@ -128,7 +129,7 @@ public class NavigationSubApplicationNodeAssembler extends AbstractNavigationAss
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
 	 */
-	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
 
 		if (knownTargetIds == null) {
 			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigation.subapplication", //$NON-NLS-1$

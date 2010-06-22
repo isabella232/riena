@@ -33,35 +33,35 @@ public class CustomerSearchController extends SubModuleController {
 	private ICustomerService customerDemoService;
 
 	@InjectService(useRanking = true)
-	public void bind(ICustomerService customerDemoService) {
+	public void bind(final ICustomerService customerDemoService) {
 		this.customerDemoService = customerDemoService;
 	}
 
-	public void unbind(ICustomerService customerDemoService) {
+	public void unbind(final ICustomerService customerDemoService) {
 		this.customerDemoService = null;
 	}
 
-	private SearchBean customerSearchBean = new SearchBean();
-	private SearchResult result = new SearchResult();
+	private final SearchBean customerSearchBean = new SearchBean();
+	private final SearchResult result = new SearchResult();
 
 	@Override
 	public void configureRidgets() {
-		ITextRidget suchName = (ITextRidget) getRidget("searchLastName"); //$NON-NLS-1$
+		final ITextRidget suchName = (ITextRidget) getRidget("searchLastName"); //$NON-NLS-1$
 		suchName.bindToModel(customerSearchBean, "lastName"); //$NON-NLS-1$
 		suchName.setMandatory(true);
 
 		((ILabelRidget) getRidget("hits")).bindToModel(result, "hits"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final ITableRidget kunden = ((ITableRidget) getRidget("result")); //$NON-NLS-1$
-		String[] columnNames = { "lastname", "firstname", "birthdate", "street", "city" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		String[] propertyNames = { "lastName", "firstName", "birthDate", "address.street", "address.city" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final String[] columnNames = { "lastname", "firstname", "birthdate", "street", "city" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final String[] propertyNames = { "lastName", "firstName", "birthDate", "address.street", "address.city" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 		kunden.bindToModel(result, "customers", Customer.class, propertyNames, columnNames); //$NON-NLS-1$
 
 		kunden.setColumnFormatter(2, new DateColumnFormatter("dd.MM.yyyy") { //$NON-NLS-1$
 
 					@Override
-					protected Date getDate(Object element) {
+					protected Date getDate(final Object element) {
 						return ((Customer) element).getBirthDate();
 					}
 				});
@@ -87,7 +87,7 @@ public class CustomerSearchController extends SubModuleController {
 
 		((IActionRidget) getRidget("open")).addListener(new IActionListener() { //$NON-NLS-1$
 					public void callback() {
-						int selectionIndex = kunden.getSelectionIndex();
+						final int selectionIndex = kunden.getSelectionIndex();
 						if (selectionIndex >= 0) {
 							getNavigationNode()
 									.navigate(

@@ -26,7 +26,7 @@ public class StringManager {
 	 * 
 	 * @param items
 	 */
-	public StringManager(String... items) {
+	public StringManager(final String... items) {
 
 		super();
 
@@ -44,7 +44,7 @@ public class StringManager {
 	/**
 	 * @param items
 	 */
-	public void setItems(Collection<String> items) {
+	public void setItems(final Collection<String> items) {
 
 		this.items = items;
 	}
@@ -60,7 +60,7 @@ public class StringManager {
 	 * @param selectedItem
 	 *            The selectedItem to set.
 	 */
-	public void setSelectedItem(String selectedItem) {
+	public void setSelectedItem(final String selectedItem) {
 		this.selectedItem = selectedItem;
 	}
 }

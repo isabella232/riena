@@ -31,27 +31,27 @@ public class DateTimeSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public DateTimeSubModuleController(ISubModuleNode navigationNode) {
+	public DateTimeSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
 	@Override
 	public void configureRidgets() {
-		IDateTimeRidget dtDate = (IDateTimeRidget) getRidget("dtDate"); //$NON-NLS-1$
-		IDateTimeRidget dtTime = (IDateTimeRidget) getRidget("dtTime"); //$NON-NLS-1$
-		IDateTimeRidget dtDateOnly = (IDateTimeRidget) getRidget("dtDateOnly"); //$NON-NLS-1$
-		IDateTimeRidget dtTimeOnly = (IDateTimeRidget) getRidget("dtTimeOnly"); //$NON-NLS-1$
-		IDateTimeRidget dtCal = (IDateTimeRidget) getRidget("dtCal"); //$NON-NLS-1$
-		ITextRidget txt1 = (ITextRidget) getRidget("txt1"); //$NON-NLS-1$
-		ITextRidget txt2 = (ITextRidget) getRidget("txt2"); //$NON-NLS-1$
-		ITextRidget txt3 = (ITextRidget) getRidget("txt3"); //$NON-NLS-1$
-		ITextRidget txt4 = (ITextRidget) getRidget("txt4"); //$NON-NLS-1$
+		final IDateTimeRidget dtDate = (IDateTimeRidget) getRidget("dtDate"); //$NON-NLS-1$
+		final IDateTimeRidget dtTime = (IDateTimeRidget) getRidget("dtTime"); //$NON-NLS-1$
+		final IDateTimeRidget dtDateOnly = (IDateTimeRidget) getRidget("dtDateOnly"); //$NON-NLS-1$
+		final IDateTimeRidget dtTimeOnly = (IDateTimeRidget) getRidget("dtTimeOnly"); //$NON-NLS-1$
+		final IDateTimeRidget dtCal = (IDateTimeRidget) getRidget("dtCal"); //$NON-NLS-1$
+		final ITextRidget txt1 = (ITextRidget) getRidget("txt1"); //$NON-NLS-1$
+		final ITextRidget txt2 = (ITextRidget) getRidget("txt2"); //$NON-NLS-1$
+		final ITextRidget txt3 = (ITextRidget) getRidget("txt3"); //$NON-NLS-1$
+		final ITextRidget txt4 = (ITextRidget) getRidget("txt4"); //$NON-NLS-1$
 
-		long now = System.currentTimeMillis();
-		TypedBean<Date> date1 = new TypedBean<Date>(new Date(now));
-		TypedBean<Date> date2 = new TypedBean<Date>(new Date(now));
-		TypedBean<Date> date3 = new TypedBean<Date>(new Date(now));
-		TypedBean<Date> date4 = new TypedBean<Date>(new Date(now));
+		final long now = System.currentTimeMillis();
+		final TypedBean<Date> date1 = new TypedBean<Date>(new Date(now));
+		final TypedBean<Date> date2 = new TypedBean<Date>(new Date(now));
+		final TypedBean<Date> date3 = new TypedBean<Date>(new Date(now));
+		final TypedBean<Date> date4 = new TypedBean<Date>(new Date(now));
 
 		dtDate.bindToModel(date1, TypedBean.PROP_VALUE);
 		dtDate.updateFromModel();
@@ -67,15 +67,15 @@ public class DateTimeSubModuleController extends SubModuleController {
 		dtCal.bindToModel(date4, TypedBean.PROP_VALUE);
 		dtCal.updateFromModel();
 
-		DataBindingContext dbc = new DataBindingContext();
-		dbc.bindValue(BeansObservables.observeValue(txt1, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
-				date1, TypedBean.PROP_VALUE));
-		dbc.bindValue(BeansObservables.observeValue(txt2, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
-				date2, TypedBean.PROP_VALUE));
-		dbc.bindValue(BeansObservables.observeValue(txt3, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
-				date3, TypedBean.PROP_VALUE));
-		dbc.bindValue(BeansObservables.observeValue(txt4, ITextRidget.PROPERTY_TEXT), BeansObservables.observeValue(
-				date4, TypedBean.PROP_VALUE));
+		final DataBindingContext dbc = new DataBindingContext();
+		dbc.bindValue(BeansObservables.observeValue(txt1, ITextRidget.PROPERTY_TEXT),
+				BeansObservables.observeValue(date1, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt2, ITextRidget.PROPERTY_TEXT),
+				BeansObservables.observeValue(date2, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt3, ITextRidget.PROPERTY_TEXT),
+				BeansObservables.observeValue(date3, TypedBean.PROP_VALUE));
+		dbc.bindValue(BeansObservables.observeValue(txt4, ITextRidget.PROPERTY_TEXT),
+				BeansObservables.observeValue(date4, TypedBean.PROP_VALUE));
 
 		makeOutputOnly(txt1, txt2, txt3, txt4);
 	}
@@ -83,8 +83,8 @@ public class DateTimeSubModuleController extends SubModuleController {
 	// helping methods
 	//////////////////
 
-	private void makeOutputOnly(ITextRidget... ridgets) {
-		for (ITextRidget ridget : ridgets) {
+	private void makeOutputOnly(final ITextRidget... ridgets) {
+		for (final ITextRidget ridget : ridgets) {
 			ridget.setOutputOnly(true);
 		}
 	}

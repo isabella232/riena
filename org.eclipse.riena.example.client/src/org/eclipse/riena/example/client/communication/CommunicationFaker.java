@@ -14,21 +14,21 @@ import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonit
 
 public class CommunicationFaker {
 
-	public void communicate(IRemoteProgressMonitorList progressMonitors) {
+	public void communicate(final IRemoteProgressMonitorList progressMonitors) {
 		startCommunication(progressMonitors);
 		doCommunicate(progressMonitors);
 		endCommuncation(progressMonitors);
 	}
 
-	private void endCommuncation(IRemoteProgressMonitorList progressMonitors) {
+	private void endCommuncation(final IRemoteProgressMonitorList progressMonitors) {
 		progressMonitors.fireEndEvent(0);
 	}
 
-	private void startCommunication(IRemoteProgressMonitorList progressMonitors) {
+	private void startCommunication(final IRemoteProgressMonitorList progressMonitors) {
 		progressMonitors.fireStartEvent();
 	}
 
-	private void doCommunicate(IRemoteProgressMonitorList progressMonitors) {
+	private void doCommunicate(final IRemoteProgressMonitorList progressMonitors) {
 		for (int i = 0; i < 100; i += 1) {
 			sendData(progressMonitors);
 			delay();
@@ -36,18 +36,18 @@ public class CommunicationFaker {
 		}
 	}
 
-	private void sendData(IRemoteProgressMonitorList progressMonitors) {
+	private void sendData(final IRemoteProgressMonitorList progressMonitors) {
 		progressMonitors.fireWriteEvent(100, 1);
 	}
 
-	private void receiveData(IRemoteProgressMonitorList progressMonitors) {
+	private void receiveData(final IRemoteProgressMonitorList progressMonitors) {
 		progressMonitors.fireReadEvent(100, 1);
 	}
 
 	private void delay() {
 		try {
 			Thread.sleep(50);
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			e.printStackTrace();
 		}
 	}

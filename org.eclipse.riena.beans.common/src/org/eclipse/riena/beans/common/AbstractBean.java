@@ -42,7 +42,7 @@ public abstract class AbstractBean {
 	 * @throws RuntimeException
 	 *             if propertyChangeListener is null
 	 */
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
+	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		Assert.isNotNull(listener);
 		propertyChangeListeners.add(listener);
 	}
@@ -55,7 +55,7 @@ public abstract class AbstractBean {
 	 * @throws RuntimeException
 	 *             if propertyChangeListener is null
 	 */
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
+	public void removePropertyChangeListener(final PropertyChangeListener listener) {
 		Assert.isNotNull(listener);
 		propertyChangeListeners.remove(listener);
 	}
@@ -67,14 +67,14 @@ public abstract class AbstractBean {
 		propertyChangeListeners.clear();
 	}
 
-	protected void firePropertyChanged(String aProperty, Object oldValue, Object newValue) {
+	protected void firePropertyChanged(final String aProperty, final Object oldValue, final Object newValue) {
 		firePropertyChanged(new PropertyChangeEvent(this, aProperty, oldValue, newValue));
 	}
 
-	protected void firePropertyChanged(PropertyChangeEvent event) {
+	protected void firePropertyChanged(final PropertyChangeEvent event) {
 		// prepare for comodification
-		List<PropertyChangeListener> tmpListeners = new ArrayList<PropertyChangeListener>(propertyChangeListeners);
-		for (PropertyChangeListener listener : tmpListeners) {
+		final List<PropertyChangeListener> tmpListeners = new ArrayList<PropertyChangeListener>(propertyChangeListeners);
+		for (final PropertyChangeListener listener : tmpListeners) {
 			listener.propertyChange(event);
 		}
 

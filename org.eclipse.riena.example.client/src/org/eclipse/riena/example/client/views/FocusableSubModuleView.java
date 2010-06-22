@@ -36,47 +36,47 @@ public class FocusableSubModuleView extends SubModuleView {
 	public static final String ID = FocusableSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
-		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
+		final GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
-		Group groupVisibility = createVisibilityGroup(parent);
+		final Group groupVisibility = createVisibilityGroup(parent);
 		fillFactory.applyTo(groupVisibility);
 
-		Group groupA = createGroup(parent, "A", 5); //$NON-NLS-1$
+		final Group groupA = createGroup(parent, "A", 5); //$NON-NLS-1$
 		fillFactory.applyTo(groupA);
 
-		Group groupB = createGroup(parent, "B", 1); //$NON-NLS-1$
+		final Group groupB = createGroup(parent, "B", 1); //$NON-NLS-1$
 		fillFactory.applyTo(groupB);
 	}
 
 	// helping methods
 	// ////////////////
 
-	private Group createVisibilityGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "Visibility Options:"); //$NON-NLS-1$
+	private Group createVisibilityGroup(final Composite parent) {
+		final Group group = UIControlsFactory.createGroup(parent, "Visibility Options:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
-		Button checkVisible = UIControlsFactory.createButtonCheck(group);
+		final Button checkVisible = UIControlsFactory.createButtonCheck(group);
 		addUIControl(checkVisible, "checkVisible"); //$NON-NLS-1$
 
 		return group;
 	}
 
-	private Group createGroup(Composite parent, String groupCaption, int numElements) {
-		Group group = UIControlsFactory.createGroup(parent, "Group #&" + groupCaption); //$NON-NLS-1$
+	private Group createGroup(final Composite parent, final String groupCaption, final int numElements) {
+		final Group group = UIControlsFactory.createGroup(parent, "Group #&" + groupCaption); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
 		Assert.isLegal(numElements > 0);
 		for (int i = 0; i < numElements; i++) {
-			String id = groupCaption + i;
+			final String id = groupCaption + i;
 
-			Button checkFocus = UIControlsFactory.createButtonCheck(group);
+			final Button checkFocus = UIControlsFactory.createButtonCheck(group);
 			addUIControl(checkFocus, "button" + id); //$NON-NLS-1$
 
-			Text text = new Text(group, SWT.BORDER | SWT.SINGLE);
+			final Text text = new Text(group, SWT.BORDER | SWT.SINGLE);
 			addUIControl(text, "text" + id); //$NON-NLS-1$
 		}
 

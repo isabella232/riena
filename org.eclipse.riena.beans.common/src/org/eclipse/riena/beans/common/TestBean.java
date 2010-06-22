@@ -36,7 +36,7 @@ public class TestBean {
 	 * @param property
 	 *            The new property value.
 	 */
-	public void setProperty(Object property) {
+	public void setProperty(final Object property) {
 		setCount++;
 		this.property = property;
 	}

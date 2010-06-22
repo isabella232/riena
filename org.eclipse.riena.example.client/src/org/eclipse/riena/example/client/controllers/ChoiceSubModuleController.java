@@ -40,10 +40,10 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 @SuppressWarnings("restriction")
 public class ChoiceSubModuleController extends SubModuleController {
 
-	private CarConfig carConfig = new CarConfig();
-	private String[] additionalColors = new String[] { "white", "silver", "gray", "yellow" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	private final CarConfig carConfig = new CarConfig();
+	private final String[] additionalColors = new String[] { "white", "silver", "gray", "yellow" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-	public ChoiceSubModuleController(ISubModuleNode navigationNode) {
+	public ChoiceSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -67,7 +67,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 		compositeCarModel.updateFromModel();
 
 		final IMultipleChoiceRidget compositeCarExtras = getRidget(IMultipleChoiceRidget.class, "compositeCarExtras"); //$NON-NLS-1$
-		String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				"Park Distance Control System", }; //$NON-NLS-1$
 		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig,
 				CarConfig.PROP_OPTIONS);
@@ -90,18 +90,18 @@ public class ChoiceSubModuleController extends SubModuleController {
 		compositeColor.updateFromModel();
 
 		final ISingleChoiceRidget compositeSunroof = getRidget(ISingleChoiceRidget.class, "compositeSunroof"); //$NON-NLS-1$
-		String[] roofLabels = { "yes", "no" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] roofLabels = { "yes", "no" }; //$NON-NLS-1$ //$NON-NLS-2$
 		compositeSunroof.bindToModel(toList(new Boolean[] { true, false }), toList(roofLabels), carConfig,
 				CarConfig.PROP_SUNROOF);
 		compositeSunroof.updateFromModel();
 
-		ITextRidget txtPrice = getRidget(ITextRidget.class, "txtPrice"); //$NON-NLS-1$
+		final ITextRidget txtPrice = getRidget(ITextRidget.class, "txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
-		DataBindingContext dbc = new DataBindingContext();
+		final DataBindingContext dbc = new DataBindingContext();
 		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextRidget.PROPERTY_TEXT),
 				BeansObservables.observeValue(carConfig, CarConfig.PROP_PRICE), null, null);
 
-		IActionRidget buttonPreset = getRidget(IActionRidget.class, "buttonPreset"); //$NON-NLS-1$
+		final IActionRidget buttonPreset = getRidget(IActionRidget.class, "buttonPreset"); //$NON-NLS-1$
 		buttonPreset.setText("&Quick Config"); //$NON-NLS-1$
 		buttonPreset.addListener(new IActionListener() {
 			public void callback() {
@@ -111,7 +111,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 				compositeCarPlates.setSelection(Arrays.asList(new String[] { carPlates[0] }));
 			}
 		});
-		IActionRidget buttonReset = getRidget(IActionRidget.class, "buttonReset"); //$NON-NLS-1$
+		final IActionRidget buttonReset = getRidget(IActionRidget.class, "buttonReset"); //$NON-NLS-1$
 
 		buttonReset.setText("&Reset"); //$NON-NLS-1$
 		buttonReset.addListener(new IActionListener() {
@@ -128,9 +128,9 @@ public class ChoiceSubModuleController extends SubModuleController {
 
 		getNavigationNode().addListener(new SubModuleNodeListener() {
 			@Override
-			public void beforeActivated(ISubModuleNode source) {
+			public void beforeActivated(final ISubModuleNode source) {
 
-				for (String color : additionalColors) {
+				for (final String color : additionalColors) {
 					if (!carConfig.getColors().contains(color)) {
 						carConfig.addColor(color);
 						compositeColor.updateFromModel();
@@ -142,7 +142,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 
 	}
 
-	private WritableList toList(Object[] values) {
+	private WritableList toList(final Object[] values) {
 		return new WritableList(Arrays.asList(values), Object.class);
 	}
 
@@ -166,7 +166,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 		private List<CarOptions> options = new ArrayList<CarOptions>();
 		private CarWarranties warranty;
 		private List<String> plates = new ArrayList<String>();
-		private List<String> colors = new ArrayList<String>();
+		private final List<String> colors = new ArrayList<String>();
 		private String color;
 		private boolean sunroof;
 
@@ -178,7 +178,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 			setSunroof(false);
 		}
 
-		public void addColor(String color) {
+		public void addColor(final String color) {
 			getColors().add(color);
 		}
 
@@ -186,7 +186,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 			return model;
 		}
 
-		public void setModel(CarModels model) {
+		public void setModel(final CarModels model) {
 			firePropertyChanged(PROP_MODEL, this.model, this.model = model);
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
@@ -195,7 +195,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 			return Collections.unmodifiableList(options);
 		}
 
-		public void setOptions(List<CarOptions> options) {
+		public void setOptions(final List<CarOptions> options) {
 			firePropertyChanged(PROP_OPTIONS, this.options, this.options = new ArrayList<CarOptions>(options));
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
@@ -204,7 +204,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 			return warranty;
 		}
 
-		public void setWarranty(CarWarranties warranty) {
+		public void setWarranty(final CarWarranties warranty) {
 			firePropertyChanged(PROP_WARRANTY, this.warranty, this.warranty = warranty);
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
@@ -213,7 +213,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 			return Collections.unmodifiableList(plates);
 		}
 
-		public void setPlates(List<String> plates) {
+		public void setPlates(final List<String> plates) {
 			firePropertyChanged(PROP_PLATES, this.plates, this.plates = new ArrayList<String>(plates));
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
@@ -243,7 +243,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 			return price;
 		}
 
-		public void setColor(String color) {
+		public void setColor(final String color) {
 			this.color = color;
 		}
 
@@ -255,7 +255,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 			return colors;
 		}
 
-		public void setSunroof(boolean sunroof) {
+		public void setSunroof(final boolean sunroof) {
 			firePropertyChanged(PROP_SUNROOF, this.sunroof, this.sunroof = sunroof);
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
@@ -271,7 +271,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 
 		private String label;
 
-		private CarModels(String label) {
+		private CarModels(final String label) {
 			Assert.isNotNull(label);
 			this.label = label;
 		}
@@ -291,11 +291,11 @@ public class ChoiceSubModuleController extends SubModuleController {
 
 		@Override
 		public String toString() {
-			char[] result = super.toString().toLowerCase().toCharArray();
+			final char[] result = super.toString().toLowerCase().toCharArray();
 			result[0] = Character.toUpperCase(result[0]);
 			return String.valueOf(result);
 		}
 	}
 
-	private String[] carPlates = { "JM5B0ND", "1 SPY", "MNY PNY", "BN D07", "Q RULE2", "MI64EVR" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	private final String[] carPlates = { "JM5B0ND", "1 SPY", "MNY PNY", "BN D07", "Q RULE2", "MI64EVR" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 }

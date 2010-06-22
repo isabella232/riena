@@ -26,7 +26,7 @@ public final class PropertyNotBindableFailure extends PropertyFailure {
 	 *            the detail message. The detail message is saved for later
 	 *            retrieval by the {@link #getMessage()}method.
 	 */
-	public PropertyNotBindableFailure(String message) {
+	public PropertyNotBindableFailure(final String message) {
 		super(message);
 	}
 
@@ -43,7 +43,7 @@ public final class PropertyNotBindableFailure extends PropertyFailure {
 	 *            permitted, and indicates that the cause is nonexistent or
 	 *            unknown.)
 	 */
-	public PropertyNotBindableFailure(String message, Throwable cause) {
+	public PropertyNotBindableFailure(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 }

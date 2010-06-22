@@ -41,15 +41,15 @@ public class ServicePublishBinder implements IServicePublishBinder {
 	/**
 	 * contains a map of available publishers per protocol
 	 */
-	private Map<String, IServicePublisher> servicePublishers = new HashMap<String, IServicePublisher>();
+	private final Map<String, IServicePublisher> servicePublishers = new HashMap<String, IServicePublisher>();
 	/**
 	 * contains services that are not yet published (due to missing publishers)
 	 */
-	private List<RemoteServiceDescription> unpublishedServices = new ArrayList<RemoteServiceDescription>();
+	private final List<RemoteServiceDescription> unpublishedServices = new ArrayList<RemoteServiceDescription>();
 	/**
 	 * contains registered published Services
 	 */
-	private Map<String, RemoteServiceDescription> rsDescs = new HashMap<String, RemoteServiceDescription>();
+	private final Map<String, RemoteServiceDescription> rsDescs = new HashMap<String, RemoteServiceDescription>();
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ServicePublishBinder.class);
 
@@ -58,7 +58,7 @@ public class ServicePublishBinder implements IServicePublishBinder {
 	}
 
 	@InjectService
-	public void bind(IServicePublisher publisher) {
+	public void bind(final IServicePublisher publisher) {
 		servicePublishers.put(publisher.getProtocol(), publisher);
 		if (unpublishedServices.size() > 0) {
 			LOGGER.log(LogService.LOG_DEBUG, "servicePublish=" + publisher.getProtocol() //$NON-NLS-1$
@@ -73,8 +73,8 @@ public class ServicePublishBinder implements IServicePublishBinder {
 		checkUnpublishedServices(publisher.getProtocol());
 	}
 
-	public void unbind(IServicePublisher publisher) {
-		String protocol = publisher.getProtocol();
+	public void unbind(final IServicePublisher publisher) {
+		final String protocol = publisher.getProtocol();
 		LOGGER.log(LogService.LOG_DEBUG, "servicePublish=" + publisher.getProtocol() //$NON-NLS-1$
 				+ " UNREGISTER...unpublishing all its services"); //$NON-NLS-1$
 		// unregister all web services for this type
@@ -87,15 +87,15 @@ public class ServicePublishBinder implements IServicePublishBinder {
 		servicePublishers.remove(protocol);
 	}
 
-	private void checkUnpublishedServices(String protocol) {
-		List<RemoteServiceDescription> removedItems = new ArrayList<RemoteServiceDescription>();
-		for (RemoteServiceDescription rsd : unpublishedServices) {
+	private void checkUnpublishedServices(final String protocol) {
+		final List<RemoteServiceDescription> removedItems = new ArrayList<RemoteServiceDescription>();
+		for (final RemoteServiceDescription rsd : unpublishedServices) {
 			if (rsd.getProtocol().equals(protocol)) {
 				publish(rsd);
 				removedItems.add(rsd);
 			}
 		}
-		for (RemoteServiceDescription item : removedItems) {
+		for (final RemoteServiceDescription item : removedItems) {
 			unpublishedServices.remove(item);
 		}
 
@@ -108,17 +108,17 @@ public class ServicePublishBinder implements IServicePublishBinder {
 	 * org.eclipse.riena.communication.publisher.IServicePublishBinder#publish
 	 * (org.osgi.framework.ServiceReference, java.lang.String, java.lang.String)
 	 */
-	public void publish(ServiceReference ref, String url, String protocol) {
-		String[] interfaces = (String[]) ref.getProperty(Constants.OBJECTCLASS);
+	public void publish(final ServiceReference ref, final String url, final String protocol) {
+		final String[] interfaces = (String[]) ref.getProperty(Constants.OBJECTCLASS);
 		Assert.isLegal(interfaces.length == 1, "OSGi service registrations only with one interface supported"); //$NON-NLS-1$
-		String interfaceName = interfaces[0];
+		final String interfaceName = interfaces[0];
 		publish(interfaceName, ref, url, protocol);
 	}
 
-	public void unpublish(ServiceReference serviceRef) {
-		for (RemoteServiceDescription rsd : rsDescs.values()) {
+	public void unpublish(final ServiceReference serviceRef) {
+		for (final RemoteServiceDescription rsd : rsDescs.values()) {
 			if (serviceRef.equals(rsd.getServiceRef())) {
-				IServicePublisher servicePublisher = servicePublishers.get(rsd.getProtocol());
+				final IServicePublisher servicePublisher = servicePublishers.get(rsd.getProtocol());
 				if (servicePublisher != null) {
 					servicePublisher.unpublishService(rsd);
 				}
@@ -128,30 +128,31 @@ public class ServicePublishBinder implements IServicePublishBinder {
 		}
 	}
 
-	public void publish(String interfaceName, ServiceReference serviceRef, String path, String protocol) {
+	public void publish(final String interfaceName, final ServiceReference serviceRef, final String path,
+			final String protocol) {
 		RemoteServiceDescription rsd;
 		try {
-			Class<?> interfaceClazz = serviceRef.getBundle().loadClass(interfaceName);
+			final Class<?> interfaceClazz = serviceRef.getBundle().loadClass(interfaceName);
 			rsd = new RemoteServiceDescription(serviceRef, Activator.getDefault().getContext().getService(serviceRef),
 					interfaceClazz);
 			rsd.setService(Activator.getDefault().getContext().getService(serviceRef));
 			rsd.setPath(path);
 			rsd.setProtocol(protocol);
 			publish(rsd);
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			LOGGER.log(LogService.LOG_WARNING,
 					"Could not load class for remote service interface for service reference" + serviceRef, e); //$NON-NLS-1$
 		}
 	}
 
-	private void publish(RemoteServiceDescription rsd) {
+	private void publish(final RemoteServiceDescription rsd) {
 		synchronized (rsDescs) {
 
-			ServiceHooksProxy handler = new ServiceHooksProxy(rsd.getService());
-			Object service = Proxy.newProxyInstance(rsd.getServiceInterfaceClass().getClassLoader(), new Class[] { rsd
-					.getServiceInterfaceClass() }, handler);
+			final ServiceHooksProxy handler = new ServiceHooksProxy(rsd.getService());
+			final Object service = Proxy.newProxyInstance(rsd.getServiceInterfaceClass().getClassLoader(),
+					new Class[] { rsd.getServiceInterfaceClass() }, handler);
 			handler.setRemoteServiceDescription(rsd);
-			RemoteServiceDescription rsDescFound = rsDescs.get(rsd.getProtocol() + "::" + rsd.getPath()); //$NON-NLS-1$
+			final RemoteServiceDescription rsDescFound = rsDescs.get(rsd.getProtocol() + "::" + rsd.getPath()); //$NON-NLS-1$
 			if (rsDescFound != null) {
 				LOGGER.log(LogService.LOG_WARNING, "A service endpoint with path=[" + rsd.getPath() //$NON-NLS-1$
 						+ "] and remoteType=[" + rsd.getProtocol() + "] already published... ignored"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -164,7 +165,7 @@ public class ServicePublishBinder implements IServicePublishBinder {
 				return;
 			}
 
-			IServicePublisher servicePublisher = servicePublishers.get(rsd.getProtocol());
+			final IServicePublisher servicePublisher = servicePublishers.get(rsd.getProtocol());
 			if (servicePublisher == null) {
 				LOGGER.log(LogService.LOG_INFO, "no publisher found for protocol " + rsd.getProtocol()); //$NON-NLS-1$
 				unpublishedServices.add(rsd);
@@ -174,7 +175,7 @@ public class ServicePublishBinder implements IServicePublishBinder {
 			String url = null;
 			try {
 				url = servicePublisher.publishService(rsd);
-			} catch (RuntimeException e) {
+			} catch (final RuntimeException e) {
 				LOGGER.log(LogService.LOG_ERROR, e.getMessage());
 				return;
 			}
@@ -189,7 +190,7 @@ public class ServicePublishBinder implements IServicePublishBinder {
 	}
 
 	public RemoteServiceDescription[] getAllServices() {
-		RemoteServiceDescription[] result = new RemoteServiceDescription[rsDescs.size()];
+		final RemoteServiceDescription[] result = new RemoteServiceDescription[rsDescs.size()];
 		synchronized (rsDescs) {
 			rsDescs.values().toArray(result);
 		}

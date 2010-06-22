@@ -23,20 +23,20 @@ import org.eclipse.riena.communication.core.hooks.IServiceMessageContext;
 
 public class MessageContext implements IServiceMessageContext {
 
-	private HttpServletRequest httpReq;
-	private HttpServletResponse httpRes;
+	private final HttpServletRequest httpReq;
+	private final HttpServletResponse httpRes;
 
-	public MessageContext(HttpServletRequest httpReq, HttpServletResponse httpRes) {
+	public MessageContext(final HttpServletRequest httpReq, final HttpServletResponse httpRes) {
 		this.httpReq = httpReq;
 		this.httpRes = httpRes;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getRequestHeaderValue(String name) {
-		Enumeration<String> enumeration = httpReq.getHeaders(name);
-		List<String> hValues = new ArrayList<String>();
+	public List<String> getRequestHeaderValue(final String name) {
+		final Enumeration<String> enumeration = httpReq.getHeaders(name);
+		final List<String> hValues = new ArrayList<String>();
 		while (enumeration.hasMoreElements()) {
-			String value = enumeration.nextElement();
+			final String value = enumeration.nextElement();
 			hValues.add(value);
 		}
 		return hValues;
@@ -44,22 +44,22 @@ public class MessageContext implements IServiceMessageContext {
 
 	@SuppressWarnings("unchecked")
 	public Map<String, List<String>> listRequestHeaders() {
-		Map<String, List<String>> headers = new HashMap<String, List<String>>();
-		Enumeration<String> enumHeaders = httpReq.getHeaderNames();
+		final Map<String, List<String>> headers = new HashMap<String, List<String>>();
+		final Enumeration<String> enumHeaders = httpReq.getHeaderNames();
 		while (enumHeaders.hasMoreElements()) {
-			String name = enumHeaders.nextElement();
-			Enumeration<String> enumeration = httpReq.getHeaders(name);
-			List<String> hValues = new ArrayList<String>();
+			final String name = enumHeaders.nextElement();
+			final Enumeration<String> enumeration = httpReq.getHeaders(name);
+			final List<String> hValues = new ArrayList<String>();
 			headers.put(name, hValues);
 			while (enumeration.hasMoreElements()) {
-				String value = enumeration.nextElement();
+				final String value = enumeration.nextElement();
 				hValues.add(value);
 			}
 		}
 		return headers;
 	}
 
-	public void addResponseHeader(String name, String value) {
+	public void addResponseHeader(final String name, final String value) {
 		httpRes.addHeader(name, value);
 	}
 

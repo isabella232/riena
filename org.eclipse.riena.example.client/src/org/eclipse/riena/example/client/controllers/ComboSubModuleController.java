@@ -46,7 +46,7 @@ public class ComboSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public ComboSubModuleController(ISubModuleNode navigationNode) {
+	public ComboSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 		manager = new PersonManager(PersonFactory.createPersonList());
 		manager.setSelectedPerson(manager.getPersons().iterator().next());
@@ -86,8 +86,8 @@ public class ComboSubModuleController extends SubModuleController {
 		}
 
 		comboOne.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				Person selectedPerson = (Person) evt.getNewValue();
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final Person selectedPerson = (Person) evt.getNewValue();
 				value.setPerson(selectedPerson);
 				textFirst.updateFromModel();
 				textLast.updateFromModel();
@@ -110,9 +110,9 @@ public class ComboSubModuleController extends SubModuleController {
 				public void callback() {
 					if (buttonSecondValue.isSelected()) {
 						if (manager.getPersons().size() > 1) {
-							Iterator<Person> iterator = manager.getPersons().iterator();
+							final Iterator<Person> iterator = manager.getPersons().iterator();
 							iterator.next();
-							Person second = iterator.next();
+							final Person second = iterator.next();
 							manager.setSelectedPerson(second);
 						}
 						comboOne.setOutputOnly(true);
@@ -128,7 +128,7 @@ public class ComboSubModuleController extends SubModuleController {
 	}
 
 	private void setValuesFromNavigation() {
-		NavigationArgument navigationArgument = getNavigationNode().getNavigationArgument();
+		final NavigationArgument navigationArgument = getNavigationNode().getNavigationArgument();
 		if (navigationArgument != null) {
 			value = (PersonModificationBean) navigationArgument.getParameter();
 			manager.setSelectedPerson(value.getPerson());
@@ -138,7 +138,7 @@ public class ComboSubModuleController extends SubModuleController {
 
 	private class NavigateSubModuleNavigationNodeListener extends SubModuleNodeListener {
 		@Override
-		public void afterActivated(ISubModuleNode source) {
+		public void afterActivated(final ISubModuleNode source) {
 			super.afterActivated(source);
 			if (getNavigationNode().getNavigationArgument() != null
 					&& getNavigationNode().getNavigationArgument().getParameter() instanceof PersonModificationBean) { // we came here from a navigation

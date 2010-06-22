@@ -26,11 +26,11 @@ public class WordNode extends AbstractBean {
 	private boolean isUpperCase;
 	private List<WordNode> children;
 
-	public WordNode(String word) {
+	public WordNode(final String word) {
 		this(null, word);
 	}
 
-	public WordNode(WordNode parent, String word) {
+	public WordNode(final WordNode parent, final String word) {
 		Assert.isNotNull(word);
 		this.parent = parent;
 		this.word = word;
@@ -42,7 +42,7 @@ public class WordNode extends AbstractBean {
 
 	public int getACount() {
 		int result = 0;
-		for (char c : word.toCharArray()) {
+		for (final char c : word.toCharArray()) {
 			if (c == 'a' || c == 'A') {
 				result++;
 			}
@@ -74,20 +74,20 @@ public class WordNode extends AbstractBean {
 		return isUpperCase;
 	}
 
-	public void setChildren(List<WordNode> children) {
-		List<WordNode> oldChildren = this.children;
+	public void setChildren(final List<WordNode> children) {
+		final List<WordNode> oldChildren = this.children;
 		this.children = new ArrayList<WordNode>(children);
 		firePropertyChanged("children", oldChildren, this.children); //$NON-NLS-1$
 	}
 
-	public void setUpperCase(boolean isUppercase) {
-		boolean oldValue = isUpperCase;
+	public void setUpperCase(final boolean isUppercase) {
+		final boolean oldValue = isUpperCase;
 		isUpperCase = isUppercase;
 		firePropertyChanged("upperCase", oldValue, isUpperCase); //$NON-NLS-1$
 	}
 
-	public void setWord(String word) {
-		String oldWord = word;
+	public void setWord(final String word) {
+		final String oldWord = word;
 		this.word = word;
 		firePropertyChanged("word", oldWord, this.word); //$NON-NLS-1$
 	}
@@ -97,9 +97,9 @@ public class WordNode extends AbstractBean {
 		return word;
 	}
 
-	private void addChild(WordNode child) {
+	private void addChild(final WordNode child) {
 		Assert.isNotNull(child);
-		List<WordNode> newChildren = getChildren();
+		final List<WordNode> newChildren = getChildren();
 		newChildren.add(child);
 		setChildren(newChildren);
 	}

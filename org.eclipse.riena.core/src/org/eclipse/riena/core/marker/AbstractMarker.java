@@ -31,11 +31,11 @@ public abstract class AbstractMarker implements IMarker {
 
 	private static final String ATTRIBUTE_UNIQUE = "unique"; //$NON-NLS-1$
 
-	private Map<String, Object> attributeMap = new HashMap<String, Object>(0, 1.0f);
-	private Set<IMarkerAttributeChangeListener> attributeChangeListeners = new HashSet<IMarkerAttributeChangeListener>(
+	private final Map<String, Object> attributeMap = new HashMap<String, Object>(0, 1.0f);
+	private final Set<IMarkerAttributeChangeListener> attributeChangeListeners = new HashSet<IMarkerAttributeChangeListener>(
 			1, 1.0f);
 
-	private boolean unique;
+	private final boolean unique;
 
 	/**
 	 * Create a 'unique' marker.
@@ -51,7 +51,7 @@ public abstract class AbstractMarker implements IMarker {
 	 * @param unique
 	 *            true to create a 'unique' marker; false otherwise.
 	 */
-	public AbstractMarker(boolean unique) {
+	public AbstractMarker(final boolean unique) {
 		this.unique = unique;
 
 		if (unique) {
@@ -72,7 +72,7 @@ public abstract class AbstractMarker implements IMarker {
 	/**
 	 * @see IMarker#getAttribute(String)
 	 */
-	public Object getAttribute(String name) {
+	public Object getAttribute(final String name) {
 		Assert.isNotNull(name, "name must not be null"); //$NON-NLS-1$
 		return attributeMap.get(name);
 	}
@@ -80,8 +80,8 @@ public abstract class AbstractMarker implements IMarker {
 	/**
 	 * @see IMarker#getAttribute(String, Object)
 	 */
-	public Object getAttribute(String name, Object defaultValue) {
-		Object value = getAttribute(name);
+	public Object getAttribute(final String name, final Object defaultValue) {
+		final Object value = getAttribute(name);
 		if (value == null) {
 			return defaultValue;
 		}
@@ -98,9 +98,9 @@ public abstract class AbstractMarker implements IMarker {
 	/**
 	 * @see IMarker#setAttribute(String, Object)
 	 */
-	public void setAttribute(String name, Object value) {
+	public void setAttribute(final String name, final Object value) {
 		Assert.isNotNull(name, "name must not be null"); //$NON-NLS-1$
-		Object oldValue = attributeMap.get(name);
+		final Object oldValue = attributeMap.get(name);
 		if ((value != null && !value.equals(oldValue)) || (value == null && oldValue != null)) {
 			attributeMap.put(name, value);
 			fireAttributesChanged();
@@ -108,9 +108,9 @@ public abstract class AbstractMarker implements IMarker {
 	}
 
 	private void fireAttributesChanged() {
-		Iterator<IMarkerAttributeChangeListener> listenerIterator = attributeChangeListeners.iterator();
+		final Iterator<IMarkerAttributeChangeListener> listenerIterator = attributeChangeListeners.iterator();
 		while (listenerIterator.hasNext()) {
-			IMarkerAttributeChangeListener listener = listenerIterator.next();
+			final IMarkerAttributeChangeListener listener = listenerIterator.next();
 			listener.attributesChanged();
 		}
 	}
@@ -122,7 +122,7 @@ public abstract class AbstractMarker implements IMarker {
 	 * org.eclipse.riena.core.marker.IMarker#addAttributeChangeListener(org.
 	 * eclipse.riena.core.marker.IMarkerAttributeChangeListener)
 	 */
-	public void addAttributeChangeListener(IMarkerAttributeChangeListener listener) {
+	public void addAttributeChangeListener(final IMarkerAttributeChangeListener listener) {
 		attributeChangeListeners.add(listener);
 	}
 
@@ -133,12 +133,12 @@ public abstract class AbstractMarker implements IMarker {
 	 * org.eclipse.riena.core.marker.IMarker#removeAttributeChangeListener(org
 	 * .eclipse.riena.core.marker.IMarkerAttributeChangeListener)
 	 */
-	public void removeAttributeChangeListener(IMarkerAttributeChangeListener listener) {
+	public void removeAttributeChangeListener(final IMarkerAttributeChangeListener listener) {
 		attributeChangeListeners.remove(listener);
 	}
 
 	@Override
-	public boolean equals(Object other) {
+	public boolean equals(final Object other) {
 		if (!(other instanceof AbstractMarker)) {
 			return false;
 		}
@@ -146,7 +146,7 @@ public abstract class AbstractMarker implements IMarker {
 			return false;
 		}
 
-		AbstractMarker otherMarker = (AbstractMarker) other;
+		final AbstractMarker otherMarker = (AbstractMarker) other;
 		return getAttributes().equals(otherMarker.getAttributes());
 	}
 
@@ -157,7 +157,7 @@ public abstract class AbstractMarker implements IMarker {
 
 	@Override
 	public String toString() {
-		StringBuilder buffer = new StringBuilder(this.getClass().getSimpleName());
+		final StringBuilder buffer = new StringBuilder(this.getClass().getSimpleName());
 		buffer.append("[attributes="); //$NON-NLS-1$
 		buffer.append(getAttributes());
 		buffer.append("]"); //$NON-NLS-1$

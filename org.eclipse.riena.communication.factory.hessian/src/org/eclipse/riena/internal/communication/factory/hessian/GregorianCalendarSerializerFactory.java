@@ -46,7 +46,7 @@ public class GregorianCalendarSerializerFactory extends AbstractRienaSerializerF
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Serializer getSerializer(Class cl) throws HessianProtocolException {
+	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		return null;
 	}
 

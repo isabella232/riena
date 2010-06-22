@@ -41,12 +41,13 @@ public class ComboAndListNodeAssembler extends AbstractNavigationAssembler {
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public IModuleGroupNode[] buildNode(NavigationNodeId presentationId, NavigationArgument navigationArgument) {
+	public IModuleGroupNode[] buildNode(final NavigationNodeId presentationId,
+			final NavigationArgument navigationArgument) {
 
-		IModuleGroupNode node = new ModuleGroupNode(new NavigationNodeId(
+		final IModuleGroupNode node = new ModuleGroupNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigate.comboAndListGroup")); //$NON-NLS-1$
-		IModuleNode module = new ModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList"), "Combo&List"); //$NON-NLS-1$ //$NON-NLS-2$
+		final IModuleNode module = new ModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.navigate.comboAndList"), "Combo&List"); //$NON-NLS-1$ //$NON-NLS-2$
 		node.addChild(module);
 
 		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.combo"), "Combo"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -58,18 +59,21 @@ public class ComboAndListNodeAssembler extends AbstractNavigationAssembler {
 		WorkareaManager.getInstance().registerDefinition(subModule, ListSubModuleController.class,
 				ListSubModuleView.ID, false);
 
-		SubModuleNode subModule2 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.list2"), "List2"); //$NON-NLS-1$ //$NON-NLS-2$
+		final SubModuleNode subModule2 = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.list2"), "List2"); //$NON-NLS-1$ //$NON-NLS-2$
 		WorkareaManager.getInstance().registerDefinition(subModule2, ListSubModuleController.class,
 				ListSubModuleView.ID, false);
 		subModule.addChild(subModule2);
 
-		SubModuleNode subModule3 = new SubModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.ordinalparent"), "Ordinal Parent"); //$NON-NLS-1$ //$NON-NLS-2$
-		WorkareaManager.getInstance().registerDefinition(subModule3, ListSubModuleController.class,
-				ListSubModuleView.ID, false).setRequiredPreparation(true);
+		final SubModuleNode subModule3 = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.ordinalparent"), "Ordinal Parent"); //$NON-NLS-1$ //$NON-NLS-2$
+		WorkareaManager.getInstance()
+				.registerDefinition(subModule3, ListSubModuleController.class, ListSubModuleView.ID, false)
+				.setRequiredPreparation(true);
 		subModule.addChild(subModule3);
 
-		SubModuleNode subModule4 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.list4"), "List4"); //$NON-NLS-1$ //$NON-NLS-2$
+		final SubModuleNode subModule4 = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.list4"), "List4"); //$NON-NLS-1$ //$NON-NLS-2$
 		WorkareaManager.getInstance().registerDefinition(subModule4, ListSubModuleController.class,
 				ListSubModuleView.ID, false);
 		subModule.addChild(subModule4);
@@ -81,7 +85,7 @@ public class ComboAndListNodeAssembler extends AbstractNavigationAssembler {
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
 	 */
-	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
 
 		if (knownTargetIds == null) {
 			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigate.comboAndList", //$NON-NLS-1$

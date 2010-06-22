@@ -36,7 +36,7 @@ import org.eclipse.equinox.log.Logger;
  */
 public class ConsoleLogger implements Logger {
 
-	private String name;
+	private final String name;
 	private static String nameAndHost;
 	private static DateFormat formatter;
 	/**
@@ -52,17 +52,17 @@ public class ConsoleLogger implements Logger {
 		String host;
 		try {
 			host = Inet4Address.getLocalHost().getHostName();
-		} catch (UnknownHostException e) {
+		} catch (final UnknownHostException e) {
 			host = "?"; //$NON-NLS-1$
 		}
-		StringBuilder buffer = new StringBuilder();
+		final StringBuilder buffer = new StringBuilder();
 		buffer.append(user).append('@').append(host);
 		nameAndHost = buffer.toString();
 
 		formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss z"); //$NON-NLS-1$
 	}
 
-	public ConsoleLogger(String name) {
+	public ConsoleLogger(final String name) {
 		this.name = name;
 	}
 
@@ -76,14 +76,14 @@ public class ConsoleLogger implements Logger {
 	/*
 	 * @see org.eclipse.equinox.log.Logger#isLoggable(int)
 	 */
-	public boolean isLoggable(int level) {
+	public boolean isLoggable(final int level) {
 		return LOG_FILTER.isLoggable(null, name, level);
 	}
 
 	/*
 	 * @see org.eclipse.equinox.log.Logger#log(int, java.lang.String)
 	 */
-	public void log(int level, String message) {
+	public void log(final int level, final String message) {
 		log(level, null, null, message, null);
 	}
 
@@ -91,7 +91,7 @@ public class ConsoleLogger implements Logger {
 	 * @see org.eclipse.equinox.log.Logger#log(int, java.lang.String,
 	 * java.lang.Throwable)
 	 */
-	public void log(int level, String message, Throwable exception) {
+	public void log(final int level, final String message, final Throwable exception) {
 		log(level, null, null, message, exception);
 	}
 
@@ -100,7 +100,7 @@ public class ConsoleLogger implements Logger {
 	 * org.eclipse.equinox.log.Logger#log(org.osgi.framework.ServiceReference,
 	 * int, java.lang.String)
 	 */
-	public void log(ServiceReference sr, int level, String message) {
+	public void log(final ServiceReference sr, final int level, final String message) {
 		log(level, null, sr, message, null);
 	}
 
@@ -109,7 +109,7 @@ public class ConsoleLogger implements Logger {
 	 * org.eclipse.equinox.log.Logger#log(org.osgi.framework.ServiceReference,
 	 * int, java.lang.String, java.lang.Throwable)
 	 */
-	public void log(ServiceReference sr, int level, String message, Throwable exception) {
+	public void log(final ServiceReference sr, final int level, final String message, final Throwable exception) {
 		log(level, null, null, message, exception);
 	}
 
@@ -117,7 +117,7 @@ public class ConsoleLogger implements Logger {
 	 * @see org.eclipse.equinox.log.Logger#log(java.lang.Object, int,
 	 * java.lang.String)
 	 */
-	public void log(Object context, int level, String message) {
+	public void log(final Object context, final int level, final String message) {
 		log(level, context, null, message, null);
 	}
 
@@ -125,15 +125,16 @@ public class ConsoleLogger implements Logger {
 	 * @see org.eclipse.equinox.log.Logger#log(java.lang.Object, int,
 	 * java.lang.String, java.lang.Throwable)
 	 */
-	public void log(Object context, int level, String message, Throwable exception) {
+	public void log(final Object context, final int level, final String message, final Throwable exception) {
 		log(level, context, null, message, exception);
 	}
 
-	private void log(int level, Object context, ServiceReference sr, String message, Throwable throwable) {
+	private void log(final int level, final Object context, final ServiceReference sr, final String message,
+			final Throwable throwable) {
 		if (!isLoggable(level)) {
 			return;
 		}
-		StringBuilder bob = new StringBuilder();
+		final StringBuilder bob = new StringBuilder();
 		synchronized (formatter) {
 			bob.append(formatter.format(new Date()));
 		}
@@ -157,13 +158,13 @@ public class ConsoleLogger implements Logger {
 		bob.append(' ');
 		bob.append(message);
 		if (throwable != null) {
-			StringWriter stringWriter = new StringWriter();
-			PrintWriter writer = new PrintWriter(stringWriter);
+			final StringWriter stringWriter = new StringWriter();
+			final PrintWriter writer = new PrintWriter(stringWriter);
 			throwable.printStackTrace(writer);
 			writer.close();
 			bob.append('\n').append(stringWriter.toString());
 		}
-		PrintStream printStream = getPrintStream(level);
+		final PrintStream printStream = getPrintStream(level);
 		printStream.println(bob.toString());
 	}
 
@@ -171,7 +172,7 @@ public class ConsoleLogger implements Logger {
 	 * @param level
 	 * @return
 	 */
-	private String getLevel(int level) {
+	private String getLevel(final int level) {
 		switch (level) {
 		case LogService.LOG_DEBUG:
 			return "DEBUG"; //$NON-NLS-1$
@@ -186,7 +187,7 @@ public class ConsoleLogger implements Logger {
 		}
 	}
 
-	private PrintStream getPrintStream(int level) {
+	private PrintStream getPrintStream(final int level) {
 		return LogService.LOG_WARNING == level || LogService.LOG_ERROR == level ? System.err : System.out;
 	}
 

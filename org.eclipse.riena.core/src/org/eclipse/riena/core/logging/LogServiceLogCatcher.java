@@ -34,8 +34,8 @@ public class LogServiceLogCatcher implements ILogCatcher, LogListener {
 	 * @see org.eclipse.riena.core.logging.ILogCatcher#attach()
 	 */
 	public void attach() {
-		logReaderInjector = Inject.service(LogReaderService.class).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
+		logReaderInjector = Inject.service(LogReaderService.class).useRanking().into(this)
+				.andStart(Activator.getDefault().getContext());
 	}
 
 	/*
@@ -50,14 +50,14 @@ public class LogServiceLogCatcher implements ILogCatcher, LogListener {
 		logReaderInjector.stop();
 	}
 
-	public void bind(LogReaderService logReaderService) {
+	public void bind(final LogReaderService logReaderService) {
 		if (logReaderService instanceof ExtendedLogReaderService) {
 			return;
 		}
 		logReaderService.addLogListener(this);
 	}
 
-	public void unbind(LogReaderService logReaderService) {
+	public void unbind(final LogReaderService logReaderService) {
 		if (logReaderService instanceof ExtendedLogReaderService) {
 			return;
 		}
@@ -70,7 +70,7 @@ public class LogServiceLogCatcher implements ILogCatcher, LogListener {
 	 * @see
 	 * org.osgi.service.log.LogListener#logged(org.osgi.service.log.LogEntry)
 	 */
-	public void logged(LogEntry entry) {
+	public void logged(final LogEntry entry) {
 		Log4r.getLogger(Activator.getDefault(), "Bundle " + entry.getBundle()).log(entry.getServiceReference(), //$NON-NLS-1$
 				entry.getLevel(), entry.getMessage(), entry.getException());
 	}

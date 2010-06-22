@@ -27,7 +27,7 @@ public class TypedComparator<T extends Comparable<T>> implements Comparator<Obje
 
 	private static final long serialVersionUID = 1L;
 
-	public int compare(Object o1, Object o2) {
+	public int compare(final Object o1, final Object o2) {
 		if (o1 == o2) {
 			return 0;
 		}
@@ -36,8 +36,8 @@ public class TypedComparator<T extends Comparable<T>> implements Comparator<Obje
 		}
 		// casting is necessary because we want to implement Comparator<Object>,
 		// not Comparator<T>
-		T t1 = (T) o1;
-		T t2 = (T) o2;
+		final T t1 = (T) o1;
+		final T t2 = (T) o2;
 		return t1.compareTo(t2);
 	}
 }

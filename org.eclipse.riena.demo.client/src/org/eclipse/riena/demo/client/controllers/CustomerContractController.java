@@ -30,19 +30,19 @@ public class CustomerContractController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		Customer customer = (Customer) getNavigationNode().getParent().getContext("demo.customer"); //$NON-NLS-1$
+		final Customer customer = (Customer) getNavigationNode().getParent().getContext("demo.customer"); //$NON-NLS-1$
 
-		ITextRidget firstName = (ITextRidget) getRidget("firstname"); //$NON-NLS-1$
+		final ITextRidget firstName = (ITextRidget) getRidget("firstname"); //$NON-NLS-1$
 		firstName.bindToModel(customer, "firstName"); //$NON-NLS-1$
 		firstName.setMandatory(true);
-		ITextRidget lastName = (ITextRidget) getRidget("lastname"); //$NON-NLS-1$
+		final ITextRidget lastName = (ITextRidget) getRidget("lastname"); //$NON-NLS-1$
 		lastName.setMandatory(true);
 		lastName.bindToModel(customer, "lastName"); //$NON-NLS-1$
 
-		IMasterDetailsRidget master = (IMasterDetailsRidget) getRidget("contracts"); //$NON-NLS-1$
+		final IMasterDetailsRidget master = (IMasterDetailsRidget) getRidget("contracts"); //$NON-NLS-1$
 		master.setDelegate(new ContractDelegate());
-		String[] properties = new String[] { "contractNo", "contractValue", "status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		String[] headers = new String[] { "contract#", "value", "status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final String[] properties = new String[] { "contractNo", "contractValue", "status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final String[] headers = new String[] { "contract#", "value", "status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		master.bindToModel(new WritableList(customer.getContracts(), Contract.class), Contract.class, properties,
 				headers);
 		// master.updateFromModel();
@@ -51,7 +51,7 @@ public class CustomerContractController extends SubModuleController {
 
 		getNavigationNode().addListener(new SubModuleNodeListener() {
 			@Override
-			public void activated(ISubModuleNode source) {
+			public void activated(final ISubModuleNode source) {
 				updateAllRidgetsFromModel();
 			}
 		});
@@ -62,24 +62,24 @@ public class CustomerContractController extends SubModuleController {
 		private final Contract workingCopy = createWorkingCopy();
 
 		// configure ridgets for the details
-		public void configureRidgets(IRidgetContainer container) {
+		public void configureRidgets(final IRidgetContainer container) {
 
-			ITextRidget txtcontractNo = (ITextRidget) container.getRidget("contractno"); //$NON-NLS-1$
+			final ITextRidget txtcontractNo = (ITextRidget) container.getRidget("contractno"); //$NON-NLS-1$
 			txtcontractNo.setMandatory(true);
 			txtcontractNo.bindToModel(workingCopy, "contractNo"); //$NON-NLS-1$
 			txtcontractNo.updateFromModel();
 
-			ITextRidget txtLast = (ITextRidget) container.getRidget("description"); //$NON-NLS-1$
+			final ITextRidget txtLast = (ITextRidget) container.getRidget("description"); //$NON-NLS-1$
 			// txtLast.setMandatory(true);
 			txtLast.bindToModel(workingCopy, "description"); //$NON-NLS-1$
 			txtLast.updateFromModel();
 
-			ITextRidget txtValue = (ITextRidget) container.getRidget("value"); //$NON-NLS-1$
+			final ITextRidget txtValue = (ITextRidget) container.getRidget("value"); //$NON-NLS-1$
 			txtValue.setMandatory(true);
 			txtValue.bindToModel(workingCopy, "contractValue"); //$NON-NLS-1$
 			txtValue.updateFromModel();
 
-			ITextRidget txtStatus = (ITextRidget) container.getRidget("status"); //$NON-NLS-1$
+			final ITextRidget txtStatus = (ITextRidget) container.getRidget("status"); //$NON-NLS-1$
 			// txtStatus.setMandatory(true);
 			txtStatus.bindToModel(workingCopy, "status"); //$NON-NLS-1$
 			txtStatus.updateFromModel();
@@ -90,8 +90,8 @@ public class CustomerContractController extends SubModuleController {
 		}
 
 		public Contract copyBean(final Object source, final Object target) {
-			Contract from = source != null ? (Contract) source : createWorkingCopy();
-			Contract to = target != null ? (Contract) target : createWorkingCopy();
+			final Contract from = source != null ? (Contract) source : createWorkingCopy();
+			final Contract to = target != null ? (Contract) target : createWorkingCopy();
 			to.setContractNo(from.getContractNo());
 			to.setDescription(from.getDescription());
 			to.setContractValue(from.getContractValue());
@@ -104,9 +104,9 @@ public class CustomerContractController extends SubModuleController {
 		}
 
 		@Override
-		public boolean isChanged(Object source, Object target) {
-			Contract source2 = (Contract) source;
-			Contract target2 = (Contract) target;
+		public boolean isChanged(final Object source, final Object target) {
+			final Contract source2 = (Contract) source;
+			final Contract target2 = (Contract) target;
 			return !(source2.getContractNo().equals(target2.getContractNo())
 					&& source2.getContractValue() == target2.getContractValue()
 					&& source2.getDescription().equals(target2.getDescription()) && source2.getStatus().equals(

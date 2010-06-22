@@ -18,7 +18,7 @@ class ReusableBufferedOutputStream extends BufferedOutputStream {
 
 	private BufferEntry entry = null;
 
-	public ReusableBufferedOutputStream(OutputStream out) {
+	public ReusableBufferedOutputStream(final OutputStream out) {
 		super(out, 1);
 		entry = BufferEntryManager.getBuffer();
 		this.buf = entry.buffer;

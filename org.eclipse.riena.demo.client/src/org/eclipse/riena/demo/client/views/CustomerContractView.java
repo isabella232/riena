@@ -41,9 +41,9 @@ public class CustomerContractView extends SubModuleView {
 	 * @param parent
 	 */
 	@Override
-	public void basicCreatePartControl(Composite parent) {
+	public void basicCreatePartControl(final Composite parent) {
 
-		Composite container = new Composite(parent, SWT.NONE);
+		final Composite container = new Composite(parent, SWT.NONE);
 		//		container.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
 
@@ -59,7 +59,7 @@ public class CustomerContractView extends SubModuleView {
 		lFirstname.setText("Firstname"); //$NON-NLS-1$
 		lFirstname.setBounds(130, 23, 94, 22);
 
-		Text firstname = new Text(container, SWT.BORDER);
+		final Text firstname = new Text(container, SWT.BORDER);
 		firstname.setData("binding_property", "firstname"); //$NON-NLS-1$ //$NON-NLS-2$
 		firstname.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 		firstname.setBounds(236, 20, 181, 32);
@@ -70,7 +70,7 @@ public class CustomerContractView extends SubModuleView {
 		lLastname.setText("Lastname"); //$NON-NLS-1$
 		lLastname.setBounds(130, 63, 93, 23);
 
-		Text lastname = new Text(container, SWT.BORDER);
+		final Text lastname = new Text(container, SWT.BORDER);
 		lastname.setData("binding_property", "lastname"); //$NON-NLS-1$ //$NON-NLS-2$
 		lastname.setFont(SWTResourceManager.getFont("", 12, SWT.NONE)); //$NON-NLS-1$
 		lastname.setBounds(235, 62, 182, 32);
@@ -80,50 +80,50 @@ public class CustomerContractView extends SubModuleView {
 		group.setLayout(new FillLayout());
 		group.setBounds(130, 120, 537, 310);
 
-		MasterDetailsComposite mdComposite = new MasterDetailsComposite(group, SWT.NONE, SWT.BOTTOM);
+		final MasterDetailsComposite mdComposite = new MasterDetailsComposite(group, SWT.NONE, SWT.BOTTOM);
 		mdComposite.getTable().setFont(SWTResourceManager.getFont("Arial", 8, SWT.NORMAL));
 		mdComposite.getButtonApply().setFont(SWTResourceManager.getFont("Tahoma", 10, SWT.BOLD));
 		mdComposite.getButtonRemove().setFont(SWTResourceManager.getFont("Tahoma", 10, SWT.BOLD));
 		mdComposite.getButtonNew().setFont(SWTResourceManager.getFont("Tahoma", 10, SWT.BOLD));
 		{
-			Composite details = mdComposite.getDetails();
+			final Composite details = mdComposite.getDetails();
 			details.setLayout(new GridLayout(2, false));
 
-			Label lcontractNo = UIControlsFactory.createLabel(details, "ContractNo"); //$NON-NLS-1$
+			final Label lcontractNo = UIControlsFactory.createLabel(details, "ContractNo"); //$NON-NLS-1$
 			lcontractNo.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-			Text contractNo = UIControlsFactory.createText(details);
+			final Text contractNo = UIControlsFactory.createText(details);
 			lcontractNo.setForeground(SWTResourceManager.getColor(1, 0, 0));
-			GridData gd_contractNo = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+			final GridData gd_contractNo = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 			gd_contractNo.widthHint = 115;
 			contractNo.setLayoutData(gd_contractNo);
 			//				contractNo.setData("binding_property", "contractno");
 			mdComposite.addUIControl(contractNo, "contractno"); //$NON-NLS-1$
 
-			Label lDescription = UIControlsFactory.createLabel(details, "Description"); //$NON-NLS-1$
+			final Label lDescription = UIControlsFactory.createLabel(details, "Description"); //$NON-NLS-1$
 			lDescription.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-			Text description = UIControlsFactory.createText(details);
+			final Text description = UIControlsFactory.createText(details);
 			lDescription.setForeground(SWTResourceManager.getColor(1, 0, 0));
-			GridData gd_description = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+			final GridData gd_description = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 			gd_description.widthHint = 432;
 			description.setLayoutData(gd_description);
 			//				description.setData("binding_property", "description");
 			mdComposite.addUIControl(description, "description"); //$NON-NLS-1$
 
-			Label lValue = UIControlsFactory.createLabel(details, "Value"); //$NON-NLS-1$
+			final Label lValue = UIControlsFactory.createLabel(details, "Value"); //$NON-NLS-1$
 			lValue.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-			Text value = UIControlsFactory.createText(details);
+			final Text value = UIControlsFactory.createText(details);
 			lValue.setForeground(SWTResourceManager.getColor(1, 0, 0));
-			GridData gd_value = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+			final GridData gd_value = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 			gd_value.widthHint = 114;
 			value.setLayoutData(gd_value);
 			//				value.setData("binding_property", "value");
 			mdComposite.addUIControl(value, "value"); //$NON-NLS-1$
 
-			Label lStatus = UIControlsFactory.createLabel(details, "Status"); //$NON-NLS-1$
+			final Label lStatus = UIControlsFactory.createLabel(details, "Status"); //$NON-NLS-1$
 			lStatus.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD));
-			Text status = UIControlsFactory.createText(details);
+			final Text status = UIControlsFactory.createText(details);
 			lStatus.setForeground(SWTResourceManager.getColor(1, 0, 0));
-			GridData gd_status = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+			final GridData gd_status = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 			gd_status.widthHint = 114;
 			status.setLayoutData(gd_status);
 			//				status.setData("binding_property", "status");

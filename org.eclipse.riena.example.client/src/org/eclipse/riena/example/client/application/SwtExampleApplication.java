@@ -33,8 +33,8 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 public class SwtExampleApplication extends SwtApplication {
 
 	@Override
-	protected ApplicationController createApplicationController(IApplicationNode node) {
-		ApplicationController controller = super.createApplicationController(node);
+	protected ApplicationController createApplicationController(final IApplicationNode node) {
+		final ApplicationController controller = super.createApplicationController(node);
 		controller.setMenubarVisible(true);
 		return controller;
 	}
@@ -43,7 +43,7 @@ public class SwtExampleApplication extends SwtApplication {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
+	public ActionBarAdvisor createActionBarAdvisor(final IActionBarConfigurer configurer) {
 		return new ExampleActionBarAdvisor(configurer);
 	}
 
@@ -51,7 +51,7 @@ public class SwtExampleApplication extends SwtApplication {
 	protected IApplicationNode createModel() {
 		ISubApplicationNode subApplication = null;
 
-		String bundleVersion = (String) Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
+		final String bundleVersion = (String) Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
 
 		final IApplicationNode applicationNode = new ApplicationNode(
 				new NavigationNodeId("application"), "Example & Playground - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$
@@ -82,7 +82,7 @@ public class SwtExampleApplication extends SwtApplication {
 
 		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.logcollector")); //$NON-NLS-1$
 
-		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
+		final NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(new SubModuleListener());
 		navigationTreeObserver.addListenerTo(applicationNode);
 		return applicationNode;
@@ -101,10 +101,10 @@ public class SwtExampleApplication extends SwtApplication {
 	 */
 	private static final class SubModuleListener extends SubModuleNodeListener {
 		@Override
-		public void activated(ISubModuleNode source) {
-			ApplicationNode appNode = source.getParentOfType(ApplicationNode.class);
-			ApplicationController controller = (ApplicationController) appNode.getNavigationNodeController();
-			IStatuslineRidget statusline = controller.getStatusline();
+		public void activated(final ISubModuleNode source) {
+			final ApplicationNode appNode = source.getParentOfType(ApplicationNode.class);
+			final ApplicationController controller = (ApplicationController) appNode.getNavigationNodeController();
+			final IStatuslineRidget statusline = controller.getStatusline();
 			if (statusline != null) {
 				statusline.getStatuslineNumberRidget().setNumberString(source.getLabel());
 			}

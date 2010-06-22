@@ -20,9 +20,9 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
-import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget.MessageBoxOption;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget.Type;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 public class MessageBoxSubModuleController extends SubModuleController {
 
@@ -43,44 +43,44 @@ public class MessageBoxSubModuleController extends SubModuleController {
 
 		messageBoxRidget = (IMessageBoxRidget) getRidget("messageBox"); //$NON-NLS-1$
 
-		ITextRidget messageTitle = (ITextRidget) getRidget("messageTitle"); //$NON-NLS-1$
+		final ITextRidget messageTitle = (ITextRidget) getRidget("messageTitle"); //$NON-NLS-1$
 		messageTitle.addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				messageBoxRidget.setTitle((String) evt.getNewValue());
 			}
 		});
 		messageTitle.setText("Bridgekeeper"); //$NON-NLS-1$
 
-		ITextRidget messageText = (ITextRidget) getRidget("messageText"); //$NON-NLS-1$
+		final ITextRidget messageText = (ITextRidget) getRidget("messageText"); //$NON-NLS-1$
 		messageText.addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				messageBoxRidget.setText((String) evt.getNewValue());
 			}
 		});
 		messageText.setText("What is your favourite colour?"); //$NON-NLS-1$
 
-		MessageBoxSettingsBean bean = new MessageBoxSettingsBean();
+		final MessageBoxSettingsBean bean = new MessageBoxSettingsBean();
 
-		IComboRidget messageTypes = (IComboRidget) getRidget("messageType"); //$NON-NLS-1$
+		final IComboRidget messageTypes = (IComboRidget) getRidget("messageType"); //$NON-NLS-1$
 		messageTypes.bindToModel(bean, "messageTypes", LabeledMessageType.class, null, bean, "selectedMessageType"); //$NON-NLS-1$ //$NON-NLS-2$
 		messageTypes.updateFromModel();
 
-		IComboRidget messageOptions = (IComboRidget) getRidget("messageOptions"); //$NON-NLS-1$
+		final IComboRidget messageOptions = (IComboRidget) getRidget("messageOptions"); //$NON-NLS-1$
 		messageOptions.bindToModel(bean, "messageOptions", LabeledOptions.class, null, bean, "selectedMessageOptions"); //$NON-NLS-1$ //$NON-NLS-2$
 		messageOptions.updateFromModel();
 
-		IActionRidget showMessage = (IActionRidget) getRidget("showMessage"); //$NON-NLS-1$
+		final IActionRidget showMessage = (IActionRidget) getRidget("showMessage"); //$NON-NLS-1$
 		showMessage.setText("Show Message Box"); //$NON-NLS-1$
 		showMessage.addListener(new ShowMessageActionListener());
 	}
 
 	private final class ShowMessageActionListener implements IActionListener {
 		public void callback() {
-			IMessageBoxRidget.MessageBoxOption selectedOption = messageBoxRidget.show();
+			final IMessageBoxRidget.MessageBoxOption selectedOption = messageBoxRidget.show();
 
 			// Filling a textfield based on the selected option. Just an
 			// example...
-			ITextRidget selectedOptionTextField = (ITextRidget) getRidget("selectedOption"); //$NON-NLS-1$
+			final ITextRidget selectedOptionTextField = (ITextRidget) getRidget("selectedOption"); //$NON-NLS-1$
 			if (selectedOption.equals(IMessageBoxRidget.OK)) {
 				selectedOptionTextField.setText("You clicked 'OK'."); //$NON-NLS-1$
 			} else if (selectedOption.equals(IMessageBoxRidget.CANCEL)) {
@@ -103,9 +103,9 @@ public class MessageBoxSubModuleController extends SubModuleController {
 
 	public final class MessageBoxSettingsBean {
 
-		private List<LabeledMessageType> messageTypes;
+		private final List<LabeledMessageType> messageTypes;
 		private LabeledMessageType selectedMessageType;
-		private List<LabeledOptions> messageOptions;
+		private final List<LabeledOptions> messageOptions;
 		private LabeledOptions selectedMessageOptions;
 
 		private MessageBoxSettingsBean() {
@@ -115,7 +115,7 @@ public class MessageBoxSubModuleController extends SubModuleController {
 			messageTypes.add(new LabeledMessageType("Warning", IMessageBoxRidget.Type.WARNING)); //$NON-NLS-1$
 			messageTypes.add(new LabeledMessageType("Error", IMessageBoxRidget.Type.ERROR)); //$NON-NLS-1$
 			messageTypes.add(new LabeledMessageType("Help", IMessageBoxRidget.Type.HELP)); //$NON-NLS-1$
-			LabeledMessageType question = new LabeledMessageType("Question", IMessageBoxRidget.Type.QUESTION); //$NON-NLS-1$
+			final LabeledMessageType question = new LabeledMessageType("Question", IMessageBoxRidget.Type.QUESTION); //$NON-NLS-1$
 			messageTypes.add(question);
 			setSelectedMessageType(question);
 
@@ -126,7 +126,7 @@ public class MessageBoxSubModuleController extends SubModuleController {
 			messageOptions.add(new LabeledOptions("Yes, No or Cancel", IMessageBoxRidget.OPTIONS_YES_NO_CANCEL)); //$NON-NLS-1$
 			messageOptions.add(new LabeledOptions("Yes, No or Maybe (partially custom)", //$NON-NLS-1$
 					new IMessageBoxRidget.MessageBoxOption[] { IMessageBoxRidget.YES, IMessageBoxRidget.NO, MAYBE }));
-			LabeledOptions blueOrYellow = new LabeledOptions("Blue or Yellow (custom)", //$NON-NLS-1$
+			final LabeledOptions blueOrYellow = new LabeledOptions("Blue or Yellow (custom)", //$NON-NLS-1$
 					new IMessageBoxRidget.MessageBoxOption[] { BLUE, YELLOW });
 			messageOptions.add(blueOrYellow);
 			setSelectedMessageOptions(blueOrYellow);
@@ -140,7 +140,7 @@ public class MessageBoxSubModuleController extends SubModuleController {
 			return selectedMessageType;
 		}
 
-		public void setSelectedMessageType(LabeledMessageType selectedMessageType) {
+		public void setSelectedMessageType(final LabeledMessageType selectedMessageType) {
 			this.selectedMessageType = selectedMessageType;
 			messageBoxRidget.setType(this.selectedMessageType.getType());
 		}
@@ -153,7 +153,7 @@ public class MessageBoxSubModuleController extends SubModuleController {
 			return selectedMessageOptions;
 		}
 
-		public void setSelectedMessageOptions(LabeledOptions selectedMessageOptions) {
+		public void setSelectedMessageOptions(final LabeledOptions selectedMessageOptions) {
 			this.selectedMessageOptions = selectedMessageOptions;
 			messageBoxRidget.setOptions(this.selectedMessageOptions.getOptions());
 		}
@@ -161,10 +161,10 @@ public class MessageBoxSubModuleController extends SubModuleController {
 
 	private static class LabeledMessageType {
 
-		private IMessageBoxRidget.Type type;
-		private String label;
+		private final IMessageBoxRidget.Type type;
+		private final String label;
 
-		public LabeledMessageType(String label, Type type) {
+		public LabeledMessageType(final String label, final Type type) {
 			this.label = label;
 			this.type = type;
 		}
@@ -181,10 +181,10 @@ public class MessageBoxSubModuleController extends SubModuleController {
 
 	private static class LabeledOptions {
 
-		private IMessageBoxRidget.MessageBoxOption[] options;
-		private String label;
+		private final IMessageBoxRidget.MessageBoxOption[] options;
+		private final String label;
 
-		public LabeledOptions(String label, IMessageBoxRidget.MessageBoxOption[] options) {
+		public LabeledOptions(final String label, final IMessageBoxRidget.MessageBoxOption[] options) {
 			this.label = label;
 			this.options = options;
 		}

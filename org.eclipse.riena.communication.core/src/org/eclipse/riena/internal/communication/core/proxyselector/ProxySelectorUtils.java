@@ -51,17 +51,17 @@ public final class ProxySelectorUtils {
 	 * @param universalProxies
 	 * @param protocolSpecificProxies
 	 */
-	public static void fillProxies(String proxyDefinitions, List<Proxy> universalProxies,
-			Map<String, List<Proxy>> protocolSpecificProxies) {
-		Scanner scanner = new Scanner(proxyDefinitions);
+	public static void fillProxies(final String proxyDefinitions, final List<Proxy> universalProxies,
+			final Map<String, List<Proxy>> protocolSpecificProxies) {
+		final Scanner scanner = new Scanner(proxyDefinitions);
 		scanner.useDelimiter(","); //$NON-NLS-1$
 		while (scanner.hasNext()) {
 			fillProxy(scanner.next(), universalProxies, protocolSpecificProxies);
 		}
 	}
 
-	public static void fillProxy(final String proxyDefinition, List<Proxy> universalProxies,
-			Map<String, List<Proxy>> protocolSpecificProxies) {
+	public static void fillProxy(final String proxyDefinition, final List<Proxy> universalProxies,
+			final Map<String, List<Proxy>> protocolSpecificProxies) {
 		String protocol = null;
 		String host = null;
 		int port = 0;
@@ -82,10 +82,10 @@ public final class ProxySelectorUtils {
 			if (augmentedURI.indexOf("://") == -1) { //$NON-NLS-1$
 				augmentedURI = "http://" + augmentedURI; //$NON-NLS-1$
 			}
-			URI uri = new URI(augmentedURI);
+			final URI uri = new URI(augmentedURI);
 			host = uri.getHost();
 			port = uri.getPort() > 0 ? uri.getPort() : getProxyDefaultPort(protocol);
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			throw new ProxySelectorUtils.IllegalFormatException(
 					"not a valid proxy definition: '" + proxyDefinition + "'.", ex); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -98,8 +98,8 @@ public final class ProxySelectorUtils {
 		if (protocol == null) {
 			universalProxies.add(createProxy(Proxy.Type.HTTP, host, port));
 		} else {
-			addProtocolSpecificProxy(protocolSpecificProxies, protocol, createProxy(resolveProxyType(protocol), host,
-					port));
+			addProtocolSpecificProxy(protocolSpecificProxies, protocol,
+					createProxy(resolveProxyType(protocol), host, port));
 		}
 	}
 
@@ -110,12 +110,12 @@ public final class ProxySelectorUtils {
 	 * @param proxies
 	 * @param failedProxies
 	 */
-	public static void resort(Collection<Proxy> proxies, Collection<Proxy> failedProxies) {
+	public static void resort(final Collection<Proxy> proxies, final Collection<Proxy> failedProxies) {
 		if (failedProxies.isEmpty()) {
 			return;
 		}
-		List<Proxy> moveToTheEnd = new ArrayList<Proxy>(failedProxies.size());
-		for (Proxy badProxy : failedProxies) {
+		final List<Proxy> moveToTheEnd = new ArrayList<Proxy>(failedProxies.size());
+		for (final Proxy badProxy : failedProxies) {
 			if (proxies.remove(badProxy)) {
 				moveToTheEnd.add(badProxy);
 			}
@@ -124,7 +124,7 @@ public final class ProxySelectorUtils {
 
 	}
 
-	private static int getProxyDefaultPort(String protocol) {
+	private static int getProxyDefaultPort(final String protocol) {
 		if (protocol == null) {
 			return PROXY_DEFAULT_PORT;
 		}
@@ -143,8 +143,8 @@ public final class ProxySelectorUtils {
 		return PROXY_DEFAULT_PORT;
 	}
 
-	private static void addProtocolSpecificProxy(Map<String, List<Proxy>> protocolSpecificProxies, String protocol,
-			Proxy proxy) {
+	private static void addProtocolSpecificProxy(final Map<String, List<Proxy>> protocolSpecificProxies,
+			final String protocol, final Proxy proxy) {
 		List<Proxy> list = protocolSpecificProxies.get(protocol);
 		if (list == null) {
 			list = new ArrayList<Proxy>();
@@ -160,7 +160,7 @@ public final class ProxySelectorUtils {
 	 * @param port
 	 * @return
 	 */
-	public static Proxy createProxy(Proxy.Type type, String host, int port) {
+	public static Proxy createProxy(final Proxy.Type type, final String host, final int port) {
 		return new Proxy(type, InetSocketAddress.createUnresolved(host, port));
 	}
 
@@ -168,7 +168,7 @@ public final class ProxySelectorUtils {
 	 * @param protocol
 	 * @return
 	 */
-	public static Proxy.Type resolveProxyType(String protocol) {
+	public static Proxy.Type resolveProxyType(final String protocol) {
 		if (protocol != null && (protocol.equalsIgnoreCase("socks") || protocol.equalsIgnoreCase("socket"))) { //$NON-NLS-1$ //$NON-NLS-2$
 			return Proxy.Type.SOCKS;
 		} else {
@@ -181,8 +181,8 @@ public final class ProxySelectorUtils {
 	 * @param sa
 	 * @return
 	 */
-	public static Proxy createProxy(String scheme, SocketAddress sa) {
-		Proxy.Type type = resolveProxyType(scheme);
+	public static Proxy createProxy(final String scheme, final SocketAddress sa) {
+		final Proxy.Type type = resolveProxyType(scheme);
 		return new Proxy(type, sa);
 	}
 
@@ -190,11 +190,11 @@ public final class ProxySelectorUtils {
 
 		private static final long serialVersionUID = 3597432896264559897L;
 
-		public IllegalFormatException(String message, Throwable throwable) {
+		public IllegalFormatException(final String message, final Throwable throwable) {
 			super(message, throwable);
 		}
 
-		public IllegalFormatException(String message) {
+		public IllegalFormatException(final String message) {
 			super(message);
 		}
 

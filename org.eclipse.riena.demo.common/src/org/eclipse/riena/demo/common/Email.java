@@ -41,7 +41,7 @@ public class Email {
 	 * @param emailFrom
 	 *            the emailFrom to set
 	 */
-	public void setEmailFrom(String emailFrom) {
+	public void setEmailFrom(final String emailFrom) {
 		this.emailFrom = emailFrom;
 	}
 
@@ -49,7 +49,7 @@ public class Email {
 	 * @param emailTo
 	 *            the emailTo to set
 	 */
-	public void setEmailTo(String emailTo) {
+	public void setEmailTo(final String emailTo) {
 		this.emailTo = emailTo;
 	}
 
@@ -71,11 +71,10 @@ public class Email {
 	 * @param emailSubject
 	 *            the emailSubject to set
 	 */
-	public void setEmailSubject(String emailSubject) {
+	public void setEmailSubject(final String emailSubject) {
 		this.emailSubject = emailSubject;
 	}
 
-	
 	/**
 	 * @return the emailDate
 	 */
@@ -87,7 +86,7 @@ public class Email {
 	 * @param emailDate
 	 *            the emailDate to set
 	 */
-	public void setEmailDate(Date emailDate) {
+	public void setEmailDate(final Date emailDate) {
 		this.emailDate = emailDate;
 	}
 
@@ -102,7 +101,7 @@ public class Email {
 	 * @param emailBody
 	 *            the emailBody to set
 	 */
-	public void setEmailBody(String emailBody) {
+	public void setEmailBody(final String emailBody) {
 		this.emailBody = emailBody;
 	}
 
@@ -110,7 +109,7 @@ public class Email {
 	 * @param directoryName
 	 *            the directoryName to set
 	 */
-	public void setDirectoryName(String directoryName) {
+	public void setDirectoryName(final String directoryName) {
 		this.directoryName = directoryName;
 	}
 

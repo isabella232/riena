@@ -51,11 +51,11 @@ public class ManualProxySelector extends ProxySelector implements IExecutableExt
 	private final Map<String, List<Proxy>> protocolSpecificProxies = new HashMap<String, List<Proxy>>();
 
 	public ManualProxySelector() throws CoreException {
-		String data = System.getProperty(RIENA_MANUAL_PROXIES);
+		final String data = System.getProperty(RIENA_MANUAL_PROXIES);
 		setInitializationData(null, null, data);
 	}
 
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 
 		if (data == null || !(data instanceof String)
@@ -64,16 +64,16 @@ public class ManualProxySelector extends ProxySelector implements IExecutableExt
 		}
 		try {
 			ProxySelectorUtils.fillProxies((String) data, universalProxies, protocolSpecificProxies);
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Bad configuration.", e)); //$NON-NLS-1$
 		}
 	}
 
 	@Override
-	public List<Proxy> select(URI uri) {
+	public List<Proxy> select(final URI uri) {
 
 		if (!protocolSpecificProxies.isEmpty()) {
-			List<Proxy> proxies = protocolSpecificProxies.get(uri.getScheme());
+			final List<Proxy> proxies = protocolSpecificProxies.get(uri.getScheme());
 			return proxies != null ? proxies : ProxySelectorUtils.NO_PROXY_LIST;
 		} else if (!universalProxies.isEmpty()) {
 			return universalProxies;
@@ -83,7 +83,7 @@ public class ManualProxySelector extends ProxySelector implements IExecutableExt
 	}
 
 	@Override
-	public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
+	public void connectFailed(final URI uri, final SocketAddress sa, final IOException ioe) {
 		// Nothing yet
 	}
 }

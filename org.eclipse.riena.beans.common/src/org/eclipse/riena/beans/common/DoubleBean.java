@@ -36,7 +36,7 @@ public class DoubleBean extends AbstractBean {
 	 * 
 	 * @param value
 	 */
-	public DoubleBean(Double value) {
+	public DoubleBean(final Double value) {
 		this.value = value;
 	}
 
@@ -45,7 +45,7 @@ public class DoubleBean extends AbstractBean {
 	 * 
 	 * @param value
 	 */
-	public DoubleBean(double value) {
+	public DoubleBean(final double value) {
 		this.value = value;
 	}
 
@@ -55,9 +55,9 @@ public class DoubleBean extends AbstractBean {
 	 * @param value
 	 *            value to set
 	 */
-	public void setValue(Double value) {
+	public void setValue(final Double value) {
 		// System.out.println( "Double bean setValue: " + value.toString() );
-		Object old = this.value;
+		final Object old = this.value;
 		this.value = value;
 		firePropertyChanged(PROP_VALUE, old, this.value);
 	}

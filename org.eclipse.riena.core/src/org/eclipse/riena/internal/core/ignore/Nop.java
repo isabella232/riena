@@ -30,7 +30,7 @@ public final class Nop {
 	 * @deprecated Use instead {@code org.eclipse.riena.core.util.Nop}
 	 */
 	@Deprecated
-	public static void reason(String reason) {
+	public static void reason(final String reason) {
 		// nothing
 	}
 }

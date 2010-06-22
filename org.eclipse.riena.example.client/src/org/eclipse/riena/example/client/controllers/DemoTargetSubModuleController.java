@@ -36,7 +36,7 @@ public class DemoTargetSubModuleController extends SubModuleController {
 		jumpBackActionRidget.setEnabled(getNavigationNode().isJumpTarget());
 		getNavigationNode().addJumpTargetListener(new IJumpTargetListener() {
 
-			public void jumpTargetStateChanged(INavigationNode<?> node, JumpTargetState jumpTargetState) {
+			public void jumpTargetStateChanged(final INavigationNode<?> node, final JumpTargetState jumpTargetState) {
 				jumpBackActionRidget.setEnabled(jumpTargetState == JumpTargetState.ENABLED);
 			}
 

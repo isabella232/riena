@@ -16,7 +16,7 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
 
 public class ServiceContractsController extends SubModuleController implements IController {
 
-	public ServiceContractsController(ISubModuleNode navigationNode) {
+	public ServiceContractsController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 

@@ -54,7 +54,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public SystemPropertiesSubModuleController(ISubModuleNode navigationNode) {
+	public SystemPropertiesSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 		properties = new ArrayList<KeyValueBean>();
 		valueBean = new KeyValueBean();
@@ -103,17 +103,17 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 		final IToggleButtonRidget toggleDoubleClick = (IToggleButtonRidget) getRidget("toggleDoubleClick"); //$NON-NLS-1$
 		final IActionRidget buttonSave = (IActionRidget) getRidget("buttonSave"); //$NON-NLS-1$
 
-		Set<Object> keys = System.getProperties().keySet();
-		for (Object key : keys) {
-			KeyValueBean bean = new KeyValueBean();
+		final Set<Object> keys = System.getProperties().keySet();
+		for (final Object key : keys) {
+			final KeyValueBean bean = new KeyValueBean();
 			bean.setKey((String) key);
 			bean.setValue(System.getProperty((String) key));
 			properties.add(bean);
 		}
 
 		tableProperties.addPropertyChangeListener(ITableRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				List<Object> selection = tableProperties.getSelection();
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final List<Object> selection = tableProperties.getSelection();
 				if (!selection.isEmpty()) {
 					valueBean.setBean((KeyValueBean) selection.get(0));
 					textKey.updateFromModel();
@@ -127,7 +127,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 			private int count = 0;
 
 			public void callback() {
-				KeyValueBean bean = new KeyValueBean();
+				final KeyValueBean bean = new KeyValueBean();
 				bean.setKey("key" + ++count); //$NON-NLS-1$
 				bean.setValue("newValue"); //$NON-NLS-1$
 				properties.add(bean);
@@ -173,7 +173,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 			return tempKey;
 		}
 
-		public void setKey(String key) {
+		public void setKey(final String key) {
 			this.tempKey = key;
 		}
 
@@ -181,11 +181,11 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 			return tempValue;
 		}
 
-		public void setValue(String value) {
+		public void setValue(final String value) {
 			this.tempValue = value;
 		}
 
-		public void setBean(KeyValueBean bean) {
+		public void setBean(final KeyValueBean bean) {
 			this.bean = bean;
 			setKey(bean.getKey());
 			setValue(bean.getValue());
@@ -203,8 +203,8 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	private final class DoubleClickListener implements IActionListener {
 
 		public void callback() {
-			Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-			String title = "Information"; //$NON-NLS-1$
+			final Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+			final String title = "Information"; //$NON-NLS-1$
 			String message = "The key ''{0}'' is selected and has the value ''{1}''"; //$NON-NLS-1$
 			message = NLS.bind(message, valueBean.getKey(), valueBean.getValue());
 			MessageDialog.openInformation(shell, title, message);

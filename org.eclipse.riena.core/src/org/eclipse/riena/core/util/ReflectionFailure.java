@@ -24,7 +24,7 @@ public class ReflectionFailure extends UtilFailure {
 	 * @param msg
 	 *            the message.
 	 */
-	public ReflectionFailure(String msg) {
+	public ReflectionFailure(final String msg) {
 		super(msg);
 	}
 
@@ -36,7 +36,7 @@ public class ReflectionFailure extends UtilFailure {
 	 * @param cause
 	 *            the cause.
 	 */
-	public ReflectionFailure(String msg, Throwable cause) {
+	public ReflectionFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 }

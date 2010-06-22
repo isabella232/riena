@@ -42,19 +42,19 @@ public class NavigateNodeAssembler extends AbstractNavigationAssembler {
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?>[] buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
+	public INavigationNode<?>[] buildNode(final NavigationNodeId nodeId, final NavigationArgument navigationArgument) {
 
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(nodeId);
+		final IModuleGroupNode moduleGroup = new ModuleGroupNode(nodeId);
 		moduleGroup.setPresentWithSingleModule(false);
 
-		IModuleNode module = new ModuleNode(
+		final IModuleNode module = new ModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.navigate.module"), "Navigate"); //$NON-NLS-1$
 		module.setIcon(ExampleIcons.ICON_GREEN_LED);
 		moduleGroup.addChild(module);
 
-		ISubModuleNode subModule = new SubModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.navigate.form"), "Navigate"); //$NON-NLS-1$ //$NON-NLS-2$
-		IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule,
+		final ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.navigate.form"), "Navigate"); //$NON-NLS-1$ //$NON-NLS-2$
+		final IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule,
 				NavigateSubModuleController.class, NavigateSubModuleView.ID);
 		def.setRequiredPreparation(true);
 
@@ -65,7 +65,7 @@ public class NavigateNodeAssembler extends AbstractNavigationAssembler {
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
 	 */
-	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
 
 		if (knownTargetIds == null) {
 			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigate.form" //$NON-NLS-1$

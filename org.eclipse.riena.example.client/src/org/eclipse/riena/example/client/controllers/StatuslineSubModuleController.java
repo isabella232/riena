@@ -40,7 +40,7 @@ public class StatuslineSubModuleController extends SubModuleController {
 
 		private final String text;
 
-		Severity(String text) {
+		Severity(final String text) {
 			this.text = text;
 		}
 
@@ -68,7 +68,7 @@ public class StatuslineSubModuleController extends SubModuleController {
 	 * @param navigationNode
 	 *            node of the sub-module
 	 */
-	public StatuslineSubModuleController(ISubModuleNode navigationNode) {
+	public StatuslineSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 		model = new StatuslineModel();
 	}
@@ -126,7 +126,7 @@ public class StatuslineSubModuleController extends SubModuleController {
 	 * @param model
 	 *            the model to set
 	 */
-	public void setModel(StatuslineModel model) {
+	public void setModel(final StatuslineModel model) {
 		this.model = model;
 	}
 
@@ -208,11 +208,11 @@ public class StatuslineSubModuleController extends SubModuleController {
 		 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
 		 */
 		public void callback() {
-			String text = getModel().getNumberText();
+			final String text = getModel().getNumberText();
 			try {
-				int intValue = Integer.parseInt(text);
+				final int intValue = Integer.parseInt(text);
 				getStatusLine().getStatuslineNumberRidget().setNumber(intValue);
-			} catch (NumberFormatException e) {
+			} catch (final NumberFormatException e) {
 				getStatusLine().getStatuslineNumberRidget().setNumberString(text);
 			}
 		}
@@ -242,7 +242,7 @@ public class StatuslineSubModuleController extends SubModuleController {
 		 * @param messageText
 		 *            the messageText to set
 		 */
-		public void setMessageText(String messageText) {
+		public void setMessageText(final String messageText) {
 			this.messageText = messageText;
 		}
 
@@ -257,7 +257,7 @@ public class StatuslineSubModuleController extends SubModuleController {
 		 * @param severity
 		 *            the severity to set
 		 */
-		public void setSeverity(Severity severity) {
+		public void setSeverity(final Severity severity) {
 			this.severity = severity;
 		}
 
@@ -276,7 +276,7 @@ public class StatuslineSubModuleController extends SubModuleController {
 		 * @param numberText
 		 *            the numberText to set
 		 */
-		public void setNumberText(String numberText) {
+		public void setNumberText(final String numberText) {
 			this.numberText = numberText;
 		}
 

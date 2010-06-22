@@ -39,16 +39,16 @@ public class StatuslineSubModuleView extends SubModuleView {
 	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleView#basicCreatePartControl(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
-		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
+		final GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
-		Group messageGroup = createMessageGroup(parent);
+		final Group messageGroup = createMessageGroup(parent);
 		fillFactory.applyTo(messageGroup);
 
-		Group numberGroup = createNumberGroup(parent);
+		final Group numberGroup = createNumberGroup(parent);
 		fillFactory.applyTo(numberGroup);
 
 	}
@@ -60,15 +60,15 @@ public class StatuslineSubModuleView extends SubModuleView {
 	 * @param parent
 	 * @return message group
 	 */
-	private Group createMessageGroup(Composite parent) {
+	private Group createMessageGroup(final Composite parent) {
 
-		Group group = UIControlsFactory.createGroup(parent, "Message:"); //$NON-NLS-1$
+		final Group group = UIControlsFactory.createGroup(parent, "Message:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
 		Label label = UIControlsFactory.createLabel(group, "Text:"); //$NON-NLS-1$
 		addUIControl(label, "textLabel"); //$NON-NLS-1$
 
-		Text text = new Text(group, SWT.BORDER | SWT.SINGLE);
+		final Text text = new Text(group, SWT.BORDER | SWT.SINGLE);
 		GridData gridData = new GridData();
 		gridData.widthHint = 200;
 		text.setLayoutData(gridData);
@@ -77,10 +77,10 @@ public class StatuslineSubModuleView extends SubModuleView {
 		label = UIControlsFactory.createLabel(group, "Severity:"); //$NON-NLS-1$
 		addUIControl(label, "severityLabel"); //$NON-NLS-1$
 
-		Combo severityCombo = UIControlsFactory.createCombo(group);
+		final Combo severityCombo = UIControlsFactory.createCombo(group);
 		addUIControl(severityCombo, "severity"); //$NON-NLS-1$
 
-		Button showBtn = UIControlsFactory.createButton(group);
+		final Button showBtn = UIControlsFactory.createButton(group);
 		showBtn.setText("Show"); //$NON-NLS-1$
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.BEGINNING;
@@ -99,21 +99,21 @@ public class StatuslineSubModuleView extends SubModuleView {
 	 * @param parent
 	 * @return number group
 	 */
-	private Group createNumberGroup(Composite parent) {
+	private Group createNumberGroup(final Composite parent) {
 
-		Group group = UIControlsFactory.createGroup(parent, "Number:"); //$NON-NLS-1$
+		final Group group = UIControlsFactory.createGroup(parent, "Number:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
-		Label label = UIControlsFactory.createLabel(group, "Number:"); //$NON-NLS-1$
+		final Label label = UIControlsFactory.createLabel(group, "Number:"); //$NON-NLS-1$
 		addUIControl(label, "numberLabel"); //$NON-NLS-1$
 
-		Text text = new Text(group, SWT.BORDER | SWT.SINGLE);
+		final Text text = new Text(group, SWT.BORDER | SWT.SINGLE);
 		GridData gridData = new GridData();
 		gridData.widthHint = 42;
 		text.setLayoutData(gridData);
 		addUIControl(text, "numberText"); //$NON-NLS-1$
 
-		Button showBtn = UIControlsFactory.createButton(group);
+		final Button showBtn = UIControlsFactory.createButton(group);
 		showBtn.setText("Show"); //$NON-NLS-1$
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.BEGINNING;

@@ -24,7 +24,7 @@ public class PersonManager {
 	 */
 	public static final String PROPERTY_SELECTED_PERSON = "selectedPerson"; //$NON-NLS-1$
 
-	private PropertyChangeSupport propertyChangeSupport;
+	private final PropertyChangeSupport propertyChangeSupport;
 	private Collection<Person> persons;
 	private Person selectedPerson;
 
@@ -33,29 +33,29 @@ public class PersonManager {
 	 * 
 	 * @param persons
 	 */
-	public PersonManager(Collection<Person> persons) {
+	public PersonManager(final Collection<Person> persons) {
 
 		super();
 		propertyChangeSupport = new PropertyChangeSupport(this);
 		setPersons(persons);
 	}
 
-	public void addPropertyChangeListener(String p, PropertyChangeListener l) {
+	public void addPropertyChangeListener(final String p, final PropertyChangeListener l) {
 
 		propertyChangeSupport.addPropertyChangeListener(p, l);
 	}
 
-	public void addPropertyChangeListener(PropertyChangeListener l) {
+	public void addPropertyChangeListener(final PropertyChangeListener l) {
 
 		propertyChangeSupport.addPropertyChangeListener(l);
 	}
 
-	public void removePropertyChangeListener(String p, PropertyChangeListener l) {
+	public void removePropertyChangeListener(final String p, final PropertyChangeListener l) {
 
 		propertyChangeSupport.removePropertyChangeListener(p, l);
 	}
 
-	public void removePropertyChangeListener(PropertyChangeListener l) {
+	public void removePropertyChangeListener(final PropertyChangeListener l) {
 
 		propertyChangeSupport.removePropertyChangeListener(l);
 	}
@@ -71,7 +71,7 @@ public class PersonManager {
 	/**
 	 * @param persons
 	 */
-	public void setPersons(Collection<Person> persons) {
+	public void setPersons(final Collection<Person> persons) {
 
 		this.persons = persons;
 	}
@@ -87,8 +87,8 @@ public class PersonManager {
 	 * @param newSelection
 	 *            The selectedPerson to set.
 	 */
-	public void setSelectedPerson(Person newSelection) {
-		Person oldSelection = this.selectedPerson;
+	public void setSelectedPerson(final Person newSelection) {
+		final Person oldSelection = this.selectedPerson;
 		this.selectedPerson = newSelection;
 		propertyChangeSupport.firePropertyChange(PROPERTY_SELECTED_PERSON, oldSelection, newSelection);
 	}

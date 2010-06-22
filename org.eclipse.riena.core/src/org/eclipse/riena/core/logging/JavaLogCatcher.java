@@ -78,7 +78,7 @@ public class JavaLogCatcher implements ILogCatcher {
 		}
 
 		@Override
-		public void publish(LogRecord record) {
+		public void publish(final LogRecord record) {
 
 			// get equinox log level
 			final int equinoxLoglevel;
@@ -94,8 +94,8 @@ public class JavaLogCatcher implements ILogCatcher {
 			}
 
 			// find corresponding equinox logger
-			final org.eclipse.equinox.log.Logger logger = Log4r.getLogger(Activator.getDefault(), record
-					.getLoggerName());
+			final org.eclipse.equinox.log.Logger logger = Log4r.getLogger(Activator.getDefault(),
+					record.getLoggerName());
 
 			if (!logger.isLoggable(equinoxLoglevel)) {
 				return;

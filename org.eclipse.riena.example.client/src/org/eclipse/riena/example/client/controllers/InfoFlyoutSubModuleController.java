@@ -25,13 +25,13 @@ public class InfoFlyoutSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		IActionRidget button = getRidget(IActionRidget.class, "flyoutButton"); //$NON-NLS-1$
+		final IActionRidget button = getRidget(IActionRidget.class, "flyoutButton"); //$NON-NLS-1$
 		counter = 0;
 
 		button.addListener(new IActionListener() {
 			public void callback() {
-				IInfoFlyoutRidget flyout = getInfoFlyout();
-				InfoFlyoutData info = new InfoFlyoutData("arrowRight", //$NON-NLS-1$
+				final IInfoFlyoutRidget flyout = getInfoFlyout();
+				final InfoFlyoutData info = new InfoFlyoutData("arrowRight", //$NON-NLS-1$
 						"This is an IInfoFlyout. It can show and image and two lines of text. " + ++counter); //$NON-NLS-1$
 				flyout.addInfo(info);
 			}

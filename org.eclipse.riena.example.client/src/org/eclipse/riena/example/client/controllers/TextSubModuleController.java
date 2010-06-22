@@ -26,7 +26,7 @@ public class TextSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public TextSubModuleController(ISubModuleNode navigationNode) {
+	public TextSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -36,17 +36,17 @@ public class TextSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		ITextRidget textModel1 = (ITextRidget) getRidget("textModel1"); //$NON-NLS-1$
+		final ITextRidget textModel1 = (ITextRidget) getRidget("textModel1"); //$NON-NLS-1$
 		textModel1.setText("type something"); //$NON-NLS-1$
 		textModel1.setOutputOnly(true);
-		ITextRidget textField = (ITextRidget) getRidget("textField"); //$NON-NLS-1$
+		final ITextRidget textField = (ITextRidget) getRidget("textField"); //$NON-NLS-1$
 		textField.bindToModel(textModel1, ITextRidget.PROPERTY_TEXT);
 		textField.updateFromModel();
 
-		ITextRidget textModel2 = (ITextRidget) getRidget("textModel2"); //$NON-NLS-1$
+		final ITextRidget textModel2 = (ITextRidget) getRidget("textModel2"); //$NON-NLS-1$
 		textModel2.setText("type something"); //$NON-NLS-1$
 		textModel2.setOutputOnly(true);
-		ITextRidget textDirectWrite = (ITextRidget) getRidget("textDirectWrite"); //$NON-NLS-1$
+		final ITextRidget textDirectWrite = (ITextRidget) getRidget("textDirectWrite"); //$NON-NLS-1$
 		textDirectWrite.setDirectWriting(true);
 		textDirectWrite.bindToModel(textModel2, ITextRidget.PROPERTY_TEXT);
 		textDirectWrite.updateFromModel();

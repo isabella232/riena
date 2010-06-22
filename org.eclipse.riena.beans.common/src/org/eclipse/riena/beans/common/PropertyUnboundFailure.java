@@ -34,7 +34,7 @@ public final class PropertyUnboundFailure extends PropertyFailure {
 	 *            the detail message. The detail message is saved for later
 	 *            retrieval by the {@link #getMessage()}method.
 	 */
-	public PropertyUnboundFailure(String message) {
+	public PropertyUnboundFailure(final String message) {
 		super(message);
 	}
 
@@ -51,7 +51,7 @@ public final class PropertyUnboundFailure extends PropertyFailure {
 	 *            permitted, and indicates that the cause is nonexistent or
 	 *            unknown.)
 	 */
-	public PropertyUnboundFailure(String message, Throwable cause) {
+	public PropertyUnboundFailure(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 

@@ -22,11 +22,11 @@ public class RemoteProgressMonitorEvent {
 		super();
 	}
 
-	public RemoteProgressMonitorEvent(int totalBytes) {
+	public RemoteProgressMonitorEvent(final int totalBytes) {
 		this.totalBytes = totalBytes;
 	}
 
-	public RemoteProgressMonitorEvent(int totalBytes, int bytesProcessed) {
+	public RemoteProgressMonitorEvent(final int totalBytes, final int bytesProcessed) {
 		this.totalBytes = totalBytes;
 		this.bytesProcessed = bytesProcessed;
 	}

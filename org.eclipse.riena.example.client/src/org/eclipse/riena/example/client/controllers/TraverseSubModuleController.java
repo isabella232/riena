@@ -24,7 +24,7 @@ import org.eclipse.riena.ui.ridgets.ITraverseRidget;
  */
 public class TraverseSubModuleController extends SubModuleController {
 
-	private Temperature temperature;
+	private final Temperature temperature;
 
 	/**
 	 * Creates a new instance of {@code TraverseSubModuleController} and
@@ -41,9 +41,9 @@ public class TraverseSubModuleController extends SubModuleController {
 
 		super.configureRidgets();
 
-		TemperatureListener listener = new TemperatureListener();
+		final TemperatureListener listener = new TemperatureListener();
 
-		ISpinnerRidget fahrenheitSpinner = (ISpinnerRidget) getRidget("fahrenheitSpinner"); //$NON-NLS-1$
+		final ISpinnerRidget fahrenheitSpinner = (ISpinnerRidget) getRidget("fahrenheitSpinner"); //$NON-NLS-1$
 		fahrenheitSpinner.setIncrement(1);
 		fahrenheitSpinner.setMaximum(122);
 		fahrenheitSpinner.setMinimum(32);
@@ -52,7 +52,7 @@ public class TraverseSubModuleController extends SubModuleController {
 		fahrenheitSpinner.updateFromModel();
 		fahrenheitSpinner.addListener(listener);
 
-		ITraverseRidget celsiusScale = (ITraverseRidget) getRidget("celsiusScale"); //$NON-NLS-1$
+		final ITraverseRidget celsiusScale = (ITraverseRidget) getRidget("celsiusScale"); //$NON-NLS-1$
 		celsiusScale.setIncrement(1);
 		celsiusScale.setMaximum(50);
 		celsiusScale.setMinimum(0);
@@ -60,7 +60,7 @@ public class TraverseSubModuleController extends SubModuleController {
 		celsiusScale.updateFromModel();
 		celsiusScale.addListener(listener);
 
-		ITraverseRidget kelvinProgressBar = (ITraverseRidget) getRidget("kelvinProgressBar"); //$NON-NLS-1$
+		final ITraverseRidget kelvinProgressBar = (ITraverseRidget) getRidget("kelvinProgressBar"); //$NON-NLS-1$
 		kelvinProgressBar.setIncrement(1);
 		kelvinProgressBar.setMaximum(323);
 		kelvinProgressBar.setMinimum(273);
@@ -82,15 +82,15 @@ public class TraverseSubModuleController extends SubModuleController {
 		private int degreeCelsius;
 		private int degreeFahrenheit;
 
-		public void setDegreeCelsius(int degreeCelsius) {
+		public void setDegreeCelsius(final int degreeCelsius) {
 			setDegreeCelsius(degreeCelsius, true);
 		}
 
-		private void setDegreeCelsius(int degreeCelsius, boolean updateKelvin) {
-			int oldValue = this.degreeCelsius;
+		private void setDegreeCelsius(final int degreeCelsius, final boolean updateKelvin) {
+			final int oldValue = this.degreeCelsius;
 			this.degreeCelsius = degreeCelsius;
 			if (updateKelvin) {
-				float k = degreeCelsius + 273.15f;
+				final float k = degreeCelsius + 273.15f;
 				setKelvin(k);
 				updateFahrenheit();
 			}
@@ -101,16 +101,16 @@ public class TraverseSubModuleController extends SubModuleController {
 			return degreeCelsius;
 		}
 
-		public void setDegreeFahrenheit(int degreeFahrenheit) {
+		public void setDegreeFahrenheit(final int degreeFahrenheit) {
 			setDegreeFahrenheit(degreeFahrenheit, true);
 		}
 
-		private void setDegreeFahrenheit(int degreeFahrenheit, boolean updateKelvin) {
-			int oldValue = this.degreeFahrenheit;
+		private void setDegreeFahrenheit(final int degreeFahrenheit, final boolean updateKelvin) {
+			final int oldValue = this.degreeFahrenheit;
 			this.degreeFahrenheit = degreeFahrenheit;
 			if (updateKelvin) {
-				float c = (degreeFahrenheit - 32) / 1.8f;
-				float k = c + 273.15f;
+				final float c = (degreeFahrenheit - 32) / 1.8f;
+				final float k = c + 273.15f;
 				setKelvin(k);
 				updateCelsius();
 			}
@@ -121,7 +121,7 @@ public class TraverseSubModuleController extends SubModuleController {
 			return degreeFahrenheit;
 		}
 
-		public void setKelvin(float kelvin) {
+		public void setKelvin(final float kelvin) {
 			this.kelvin = kelvin;
 			System.out.println("TraverseSubModuleController.Temperature.setKelvin() " + kelvin);
 		}
@@ -131,13 +131,13 @@ public class TraverseSubModuleController extends SubModuleController {
 		}
 
 		private void updateCelsius() {
-			int c = Math.round(getKelvin() - 273.15f);
+			final int c = Math.round(getKelvin() - 273.15f);
 			setDegreeCelsius(c, false);
 		}
 
 		private void updateFahrenheit() {
-			int c = Math.round(getKelvin() - 273.15f);
-			int f = Math.round(c * 1.8f + 32);
+			final int c = Math.round(getKelvin() - 273.15f);
+			final int f = Math.round(c * 1.8f + 32);
 			setDegreeFahrenheit(f, false);
 		}
 

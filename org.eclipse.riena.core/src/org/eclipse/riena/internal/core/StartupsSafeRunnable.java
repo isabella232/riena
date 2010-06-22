@@ -44,7 +44,7 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 	 */
 	public void handleException(final Throwable exception) {
 
-		IExceptionHandlerManager manager = Service.get(IExceptionHandlerManager.class);
+		final IExceptionHandlerManager manager = Service.get(IExceptionHandlerManager.class);
 		if (manager != null) {
 			manager.handleException(exception, "Error activating bundels.", LOGGER); //$NON-NLS-1$
 			return;
@@ -62,13 +62,13 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 			return;
 		}
 		// handle required bundles first!
-		for (IRienaStartupExtension startup : startups) {
-			String[] bundleNames = PropertiesUtils.asArray(startup.getRequiredBundles());
-			for (String bundleName : bundleNames) {
+		for (final IRienaStartupExtension startup : startups) {
+			final String[] bundleNames = PropertiesUtils.asArray(startup.getRequiredBundles());
+			for (final String bundleName : bundleNames) {
 				if (StringUtils.isEmpty(bundleName)) {
 					continue;
 				}
-				Bundle bundle = Platform.getBundle(bundleName);
+				final Bundle bundle = Platform.getBundle(bundleName);
 				if (bundle != null) {
 					if (bundle.getState() != Bundle.ACTIVE) {
 						start(bundle);
@@ -83,16 +83,16 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 			}
 		}
 		// handle bundle ´self´ activation either by creating and executing the ´load class´ or by activating the bundle 
-		for (IRienaStartupExtension startup : startups) {
-			Bundle bundle = startup.getContributingBundle();
-			String runClassName = startup.getRunClassName();
+		for (final IRienaStartupExtension startup : startups) {
+			final Bundle bundle = startup.getContributingBundle();
+			final String runClassName = startup.getRunClassName();
 			if (StringUtils.isGiven(runClassName)) {
 				// try to load and execute the ´starter´ class
 				try {
 					startup.createRunner().run();
 					LOGGER.log(LogService.LOG_INFO, "Startup: '" + bundle.getSymbolicName() + "' with starter '" //$NON-NLS-1$ //$NON-NLS-2$
 							+ runClassName + "' succesful."); //$NON-NLS-1$
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					LOGGER.log(LogService.LOG_ERROR, "Startup: '" + bundle.getSymbolicName() + "' with starter '" //$NON-NLS-1$ //$NON-NLS-2$
 							+ runClassName + "' failed.", e); //$NON-NLS-1$
 				}
@@ -107,11 +107,11 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 				try {
 					bundle.start();
 					LOGGER.log(LogService.LOG_INFO, "Startup <<lazy>>: '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
-				} catch (BundleException be) {
+				} catch (final BundleException be) {
 					LOGGER.log(LogService.LOG_WARNING, "Startup <<lazy>>: '" + bundle.getSymbolicName() //$NON-NLS-1$
 							+ "' failed but may succeed (bundle state is in transition):\n\t\t" + be.getMessage() //$NON-NLS-1$
 							+ (be.getCause() != null ? " cause: " + be.getCause() : "")); //$NON-NLS-1$ //$NON-NLS-2$
-				} catch (RuntimeException rte) {
+				} catch (final RuntimeException rte) {
 					LOGGER.log(LogService.LOG_ERROR, "Startup <<lazy>>:: '" + bundle.getSymbolicName() //$NON-NLS-1$
 							+ "' failed with exception.", rte); //$NON-NLS-1$
 				}
@@ -125,14 +125,14 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 
 	}
 
-	private void start(Bundle bundle) throws BundleException {
+	private void start(final Bundle bundle) throws BundleException {
 		if (bundle == null) {
 			return;
 		}
 		try {
 			bundle.start();
 			LOGGER.log(LogService.LOG_INFO, "Startup: '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
-		} catch (RuntimeException rte) {
+		} catch (final RuntimeException rte) {
 			LOGGER.log(LogService.LOG_ERROR, "Startup: '" + bundle.getSymbolicName() //$NON-NLS-1$
 					+ "' failed with exception.", rte); //$NON-NLS-1$
 		}
@@ -140,7 +140,7 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 
 	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´startups´ is too expensive")
 	@InjectExtension
-	public void update(IRienaStartupExtension[] startups) {
+	public void update(final IRienaStartupExtension[] startups) {
 		this.startups = startups;
 	}
 

@@ -38,8 +38,8 @@ import org.eclipse.riena.core.wire.Wire;
  * 
  * Each {@code ServiceAccessor} will attempt to wire itself. See {@code Wire}.<br>
  * If a <code>accessor</code> needs specific handling of bound and unbound
- * services it can define a {@code IBindHook} and pass it to the to the {@code
- * ServiceAccessor} super class via its constructor.
+ * services it can define a {@code IBindHook} and pass it to the to the
+ * {@code ServiceAccessor} super class via its constructor.
  */
 @Deprecated
 public abstract class ServiceAccessor<S> {
@@ -49,11 +49,11 @@ public abstract class ServiceAccessor<S> {
 	private final IBindHook<S> bindHook;
 	private boolean initialized;
 
-	public ServiceAccessor(BundleContext context) {
+	public ServiceAccessor(final BundleContext context) {
 		this(context, null);
 	}
 
-	public ServiceAccessor(BundleContext context, IBindHook<S> bindHook) {
+	public ServiceAccessor(final BundleContext context, final IBindHook<S> bindHook) {
 		this.context = context;
 		this.bindHook = bindHook;
 	}

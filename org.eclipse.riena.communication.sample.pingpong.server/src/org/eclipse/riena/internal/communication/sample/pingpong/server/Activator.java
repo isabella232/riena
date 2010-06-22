@@ -30,10 +30,10 @@ public class Activator implements BundleActivator {
 
 	// private ServiceRegistration pingPongRegXFire;
 
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		// create hessian service
-		PingPong pingPong = new PingPong();
-		Hashtable<String, String> properties = new Hashtable<String, String>(3);
+		final PingPong pingPong = new PingPong();
+		final Hashtable<String, String> properties = new Hashtable<String, String>(3);
 
 		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "hessian"); //$NON-NLS-1$
@@ -59,7 +59,7 @@ public class Activator implements BundleActivator {
 
 	}
 
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		pingPongRegHessian.unregister();
 		pingPongRegHessian = null;
 	}

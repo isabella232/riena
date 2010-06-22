@@ -32,7 +32,7 @@ public class LayoutSubModuleView extends SubModuleView {
 	public static final String ID = LayoutSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(20, 5).applyTo(parent);
 		addUIControl(parent, "parent"); //$NON-NLS-1$
@@ -41,29 +41,29 @@ public class LayoutSubModuleView extends SubModuleView {
 		createButtonBar(parent);
 	}
 
-	private void createDetails(Composite details) {
+	private void createDetails(final Composite details) {
 		UIControlsFactory.createLabel(details, "First Name:", "lblFirst"); //$NON-NLS-1$ //$NON-NLS-2$
-		Text txtFirst = UIControlsFactory.createText(details, SWT.BORDER, "txtFirst"); //$NON-NLS-1$
+		final Text txtFirst = UIControlsFactory.createText(details, SWT.BORDER, "txtFirst"); //$NON-NLS-1$
 		txtFirst.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		UIControlsFactory.createLabel(details, "Last Name:", "lblLast"); //$NON-NLS-1$ //$NON-NLS-2$
-		Text txtLast = UIControlsFactory.createText(details, SWT.BORDER, "txtLast"); //$NON-NLS-1$
+		final Text txtLast = UIControlsFactory.createText(details, SWT.BORDER, "txtLast"); //$NON-NLS-1$
 		txtLast.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
 		UIControlsFactory.createLabel(details, "Gender:", "lblGender"); //$NON-NLS-1$ //$NON-NLS-2$
-		ChoiceComposite ccGender = new ChoiceComposite(details, SWT.NONE, false);
+		final ChoiceComposite ccGender = new ChoiceComposite(details, SWT.NONE, false);
 		ccGender.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		ccGender.setOrientation(SWT.HORIZONTAL);
 		addUIControl(ccGender, "ccGender"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(details, "Pets:", "lblPets"); //$NON-NLS-1$ //$NON-NLS-2$
-		ChoiceComposite ccPets = new ChoiceComposite(details, SWT.NONE, true);
+		final ChoiceComposite ccPets = new ChoiceComposite(details, SWT.NONE, true);
 		ccPets.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		ccPets.setOrientation(SWT.HORIZONTAL);
 		addUIControl(ccPets, "ccPets"); //$NON-NLS-1$
 	}
 
-	private void createButtonBar(Composite parent) {
+	private void createButtonBar(final Composite parent) {
 		UIControlsFactory.createButton(parent, "More Text", "btnMore"); //$NON-NLS-1$ //$NON-NLS-2$
 		UIControlsFactory.createButton(parent, "Less Text", "btnLess"); //$NON-NLS-1$ //$NON-NLS-2$
 	}

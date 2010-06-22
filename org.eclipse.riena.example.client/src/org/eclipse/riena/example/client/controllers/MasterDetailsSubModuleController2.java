@@ -50,26 +50,26 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 		private final String[] GENDER = { Person.FEMALE, Person.MALE };
 		private final Person workingCopy = createWorkingCopy();
 
-		public void configureRidgets(IRidgetContainer container) {
-			ITextRidget txtFirst = container.getRidget(ITextRidget.class, "first"); //$NON-NLS-1$
+		public void configureRidgets(final IRidgetContainer container) {
+			final ITextRidget txtFirst = container.getRidget(ITextRidget.class, "first"); //$NON-NLS-1$
 			txtFirst.setMandatory(true);
 			txtFirst.setDirectWriting(true);
 			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
-			ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
+			final ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
 			txtLast.setDirectWriting(true);
 			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
 			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 
-			ISingleChoiceRidget gender = container.getRidget(ISingleChoiceRidget.class, "gender"); //$NON-NLS-1$
+			final ISingleChoiceRidget gender = container.getRidget(ISingleChoiceRidget.class, "gender"); //$NON-NLS-1$
 			if (gender != null) {
 				gender.bindToModel(Arrays.asList(GENDER), (List<String>) null, workingCopy, Person.PROPERTY_GENDER);
 				gender.updateFromModel();
 			}
 
-			IMultipleChoiceRidget pets = container.getRidget(IMultipleChoiceRidget.class, "pets"); //$NON-NLS-1$
+			final IMultipleChoiceRidget pets = container.getRidget(IMultipleChoiceRidget.class, "pets"); //$NON-NLS-1$
 			if (pets != null) {
 				pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, workingCopy,
 						Person.PROPERTY_PETS);
@@ -82,8 +82,8 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 		}
 
 		public Person copyBean(final Object source, final Object target) {
-			Person from = source != null ? (Person) source : createWorkingCopy();
-			Person to = target != null ? (Person) target : createWorkingCopy();
+			final Person from = source != null ? (Person) source : createWorkingCopy();
+			final Person to = target != null ? (Person) target : createWorkingCopy();
 			to.setFirstname(from.getFirstname());
 			to.setLastname(from.getLastname());
 			to.setGender(from.getGender());
@@ -96,17 +96,18 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 		}
 
 		@Override
-		public boolean isChanged(Object source, Object target) {
-			Person p1 = (Person) source;
-			Person p2 = (Person) target;
-			boolean equals = p1.getFirstname().equals(p2.getFirstname()) && p1.getLastname().equals(p2.getLastname())
-					&& p1.getGender().equals(p2.getGender()) && p1.getPets().equals(p2.getPets());
+		public boolean isChanged(final Object source, final Object target) {
+			final Person p1 = (Person) source;
+			final Person p2 = (Person) target;
+			final boolean equals = p1.getFirstname().equals(p2.getFirstname())
+					&& p1.getLastname().equals(p2.getLastname()) && p1.getGender().equals(p2.getGender())
+					&& p1.getPets().equals(p2.getPets());
 			return !equals;
 		}
 
 		@Override
-		public String isValid(IRidgetContainer container) {
-			ITextRidget txtLast = (ITextRidget) container.getRidget("last"); //$NON-NLS-1$
+		public String isValid(final IRidgetContainer container) {
+			final ITextRidget txtLast = (ITextRidget) container.getRidget("last"); //$NON-NLS-1$
 			if (txtLast.isErrorMarked()) {
 				return "'Last Name' is not valid."; //$NON-NLS-1$
 			}
@@ -114,33 +115,33 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 		}
 
 		@Override
-		public void itemCreated(Object item) {
+		public void itemCreated(final Object item) {
 			lblStatus.setText("New item created"); //$NON-NLS-1$
 		}
 
 		@Override
-		public void itemRemoved(Object item) {
+		public void itemRemoved(final Object item) {
 			lblStatus.setText("Item removed: " + item); //$NON-NLS-1$
 		}
 
 		@Override
-		public void itemApplied(Object item) {
+		public void itemApplied(final Object item) {
 			lblStatus.setText("Item changed: " + item); //$NON-NLS-1$
 		}
 
 		@Override
-		public void itemSelected(Object item) {
+		public void itemSelected(final Object item) {
 			lblStatus.setText("Item selected: " + String.valueOf(item)); //$NON-NLS-1$
 		}
 	}
 
-	private List<Person> input = PersonFactory.createPersonList();
+	private final List<Person> input = PersonFactory.createPersonList();
 	private ILabelRidget lblStatus;
 
 	@Override
 	public void configureRidgets() {
-		String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
-		String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 		final IMasterDetailsRidget master2 = getRidget(IMasterDetailsRidget.class, "master2"); //$NON-NLS-1$
 		master2.setDelegate(new PersonDelegate());
@@ -149,21 +150,22 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 
 		lblStatus = getRidget(ILabelRidget.class, "lblStatus"); //$NON-NLS-1$
 
-		IActionRidget actionApply = master2.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
+		final IActionRidget actionApply = master2.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
 		actionApply.setIcon("apply_h.png"); //$NON-NLS-1$
 
-		IActionRidget actionNew = master2.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_NEW);
+		final IActionRidget actionNew = master2.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_NEW);
 		actionNew.setText(""); //$NON-NLS-1$
 		actionNew.setIcon("new_h.png"); //$NON-NLS-1$
 
-		IActionRidget actionRemove = master2.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_REMOVE);
+		final IActionRidget actionRemove = master2
+				.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_REMOVE);
 		actionRemove.setText(""); //$NON-NLS-1$
 		actionRemove.setIcon("remove_h.png"); //$NON-NLS-1$
 
 		final IToggleButtonRidget chkNoErrors = getRidget(IToggleButtonRidget.class, "chkNoErrors"); //$NON-NLS-1$
 		chkNoErrors.addListener(new IActionListener() {
 			public void callback() {
-				boolean noErrors = chkNoErrors.isSelected();
+				final boolean noErrors = chkNoErrors.isSelected();
 				master2.setApplyRequiresNoErrors(noErrors);
 			}
 		});
@@ -172,7 +174,7 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 		final IToggleButtonRidget chkNoMandatories = getRidget(IToggleButtonRidget.class, "chkNoMandatories"); //$NON-NLS-1$
 		chkNoMandatories.addListener(new IActionListener() {
 			public void callback() {
-				boolean noMandatories = chkNoMandatories.isSelected();
+				final boolean noMandatories = chkNoMandatories.isSelected();
 				master2.setApplyRequiresNoMandatories(noMandatories);
 			}
 		});

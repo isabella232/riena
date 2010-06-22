@@ -42,7 +42,7 @@ public class BlockingSubModuleController extends SubModuleController {
 		super();
 	}
 
-	public BlockingSubModuleController(ISubModuleNode navigationNode) {
+	public BlockingSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -50,7 +50,7 @@ public class BlockingSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 		super.configureRidgets();
 
-		IActionRidget blockSubModule = (IActionRidget) getRidget(RIDGET_BLOCK_SUB_MODULE);
+		final IActionRidget blockSubModule = (IActionRidget) getRidget(RIDGET_BLOCK_SUB_MODULE);
 		blockSubModule.setText("Block current SubModule = Blocking"); //$NON-NLS-1$
 		blockSubModule.addListener(new IActionListener() {
 			public void callback() {
@@ -58,7 +58,7 @@ public class BlockingSubModuleController extends SubModuleController {
 			}
 		});
 
-		IActionRidget blockModule = (IActionRidget) getRidget(RIDGET_BLOCK_MODULE);
+		final IActionRidget blockModule = (IActionRidget) getRidget(RIDGET_BLOCK_MODULE);
 		blockModule.setText("Block current Module = Playground"); //$NON-NLS-1$
 		blockModule.addListener(new IActionListener() {
 			public void callback() {
@@ -66,7 +66,7 @@ public class BlockingSubModuleController extends SubModuleController {
 			}
 		});
 
-		IActionRidget blockSubApp = (IActionRidget) getRidget(RIDGET_BLOCK_SUB_APP);
+		final IActionRidget blockSubApp = (IActionRidget) getRidget(RIDGET_BLOCK_SUB_APP);
 		blockSubApp.setText("Block current SubApplication = Playground Tab"); //$NON-NLS-1$
 		blockSubApp.addListener(new IActionListener() {
 			public void callback() {
@@ -74,11 +74,11 @@ public class BlockingSubModuleController extends SubModuleController {
 			}
 		});
 
-		IActionRidget disableModule = (IActionRidget) getRidget(RIDGET_DISABLE_MODULE);
+		final IActionRidget disableModule = (IActionRidget) getRidget(RIDGET_DISABLE_MODULE);
 		disableModule.setText("Disable current Module = Playground"); //$NON-NLS-1$
 		disableModule.addListener(new IActionListener() {
 			public void callback() {
-				INavigationNode<?> moduleNode = getModuleNode();
+				final INavigationNode<?> moduleNode = getModuleNode();
 				disableNode(moduleNode);
 			}
 		});
@@ -89,14 +89,14 @@ public class BlockingSubModuleController extends SubModuleController {
 	// helping methods
 	//////////////////
 
-	private void blockNode(INavigationNode<?> node) {
-		BlockerUIProcess process = new BlockerUIProcess(node, status);
+	private void blockNode(final INavigationNode<?> node) {
+		final BlockerUIProcess process = new BlockerUIProcess(node, status);
 		process.setBlock(true);
 		process.start();
 	}
 
-	private void disableNode(INavigationNode<?> node) {
-		BlockerUIProcess process = new BlockerUIProcess(node, status);
+	private void disableNode(final INavigationNode<?> node) {
+		final BlockerUIProcess process = new BlockerUIProcess(node, status);
 		process.setDisable(true);
 		process.start();
 	}
@@ -122,22 +122,22 @@ public class BlockingSubModuleController extends SubModuleController {
 		private boolean disable;
 		private boolean block;
 
-		public BlockerUIProcess(INavigationNode<?> node, ILabelRidget labelRidget) {
+		public BlockerUIProcess(final INavigationNode<?> node, final ILabelRidget labelRidget) {
 			super("block", false); //$NON-NLS-1$
 			this.node = node;
 			this.labelRidget = labelRidget;
 		}
 
-		public void setBlock(boolean doBlock) {
+		public void setBlock(final boolean doBlock) {
 			this.block = doBlock;
 		}
 
-		public void setDisable(boolean doDisable) {
+		public void setDisable(final boolean doDisable) {
 			this.disable = doDisable;
 		}
 
 		@Override
-		public void initialUpdateUI(int totalWork) {
+		public void initialUpdateUI(final int totalWork) {
 			labelRidget.setText(String.format("Changing '%s' for 10s", node.getLabel())); //$NON-NLS-1$
 			if (block) {
 				node.setBlocked(true);
@@ -160,10 +160,10 @@ public class BlockingSubModuleController extends SubModuleController {
 		}
 
 		@Override
-		public boolean runJob(IProgressMonitor monitor) {
+		public boolean runJob(final IProgressMonitor monitor) {
 			try {
 				Thread.sleep(10000);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				return false;
 			}
 			return true;

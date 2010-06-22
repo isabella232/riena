@@ -23,7 +23,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class ExceptionTestView extends SubModuleView {
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setLayout(new GridLayout(1, true));
 
 		UIControlsFactory.createLabel(parent, "Testing various Exceptions"); //$NON-NLS-1$

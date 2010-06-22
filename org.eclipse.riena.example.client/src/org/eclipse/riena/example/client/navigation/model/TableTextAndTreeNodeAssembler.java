@@ -47,11 +47,12 @@ public class TableTextAndTreeNodeAssembler extends AbstractNavigationAssembler {
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public IModuleGroupNode[] buildNode(NavigationNodeId presentationId, NavigationArgument navigationArgument) {
+	public IModuleGroupNode[] buildNode(final NavigationNodeId presentationId,
+			final NavigationArgument navigationArgument) {
 
-		IModuleGroupNode node = new ModuleGroupNode(new NavigationNodeId(
+		final IModuleGroupNode node = new ModuleGroupNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigate.tableTextAndTree")); //$NON-NLS-1$
-		IModuleNode module = new ModuleNode(null, "Table,Text&Tree"); //$NON-NLS-1$
+		final IModuleNode module = new ModuleNode(null, "Table,Text&Tree"); //$NON-NLS-1$
 		node.addChild(module);
 		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.table"), "Table"); //$NON-NLS-1$ //$NON-NLS-2$
 		WorkareaManager.getInstance().registerDefinition(subModule, TableSubModuleController.class,
@@ -71,7 +72,7 @@ public class TableTextAndTreeNodeAssembler extends AbstractNavigationAssembler {
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
 	 */
-	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
 
 		if (knownTargetIds == null) {
 			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigate.tableTextAndTree", //$NON-NLS-1$

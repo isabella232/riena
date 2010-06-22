@@ -24,7 +24,7 @@ public class DummyHandler extends AbstractHandler {
 	/**
 	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
 	 */
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
 
 		MessageDialog.openInformation(HandlerUtil.getActiveShell(event), getTitle(), getMessage());
 

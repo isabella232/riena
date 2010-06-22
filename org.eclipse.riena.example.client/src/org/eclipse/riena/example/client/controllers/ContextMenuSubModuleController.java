@@ -32,7 +32,7 @@ public class ContextMenuSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public ContextMenuSubModuleController(ISubModuleNode navigationNode) {
+	public ContextMenuSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -75,7 +75,7 @@ public class ContextMenuSubModuleController extends SubModuleController {
 		final IToggleButtonRidget markerButton = (IToggleButtonRidget) getRidget("markerButton"); //$NON-NLS-1$
 		markerButton.addListener(new IActionListener() {
 			public void callback() {
-				boolean state = markerButton.isSelected();
+				final boolean state = markerButton.isSelected();
 				textClear.setVisible(!state);
 			}
 		});
@@ -83,15 +83,15 @@ public class ContextMenuSubModuleController extends SubModuleController {
 		final WritableList personList = new WritableList(PersonFactory.createPersonList(), Person.class);
 		final ITableRidget table = (ITableRidget) getRidget("table"); //$NON-NLS-1$
 
-		String[] columnPropertyNames = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME };
-		String[] columnHeaders = { "FirstName", "LastName" }; //$NON-NLS-1$ //$NON-NLS-2$ 
+		final String[] columnPropertyNames = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME };
+		final String[] columnHeaders = { "FirstName", "LastName" }; //$NON-NLS-1$ //$NON-NLS-2$ 
 		table.bindToModel(new WritableList(personList, Person.class), Person.class, columnPropertyNames, columnHeaders);
 		table.updateFromModel();
 
-		IMenuItemRidget tableRemoveSelected = (IMenuItemRidget) getRidget("tableRemove"); //$NON-NLS-1$
+		final IMenuItemRidget tableRemoveSelected = (IMenuItemRidget) getRidget("tableRemove"); //$NON-NLS-1$
 		tableRemoveSelected.addListener(new IActionListener() {
 			public void callback() {
-				int sel = table.getSelectionIndex();
+				final int sel = table.getSelectionIndex();
 				if (sel > -1) {
 					personList.remove(sel);
 					table.updateFromModel();

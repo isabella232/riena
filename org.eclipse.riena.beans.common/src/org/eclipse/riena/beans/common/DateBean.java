@@ -35,7 +35,7 @@ public class DateBean extends AbstractBean {
 	 * 
 	 * @param value
 	 */
-	public DateBean(Date value) {
+	public DateBean(final Date value) {
 		if (value != null) {
 			this.date = (Date) value.clone();
 		} else {
@@ -47,11 +47,11 @@ public class DateBean extends AbstractBean {
 	/**
 	 * Sets the value of this bean
 	 * 
-	 * @param value -
-	 *            value to set
+	 * @param value
+	 *            - value to set
 	 */
-	public void setValue(Date value) {
-		Object old = this.date;
+	public void setValue(final Date value) {
+		final Object old = this.date;
 		if (value != null) {
 			this.date = (Date) value.clone();
 		} else {

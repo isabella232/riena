@@ -28,7 +28,7 @@ public final class StringUtils {
 	 *         null (if input is null), or "" if input is ""
 	 * 
 	 */
-	public static String capitalize(String input) {
+	public static String capitalize(final String input) {
 		String result = input;
 		if (input != null && input.length() > 0) {
 			result = input.substring(0, 1).toUpperCase();
@@ -47,7 +47,7 @@ public final class StringUtils {
 	 * @param ch
 	 *            the character to look for
 	 */
-	public static int count(final String string, char ch) {
+	public static int count(final String string, final char ch) {
 		int result = 0;
 		if (string != null) {
 			for (int i = 0; i < string.length(); i++) {

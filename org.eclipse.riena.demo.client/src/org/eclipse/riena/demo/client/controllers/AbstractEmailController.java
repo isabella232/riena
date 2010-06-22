@@ -40,22 +40,22 @@ public class AbstractEmailController extends SubModuleController {
 	protected Email selectedEmail;
 
 	@InjectService(useRanking = true)
-	public void bind(IEmailService mailDemoService) {
+	public void bind(final IEmailService mailDemoService) {
 		this.mailDemoService = mailDemoService;
 	}
 
-	public void unbind(IEmailService mailDemoService) {
+	public void unbind(final IEmailService mailDemoService) {
 		this.mailDemoService = null;
 	}
 
 	private ICustomerService customerDemoService;
 
 	@InjectService(useRanking = true)
-	public void bind(ICustomerService customerDemoService) {
+	public void bind(final ICustomerService customerDemoService) {
 		this.customerDemoService = customerDemoService;
 	}
 
-	public void unbind(ICustomerService customerDemoService) {
+	public void unbind(final ICustomerService customerDemoService) {
 		this.customerDemoService = null;
 	}
 
@@ -77,7 +77,7 @@ public class AbstractEmailController extends SubModuleController {
 		emails.setComparator(3, new TypedComparator<Date>());
 		emails.addPropertyChangeListener(new PropertyChangeListener() {
 
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				if (evt.getPropertyName() == "selection") { //$NON-NLS-1$
 					selectedEmail = (Email) emails.getSelection().get(0);
 					emailSubject.setText(selectedEmail.getEmailSubject());
@@ -95,21 +95,21 @@ public class AbstractEmailController extends SubModuleController {
 		if (getNavigationNode().isJumpTarget()) {
 			final IActionRidget openCustomerAction = (IActionRidget) getRidget("openCustomer");
 			openCustomerAction.setText("Back to Customer");
-			openCustomerAction.addListener(new IActionListener() { //$NON-NLS-1$
-						public void callback() {
-							getNavigationNode().jumpBack();
-							getNavigationNode().getParent().dispose();
-						}
-					});
+			openCustomerAction.addListener(new IActionListener() {
+				public void callback() {
+					getNavigationNode().jumpBack();
+					getNavigationNode().getParent().dispose();
+				}
+			});
 
 		} else {
 
 			((IActionRidget) getRidget("openCustomer")).addListener(new IActionListener() { //$NON-NLS-1$
 						public void callback() {
 							if (selectedEmail != null) {
-								String selectedEmailAddress = openCustomerWithEmailAddress();
+								final String selectedEmailAddress = openCustomerWithEmailAddress();
 								if (selectedEmailAddress != null) {
-									Customer customer = customerDemoService
+									final Customer customer = customerDemoService
 											.findCustomerWithEmailAddress(selectedEmailAddress);
 
 									System.out.println("customer " + customer); //$NON-NLS-1$

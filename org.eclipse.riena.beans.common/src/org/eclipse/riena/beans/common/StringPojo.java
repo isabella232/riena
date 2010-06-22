@@ -26,14 +26,14 @@ public class StringPojo {
 	 * @param value
 	 *            a String
 	 */
-	public StringPojo(String value) {
+	public StringPojo(final String value) {
 		this.value = value;
 	}
 
 	/**
 	 * Sets String stored by this bean.
 	 */
-	public void setValue(String value) {
+	public void setValue(final String value) {
 		this.value = value;
 	}
 

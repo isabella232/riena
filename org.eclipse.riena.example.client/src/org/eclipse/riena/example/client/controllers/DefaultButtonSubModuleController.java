@@ -27,47 +27,47 @@ public class DefaultButtonSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public DefaultButtonSubModuleController(ISubModuleNode navigationNode) {
+	public DefaultButtonSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
 	@Override
 	public void configureRidgets() {
 		// one default button per group
-		ICompositeRidget group1 = getRidget(ICompositeRidget.class, "group1"); //$NON-NLS-1$
-		IActionRidget action1 = getActionRidget("1"); //$NON-NLS-1$
+		final ICompositeRidget group1 = getRidget(ICompositeRidget.class, "group1"); //$NON-NLS-1$
+		final IActionRidget action1 = getActionRidget("1"); //$NON-NLS-1$
 		addDefaultAction(group1, action1);
 
 		// two default buttons per group (one per text field)
-		ITextRidget input2a = getRidget(ITextRidget.class, "input2a"); //$NON-NLS-1$
-		IActionRidget action2a = getActionRidget("2a"); //$NON-NLS-1$
+		final ITextRidget input2a = getRidget(ITextRidget.class, "input2a"); //$NON-NLS-1$
+		final IActionRidget action2a = getActionRidget("2a"); //$NON-NLS-1$
 		addDefaultAction(input2a, action2a);
 
-		ITextRidget input2b = getRidget(ITextRidget.class, "input2b"); //$NON-NLS-1$
-		IActionRidget action2b = getActionRidget("2b"); //$NON-NLS-1$
+		final ITextRidget input2b = getRidget(ITextRidget.class, "input2b"); //$NON-NLS-1$
+		final IActionRidget action2b = getActionRidget("2b"); //$NON-NLS-1$
 		addDefaultAction(input2b, action2b);
 
 		// nested default buttons;
-		ICompositeRidget group3a = getRidget(ICompositeRidget.class, "group3a"); //$NON-NLS-1$
-		IActionRidget action3a = getActionRidget("3a"); //$NON-NLS-1$
+		final ICompositeRidget group3a = getRidget(ICompositeRidget.class, "group3a"); //$NON-NLS-1$
+		final IActionRidget action3a = getActionRidget("3a"); //$NON-NLS-1$
 		addDefaultAction(group3a, action3a);
 
-		ICompositeRidget group3b = getRidget(ICompositeRidget.class, "group3b"); //$NON-NLS-1$
-		IActionRidget action3b = getActionRidget("3b"); //$NON-NLS-1$
+		final ICompositeRidget group3b = getRidget(ICompositeRidget.class, "group3b"); //$NON-NLS-1$
+		final IActionRidget action3b = getActionRidget("3b"); //$NON-NLS-1$
 		addDefaultAction(group3b, action3b);
 	}
 
 	// helping methods
 	//////////////////
 
-	private ITextRidget getInputRidget(String id) {
-		ITextRidget result = getRidget(ITextRidget.class, id);
+	private ITextRidget getInputRidget(final String id) {
+		final ITextRidget result = getRidget(ITextRidget.class, id);
 		result.setText(id);
 		return result;
 	}
 
-	private ITextRidget getOutputRidget(String id) {
-		ITextRidget result = getRidget(ITextRidget.class, id);
+	private ITextRidget getOutputRidget(final String id) {
+		final ITextRidget result = getRidget(ITextRidget.class, id);
 		result.setOutputOnly(true);
 		return result;
 	}
@@ -75,7 +75,7 @@ public class DefaultButtonSubModuleController extends SubModuleController {
 	private IActionRidget getActionRidget(final String id) {
 		final ITextRidget input = getInputRidget("input" + id); //$NON-NLS-1$
 		final ITextRidget output = getOutputRidget("output" + id); //$NON-NLS-1$
-		IActionRidget result = getRidget(IActionRidget.class, "button" + id); //$NON-NLS-1$
+		final IActionRidget result = getRidget(IActionRidget.class, "button" + id); //$NON-NLS-1$
 
 		result.addListener(new IActionListener() {
 			public void callback() {

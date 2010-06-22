@@ -17,16 +17,16 @@ package org.eclipse.riena.beans.common;
  */
 public final class SuperHero {
 
-	private String pseudonym;
-	private String name;
-	private Integer appearance;
+	private final String pseudonym;
+	private final String name;
+	private final Integer appearance;
 	private boolean active;
 
-	public SuperHero(String pseudonym, String name, int appearance) {
+	public SuperHero(final String pseudonym, final String name, final int appearance) {
 		this(pseudonym, name, appearance, true);
 	}
 
-	public SuperHero(String pseudonym, String name, int appearance, boolean active) {
+	public SuperHero(final String pseudonym, final String name, final int appearance, final boolean active) {
 		this.pseudonym = pseudonym;
 		this.name = name;
 		this.appearance = appearance;
@@ -49,7 +49,7 @@ public final class SuperHero {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(final boolean active) {
 		this.active = active;
 	}
 

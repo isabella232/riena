@@ -28,7 +28,7 @@ public class NoControllerSubModuleView extends SubModuleView {
 	public static final String ID = NoControllerSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		parent.setLayout(new GridLayout(1, false));
 

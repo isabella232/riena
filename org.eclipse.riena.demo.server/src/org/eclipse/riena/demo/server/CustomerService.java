@@ -30,12 +30,12 @@ public class CustomerService implements ICustomerService {
 		System.out.println("customer service started"); //$NON-NLS-1$
 	}
 
-	public void bind(ICustomerRepository repository) {
+	public void bind(final ICustomerRepository repository) {
 		System.out.println("customer service:repository bound"); //$NON-NLS-1$
 		this.repository = repository;
 	}
 
-	public void unbind(ICustomerRepository repository) {
+	public void unbind(final ICustomerRepository repository) {
 		System.out.println("customer service:repository unbound"); //$NON-NLS-1$
 		this.repository = null;
 	}
@@ -48,19 +48,19 @@ public class CustomerService implements ICustomerService {
 	 * 
 	 * 
 	 */
-	public List<Customer> search(String lastName) {
+	public List<Customer> search(final String lastName) {
 		// check parameter
 
 		// perform search
 		return repository.search(lastName);
 	}
 
-	public boolean store(Customer customer) {
+	public boolean store(final Customer customer) {
 		// checkCustomer object
 		try {
 			repository.store(customer);
 			return true;
-		} catch (RuntimeException r) {
+		} catch (final RuntimeException r) {
 			return false;
 		}
 	}
@@ -72,7 +72,7 @@ public class CustomerService implements ICustomerService {
 	 * org.eclipse.riena.demo.common.ICustomerService#searchWithEmailAddress
 	 * (java.lang.String)
 	 */
-	public Customer findCustomerWithEmailAddress(String emailAddress) {
+	public Customer findCustomerWithEmailAddress(final String emailAddress) {
 		// perform search for customer by means of customer's email address
 		return repository.findCustomerWithEmailAddress(emailAddress);
 	}

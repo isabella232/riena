@@ -59,7 +59,7 @@ public class OnePersonSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public OnePersonSubModuleController(ISubModuleNode navigationNode) {
+	public OnePersonSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -105,7 +105,7 @@ public class OnePersonSubModuleController extends SubModuleController {
 			countries.add(Locale.ITALY.getCountry());
 			countries.add(Locale.UK.getCountry());
 			countries.add(Locale.US.getCountry());
-			String defCountry = Locale.getDefault().getCountry();
+			final String defCountry = Locale.getDefault().getCountry();
 			if (!countries.contains(defCountry)) {
 				countries.add(defCountry);
 			}
@@ -159,7 +159,7 @@ public class OnePersonSubModuleController extends SubModuleController {
 		firstName.bindToModel(person, "firstname"); //$NON-NLS-1$
 		birthday.bindToModel(person, "birthday"); //$NON-NLS-1$
 		birthplace.bindToModel(person, "birthplace"); //$NON-NLS-1$
-		List<String> genders = new ArrayList<String>(2);
+		final List<String> genders = new ArrayList<String>(2);
 		genders.add(Person.FEMALE);
 		genders.add(Person.MALE);
 		gender.bindToModel(genders, genders, person, "gender"); //$NON-NLS-1$
@@ -173,7 +173,7 @@ public class OnePersonSubModuleController extends SubModuleController {
 
 		getNavigationNode().addListener(new SubModuleNodeListener() {
 			@Override
-			public void afterActivated(ISubModuleNode source) {
+			public void afterActivated(final ISubModuleNode source) {
 				super.afterActivated(source);
 				jumpBack.setEnabled(getNavigationNode().isJumpTarget());
 			}
@@ -209,8 +209,8 @@ public class OnePersonSubModuleController extends SubModuleController {
 
 		public void callback() {
 
-			ISubModuleNode nextSubModuleNode = (ISubModuleNode) createNextPersonSubModule();
-			IModuleNode parent = (IModuleNode) getNavigationNode().getParent();
+			final ISubModuleNode nextSubModuleNode = (ISubModuleNode) createNextPersonSubModule();
+			final IModuleNode parent = (IModuleNode) getNavigationNode().getParent();
 			parent.addChild(nextSubModuleNode);
 
 		}
@@ -230,7 +230,7 @@ public class OnePersonSubModuleController extends SubModuleController {
 
 	private class NameChangeListener implements PropertyChangeListener {
 
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			if (evt.getPropertyName().equals(Person.PROPERTY_LASTNAME)
 					|| evt.getPropertyName().equals(Person.PROPERTY_FIRSTNAME)) {
 				updateTitle();
@@ -240,11 +240,13 @@ public class OnePersonSubModuleController extends SubModuleController {
 	}
 
 	protected INavigationNode<?> createNextPersonSubModule() {
-		ISubModuleNode nextSubModuleNode = new SubModuleNode(new NavigationNodeId("onePerson", Integer //$NON-NLS-1$
+		final ISubModuleNode nextSubModuleNode = new SubModuleNode(new NavigationNodeId("onePerson", Integer //$NON-NLS-1$
 				.toString(personCounter++)), "nextPersonLabel"); //$NON-NLS-1$
 		nextSubModuleNode.setIcon("person.gif"); //$NON-NLS-1$
-		WorkareaManager.getInstance().registerDefinition(nextSubModuleNode, OnePersonSubModuleController.class,
-				"org.eclipse.riena.example.client.views.OnePersonSubModuleView").setRequiredPreparation(true); //$NON-NLS-1$
+		WorkareaManager
+				.getInstance()
+				.registerDefinition(nextSubModuleNode, OnePersonSubModuleController.class,
+						"org.eclipse.riena.example.client.views.OnePersonSubModuleView").setRequiredPreparation(true); //$NON-NLS-1$
 		return nextSubModuleNode;
 	}
 

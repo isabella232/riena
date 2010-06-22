@@ -49,25 +49,25 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 
 		private final Person workingCopy = createWorkingCopy();
 
-		public void configureRidgets(IRidgetContainer container) {
-			ITextRidget txtFirst = (ITextRidget) container.getRidget("first"); //$NON-NLS-1$
+		public void configureRidgets(final IRidgetContainer container) {
+			final ITextRidget txtFirst = (ITextRidget) container.getRidget("first"); //$NON-NLS-1$
 			txtFirst.setMandatory(true);
 			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
-			ITextRidget txtLast = (ITextRidget) container.getRidget("last"); //$NON-NLS-1$
+			final ITextRidget txtLast = (ITextRidget) container.getRidget("last"); //$NON-NLS-1$
 			txtLast.setMandatory(true);
 			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
 			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 
-			ISingleChoiceRidget gender = (ISingleChoiceRidget) container.getRidget("gender"); //$NON-NLS-1$
+			final ISingleChoiceRidget gender = (ISingleChoiceRidget) container.getRidget("gender"); //$NON-NLS-1$
 			if (gender != null) {
 				gender.bindToModel(Arrays.asList(GENDER), (List<String>) null, workingCopy, Person.PROPERTY_GENDER);
 				gender.updateFromModel();
 			}
 
-			IMultipleChoiceRidget pets = (IMultipleChoiceRidget) container.getRidget("pets"); //$NON-NLS-1$
+			final IMultipleChoiceRidget pets = (IMultipleChoiceRidget) container.getRidget("pets"); //$NON-NLS-1$
 			if (pets != null) {
 				pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, workingCopy,
 						Person.PROPERTY_PETS);
@@ -80,8 +80,8 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 		}
 
 		public Person copyBean(final Object source, final Object target) {
-			Person from = source != null ? (Person) source : createWorkingCopy();
-			Person to = target != null ? (Person) target : createWorkingCopy();
+			final Person from = source != null ? (Person) source : createWorkingCopy();
+			final Person to = target != null ? (Person) target : createWorkingCopy();
 			to.setFirstname(from.getFirstname());
 			to.setLastname(from.getLastname());
 			to.setGender(from.getGender());
@@ -94,17 +94,18 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 		}
 
 		@Override
-		public boolean isChanged(Object source, Object target) {
-			Person p1 = (Person) source;
-			Person p2 = (Person) target;
-			boolean equals = p1.getFirstname().equals(p2.getFirstname()) && p1.getLastname().equals(p2.getLastname())
-					&& p1.getGender().equals(p2.getGender()) && p1.getPets().equals(p2.getPets());
+		public boolean isChanged(final Object source, final Object target) {
+			final Person p1 = (Person) source;
+			final Person p2 = (Person) target;
+			final boolean equals = p1.getFirstname().equals(p2.getFirstname())
+					&& p1.getLastname().equals(p2.getLastname()) && p1.getGender().equals(p2.getGender())
+					&& p1.getPets().equals(p2.getPets());
 			return !equals;
 		}
 
 		@Override
-		public String isValid(IRidgetContainer container) {
-			ITextRidget txtLast = (ITextRidget) container.getRidget("last"); //$NON-NLS-1$
+		public String isValid(final IRidgetContainer container) {
+			final ITextRidget txtLast = (ITextRidget) container.getRidget("last"); //$NON-NLS-1$
 			if (txtLast.isErrorMarked()) {
 				return "'Last Name' is not valid."; //$NON-NLS-1$
 			}
@@ -112,12 +113,12 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 		}
 	}
 
-	private List<Person> input = PersonFactory.createPersonList();
+	private final List<Person> input = PersonFactory.createPersonList();
 
 	@Override
 	public void configureRidgets() {
-		String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
-		String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 		final IMasterDetailsRidget master = (IMasterDetailsRidget) getRidget("master"); //$NON-NLS-1$
 		if (master != null) {
@@ -125,7 +126,8 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 			master.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
 			master.updateFromModel();
 
-			IActionRidget actionApply = master.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
+			final IActionRidget actionApply = master.getRidget(IActionRidget.class,
+					MasterDetailsComposite.BIND_ID_APPLY);
 			addDefaultAction(master, actionApply);
 		}
 
@@ -138,7 +140,7 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 			master3.setDirectWriting(true); // enable auto apply
 		}
 
-		IActionRidget enableDisableButton = getRidget(IActionRidget.class, "enableDisable"); //$NON-NLS-1$
+		final IActionRidget enableDisableButton = getRidget(IActionRidget.class, "enableDisable"); //$NON-NLS-1$
 		if (enableDisableButton != null) {
 			enableDisableButton.addListener(new IActionListener() {
 				public void callback() {

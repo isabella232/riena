@@ -23,12 +23,12 @@ import org.eclipse.riena.demo.common.Email;
  */
 public class EmailRepository implements IEmailRepository {
 
-	private List<Email> emails = new ArrayList<Email>();
+	private final List<Email> emails = new ArrayList<Email>();
 	private List<String> emailAddresses = new ArrayList<String>();
 	private String myEmailAddress;
 	private List<String> emailSubjects = new ArrayList<String>();
 	private List<String> emailBodies = new ArrayList<String>();
-	private Random random = new Random();
+	private final Random random = new Random();
 
 	/**
 	 * 
@@ -49,14 +49,13 @@ public class EmailRepository implements IEmailRepository {
 		emailSubjects = new ArrayList<String>(Arrays.asList(new String[] { "For your information", "Your request", //$NON-NLS-1$ //$NON-NLS-2$
 				"Your order", "Your monthly Newsletter", "The information to your order", "How to invest properly" })); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
 		emailBodies = new ArrayList<String>(
-				Arrays
-						.asList(new String[] {
-								"This email is just for your information...", //$NON-NLS-1$
-								"Here is the information you asked for...", //$NON-NLS-1$
-								"Hello! Send me please the missing data needed for your order completion.", //$NON-NLS-1$
-								"Here you find the latest highlights...", //$NON-NLS-1$
-								"Specially for you! This email contains the actual data to your account and the new offers.", //$NON-NLS-1$
-								"The following range of products may be of interest for you: insurance police, investment offers.. ", })); //$NON-NLS-1$
+				Arrays.asList(new String[] {
+						"This email is just for your information...", //$NON-NLS-1$
+						"Here is the information you asked for...", //$NON-NLS-1$
+						"Hello! Send me please the missing data needed for your order completion.", //$NON-NLS-1$
+						"Here you find the latest highlights...", //$NON-NLS-1$
+						"Specially for you! This email contains the actual data to your account and the new offers.", //$NON-NLS-1$
+						"The following range of products may be of interest for you: insurance police, investment offers.. ", })); //$NON-NLS-1$
 
 	}
 
@@ -68,13 +67,13 @@ public class EmailRepository implements IEmailRepository {
 
 		for (int i = 0; i < 7; i++) {
 
-			int number = random.nextInt(5); // 0 <= number < 5
+			final int number = random.nextInt(5); // 0 <= number < 5
 			email = new Email();
 			email.setEmailFrom(emailAddresses.get(number));
 			email.setEmailTo(myEmailAddress);
 			email.setEmailSubject(emailSubjects.get(number));
-			long currentTime = System.currentTimeMillis();
-			long emailDate = nextEmailDate(currentTime);
+			final long currentTime = System.currentTimeMillis();
+			final long emailDate = nextEmailDate(currentTime);
 			email.setEmailDate(new Date(emailDate));
 			email.setEmailBody(emailBodies.get(number));
 			email.setDirectoryName("Inbox"); //$NON-NLS-1$
@@ -83,13 +82,13 @@ public class EmailRepository implements IEmailRepository {
 
 		for (int i = 0; i < 2; i++) {
 
-			int number = random.nextInt(6); // 0 <= number < 5
+			final int number = random.nextInt(6); // 0 <= number < 5
 			email = new Email();
 			email.setEmailFrom(myEmailAddress);
 			email.setEmailTo(emailAddresses.get(random.nextInt(5)));
 			email.setEmailSubject(emailSubjects.get(number));
-			long currentTime = System.currentTimeMillis();
-			long emailDate = nextEmailDate(currentTime);
+			final long currentTime = System.currentTimeMillis();
+			final long emailDate = nextEmailDate(currentTime);
 			email.setEmailDate(new Date(emailDate));
 			email.setEmailBody(emailBodies.get(number));
 			email.setDirectoryName("Draft"); //$NON-NLS-1$
@@ -98,13 +97,13 @@ public class EmailRepository implements IEmailRepository {
 
 		for (int i = 0; i < 5; i++) {
 
-			int number = random.nextInt(5); // 0 <= number < 5
+			final int number = random.nextInt(5); // 0 <= number < 5
 			email = new Email();
 			email.setEmailFrom(myEmailAddress);
 			email.setEmailTo(emailAddresses.get(random.nextInt(5)));
 			email.setEmailSubject(emailSubjects.get(number));
-			long currentTime = System.currentTimeMillis();
-			long emailDate = nextEmailDate(currentTime);
+			final long currentTime = System.currentTimeMillis();
+			final long emailDate = nextEmailDate(currentTime);
 			email.setEmailDate(new Date(emailDate));
 			email.setEmailBody(emailBodies.get(number));
 			email.setDirectoryName("Sent"); //$NON-NLS-1$
@@ -113,8 +112,8 @@ public class EmailRepository implements IEmailRepository {
 
 	}
 
-	private long nextEmailDate(long currentTime) {
-		long result = currentTime - random.nextInt(1000000000);
+	private long nextEmailDate(final long currentTime) {
+		final long result = currentTime - random.nextInt(1000000000);
 		return result;
 	}
 
@@ -123,9 +122,9 @@ public class EmailRepository implements IEmailRepository {
 	 * 
 	 * @see org.eclipse.riena.demo.server.IEmailRepository#emailsList()
 	 */
-	public List<Email> emailsList(String directoryName) {
-		ArrayList<Email> result = new ArrayList<Email>();
-		for (Email email : emails) {
+	public List<Email> emailsList(final String directoryName) {
+		final ArrayList<Email> result = new ArrayList<Email>();
+		for (final Email email : emails) {
 			if (email.getDirectoryName().equals(directoryName)) {
 				result.add(email);
 			}
@@ -133,9 +132,9 @@ public class EmailRepository implements IEmailRepository {
 		return result;
 	}
 
-	public List<Email> findEmailsForCustomer(String emailAddress) {
-		ArrayList<Email> result = new ArrayList<Email>();
-		for (Email email : emails) {
+	public List<Email> findEmailsForCustomer(final String emailAddress) {
+		final ArrayList<Email> result = new ArrayList<Email>();
+		for (final Email email : emails) {
 			if (email.getEmailFrom().equals(emailAddress) || email.getEmailTo().equals(emailAddress)) {
 				result.add(email);
 			}
@@ -150,7 +149,7 @@ public class EmailRepository implements IEmailRepository {
 	 * org.eclipse.riena.demo.server.IEmailRepository#store(org.eclipse.riena
 	 * .demo.common.Email)
 	 */
-	public void store(Email email) {
+	public void store(final Email email) {
 		emails.add(email);
 
 	}

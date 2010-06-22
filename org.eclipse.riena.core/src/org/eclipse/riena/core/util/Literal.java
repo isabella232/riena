@@ -30,7 +30,7 @@ public final class Literal {
 	 * @param <V>
 	 * @return
 	 */
-	public static <K, V> LMap<K, V> map(K key, V value) {
+	public static <K, V> LMap<K, V> map(final K key, final V value) {
 		return new LMap<K, V>().map(key, value);
 	}
 
@@ -45,7 +45,7 @@ public final class Literal {
 		 * @param value
 		 * @return
 		 */
-		public LMap<K, V> map(K key, V value) {
+		public LMap<K, V> map(final K key, final V value) {
 			put(key, value);
 			return this;
 		}
@@ -57,7 +57,7 @@ public final class Literal {
 	 * @param <E>
 	 * @return
 	 */
-	public static <E> LList<E> list(E element) {
+	public static <E> LList<E> list(final E element) {
 		return new LList<E>().list(element);
 	}
 
@@ -67,7 +67,7 @@ public final class Literal {
 	public static class LList<E> extends ArrayList<E> {
 		private static final long serialVersionUID = 8392251745423189748L;
 
-		public LList<E> list(E element) {
+		public LList<E> list(final E element) {
 			add(element);
 			return this;
 		}
@@ -79,7 +79,7 @@ public final class Literal {
 	 * @param <E>
 	 * @return
 	 */
-	public static <E> LSet<E> set(E element) {
+	public static <E> LSet<E> set(final E element) {
 		return new LSet<E>().set(element);
 	}
 
@@ -90,7 +90,7 @@ public final class Literal {
 
 		private static final long serialVersionUID = 1829000701379306982L;
 
-		public LSet<E> set(E element) {
+		public LSet<E> set(final E element) {
 			add(element);
 			return this;
 		}

@@ -25,7 +25,7 @@ public class UtilFailure extends Failure {
 	 * @param msg
 	 *            the message.
 	 */
-	public UtilFailure(String msg) {
+	public UtilFailure(final String msg) {
 		super(msg);
 	}
 
@@ -37,7 +37,7 @@ public class UtilFailure extends Failure {
 	 * @param cause
 	 *            the cause.
 	 */
-	public UtilFailure(String msg, Throwable cause) {
+	public UtilFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 }

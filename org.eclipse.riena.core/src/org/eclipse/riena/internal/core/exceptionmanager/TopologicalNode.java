@@ -21,7 +21,7 @@ public class TopologicalNode<T> {
 	private final T element;
 	private int pointToMe;
 
-	public TopologicalNode(String name, String before, T element) {
+	public TopologicalNode(final String name, final String before, final T element) {
 		Assert.isLegal(name != null && name.length() > 0, "name is required"); //$NON-NLS-1$
 		this.name = name;
 		this.before = before == null ? "" : before; //$NON-NLS-1$

@@ -19,7 +19,7 @@ import org.eclipse.riena.core.ping.PingFingerprint;
  */
 public class PingableTreeNode extends PingResultTreeNode {
 
-	private IPingable pingable;
+	private final IPingable pingable;
 
 	/**
 	 * Creates a PingableTreeNode.
@@ -27,7 +27,7 @@ public class PingableTreeNode extends PingResultTreeNode {
 	 * @param pingable
 	 *            the {@link IPingable}.
 	 */
-	public PingableTreeNode(IPingable pingable) {
+	public PingableTreeNode(final IPingable pingable) {
 		super(null, getNameFor(pingable));
 		this.pingable = pingable;
 	}
@@ -50,10 +50,10 @@ public class PingableTreeNode extends PingResultTreeNode {
 	 *            the {@link IPingable} for which to retrieve the name.
 	 * @return the String representation for the given {@link IPingable}.
 	 */
-	protected static String getNameFor(IPingable pingable) {
+	protected static String getNameFor(final IPingable pingable) {
 		try {
 			return pingable.getPingFingerprint().getName();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return pingable.toString();
 		}
 	}

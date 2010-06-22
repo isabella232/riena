@@ -42,22 +42,22 @@ public class SharedViewDemoSubModuleView extends SubModuleView {
 	}
 
 	@Override
-	public void basicCreatePartControl(Composite parent) {
+	public void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		addUIControl(parent, "view"); //$NON-NLS-1$
 
 		GridLayoutFactory.fillDefaults().numColumns(2).margins(20, 20).applyTo(parent);
 
-		String text = String.format("(Instance %d Data)", instanceIndex); //$NON-NLS-1$
-		Label lblInfo = UIControlsFactory.createLabel(parent, text);
+		final String text = String.format("(Instance %d Data)", instanceIndex); //$NON-NLS-1$
+		final Label lblInfo = UIControlsFactory.createLabel(parent, text);
 		GridDataFactory.fillDefaults().span(2, 1).applyTo(lblInfo);
 
 		UIControlsFactory.createLabel(parent, "&First Name:"); //$NON-NLS-1$
-		Text txtFirst = UIControlsFactory.createText(parent, SWT.SINGLE, "txtFirst"); //$NON-NLS-1$
+		final Text txtFirst = UIControlsFactory.createText(parent, SWT.SINGLE, "txtFirst"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().hint(200, SWT.DEFAULT).applyTo(txtFirst);
 
 		UIControlsFactory.createLabel(parent, "&Last Name:"); //$NON-NLS-1$
-		Text txtLast = UIControlsFactory.createText(parent, SWT.SINGLE, "txtLast"); //$NON-NLS-1$
+		final Text txtLast = UIControlsFactory.createText(parent, SWT.SINGLE, "txtLast"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().hint(200, SWT.DEFAULT).applyTo(txtLast);
 
 		UIControlsFactory.createButton(parent, "Default Button", "btnDefault"); //$NON-NLS-1$ //$NON-NLS-2$

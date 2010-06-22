@@ -37,7 +37,8 @@ public class DeferringLoggerHandler implements InvocationHandler {
 	 * @param loggerProvider
 	 * @param queue
 	 */
-	DeferringLoggerHandler(String name, LoggerProvider loggerProvider, BlockingQueue<DeferredLogEvent> queue) {
+	DeferringLoggerHandler(final String name, final LoggerProvider loggerProvider,
+			final BlockingQueue<DeferredLogEvent> queue) {
 		this.name = name;
 		this.loggerProvider = loggerProvider;
 		this.queue = queue;
@@ -49,7 +50,7 @@ public class DeferringLoggerHandler implements InvocationHandler {
 	 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
 	 * java.lang.reflect.Method, java.lang.Object[])
 	 */
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 		if (logger == null) {
 			// try to get real logger
 			logger = loggerProvider.getRealLogger(name);
@@ -60,7 +61,7 @@ public class DeferringLoggerHandler implements InvocationHandler {
 			return method.invoke(logger, args);
 		}
 
-		DeferredLogEvent logEvent = new DeferredLogEvent(name, System.currentTimeMillis(), Thread.currentThread()
+		final DeferredLogEvent logEvent = new DeferredLogEvent(name, System.currentTimeMillis(), Thread.currentThread()
 				.getName(), method, args);
 
 		queue(logEvent);
@@ -76,10 +77,10 @@ public class DeferringLoggerHandler implements InvocationHandler {
 	/**
 	 * @param logEvent
 	 */
-	private void queue(DeferredLogEvent logEvent) {
+	private void queue(final DeferredLogEvent logEvent) {
 		try {
 			queue.put(logEvent);
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			new ConsoleLogger(DeferringLoggerHandler.class.getName()).log(LogService.LOG_ERROR,
 					"Queueing log event failed: " + logEvent, e); //$NON-NLS-1$
 		}

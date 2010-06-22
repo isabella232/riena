@@ -12,7 +12,6 @@ package org.eclipse.riena.communication.core.zipsupport;
 
 import java.util.LinkedList;
 
-
 class BufferEntryManager {
 
 	private static LinkedList<BufferEntry> cachedBuffers = new LinkedList<BufferEntry>();
@@ -25,7 +24,7 @@ class BufferEntryManager {
 		}
 	}
 
-	synchronized static void putBuffer(BufferEntry entry) {
+	synchronized static void putBuffer(final BufferEntry entry) {
 		cachedBuffers.addLast(entry);
 	}
 

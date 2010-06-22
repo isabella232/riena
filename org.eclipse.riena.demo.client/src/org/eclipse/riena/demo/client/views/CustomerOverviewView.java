@@ -36,7 +36,7 @@ public class CustomerOverviewView extends SubModuleView {
 	 * @param parent
 	 */
 	@Override
-	public void basicCreatePartControl(Composite parent) {
+	public void basicCreatePartControl(final Composite parent) {
 
 		Text salary;
 		Text birthdate;
@@ -48,7 +48,7 @@ public class CustomerOverviewView extends SubModuleView {
 		Text emailaddress;
 
 		parent.setLayout(new FillLayout());
-		Composite container = new Composite(parent, SWT.NONE);
+		final Composite container = new Composite(parent, SWT.NONE);
 
 		final Label personalLabel = new Label(container, SWT.NONE);
 		personalLabel.setFont(SWTResourceManager.getFont("Arial", 8, SWT.NORMAL));
@@ -163,7 +163,7 @@ public class CustomerOverviewView extends SubModuleView {
 		openEmailsButton.setBounds(625, 465, 109, 38);
 		addUIControl(openEmailsButton, "openEmailsAction"); //$NON-NLS-1$
 
-		Group grpUifilter = new Group(container, SWT.NONE);
+		final Group grpUifilter = new Group(container, SWT.NONE);
 		grpUifilter.setText("UIFilter"); //$NON-NLS-1$
 		grpUifilter.setBounds(576, 340, 190, 89);
 

@@ -28,7 +28,7 @@ import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 public class FilterExampleSubModuleView extends SubModuleView {
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		final GridLayout gridLayout3 = new GridLayout();
 		parent.setLayout(gridLayout3);

@@ -44,7 +44,7 @@ public final class Trace {
 	 * 
 	 * @see Platform.getDebugOption()
 	 */
-	public static boolean isOn(Class<?> clazz, String option) {
+	public static boolean isOn(final Class<?> clazz, final String option) {
 		return isOn(clazz, clazz, option);
 	}
 
@@ -68,7 +68,7 @@ public final class Trace {
 	 * 
 	 * @see Platform.getDebugOption()
 	 */
-	public static boolean isOn(Class<?> clazzForName, Class<?> clazzForBundle, String option) {
+	public static boolean isOn(final Class<?> clazzForName, final Class<?> clazzForBundle, final String option) {
 		if (Activator.getDefault() == null) {
 			// No OSGi? Maybe we are running in a plain jUnit test - so yes we want tracing
 			return true;

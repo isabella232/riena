@@ -26,8 +26,8 @@ import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.Wire;
 
 /**
- * The {@code RienaSerializerFactory} is a delegating {@code
- * AbstractSerializerFactory}. It´s main purpose is to act like a regular
+ * The {@code RienaSerializerFactory} is a delegating
+ * {@code AbstractSerializerFactory}. It´s main purpose is to act like a regular
  * {@code AbstractSerializerFactory} but internally (not visible to hessian) it
  * manages a configurable list of {@code AbstractRienaSerializerFactory} and
  * takes care of their ´salience´.<br>
@@ -42,10 +42,10 @@ public class RienaSerializerFactory extends AbstractSerializerFactory {
 	}
 
 	@Override
-	public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
+	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
 		synchronized (this) {
-			for (AbstractRienaSerializerFactory serializerFactory : serializerFactories) {
-				Deserializer deserializer = serializerFactory.getDeserializer(cl);
+			for (final AbstractRienaSerializerFactory serializerFactory : serializerFactories) {
+				final Deserializer deserializer = serializerFactory.getDeserializer(cl);
 				if (deserializer != null) {
 					return deserializer;
 				}
@@ -55,10 +55,10 @@ public class RienaSerializerFactory extends AbstractSerializerFactory {
 	}
 
 	@Override
-	public Serializer getSerializer(Class cl) throws HessianProtocolException {
+	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		synchronized (this) {
-			for (AbstractRienaSerializerFactory serializerFactory : serializerFactories) {
-				Serializer serializer = serializerFactory.getSerializer(cl);
+			for (final AbstractRienaSerializerFactory serializerFactory : serializerFactories) {
+				final Serializer serializer = serializerFactory.getSerializer(cl);
 				if (serializer != null) {
 					return serializer;
 				}
@@ -68,10 +68,10 @@ public class RienaSerializerFactory extends AbstractSerializerFactory {
 	}
 
 	@InjectExtension
-	public void update(ISerializerFactoryExtension[] serializerFactoryDefinitions) {
-		List<AbstractRienaSerializerFactory> rienaSerializerFactories = new ArrayList<AbstractRienaSerializerFactory>(
+	public void update(final ISerializerFactoryExtension[] serializerFactoryDefinitions) {
+		final List<AbstractRienaSerializerFactory> rienaSerializerFactories = new ArrayList<AbstractRienaSerializerFactory>(
 				serializerFactoryDefinitions.length);
-		for (ISerializerFactoryExtension serializerFactoryExtension : serializerFactoryDefinitions) {
+		for (final ISerializerFactoryExtension serializerFactoryExtension : serializerFactoryDefinitions) {
 			rienaSerializerFactories.add(serializerFactoryExtension.createImplementation());
 		}
 		// sort and than make active
@@ -86,10 +86,11 @@ public class RienaSerializerFactory extends AbstractSerializerFactory {
 	 * we can do better.
 	 */
 	private void prepareHessianSerializerFactory() {
-		HashMap<?, ?> staticDeSerMap = ReflectionUtils.getHidden(SerializerFactory.class, "_staticDeserializerMap"); //$NON-NLS-1$
+		final HashMap<?, ?> staticDeSerMap = ReflectionUtils.getHidden(SerializerFactory.class,
+				"_staticDeserializerMap"); //$NON-NLS-1$
 		staticDeSerMap.remove(java.io.InputStream.class);
 		staticDeSerMap.remove(StackTraceElement.class);
-		HashMap<?, ?> staticSerMap = ReflectionUtils.getHidden(SerializerFactory.class, "_staticSerializerMap"); //$NON-NLS-1$
+		final HashMap<?, ?> staticSerMap = ReflectionUtils.getHidden(SerializerFactory.class, "_staticSerializerMap"); //$NON-NLS-1$
 		staticSerMap.remove(java.io.InputStream.class);
 	}
 

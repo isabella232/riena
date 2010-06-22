@@ -25,7 +25,7 @@ public class NoPingableFound implements IPingable {
 		return new PingFingerprint(this);
 	}
 
-	public PingVisitor ping(PingVisitor visitor) {
+	public PingVisitor ping(final PingVisitor visitor) {
 		throw new RuntimeException("No IPingable found to ping!"); //$NON-NLS-1$
 	}
 

@@ -28,10 +28,11 @@ public final class ExceptionHandlerManagerAccessor {
 
 	/**
 	 * @return
-	 * @deprecated This should be replaced with {@code
+	 * @deprecated This should be replaced with
+	 *             {@code
 	 *             Service.get(Activator.getDefault().getContext(),
-	 *             IExceptionHandlerManager.class);} or with {@code
-	 *             With.service(..).doo(...);}
+	 *             IExceptionHandlerManager.class);} or with
+	 *             {@code With.service(..).doo(...);}
 	 */
 	@Deprecated
 	public static IExceptionHandlerManager getExceptionHandlerManager() {

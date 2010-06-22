@@ -35,13 +35,13 @@ public class ByteArrayDataSource implements IDataSource {
 	 * 
 	 * @param source
 	 */
-	public ByteArrayDataSource(IDataSource source) {
+	public ByteArrayDataSource(final IDataSource source) {
 		super();
 		if (source != null) {
 			name = source.getName();
 			try {
 				input = source.getInputStream();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw new RuntimeException("IOException when transporting attachment ", e); //$NON-NLS-1$
 			}
 		}

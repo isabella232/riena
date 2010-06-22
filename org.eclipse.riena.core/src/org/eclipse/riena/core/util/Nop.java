@@ -27,7 +27,7 @@ public final class Nop {
 	 * 
 	 * @param reason
 	 */
-	public static void reason(String reason) {
+	public static void reason(final String reason) {
 		// nothing
 	}
 }

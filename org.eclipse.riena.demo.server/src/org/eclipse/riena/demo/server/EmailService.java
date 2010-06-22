@@ -26,12 +26,12 @@ public class EmailService implements IEmailService {
 		System.out.println("email service started"); //$NON-NLS-1$
 	}
 
-	public void bind(IEmailRepository emailRepository) {
+	public void bind(final IEmailRepository emailRepository) {
 		this.emailRepository = emailRepository;
 		System.out.println("email service: repository bound"); //$NON-NLS-1$
 	}
 
-	public void unbind(IEmailRepository emailRepository) {
+	public void unbind(final IEmailRepository emailRepository) {
 		this.emailRepository = null;
 		System.out.println("email service: repository unbound"); //$NON-NLS-1$
 	}
@@ -43,11 +43,11 @@ public class EmailService implements IEmailService {
 	/*
 	 * @see org.eclipse.riena.demo.common.IEmailService#emailsList()
 	 */
-	public List<Email> showEmailsList(String directoryName) {
+	public List<Email> showEmailsList(final String directoryName) {
 		return emailRepository.emailsList(directoryName);
 	}
 
-	public List<Email> findEmailsForCustomer(String emailAddress) {
+	public List<Email> findEmailsForCustomer(final String emailAddress) {
 		return emailRepository.findEmailsForCustomer(emailAddress);
 	}
 
@@ -56,11 +56,11 @@ public class EmailService implements IEmailService {
 	 * org.eclipse.riena.demo.common.IEmailService#store(org.eclipse.riena.demo
 	 * .common.Email)
 	 */
-	public boolean store(Email email) {
+	public boolean store(final Email email) {
 		try {
 			emailRepository.store(email);
 			return true;
-		} catch (RuntimeException r) {
+		} catch (final RuntimeException r) {
 			return false;
 		}
 	}

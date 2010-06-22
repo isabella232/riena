@@ -46,7 +46,7 @@ public class TreeSubModuleController extends SubModuleController {
 		this(null);
 	}
 
-	public TreeSubModuleController(ISubModuleNode navigationNode) {
+	public TreeSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -61,7 +61,7 @@ public class TreeSubModuleController extends SubModuleController {
 
 	private void bindModel() {
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		TreeNode[] roots = createTreeInput();
+		final TreeNode[] roots = createTreeInput();
 		tree.setRootsVisible(false);
 		tree.bindToModel(roots, TreeNode.class, TreeNode.PROPERTY_CHILDREN, TreeNode.PROPERTY_PARENT,
 				TreeNode.PROPERTY_VALUE, TreeNode.PROPERTY_ENABLED, TreeNode.PROPERTY_VISIBLE);
@@ -89,8 +89,8 @@ public class TreeSubModuleController extends SubModuleController {
 		buttonAddSibling.setText("Add &Sibling"); //$NON-NLS-1$
 		buttonAddSibling.addListener(new IActionListener() {
 			public void callback() {
-				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
-				ITreeNode parent = (node != null) ? node.getParent() : null;
+				final ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
+				final ITreeNode parent = (node != null) ? node.getParent() : null;
 				if (parent != null) {
 					new TreeNode(parent, "SIBLING " + nodeCount++); //$NON-NLS-1$
 				}
@@ -100,7 +100,7 @@ public class TreeSubModuleController extends SubModuleController {
 		buttonAddChild.setText("Add &Child"); //$NON-NLS-1$
 		buttonAddChild.addListener(new IActionListener() {
 			public void callback() {
-				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
+				final ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
 					new TreeNode(node, "CHILD " + nodeCount++); //$NON-NLS-1$
 				}
@@ -110,9 +110,9 @@ public class TreeSubModuleController extends SubModuleController {
 		buttonRename.setText("&Rename"); //$NON-NLS-1$
 		buttonRename.addListener(new IActionListener() {
 			public void callback() {
-				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
+				final ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
-					String newValue = getNewValue(node.getValue());
+					final String newValue = getNewValue(node.getValue());
 					if (newValue != null) {
 						node.setValue(newValue);
 					}
@@ -123,10 +123,10 @@ public class TreeSubModuleController extends SubModuleController {
 		buttonDelete.setText("&Delete"); //$NON-NLS-1$
 		buttonDelete.addListener(new IActionListener() {
 			public void callback() {
-				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
-				ITreeNode parent = (node != null) ? node.getParent() : null;
+				final ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
+				final ITreeNode parent = (node != null) ? node.getParent() : null;
 				if (parent != null) {
-					List<ITreeNode> children = parent.getChildren();
+					final List<ITreeNode> children = parent.getChildren();
 					children.remove(node);
 					parent.setChildren(children);
 				}
@@ -136,7 +136,7 @@ public class TreeSubModuleController extends SubModuleController {
 		buttonExpand.setText("E&xpand"); //$NON-NLS-1$
 		buttonExpand.addListener(new IActionListener() {
 			public void callback() {
-				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
+				final ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
 					tree.expand(node);
 				}
@@ -146,7 +146,7 @@ public class TreeSubModuleController extends SubModuleController {
 		buttonCollapse.setText("&Collapse"); //$NON-NLS-1$
 		buttonCollapse.addListener(new IActionListener() {
 			public void callback() {
-				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
+				final ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
 					tree.collapse(node);
 				}
@@ -156,7 +156,7 @@ public class TreeSubModuleController extends SubModuleController {
 		buttonDisable.setText("D&isable"); //$NON-NLS-1$
 		buttonDisable.addListener(new IActionListener() {
 			public void callback() {
-				TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
+				final TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
 					setEnabledRec(node, false);
 					tree.clearSelection();
@@ -167,7 +167,7 @@ public class TreeSubModuleController extends SubModuleController {
 		buttonEnable.setText("&Enable"); //$NON-NLS-1$
 		buttonEnable.addListener(new IActionListener() {
 			public void callback() {
-				TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
+				final TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
 					setEnabledRec(node, true);
 				}
@@ -177,7 +177,7 @@ public class TreeSubModuleController extends SubModuleController {
 		buttonHide.setText("&Hide"); //$NON-NLS-1$
 		buttonHide.addListener(new IActionListener() {
 			public void callback() {
-				TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
+				final TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
 					node.setVisible(false);
 				}
@@ -187,9 +187,9 @@ public class TreeSubModuleController extends SubModuleController {
 		buttonShow.setText("Sho&w children"); //$NON-NLS-1$
 		buttonShow.addListener(new IActionListener() {
 			public void callback() {
-				TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
+				final TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
-					for (ITreeNode child : node.getChildren()) {
+					for (final ITreeNode child : node.getChildren()) {
 						((TreeNode) child).setVisible(true);
 					}
 				}
@@ -197,19 +197,19 @@ public class TreeSubModuleController extends SubModuleController {
 		});
 
 		final IObservableValue viewerSelection = tree.getSingleSelectionObservable();
-		IObservableValue hasSelection = new NotNullValue(viewerSelection);
-		IObservableValue hasNonRootSelection = new ComputedValue(Boolean.TYPE) {
+		final IObservableValue hasSelection = new NotNullValue(viewerSelection);
+		final IObservableValue hasNonRootSelection = new ComputedValue(Boolean.TYPE) {
 			@Override
 			protected Object calculate() {
 				boolean result = false;
-				Object node = viewerSelection.getValue();
+				final Object node = viewerSelection.getValue();
 				if (node instanceof ITreeNode) {
 					result = ((ITreeNode) node).getParent() != null;
 				}
 				return Boolean.valueOf(result);
 			}
 		};
-		DataBindingContext dbc = new DataBindingContext();
+		final DataBindingContext dbc = new DataBindingContext();
 		bindEnablementToValue(dbc, buttonAddChild, hasSelection);
 		bindEnablementToValue(dbc, buttonAddSibling, hasNonRootSelection);
 		bindEnablementToValue(dbc, buttonDelete, hasNonRootSelection);
@@ -225,24 +225,24 @@ public class TreeSubModuleController extends SubModuleController {
 	// helping methods
 	//////////////////
 
-	private void bindEnablementToValue(DataBindingContext dbc, IRidget ridget, IObservableValue value) {
+	private void bindEnablementToValue(final DataBindingContext dbc, final IRidget ridget, final IObservableValue value) {
 		dbc.bindValue(BeansObservables.observeValue(ridget, IRidget.PROPERTY_ENABLED), value, null, null);
 	}
 
 	private TreeNode[] createTreeInput() {
-		TreeNode root = new TreeNode("root"); //$NON-NLS-1$
+		final TreeNode root = new TreeNode("root"); //$NON-NLS-1$
 
-		TreeNode groupA = new TreeNode(root, "group a"); //$NON-NLS-1$
+		final TreeNode groupA = new TreeNode(root, "group a"); //$NON-NLS-1$
 		new TreeNode(groupA, "a_child_1"); //$NON-NLS-1$
 		new TreeNode(groupA, "a_child_2"); //$NON-NLS-1$
 		new TreeNode(groupA, "a_child_3"); //$NON-NLS-1$
 
-		TreeNode groupB = new TreeNode(root, "group b"); //$NON-NLS-1$
+		final TreeNode groupB = new TreeNode(root, "group b"); //$NON-NLS-1$
 		new TreeNode(groupB, "b_child_1"); //$NON-NLS-1$
 		new TreeNode(groupB, "b_child_2"); //$NON-NLS-1$
 		new TreeNode(groupB, "b_child_3"); //$NON-NLS-1$
 
-		TreeNode groupC = new TreeNode(root, "group c"); //$NON-NLS-1$
+		final TreeNode groupC = new TreeNode(root, "group c"); //$NON-NLS-1$
 		new TreeNode(groupC, "c_child_1"); //$NON-NLS-1$
 		new TreeNode(groupC, "c_child_2"); //$NON-NLS-1$
 		new TreeNode(groupC, "c_child_3"); //$NON-NLS-1$
@@ -250,19 +250,19 @@ public class TreeSubModuleController extends SubModuleController {
 		return new TreeNode[] { root };
 	}
 
-	private String getNewValue(Object oldValue) {
+	private String getNewValue(final Object oldValue) {
 		String newValue = null;
 		if (oldValue != null) {
-			Shell shell = ((Button) buttonRename.getUIControl()).getShell();
-			IInputValidator validator = new IInputValidator() {
-				public String isValid(String newText) {
-					boolean isValid = newText.trim().length() > 0;
+			final Shell shell = ((Button) buttonRename.getUIControl()).getShell();
+			final IInputValidator validator = new IInputValidator() {
+				public String isValid(final String newText) {
+					final boolean isValid = newText.trim().length() > 0;
 					return isValid ? null : "Name cannot be empty!"; //$NON-NLS-1$
 				}
 			};
-			InputDialog dialog = new InputDialog(shell, "Rename", "Enter a new name:", String.valueOf(oldValue), //$NON-NLS-1$ //$NON-NLS-2$
+			final InputDialog dialog = new InputDialog(shell, "Rename", "Enter a new name:", String.valueOf(oldValue), //$NON-NLS-1$ //$NON-NLS-2$
 					validator);
-			int result = dialog.open();
+			final int result = dialog.open();
 			if (result == Window.OK) {
 				newValue = dialog.getValue();
 			}
@@ -270,9 +270,9 @@ public class TreeSubModuleController extends SubModuleController {
 		return newValue;
 	}
 
-	private void setEnabledRec(TreeNode node, boolean isEnabled) {
+	private void setEnabledRec(final TreeNode node, final boolean isEnabled) {
 		node.setEnabled(isEnabled);
-		for (ITreeNode child : node.getChildren()) {
+		for (final ITreeNode child : node.getChildren()) {
 			setEnabledRec((TreeNode) child, isEnabled);
 		}
 	}
@@ -281,7 +281,7 @@ public class TreeSubModuleController extends SubModuleController {
 
 		private final IObservableValue value;
 
-		private NotNullValue(IObservableValue value) {
+		private NotNullValue(final IObservableValue value) {
 			super(Boolean.TYPE);
 			this.value = value;
 		}

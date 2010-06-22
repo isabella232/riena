@@ -32,7 +32,7 @@ public class Log4jCommandProvider implements CommandProvider {
 	 * 
 	 * @param intp
 	 */
-	public void _log4jLevel(CommandInterpreter intp) {
+	public void _log4jLevel(final CommandInterpreter intp) {
 
 		final String category = intp.nextArgument();
 		String loglevel = intp.nextArgument();
@@ -45,7 +45,7 @@ public class Log4jCommandProvider implements CommandProvider {
 			intp.println(String.format("LogLevel for %s is %s", categoryForDisplay, getLogLevelString(logger))); //$NON-NLS-1$
 		} else {
 			loglevel = loglevel.toUpperCase();
-			Level newLevel = Level.toLevel(loglevel);
+			final Level newLevel = Level.toLevel(loglevel);
 			if (newLevel.toString().equals(loglevel)) {
 				logger.setLevel(newLevel);
 				intp.println(String.format("LogLevel for %s set to %s", categoryForDisplay, getLogLevelString(logger))); //$NON-NLS-1$
@@ -56,7 +56,7 @@ public class Log4jCommandProvider implements CommandProvider {
 		}
 	}
 
-	private String getLogLevelString(Logger logger) {
+	private String getLogLevelString(final Logger logger) {
 		if (logger == null) {
 			return "OFF"; //$NON-NLS-1$
 		} else if (logger.isEnabledFor(Level.ALL)) {
@@ -81,8 +81,8 @@ public class Log4jCommandProvider implements CommandProvider {
 	 * @see org.eclipse.osgi.framework.console.CommandProvider#getHelp()
 	 */
 	public String getHelp() {
-		StringWriter stringWriter = new StringWriter();
-		PrintWriter writer = new PrintWriter(stringWriter);
+		final StringWriter stringWriter = new StringWriter();
+		final PrintWriter writer = new PrintWriter(stringWriter);
 		writer.println("---Log4j configuration---"); //$NON-NLS-1$
 		writer.println("\tlog4jLevel - display log level of root category (same as 'log4jLevel ROOT')"); //$NON-NLS-1$
 		writer.println("\tlog4jLevel (ROOT|<category>) - display log level for specified category"); //$NON-NLS-1$

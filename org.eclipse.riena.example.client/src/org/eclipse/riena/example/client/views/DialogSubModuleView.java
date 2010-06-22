@@ -29,13 +29,13 @@ public class DialogSubModuleView extends SubModuleView {
 	public static final String ID = DialogSubModuleView.class.getName();
 
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
-		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
+		final GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
-		Button openDialog = UIControlsFactory.createButton(parent);
+		final Button openDialog = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(openDialog);
 		addUIControl(openDialog, DialogSubModuleController.RIDGET_ID_OPEN_DIALOG);
 	}

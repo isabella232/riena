@@ -34,22 +34,22 @@ public class ProxySelectorConfiguration {
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ProxySelectorConfiguration.class);
 
 	@InjectExtension()
-	public void configure(IProxySelectorExtension[] proxySelectorExtensions) {
+	public void configure(final IProxySelectorExtension[] proxySelectorExtensions) {
 		if (proxySelectorExtensions == null || proxySelectorExtensions.length == 0) {
 			ProxySelector.setDefault(previousProxySlector);
 			return;
 		}
 
 		Arrays.sort(proxySelectorExtensions, new Comparator<IProxySelectorExtension>() {
-			public int compare(IProxySelectorExtension e1, IProxySelectorExtension e2) {
+			public int compare(final IProxySelectorExtension e1, final IProxySelectorExtension e2) {
 				return e1.getOrder() < e2.getOrder() ? -1 : e1.getOrder() > e2.getOrder() ? 1 : 0;
 			}
 		});
 
 		LOGGER.log(LogService.LOG_DEBUG, "Configured proxy selectors:"); //$NON-NLS-1$
-		List<ProxySelector> proxySelectors = new ArrayList<ProxySelector>(proxySelectorExtensions.length);
-		for (IProxySelectorExtension extension : proxySelectorExtensions) {
-			ProxySelector proxySelector = extension.createProxySelector();
+		final List<ProxySelector> proxySelectors = new ArrayList<ProxySelector>(proxySelectorExtensions.length);
+		for (final IProxySelectorExtension extension : proxySelectorExtensions) {
+			final ProxySelector proxySelector = extension.createProxySelector();
 			LOGGER.log(LogService.LOG_DEBUG, "  - " + extension.getName() + " with order=" + extension.getOrder() //$NON-NLS-1$ //$NON-NLS-2$
 					+ " implemented by " + proxySelector.getClass().getName()); //$NON-NLS-1$
 			proxySelectors.add(proxySelector);

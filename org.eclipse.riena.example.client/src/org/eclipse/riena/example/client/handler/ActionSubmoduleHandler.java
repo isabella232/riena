@@ -50,9 +50,9 @@ public class ActionSubmoduleHandler extends DummyHandler {
 	// }
 
 	private ISubApplicationNode getActiveSubApplication() {
-		IApplicationNode parent = ApplicationNodeManager.getApplicationNode();
-		List<ISubApplicationNode> children = parent.getChildren();
-		for (ISubApplicationNode subAppNode : children) {
+		final IApplicationNode parent = ApplicationNodeManager.getApplicationNode();
+		final List<ISubApplicationNode> children = parent.getChildren();
+		for (final ISubApplicationNode subAppNode : children) {
 			if (subAppNode.isActivated()) {
 				return subAppNode;
 			}
@@ -61,9 +61,9 @@ public class ActionSubmoduleHandler extends DummyHandler {
 	}
 
 	private IModuleGroupNode getActiveModuleGroup() {
-		ISubApplicationNode parent = getActiveSubApplication();
-		List<IModuleGroupNode> children = parent.getChildren();
-		for (IModuleGroupNode moduleGroupNode : children) {
+		final ISubApplicationNode parent = getActiveSubApplication();
+		final List<IModuleGroupNode> children = parent.getChildren();
+		for (final IModuleGroupNode moduleGroupNode : children) {
 			if (moduleGroupNode.isActivated()) {
 				return moduleGroupNode;
 			}
@@ -72,9 +72,9 @@ public class ActionSubmoduleHandler extends DummyHandler {
 	}
 
 	private IModuleNode getActiveModule() {
-		IModuleGroupNode parent = getActiveModuleGroup();
-		List<IModuleNode> children = parent.getChildren();
-		for (IModuleNode moduleNode : children) {
+		final IModuleGroupNode parent = getActiveModuleGroup();
+		final List<IModuleNode> children = parent.getChildren();
+		for (final IModuleNode moduleNode : children) {
 			if (moduleNode.isActivated()) {
 				return moduleNode;
 			}
@@ -84,16 +84,16 @@ public class ActionSubmoduleHandler extends DummyHandler {
 
 	private ISubModuleNode getActiveSubModule() {
 		ISubModuleNode node = null;
-		IModuleNode parent = getActiveModule();
-		List<ISubModuleNode> children = parent.getChildren();
-		for (ISubModuleNode subModuleNode : children) {
+		final IModuleNode parent = getActiveModule();
+		final List<ISubModuleNode> children = parent.getChildren();
+		for (final ISubModuleNode subModuleNode : children) {
 			if (subModuleNode.isActivated()) {
 				node = subModuleNode;
 				break;
 			}
 		}
 		if (node == null) {
-			for (ISubModuleNode subModuleNode : children) {
+			for (final ISubModuleNode subModuleNode : children) {
 				node = getActiveSubModule(subModuleNode);
 				if (node != null) {
 					break;
@@ -103,17 +103,17 @@ public class ActionSubmoduleHandler extends DummyHandler {
 		return node;
 	}
 
-	private ISubModuleNode getActiveSubModule(ISubModuleNode parent) {
+	private ISubModuleNode getActiveSubModule(final ISubModuleNode parent) {
 		ISubModuleNode node = null;
-		List<ISubModuleNode> children = parent.getChildren();
-		for (ISubModuleNode subModuleNode : children) {
+		final List<ISubModuleNode> children = parent.getChildren();
+		for (final ISubModuleNode subModuleNode : children) {
 			if (subModuleNode.isActivated()) {
 				node = subModuleNode;
 				break;
 			}
 		}
 		if (node == null) {
-			for (ISubModuleNode subModuleNode : children) {
+			for (final ISubModuleNode subModuleNode : children) {
 				node = getActiveSubModule(subModuleNode);
 				if (node != null) {
 					break;

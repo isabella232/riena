@@ -41,17 +41,17 @@ public class LayoutSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		ISingleChoiceRidget ccGender = getRidget(ISingleChoiceRidget.class, "ccGender"); //$NON-NLS-1$
+		final ISingleChoiceRidget ccGender = getRidget(ISingleChoiceRidget.class, "ccGender"); //$NON-NLS-1$
 		ccGender.bindToModel(Arrays.asList(Person.FEMALE, Person.MALE), (List<String>) null, new StringBean(),
 				StringBean.PROP_VALUE);
 		ccGender.updateFromModel();
 
-		IMultipleChoiceRidget ccPets = getRidget(IMultipleChoiceRidget.class, "ccPets"); //$NON-NLS-1$
+		final IMultipleChoiceRidget ccPets = getRidget(IMultipleChoiceRidget.class, "ccPets"); //$NON-NLS-1$
 		ccPets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, new ListBean(),
 				ListBean.PROPERTY_VALUES);
 		ccPets.updateFromModel();
 
-		IActionRidget btnMore = getRidget(IActionRidget.class, "btnMore"); //$NON-NLS-1$
+		final IActionRidget btnMore = getRidget(IActionRidget.class, "btnMore"); //$NON-NLS-1$
 		final IActionRidget btnLess = getRidget(IActionRidget.class, "btnLess"); //$NON-NLS-1$
 
 		btnMore.addListener(new IActionListener() {
@@ -86,19 +86,19 @@ public class LayoutSubModuleController extends SubModuleController {
 	// helping methods
 	//////////////////
 
-	private String[] getCaptions(String[] ridgets) {
-		String[] result = new String[ridgets.length];
+	private String[] getCaptions(final String[] ridgets) {
+		final String[] result = new String[ridgets.length];
 		for (int i = 0; i < result.length; i++) {
 			result[i] = ((ILabelRidget) getRidget(ridgets[i])).getText();
 		}
 		return result;
 	}
 
-	private void updateCaptions(String[] ridgets, String[] texts, final int length) {
+	private void updateCaptions(final String[] ridgets, final String[] texts, final int length) {
 		Assert.isLegal(length > 0);
 		for (int i = 0; i < ridgets.length; i++) {
-			ILabelRidget ridget = (ILabelRidget) getRidget(ridgets[i]);
-			StringBuilder caption = new StringBuilder();
+			final ILabelRidget ridget = (ILabelRidget) getRidget(ridgets[i]);
+			final StringBuilder caption = new StringBuilder();
 			for (int j = 0; j < length; j++) {
 				caption.append(texts[i]);
 			}

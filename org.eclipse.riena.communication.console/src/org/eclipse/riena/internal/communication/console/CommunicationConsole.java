@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.osgi.framework.console.CommandInterpreter;
 import org.eclipse.osgi.framework.console.CommandProvider;
+
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
@@ -31,7 +32,7 @@ public class CommunicationConsole implements CommandProvider {
 	}
 
 	@IgnoreCheckStyle("the _ is the pattern for console commands - do not change!!")
-	public void _remotestatus(CommandInterpreter ci) throws Exception {
+	public void _remotestatus(final CommandInterpreter ci) throws Exception {
 		printToPublishServices();
 		printPublishedServices();
 		printRegisteredRemoteServices();
@@ -42,10 +43,10 @@ public class CommunicationConsole implements CommandProvider {
 		if (servicePublisher == null) {
 			return;
 		}
-		RemoteServiceDescription[] rsDescs = servicePublisher.getAllServices();
+		final RemoteServiceDescription[] rsDescs = servicePublisher.getAllServices();
 
 		// boolean found = false;
-		for (RemoteServiceDescription rsDesc : rsDescs) {
+		for (final RemoteServiceDescription rsDesc : rsDescs) {
 			if (rsDesc.getState() == RemoteServiceDescription.State.UNREGISTERED) {
 				// found = true;
 				System.out.println("Riena:: not published end point=(" + rsDesc + ")"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -57,9 +58,9 @@ public class CommunicationConsole implements CommandProvider {
 		if (servicePublisher == null) {
 			return;
 		}
-		RemoteServiceDescription[] rsDescs = servicePublisher.getAllServices();
+		final RemoteServiceDescription[] rsDescs = servicePublisher.getAllServices();
 		boolean found = false;
-		for (RemoteServiceDescription rsDesc : rsDescs) {
+		for (final RemoteServiceDescription rsDesc : rsDescs) {
 			if (rsDesc.getState() == RemoteServiceDescription.State.REGISTERED) {
 				found = true;
 				System.out.println("Riena:: Published OSGi Service=(" + rsDesc + ")"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -77,13 +78,13 @@ public class CommunicationConsole implements CommandProvider {
 			// System.out.println("Riena:: no OSGi services registered");
 			return;
 		}
-		List<IRemoteServiceRegistration> rsRegs = serviceRegistry.registeredServices(null);
+		final List<IRemoteServiceRegistration> rsRegs = serviceRegistry.registeredServices(null);
 		if (rsRegs.size() == 0) {
 			System.out.println("Riena:: no RemoteServiceProxies registered"); //$NON-NLS-1$
 			return;
 		}
-		for (IRemoteServiceRegistration rsReg : rsRegs) {
-			IRemoteServiceReference rsRef = rsReg.getReference();
+		for (final IRemoteServiceRegistration rsReg : rsRegs) {
+			final IRemoteServiceReference rsRef = rsReg.getReference();
 			System.out.println("Riena:: Registered RemoteServiceProxy=(" + rsRef + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
@@ -92,7 +93,7 @@ public class CommunicationConsole implements CommandProvider {
 	 * @param servicePublisher
 	 *            the servicePublisher to bind
 	 */
-	public void bind(IServicePublishBinder servicePublisher) {
+	public void bind(final IServicePublishBinder servicePublisher) {
 		this.servicePublisher = servicePublisher;
 	}
 
@@ -100,7 +101,7 @@ public class CommunicationConsole implements CommandProvider {
 	 * @param servicePublisher
 	 *            the servicePublisher to unbind
 	 */
-	public void unbind(IServicePublishBinder servicePublisher) {
+	public void unbind(final IServicePublishBinder servicePublisher) {
 		this.servicePublisher = null;
 	}
 
@@ -108,7 +109,7 @@ public class CommunicationConsole implements CommandProvider {
 	 * @param serviceRegistry
 	 *            the serviceRegistry to bind
 	 */
-	public void bind(IRemoteServiceRegistry serviceRegistry) {
+	public void bind(final IRemoteServiceRegistry serviceRegistry) {
 		this.serviceRegistry = serviceRegistry;
 	}
 
@@ -116,7 +117,7 @@ public class CommunicationConsole implements CommandProvider {
 	 * @param serviceRegistry
 	 *            the serviceRegistry to unbind
 	 */
-	public void unbind(IRemoteServiceRegistry serviceRegistry) {
+	public void unbind(final IRemoteServiceRegistry serviceRegistry) {
 		this.serviceRegistry = null;
 	}
 

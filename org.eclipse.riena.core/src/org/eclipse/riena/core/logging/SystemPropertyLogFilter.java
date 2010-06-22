@@ -33,8 +33,8 @@ public class SystemPropertyLogFilter implements LogFilter {
 		this(RIENA_LOG_LEVEL_PROPERTY, "warn"); //$NON-NLS-1$
 	}
 
-	SystemPropertyLogFilter(String systemPropertyName, String defaultLevel) {
-		String logLevelString = System.getProperty(systemPropertyName, defaultLevel);
+	SystemPropertyLogFilter(final String systemPropertyName, final String defaultLevel) {
+		final String logLevelString = System.getProperty(systemPropertyName, defaultLevel);
 		threshold = LogLevelMapper.getValue(logLevelString);
 	}
 
@@ -45,7 +45,7 @@ public class SystemPropertyLogFilter implements LogFilter {
 	 * org.eclipse.equinox.log.LogFilter#isLoggable(org.osgi.framework.Bundle,
 	 * java.lang.String, int)
 	 */
-	public boolean isLoggable(Bundle b, String loggerName, int logLevel) {
+	public boolean isLoggable(final Bundle b, final String loggerName, final int logLevel) {
 		return logLevel <= threshold;
 	}
 

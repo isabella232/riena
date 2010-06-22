@@ -18,7 +18,7 @@ public class ReusableBufferedInputStream extends BufferedInputStream {
 
 	private BufferEntry entry = null;
 
-	public ReusableBufferedInputStream(InputStream in) {
+	public ReusableBufferedInputStream(final InputStream in) {
 		super(in, 1);
 		entry = BufferEntryManager.getBuffer();
 		this.buf = entry.buffer;

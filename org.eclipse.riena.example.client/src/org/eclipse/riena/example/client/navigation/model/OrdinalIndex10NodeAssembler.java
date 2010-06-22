@@ -34,7 +34,7 @@ public class OrdinalIndex10NodeAssembler extends AbstractNavigationAssembler {
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
 	 */
-	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
 
 		if (knownTargetIds == null) {
 			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigate.ordinal10SubModule" //$NON-NLS-1$
@@ -45,8 +45,8 @@ public class OrdinalIndex10NodeAssembler extends AbstractNavigationAssembler {
 		return knownTargetIds.contains(nodeId.getTypeId());
 	}
 
-	public INavigationNode<?>[] buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
-		SubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
+	public INavigationNode<?>[] buildNode(final NavigationNodeId nodeId, final NavigationArgument navigationArgument) {
+		final SubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigate.ordinal10SubModule"), "Ordinal 10"); //$NON-NLS-1$ //$NON-NLS-2$
 		WorkareaManager.getInstance().registerDefinition(subModule, ListSubModuleController.class,
 				ListSubModuleView.ID, false);
