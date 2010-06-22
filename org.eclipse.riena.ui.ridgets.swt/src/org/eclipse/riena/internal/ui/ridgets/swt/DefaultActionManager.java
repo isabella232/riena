@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
@@ -80,12 +81,11 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 	}
 
 	public void activate() {
-		Assert.isTrue(control2button == null);
 		if (control2button == null) {
 			shell = ((Control) windowRidget.getUIControl()).getShell();
 			display = shell.getDisplay();
 			control2button = new HashMap<Control, Button>();
-			for (final Map.Entry<IRidget, IActionRidget> entry : ridget2button.entrySet()) {
+			for (final Entry<IRidget, IActionRidget> entry : ridget2button.entrySet()) {
 				final Control control = (Control) entry.getKey().getUIControl();
 				Assert.isNotNull(control);
 
@@ -95,6 +95,7 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 				control2button.put(control, button);
 			}
 			updateDefaultButton(display.getFocusControl());
+			display.removeFilter(SWT.FocusIn, this);
 			display.addFilter(SWT.FocusIn, this);
 		}
 	}
