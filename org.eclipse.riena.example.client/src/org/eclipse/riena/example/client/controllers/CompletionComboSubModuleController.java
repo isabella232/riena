@@ -36,7 +36,7 @@ public class CompletionComboSubModuleController extends SubModuleController {
 		final ITextRidget text3 = getRidget(ITextRidget.class, "text3"); //$NON-NLS-1$
 
 		final ListBean input = new ListBean("Aachen", "Athens", "Austin", "Arkansas", "Ashland", "London", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-				"Moskow", "New York", "Paris", "Portland", "Potzdam"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				"Moskow", "New York", "Paris", "Portland", "Potsdam"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		combo1.bindToModel(input, ListBean.PROPERTY_VALUES, String.class, null, selection1, "text"); //$NON-NLS-1$
 		combo1.addPropertyChangeListener(IComboRidget.PROPERTY_TEXT, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
