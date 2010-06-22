@@ -44,7 +44,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	public static final int OK = 0;
 
 	/**
-	 * Return code to indicate that the window was cancelled (value: {@value} ).
+	 * Return code to indicate that the window was canceled (value: {@value} ).
 	 * 
 	 * @see #getReturnCode()
 	 * @since 1.2
@@ -73,7 +73,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 * the user presses ENTER within the window.
 	 * <p>
 	 * Note: the algorithm stops at the first match. It will check the most
-	 * specific (innermost) ridget first and check the most general (outremost)
+	 * specific (innermost) ridget first and check the most general (outermost)
 	 * ridget last.
 	 * 
 	 * @param focusRidget
@@ -112,8 +112,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 			okAction.setText("&Okay"); //$NON-NLS-1$
 			okAction.addListener(new IActionListener() {
 				public void callback() {
-					setReturnCode(OK);
-					getWindowRidget().dispose();
+					close(OK);
 				}
 			});
 		}
@@ -121,8 +120,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 		if (cancelAction != null) {
 			cancelAction.addListener(new IActionListener() {
 				public void callback() {
-					setReturnCode(CANCEL);
-					getWindowRidget().dispose();
+					close(CANCEL);
 				}
 			});
 		}
@@ -206,5 +204,10 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 */
 	public void setWindowRidget(final IWindowRidget windowRidget) {
 		this.windowRidget = windowRidget;
+	}
+
+	public void close(final int returnCode) {
+		setReturnCode(returnCode);
+		getWindowRidget().dispose();
 	}
 }
