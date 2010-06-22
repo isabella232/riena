@@ -43,6 +43,9 @@ public abstract class AbstractDialogViewWithButtonBar extends AbstractDialogView
 		final Button okButton = UIControlsFactory.createButton(parent, "&Ok", AbstractWindowController.RIDGET_ID_OK); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, true).align(SWT.END, SWT.END).applyTo(okButton);
 
-		UIControlsFactory.createButton(parent, "&Cancel", AbstractWindowController.RIDGET_ID_CANCEL); //$NON-NLS-1$
+		final Button cancelButton = UIControlsFactory.createButton(parent,
+				"&Cancel", AbstractWindowController.RIDGET_ID_CANCEL); //$NON-NLS-1$
+
+		getShell().setDefaultButton(cancelButton);
 	}
 }
